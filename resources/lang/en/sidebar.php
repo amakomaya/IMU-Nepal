@@ -1,0 +1,43 @@
+<?php
+
+return [
+    'center' => 'Center',
+    'province' => 'Province',
+    'create' => 'Create',
+    'dho' => 'DHO',
+    'list' => 'List',
+    'municipality' => 'Municipality',
+    'overview_of_data' => 'Overview of Data',
+    'fchv' => 'FCHV',
+    'content_app' => 'Content App',
+    'media' => 'Media(Audio,Video,Text)',
+    'news_feed' => 'News Feed',
+    'download_apk' => 'Download Test Development Apk.',
+    'activity_log' => 'Activity Log',
+    'backup_restore' => 'Backup and Restore',
+    'ward' => 'Ward',
+    'baby' => 'Baby',
+    'woman' => 'Woman',
+    'logout' => 'Logout',
+    'health_post' => 'Health Post',
+    'generate_qr_code' => 'Generate QR Code',
+    'go_to_admin' => 'Go to :name Admin',
+    'report_info_format' => 'Report (Information Format)',
+    'report_hmis'  => 'Report (HMIS Format)',
+    'woman_information' => 'Woman Information Diagram',
+    'out_reach_clinic' => 'Out Reach Clinics (ORC)',
+    'health_worker' => 'Health Worker',
+    'fchv' => 'FCHV',
+    'service_event' => 'Serice / Event',
+    'pregnant_mother' => 'Pregnant Mother',
+    'woman_map' => 'Woman Maps',
+    'registered_child' => 'Registered Child',
+    'immunized_child' => 'Immunized Child',
+    'eligible_child' => 'Eligible Child',
+    'related_offices' => 'Related Offices',
+    'local_level' => 'Local Government',
+    'self_evaluation' => 'Self Evaluation',
+    'appointment' => 'Appointment'
+    
+   
+];

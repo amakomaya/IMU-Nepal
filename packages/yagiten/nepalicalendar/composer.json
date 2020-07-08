@@ -1,0 +1,13 @@
+{
+    "name": "yagiten/nepalicalendar",
+    "description": "english date to nepali date and vice-versa",
+    "type": "library",
+    "authors": [
+        {
+            "name": "timilsina.bishwa",
+            "email": "ranjanbishwa11@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
