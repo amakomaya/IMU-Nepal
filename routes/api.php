@@ -189,6 +189,7 @@ Route::get('/v1/client', function(Request $request){
         $response['emergency_name'] = $row->emergency_name ?? '';
         $response['emergency_name_person_relation'] = $row->emergency_name_person_relation ?? '';
         $response['province_id'] = $row->province_id ?? '';
+        $response['district_id'] = $row->district_id ?? '';
         $response['municipality_id'] = $row->municipality_id ?? '';
         $response['ward'] = $row->ward ?? '';
         $response['tole'] = $row->tole ?? '';
