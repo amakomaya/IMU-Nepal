@@ -48,29 +48,14 @@ class AdminController extends Controller
             ->get();
 
         $chartWoman = Charts::database($woman, 'bar', 'highcharts')
-            ->title("Total Registered Woman = " . Woman::whereIn('hp_code', $hpCodes)->active()->count())
-            ->elementLabel("Total Woman")
-            ->dimensions(800, 400)
-            ->responsive(true)
-            ->groupByMonth(date('Y'), true);
-
-        $baby = BabyDetail::whereIn('hp_code', $hpCodes)->isAlive()
-            ->active()
-            ->where(\DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))
-            ->get();
-
-        $chartBaby = Charts::database($baby, 'bar', 'highcharts')
-            ->title("Total Register Baby = " . BabyDetail::whereIn('hp_code', $hpCodes)->isAlive()->get()->count())
-            ->elementLabel("Total Baby")
+            ->title("Total Registered = " . Woman::whereIn('hp_code', $hpCodes)->active()->count())
             ->dimensions(800, 400)
             ->responsive(true)
             ->groupByMonth(date('Y'), true);
             
         $ancCount = Anc::whereIn('hp_code', $hpCodes)->active()->get()->count();
 
-        $vaccinatedBabyCount = VaccinationRecord::whereIn('hp_code', $hpCodes)->hasVialImage()->active()->get()->count();
-
-        return view('admin', compact('vaccinatedBabyCount', 'ancCount', 'chartWoman', 'chartBaby', 'provinces', 'districts', 'options', 'ward_or_healthpost', 'municipalities', 'wards', 'healthposts', 'province_id', 'district_id', 'municipality_id', 'ward_id', 'hp_code', 'from_date', 'to_date'));
+        return view('admin', compact('ancCount', 'chartWoman', 'provinces', 'districts', 'options', 'ward_or_healthpost', 'municipalities', 'wards', 'healthposts', 'province_id', 'district_id', 'municipality_id', 'ward_id', 'hp_code', 'from_date', 'to_date'));
     }
 
     public function districtSelectByProvince(Request $request)

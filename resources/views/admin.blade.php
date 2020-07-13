@@ -33,32 +33,21 @@
     </div>
     <!-- /.row -->
     <div class="row" style="padding: 15px;">
-    <div class="panel panel-default col-lg-6">
+    <div class="panel panel-default col-lg-12">
         <div class="panel-body">
                 {!! $chartWoman->html() !!}
         </div>
     </div>
-        <div class="panel panel-default col-lg-6">
-            <div class="panel-body">
-                {!! $chartBaby->html() !!}
-            </div>
-        </div>
     </div>
     <div class="row" style="padding: 15px;">
-        <div class="panel panel-default col-lg-6">
+        <div class="panel panel-default col-lg-12">
             <div class="panel-body">
-                Total ANC Visits : {{ $ancCount }}
-            </div>
-        </div>
-        <div class="panel panel-default col-lg-6">
-            <div class="panel-body">
-                Total Baby Vaccination : {{ $vaccinatedBabyCount }}
+                Total Reports : {{ $ancCount }}
             </div>
         </div>
     </div>
 </div>
 <!-- /#page-wrapper -->
 {!! $chartWoman->script() !!}
-{!! $chartBaby->script() !!}
 {!! Charts::scripts() !!}
 @endsection

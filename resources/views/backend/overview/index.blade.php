@@ -20,9 +20,8 @@
                                             <th>Health Post Name</th>    
                                             <th>HP Code</th>                                     
                                             <th>District</th>                                     
-                                            <th>AMC Records</th>
-                                            <th>VTC Records</th>
-                                            <th>Actions</th>
+                                            <th>Registers</th>
+                                            <th>Records</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -41,14 +40,6 @@
                                                 <td>{{ $d->getDistrictName($d->district_id) }}</td>                                     
                                                 <td>{{ $d->getAmcRecords($d->hp_code) }}</td>
                                                 <td>{{ $d->getVtcRecords($d->hp_code) }}</td>
-                                                <td>
-                                                    <form method="get" action="{{route('vaccine-vial-management', $d->hp_code)}}" >
-                                                        {{csrf_field()}}
-                                                        <a class="btn btn-xs btn-primary" onclick="this.parentNode.submit()" href="#" title="Vial Stock, Expense, Used, details">
-                                                            Vial Management
-                                                        </a>
-                                                    </form>
-                                                </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
