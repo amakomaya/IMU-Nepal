@@ -161,3 +161,113 @@ Route::post('/v1/raw/fhr', function(Request $request){
         return response()->json(['message'=> 'Error in Sync']);
     }
 });
+
+
+Route::post('/v1/client', function(Request $request){
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            \App\Models\Woman::create($value);
+        } catch (\Exception $e) {
+            
+        }
+    }
+    return response()->json(['message' => 'Data Sussessfully Sync']);
+});
+
+Route::get('/v1/client', function(Request $request){
+    $hp_code = $request->hp_code;
+    $data = collect(\DB::table('women')->where('hp_code', $hp_code)->get())->map(function ($row) {
+
+        $response = [];
+        $response['token'] = $row->token;
+        $response['name'] = $row->name ?? '';
+        $response['age'] = $row->age ?? '';
+        $response['sex'] = $row->sex ?? '';
+        $response['caste'] = $row->caste ?? '';
+        $response['phone'] = $row->phone ?? '';
+        $response['emergency_name'] = $row->emergency_name ?? '';
+        $response['emergency_name_person_relation'] = $row->emergency_name_person_relation ?? '';
+        $response['province_id'] = $row->province_id ?? '';
+        $response['municipality_id'] = $row->municipality_id ?? '';
+        $response['ward'] = $row->ward ?? '';
+        $response['tole'] = $row->tole ?? '';
+        $response['chronic_illness'] = $row->chronic_illness ?? '';
+        $response['symptoms'] = $row->symptoms ?? '';
+        $response['travelled'] = $row->travelled ?? '';
+        $response['travelled_date'] = $row->travelled_date ?? '';
+        $response['travel_medium'] = $row->travel_medium ?? '';
+        $response['travel_detail'] = $row->travel_detail ?? '';
+        $response['travelled_where'] = $row->travelled_where ?? '';
+        $response['covid_infect'] = $row->covid_infect ?? '';
+        $response['covid_around_you'] = $row->covid_around_you ?? '';
+        $response['hp_code'] = $row->hp_code ?? '';
+        $response['registered_device'] = $row->registered_device ?? '';
+        $response['created_by'] = $row->created_by ?? '';
+        $response['longitude'] = $row->longitude ?? '';
+        $response['latitude'] = $row->latitude ?? '';
+        $response['status'] = $row->status ?? '';
+        $response['created_at'] = $row->created_at ?? '';
+        $response['updated_at'] = $row->updated_at ?? '';
+
+    return $response;
+});
+    return response()->json($data);
+});
+
+Route::post('/v1/client-update', function(Request $request){
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            \App\Models\Woman::where('token', $value['token'])->update($value);
+        } catch (\Exception $e) {
+            
+        }
+    }
+    return response()->json(['message' => 'Data Sussessfully Sync and Update']);
+});
+
+Route::post('/v1/client-tests', function(Request $request){
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            \App\Models\Anc::create($value);
+        } catch (\Exception $e) {
+            
+        }
+    }
+    return response()->json(['message' => 'Data Sussessfully Sync']);
+});
+
+Route::get('/v1/client-tests', function(Request $request){
+    $hp_code = $request->hp_code;
+    $data = collect(\DB::table('ancs')->where('hp_code', $hp_code)->get())->map(function ($row) {
+
+        $response = [];
+        $response['token'] = $row->token;
+        $response['woman_token'] = $row->woman_token ?? '';
+        $response['current_province'] = $row->current_province ?? '';
+        $response['current_district'] = $row->current_district ?? '';
+        $response['current_municipality'] = $row->current_municipality ?? '';
+        $response['current_ward'] = $row->current_ward ?? '';
+        $response['current_tole'] = $row->current_tole ?? '';
+        $response['rdt_test'] = $row->rdt_test ?? '';
+        $response['rdt_result'] = $row->rdt_result ?? '';
+        $response['rdt_test_date'] = $row->rdt_test_date ?? '';
+        $response['pcr_test'] = $row->pcr_test ?? '';
+        $response['pcr_result'] = $row->pcr_result ?? '';
+        $response['pcr_test_date'] = $row->pcr_test_date ?? '';
+        $response['problems_and_suggestions'] = $row->problems_and_suggestions ?? '';
+        $response['situation'] = $row->situation ?? '';
+        $response['checked_by'] = $row->checked_by ?? '';
+        $response['hp_code'] = $row->hp_code ?? '';
+        $response['mobile'] = 'mobile';
+        $response['status'] = $row->status ?? '';
+        $response['created_at'] = $row->created_at ?? '';
+        $response['updated_at'] = $row->updated_at ?? '';
+        $response['checked_by_name'] = $row->checked_by_name ?? '';
+
+    return $response;
+});
+    return response()->json($data);
+});

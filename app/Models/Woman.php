@@ -28,7 +28,11 @@ class Woman extends Model
         '6' => 'अन्य',
     ];
     protected $table = 'women';
-    protected $fillable = ['token', 'name', 'phone', 'height', 'age', 'lmp_date_en', 'lmp_date_np', 'orc_id', 'blood_group', 'mool_darta_no', 'sewa_darta_no', 'orc_darta_no', 'province_id', 'district_id', 'municipality_id', 'hp_code', 'tole', 'ward', 'caste', 'husband_name', 'anc_status', 'delivery_status', 'labtest_status', 'pnc_status', 'registered_device', 'created_by', 'longitude', 'latitude', 'status', 'created_at', 'updated_at'];
+    protected $fillable = ['token', 'name', 'phone', 'height', 'age', 'lmp_date_en', 'lmp_date_np', 'orc_id', 'blood_group', 'mool_darta_no', 'sewa_darta_no', 'orc_darta_no', 'province_id', 'district_id', 'municipality_id', 'hp_code', 'tole', 'ward', 'caste', 'husband_name', 'anc_status', 'delivery_status', 'labtest_status', 'pnc_status', 'registered_device', 'created_by', 'longitude', 'latitude', 'status', 'created_at', 'updated_at',
+
+        // new field
+        'sex', 'emergency_name', 'emergency_name_person_relation', 'chronic_illness', 'symptoms', 'travelled', 'travelled_date', 'travel_medium', 'travel_detail', 'travelled_where', 'covid_infect', 'covid_around_you'
+    ];
     protected $dates = ['deleted_at'];
     protected $allowedFilters = [
         'name', 'phone', 'height', 'age', 'lmp_date_en', 'blood_group', 'province_id', 'district_id',
