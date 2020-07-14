@@ -200,8 +200,14 @@ Route::get('/v1/client', function(Request $request){
         $response['travel_medium'] = $row->travel_medium ?? '';
         $response['travel_detail'] = $row->travel_detail ?? '';
         $response['travelled_where'] = $row->travelled_where ?? '';
-        $response['covid_infect'] = $row->covid_infect ?? '';
-        $response['covid_around_you'] = $row->covid_around_you ?? '';
+        // $response['covid_infect'] = $row->covid_infect ?? '';
+        // $response['covid_around_you'] = $row->covid_around_you ?? '';
+                
+        $response['family_member'] = $row->family_member ?? '';
+        $response['family_chronic_illness'] = $row->family_chronic_illness ?? '';
+        $response['family_above_sixty'] = $row->family_above_sixty ?? '';
+        $response['family_below_ten'] = $row->family_below_ten ?? '';
+
         $response['hp_code'] = $row->hp_code ?? '';
         $response['registered_device'] = $row->registered_device ?? '';
         $response['created_by'] = $row->created_by ?? '';
