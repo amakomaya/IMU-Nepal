@@ -247,6 +247,7 @@ Route::get('/v1/client-tests', function(Request $request){
         $response = [];
         $response['token'] = $row->token;
         $response['woman_token'] = $row->woman_token ?? '';
+        $response['current_address'] = $row->current_address ?? '';
         $response['current_province'] = $row->current_province ?? '';
         $response['current_district'] = $row->current_district ?? '';
         $response['current_municipality'] = $row->current_municipality ?? '';
