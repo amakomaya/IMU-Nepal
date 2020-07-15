@@ -43,7 +43,7 @@ class Woman extends Model
 
 
         // nested
-        'ancs.visit_date'
+        'ancs.created_at'
 
     ];
     protected $appends = ['anc_with_protocol', 'anc_visits'];

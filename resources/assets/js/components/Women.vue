@@ -10,10 +10,10 @@
                 <th>Name</th>
                 <th>Age</th>
                 <th>Phone</th>
-                <th>Date</th>
-                <th>ANC Status</th>
-                <th>Delivery Status</th>
-                <th>Action</th>
+                <th>District</th>
+                <th>Muicipality</th>
+                <th>अवस्था</th>
+                <th>Total Tests</th>
             </tr>
             </thead>
             <tr slot-scope="{item}">
@@ -23,69 +23,22 @@
                 <td>{{item.name}}</td>
                 <td>{{item.age}}</td>
                 <td>{{item.phone}}</td>
-                <td>
-                    LMP : {{ ad2bs(item.lmp_date_en) }} <br>
-                    EDD : {{ ad2bs(lmp2edd(item.lmp_date_en)) }}
-                </td>
+                <td>{{item.district.district_name}}</td>
+                <td>{{item.municipality.municipality_name}}</td>
                 <td>
                     <div class="row">
-                        <div class="col-md-4">
-                            <ul v-if="item.anc_visits.length > 0">
-                                <status-indicator status="positive" v-if="item.anc_visits.includes(1)"
-                                                  title="First ANC"/>
-                                <status-indicator status="negative" pulse v-else title="First ANC"/>
-                                <status-indicator status="positive" v-if="item.anc_visits.includes(2)"
-                                                  title="Second ANC"/>
-                                <status-indicator status="negative" pulse v-else title="Second ANC"/>
-                                <status-indicator status="positive" v-if="item.anc_visits.includes(3)"
-                                                  title="Third ANC"/>
-                                <status-indicator status="negative" pulse v-else title="Third ANC"/>
-                                <status-indicator status="positive" v-if="item.anc_visits.includes(4)"
-                                                  title="Forth ANC"/>
-                                <status-indicator status="negative" pulse v-else title="Forth ANC"/>
-                            </ul>
-                            <ul v-else>
-                                <status-indicator status="negative" pulse title="First ANC"/>
-                                <status-indicator status="negative" pulse title="Second ANC"/>
-                                <status-indicator status="negative" pulse title="Third ANC"/>
-                                <status-indicator status="negative" pulse title="Forth ANC"/>
-                            </ul>
+                        <div v-if="item.anc_visits">
+                            <status-indicator status="positive" v-if="item.anc_visits.situation == 1"
+                                              title="समान्य"/>
+                            <status-indicator status="intermediary" v-if="item.anc_visits.situation == 2"
+                                              title="सम्भाब्य जोखिम"/>
+                            <status-indicator status="negative" v-if="item.anc_visits.situation == 3"
+                                              title="जोखिम"/>
                         </div>
-
-                        <div class="col-md-4">
-                            <span class="label label-info">Total {{ item.ancs.length }}</span>
-                        </div>
-                        <div class="col-md-4"></div>
+                            <status-indicator status="negative-semi" v-else pulse title="Not Recorded"/>
                     </div>
                 </td>
-                <td>
-                    <status-indicator status="positive" v-if="item.delivery_status == '1'"
-                                      title="Successfully Delivery"/>
-                    <status-indicator status="intermediary" v-else-if="item.delivery_status == '2'" title="Misscarage"/>
-                    <status-indicator status="negative-semi" v-else title="Not Recorded"/>
-                </td>
-                <td>
-                    <button v-on:click="viewReport(item.id)" title="View Report">
-                        <i class="fa fa-file-o"></i>
-                    </button>
-                    |
-                    <button v-on:click="ancVisitSchedule(item.id)" title="ANC Visit Schedule">
-                        <i class="fa fa-calendar"></i>
-                    </button>
-                    <div class="pull-right">
-                        <button v-on:click="edit(item.token)" title="Edit">
-                            <i class="fa fa-pencil-square-o"></i>
-                        </button>
-                        |
-                        <button v-on:click="userManagement(item)" title="User Management">
-                            <i class="fa fa-key"></i>
-                        </button>
-                        |
-                        <button v-on:click="destroy(item.token, item.name, item.id)" title="Delete">
-                            <i class="fa fa-trash-o"></i>
-                        </button>
-                    </div>
-                </td>
+                <td><span class="label label-info"> {{ item.ancs.length }}</span></td>              
             </tr>
 <!--            <span>Selected Ids: {{ item }}</span>-->
 
@@ -115,18 +68,17 @@
                     ],
                     filterGroups: [
                         {
-                            name: 'Woman',
+                            name: 'Clients',
                             filters: [
                                 {title: 'Name', name: 'name', type: 'string'},
                                 {title: 'Age', name: 'age', type: 'numeric'},
                                 {title: 'Phone Number', name: 'phone', type: 'numeric'},
-                                {title: 'LMP Date', name: 'lmp_date_en', type: 'datetime'},
                             ]
                         },
                         {
-                            name: 'ANCS',
+                            name: 'Tests',
                             filters: [
-                                {title: 'Visit Date', name: 'ancs.visit_date', type: 'datetime'}
+                                {title: 'Created At', name: 'ancs.visit_date', type: 'datetime'}
                             ]
                         }
                     ]

@@ -3876,53 +3876,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -3952,7 +3905,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           name: 'anc_with_protocol'
         }],
         filterGroups: [{
-          name: 'Woman',
+          name: 'Clients',
           filters: [{
             title: 'Name',
             name: 'name',
@@ -3965,15 +3918,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             title: 'Phone Number',
             name: 'phone',
             type: 'numeric'
-          }, {
-            title: 'LMP Date',
-            name: 'lmp_date_en',
-            type: 'datetime'
           }]
         }, {
-          name: 'ANCS',
+          name: 'Tests',
           filters: [{
-            title: 'Visit Date',
+            title: 'Created At',
             name: 'ancs.visit_date',
             type: 'datetime'
           }]
@@ -31102,239 +31051,65 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(item.phone))]),
                     _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.district.district_name))]),
+                    _vm._v(" "),
                     _c("td", [
-                      _vm._v(
-                        "\n                    LMP : " +
-                          _vm._s(_vm.ad2bs(item.lmp_date_en)) +
-                          " "
-                      ),
-                      _c("br"),
-                      _vm._v(
-                        "\n                    EDD : " +
-                          _vm._s(_vm.ad2bs(_vm.lmp2edd(item.lmp_date_en))) +
-                          "\n                "
+                      _vm._v(_vm._s(item.municipality.municipality_name))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "div",
+                        { staticClass: "row" },
+                        [
+                          item.anc_visits
+                            ? _c(
+                                "div",
+                                [
+                                  item.anc_visits.situation == 1
+                                    ? _c("status-indicator", {
+                                        attrs: {
+                                          status: "positive",
+                                          title: "समान्य"
+                                        }
+                                      })
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  item.anc_visits.situation == 2
+                                    ? _c("status-indicator", {
+                                        attrs: {
+                                          status: "intermediary",
+                                          title: "सम्भाब्य जोखिम"
+                                        }
+                                      })
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  item.anc_visits.situation == 3
+                                    ? _c("status-indicator", {
+                                        attrs: {
+                                          status: "negative",
+                                          title: "जोखिम"
+                                        }
+                                      })
+                                    : _vm._e()
+                                ],
+                                1
+                              )
+                            : _c("status-indicator", {
+                                attrs: {
+                                  status: "negative-semi",
+                                  pulse: "",
+                                  title: "Not Recorded"
+                                }
+                              })
+                        ],
+                        1
                       )
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-4" }, [
-                          item.anc_visits.length > 0
-                            ? _c(
-                                "ul",
-                                [
-                                  item.anc_visits.includes(1)
-                                    ? _c("status-indicator", {
-                                        attrs: {
-                                          status: "positive",
-                                          title: "First ANC"
-                                        }
-                                      })
-                                    : _c("status-indicator", {
-                                        attrs: {
-                                          status: "negative",
-                                          pulse: "",
-                                          title: "First ANC"
-                                        }
-                                      }),
-                                  _vm._v(" "),
-                                  item.anc_visits.includes(2)
-                                    ? _c("status-indicator", {
-                                        attrs: {
-                                          status: "positive",
-                                          title: "Second ANC"
-                                        }
-                                      })
-                                    : _c("status-indicator", {
-                                        attrs: {
-                                          status: "negative",
-                                          pulse: "",
-                                          title: "Second ANC"
-                                        }
-                                      }),
-                                  _vm._v(" "),
-                                  item.anc_visits.includes(3)
-                                    ? _c("status-indicator", {
-                                        attrs: {
-                                          status: "positive",
-                                          title: "Third ANC"
-                                        }
-                                      })
-                                    : _c("status-indicator", {
-                                        attrs: {
-                                          status: "negative",
-                                          pulse: "",
-                                          title: "Third ANC"
-                                        }
-                                      }),
-                                  _vm._v(" "),
-                                  item.anc_visits.includes(4)
-                                    ? _c("status-indicator", {
-                                        attrs: {
-                                          status: "positive",
-                                          title: "Forth ANC"
-                                        }
-                                      })
-                                    : _c("status-indicator", {
-                                        attrs: {
-                                          status: "negative",
-                                          pulse: "",
-                                          title: "Forth ANC"
-                                        }
-                                      })
-                                ],
-                                1
-                              )
-                            : _c(
-                                "ul",
-                                [
-                                  _c("status-indicator", {
-                                    attrs: {
-                                      status: "negative",
-                                      pulse: "",
-                                      title: "First ANC"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("status-indicator", {
-                                    attrs: {
-                                      status: "negative",
-                                      pulse: "",
-                                      title: "Second ANC"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("status-indicator", {
-                                    attrs: {
-                                      status: "negative",
-                                      pulse: "",
-                                      title: "Third ANC"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("status-indicator", {
-                                    attrs: {
-                                      status: "negative",
-                                      pulse: "",
-                                      title: "Forth ANC"
-                                    }
-                                  })
-                                ],
-                                1
-                              )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-4" }, [
-                          _c("span", { staticClass: "label label-info" }, [
-                            _vm._v("Total " + _vm._s(item.ancs.length))
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-4" })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "td",
-                      [
-                        item.delivery_status == "1"
-                          ? _c("status-indicator", {
-                              attrs: {
-                                status: "positive",
-                                title: "Successfully Delivery"
-                              }
-                            })
-                          : item.delivery_status == "2"
-                          ? _c("status-indicator", {
-                              attrs: {
-                                status: "intermediary",
-                                title: "Misscarage"
-                              }
-                            })
-                          : _c("status-indicator", {
-                              attrs: {
-                                status: "negative-semi",
-                                title: "Not Recorded"
-                              }
-                            })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c(
-                        "button",
-                        {
-                          attrs: { title: "View Report" },
-                          on: {
-                            click: function($event) {
-                              return _vm.viewReport(item.id)
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "fa fa-file-o" })]
-                      ),
-                      _vm._v("\n                    |\n                    "),
-                      _c(
-                        "button",
-                        {
-                          attrs: { title: "ANC Visit Schedule" },
-                          on: {
-                            click: function($event) {
-                              return _vm.ancVisitSchedule(item.id)
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "fa fa-calendar" })]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "pull-right" }, [
-                        _c(
-                          "button",
-                          {
-                            attrs: { title: "Edit" },
-                            on: {
-                              click: function($event) {
-                                return _vm.edit(item.token)
-                              }
-                            }
-                          },
-                          [_c("i", { staticClass: "fa fa-pencil-square-o" })]
-                        ),
-                        _vm._v(
-                          "\n                        |\n                        "
-                        ),
-                        _c(
-                          "button",
-                          {
-                            attrs: { title: "User Management" },
-                            on: {
-                              click: function($event) {
-                                return _vm.userManagement(item)
-                              }
-                            }
-                          },
-                          [_c("i", { staticClass: "fa fa-key" })]
-                        ),
-                        _vm._v(
-                          "\n                        |\n                        "
-                        ),
-                        _c(
-                          "button",
-                          {
-                            attrs: { title: "Delete" },
-                            on: {
-                              click: function($event) {
-                                return _vm.destroy(
-                                  item.token,
-                                  item.name,
-                                  item.id
-                                )
-                              }
-                            }
-                          },
-                          [_c("i", { staticClass: "fa fa-trash-o" })]
-                        )
+                      _c("span", { staticClass: "label label-info" }, [
+                        _vm._v(" " + _vm._s(item.ancs.length))
                       ])
                     ])
                   ])
@@ -31357,13 +31132,13 @@ var render = function() {
               _vm._v(" "),
               _c("th", [_vm._v("Phone")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Date")]),
+              _c("th", [_vm._v("District")]),
               _vm._v(" "),
-              _c("th", [_vm._v("ANC Status")]),
+              _c("th", [_vm._v("Muicipality")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Delivery Status")]),
+              _c("th", [_vm._v("अवस्था")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Action")])
+              _c("th", [_vm._v("Total Tests")])
             ])
           ])
         ]
@@ -81375,15 +81150,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!*********************************************************************!*\
   !*** ./resources/assets/js/components/WomanUsermanagementModel.vue ***!
   \*********************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _WomanUsermanagementModel_vue_vue_type_template_id_71638d50___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./WomanUsermanagementModel.vue?vue&type=template&id=71638d50& */ "./resources/assets/js/components/WomanUsermanagementModel.vue?vue&type=template&id=71638d50&");
 /* harmony import */ var _WomanUsermanagementModel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WomanUsermanagementModel.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/WomanUsermanagementModel.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _WomanUsermanagementModel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _WomanUsermanagementModel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -81413,7 +81187,7 @@ component.options.__file = "resources/assets/js/components/WomanUsermanagementMo
 /*!**********************************************************************************************!*\
   !*** ./resources/assets/js/components/WomanUsermanagementModel.vue?vue&type=script&lang=js& ***!
   \**********************************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -81615,8 +81389,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /mnt/Code/php/office/amakomaya_new_2017/resources/assets/js/app.js */"./resources/assets/js/app.js");
-module.exports = __webpack_require__(/*! /mnt/Code/php/office/amakomaya_new_2017/resources/assets/sass/app.scss */"./resources/assets/sass/app.scss");
+__webpack_require__(/*! /mnt/Code/php/office/survey/resources/assets/js/app.js */"./resources/assets/js/app.js");
+module.exports = __webpack_require__(/*! /mnt/Code/php/office/survey/resources/assets/sass/app.scss */"./resources/assets/sass/app.scss");
 
 
 /***/ })
