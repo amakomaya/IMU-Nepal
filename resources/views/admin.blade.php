@@ -39,62 +39,55 @@
         </div>
     </div>
     </div>
-    <div>
-        <div class="panel panel-default col-lg-12">
-            <div class="panel-body">
-                Total Reports : {{ $ancCount }}
-                <br>
-                <br>
-                <div class="col-lg-4">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-user fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">{{ $data['situation_normal'] }}</div>
-                                <div><h4>समान्य अवस्था</h4></div>
-                            </div>
-                        </div>
+    <div class="panel-body">
+        <div class="col-lg-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-user fa-5x"></i>
                     </div>
-                    </a>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ $data['situation_normal'] }}</div>
+                        <div><h4>समान्य अवस्था</h4></div>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="panel panel-warning">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-user fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">{{ $data['situation_possible'] }}</div>
-                                <div><h4>सम्भाब्य जोखिम अवस्था</h4></div>
-                            </div>
-                        </div>
-                    </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-user fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">{{ $data['situation_danger'] }}</div>
-                                <div><h4>जोखिम अवस्था</h4></div>
-                            </div>
-                        </div>
-                    </div>
-                    </a>
-                </div>
-            </div>
-            </div>
+            </a>
         </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-user fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ $data['situation_possible'] }}</div>
+                        <div><h4>सम्भाब्य जोखिम अवस्था</h4></div>
+                    </div>
+                </div>
+            </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-user fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ $data['situation_danger'] }}</div>
+                        <div><h4>जोखिम अवस्था</h4></div>
+                    </div>
+                </div>
+            </div>
+            </a>
+        </div>
+    </div>
     </div>
 <div class="row" style="padding: 15px;">
     <div class="col-lg-3">
