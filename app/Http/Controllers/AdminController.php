@@ -55,7 +55,7 @@ class AdminController extends Controller
             ->responsive(true)
             ->groupByMonth(date('Y'), true);
             
-        $tests = collect(Anc::whereIn('hp_code', $hpCodes)->active()->orderBy('created_at', 'desc')->groupBy('woman_token')->get());
+        $tests = collect(Anc::whereIn('hp_code', $hpCodes)->active()->latest()->groupBy('woman_token')->get());
 
         $ancCount = $tests->count();
 
@@ -64,7 +64,6 @@ class AdminController extends Controller
         //             return $q->pcr_result == 1 or $q->rdt_result == 1;
         //           };
         //       });
-
 
         $data = [
                 'situation_normal' => $tests->where('situation', 1)->count(),
