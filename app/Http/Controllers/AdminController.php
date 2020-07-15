@@ -55,7 +55,7 @@ class AdminController extends Controller
             ->responsive(true)
             ->groupByMonth(date('Y'), true);
             
-        $tests = collect(Anc::whereIn('hp_code', $hpCodes)->active()->latest()->groupBy('woman_token')->get());
+        $tests = collect(Anc::whereIn('hp_code', $hpCodes)->active()->orderBy('created_at', 'desc')->get())->unique('woman_token')->values();
 
         $ancCount = $tests->count();
 
