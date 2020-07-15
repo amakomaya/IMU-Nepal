@@ -296,7 +296,7 @@
                     @guest
                     <!-- // -->
                     @else
-                    <a class="navbar-brand navbar-brand-small"><small class="text-primary">{{ \App\User::getAppRole() }}</small></a>
+                    <a class="navbar-brand navbar-brand-small"><small class="text-primary"></small></a>
                     @endif
                     
             </div>

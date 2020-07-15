@@ -43,19 +43,47 @@ class AdminController extends Controller
             $$key = $value;
         }
 
-        $woman = Woman::whereIn('hp_code', $hpCodes)->active()
-            ->where(\DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))
+        $woman = Woman::whereIn('hp_code', $hpCodes)->active();
+
+
+        $chartData = $woman->where(\DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))
             ->get();
 
-        $chartWoman = Charts::database($woman, 'bar', 'highcharts')
+        $chartWoman = Charts::database($chartData, 'bar', 'highcharts')
             ->title("Total Registered = " . Woman::whereIn('hp_code', $hpCodes)->active()->count())
             ->dimensions(800, 400)
             ->responsive(true)
             ->groupByMonth(date('Y'), true);
             
-        $ancCount = Anc::whereIn('hp_code', $hpCodes)->active()->get()->count();
+        $tests = collect(Anc::whereIn('hp_code', $hpCodes)->active()->orderBy('created_at')->get());
 
-        return view('admin', compact('ancCount', 'chartWoman', 'provinces', 'districts', 'options', 'ward_or_healthpost', 'municipalities', 'wards', 'healthposts', 'province_id', 'district_id', 'municipality_id', 'ward_id', 'hp_code', 'from_date', 'to_date'));
+        $ancCount = $tests->count();
+
+        $forInfected = $tests->unique('woman_token')->filter(function($q) {
+                  if($q->pcr_test == 1 or $q->rdt_test == 1){
+                    return $q->pcr_result == 1 or $q->rdt_result == 1;
+                  };
+              });
+
+        $data = [
+                'situation_normal' => $tests->unique('woman_token')->where('situation', 1)->count(),
+                'situation_possible' => $tests->unique('woman_token')->where('situation', 2)->count(),
+                'situation_danger' => $tests->unique('woman_token')->where('situation', 3)->count(),
+
+                'infected' => $forInfected->count(),
+                // 'notTravelled' => $forInfected->where('situation', 3)->count(),
+                // 'domesticTravel' => $forInfected->where('situation', 3)->count(),
+                // 'internationalTravel' => $forInfected->where('situation', 3)->count(),
+
+                'totalOrgQuarintine' => $tests->unique('woman_token')->where('current_address', 0)->count(),
+                'totalOrgIsolation' => $tests->unique('woman_token')->where('current_address', 1)->count(),
+                'totalHealthInstitude' => $tests->unique('woman_token')->where('current_address', 2)->count(),
+                'totalHomeQuarintine' => $tests->unique('woman_token')->where('current_address', 3)->count(),
+                'totalHomeIsolation' => $tests->unique('woman_token')->where('current_address', 4)->count(),
+                'totalOther' => $tests->unique('woman_token')->where('current_address', 5)->count(),
+        ];
+
+        return view('admin', compact('data','ancCount', 'chartWoman', 'provinces', 'districts', 'options', 'ward_or_healthpost', 'municipalities', 'wards', 'healthposts', 'province_id', 'district_id', 'municipality_id', 'ward_id', 'hp_code', 'from_date', 'to_date'));
     }
 
     public function districtSelectByProvince(Request $request)

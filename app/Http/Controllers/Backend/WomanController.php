@@ -464,25 +464,21 @@ class WomanController extends Controller
         return view('backend.woman.anc-program-schedule', compact('data'));
     }
 
-    public function womanMaps()
+    public function womanMaps(Request $request)
     {
-        $hp_token = Auth::user()->token;
-        $health_post = Healthpost::where('token', $hp_token)->get()->first();
-        $district_name = $health_post->district->district_name;
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
 
-
-        $config['center'] = $district_name . ', Nepal';
-        $config['zoom'] = '10';
+        $config['center'] = 'Kaski, Nepal';
+        $config['zoom'] = '3';
         $config['map_height'] = '500px';
         $config['scrollwheel'] = false;
 
         $config['geocodeCaching'] = true;
         GMaps::initialize($config);
 
-
         // Add marker
-        $woman = Woman::where('hp_code', $health_post->hp_code)
-            ->where('delivery_status', '=', 0)
+        $woman = Woman::whereIn('hp_code', $hpCodes)
             ->groupBy(['longitude', 'latitude'])
             ->get(['longitude', 'latitude']);
 
@@ -495,10 +491,10 @@ class WomanController extends Controller
 
         $i = 0;
         foreach ($woman as $women) {
-            $circle['center'] = $women->latitude . ',' . $women->longitude;
+            $config['center'] = 'Kaski, Nepal';
             $circle['radius'] = '2000';
             $marker['position'] = $women->latitude . ',' . $women->longitude;
-            $marker['infowindow_content'] = 'Total Pregnant Woman ' . $woman_count[$i];
+            $marker['infowindow_content'] = $woman_count[$i];
             GMaps::add_circle($circle);
             GMaps::add_marker($marker);
             $i++;
