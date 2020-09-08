@@ -164,7 +164,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">{{ $data['totalOrgQuarintine'] }}</div>
-                        <div><h4>जम्मा संगठन क्वारेन्टाइनमा </h4></div>
+                        <div><h4>जम्मा संस्थागत क्वारेन्टाइनमा </h4></div>
                     </div>
                 </div>
             </div>
@@ -180,7 +180,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">100</div>
-                        <div><h4>यात्रा नगरेका संगठन क्वारेन्टाइनमा</h4></div>
+                        <div><h4>यात्रा नगरेका संस्थागत क्वारेन्टाइनमा</h4></div>
                     </div>
                 </div>
             </div>
@@ -196,7 +196,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">100</div>
-                        <div><h4>आन्तरिक यात्रा गरेका संगठन क्वारेन्टाइनमा</h4></div>
+                        <div><h4>आन्तरिक यात्रा गरेका संस्थागत क्वारेन्टाइनमा</h4></div>
                     </div>
                 </div>
             </div>
@@ -212,7 +212,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">100</div>
-                        <div><h4>अन्तराष्ट्रिय यात्रा गरेका संगठन क्वारेन्टाइनमा</h4></div>
+                        <div><h4>अन्तराष्ट्रिय यात्रा गरेका संस्थागत क्वारेन्टाइनमा</h4></div>
                     </div>
                 </div>
             </div>
@@ -229,7 +229,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">{{ $data['totalOrgIsolation'] }}</div>
-                        <div><h4>जम्मा संगठन आइसोलेसनमा</h4></div>
+                        <div><h4>जम्मा संस्थागत आइसोलेसनमा</h4></div>
                     </div>
                 </div>
             </div>
@@ -245,7 +245,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">100</div>
-                        <div><h4>यात्रा नगरेका संगठन आइसोलेसनमा</h4></div>
+                        <div><h4>यात्रा नगरेका संस्थागत आइसोलेसनमा</h4></div>
                     </div>
                 </div>
             </div>
@@ -261,7 +261,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">100</div>
-                        <div><h4>आन्तरिक यात्रा गरेका संगठन आइसोलेसनमा</h4></div>
+                        <div><h4>आन्तरिक यात्रा गरेका संस्थागत आइसोलेसनमा</h4></div>
                     </div>
                 </div>
             </div>
@@ -277,7 +277,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">100</div>
-                        <div><h4>अन्तराष्ट्रिय यात्रा गरेका संगठन आइसोलेसनमा</h4></div>
+                        <div><h4>अन्तराष्ट्रिय यात्रा गरेका संस्थागत आइसोलेसनमा</h4></div>
                     </div>
                 </div>
             </div>
