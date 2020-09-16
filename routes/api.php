@@ -219,7 +219,7 @@ Route::get('/v1/client', function(Request $request){
 
         $response['age_unit'] = $row->age_unit ?? 0;
         $response['occupation'] = $row->occupation ?? '';
-        $response['emergency_person_relation_phone'] = $row->emergency_person_relation_phone ?? '';
+        $response['emergency_name_person_phone'] = $row->emergency_name_person_phone ?? '';
         $response['email'] = $row->email ?? '';
         $response['nationality'] = $row->nationality ?? '';
         $response['country_name'] = $row->country_name ?? '';
