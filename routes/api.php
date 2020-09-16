@@ -288,7 +288,7 @@ Route::get('/v1/client-tests', function(Request $request){
         $response['pcr_test'] = $row->pcr_test ?? '';
         $response['pcr_result'] = $row->pcr_result ?? '';
         $response['pcr_test_date'] = $row->pcr_test_date ?? '';
-        $response['problems_and_suggestions'] = $row->problems_and_suggestions ?? '';
+        $response['problem_suggestion'] = $row->problem_suggestion ?? '';
         $response['situation'] = $row->situation ?? '';
         $response['checked_by'] = $row->checked_by ?? '';
         $response['hp_code'] = $row->hp_code ?? '';
