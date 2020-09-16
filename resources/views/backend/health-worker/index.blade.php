@@ -42,7 +42,7 @@
                     @if($role=="healthworker")
                         Healthworker
                     @else
-                        Fchv
+                        Lab Users
                     @endif
                 </div>
                 <!-- /.panel-heading -->

@@ -46,7 +46,7 @@
 <li>
     <a href="{{ route('woman.index') }}">
         <i class="fa fa-users" aria-hidden="true"></i>
-        Clients
+        Patients
     </a>
 </li>
 <li>
@@ -55,8 +55,8 @@
             Map 
     </a>
 </li>
-<li>
+<!-- <li>
     <a href="{{ route('backup-restore.index') }}">
         <i class="fa fa-undo" aria-hidden="true"></i> {{trans('sidebar.backup_restore')}} 
     </a>
-</li>
+</li> -->

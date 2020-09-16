@@ -46,7 +46,12 @@
         </li>
     </ul>
 </li>
-
+<li>
+    <a href="{{ route('woman.index') }}">
+        <i class="fa fa-users" aria-hidden="true"></i>
+        Patients
+    </a>
+</li>
  <li>
     <a href="{{ route('admin.overview') }}">
             <i class="fa fa-database" aria-hidden="true"></i> {{ trans('sidebar.overview_of_data') }}
@@ -54,11 +59,11 @@
 </li>
 
 
-<li>
+<!-- <li>
     <a href="{{ route('backup-restore.index') }}">
         <i class="fa fa-undo" aria-hidden="true"></i> {{ trans('sidebar.backup_restore') }}
     </a>
-</li>
+</li> -->
 
 <li>
     <a href="{{ route('activity-log.index') }}">

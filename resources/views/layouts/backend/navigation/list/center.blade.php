@@ -33,7 +33,12 @@
         Health Worker
     </a>
 </li>
-
+<li>
+    <a href="{{ route('woman.index') }}">
+        <i class="fa fa-users" aria-hidden="true"></i>
+        Patients
+    </a>
+</li>
 <li>
     <a href="{{ route('center.woman.map') }}">
     <i class="fa fa-map-marker"></i>
@@ -47,8 +52,8 @@
     </a>
 </li>
 
-<li>
+<!-- <li>
     <a href="{{ route('backup-restore.index') }}">
         <i class="fa fa-undo" aria-hidden="true"></i> {{ trans('sidebar.backup_restore') }}
     </a>
-</li>
+</li> -->

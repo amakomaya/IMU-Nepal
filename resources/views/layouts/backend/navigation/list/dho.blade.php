@@ -31,7 +31,7 @@
 <li>
     <a href="{{ route('woman.index') }}">
         <i class="fa fa-users" aria-hidden="true"></i>
-        Clients
+        Patients
     </a>
 </li>
 <li>
