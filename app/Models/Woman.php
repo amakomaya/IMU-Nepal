@@ -33,7 +33,9 @@ class Woman extends Model
         // new field
         'sex', 'emergency_name', 'emergency_name_person_relation', 'chronic_illness', 'symptoms', 'travelled', 'travelled_date', 'travel_medium', 'travel_detail', 'travelled_where', 
         //'covid_infect', 'covid_around_you'
-        'family_member','family_chronic_illness','family_above_sixty','family_below_ten'
+        'family_member','family_chronic_illness','family_above_sixty','family_below_ten',
+
+        'occupation', 'emergency_person_relation_phone', 'email', 'nationality', 'country_name', 'passport_no', 'quarantine_type', 'quarantine_specific', 'province_quarantine_id', 'district_quarantine_id', 'municipality_quarantine_id', 'ward_quarantine', 'tole_quarantine', 'pcr_test', 'pcr_test_date','pcr_test_result', 'symptoms_specific', 'symptoms_comorbidity', 'symptoms_comorbidity_specific', 'screening', 'screening_specific'
 
     ];
     protected $dates = ['deleted_at'];
