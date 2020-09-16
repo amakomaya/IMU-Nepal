@@ -38,7 +38,7 @@ class Anc extends Model
     }
 
     public function getFillable()
-    {woman_token
+    {
         return $this->fillable;
     }
 

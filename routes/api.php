@@ -279,3 +279,15 @@ Route::get('/v1/client-tests', function(Request $request){
 });
     return response()->json($data);
 });
+
+Route::post('/v1/lab-test', function(Request $request){
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            \App\Models\LabTest::create($value);
+        } catch (\Exception $e) {
+            
+        }
+    }
+    return response()->json(['message' => 'Data Sussessfully Sync']);
+});
