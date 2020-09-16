@@ -217,6 +217,7 @@ Route::get('/v1/client', function(Request $request){
         $response['created_at'] = $row->created_at ?? '';
         $response['updated_at'] = $row->updated_at ?? '';
 
+        $response['age_unit'] = $row->age_unit ?? 0;
         $response['occupation'] = $row->occupation ?? '';
         $response['emergency_person_relation_phone'] = $row->emergency_person_relation_phone ?? '';
         $response['email'] = $row->email ?? '';
