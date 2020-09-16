@@ -217,6 +217,28 @@ Route::get('/v1/client', function(Request $request){
         $response['created_at'] = $row->created_at ?? '';
         $response['updated_at'] = $row->updated_at ?? '';
 
+        $response['occupation'] = $row->occupation ?? '';
+        $response['emergency_person_relation_phone'] = $row->emergency_person_relation_phone ?? '';
+        $response['email'] = $row->email ?? '';
+        $response['nationality'] = $row->nationality ?? '';
+        $response['country_name'] = $row->country_name ?? '';
+        $response['passport_no'] = $row->passport_no ?? '';
+        $response['quarantine_type'] = $row->quarantine_type ?? '';
+        $response['quarantine_specific'] = $row->quarantine_specific ?? '';
+        $response['province_quarantine_id'] = $row->province_quarantine_id ?? '';
+        $response['district_quarantine_id'] = $row->district_quarantine_id ?? '';
+        $response['municipality_quarantine_id'] = $row->municipality_quarantine_id ?? '';
+        $response['ward_quarantine'] = $row->ward_quarantine ?? '';
+        $response['tole_quarantine'] = $row->tole_quarantine ?? '';
+        $response['pcr_test'] = $row->pcr_test ?? '';
+        $response['pcr_test_date'] = $row->pcr_test_date ?? '';
+        $response['pcr_test_result'] = $row->pcr_test_result ?? '';
+        $response['symptoms_specific'] = $row->symptoms_specific ?? '';
+        $response['symptoms_comorbidity'] = $row->symptoms_comorbidity ?? '';
+        $response['symptoms_comorbidity_specific'] = $row->symptoms_comorbidity_specific ?? '';
+        $response['screening'] = $row->screening ?? '';
+        $response['screening_specific'] = $row->screening_specific ?? '';
+
     return $response;
 });
     return response()->json($data);
@@ -274,6 +296,12 @@ Route::get('/v1/client-tests', function(Request $request){
         $response['created_at'] = $row->created_at ?? '';
         $response['updated_at'] = $row->updated_at ?? '';
         $response['checked_by_name'] = $row->checked_by_name ?? '';
+
+        $response['sample_type'] = $row->sample_type ?? '';
+        $response['sample_type_specific'] = $row->sample_type_specific ?? '';
+        $response['sample_case_specific'] = $row->sample_case_specific ?? '';
+        $response['sample_case'] = $row->sample_case ?? '';
+        $response['sample_identification_type'] = $row->sample_identification_type ?? '';
 
     return $response;
 });
