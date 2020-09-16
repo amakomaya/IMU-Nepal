@@ -225,9 +225,9 @@ Route::get('/v1/client', function(Request $request){
         $response['passport_no'] = $row->passport_no ?? '';
         $response['quarantine_type'] = $row->quarantine_type ?? '';
         $response['quarantine_specific'] = $row->quarantine_specific ?? '';
-        $response['province_quarantine_id'] = $row->province_quarantine_id ?? '';
-        $response['district_quarantine_id'] = $row->district_quarantine_id ?? '';
-        $response['municipality_quarantine_id'] = $row->municipality_quarantine_id ?? '';
+        $response['province_quarantine_id'] = $row->province_quarantine_id ?? 0;
+        $response['district_quarantine_id'] = $row->district_quarantine_id ?? 0;
+        $response['municipality_quarantine_id'] = $row->municipality_quarantine_id ?? 0;
         $response['ward_quarantine'] = $row->ward_quarantine ?? '';
         $response['tole_quarantine'] = $row->tole_quarantine ?? '';
         $response['pcr_test'] = $row->pcr_test ?? '';

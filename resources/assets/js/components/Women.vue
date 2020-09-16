@@ -1,8 +1,5 @@
 <template>
     <div>
-        <button class="pull-right" v-on:click="sendMessage(womanTokens)" title="Send Message">
-            <i class="fa fa-envelope-o"></i>
-        </button>
         <filterable v-bind="filterable">
             <thead slot="thead">
             <tr>
@@ -14,6 +11,7 @@
                 <th>Muicipality</th>
                 <th>अवस्था</th>
                 <th>Total Tests</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tr slot-scope="{item}">
@@ -38,7 +36,12 @@
                             <status-indicator status="negative-semi" v-else pulse title="Not Recorded"/>
                     </div>
                 </td>
-                <td><span class="label label-info"> {{ item.ancs.length }}</span></td>              
+                <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
+                <td>
+                    <button v-on:click="viewReport(item)" title="Amakomaya Card">
+                        <i class="fa fa-newspaper-o"></i>
+                    </button>
+                </td>              
             </tr>
 <!--            <span>Selected Ids: {{ item }}</span>-->
 
@@ -50,7 +53,7 @@
     import Filterable from './Filterable.vue'
     import DataConverter from 'ad-bs-converter'
     import axios from 'axios'
-    import WomanUsermanagementModelVue from './WomanUsermanagementModel.vue'
+    import ViewLabReportModel from './ViewLabReportModel.vue'
 
     export default {
         components: {Filterable},
@@ -61,10 +64,7 @@
                     orderables: [
                         {title: 'Name', name: 'name'},
                         {title: 'Age', name: 'age'},
-                        {title: 'LMP Date', name: 'lmp_date_en'},
-                        {title: 'Created At', name: 'created_at'},
-                        {title: 'ANC Visit Status', name: 'anc_with_protocol'},
-
+                        {title: 'Created At', name: 'created_at'}
                     ],
                     filterGroups: [
                         {
@@ -101,122 +101,16 @@
             select: function () {
                 this.allSelected = false;
             },
-            viewReport: function (id) {
-                var url = "/admin/woman/" + id;
-                window.open(url, '_blank').focus();
-            },
-            edit: function (token) {
-                var url = '/woman?q=' + token;
-                window.open(url, '_blank').focus();
-            },
-            destroy: function (token, name, id) {
-                this.$swal({
-                    title: 'Are you sure?',
-                    text: "Delete " + name + "'s records. You won't be able to revert this!",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.value) {
-                        axios.delete('/woman/' + token)
-                            .then(response => {
-                                window.location.reload();
-                            });
-                        this.$swal(
-                            'Deleted!',
-                            'Woman has been deleted.',
-                            'success'
-                        )
-                    }
-                })
-            },
-            sendMessage: async function (token) {
-                if (!token.length) {
-                    this.$swal({
-                        position: 'top-end',
-                        type: 'info',
-                        title: 'Please select woman.',
-                        showConfirmButton: false,
-                        timer: 1200
-                    });
-                    return false;
-                }
-                var current_datetime = new Date();
-                var formated_date = current_datetime.getFullYear() + "-" + (current_datetime.getMonth() + 1) + "-" + current_datetime.getDate() + " " + current_datetime.getHours() + ":" + current_datetime.getMinutes() + ":" + current_datetime.getSeconds();
-                const {value: message} = await this.$swal({
-                    input: 'textarea',
-                    inputPlaceholder: 'Type your message here...',
-                    animation: "slide-from-top",
-                    showCancelButton: true,
-                    confirmButtonText: "Send",
-                });
-                if (message) {
-                    var payload = {
-                        woman_token: token,
-                        message: message,
-                        notified_by: "Message From web",
-                        notified_at: formated_date,
-                    };
-
-                    axios.post('/api/v2/send_message', payload)
-                        .then(response => {
-                            // JSON responses are automatically parsed.
-                            if (response.data.success_woman_token.length > 0) {
-                                this.$swal({
-                                    position: 'top-end',
-                                    type: 'success',
-                                    title: 'Your message has been saved',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
-                            }
-                        })
-                        .catch(function (error) {
-                            this.$swal({
-                                position: 'top-end',
-                                type: 'error',
-                                title: 'Network error, Please try again...',
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                        });
-                } else {
-                    this.$swal({
-                        position: 'top-end',
-                        type: 'error',
-                        title: 'Please enter your message',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
-            },
-
-            userManagement: function (item){
-                var user = item.user;
-                if(!user){
-                    user = {
-                        'id' : '',
-                        'token' : item.token,
-                        'username' : '',
-                        'password' : ''
-                    }
-                }
-                this.$dlg.modal(WomanUsermanagementModelVue, {
-                    width: 500,
-                    height: 350,
-                    title: 'User Management',
+            viewReport: function (item) {
+                this.$dlg.modal(ViewLabReportModel, {
+                    height : 700,
+                    width : 800,
+                    title: item.name,
                     params: {
-                        data : user,
-                    }
-                });
-            },
-
-            ancVisitSchedule: function (id) {
-                var url = "/admin/woman/" + id + "/anc-visit-schedule";
-                window.open(url, '_blank').focus();
-            },
+                        data : item
+                    },
+                })
+            },          
             ad2bs: function (date) {
                 var dateObject = new Date(date);
 
@@ -227,10 +121,7 @@
                 return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
 
             },
-            lmp2edd: function (lmpDate) {
-                let date = new Date(lmpDate);
-                return date.setDate(date.getDate() + 280);
-            }
+
         }
     }
 </script>
