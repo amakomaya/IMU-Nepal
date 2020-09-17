@@ -8,7 +8,7 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Healthpost : {{$data->name}}
+                        {{$data->name}}
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -104,7 +104,13 @@
                                 </tr>                                     
                                 <tr>
                                     <th>Role</th>
-                                    <td>{{$data->role}}</td>
+                                    <td>
+                                        @if($data->role == 'fchv')
+                                            Lab
+                                        @else
+                                            Healthworker
+                                        @endif
+                                    </td>
                                 </tr>                                     
                                 <!-- <tr>
                                     <th>Longitude</th>
