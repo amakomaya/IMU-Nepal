@@ -3702,8 +3702,18 @@ __webpack_require__.r(__webpack_exports__);
 /*!************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/ViewLabReportModel.vue?vue&type=script&lang=js& ***!
   \************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 //
 //
@@ -3900,7 +3910,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {},
+  data: function data() {
+    return {};
+  },
+  methods: {
+    print: function print() {
+      // Get HTML to print from element
+      var prtHtml = document.getElementById('report-printMe').innerHTML; // Get all stylesheets HTML
+
+      var stylesHtml = '';
+
+      for (var _i = 0, _arr = _toConsumableArray(document.querySelectorAll('link[rel="stylesheet"], style')); _i < _arr.length; _i++) {
+        var node = _arr[_i];
+        stylesHtml += node.outerHTML;
+      } // Open the print window
+
+
+      var WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+      WinPrint.document.write("<!DOCTYPE html>\n      <html>\n        <head>\n          ".concat(stylesHtml, "\n        </head>\n        <body>\n          ").concat(prtHtml, "\n        </body>\n      </html>"));
+      WinPrint.document.close();
+      WinPrint.focus();
+      WinPrint.print(); // WinPrint.close();
+    }
+  }
+});
 
 /***/ }),
 
@@ -3993,7 +4028,7 @@ __webpack_require__.r(__webpack_exports__);
           name: 'created_at'
         }],
         filterGroups: [{
-          name: 'Clients',
+          name: 'Patient',
           filters: [{
             title: 'Name',
             name: 'name',
@@ -4019,8 +4054,13 @@ __webpack_require__.r(__webpack_exports__);
       token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
       selected: [],
       allSelected: false,
-      womanTokens: []
+      womanTokens: [],
+      municipalities: [],
+      districts: []
     };
+  },
+  created: function created() {
+    this.fetch();
   },
   methods: {
     selectAll: function selectAll(item) {
@@ -4037,11 +4077,26 @@ __webpack_require__.r(__webpack_exports__);
       this.$dlg.modal(_ViewLabReportModel_vue__WEBPACK_IMPORTED_MODULE_3__["default"], {
         height: 700,
         width: 800,
-        title: item.name,
+        title: 'Laboratory Sample Collection Form for Suspected COVID-19 Case',
         params: {
           data: item
         }
       });
+    },
+    fetch: function fetch() {
+      var _this = this;
+
+      var municipality_url = window.location.protocol + '/api/municipality';
+      var district_url = window.location.protocol + '/api/district';
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(municipality_url).then(function (response) {
+        _this.municipalities = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(district_url).then(function (response) {
+        _this.districts = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {});
     },
     ad2bs: function ad2bs(date) {
       var dateObject = new Date(date);
@@ -5628,7 +5683,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.main[data-v-115c4484] {\n    width: 90%;\n    margin: 0 auto;\n}\n.header[data-v-115c4484] {\n    font-family: sans-serif;\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    justify-content: space-between;\n}\n.date[data-v-115c4484] {\n    color: #000;\n    margin-top: 10px;\n    font-size: 17px;\n}\n*[data-v-115c4484], p[data-v-115c4484] {\n    margin: 0;\n    padding: 0;\n}\n.img[data-v-115c4484] {\n    text-align: right;\n}\n.titleMid[data-v-115c4484] {\n    text-align: center;\n}\n.titleSide[data-v-115c4484] {\n    color: #E61C23;\n    font-size: 15px;\n}\n.govF[data-v-115c4484] {\n    color: #E61C23;\n    font-size: 14px;\n}\n.govM[data-v-115c4484] {\n    color: #E61C23;\n    font-size: 17px;\n}\n.govB[data-v-115c4484] {\n    color: #E61C23;\n    font-weight: bolder;\n    font-size: large;\n}\n.govA[data-v-115c4484] {\n    color: #E61C23;\n    font-size: 14px;\n}\n\n/*  table css */\ntable[data-v-115c4484] {\n    width: 100%;\n    border-collapse: collapse;\n    border: 1px solid black;\n}\ntr[data-v-115c4484] {}\ntd[data-v-115c4484] {\n    font-size: 15px;\n    border: 1px solid black;\n}\n.titleHead[data-v-115c4484] {\n    font-size: 18px;\n    padding-top: 20px;\n    font-weight: 700;\n}\n.subTitle[data-v-115c4484] {\n    padding-top: 20px;\n    font-size: 15px;\n}\n.typeSample[data-v-115c4484] {\n    padding-top: 20px;\n    border: 1px solid #000;\n}\n.noteStyle[data-v-115c4484] {\n    display: flex;\n    margin-top: 20px;\n}\n.footerStyle[data-v-115c4484] {\n    margin-top: 20px;\n    font-size: 14px;\n}\n@media print\n    {\n#printable[data-v-115c4484] { display: block;\n}\n}\n\n    ", ""]);
+exports.push([module.i, "\n.main[data-v-115c4484] {\n    width: 90%;\n    margin: 0 auto;\n}\n.header[data-v-115c4484] {\n    font-family: sans-serif;\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    justify-content: space-between;\n}\n.date[data-v-115c4484] {\n    color: #000;\n    margin-top: 10px;\n    font-size: 17px;\n}\n*[data-v-115c4484], p[data-v-115c4484] {\n    margin: 0;\n    padding: 0;\n}\n.img[data-v-115c4484] {\n    text-align: right;\n}\n.titleMid[data-v-115c4484] {\n    text-align: center;\n}\n.titleSide[data-v-115c4484] {\n    color: #E61C23;\n    font-size: 15px;\n}\n.govF[data-v-115c4484] {\n    color: #E61C23;\n    font-size: 14px;\n}\n.govM[data-v-115c4484] {\n    color: #E61C23;\n    font-size: 17px;\n}\n.govB[data-v-115c4484] {\n    color: #E61C23;\n    font-weight: bolder;\n    font-size: large;\n}\n.govA[data-v-115c4484] {\n    color: #E61C23;\n    font-size: 14px;\n}\n\n/*  table css */\ntable[data-v-115c4484] {\n    width: 100%;\n    border-collapse: collapse;\n    border: 1px solid black;\n}\ntr[data-v-115c4484] {}\ntd[data-v-115c4484] {\n    font-size: 15px;\n    border: 1px solid black;\n}\n.titleHead[data-v-115c4484] {\n    font-size: 18px;\n    padding-top: 20px;\n    font-weight: 700;\n}\n.subTitle[data-v-115c4484] {\n    padding-top: 20px;\n    font-size: 15px;\n}\n.typeSample[data-v-115c4484] {\n    padding-top: 20px;\n    border: 1px solid #000;\n}\n.noteStyle[data-v-115c4484] {\n    display: flex;\n    margin-top: 20px;\n}\n.footerStyle[data-v-115c4484] {\n    margin-top: 20px;\n    font-size: 14px;\n}\n\n", ""]);
 
 // exports
 
@@ -30057,427 +30112,429 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("div", { staticClass: "pull-right" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary btn-lg",
+          attrs: { type: "submit" },
+          on: { click: _vm.print }
+        },
+        [_c("i", { staticClass: "fa fa-print" }, [_vm._v(" Print ")])]
+      )
+    ]),
+    _vm._v(" "),
+    _vm._m(0)
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("div", { staticClass: "pull-right" }, [
-        _c(
-          "button",
-          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-          [_c("i", { staticClass: "fa fa-print" }), _vm._v(" Print\n        ")]
-        )
+    return _c("div", { staticClass: "main", attrs: { id: "report-printMe" } }, [
+      _c("div", { staticClass: "header" }, [
+        _c("div", { staticClass: "img" }, [
+          _c("img", {
+            attrs: {
+              src: "/images/report-logo.jpg",
+              width: "92",
+              height: "92",
+              alt: ""
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "titleMid" }, [
+          _c("p", { staticClass: "govF" }, [_vm._v("Government of Nepal")]),
+          _vm._v(" "),
+          _c("p", { staticClass: "govF" }, [
+            _vm._v("Ministry of Health & Population")
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: "govM" }, [
+            _vm._v("Department of Health Service")
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: "govB" }, [
+            _vm._v("National Public Health Laboratory")
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: "govA" }, [_vm._v("Teku, Kathmandu")])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "titleSide" }, [
+          _c("p", [_vm._v("Phone: 4252421")]),
+          _vm._v(" "),
+          _c("p", [_vm._v("Fax: 4252375")]),
+          _vm._v(" "),
+          _c("p", [_vm._v(" E-mail: nphl@nphl.gov.com.np")]),
+          _vm._v(" "),
+          _c("p", { staticClass: "date" }, [_vm._v("Date: 2077/ / /")])
+        ])
       ]),
-      _vm._v("ull\n    "),
-      _c("div", { staticClass: "main" }, [
-        _c("div", { staticClass: "header" }, [
-          _c("div", { staticClass: "img" }, [
-            _c("img", {
-              attrs: {
-                src: "/images/report-logo.jpg",
-                width: "92",
-                height: "92",
-                alt: ""
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "titleMid" }, [
-            _c("p", { staticClass: "govF" }, [_vm._v("Government of Nepal")]),
-            _vm._v(" "),
-            _c("p", { staticClass: "govF" }, [
-              _vm._v("Ministry of Health & Population")
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "govM" }, [
-              _vm._v("Department of Health Service")
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "govB" }, [
-              _vm._v("National Public Health Laboratory")
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "govA" }, [_vm._v("Teku, Kathmandu")])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "titleSide" }, [
-            _c("p", [_vm._v("Phone: 4252421")]),
-            _vm._v(" "),
-            _c("p", [_vm._v("Fax: 4252375")]),
-            _vm._v(" "),
-            _c("p", [_vm._v(" E-mail: nphl@nphl.gov.com.np")]),
-            _vm._v(" "),
-            _c("p", { staticClass: "date" }, [_vm._v("Date: 2077/ / /")])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("p", { staticClass: "titleHead" }, [
-          _c("u", [
-            _vm._v(
-              "Laboratory Sample Collection Form for Suspected COVID-19 Case"
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("p", { staticClass: "subTitle" }, [
-          _c("b", [_vm._v("Sample Collection Site")]),
-          _vm._v(" "),
-          _c("table", [
-            _c("tr", [
-              _c("td", { staticStyle: { width: "20%" } }, [_vm._v("Province")]),
-              _vm._v(" "),
-              _c("td"),
-              _vm._v(" "),
-              _c("td", { attrs: { colspan: "2" } }, [
-                _vm._v(
-                  "Please tick the appropriate option and specify the name"
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v("District ")]),
-              _vm._v(" "),
-              _c("td"),
-              _vm._v(" "),
-              _c("td", [_vm._v("1.Quarantine [___] ")]),
-              _vm._v(" "),
-              _c("td")
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v("Municipality ")]),
-              _vm._v(" "),
-              _c("td"),
-              _vm._v(" "),
-              _c("td", [_vm._v("2. Home quarantine [___] ")]),
-              _vm._v(" "),
-              _c("td")
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v(" Ward ")]),
-              _vm._v(" "),
-              _c("td"),
-              _vm._v(" "),
-              _c("td", [_vm._v("3. Health institution [___] ")]),
-              _vm._v(" "),
-              _c("td")
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v(" Tole ")]),
-              _vm._v(" "),
-              _c("td"),
-              _vm._v(" "),
-              _c("td", [_vm._v("4. Other institution [___] ")]),
-              _vm._v(" "),
-              _c("td")
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", { attrs: { rowspan: "2" } }, [
-                _c("b", [_vm._v("Contact Person ")]),
-                _vm._v(" for"),
-                _c("br"),
-                _vm._v(" Reporting: (for all"),
-                _c("br"),
-                _vm._v(" collected sample) ")
-              ]),
-              _vm._v(" "),
-              _c(
-                "td",
-                { staticStyle: { width: "20%" }, attrs: { rowspan: "2" } },
-                [
-                  _vm._v(" Name:"),
-                  _c("br"),
-                  _vm._v("\n                    Ph. No."),
-                  _c("br"),
-                  _vm._v("\n                    Email:")
-                ]
-              ),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v(" 5.Community surveillance "),
-                _c("br"),
-                _vm._v(" [___]")
-              ]),
-              _vm._v(" "),
-              _c("td", { staticStyle: { width: "30%" } })
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v("6.Others (Specify)")]),
-              _vm._v(" "),
-              _c("td")
-            ])
-          ])
-        ]),
-        _c("p", { staticClass: "subTitle" }, [
-          _c("b", [_vm._v("Patient's Detail:")]),
-          _vm._v(" "),
-          _c("table", [
-            _c("tr", [
-              _c(
-                "td",
-                {
-                  staticStyle: { border: "0px !important" },
-                  attrs: { colspan: "2" }
-                },
-                [_vm._v(" First Name: ")]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticStyle: { border: "0px !important" },
-                  attrs: { colspan: "2" }
-                },
-                [_vm._v(" Mid. Name:")]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticStyle: { border: "0px !important" },
-                  attrs: { colspan: "2" }
-                },
-                [_vm._v(" Last Name: ")]
-              )
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v("Age : Year/month\n                ")]),
-              _vm._v(" "),
-              _c("td", [_vm._v(" Sex: Male ")]),
-              _vm._v(" "),
-              _c("td", [_vm._v(" Female ")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Other")]),
-              _vm._v(" "),
-              _c("td", [_vm._v(" Occupation:")])
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v("Current address ")]),
-              _vm._v(" "),
-              _c("td", [_vm._v(" District: ")]),
-              _vm._v(" "),
-              _c("td", [_vm._v(" Municipality: ")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Ward No:")]),
-              _vm._v(" "),
-              _c("td", [_vm._v(" Tole:")])
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v("Contact No.\n                ")]),
-              _vm._v(" "),
-              _c("td"),
-              _vm._v(" "),
-              _c("td", { attrs: { colspan: "3" } }, [
-                _vm._v("Email, if necessary:")
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v(" If other than Nepal\n                ")]),
-              _vm._v(" "),
-              _c("td", { attrs: { colspan: "4" } }, [
-                _vm._v(
-                  "\n                    Country: Passport No. Email:\n\n                "
-                )
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "table",
-            {
-              staticStyle: { "margin-top": "20px", border: "2px solid black" }
-            },
-            [
-              _c("tr", [
-                _c("td", [_vm._v(" Was RT-PCR tested before?")]),
-                _vm._v(" "),
-                _c("td", [_vm._v(" 1.Yes")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("2. No")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("If tested, mention date of latest test ")])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v("Result of the latest test")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Positive")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Negative")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Don’t know")])
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c("br")
-        ]),
-        _c("p", { staticStyle: { border: "1px solid #000" } }, [
-          _c("b", [_vm._v("Type of sample collected: ")]),
-          _vm._v(" (Please tick [ ] the type)"),
-          _c("br"),
+      _vm._v(" "),
+      _c("p", { staticClass: "titleHead" }, [
+        _c("u", [
           _vm._v(
-            "\n\n            Nasopharyngeal [___] / Oropharyngeal [___]/ BAL [___]/ Sputum [___]/ Endotracheal Aspirate[___] "
-          ),
-          _c("br"),
-          _vm._v(
-            "\n\n            If other, please specify: …………………………………………..\n        "
-          )
-        ]),
-        _vm._v(" "),
-        _c("p", { staticClass: "subTitle" }, [
-          _c("b", [_vm._v("Type of Case")]),
-          _vm._v(
-            " (Travel, Contact and Symptoms Details) (Please tick [ ] in the box)"
-          ),
-          _vm._v(" "),
-          _c("table", [
-            _c("tr", [
-              _c("td", [
-                _c("b", [_vm._v("Symptomatic patient with")]),
-                _vm._v(" Pneumonia [___]"),
-                _c("br"),
-                _vm._v(
-                  "\n                    ARDS [___] /Influenza-like illness[___]"
-                ),
-                _c("br"),
-                _vm._v("\n                    If Other, specify:")
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v("Most recent travel history in the last 14 days"),
-                _c("br"),
-                _vm._v(
-                  "\n                    Country: If within Nepal:District: "
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", [
-                _c("b", [_vm._v("Symptomatic patient with comorbidity")]),
-                _c("br"),
-                _vm._v(
-                  " Diabetes[___],HTN[___],\n                    Hemodialysis [___]"
-                ),
-                _c("br"),
-                _vm._v(" immunocompromised[___]If other, specify: ")
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _c("b", [_vm._v("Screening:")]),
-                _vm._v(" Pregnant /in labour:[___], > 65 Year[___]"),
-                _c("br"),
-                _vm._v(
-                  "\n                    Health care worker [___] If other,specify:"
-                ),
-                _c("br"),
-                _vm._v(
-                  "\n                    Clinical Suspicious (not admitted/ isolated ) [___]"
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", [_c("b", [_vm._v("Death case")]), _vm._v(" [___]")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Contact tracing: [___]")])
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", [
-                _c("b", [
-                  _vm._v("Health care worker in contact with positive case")
-                ]),
-                _vm._v(" [___]")
-              ]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Repeat swab for positive case: [___]")])
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("td", [
-                _c("b", [_vm._v("Emergency surgical intervention")]),
-                _vm._v(" [___]"),
-                _c("br"),
-                _vm._v(" "),
-                _c("b", [_vm._v("ICU case")]),
-                _vm._v(" [___]")
-              ]),
-              _vm._v(" "),
-              _c("td", [_vm._v("If other, Specify: ")])
-            ])
-          ])
-        ]),
-        _c("div", { staticClass: "noteStyle" }, [
-          _c("div", { staticStyle: { width: "45%" } }, [
-            _c(
-              "p",
-              {
-                staticStyle: {
-                  padding: "5px",
-                  "margin-right": "5%",
-                  border: "1px solid #000"
-                }
-              },
-              [
-                _c("b", [
-                  _vm._v(
-                    "Note: Please fill complete\n                        information in the form\n                        before sample collection. Keep\n                        it separate and transport separately from the sample."
-                  )
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticStyle: { width: "55%" } }, [
-            _c(
-              "p",
-              {
-                staticStyle: {
-                  padding: "5px",
-                  "margin-left": "5%",
-                  border: "1px solid #000"
-                }
-              },
-              [
-                _vm._v(
-                  "\n                    Attending physician/Health worker "
-                ),
-                _c("br"),
-                _vm._v("\n                    Signature: "),
-                _c("br"),
-                _vm._v("\n                    Name: …………………………………………… "),
-                _c("br"),
-                _vm._v("\n                    Phone: …………………………………………… "),
-                _c("br")
-              ]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("p", { staticClass: "footerStyle" }, [
-          _vm._v("For further information please visit "),
-          _c("a", { attrs: { href: " www.nphl.gov.np" } }, [
-            _vm._v(" www.nphl.gov.np")
-          ]),
-          _vm._v(
-            ",\n            Contact Person: Mr. Rajesh\n            Kumar Gupta,(9851239988)\n        "
+            "Laboratory Sample Collection Form for Suspected COVID-19 Case"
           )
         ])
+      ]),
+      _vm._v(" "),
+      _c("p", { staticClass: "subTitle" }, [
+        _c("b", [_vm._v("Sample Collection Site")]),
+        _vm._v(" "),
+        _c("table", [
+          _c("tr", [
+            _c("td", { staticStyle: { width: "20%" } }, [_vm._v("Province")]),
+            _vm._v(" "),
+            _c("td"),
+            _vm._v(" "),
+            _c("td", { attrs: { colspan: "2" } }, [
+              _vm._v("Please tick the appropriate option and specify the name")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("District ")]),
+            _vm._v(" "),
+            _c("td"),
+            _vm._v(" "),
+            _c("td", [_vm._v("1.Quarantine [___] ")]),
+            _vm._v(" "),
+            _c("td")
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("Municipality ")]),
+            _vm._v(" "),
+            _c("td"),
+            _vm._v(" "),
+            _c("td", [_vm._v("2. Home quarantine [___] ")]),
+            _vm._v(" "),
+            _c("td")
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v(" Ward ")]),
+            _vm._v(" "),
+            _c("td"),
+            _vm._v(" "),
+            _c("td", [_vm._v("3. Health institution [___] ")]),
+            _vm._v(" "),
+            _c("td")
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v(" Tole ")]),
+            _vm._v(" "),
+            _c("td"),
+            _vm._v(" "),
+            _c("td", [_vm._v("4. Other institution [___] ")]),
+            _vm._v(" "),
+            _c("td")
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", { attrs: { rowspan: "2" } }, [
+              _c("b", [_vm._v("Contact Person ")]),
+              _vm._v(" for"),
+              _c("br"),
+              _vm._v(" Reporting: (for all"),
+              _c("br"),
+              _vm._v(" collected sample) ")
+            ]),
+            _vm._v(" "),
+            _c(
+              "td",
+              { staticStyle: { width: "20%" }, attrs: { rowspan: "2" } },
+              [
+                _vm._v(" Name:"),
+                _c("br"),
+                _vm._v("\n                Ph. No."),
+                _c("br"),
+                _vm._v("\n                Email:")
+              ]
+            ),
+            _vm._v(" "),
+            _c("td", [
+              _vm._v(" 5.Community surveillance "),
+              _c("br"),
+              _vm._v(" [___]")
+            ]),
+            _vm._v(" "),
+            _c("td", { staticStyle: { width: "30%" } })
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("6.Others (Specify)")]),
+            _vm._v(" "),
+            _c("td")
+          ])
+        ])
+      ]),
+      _c("p", { staticClass: "subTitle" }, [
+        _c("b", [_vm._v("Patient's Detail:")]),
+        _vm._v(" "),
+        _c("table", [
+          _c("tr", [
+            _c(
+              "td",
+              {
+                staticStyle: { border: "0px !important" },
+                attrs: { colspan: "2" }
+              },
+              [_vm._v(" First Name: ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              {
+                staticStyle: { border: "0px !important" },
+                attrs: { colspan: "2" }
+              },
+              [_vm._v(" Mid. Name:")]
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              {
+                staticStyle: { border: "0px !important" },
+                attrs: { colspan: "2" }
+              },
+              [_vm._v(" Last Name: ")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("Age : Year/month\n            ")]),
+            _vm._v(" "),
+            _c("td", [_vm._v(" Sex: Male ")]),
+            _vm._v(" "),
+            _c("td", [_vm._v(" Female ")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("Other")]),
+            _vm._v(" "),
+            _c("td", [_vm._v(" Occupation:")])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("Current address ")]),
+            _vm._v(" "),
+            _c("td", [_vm._v(" District: ")]),
+            _vm._v(" "),
+            _c("td", [_vm._v(" Municipality: ")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("Ward No:")]),
+            _vm._v(" "),
+            _c("td", [_vm._v(" Tole:")])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("Contact No.\n            ")]),
+            _vm._v(" "),
+            _c("td"),
+            _vm._v(" "),
+            _c("td", { attrs: { colspan: "3" } }, [
+              _vm._v("Email, if necessary:")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v(" If other than Nepal ")]),
+            _vm._v(" "),
+            _c("td", { staticStyle: { border: "0px !important" } }, [
+              _vm._v(" Country: ")
+            ]),
+            _vm._v(" "),
+            _c("td", { staticStyle: { border: "0px !important" } }, [
+              _vm._v("Passport No.")
+            ]),
+            _vm._v(" "),
+            _c("td", { staticStyle: { border: "0px !important" } }, [
+              _vm._v("Email:")
+            ]),
+            _vm._v(" "),
+            _c("td", { staticStyle: { border: "0px !important" } })
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "table",
+          { staticStyle: { "margin-top": "20px", border: "2px solid black" } },
+          [
+            _c("tr", [
+              _c("td", [_vm._v(" Was RT-PCR tested before?")]),
+              _vm._v(" "),
+              _c("td", [_vm._v(" 1.Yes")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("2. No")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("If tested, mention date of latest test ")])
+            ]),
+            _vm._v(" "),
+            _c("tr", [
+              _c("td", [_vm._v("Result of the latest test")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("Positive")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("Negative")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("Don’t know")])
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c("br")
+      ]),
+      _c("p", { staticStyle: { border: "1px solid #000" } }, [
+        _c("b", [_vm._v("Type of sample collected: ")]),
+        _vm._v(" (Please tick [ ] the type)"),
+        _c("br"),
+        _vm._v(
+          "\n\n        Nasopharyngeal [___] / Oropharyngeal [___]/ BAL [___]/ Sputum [___]/ Endotracheal Aspirate[___] "
+        ),
+        _c("br"),
+        _vm._v("\n\n        If other, please specify: …………………………………………..\n    ")
+      ]),
+      _vm._v(" "),
+      _c("p", { staticClass: "subTitle" }, [
+        _c("b", [_vm._v("Type of Case")]),
+        _vm._v(
+          " (Travel, Contact and Symptoms Details) (Please tick [ ] in the box)"
+        ),
+        _vm._v(" "),
+        _c("table", [
+          _c("tr", [
+            _c("td", [
+              _c("b", [_vm._v("Symptomatic patient with")]),
+              _vm._v(" Pneumonia [___]"),
+              _c("br"),
+              _vm._v(
+                "\n                ARDS [___] /Influenza-like illness[___]"
+              ),
+              _c("br"),
+              _vm._v("\n                If Other, specify:")
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _vm._v("Most recent travel history in the last 14 days"),
+              _c("br"),
+              _vm._v("\n                Country: If within Nepal:District: ")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [
+              _c("b", [_vm._v("Symptomatic patient with comorbidity")]),
+              _c("br"),
+              _vm._v(
+                " Diabetes[___],HTN[___],\n                Hemodialysis [___]"
+              ),
+              _c("br"),
+              _vm._v(" immunocompromised[___]If other, specify: ")
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c("b", [_vm._v("Screening:")]),
+              _vm._v(" Pregnant /in labour:[___], > 65 Year[___]"),
+              _c("br"),
+              _vm._v(
+                "\n                Health care worker [___] If other,specify:"
+              ),
+              _c("br"),
+              _vm._v(
+                "\n                Clinical Suspicious (not admitted/ isolated ) [___]"
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_c("b", [_vm._v("Death case")]), _vm._v(" [___]")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("Contact tracing: [___]")])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [
+              _c("b", [
+                _vm._v("Health care worker in contact with positive case")
+              ]),
+              _vm._v(" [___]")
+            ]),
+            _vm._v(" "),
+            _c("td", [_vm._v("Repeat swab for positive case: [___]")])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [
+              _c("b", [_vm._v("Emergency surgical intervention")]),
+              _vm._v(" [___]"),
+              _c("br"),
+              _vm._v(" "),
+              _c("b", [_vm._v("ICU case")]),
+              _vm._v(" [___]")
+            ]),
+            _vm._v(" "),
+            _c("td", [_vm._v("If other, Specify: ")])
+          ])
+        ])
+      ]),
+      _c("div", { staticClass: "noteStyle" }, [
+        _c("div", { staticStyle: { width: "45%" } }, [
+          _c(
+            "p",
+            {
+              staticStyle: {
+                padding: "5px",
+                "margin-right": "5%",
+                border: "1px solid #000"
+              }
+            },
+            [
+              _c("b", [
+                _vm._v(
+                  "Note: Please fill complete\n                    information in the form\n                    before sample collection. Keep\n                    it separate and transport separately from the sample."
+                )
+              ])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticStyle: { width: "55%" } }, [
+          _c(
+            "p",
+            {
+              staticStyle: {
+                padding: "5px",
+                "margin-left": "5%",
+                border: "1px solid #000"
+              }
+            },
+            [
+              _vm._v("\n                Attending physician/Health worker "),
+              _c("br"),
+              _vm._v("\n                Signature: "),
+              _c("br"),
+              _vm._v("\n                Name: …………………………………………… "),
+              _c("br"),
+              _vm._v("\n                Phone: …………………………………………… "),
+              _c("br")
+            ]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("p", { staticClass: "footerStyle" }, [
+        _vm._v("For further information please visit "),
+        _c("a", { attrs: { href: " www.nphl.gov.np" } }, [
+          _vm._v(" www.nphl.gov.np")
+        ]),
+        _vm._v(
+          ",\n        Contact Person: Mr. Rajesh\n        Kumar Gupta,(9851239988)\n    "
+        )
       ])
     ])
   }
@@ -30564,10 +30621,24 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(item.phone))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.district.district_name))]),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(
+                          _vm.districts.find(function(x) {
+                            return x.id === item.district_id
+                          }).district_name
+                        )
+                      )
+                    ]),
                     _vm._v(" "),
                     _c("td", [
-                      _vm._v(_vm._s(item.municipality.municipality_name))
+                      _vm._v(
+                        _vm._s(
+                          _vm.municipalities.find(function(x) {
+                            return x.id === item.municipality_id
+                          }).municipality_name
+                        )
+                      )
                     ]),
                     _vm._v(" "),
                     _c("td", [
@@ -79746,9 +79817,7 @@ component.options.__file = "resources/assets/js/components/ViewLabReportModel.vu
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewLabReportModel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ViewLabReportModel.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/ViewLabReportModel.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewLabReportModel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewLabReportModel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewLabReportModel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewLabReportModel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewLabReportModel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewLabReportModel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 

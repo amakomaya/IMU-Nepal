@@ -21,8 +21,8 @@
                 <td>{{item.name}}</td>
                 <td>{{item.age}}</td>
                 <td>{{item.phone}}</td>
-                <td>{{item.district.district_name}}</td>
-                <td>{{item.municipality.municipality_name}}</td>
+                <td>{{ districts.find(x => x.id === item.district_id).district_name }}</td>
+                <td>{{ municipalities.find(x => x.id === item.municipality_id).municipality_name }}</td>
                 <td>
                     <div class="row">
                         <div v-if="item.anc_visits">
@@ -68,7 +68,7 @@
                     ],
                     filterGroups: [
                         {
-                            name: 'Clients',
+                            name: 'Patient',
                             filters: [
                                 {title: 'Name', name: 'name', type: 'string'},
                                 {title: 'Age', name: 'age', type: 'numeric'},
@@ -86,8 +86,13 @@
                 token : Filterable.data().collection.data,
                 selected: [],
                 allSelected: false,
-                womanTokens: []
+                womanTokens: [],
+                municipalities : [],
+                districts : []
             }
+        },
+        created() {
+            this.fetch()
         },
         methods: {
             selectAll: function (item) {
@@ -105,12 +110,36 @@
                 this.$dlg.modal(ViewLabReportModel, {
                     height : 700,
                     width : 800,
-                    title: item.name,
+                    title: 'Laboratory Sample Collection Form for Suspected COVID-19 Case',
                     params: {
                         data : item
                     },
                 })
-            },          
+            },
+
+            fetch() {
+                let municipality_url = window.location.protocol + '/api/municipality';
+                let district_url = window.location.protocol + '/api/district';
+                axios.get(municipality_url)
+                    .then((response) => {
+                        this.municipalities = response.data;
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                    })
+                    .finally(() => {
+                    }),
+                axios.get(district_url)
+                    .then((response) => {
+                        this.districts = response.data;
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                    })
+                    .finally(() => {
+                    })
+            },
+
             ad2bs: function (date) {
                 var dateObject = new Date(date);
 
