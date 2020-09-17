@@ -11,8 +11,8 @@
                 <th>Muicipality</th>
                 <th>Situation</th>
                 <th>Total Collection</th>
-<!--                 <th>Latest Lab Result</th>
- -->                <th>Action</th>
+                <th>Latest Lab Result</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tr slot-scope="{item}">
@@ -38,6 +38,7 @@
                     </div>
                 </td>
                 <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
+                <td><div v-html="latestLabResult(item.latest_anc)"></div></td>
                 <td>
                     <button v-on:click="viewReport(item)" title=" Card Laboratory Sample Collection Form Details">
                         <i class="fa fa-newspaper-o"></i>
@@ -178,7 +179,23 @@
                 }else{
                 return this.municipalities.find(x => x.id === value).municipality_name.split(" ").slice(0, -1).join(" ");
                 }
+            },
+            latestLabResult :function(value){
+                if (value == 0 || value == null || value == ''){
+                    return '<span class=\"label label-default\"> Don\'t Know </span>';
+                }else{
+                    if (value.labreport == 0 || value.labreport == null || value.labreport == ''){
+                        return '<span class=\"label label-default\"> Don\'t Know </span>';
+                    }else{
+                        if (value.labreport.sample_test_result == 1) {
+                            return '<span class=\"label label-danger\"> Positive</span>'
+                        }
+                        if (value.labreport.sample_test_result == 2) {
+                            return '<span class=\"label label-success\"> Negative</span>'
+                        }
+                    }
+                }
             }
-            }
+        }
     }
 </script>

@@ -4096,6 +4096,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -4220,6 +4221,23 @@ __webpack_require__.r(__webpack_exports__);
         return this.municipalities.find(function (x) {
           return x.id === value;
         }).municipality_name.split(" ").slice(0, -1).join(" ");
+      }
+    },
+    latestLabResult: function latestLabResult(value) {
+      if (value == 0 || value == null || value == '') {
+        return '<span class=\"label label-default\"> Don\'t Know </span>';
+      } else {
+        if (value.labreport == 0 || value.labreport == null || value.labreport == '') {
+          return '<span class=\"label label-default\"> Don\'t Know </span>';
+        } else {
+          if (value.labreport.sample_test_result == 1) {
+            return '<span class=\"label label-danger\"> Positive</span>';
+          }
+
+          if (value.labreport.sample_test_result == 2) {
+            return '<span class=\"label label-success\"> Negative</span>';
+          }
+        }
       }
     }
   }
@@ -30477,10 +30495,10 @@ var render = function() {
             _c("td", [
               _vm._v(
                 " Municipality: " +
-                  _vm._s(_vm.checkMunicipality(_vm.data.municipality_id)) +
-                  ">td>\n            "
+                  _vm._s(_vm.checkMunicipality(_vm.data.municipality_id))
               )
             ]),
+            _vm._v(" "),
             _c("td", [_vm._v("Ward No: " + _vm._s(_vm.data.ward))]),
             _vm._v(" "),
             _c("td", [_vm._v(" Tole: " + _vm._s(_vm.data.tole))])
@@ -31120,6 +31138,16 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", [
+                      _c("div", {
+                        domProps: {
+                          innerHTML: _vm._s(
+                            _vm.latestLabResult(item.latest_anc)
+                          )
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
                       _c(
                         "button",
                         {
@@ -31163,6 +31191,8 @@ var render = function() {
               _c("th", [_vm._v("Situation")]),
               _vm._v(" "),
               _c("th", [_vm._v("Total Collection")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Latest Lab Result")]),
               _vm._v(" "),
               _c("th", [_vm._v("Action")])
             ])

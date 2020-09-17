@@ -52,7 +52,7 @@
                 <td>
                     {{ checkMunicipality(data.municipality_quarantine_id) }}
                 </td>
-                 <td v-if="data.quarantine_type==1" >2. Institutional Isolation[ &#10004; ] </td>
+                 <td v-if="data.quarantine_type==1">2. Institutional Isolation[ &#10004; ] </td>
                 <td v-else>2. Institutional Isolation [__]</td>
                 <td v-if="data.quarantine_type==1" > {{ data.quarantine_specific }} </td>
                 <td v-else></td>
@@ -108,7 +108,7 @@
             <tr>
                 <td>Current address </td>
                 <td> District: {{ checkDistrict(data.district_id) }}</td>
-                <td> Municipality: {{ checkMunicipality(data.municipality_id) }}>td>
+                <td> Municipality: {{ checkMunicipality(data.municipality_id) }}</td>
                 <td>Ward No: {{ data.ward }}</td>
                 <td> Tole: {{ data.tole }}</td>
             </tr>
