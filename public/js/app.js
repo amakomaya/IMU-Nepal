@@ -3926,6 +3926,32 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -3970,6 +3996,33 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     },
     gender: function gender(value) {
       return this.gender_array[value - 1] ? this.gender_array[value - 1] : '';
+    },
+    checkProvince: function checkProvince(value) {
+      if (value == 0 || value == null || value == '') {
+        return '';
+      } else {
+        return this.provinces.find(function (x) {
+          return x.id === value;
+        }).province_name;
+      }
+    },
+    checkDistrict: function checkDistrict(value) {
+      if (value == 0 || value == null || value == '') {
+        return '';
+      } else {
+        return this.districts.find(function (x) {
+          return x.id === value;
+        }).district_name;
+      }
+    },
+    checkMunicipality: function checkMunicipality(value) {
+      if (value == 0 || value == null || value == '') {
+        return '';
+      } else {
+        return this.municipalities.find(function (x) {
+          return x.id === value;
+        }).municipality_name.split(" ").slice(0, -1).join(" ");
+      }
     }
   }
 });
@@ -4150,6 +4203,24 @@ __webpack_require__.r(__webpack_exports__);
       var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
       var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default.a.ad2bs(dateFormat);
       return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
+    },
+    checkDistrict: function checkDistrict(value) {
+      if (value == 0 || value == null || value == '') {
+        return '';
+      } else {
+        return this.districts.find(function (x) {
+          return x.id === value;
+        }).district_name;
+      }
+    },
+    checkMunicipality: function checkMunicipality(value) {
+      if (value == 0 || value == null || value == '') {
+        return '';
+      } else {
+        return this.municipalities.find(function (x) {
+          return x.id === value;
+        }).municipality_name.split(" ").slice(0, -1).join(" ");
+      }
     }
   }
 });
@@ -30227,11 +30298,7 @@ var render = function() {
             _c("td", [
               _vm._v(
                 " " +
-                  _vm._s(
-                    _vm.provinces.find(function(x) {
-                      return x.id === _vm.data.province_quarantine_id
-                    }).province_name
-                  ) +
+                  _vm._s(_vm.checkProvince(_vm.data.province_quarantine_id)) +
                   "\n            "
               )
             ]),
@@ -30247,11 +30314,7 @@ var render = function() {
             _c("td", [
               _vm._v(
                 "\n                " +
-                  _vm._s(
-                    _vm.districts.find(function(x) {
-                      return x.id === _vm.data.district_quarantine_id
-                    }).district_name
-                  ) +
+                  _vm._s(_vm.checkDistrict(_vm.data.district_quarantine_id)) +
                   "         \n            "
               )
             ]),
@@ -30274,13 +30337,7 @@ var render = function() {
               _vm._v(
                 "\n                " +
                   _vm._s(
-                    _vm.municipalities
-                      .find(function(x) {
-                        return x.id === _vm.data.municipality_quarantine_id
-                      })
-                      .municipality_name.split(" ")
-                      .slice(0, -1)
-                      .join(" ")
+                    _vm.checkMunicipality(_vm.data.municipality_quarantine_id)
                   ) +
                   "\n            "
               )
@@ -30413,30 +30470,17 @@ var render = function() {
             _vm._v(" "),
             _c("td", [
               _vm._v(
-                " District: " +
-                  _vm._s(
-                    _vm.districts.find(function(x) {
-                      return x.id === _vm.data.district_id
-                    }).district_name
-                  )
+                " District: " + _vm._s(_vm.checkDistrict(_vm.data.district_id))
               )
             ]),
             _vm._v(" "),
             _c("td", [
               _vm._v(
                 " Municipality: " +
-                  _vm._s(
-                    _vm.municipalities
-                      .find(function(x) {
-                        return x.id === _vm.data.municipality_id
-                      })
-                      .municipality_name.split(" ")
-                      .slice(0, -1)
-                      .join(" ")
-                  )
+                  _vm._s(_vm.checkMunicipality(_vm.data.municipality_id)) +
+                  ">td>\n            "
               )
             ]),
-            _vm._v(" "),
             _c("td", [_vm._v("Ward No: " + _vm._s(_vm.data.ward))]),
             _vm._v(" "),
             _c("td", [_vm._v(" Tole: " + _vm._s(_vm.data.tole))])
@@ -30486,7 +30530,10 @@ var render = function() {
                 _vm.data.pcr_test == 1 ? _c("span", [_vm._v(" ✔ ")]) : _vm._e()
               ]),
               _vm._v(" "),
-              _c("td", [_vm._v("2. No")]),
+              _c("td", [
+                _vm._v("2. No "),
+                _vm.data.pcr_test == 0 ? _c("span", [_vm._v(" ✔ ")]) : _vm._e()
+              ]),
               _vm._v(" "),
               _c("td", [
                 _vm._v(
@@ -30526,20 +30573,44 @@ var render = function() {
         _vm._v(" "),
         _c("br")
       ]),
-      _c("p", { staticStyle: { border: "1px solid #000" } }, [
-        _c("b", [_vm._v("Type of sample collected: ")]),
-        _vm._v(" (Please tick [ ] the type)"),
-        _c("br"),
-        _vm._v(
-          "\n\n        Nasopharyngeal [___] / Oropharyngeal [___]/ BAL [___]/ Sputum [___]/ Endotracheal Aspirate[___] "
-        ),
-        _c("br"),
-        _vm._v(
-          "\n\n        If other, please specify: " +
-            _vm._s(_vm.data.symptoms_specific) +
-            "\n    "
-        )
-      ]),
+      _vm._m(3),
+      _vm.data.latest_anc !== null
+        ? _c("div", { staticStyle: { border: "1px solid #000" } }, [
+            _vm._v("\n            Nasopharyngeal [_"),
+            _vm.data.latest_anc.sample_type.includes("1")
+              ? _c("span", [_vm._v(" ✔ ")])
+              : _vm._e(),
+            _vm._v("_] / Oropharyngeal [_"),
+            _vm.data.latest_anc.sample_type.includes("2")
+              ? _c("span", [_vm._v(" ✔ ")])
+              : _vm._e(),
+            _vm._v("_]/ BAL [_"),
+            _vm.data.latest_anc.sample_type.includes("3")
+              ? _c("span", [_vm._v(" ✔ ")])
+              : _vm._e(),
+            _vm._v("_]/ Sputum [_"),
+            _vm.data.latest_anc.sample_type.includes("4")
+              ? _c("span", [_vm._v(" ✔ ")])
+              : _vm._e(),
+            _vm._v("_]/ Endotracheal Aspirate[_"),
+            _vm.data.latest_anc.sample_type.includes("5")
+              ? _c("span", [_vm._v(" ✔ ")])
+              : _vm._e(),
+            _vm._v("_] "),
+            _c("br"),
+            _vm._v(
+              "\n\n                    If other, please specify: \n        "
+            )
+          ])
+        : _c("div", { staticStyle: { border: "1px solid #000" } }, [
+            _vm._v(
+              "\n            Nasopharyngeal [__] / Oropharyngeal [__]/ BAL [__]/ Sputum [__]/ Endotracheal Aspirate[__] "
+            ),
+            _c("br"),
+            _vm._v("\n                    If other, please specify: \n        ")
+          ]),
+      _vm._v(" "),
+      _c("p"),
       _vm._v(" "),
       _c("p", { staticClass: "subTitle" }, [
         _c("b", [_vm._v("Type of Case")]),
@@ -30548,46 +30619,184 @@ var render = function() {
         ),
         _vm._v(" "),
         _c("table", [
-          _vm._m(3),
+          _c("tr", [
+            _c("td", [
+              _c("b", [_vm._v("Symptomatic patient with")]),
+              _vm._v(" Pneumonia [_"),
+              _vm.data.symptoms.includes("1")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_]"),
+              _c("br"),
+              _vm._v("\n                ARDS [_"),
+              _vm.data.symptoms.includes("2")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_] /Influenza-like illness[_"),
+              _vm.data.symptoms.includes("3")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_]"),
+              _c("br"),
+              _vm._v(
+                "\n                If Other, specify: " +
+                  _vm._s(_vm.data.symptoms_specific)
+              )
+            ]),
+            _vm._v(" "),
+            _vm._m(4)
+          ]),
           _vm._v(" "),
           _c("tr", [
             _c("td", [
               _c("b", [_vm._v("Symptomatic patient with comorbidity")]),
               _c("br"),
-              _vm._v(
-                " Diabetes[___],HTN[___],\n                Hemodialysis [___]"
-              ),
+              _vm._v(" Diabetes[_"),
+              _vm.data.symptoms_comorbidity.includes("1")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_],HTN[_"),
+              _vm.data.symptoms_comorbidity.includes("2")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_],\n                Hemodialysis[_"),
+              _vm.data.symptoms_comorbidity.includes("3")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_]"),
+              _c("br"),
+              _vm._v(" immunocompromised[_"),
+              _vm.data.symptoms_comorbidity.includes("4")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_] "),
               _c("br"),
               _vm._v(
-                " immunocompromised[___]If other, specify: " +
+                " If other, specify: " +
                   _vm._s(_vm.data.symptoms_comorbidity_specific)
               )
             ]),
             _vm._v(" "),
             _c("td", [
               _c("b", [_vm._v("Screening:")]),
-              _vm._v(" Pregnant /in labour:[___], > 65 Year[___]"),
+              _vm._v(" Pregnant /in labour:[_"),
+              _vm.data.screening.includes("1")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_], "),
+              _c("br"),
+              _vm._v(" > 65 Year[_"),
+              _vm.data.screening.includes("2")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_]\n                Health care worker [_"),
+              _vm.data.screening.includes("3")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_] "),
               _c("br"),
               _vm._v(
-                "\n                Health care worker [___] If other,specify: " +
-                  _vm._s(_vm.data.screening_specific)
+                "If other,specify: " + _vm._s(_vm.data.screening_specific)
               ),
               _c("br"),
-              _vm._v(
-                "\n                Clinical Suspicious (not admitted/ isolated ) [___]"
-              )
+              _vm._v(" "),
+              _vm.data.latest_anc !== null
+                ? _c("p", [
+                    _vm._v(
+                      "\n                    Clinical Suspicious(not admitted/isolated ) ["
+                    ),
+                    _vm.data.latest_anc.sample_case.includes("4")
+                      ? _c("span", [_vm._v(" ✔ ")])
+                      : _vm._e(),
+                    _vm._v("]\n                ")
+                  ])
+                : _c("p", [
+                    _vm._v(
+                      "\n                    Clinical Suspicious (not admitted/ isolated ) [___]\n                "
+                    )
+                  ])
             ])
           ]),
           _vm._v(" "),
-          _vm._m(4),
+          _vm.data.latest_anc !== null
+            ? _c("tr", [
+                _c("td", [
+                  _c("b", [_vm._v("Death case")]),
+                  _vm._v(" [_"),
+                  _vm.data.latest_anc.sample_case.includes("1")
+                    ? _c("span", [_vm._v(" ✔ ")])
+                    : _vm._e(),
+                  _vm._v("_]")
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v("Contact tracing: [_"),
+                  _vm.data.latest_anc.sample_case.includes("5")
+                    ? _c("span", [_vm._v(" ✔ ")])
+                    : _vm._e(),
+                  _vm._v("_]")
+                ])
+              ])
+            : _c("tr", [
+                _vm._m(5),
+                _vm._v(" "),
+                _c("td", [_vm._v("Contact tracing: [___]")])
+              ]),
           _vm._v(" "),
-          _vm._m(5),
+          _vm.data.latest_anc !== null
+            ? _c("tr", [
+                _vm._m(6),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v("Repeat swab for positive case: [_"),
+                  _vm.data.latest_anc.sample_case.includes("6")
+                    ? _c("span", [_vm._v(" ✔ ")])
+                    : _vm._e(),
+                  _vm._v("_]")
+                ])
+              ])
+            : _c("tr", [
+                _vm._m(7),
+                _vm._v(" "),
+                _c("td", [_vm._v("Repeat swab for positive case: [__]")])
+              ]),
           _vm._v(" "),
-          _vm._m(6)
+          _vm.data.latest_anc !== null
+            ? _c("tr", [
+                _c("td", [
+                  _c("b", [_vm._v("Emergency surgical intervention")]),
+                  _vm._v(" [_"),
+                  _vm.data.latest_anc.sample_case.includes("2")
+                    ? _c("span", [_vm._v(" ✔ ")])
+                    : _vm._e(),
+                  _vm._v("_]"),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("b", [_vm._v("ICU case")]),
+                  _vm._v(" [_"),
+                  _vm.data.latest_anc.sample_case.includes("3")
+                    ? _c("span", [_vm._v(" ✔ ")])
+                    : _vm._e(),
+                  _vm._v("_]")
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "If other, Specify: " +
+                      _vm._s(_vm.data.latest_anc.sample_case_specific) +
+                      " "
+                  )
+                ])
+              ])
+            : _c("tr", [
+                _vm._m(8),
+                _vm._v(" "),
+                _c("td", [_vm._v("If other, Specify:  ")])
+              ])
         ])
       ]),
       _c("div", { staticClass: "noteStyle" }, [
-        _vm._m(7),
+        _vm._m(9),
         _vm._v(" "),
         _c("div", { staticStyle: { width: "55%" } }, [
           _c(
@@ -30603,11 +30812,7 @@ var render = function() {
               _vm._v("\n                Attending physician/Health worker "),
               _c("br"),
               _vm._v("\n                Signature: "),
-              _c("img", {
-                attrs: {
-                  src: '"/storage/health-worker/"+data.healthworker.image'
-                }
-              }),
+              _c("img", { attrs: { src: "" } }),
               _vm._v(" "),
               _c("br"),
               _vm._v(
@@ -30627,7 +30832,7 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _vm._m(8)
+      _vm._m(10)
     ])
   ])
 }
@@ -30674,61 +30879,57 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", [
-        _c("b", [_vm._v("Symptomatic patient with")]),
-        _vm._v(" Pneumonia [___]"),
-        _c("br"),
-        _vm._v("\n                ARDS [___] /Influenza-like illness[___]"),
-        _c("br"),
-        _vm._v("\n                If Other, specify:")
-      ]),
-      _vm._v(" "),
-      _c("td", [
-        _vm._v("Most recent travel history in the last 14 days"),
-        _c("br"),
-        _vm._v("\n                Country: If within Nepal:District: ")
-      ])
+    return _c("p", { staticStyle: { border: "1px solid #000" } }, [
+      _c("b", [_vm._v("Type of sample collected: ")]),
+      _vm._v(" (Please tick [ ] the type)"),
+      _c("br")
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", [_c("b", [_vm._v("Death case")]), _vm._v(" [___]")]),
-      _vm._v(" "),
-      _c("td", [_vm._v("Contact tracing: [___]")])
+    return _c("td", [
+      _vm._v("Most recent travel history in the last 14 days"),
+      _c("br"),
+      _vm._v("\n                Country: If within Nepal:District: ")
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", [
-        _c("b", [_vm._v("Health care worker in contact with positive case")]),
-        _vm._v(" [___]")
-      ]),
-      _vm._v(" "),
-      _c("td", [_vm._v("Repeat swab for positive case: [___]")])
+    return _c("td", [_c("b", [_vm._v("Death case")]), _vm._v(" [___]")])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("b", [_vm._v("Health care worker in contact with positive case")]),
+      _vm._v(" [__]")
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", [
-        _c("b", [_vm._v("Emergency surgical intervention")]),
-        _vm._v(" [___]"),
-        _c("br"),
-        _vm._v(" "),
-        _c("b", [_vm._v("ICU case")]),
-        _vm._v(" [___]")
-      ]),
+    return _c("td", [
+      _c("b", [_vm._v("Health care worker in contact with positive case")]),
+      _vm._v(" [__]")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("b", [_vm._v("Emergency surgical intervention")]),
+      _vm._v(" [__]"),
+      _c("br"),
       _vm._v(" "),
-      _c("td", [_vm._v("If other, Specify: ")])
+      _c("b", [_vm._v("ICU case")]),
+      _vm._v(" [__]")
     ])
   },
   function() {
@@ -30853,22 +31054,12 @@ var render = function() {
                     _c("td", [_vm._v(_vm._s(item.phone))]),
                     _vm._v(" "),
                     _c("td", [
-                      _vm._v(
-                        _vm._s(
-                          _vm.districts.find(function(x) {
-                            return x.id === item.district_id
-                          }).district_name
-                        )
-                      )
+                      _vm._v(_vm._s(_vm.checkDistrict(item.district_id)))
                     ]),
                     _vm._v(" "),
                     _c("td", [
                       _vm._v(
-                        _vm._s(
-                          _vm.municipalities.find(function(x) {
-                            return x.id === item.municipality_id
-                          }).municipality_name
-                        )
+                        _vm._s(_vm.checkMunicipality(item.municipality_id))
                       )
                     ]),
                     _vm._v(" "),
@@ -30881,7 +31072,7 @@ var render = function() {
                             ? _c(
                                 "div",
                                 [
-                                  item.ancs.slice(-1)[0].situation == 1
+                                  item.latest_anc.situation == 1
                                     ? _c("status-indicator", {
                                         attrs: {
                                           status: "positive",
@@ -30890,7 +31081,7 @@ var render = function() {
                                       })
                                     : _vm._e(),
                                   _vm._v(" "),
-                                  item.ancs.slice(-1)[0].situation == 2
+                                  item.latest_anc.situation == 2
                                     ? _c("status-indicator", {
                                         attrs: {
                                           status: "intermediary",
@@ -30899,7 +31090,7 @@ var render = function() {
                                       })
                                     : _vm._e(),
                                   _vm._v(" "),
-                                  item.ancs.slice(-1)[0].situation == 3
+                                  item.latest_anc.situation == 3
                                     ? _c("status-indicator", {
                                         attrs: {
                                           status: "negative",
@@ -80005,15 +80196,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!***************************************************************!*\
   !*** ./resources/assets/js/components/ViewLabReportModel.vue ***!
   \***************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ViewLabReportModel_vue_vue_type_template_id_115c4484_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ViewLabReportModel.vue?vue&type=template&id=115c4484&scoped=true& */ "./resources/assets/js/components/ViewLabReportModel.vue?vue&type=template&id=115c4484&scoped=true&");
 /* harmony import */ var _ViewLabReportModel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ViewLabReportModel.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/ViewLabReportModel.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _ViewLabReportModel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _ViewLabReportModel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _ViewLabReportModel_vue_vue_type_style_index_0_id_115c4484_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ViewLabReportModel.vue?vue&type=style&index=0&id=115c4484&scoped=true&lang=css& */ "./resources/assets/js/components/ViewLabReportModel.vue?vue&type=style&index=0&id=115c4484&scoped=true&lang=css&");
+/* empty/unused harmony star reexport *//* harmony import */ var _ViewLabReportModel_vue_vue_type_style_index_0_id_115c4484_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ViewLabReportModel.vue?vue&type=style&index=0&id=115c4484&scoped=true&lang=css& */ "./resources/assets/js/components/ViewLabReportModel.vue?vue&type=style&index=0&id=115c4484&scoped=true&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -80045,7 +80235,7 @@ component.options.__file = "resources/assets/js/components/ViewLabReportModel.vu
 /*!****************************************************************************************!*\
   !*** ./resources/assets/js/components/ViewLabReportModel.vue?vue&type=script&lang=js& ***!
   \****************************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

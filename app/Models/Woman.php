@@ -51,7 +51,7 @@ class Woman extends Model
     // protected $appends = ['anc_with_protocol', 'anc_visits'];
     protected $orderable = ['name', 'phone', 'age', 'lmp_date_en', 'created_at'];
 
-    protected $supportedRelations = ['ancs', 'healthworker' ,'healthpost'];
+    protected $supportedRelations = ['ancs', 'latestAnc', 'healthworker' ,'healthpost'];
 
     public static function getWomanName($womanToken)
     {
@@ -110,7 +110,7 @@ class Woman extends Model
 
     public function ancs()
     {
-        return $this->hasMany('App\Models\Anc', 'woman_token', 'token');
+        return $this->hasMany('App\Models\Anc', 'woman_token', 'token')->with('labreport');
     }
 
     public function deliveries()
@@ -163,5 +163,10 @@ class Woman extends Model
     public function healthworker()
     {
         return $this->hasOne('App\Models\HealthWorker', 'token', 'created_by');
+    }
+
+    public function latestAnc()
+    {
+        return $this->hasOne('App\Models\Anc', 'woman_token', 'token')->with('labreport')->latest();
     }
 }

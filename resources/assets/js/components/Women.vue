@@ -22,16 +22,16 @@
                 <td>{{item.name}}</td>
                 <td>{{item.age}}</td>
                 <td>{{item.phone}}</td>
-                <td>{{ districts.find(x => x.id === item.district_id).district_name }}</td>
-                <td>{{ municipalities.find(x => x.id === item.municipality_id).municipality_name }}</td>
+                <td>{{ checkDistrict(item.district_id) }}</td>
+                <td>{{ checkMunicipality(item.municipality_id) }}</td>
                 <td>
                     <div class="row">
                         <div v-if="item.ancs.length > 0">
-                            <status-indicator status="positive" v-if="item.ancs.slice(-1)[0].situation == 1"
+                            <status-indicator status="positive" v-if="item.latest_anc.situation == 1"
                                               title="समान्य"/>
-                            <status-indicator status="intermediary" v-if="item.ancs.slice(-1)[0].situation == 2"
+                            <status-indicator status="intermediary" v-if="item.latest_anc.situation == 2"
                                               title="सम्भाब्य जोखिम"/>
-                            <status-indicator status="negative" v-if="item.ancs.slice(-1)[0].situation == 3"
+                            <status-indicator status="negative" v-if="item.latest_anc.situation == 3"
                                               title="जोखिम"/>
                         </div>
                             <status-indicator status="negative-semi" v-else pulse title="Not Recorded"/>
@@ -165,7 +165,20 @@
                 return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
 
             },
-
-        }
+            checkDistrict : function(value){
+                if (value == 0 || value == null || value == ''){
+                    return ''
+                }else{
+                return this.districts.find(x => x.id === value).district_name;
+                }
+            },
+            checkMunicipality : function(value){
+                if (value == 0 || value == null || value == ''){
+                    return ''
+                }else{
+                return this.municipalities.find(x => x.id === value).municipality_name.split(" ").slice(0, -1).join(" ");
+                }
+            }
+            }
     }
 </script>

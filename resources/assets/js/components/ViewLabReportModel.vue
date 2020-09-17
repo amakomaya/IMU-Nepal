@@ -31,14 +31,14 @@
         <table>
             <tr>
                 <td style="width:20%">Province</td>
-                <td> {{ provinces.find(x => x.id === data.province_quarantine_id).province_name }}
+                <td> {{ checkProvince(data.province_quarantine_id) }}
                 </td>
                 <td colspan="2">Please tick the appropriate option and specify the name</td>
             </tr>
             <tr>
                 <td>District </td>
                 <td>
-                    {{ districts.find(x => x.id === data.district_quarantine_id).district_name }}         
+                    {{ checkDistrict(data.district_quarantine_id) }}         
                 </td>
                 <td v-if="data.quarantine_type==0" >1. Institutional Quarantine[ &#10004; ]</td>
                 <td v-else>1. Institutional Quarantine[__]</td>
@@ -50,7 +50,7 @@
             <tr>
                 <td>Municipality </td>
                 <td>
-                    {{ municipalities.find(x => x.id === data.municipality_quarantine_id).municipality_name.split(" ").slice(0, -1).join(" ") }}
+                    {{ checkMunicipality(data.municipality_quarantine_id) }}
                 </td>
                  <td v-if="data.quarantine_type==1" >2. Institutional Isolation[ &#10004; ] </td>
                 <td v-else>2. Institutional Isolation [__]</td>
@@ -107,8 +107,8 @@
             </tr>
             <tr>
                 <td>Current address </td>
-                <td> District: {{ districts.find(x => x.id === data.district_id).district_name }}</td>
-                <td> Municipality: {{ municipalities.find(x => x.id === data.municipality_id).municipality_name.split(" ").slice(0, -1).join(" ") }}</td>
+                <td> District: {{ checkDistrict(data.district_id) }}</td>
+                <td> Municipality: {{ checkMunicipality(data.municipality_id) }}>td>
                 <td>Ward No: {{ data.ward }}</td>
                 <td> Tole: {{ data.tole }}</td>
             </tr>
@@ -132,7 +132,7 @@
             <tr>
                 <td> Was RT-PCR tested before?</td>
                 <td> 1.Yes <span v-if="data.pcr_test == 1"> &#10004; </span></td>
-                <td>2. No</td>
+                <td>2. No <span v-if="data.pcr_test == 0"> &#10004; </span></td>
                 <td>If tested, mention date of latest test | {{ data.pcr_test_date }} </td>
             </tr>
             <tr>
@@ -146,40 +146,66 @@
         <br>
         <p style="border: 1px solid #000;">
             <b>Type of sample collected: </b> (Please tick [ ] the type)</br>
+            <div style="border: 1px solid #000;" v-if="data.latest_anc !== null">
+                Nasopharyngeal [_<span v-if='data.latest_anc.sample_type.includes("1")'> &#10004; </span>_] / Oropharyngeal [_<span v-if='data.latest_anc.sample_type.includes("2")'> &#10004; </span>_]/ BAL [_<span v-if='data.latest_anc.sample_type.includes("3")'> &#10004; </span>_]/ Sputum [_<span v-if='data.latest_anc.sample_type.includes("4")'> &#10004; </span>_]/ Endotracheal Aspirate[_<span v-if='data.latest_anc.sample_type.includes("5")'> &#10004; </span>_] </br>
 
-            Nasopharyngeal [___] / Oropharyngeal [___]/ BAL [___]/ Sputum [___]/ Endotracheal Aspirate[___] </br>
+                        If other, please specify: 
+            </div>
+            <div v-else style="border: 1px solid #000;">
+                Nasopharyngeal [__] / Oropharyngeal [__]/ BAL [__]/ Sputum [__]/ Endotracheal Aspirate[__] </br>
+                        If other, please specify: 
+            </div>
 
-            If other, please specify: {{ data.symptoms_specific }}
+            
         </p>
         <p class="subTitle"><b>Type of Case</b> (Travel, Contact and Symptoms Details) (Please tick [ ] in the box)</h6>
         <table>
             <tr>
-                <td> <b>Symptomatic patient with</b> Pneumonia [___]</br>
-                    ARDS [___] /Influenza-like illness[___]</br>
-                    If Other, specify:</td>
+                <td> <b>Symptomatic patient with</b> Pneumonia [_<span v-if='data.symptoms.includes("1")'> &#10004; </span>_]</br>
+                    ARDS [_<span v-if='data.symptoms.includes("2")'> &#10004; </span>_] /Influenza-like illness[_<span v-if='data.symptoms.includes("3")'> &#10004; </span>_]</br>
+                    If Other, specify: {{ data.symptoms_specific }}</td>
                 <td>Most recent travel history in the last 14 days</br>
                     Country: If within Nepal:District: </td>
             </tr>
             <tr>
-                <td><b>Symptomatic patient with comorbidity</b></br> Diabetes[___],HTN[___],
-                    Hemodialysis [___]</br> immunocompromised[___]If other, specify: {{ data.symptoms_comorbidity_specific }}</td>
-                <td><b>Screening:</b> Pregnant /in labour:[___], > 65 Year[___]</br>
-                    Health care worker [___] If other,specify: {{ data.screening_specific }}</br>
-                    Clinical Suspicious (not admitted/ isolated ) [___]</td>
+                <td><b>Symptomatic patient with comorbidity</b></br> Diabetes[_<span v-if='data.symptoms_comorbidity.includes("1")'> &#10004; </span>_],HTN[_<span v-if='data.symptoms_comorbidity.includes("2")'> &#10004; </span>_],
+                    Hemodialysis[_<span v-if='data.symptoms_comorbidity.includes("3")'> &#10004; </span>_]</br> immunocompromised[_<span v-if='data.symptoms_comorbidity.includes("4")'> &#10004; </span>_] <br> If other, specify: {{ data.symptoms_comorbidity_specific }}</td>
+                <td><b>Screening:</b> Pregnant /in labour:[_<span v-if='data.screening.includes("1")'> &#10004; </span>_], <br> > 65 Year[_<span v-if='data.screening.includes("2")'> &#10004; </span>_]
+                    Health care worker [_<span v-if='data.screening.includes("3")'> &#10004; </span>_] <br>If other,specify: {{ data.screening_specific }}</br>
+                    <p v-if="data.latest_anc !== null">
+                        Clinical Suspicious(not admitted/isolated ) [<span v-if='data.latest_anc.sample_case.includes("4")'> &#10004; </span>]
+                    </p>
+                    <p v-else>
+                        Clinical Suspicious (not admitted/ isolated ) [___]
+                    </p>
+                    </td>
             </tr>
-            <tr>
+                <tr v-if="data.latest_anc !== null">
+                <td><b>Death case</b> [_<span v-if='data.latest_anc.sample_case.includes("1")'> &#10004; </span>_]</td>
+                <td>Contact tracing: [_<span v-if='data.latest_anc.sample_case.includes("5")'> &#10004; </span>_]</td>
+            </tr>
+            <tr v-else>
                 <td><b>Death case</b> [___]</td>
                 <td>Contact tracing: [___]</td>
             </tr>
-            <tr>
-                <td><b>Health care worker in contact with positive case</b> [___]</td>
-                <td>Repeat swab for positive case: [___]</td>
+            <tr v-if="data.latest_anc !== null">
+                <td><b>Health care worker in contact with positive case</b> [__]</td>
+                <td>Repeat swab for positive case: [_<span v-if='data.latest_anc.sample_case.includes("6")'> &#10004; </span>_]</td>
             </tr>
-            <tr>
-                <td><b>Emergency surgical intervention</b> [___]</br>
-                    <b>ICU case</b> [___]</td>
-                <td>If other, Specify: </td>
+            <tr v-else>
+                <td><b>Health care worker in contact with positive case</b> [__]</td>
+                <td>Repeat swab for positive case: [__]</td>
             </tr>
+            <tr v-if="data.latest_anc !== null">
+                <td><b>Emergency surgical intervention</b> [_<span v-if='data.latest_anc.sample_case.includes("2")'> &#10004; </span>_]</br>
+                    <b>ICU case</b> [_<span v-if='data.latest_anc.sample_case.includes("3")'> &#10004; </span>_]</td>
+                <td>If other, Specify: {{ data.latest_anc.sample_case_specific }} </td>
+            </tr>  
+            <tr v-else>
+                <td><b>Emergency surgical intervention</b> [__]</br>
+                    <b>ICU case</b> [__]</td>
+                <td>If other, Specify:  </td>
+            </tr>          
         </table>
         <div class="noteStyle">
             <div style="width: 45%;">
@@ -191,7 +217,7 @@
             <div style=" width: 55%;">
                 <p style=" padding: 5px; margin-left: 5%; border: 1px solid #000; ">
                     Attending physician/Health worker <br>
-                    Signature: <img src='"/storage/health-worker/"+data.healthworker.image'> <br>
+                    Signature: <img src=''> <br>
                     Name: {{ data.healthworker.name }} <br>
                     Phone: {{ data.healthworker.phone }} <br>
                 </p>
@@ -269,6 +295,27 @@ export default {
 
         gender: function(value){
             return this.gender_array[value - 1] ? this.gender_array[value - 1] : '';
+        },
+        checkProvince : function(value){
+        if (value == 0 || value == null || value == ''){
+            return ''
+        }else{
+        return this.provinces.find(x => x.id === value).province_name;
+        }
+        },
+        checkDistrict : function(value){
+        if (value == 0 || value == null || value == ''){
+            return ''
+        }else{
+        return this.districts.find(x => x.id === value).district_name;
+        }
+        },
+        checkMunicipality : function(value){
+        if (value == 0 || value == null || value == ''){
+            return ''
+        }else{
+        return this.municipalities.find(x => x.id === value).municipality_name.split(" ").slice(0, -1).join(" ");
+        }
         }
     } 
   }
