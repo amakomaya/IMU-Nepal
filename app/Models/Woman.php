@@ -51,7 +51,7 @@ class Woman extends Model
     // protected $appends = ['anc_with_protocol', 'anc_visits'];
     protected $orderable = ['name', 'phone', 'age', 'lmp_date_en', 'created_at'];
 
-    protected $supportedRelations = ['ancs', 'lab_tests', 'healthworker' ,'healthpost'];
+    protected $supportedRelations = ['ancs', 'healthworker' ,'healthpost'];
 
     public static function getWomanName($womanToken)
     {
@@ -72,11 +72,6 @@ class Woman extends Model
     public function getFillable()
     {
         return $this->fillable;
-    }
-
-    public function lab_tests()
-    {
-        return $this->hasMany('App\Models\LabTest', 'woman_token', 'token');
     }
 
     public function scopeActive($query)

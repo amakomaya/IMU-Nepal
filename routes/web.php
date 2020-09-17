@@ -183,6 +183,9 @@ Route::post('/api/health-worker/{id}', 'Api\HealthWorkerController@update')->nam
 Route::post('/api/login', 'Api\UserController@login')->name('api.user.login');
 Route::get('/api/district', 'Api\DistrictController@index')->name('api.district.index');
 Route::get('/api/municipality', 'Api\MunicipalityController@index')->name('api.municiplaity.index');
+Route::get('/api/province' , function(){
+	return \App\Models\Province::all();
+});
 
 Route::get('/api/aefi', 'Api\AefiController@index')->name('api.aefi.index');
 Route::get('/api/aefi/1', 'Api\AefiController@show')->name('api.aefi.show');

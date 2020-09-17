@@ -9,9 +9,10 @@
                 <th>Phone</th>
                 <th>District</th>
                 <th>Muicipality</th>
-                <th>अवस्था</th>
-                <th>Total Tests</th>
-                <th>Action</th>
+                <th>Situation</th>
+                <th>Total Collection</th>
+<!--                 <th>Latest Lab Result</th>
+ -->                <th>Action</th>
             </tr>
             </thead>
             <tr slot-scope="{item}">
@@ -25,12 +26,12 @@
                 <td>{{ municipalities.find(x => x.id === item.municipality_id).municipality_name }}</td>
                 <td>
                     <div class="row">
-                        <div v-if="item.anc_visits">
-                            <status-indicator status="positive" v-if="item.anc_visits.situation == 1"
+                        <div v-if="item.ancs.length > 0">
+                            <status-indicator status="positive" v-if="item.ancs.slice(-1)[0].situation == 1"
                                               title="समान्य"/>
-                            <status-indicator status="intermediary" v-if="item.anc_visits.situation == 2"
+                            <status-indicator status="intermediary" v-if="item.ancs.slice(-1)[0].situation == 2"
                                               title="सम्भाब्य जोखिम"/>
-                            <status-indicator status="negative" v-if="item.anc_visits.situation == 3"
+                            <status-indicator status="negative" v-if="item.ancs.slice(-1)[0].situation == 3"
                                               title="जोखिम"/>
                         </div>
                             <status-indicator status="negative-semi" v-else pulse title="Not Recorded"/>
@@ -38,7 +39,7 @@
                 </td>
                 <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
                 <td>
-                    <button v-on:click="viewReport(item)" title="Amakomaya Card">
+                    <button v-on:click="viewReport(item)" title=" Card Laboratory Sample Collection Form Details">
                         <i class="fa fa-newspaper-o"></i>
                     </button>
                 </td>              
@@ -87,6 +88,7 @@
                 selected: [],
                 allSelected: false,
                 womanTokens: [],
+                provinces : [],
                 municipalities : [],
                 districts : []
             }
@@ -112,12 +114,16 @@
                     width : 800,
                     title: 'Laboratory Sample Collection Form for Suspected COVID-19 Case',
                     params: {
-                        data : item
+                        data : item,
+                        provinces : this.provinces,
+                        districts : this.districts,
+                        municipalities : this.municipalities
                     },
                 })
             },
 
             fetch() {
+                let province_url = window.location.protocol + '/api/province';
                 let municipality_url = window.location.protocol + '/api/municipality';
                 let district_url = window.location.protocol + '/api/district';
                 axios.get(municipality_url)
@@ -132,6 +138,15 @@
                 axios.get(district_url)
                     .then((response) => {
                         this.districts = response.data;
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                    })
+                    .finally(() => {
+                    }),
+                 axios.get(province_url)
+                    .then((response) => {
+                        this.provinces = response.data;
                     })
                     .catch((error) => {
                         console.error(error)

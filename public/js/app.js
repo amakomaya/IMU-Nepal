@@ -3707,6 +3707,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_0__);
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -3910,10 +3912,33 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {},
+  props: {
+    data: Object,
+    provinces: Array,
+    districts: Array,
+    municipalities: Array
+  },
   data: function data() {
-    return {};
+    return {
+      age_units: ['Years', 'Months', 'Days'],
+      gender_array: ['Male', 'Female', 'Other']
+    };
   },
   methods: {
     print: function print() {
@@ -3933,6 +3958,18 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       WinPrint.document.close();
       WinPrint.focus();
       WinPrint.print(); // WinPrint.close();
+    },
+    ad2bs: function ad2bs(date) {
+      var dateObject = new Date(date);
+      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
+      var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_0___default.a.ad2bs(dateFormat);
+      return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
+    },
+    age_unit: function age_unit(unit) {
+      return this.age_units[unit - 1] ? this.age_units[unit - 1] : 'Years';
+    },
+    gender: function gender(value) {
+      return this.gender_array[value - 1] ? this.gender_array[value - 1] : '';
     }
   }
 });
@@ -3954,6 +3991,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _ViewLabReportModel_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ViewLabReportModel.vue */ "./resources/assets/js/components/ViewLabReportModel.vue");
+//
 //
 //
 //
@@ -4055,6 +4093,7 @@ __webpack_require__.r(__webpack_exports__);
       selected: [],
       allSelected: false,
       womanTokens: [],
+      provinces: [],
       municipalities: [],
       districts: []
     };
@@ -4079,13 +4118,17 @@ __webpack_require__.r(__webpack_exports__);
         width: 800,
         title: 'Laboratory Sample Collection Form for Suspected COVID-19 Case',
         params: {
-          data: item
+          data: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
         }
       });
     },
     fetch: function fetch() {
       var _this = this;
 
+      var province_url = window.location.protocol + '/api/province';
       var municipality_url = window.location.protocol + '/api/municipality';
       var district_url = window.location.protocol + '/api/district';
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(municipality_url).then(function (response) {
@@ -4094,6 +4137,10 @@ __webpack_require__.r(__webpack_exports__);
         console.error(error);
       })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(district_url).then(function (response) {
         _this.districts = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(province_url).then(function (response) {
+        _this.provinces = response.data;
       })["catch"](function (error) {
         console.error(error);
       })["finally"](function () {});
@@ -30125,26 +30172,9 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _vm._m(0)
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "main", attrs: { id: "report-printMe" } }, [
+    _c("div", { staticClass: "main", attrs: { id: "report-printMe" } }, [
       _c("div", { staticClass: "header" }, [
-        _c("div", { staticClass: "img" }, [
-          _c("img", {
-            attrs: {
-              src: "/images/report-logo.jpg",
-              width: "92",
-              height: "92",
-              alt: ""
-            }
-          })
-        ]),
+        _vm._m(0),
         _vm._v(" "),
         _c("div", { staticClass: "titleMid" }, [
           _c("p", { staticClass: "govF" }, [_vm._v("Government of Nepal")]),
@@ -30158,30 +30188,34 @@ var staticRenderFns = [
           ]),
           _vm._v(" "),
           _c("p", { staticClass: "govB" }, [
-            _vm._v("National Public Health Laboratory")
+            _vm._v(_vm._s(_vm.data.healthpost.name))
           ]),
           _vm._v(" "),
-          _c("p", { staticClass: "govA" }, [_vm._v("Teku, Kathmandu")])
+          _c("p", { staticClass: "govA" }, [
+            _vm._v(
+              _vm._s(_vm.data.healthpost.address) +
+                ", " +
+                _vm._s(
+                  _vm.districts.find(function(x) {
+                    return x.id === _vm.data.healthpost.district_id
+                  }).district_name
+                )
+            )
+          ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "titleSide" }, [
-          _c("p", [_vm._v("Phone: 4252421")]),
+          _c("p", [_vm._v("Phone: " + _vm._s(_vm.data.healthpost.phone))]),
           _vm._v(" "),
-          _c("p", [_vm._v("Fax: 4252375")]),
+          _c("p", [_vm._v(" E-mail: " + _vm._s(_vm.data.healthpost.email))]),
           _vm._v(" "),
-          _c("p", [_vm._v(" E-mail: nphl@nphl.gov.com.np")]),
-          _vm._v(" "),
-          _c("p", { staticClass: "date" }, [_vm._v("Date: 2077/ / /")])
+          _c("p", { staticClass: "date" }, [
+            _vm._v("Date: " + _vm._s(_vm.ad2bs(_vm.data.created_at)))
+          ])
         ])
       ]),
       _vm._v(" "),
-      _c("p", { staticClass: "titleHead" }, [
-        _c("u", [
-          _vm._v(
-            "Laboratory Sample Collection Form for Suspected COVID-19 Case"
-          )
-        ])
-      ]),
+      _vm._m(1),
       _vm._v(" "),
       _c("p", { staticClass: "subTitle" }, [
         _c("b", [_vm._v("Sample Collection Site")]),
@@ -30190,7 +30224,17 @@ var staticRenderFns = [
           _c("tr", [
             _c("td", { staticStyle: { width: "20%" } }, [_vm._v("Province")]),
             _vm._v(" "),
-            _c("td"),
+            _c("td", [
+              _vm._v(
+                " " +
+                  _vm._s(
+                    _vm.provinces.find(function(x) {
+                      return x.id === _vm.data.province_quarantine_id
+                    }).province_name
+                  ) +
+                  "\n            "
+              )
+            ]),
             _vm._v(" "),
             _c("td", { attrs: { colspan: "2" } }, [
               _vm._v("Please tick the appropriate option and specify the name")
@@ -30200,78 +30244,133 @@ var staticRenderFns = [
           _c("tr", [
             _c("td", [_vm._v("District ")]),
             _vm._v(" "),
-            _c("td"),
+            _c("td", [
+              _vm._v(
+                "\n                " +
+                  _vm._s(
+                    _vm.districts.find(function(x) {
+                      return x.id === _vm.data.district_quarantine_id
+                    }).district_name
+                  ) +
+                  "         \n            "
+              )
+            ]),
             _vm._v(" "),
-            _c("td", [_vm._v("1.Quarantine [___] ")]),
+            _vm.data.quarantine_type == 0
+              ? _c("td", [_vm._v("1. Institutional Quarantine[ ✔ ]")])
+              : _c("td", [_vm._v("1. Institutional Quarantine[__]")]),
             _vm._v(" "),
-            _c("td")
+            _vm.data.quarantine_type == 0
+              ? _c("td", [
+                  _vm._v(" " + _vm._s(_vm.data.quarantine_specific) + " ")
+                ])
+              : _c("td")
           ]),
           _vm._v(" "),
           _c("tr", [
             _c("td", [_vm._v("Municipality ")]),
             _vm._v(" "),
-            _c("td"),
+            _c("td", [
+              _vm._v(
+                "\n                " +
+                  _vm._s(
+                    _vm.municipalities
+                      .find(function(x) {
+                        return x.id === _vm.data.municipality_quarantine_id
+                      })
+                      .municipality_name.split(" ")
+                      .slice(0, -1)
+                      .join(" ")
+                  ) +
+                  "\n            "
+              )
+            ]),
             _vm._v(" "),
-            _c("td", [_vm._v("2. Home quarantine [___] ")]),
+            _vm.data.quarantine_type == 1
+              ? _c("td", [_vm._v("2. Institutional Isolation[ ✔ ] ")])
+              : _c("td", [_vm._v("2. Institutional Isolation [__]")]),
             _vm._v(" "),
-            _c("td")
+            _vm.data.quarantine_type == 1
+              ? _c("td", [
+                  _vm._v(" " + _vm._s(_vm.data.quarantine_specific) + " ")
+                ])
+              : _c("td")
           ]),
           _vm._v(" "),
           _c("tr", [
             _c("td", [_vm._v(" Ward ")]),
             _vm._v(" "),
-            _c("td"),
+            _c("td", [_vm._v(_vm._s(_vm.data.ward_quarantine))]),
             _vm._v(" "),
-            _c("td", [_vm._v("3. Health institution [___] ")]),
+            _vm.data.quarantine_type == 2
+              ? _c("td", [_vm._v("3.Health Institution[ ✔ ] ")])
+              : _c("td", [_vm._v("3. Health Institution [__]")]),
             _vm._v(" "),
-            _c("td")
+            _vm.data.quarantine_type == 2
+              ? _c("td", [
+                  _vm._v(" " + _vm._s(_vm.data.quarantine_specific) + " ")
+                ])
+              : _c("td")
           ]),
           _vm._v(" "),
           _c("tr", [
             _c("td", [_vm._v(" Tole ")]),
             _vm._v(" "),
-            _c("td"),
+            _c("td", [_vm._v(_vm._s(_vm.data.tole_quarantine))]),
             _vm._v(" "),
-            _c("td", [_vm._v("4. Other institution [___] ")]),
+            _vm.data.quarantine_type == 3
+              ? _c("td", [_vm._v("4. Home Quarantine[ ✔ ] ")])
+              : _c("td", [_vm._v("4. Home Quarantine[__]")]),
             _vm._v(" "),
-            _c("td")
+            _vm.data.quarantine_type == 0
+              ? _c("td", [
+                  _vm._v(" " + _vm._s(_vm.data.quarantine_specific) + " ")
+                ])
+              : _c("td")
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("td", { attrs: { rowspan: "2" } }, [
-              _c("b", [_vm._v("Contact Person ")]),
-              _vm._v(" for"),
-              _c("br"),
-              _vm._v(" Reporting: (for all"),
-              _c("br"),
-              _vm._v(" collected sample) ")
-            ]),
+            _vm._m(2),
             _vm._v(" "),
             _c(
               "td",
               { staticStyle: { width: "20%" }, attrs: { rowspan: "2" } },
               [
-                _vm._v(" Name:"),
+                _vm._v(" Name: " + _vm._s(_vm.data.healthworker.name)),
                 _c("br"),
-                _vm._v("\n                Ph. No."),
+                _vm._v(
+                  "\n                Ph. No. " +
+                    _vm._s(_vm.data.healthworker.phone)
+                ),
                 _c("br"),
-                _vm._v("\n                Email:")
+                _vm._v(
+                  "\n                Email: " +
+                    _vm._s(_vm.data.healthworker.email)
+                )
               ]
             ),
             _vm._v(" "),
-            _c("td", [
-              _vm._v(" 5.Community surveillance "),
-              _c("br"),
-              _vm._v(" [___]")
-            ]),
+            _vm.data.quarantine_type == 4
+              ? _c("td", [_vm._v("5. Home Isolation [ ✔ ] ")])
+              : _c("td", [_vm._v("5. Home Isolation[__]")]),
             _vm._v(" "),
-            _c("td", { staticStyle: { width: "30%" } })
+            _vm.data.quarantine_type == 4
+              ? _c("td", [
+                  _vm._v(" " + _vm._s(_vm.data.quarantine_specific) + " ")
+                ])
+              : _c("td")
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("td", [_vm._v("6.Others (Specify)")]),
+            _vm.data.quarantine_type == 5
+              ? _c("td", [_vm._v("6. Other  [ ✔ ] ")])
+              : _c("td", [_vm._v("6. Other [__]")]),
             _vm._v(" "),
-            _c("td")
+            _vm.data.quarantine_type == 5
+              ? _c("td", [
+                  _vm._v(" " + _vm._s(_vm.data.quarantine_specific) + " ")
+                ])
+              : _c("td")
           ])
         ])
       ]),
@@ -30280,65 +30379,76 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("table", [
           _c("tr", [
-            _c(
-              "td",
-              {
-                staticStyle: { border: "0px !important" },
-                attrs: { colspan: "2" }
-              },
-              [_vm._v(" First Name: ")]
-            ),
-            _vm._v(" "),
-            _c(
-              "td",
-              {
-                staticStyle: { border: "0px !important" },
-                attrs: { colspan: "2" }
-              },
-              [_vm._v(" Mid. Name:")]
-            ),
-            _vm._v(" "),
-            _c(
-              "td",
-              {
-                staticStyle: { border: "0px !important" },
-                attrs: { colspan: "2" }
-              },
-              [_vm._v(" Last Name: ")]
-            )
+            _c("td", { attrs: { colspan: "5" } }, [
+              _vm._v(
+                "\n                Full Name : " +
+                  _vm._s(_vm.data.name) +
+                  " \n            "
+              )
+            ])
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("td", [_vm._v("Age : Year/month\n            ")]),
+            _c("td", [
+              _vm._v(
+                "Age : " +
+                  _vm._s(_vm.data.age) +
+                  " / " +
+                  _vm._s(_vm.age_unit(_vm.data.age_unit)) +
+                  "\n            "
+              )
+            ]),
             _vm._v(" "),
-            _c("td", [_vm._v(" Sex: Male ")]),
+            _c("td", [
+              _vm._v(" Sex: " + _vm._s(_vm.gender(_vm.data.sex)) + " ")
+            ]),
             _vm._v(" "),
-            _c("td", [_vm._v(" Female ")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Other")]),
-            _vm._v(" "),
-            _c("td", [_vm._v(" Occupation:")])
+            _c("td", { attrs: { colspan: "3" } }, [
+              _vm._v(" Occupation: " + _vm._s(_vm.data.occupation))
+            ])
           ]),
           _vm._v(" "),
           _c("tr", [
             _c("td", [_vm._v("Current address ")]),
             _vm._v(" "),
-            _c("td", [_vm._v(" District: ")]),
+            _c("td", [
+              _vm._v(
+                " District: " +
+                  _vm._s(
+                    _vm.districts.find(function(x) {
+                      return x.id === _vm.data.district_id
+                    }).district_name
+                  )
+              )
+            ]),
             _vm._v(" "),
-            _c("td", [_vm._v(" Municipality: ")]),
+            _c("td", [
+              _vm._v(
+                " Municipality: " +
+                  _vm._s(
+                    _vm.municipalities
+                      .find(function(x) {
+                        return x.id === _vm.data.municipality_id
+                      })
+                      .municipality_name.split(" ")
+                      .slice(0, -1)
+                      .join(" ")
+                  )
+              )
+            ]),
             _vm._v(" "),
-            _c("td", [_vm._v("Ward No:")]),
+            _c("td", [_vm._v("Ward No: " + _vm._s(_vm.data.ward))]),
             _vm._v(" "),
-            _c("td", [_vm._v(" Tole:")])
+            _c("td", [_vm._v(" Tole: " + _vm._s(_vm.data.tole))])
           ]),
           _vm._v(" "),
           _c("tr", [
             _c("td", [_vm._v("Contact No.\n            ")]),
             _vm._v(" "),
-            _c("td"),
+            _c("td", [_vm._v(_vm._s(_vm.data.phone))]),
             _vm._v(" "),
             _c("td", { attrs: { colspan: "3" } }, [
-              _vm._v("Email, if necessary:")
+              _vm._v("Email, if necessary: " + _vm._s(_vm.data.email))
             ])
           ]),
           _vm._v(" "),
@@ -30346,15 +30456,18 @@ var staticRenderFns = [
             _c("td", [_vm._v(" If other than Nepal ")]),
             _vm._v(" "),
             _c("td", { staticStyle: { border: "0px !important" } }, [
-              _vm._v(" Country: ")
+              _vm._v(" Country: " + _vm._s(_vm.data.country_name))
             ]),
             _vm._v(" "),
             _c("td", { staticStyle: { border: "0px !important" } }, [
-              _vm._v("Passport No.")
+              _vm._v("Passport No. " + _vm._s(_vm.data.passport_no))
             ]),
             _vm._v(" "),
             _c("td", { staticStyle: { border: "0px !important" } }, [
-              _vm._v("Email:")
+              _vm._v("Email: "),
+              _vm.data.country_name
+                ? _c("span", [_vm._v(_vm._s(_vm.data.email))])
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("td", { staticStyle: { border: "0px !important" } })
@@ -30368,21 +30481,45 @@ var staticRenderFns = [
             _c("tr", [
               _c("td", [_vm._v(" Was RT-PCR tested before?")]),
               _vm._v(" "),
-              _c("td", [_vm._v(" 1.Yes")]),
+              _c("td", [
+                _vm._v(" 1.Yes "),
+                _vm.data.pcr_test == 1 ? _c("span", [_vm._v(" ✔ ")]) : _vm._e()
+              ]),
               _vm._v(" "),
               _c("td", [_vm._v("2. No")]),
               _vm._v(" "),
-              _c("td", [_vm._v("If tested, mention date of latest test ")])
+              _c("td", [
+                _vm._v(
+                  "If tested, mention date of latest test | " +
+                    _vm._s(_vm.data.pcr_test_date) +
+                    " "
+                )
+              ])
             ]),
             _vm._v(" "),
             _c("tr", [
               _c("td", [_vm._v("Result of the latest test")]),
               _vm._v(" "),
-              _c("td", [_vm._v("Positive")]),
+              _c("td", [
+                _vm._v("Positive "),
+                _vm.data.pcr_test_result == 1
+                  ? _c("span", [_vm._v("✔")])
+                  : _vm._e()
+              ]),
               _vm._v(" "),
-              _c("td", [_vm._v("Negative")]),
+              _c("td", [
+                _vm._v("Negative "),
+                _vm.data.pcr_test_result == 2
+                  ? _c("span", [_vm._v("✔")])
+                  : _vm._e()
+              ]),
               _vm._v(" "),
-              _c("td", [_vm._v("Don’t know")])
+              _c("td", [
+                _vm._v("Don’t know "),
+                _vm.data.pcr_test_result == 3
+                  ? _c("span", [_vm._v("✔")])
+                  : _vm._e()
+              ])
             ])
           ]
         ),
@@ -30397,7 +30534,11 @@ var staticRenderFns = [
           "\n\n        Nasopharyngeal [___] / Oropharyngeal [___]/ BAL [___]/ Sputum [___]/ Endotracheal Aspirate[___] "
         ),
         _c("br"),
-        _vm._v("\n\n        If other, please specify: …………………………………………..\n    ")
+        _vm._v(
+          "\n\n        If other, please specify: " +
+            _vm._s(_vm.data.symptoms_specific) +
+            "\n    "
+        )
       ]),
       _vm._v(" "),
       _c("p", { staticClass: "subTitle" }, [
@@ -30407,24 +30548,7 @@ var staticRenderFns = [
         ),
         _vm._v(" "),
         _c("table", [
-          _c("tr", [
-            _c("td", [
-              _c("b", [_vm._v("Symptomatic patient with")]),
-              _vm._v(" Pneumonia [___]"),
-              _c("br"),
-              _vm._v(
-                "\n                ARDS [___] /Influenza-like illness[___]"
-              ),
-              _c("br"),
-              _vm._v("\n                If Other, specify:")
-            ]),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v("Most recent travel history in the last 14 days"),
-              _c("br"),
-              _vm._v("\n                Country: If within Nepal:District: ")
-            ])
-          ]),
+          _vm._m(3),
           _vm._v(" "),
           _c("tr", [
             _c("td", [
@@ -30434,7 +30558,10 @@ var staticRenderFns = [
                 " Diabetes[___],HTN[___],\n                Hemodialysis [___]"
               ),
               _c("br"),
-              _vm._v(" immunocompromised[___]If other, specify: ")
+              _vm._v(
+                " immunocompromised[___]If other, specify: " +
+                  _vm._s(_vm.data.symptoms_comorbidity_specific)
+              )
             ]),
             _vm._v(" "),
             _c("td", [
@@ -30442,7 +30569,8 @@ var staticRenderFns = [
               _vm._v(" Pregnant /in labour:[___], > 65 Year[___]"),
               _c("br"),
               _vm._v(
-                "\n                Health care worker [___] If other,specify:"
+                "\n                Health care worker [___] If other,specify: " +
+                  _vm._s(_vm.data.screening_specific)
               ),
               _c("br"),
               _vm._v(
@@ -30451,57 +30579,15 @@ var staticRenderFns = [
             ])
           ]),
           _vm._v(" "),
-          _c("tr", [
-            _c("td", [_c("b", [_vm._v("Death case")]), _vm._v(" [___]")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Contact tracing: [___]")])
-          ]),
+          _vm._m(4),
           _vm._v(" "),
-          _c("tr", [
-            _c("td", [
-              _c("b", [
-                _vm._v("Health care worker in contact with positive case")
-              ]),
-              _vm._v(" [___]")
-            ]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Repeat swab for positive case: [___]")])
-          ]),
+          _vm._m(5),
           _vm._v(" "),
-          _c("tr", [
-            _c("td", [
-              _c("b", [_vm._v("Emergency surgical intervention")]),
-              _vm._v(" [___]"),
-              _c("br"),
-              _vm._v(" "),
-              _c("b", [_vm._v("ICU case")]),
-              _vm._v(" [___]")
-            ]),
-            _vm._v(" "),
-            _c("td", [_vm._v("If other, Specify: ")])
-          ])
+          _vm._m(6)
         ])
       ]),
       _c("div", { staticClass: "noteStyle" }, [
-        _c("div", { staticStyle: { width: "45%" } }, [
-          _c(
-            "p",
-            {
-              staticStyle: {
-                padding: "5px",
-                "margin-right": "5%",
-                border: "1px solid #000"
-              }
-            },
-            [
-              _c("b", [
-                _vm._v(
-                  "Note: Please fill complete\n                    information in the form\n                    before sample collection. Keep\n                    it separate and transport separately from the sample."
-                )
-              ])
-            ]
-          )
-        ]),
+        _vm._m(7),
         _vm._v(" "),
         _c("div", { staticStyle: { width: "55%" } }, [
           _c(
@@ -30517,25 +30603,170 @@ var staticRenderFns = [
               _vm._v("\n                Attending physician/Health worker "),
               _c("br"),
               _vm._v("\n                Signature: "),
+              _c("img", {
+                attrs: {
+                  src: '"/storage/health-worker/"+data.healthworker.image'
+                }
+              }),
+              _vm._v(" "),
               _c("br"),
-              _vm._v("\n                Name: …………………………………………… "),
+              _vm._v(
+                "\n                Name: " +
+                  _vm._s(_vm.data.healthworker.name) +
+                  " "
+              ),
               _c("br"),
-              _vm._v("\n                Phone: …………………………………………… "),
+              _vm._v(
+                "\n                Phone: " +
+                  _vm._s(_vm.data.healthworker.phone) +
+                  " "
+              ),
               _c("br")
             ]
           )
         ])
       ]),
       _vm._v(" "),
-      _c("p", { staticClass: "footerStyle" }, [
-        _vm._v("For further information please visit "),
-        _c("a", { attrs: { href: " www.nphl.gov.np" } }, [
-          _vm._v(" www.nphl.gov.np")
-        ]),
-        _vm._v(
-          ",\n        Contact Person: Mr. Rajesh\n        Kumar Gupta,(9851239988)\n    "
-        )
+      _vm._m(8)
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "img" }, [
+      _c("img", {
+        attrs: {
+          src: "/images/report-logo.jpg",
+          width: "92",
+          height: "92",
+          alt: ""
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "titleHead" }, [
+      _c("u", [
+        _vm._v("Laboratory Sample Collection Form for Suspected COVID-19 Case")
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { attrs: { rowspan: "2" } }, [
+      _c("b", [_vm._v("Contact Person ")]),
+      _vm._v(" for"),
+      _c("br"),
+      _vm._v(" Reporting: (for all"),
+      _c("br"),
+      _vm._v(" collected sample) ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", [
+        _c("b", [_vm._v("Symptomatic patient with")]),
+        _vm._v(" Pneumonia [___]"),
+        _c("br"),
+        _vm._v("\n                ARDS [___] /Influenza-like illness[___]"),
+        _c("br"),
+        _vm._v("\n                If Other, specify:")
+      ]),
+      _vm._v(" "),
+      _c("td", [
+        _vm._v("Most recent travel history in the last 14 days"),
+        _c("br"),
+        _vm._v("\n                Country: If within Nepal:District: ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", [_c("b", [_vm._v("Death case")]), _vm._v(" [___]")]),
+      _vm._v(" "),
+      _c("td", [_vm._v("Contact tracing: [___]")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", [
+        _c("b", [_vm._v("Health care worker in contact with positive case")]),
+        _vm._v(" [___]")
+      ]),
+      _vm._v(" "),
+      _c("td", [_vm._v("Repeat swab for positive case: [___]")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", [
+        _c("b", [_vm._v("Emergency surgical intervention")]),
+        _vm._v(" [___]"),
+        _c("br"),
+        _vm._v(" "),
+        _c("b", [_vm._v("ICU case")]),
+        _vm._v(" [___]")
+      ]),
+      _vm._v(" "),
+      _c("td", [_vm._v("If other, Specify: ")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticStyle: { width: "45%" } }, [
+      _c(
+        "p",
+        {
+          staticStyle: {
+            padding: "5px",
+            "margin-right": "5%",
+            border: "1px solid #000"
+          }
+        },
+        [
+          _c("b", [
+            _vm._v(
+              "Note: Please fill complete\n                    information in the form\n                    before sample collection. Keep\n                    it separate and transport separately from the sample."
+            )
+          ])
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "footerStyle" }, [
+      _vm._v("For further information please visit "),
+      _c("a", { attrs: { href: " www.nphl.gov.np" } }, [
+        _vm._v(" www.nphl.gov.np")
+      ]),
+      _vm._v(
+        ",\n        Contact Person: Mr. Rajesh\n        Kumar Gupta,(9851239988)\n    "
+      )
     ])
   }
 ]
@@ -30646,11 +30877,11 @@ var render = function() {
                         "div",
                         { staticClass: "row" },
                         [
-                          item.anc_visits
+                          item.ancs.length > 0
                             ? _c(
                                 "div",
                                 [
-                                  item.anc_visits.situation == 1
+                                  item.ancs.slice(-1)[0].situation == 1
                                     ? _c("status-indicator", {
                                         attrs: {
                                           status: "positive",
@@ -30659,7 +30890,7 @@ var render = function() {
                                       })
                                     : _vm._e(),
                                   _vm._v(" "),
-                                  item.anc_visits.situation == 2
+                                  item.ancs.slice(-1)[0].situation == 2
                                     ? _c("status-indicator", {
                                         attrs: {
                                           status: "intermediary",
@@ -30668,7 +30899,7 @@ var render = function() {
                                       })
                                     : _vm._e(),
                                   _vm._v(" "),
-                                  item.anc_visits.situation == 3
+                                  item.ancs.slice(-1)[0].situation == 3
                                     ? _c("status-indicator", {
                                         attrs: {
                                           status: "negative",
@@ -30701,7 +30932,10 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          attrs: { title: "Amakomaya Card" },
+                          attrs: {
+                            title:
+                              " Card Laboratory Sample Collection Form Details"
+                          },
                           on: {
                             click: function($event) {
                               return _vm.viewReport(item)
@@ -30735,9 +30969,9 @@ var render = function() {
               _vm._v(" "),
               _c("th", [_vm._v("Muicipality")]),
               _vm._v(" "),
-              _c("th", [_vm._v("अवस्था")]),
+              _c("th", [_vm._v("Situation")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Total Tests")]),
+              _c("th", [_vm._v("Total Collection")]),
               _vm._v(" "),
               _c("th", [_vm._v("Action")])
             ])

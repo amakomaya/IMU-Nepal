@@ -15,15 +15,15 @@
                 <p class="govF">Government of Nepal</p>
                 <p class="govF">Ministry of Health & Population</p>
                 <p class="govM">Department of Health Service</p>
-                <p class="govB">National Public Health Laboratory</p>
-                <p class="govA">Teku, Kathmandu</p>
+                <p class="govB">{{ data.healthpost.name }}</p>
+                <p class="govA">{{ data.healthpost.address }}, {{ districts.find(x => x.id === data.healthpost.district_id).district_name }}</p>
             </div>
 
             <div class="titleSide">
-                <p>Phone: 4252421</p>
-                <p>Fax: 4252375</p>
-                <p> E-mail: nphl@nphl.gov.com.np</p>
-                <p class="date">Date: 2077/ / /</p>
+                <p>Phone: {{ data.healthpost.phone }}</p>
+                <!-- <p>Fax: 4252375</p> -->
+                <p> E-mail: {{ data.healthpost.email }}</p>
+                <p class="date">Date: {{ ad2bs(data.created_at) }}</p>
             </div>
         </div>
         <p class="titleHead"> <u>Laboratory Sample Collection Form for Suspected COVID-19 Case</u></p>
@@ -31,85 +31,99 @@
         <table>
             <tr>
                 <td style="width:20%">Province</td>
-                <td></td>
+                <td> {{ provinces.find(x => x.id === data.province_quarantine_id).province_name }}
+                </td>
                 <td colspan="2">Please tick the appropriate option and specify the name</td>
             </tr>
             <tr>
                 <td>District </td>
-                <td></td>
-                <td>1.Quarantine [___] </td>
-                <td></td>
+                <td>
+                    {{ districts.find(x => x.id === data.district_quarantine_id).district_name }}         
+                </td>
+                <td v-if="data.quarantine_type==0" >1. Institutional Quarantine[ &#10004; ]</td>
+                <td v-else>1. Institutional Quarantine[__]</td>
+                <td v-if="data.quarantine_type==0" > {{ data.quarantine_specific }} </td>
+                <td v-else></td>
+
             </tr>
 
             <tr>
                 <td>Municipality </td>
-                <td></td>
-                <td>2. Home quarantine [___] </td>
-                <td></td>
+                <td>
+                    {{ municipalities.find(x => x.id === data.municipality_quarantine_id).municipality_name.split(" ").slice(0, -1).join(" ") }}
+                </td>
+                 <td v-if="data.quarantine_type==1" >2. Institutional Isolation[ &#10004; ] </td>
+                <td v-else>2. Institutional Isolation [__]</td>
+                <td v-if="data.quarantine_type==1" > {{ data.quarantine_specific }} </td>
+                <td v-else></td>
             </tr>
             <tr>
                 <td> Ward </td>
-                <td></td>
-                <td>3. Health institution [___] </td>
-                <td></td>
+                <td>{{ data.ward_quarantine }}</td>
+                 <td v-if="data.quarantine_type==2" >3.Health Institution[ &#10004; ] </td>
+                <td v-else>3. Health Institution [__]</td>
+                <td v-if="data.quarantine_type==2" > {{ data.quarantine_specific }} </td>
+                <td v-else></td>
             </tr>
             <tr>
                 <td> Tole </td>
-                <td></td>
-                <td>4. Other institution [___] </td>
-                <td></td>
+                <td>{{ data.tole_quarantine }}</td>
+                 <td v-if="data.quarantine_type==3" >4. Home Quarantine[ &#10004; ] </td>
+                <td v-else>4. Home Quarantine[__]</td>
+                <td v-if="data.quarantine_type==0" > {{ data.quarantine_specific }} </td>
+                <td v-else></td>
             </tr>
+            
             <tr>
                 <td rowspan="2"> <b>Contact Person </b> for</br> Reporting: (for all</br> collected sample) </td>
-                <td rowspan="2" style="width: 20%;"> Name:</br>
-                    Ph. No.</br>
-                    Email:</td>
-                <td> 5.Community surveillance </br> [___]</td>
-
-                <td style="width: 30%;"></td>
+                <td rowspan="2" style="width: 20%;" > Name: {{ data.healthworker.name }}</br>
+                    Ph. No. {{ data.healthworker.phone }}</br>
+                    Email: {{ data.healthworker.email }}</td>
+                 <td v-if="data.quarantine_type==4" >5. Home Isolation [ &#10004; ] </td>
+                <td v-else>5. Home Isolation[__]</td>
+                <td v-if="data.quarantine_type==4" > {{ data.quarantine_specific }} </td>
+                <td v-else></td>
             </tr>
             <tr>
-                <td>6.Others (Specify)</td>
-                <td></td>
+                 <td v-if="data.quarantine_type==5" >6. Other  [ &#10004; ] </td>
+                <td v-else>6. Other [__]</td>
+                <td v-if="data.quarantine_type==5" > {{ data.quarantine_specific }} </td>
+                <td v-else></td>
             </tr>
         </table>
         <p class="subTitle"> <b>Patient's Detail:</b> </h6>
         <table>
             <tr>
-                <td style="border: 0px !important;" colspan="2"> First Name: </td>
-
-                <td style="border: 0px !important;" colspan="2"> Mid. Name:</td>
-
-                <td style="border: 0px !important;" colspan="2"> Last Name: </td>
+                <td colspan="5">
+                    Full Name : {{ data.name }} 
+                </td>
 
             </tr>
             <tr>
-                <td>Age : Year/month
+                <td>Age : {{ data.age }} / {{ age_unit(data.age_unit) }}
                 </td>
-                <td> Sex: Male </td>
-                <td> Female </td>
-                <td>Other</td>
-                <td> Occupation:</td>
+                <td> Sex: {{ gender(data.sex) }} </td>
+                <td colspan="3"> Occupation: {{ data.occupation }}</td>
             </tr>
             <tr>
                 <td>Current address </td>
-                <td> District: </td>
-                <td> Municipality: </td>
-                <td>Ward No:</td>
-                <td> Tole:</td>
+                <td> District: {{ districts.find(x => x.id === data.district_id).district_name }}</td>
+                <td> Municipality: {{ municipalities.find(x => x.id === data.municipality_id).municipality_name.split(" ").slice(0, -1).join(" ") }}</td>
+                <td>Ward No: {{ data.ward }}</td>
+                <td> Tole: {{ data.tole }}</td>
             </tr>
             <tr>
                 <td>Contact No.
                 </td>
-                <td></td>
-                <td colspan="3">Email, if necessary:</td>
+                <td>{{ data.phone }}</td>
+                <td colspan="3">Email, if necessary: {{ data.email }}</td>
 
             </tr>
             <tr>
                 <td> If other than Nepal </td>
-                <td style="border: 0px !important"> Country: </td>
-                <td style="border: 0px !important">Passport No.</td> 
-                <td style="border: 0px !important">Email:</td>
+                <td style="border: 0px !important"> Country: {{ data.country_name }}</td>
+                <td style="border: 0px !important">Passport No. {{ data.passport_no }}</td> 
+                <td style="border: 0px !important">Email: <span v-if="data.country_name">{{ data.email }}</span></td>
                 <td style="border: 0px !important"></td>
             </tr>
         </table>
@@ -117,15 +131,15 @@
         <table style="margin-top: 20px; border: 2px solid black;">
             <tr>
                 <td> Was RT-PCR tested before?</td>
-                <td> 1.Yes</td>
+                <td> 1.Yes <span v-if="data.pcr_test == 1"> &#10004; </span></td>
                 <td>2. No</td>
-                <td>If tested, mention date of latest test </td>
+                <td>If tested, mention date of latest test | {{ data.pcr_test_date }} </td>
             </tr>
             <tr>
                 <td>Result of the latest test</td>
-                <td>Positive</td>
-                <td>Negative</td>
-                <td>Don’t know</td>
+                <td>Positive <span v-if="data.pcr_test_result == 1">&#10004;</span></td>
+                <td>Negative <span v-if="data.pcr_test_result == 2">&#10004;</span></td>
+                <td>Don’t know <span v-if="data.pcr_test_result == 3">&#10004;</span></td>
 
             </tr>
         </table>
@@ -135,7 +149,7 @@
 
             Nasopharyngeal [___] / Oropharyngeal [___]/ BAL [___]/ Sputum [___]/ Endotracheal Aspirate[___] </br>
 
-            If other, please specify: …………………………………………..
+            If other, please specify: {{ data.symptoms_specific }}
         </p>
         <p class="subTitle"><b>Type of Case</b> (Travel, Contact and Symptoms Details) (Please tick [ ] in the box)</h6>
         <table>
@@ -148,9 +162,9 @@
             </tr>
             <tr>
                 <td><b>Symptomatic patient with comorbidity</b></br> Diabetes[___],HTN[___],
-                    Hemodialysis [___]</br> immunocompromised[___]If other, specify: </td>
+                    Hemodialysis [___]</br> immunocompromised[___]If other, specify: {{ data.symptoms_comorbidity_specific }}</td>
                 <td><b>Screening:</b> Pregnant /in labour:[___], > 65 Year[___]</br>
-                    Health care worker [___] If other,specify:</br>
+                    Health care worker [___] If other,specify: {{ data.screening_specific }}</br>
                     Clinical Suspicious (not admitted/ isolated ) [___]</td>
             </tr>
             <tr>
@@ -177,9 +191,9 @@
             <div style=" width: 55%;">
                 <p style=" padding: 5px; margin-left: 5%; border: 1px solid #000; ">
                     Attending physician/Health worker <br>
-                    Signature: <br>
-                    Name: …………………………………………… <br>
-                    Phone: …………………………………………… <br>
+                    Signature: <img src='"/storage/health-worker/"+data.healthworker.image'> <br>
+                    Name: {{ data.healthworker.name }} <br>
+                    Phone: {{ data.healthworker.phone }} <br>
                 </p>
             </div>
         </div>
@@ -194,12 +208,19 @@
 
 
 <script type="text/javascript">
+    import DataConverter from 'ad-bs-converter'
 
 export default {
     props: {
+            data : Object,
+            provinces : Array,
+            districts : Array,
+            municipalities : Array
         },
   data() {
     return {
+        age_units : [ 'Years', 'Months', 'Days' ],
+        gender_array : ['Male', 'Female', 'Other']
     }
   },
   methods: {
@@ -230,7 +251,25 @@ export default {
       WinPrint.focus();
       WinPrint.print();
       // WinPrint.close();
-      }
+      },
+
+      ad2bs: function (date) {
+                var dateObject = new Date(date);
+
+                var dateFormat = dateObject.getFullYear()  + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getDate();
+
+                let dateConverter = DataConverter.ad2bs(dateFormat);
+
+                return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
+
+            },
+        age_unit: function(unit){
+            return this.age_units[unit - 1] ? this.age_units[unit - 1] : 'Years';
+        },
+
+        gender: function(value){
+            return this.gender_array[value - 1] ? this.gender_array[value - 1] : '';
+        }
     } 
   }
 </script>
