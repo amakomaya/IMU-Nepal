@@ -37,7 +37,7 @@ input:focus ~ div{
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             @if (isset($data))
-                                Edit Healthpost
+                                Edit Hospitals
                             @else
                             {{trans('create.create_hp')}}
                             @endif

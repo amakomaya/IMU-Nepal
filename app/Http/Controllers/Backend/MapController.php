@@ -12,8 +12,7 @@ class MapController extends Controller
 {
     public function map()
     {
-        $woman = Woman::where('delivery_status','=',0)
-                        ->groupBy(['longitude','latitude','hp_code'])
+        $woman = Woman::groupBy(['longitude','latitude','hp_code'])
                         ->get(['longitude','latitude','hp_code']);
         // dd($woman);
         $woman_count = array();
@@ -27,7 +26,7 @@ class MapController extends Controller
             $circle['center'] = $women->latitude.','.$women->longitude;
             $circle['radius'] = '50';
             $marker['position'] = $women->latitude.','.$women->longitude;
-            $marker['infowindow_content'] = $women->getHealthpost($women->hp_code).'<br> Total Pregnant Woman '.$woman_count[$i];
+            $marker['infowindow_content'] = $women->getHealthpost($women->hp_code).'<br> Total COVID-19 Cases '.$woman_count[$i];
             GMaps::add_circle($circle);
             GMaps::add_marker($marker);
         $i++;

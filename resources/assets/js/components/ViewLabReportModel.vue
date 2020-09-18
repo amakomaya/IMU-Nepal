@@ -102,7 +102,7 @@
             <tr>
                 <td>Age : {{ data.age }} / {{ age_unit(data.age_unit) }}
                 </td>
-                <td> Sex: {{ gender(data.sex) }} </td>
+                <td> Gender: {{ gender(data.sex) }} </td>
                 <td colspan="3"> Occupation: {{ data.occupation }}</td>
             </tr>
             <tr>

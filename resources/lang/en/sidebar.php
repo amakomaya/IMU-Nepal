@@ -19,7 +19,7 @@ return [
     'baby' => 'Baby',
     'woman' => 'Woman',
     'logout' => 'Logout',
-    'health_post' => 'Health Post',
+    'health_post' => 'Hospital',
     'generate_qr_code' => 'Generate QR Code',
     'go_to_admin' => 'Go to :name Admin',
     'report_info_format' => 'Report (Information Format)',

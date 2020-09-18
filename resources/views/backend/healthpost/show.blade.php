@@ -8,7 +8,7 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Healthpost : {{$data->name}}
+                        Hospital : {{$data->name}}
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">

@@ -38,7 +38,12 @@
                     </div>
                 </td>
                 <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
-                <td><div v-html="latestLabResult(item.latest_anc)"></div></td>
+                <td><div v-html="latestLabResult(item.latest_anc)">
+                </div>
+                <!-- <button v-on:click="viewLabReport(item)" title="Lab Report">
+                    <i class="fa fa-file"></i>
+                </button> -->
+                </td>
                 <td>
                     <button v-on:click="viewReport(item)" title=" Card Laboratory Sample Collection Form Details">
                         <i class="fa fa-newspaper-o"></i>
@@ -56,6 +61,7 @@
     import DataConverter from 'ad-bs-converter'
     import axios from 'axios'
     import ViewLabReportModel from './ViewLabReportModel.vue'
+    import ViewLabResultReportModel from './ViewLabResultReportModel.vue'
 
     export default {
         components: {Filterable},
@@ -116,6 +122,20 @@
                     title: 'Laboratory Sample Collection Form for Suspected COVID-19 Case',
                     params: {
                         data : item,
+                        provinces : this.provinces,
+                        districts : this.districts,
+                        municipalities : this.municipalities
+                    },
+                })
+            },
+
+            viewLabReport: function (item) {
+                this.$dlg.modal(ViewLabResultReportModel, {
+                    height : 700,
+                    width : 800,
+                    title: 'Laboratory Result Form for Suspected COVID-19 Case',
+                    params: {
+                        item : item,
                         provinces : this.provinces,
                         districts : this.districts,
                         municipalities : this.municipalities

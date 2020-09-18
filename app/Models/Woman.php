@@ -169,4 +169,12 @@ class Woman extends Model
     {
         return $this->hasOne('App\Models\Anc', 'woman_token', 'token')->with('labreport')->latest();
     }
+
+    public static function getHealthpost($hp_code)
+    {
+        $healthpost = Healthpost::where('hp_code', $hp_code)->get()->first();
+        if (count($healthpost) > 0) {
+            return $healthpost->name;
+        }
+    }
 }

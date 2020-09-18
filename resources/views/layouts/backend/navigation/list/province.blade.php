@@ -29,7 +29,7 @@
 <li>
     <a href="{{ route('woman.index') }}">
         <i class="fa fa-users" aria-hidden="true"></i>
-        Patients
+        COVID-19 Cases
     </a>
 </li>
 
