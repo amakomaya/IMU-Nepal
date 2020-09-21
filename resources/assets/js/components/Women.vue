@@ -20,8 +20,8 @@
                 </td>
                 <td>{{item.name}}</td>
                 <td>{{item.age}}</td>
-                <td>{{item.emergency_contact_one}} <br>
-                    {{item.emergency_contact_two}}
+                <td>One : {{item.emergency_contact_one}} <br>
+                    Two : {{item.emergency_contact_two}}
                 </td>
                 <td>{{ checkDistrict(item.district_id) }}</td>
                 <td>{{ checkMunicipality(item.municipality_id) }}</td>

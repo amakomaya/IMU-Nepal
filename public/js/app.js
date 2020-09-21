@@ -31526,10 +31526,12 @@ var render = function() {
                     _c("td", [_vm._v(_vm._s(item.age))]),
                     _vm._v(" "),
                     _c("td", [
-                      _vm._v(_vm._s(item.emergency_contact_one) + " "),
+                      _vm._v(
+                        "One : " + _vm._s(item.emergency_contact_one) + " "
+                      ),
                       _c("br"),
                       _vm._v(
-                        "\n                    " +
+                        "\n                    Two : " +
                           _vm._s(item.emergency_contact_two) +
                           "\n                "
                       )
