@@ -177,14 +177,8 @@ Route::post('/v1/client', function(Request $request){
 
 Route::get('/v1/client', function(Request $request){
     $hp_code = $request->hp_code;
-    $data = collect(\App\Models\Woman::where('hp_code', $hp_code)->with('latestAnc')->get())->map(function ($row) {
+    $data = collect(\App\Models\Woman::where('hp_code', $hp_code)->get())->map(function ($row) {
 
-        $latest_result = $row->latestAnc->result ?? '';
-
-
-        if ($latest_result == '2') {
-            return false;
-        }
      
         $response = [];
 
@@ -257,9 +251,7 @@ Route::get('/v1/client', function(Request $request){
 
 
     return $response;
-})->reject(function ($value) {
-        return $value === false;
-    })->values();
+});
     return response()->json($data);
 });
 
