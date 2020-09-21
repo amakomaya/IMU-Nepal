@@ -105,6 +105,7 @@ class LoginController extends Controller
                 'token'=>$user->token,
                 'hp_code'=>$healthworker->hp_code,
                 'hp_name'=>$healthworker->getHealthpost($healthworker->hp_code),
+                'province_id'=>$healthworker->province_id,
                 'municipality_id'=>$healthworker->municipality_id,
                 'district_id'=>$healthworker->district_id
             ];
