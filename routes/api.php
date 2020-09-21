@@ -323,7 +323,7 @@ Route::post('/v1/lab-test', function(Request $request){
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
-            \App\Models\Anc::where('token', $value['token'])->update('result', $value['sample_test_result']);
+            \App\Models\Anc::where('token', $value['token'])->update(['result' => $value['sample_test_result']]);
             \App\Models\LabTest::create($value);
         } catch (\Exception $e) {
             
