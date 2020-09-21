@@ -177,9 +177,8 @@ Route::post('/v1/client', function(Request $request){
 
 Route::get('/v1/client', function(Request $request){
     $hp_code = $request->hp_code;
-    $data = collect(\App\Models\Woman::where('hp_code', $hp_code)->get())->map(function ($row) {
+    $data = collect(\DB::table('women')->where('hp_code', $hp_code)->get())->map(function ($row) {        
 
-     
         $response = [];
 
         $response['token'] = $row->token;
