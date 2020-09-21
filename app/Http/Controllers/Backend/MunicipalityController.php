@@ -31,9 +31,9 @@ class MunicipalityController extends Controller
      */
     public function index()
     {
-       if(User::checkAuthForIndexShowProvince()===false && User::checkAuthForIndexShowDho()===false && User::checkAuthForIndexShowMunicipality()===false){
-            return redirect('/admin');
-       }
+       // if(User::checkAuthForIndexShowDho()===false && User::checkAuthForIndexShowMunicipality()===false){
+       //      return redirect('/admin');
+       // }
        if(Auth::user()->role=="province"){
             $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
             $municipalityInfos = MunicipalityInfo::where('province_id', $province_id)->latest()->get();
@@ -54,12 +54,28 @@ class MunicipalityController extends Controller
      */
     public function create()
     {
-        if(User::checkAuthForCreateUpdateDelProvince()===false){
-            return redirect('/admin');
-        }
+        // if(User::checkAuthForCreateUpdateDelProvince()===false){
+        //     return redirect('/admin');
+        // }
         $provinces = Province::all();
         $districts = District::all();
         $municipalities = Municipality::all();
+        if(Auth::user()->role=="province"){
+            $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
+            $districts = $districts->where('province_id', $province_id);
+            $provinces = $provinces->where('id', $province_id);
+            $municipalities = $municipalities->where('province_id', $province_id);
+       }
+       if(Auth::user()->role=="dho"){
+
+            $district = District::modelDistrictInfo(Auth::user()->token)->first();
+            $districts = $districts->where('id', $district->district_id);
+            $provinces = $provinces->where('id', $districts->first()->province_id);
+
+            $municipalities = $municipalities->where('district_id', $district->district_id);
+
+           // $municipalityInfos = MunicipalityInfo::where('district_id', $district_id)->latest()->get();
+       }
         return view('backend.municipality.create',compact('provinces','districts','municipalities'));
     }
 
@@ -71,9 +87,9 @@ class MunicipalityController extends Controller
      */
     public function store(MunicipalityRequest $request)
     {
-        if(User::checkAuthForCreateUpdateDelProvince()===false){
-            return redirect('/admin');
-        }
+        // if(User::checkAuthForCreateUpdateDelProvince()===false){
+        //     return redirect('/admin');
+        // }
 
          $municipality = MunicipalityInfo::create([
             'token'               => uniqid().time(),
@@ -110,9 +126,9 @@ class MunicipalityController extends Controller
      */
     public function show($id)
     {
-        if(User::checkAuthForIndexShowProvince()===false && User::checkAuthForIndexShowDho()===false && User::checkAuthForIndexShowMunicipality()===false && User::checkAuthForShowWard()===false && User::checkAuthForShowHealthpost()===false){
-            return redirect('/admin');
-       }
+       //  if(User::checkAuthForIndexShowProvince()===false && User::checkAuthForIndexShowDho()===false && User::checkAuthForIndexShowMunicipality()===false && User::checkAuthForShowWard()===false && User::checkAuthForShowHealthpost()===false){
+       //      return redirect('/admin');
+       // }
 
         $data = $this->findModel($id);
         return view('backend.municipality.show',compact('data'));
@@ -126,14 +142,22 @@ class MunicipalityController extends Controller
      */
     public function edit($id)
     {
-        if(User::checkAuthForCreateUpdateDelProvince()===false){
-            return redirect('/admin');
-        }
+        // if(User::checkAuthForCreateUpdateDelProvince()===false){
+        //     return redirect('/admin');
+        // }
 
         $data = $this->findModel($id);
         $provinces = Province::all();
         $districts = District::all();
         $municipalities = Municipality::all();
+
+        if(Auth::user()->role=="province"){
+            $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
+            $districts = $districts->where('province_id', $province_id);
+            $provinces = $provinces->where('id', $province_id);
+            $municipalities = $municipalities->where('province_id', $province_id);
+       }
+
         $user = $this->findModelUser($data->token);
         return view('backend.municipality.edit', compact('data','provinces','districts','municipalities','user'));
     }
@@ -147,9 +171,9 @@ class MunicipalityController extends Controller
      */
     public function update(MunicipalityRequest $request, $id)
     {         
-        if(User::checkAuthForCreateUpdateDelProvince()===false){
-            return redirect('/admin');
-        }
+        // if(User::checkAuthForCreateUpdateDelProvince()===false){
+        //     return redirect('/admin');
+        // }
 
         $municipalityInfo = $this->findModel($id);        
         
@@ -183,9 +207,9 @@ class MunicipalityController extends Controller
      */
     public function destroy($id, Request $request)
     {
-        if(User::checkAuthForCreateUpdateDelProvince()===false){
-            return redirect('/admin');
-        }
+        // if(User::checkAuthForCreateUpdateDelProvince()===false){
+        //     return redirect('/admin');
+        // }
 
         $municipalityInfo = $this->findModel($id);
         

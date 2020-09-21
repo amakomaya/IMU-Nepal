@@ -17,7 +17,7 @@
             </thead>
             <tr slot-scope="{item}">
                 <td>
-                    <input type="checkbox" v-model="womanTokens" @click="select" :value="item.token">
+                    <input type="checkbox" v-model="womanTokens" @click="select" :value="item.token">                           
                 </td>
                 <td>{{item.name}}</td>
                 <td>{{item.age}}</td>

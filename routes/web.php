@@ -30,7 +30,7 @@ Route::get('/admin/select-from-to', 'AdminController@selectFromTo')->name('admin
 
 //Backend Center
 Route::resource('admin/center', 'Backend\CenterController');
-Route::get('/admin/center-woman-maps', 'Backend\MapController@map')->name('center.woman.map');
+Route::get('/admin/center-maps', 'Backend\MapController@map')->name('center.woman.map');
 
 //Backend Dho
 Route::resource('admin/child', 'Backend\BabyDetailController');
@@ -57,13 +57,13 @@ Route::resource('admin/healthpost', 'Backend\HealthpostController');
 Route::resource('admin/ward', 'Backend\WardController');
 
 //Bakend Fchv
-Route::resource('admin/fchv', 'Backend\FchvController');
+Route::resource('admin/lab-user', 'Backend\FchvController', ['names' => 'fchv']);
 
 //Backend Health Worker
 Route::resource('admin/health-worker', 'Backend\HealthWorkerController');
 
 //Bakend Woman
-Route::resource('admin/woman', 'Backend\WomanController');
+Route::resource('admin/patients', 'Backend\WomanController', ['names' => 'woman']);
 
 //Route::delete('admin/woman/{token}','Backend\WomanController@delete');
 
@@ -87,7 +87,7 @@ Route::get('/admin/security-program-of-mother','Backend\WomanController@security
 
 // Route::get('/admin/vaccination-program-report','Backend\WomanController@vaccinationProgram')->name('woman.vaccination-program');
 Route::get('/admin/woman/{id}/anc-visit-schedule','Backend\WomanController@ancVisitSchedule')->name('woman.anc-visit-schedule');
-Route::get('/admin/woman-maps', 'Backend\WomanController@womanMaps')->name('woman.map');
+Route::get('/admin/patients-map', 'Backend\WomanController@womanMaps')->name('woman.map');
 Route::get('/admin/vaccine-detail-list','Backend\WomanController@vaccineDetailList')->name('woman.vaccination-detail-list');
 Route::get('/admin/raw-details-about-maternal-and-newborn-infants','Backend\WomanController@rawDetailsAboutMaternalAndNewbornInfantsReport')->name('woman.raw-details-about-maternal-and-newborn-infants-report');
 Route::get('/admin/woman-anc-visit-schedule','Backend\WomanController@womanANCVisitSchedule')->name('woman.visit-schedule');
@@ -187,35 +187,6 @@ Route::get('/api/province' , function(){
 	return \App\Models\Province::all();
 });
 
-Route::get('/api/aefi', 'Api\AefiController@index')->name('api.aefi.index');
-Route::get('/api/aefi/1', 'Api\AefiController@show')->name('api.aefi.show');
-Route::post('/api/aefi', 'Api\AefiController@store')->name('api.aefi.store');
-Route::post('/api/aefi/{id}', 'Api\AefiController@update')->name('api.aefi.update');
-
-Route::get('/api/vaccination-record', 'Api\VaccinationRecordController@index')->name('api.vaccination-record.index');
-Route::get('/api/vaccination-record/1', 'Api\VaccinationRecordController@show')->name('api.vaccination-record.show');
-Route::post('/api/vaccination-record', 'Api\VaccinationRecordController@store')->name('api.vaccination-record.store');
-Route::post('/api/vaccination-record/{id}', 'Api\VaccinationRecordController@update')->name('api.vaccination-record.update');
-
-Route::get('/api/vaccine-vial', 'Api\VaccineVialController@index')->name('api.vaccine-vial.index');
-Route::get('/api/vaccine-vial/1', 'Api\VaccineVialController@show')->name('api.vaccine-vial.show');
-Route::post('/api/vaccine-vial', 'Api\VaccineVialController@store')->name('api.vaccine-vial.store');
-Route::post('/api/vaccine-vial/{id}', 'Api\VaccineVialController@update')->name('api.vaccine-vial.update');
-
-Route::get('/api/vaccine-vial-stock', 'Api\VaccineVialStockController@index')->name('api.vaccine-vial-stock.index');
-Route::get('/api/vaccine-vial-stock/1', 'Api\VaccineVialStockController@show')->name('api.vaccine-vial-stock.show');
-Route::post('/api/vaccine-vial-stock', 'Api\VaccineVialStockController@store')->name('api.vaccine-vial-stock.store');
-Route::post('/api/vaccine-vial-stock-update', 'Api\VaccineVialStockController@update')->name('api.vaccine-vial-stock.update');
-
-Route::get('/api/baby_weight', 'Api\BabyWeightController@index')->name('api.baby_weight.index');
-Route::get('/api/baby_weight/1', 'Api\BabyWeightController@show')->name('api.baby_weight.show');
-Route::post('/api/baby_weight', 'Api\BabyWeightController@store')->name('api.baby_weight.store');
-Route::post('/api/baby_weight/{id}', 'Api\BabyWeightController@update')->name('api.baby_weight.update');
-
-Route::post('/api/vial-to-child/login', 'Api\VialToChildController@login')->name('api.vial-to-child.login');
-Route::get('/api/vial-to-child/baby', 'Api\VialToChildController@baby')->name('api.vial-to-child.baby');
-Route::post('/api/vial-to-child/create-baby', 'Api\VialToChildController@storeBaby')->name('api.vial-to-child.create-baby');
-
 Route::get('/admin/overview-data', 'Backend\OverviewController@index')->name('admin.overview');
 Route::get('/admin/fchv-overview', 'Backend\OverviewController@fchv')->name('admin.fchv-overview'); 
 
@@ -249,46 +220,10 @@ if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
     // error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
     error_reporting(E_ALL ^ E_WARNING); // Maybe this is enough
 }
-/*Nirjal Routes*/
-/*Ancs routes*/
-
-Route::get('woman','Backend\Woman\HealthCardController@woman_edit')->name('woman.woman_edit');
-Route::post('woman/{woman}','Backend\Woman\HealthCardController@woman_update')->name('woman.woman_update');
-
-Route::delete('woman/{woman}','Backend\Woman\HealthCardController@woman_destroy')->name('woman.woman_destroy');
-
-
-Route::post('ancs/{ancs}','Backend\Woman\HealthCardController@ancs_update')->name('ancs.ancs_update');
-
-Route::get('ancs/{ancs}','Backend\Woman\HealthCardController@ancs_edit')->name('ancs.ancs_edit');
-
-Route::delete('ancs/{ancs}','Backend\Woman\HealthCardController@ancs_destroy')->name('ancs.ancs_destroy');
-
-
-Route::post('labtest/{test}','Backend\Woman\HealthCardController@lab_test_update')->name('labtest.labtest');
-Route::get('labtest/{test}','Backend\Woman\HealthCardController@lab_test_edit')->name('labtest.laptest_edit');
-Route::delete('labtest/{test}','Backend\Woman\HealthCardController@labtest_destroy')->name('labtest.labtest_destroy');
-
-Route::post('delivery/{deliveries}','Backend\Woman\HealthCardController@delivery_update')->name('delivery.delivery_update');
-Route::get('delivery/{deliveries}','Backend\Woman\HealthCardController@delivery_edit')->name('delivery.edit_delivery');
-Route::delete('delivery/{deliveries}','Backend\Woman\HealthCardController@delivery_desctory')->name('delivery.delivery_desctory');
-
-Route::post('pncs/{pncs}','Backend\Woman\HealthCardController@pncs_update')->name('pncs.pncs_update');
-
-Route::get('pncs/{pncs}','Backend\Woman\HealthCardController@pncs_edit')->name('pncs.pncs_edit');
-
-Route::delete('pncs/{pncs}','Backend\Woman\HealthCardController@pncs_destroy')->name('pncs.pncs_destroy');
-/*End routes*/
-
-
-Route::resource('baby','Backend\Baby\BabyController');
-
 
 Route::post('/api/v2/send_message', 'Backend\SendMessageController@fromWebAdmin');
 
-Route::get('/vaccine-vial-management/{hp_code}', 'Backend\VaccineVialManagement@showAll')->name('vaccine-vial-management');
-
-Route::get('/admin/aamakomaya-qrcode', 'Backend\AamakomayaGenerateQrcode@get')->name('aamakomaya.qrcode');
+Route::get('/admin/qrcode', 'Backend\AamakomayaGenerateQrcode@get')->name('aamakomaya.qrcode');
 Route::get('/admin/activity-log', 'Backend\ActivityLogController@index')->name('activity-log.index');
 
 Route::get('/artisan-clear', function() {
@@ -298,17 +233,3 @@ Route::get('/artisan-clear', function() {
     Artisan::call('view:clear');
     return "Cleared!";
 });
-
-Route::get('/covid-19/user','SurveyController@user')->name('survey.user');
-Route::post('/covid-19/user','SurveyController@userStore')->name('survey.user.store');
-Route::get('/covid-19/report','SurveyController@index')->name('report.survey');
-Route::post('/covid-19/report/login','SurveyController@login')->name('report.survey.login');
-Route::get('/covid-19/report/logout','SurveyController@logout')->name('report.survey.logout');
-Route::post('/covid-19/export','SurveyController@export')->name('report.survey.export');
-
-Route::resource('admin/appointment', 'Backend\AppointmentController');
-Route::get('admin/appointment-plan', 'Backend\AppointmentController@indexPlan')->name('appointment.plan.index');
-Route::get('admin/appointment-plan/create', 'Backend\AppointmentController@createPlan')->name('appointment.plan.create');
-Route::post('admin/appointment-plan', 'Backend\AppointmentController@storePlan')->name('appointment.plan.store');
-Route::get('admin/appointment-plan/{id}', 'Backend\AppointmentController@editPlan')->name('appointment.plan.edit');
-Route::patch('admin/appointment-plan/{id}', 'Backend\AppointmentController@updatePlan')->name('appointment.plan.update');

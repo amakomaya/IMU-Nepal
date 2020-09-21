@@ -5,7 +5,7 @@
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
-                    @if(\App\User::checkAuthForViewByMain()===true)
+                    @if(\App\User::checkAuthForViewByMain()===true || Auth::user()->role === "center" || Auth::user()->role === "province")
                         <div class="form-group">
                             <a class="btn btn-success" href="{{route('dho.create') }}">{{trans('index.create')}}</a>
                         </div>
@@ -82,7 +82,7 @@
                                                         <div class="icon">
                                                             <a  href="{{route('dho.show', $datum->id) }}">
                                                             <span class="glyphicon glyphicon-eye-open"></span>                                                            </a>
-                                                            @if(\App\User::checkAuthForViewByMain()===true)
+                                                            @if(\App\User::checkAuthForViewByMain()===true || Auth::user()->role === "center"  || Auth::user()->role === "province")
                                                                 <a href="{{route('dho.edit', $datum->id) }}">
                                                                     <i class="fa fa-pencil"></i>
                                                                 </a>
@@ -94,7 +94,7 @@
                                                         </div>
                                                     </form>
                                                     
-                                                    @if(\App\User::checkAuthForViewByMain()===true && $datum->status=='1')
+                                                    @if(\App\User::checkAuthForViewByMain()===true || Auth::user()->role === "center" || Auth::user()->role === "province" && $datum->status=='1')
                                                     <form method="post" action="{{route('user-manager.login-as', \App\User::getUserId($datum->token) )}}" >
                                                         {{csrf_field()}}
                                                         <div class="form-group">

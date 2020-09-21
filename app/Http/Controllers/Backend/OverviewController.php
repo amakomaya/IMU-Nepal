@@ -14,6 +14,11 @@ class OverviewController extends Controller
     public function index()
     {
         $data = HealthPost::all();
+
+        if(\Auth::user()->role == 'province'){
+            $province = \App\Models\ProvinceInfo::where('token', \Auth::user()->token)->first();
+            $data = $data->where('province_id', $province->province_id);
+        }
         return view('backend.overview.index', compact('data'));
     }
 

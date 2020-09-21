@@ -5,7 +5,7 @@
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
-                    @if(\App\User::checkAuthForViewByMain()===true)
+                    @if(\App\User::checkAuthForViewByMain()===true || Auth::user()->role === "province" || Auth::user()->role === "dho")
                         <div class="form-group">
                             <a class="btn btn-success" href="{{route('municipality.create') }}">{{trans('index.create')}}</a>
                         </div>
@@ -90,7 +90,7 @@
                                                 <a  href="{{route('municipality.show', $municipalityInfo->id) }}">
                                                 <span class="glyphicon glyphicon-eye-open"></span>                                                </a>
 
-                                                @if(\App\User::checkAuthForViewByMain()===true)
+                                                @if(\App\User::checkAuthForViewByMain()===true || Auth::user()->role === "center"  || Auth::user()->role === "province" || Auth::user()->role === "dho")
                                                     <a href="{{route('municipality.edit', $municipalityInfo->id) }}">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
@@ -102,7 +102,7 @@
                                                 @endif
                                             </div>
                                             </form>
-                                            @if(\App\User::checkAuthForViewByMain()===true && $municipalityInfo->status=='1')
+                                            @if(\App\User::checkAuthForViewByMain()===true || Auth::user()->role === "center" || Auth::user()->role === "province" || Auth::user()->role === "dho" && $municipalityInfo->status=='1')
                                                 <form method="post" action="{{route('user-manager.login-as', \App\User::getUserId($municipalityInfo->token) )}}" >
                                                     {{csrf_field()}}
                                                     <div class="form-group">

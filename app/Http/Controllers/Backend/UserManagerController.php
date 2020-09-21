@@ -24,6 +24,8 @@ class UserManagerController extends Controller
     public function changePassword($id)
     {
 
+        \Session::put('url.intended',\URL::previous());
+
         $user = $this->findModelUser($id);
 
         return view('backend.user-manager.change-password', compact('user'));
@@ -43,7 +45,7 @@ class UserManagerController extends Controller
 
 		$request->session()->flash('message', 'Username \ Password changed successfully');
 
-        return redirect()->route('admin');
+        return redirect()->to(\Session::get('url.intended'));
 
     }
 

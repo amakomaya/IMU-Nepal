@@ -20,9 +20,9 @@ class DHOController extends Controller
 
     public function index() 
     {
-       if(User::checkAuthForIndexShowProvince()===false && User::checkAuthForIndexShowDho()===false){
-            return redirect('/admin');
-       }
+       // if(User::checkAuthForIndexShowProvince()===false && User::checkAuthForIndexShowDho()===false){
+       //      return redirect('/admin');
+       // }
        if(Auth::user()->role=="province"){
             $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
             $districtsList = Province::districtList($province_id);
@@ -36,19 +36,25 @@ class DHOController extends Controller
 
     public function create()
     {
-        if(User::checkAuthForCreateUpdateDelProvince()===false){
-            return redirect('/admin');
-        }
+        // if(User::checkAuthForCreateUpdateDelProvince()===false){
+        //     return redirect('/admin');
+        // }
 
         $districts = District::all();
+
+        if(Auth::user()->role=="province"){
+            $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
+            $districts = $districts->where('province_id', $province_id);
+       }
+
         return view('backend.dho.create',compact('districts'));
     }
 
     public function store(DHORequest $request)
     {
-        if(User::checkAuthForCreateUpdateDelProvince()===false){
-            return redirect('/admin');
-        }
+        // if(User::checkAuthForCreateUpdateDelProvince()===false){
+        //     return redirect('/admin');
+        // }
 
         $dho_info = [
             'district_id'         => $request->get('district_id'),
@@ -79,9 +85,9 @@ class DHOController extends Controller
 
     public function show($id)
     {
-       if(User::checkAuthForIndexShowProvince()===false && User::checkAuthForIndexShowDho()===false){
-            return redirect('/admin');
-       }
+       // if(User::checkAuthForIndexShowProvince()===false && User::checkAuthForIndexShowDho()===false){
+       //      return redirect('/admin');
+       // }
 
         $data = $this->findModel($id);
         $user = $this->findModelUser($data->token);
@@ -90,21 +96,25 @@ class DHOController extends Controller
 
     public function edit($id)
     {
-        if(User::checkAuthForCreateUpdateDelProvince()===false){
-            return redirect('/admin');
-        }
+        // if(User::checkAuthForCreateUpdateDelProvince()===false){
+        //     return redirect('/admin');
+        // }
 
         $data = $this->findModel($id);
         $user = $this->findModelUser($data->token);
         $districts = District::all();
+        if(Auth::user()->role=="province"){
+            $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
+            $districts = $districts->where('province_id', $province_id);
+       }
         return view('backend.dho.edit', compact('data','user','districts'));
     }
 
     public function update(DHORequest $request, $id)
     {
-        if(User::checkAuthForCreateUpdateDelProvince()===false){
-            return redirect('/admin');
-        }
+        // if(User::checkAuthForCreateUpdateDelProvince()===false){
+        //     return redirect('/admin');
+        // }
         
         $dho = $this->findModel($id);
         
@@ -131,9 +141,9 @@ class DHOController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        if(User::checkAuthForCreateUpdateDelProvince()===false){
-            return redirect('/admin');
-        }
+        // if(User::checkAuthForCreateUpdateDelProvince()===false){
+        //     return redirect('/admin');
+        // }
 
         $dho = $this->findModel($id);      
         $dho->delete();    

@@ -49,7 +49,7 @@ class FchvController extends Controller
             $healthWorkers = HealthWorker::where('role', 'fchv')->latest()->get();
        }
         $role = 'fchv';
-        return view('backend.health-worker.index',compact('healthWorkers','role'));
+        return view('backend.fchv.index',compact('healthWorkers','role'));
     }
 
     /**
@@ -59,19 +59,19 @@ class FchvController extends Controller
      */
     public function create()
     {
-        if(User::checkAuthForCreateUpdateDelHealthworker()===false){
-            return redirect('/admin');
-        }
+        // if(User::checkAuthForCreateUpdateDelHealthworker()===false){
+        //     return redirect('/admin');
+        // }
 
         $token = Auth::user()->token;
         $healthpost = Healthpost::where('token', $token)->get()->first();
-        $provinces = Province::where('id', $healthpost->province_id)->get();
-        $districts = District::where('id', $healthpost->district_id)->get();
-        $municipalities = Municipality::where('id', $healthpost->municipality_id)->get();
-        $wards = Ward::where([['ward_no', $healthpost->ward_no],['municipality_id', $healthpost->municipality_id]])->get();
-        $healthposts = Healthpost::where('id', $healthpost->id)->get();
+        $provinces = Province::where('id', $healthpost->province_id ?? '')->get();
+        $districts = District::where('id', $healthpost->district_id ?? '')->get();
+        $municipalities = Municipality::where('id', $healthpost->municipality_id ?? '')->get();
+        $wards = Ward::where([['ward_no', $healthpost->ward_no ?? ''],['municipality_id', $healthpost->municipality_id ?? '']])->get();
+        $healthposts = Healthpost::where('id', $healthpost->id ?? '')->get();
         $role = 'fchv';
-        return view('backend.health-worker.create',compact('provinces','districts','municipalities','wards','healthposts','role'));
+        return view('backend.fchv.create',compact('provinces','districts','municipalities','wards','healthposts','role'));
     }
 
     /**
@@ -80,11 +80,19 @@ class FchvController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(HealthWorkerRequest $request)
+    public function store(Request $request)
     {
-        if(User::checkAuthForCreateUpdateDelHealthworker()===false){
-            return redirect('/admin');
-        }
+        // if(User::checkAuthForCreateUpdateDelHealthworker()===false){
+        //     return redirect('/admin');
+        // }
+
+        // dd($request->all());
+
+        $request->validate([
+            'username' => 'required|unique:users',
+            'name' => 'required',
+            'password' => 'required|min:4'
+        ]);
 
         $healthWorker = HealthWorker::create([
             'token'               => uniqid().time(),
@@ -134,7 +142,7 @@ class FchvController extends Controller
         }
         $user = $this->findModelUser($data->token);
         $role="fchv";
-        return view('backend.health-worker.show',compact('data','role','user'));
+        return view('backend.fchv.show',compact('data','role','user'));
     }
 
     /**
@@ -145,9 +153,9 @@ class FchvController extends Controller
      */
     public function edit($id)
     {
-        if(User::checkAuthForCreateUpdateDelHealthworker()===false){
-            return redirect('/admin');
-        }
+        // if(User::checkAuthForCreateUpdateDelHealthworker()===false){
+        //     return redirect('/admin');
+        // }
 
         $data = $this->findModel($id);
 
@@ -156,15 +164,15 @@ class FchvController extends Controller
         }
         
         $token = Auth::user()->token;
-        $healthpost = Healthpost::where('token', $token)->get()->first();
-        $provinces = Province::where('id', $healthpost->province_id)->get();
-        $districts = District::where('id', $healthpost->district_id)->get();
-        $municipalities = Municipality::where('id', $healthpost->municipality_id)->get();
-        $wards = Ward::where([['ward_no', $healthpost->ward_no],['municipality_id', $healthpost->municipality_id]])->get();
-        $healthposts = Healthpost::where('id', $healthpost->id)->get();
+        $healthpost = Healthpost::where('token', $token ?? '')->get()->first();
+        $provinces = Province::where('id', $healthpost->province_id ?? '')->get();
+        $districts = District::where('id', $healthpost->district_id ?? '')->get();
+        $municipalities = Municipality::where('id', $healthpost->municipality_id ?? '')->get();
+        $wards = Ward::where([['ward_no', $healthpost->ward_no ?? ''],['municipality_id', $healthpost->municipality_id ?? '']])->get();
+        $healthposts = Healthpost::where('id', $healthpost->id ?? '')->get();
         $user = $this->findModelUser($data->token);
         $role = 'fchv';
-        return view('backend.health-worker.edit', compact('data','provinces','districts','municipalities','wards','healthposts','user','role'));
+        return view('backend.fchv.edit', compact('data','provinces','districts','municipalities','wards','healthposts','user','role'));
     }
 
     /**
@@ -174,11 +182,15 @@ class FchvController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(HealthWorkerRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        if(User::checkAuthForCreateUpdateDelHealthworker()===false){
-            return redirect('/admin');
-        }
+        // if(User::checkAuthForCreateUpdateDelHealthworker()===false){
+        //     return redirect('/admin');
+        // }
+
+        $request->validate([
+            'name' => 'required',
+        ]);
 
         if(HealthWorker::checkValidId($id)===false){
             return redirect('/admin');
@@ -220,9 +232,9 @@ class FchvController extends Controller
      */
     public function destroy($id, Request $request)
     {
-        if(User::checkAuthForCreateUpdateDelHealthworker()===false){
-            return redirect('/admin');
-        }
+        // if(User::checkAuthForCreateUpdateDelHealthworker()===false){
+        //     return redirect('/admin');
+        // }
 
 
         if(HealthWorker::checkValidId($id)===false){

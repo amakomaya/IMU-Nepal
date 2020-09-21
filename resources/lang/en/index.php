@@ -17,7 +17,7 @@ return [
     'province' => 'Province',
     'no_of_hp' => 'No. of Hospital',
     'office_address' => 'Office Address',
-    'province_info' => 'प्रान्त जानकारी',
+    'province_info' => 'Province Information',
     'created_at' => 'Created At',
     'updated_at' => 'Updated At',
     'dho_info' => 'DHO Information',

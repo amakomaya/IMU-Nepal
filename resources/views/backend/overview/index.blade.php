@@ -7,7 +7,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Overview of Data
+                            Hospital Record Overview
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -17,11 +17,11 @@
                                     <thead>
                                         <tr>
                                             <th>S.N</th>                                     
-                                            <th>Health Post Name</th>    
+                                            <th>Hospitals</th>    
                                             <th>HP Code</th>                                     
                                             <th>District</th>                                     
                                             <th>Registers</th>
-                                            <th>Records</th>
+                                            <th>Sample Records</th>
                                         </tr>
                                     </thead>
                                     <tbody>
