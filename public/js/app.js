@@ -4220,10 +4220,10 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Women.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Women.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/WomanListNegative.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/WomanListNegative.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4236,6 +4236,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _ViewLabReportModel_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ViewLabReportModel.vue */ "./resources/assets/js/components/ViewLabReportModel.vue");
 /* harmony import */ var _ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ViewLabResultReportModel.vue */ "./resources/assets/js/components/ViewLabResultReportModel.vue");
+//
 //
 //
 //
@@ -4441,6 +4442,271 @@ __webpack_require__.r(__webpack_exports__);
             return '<span class=\"label label-danger\"> Positive</span>';
           } else {
             return '<span class=\"label label-default\"> Don\'t Know</span>';
+          }
+        }
+      }
+    },
+    latestLabResultNegative: function latestLabResultNegative(value) {
+      if (value) {
+        if (value == '0' || value == null || value == '') {
+          return false;
+        } else {
+          if (value == '0' || value == null || value == '') {
+            return false;
+          } else {
+            if (value.result == '4') {
+              return true;
+            } else {
+              return false;
+            }
+          }
+        }
+      }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Women.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Women.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filterable.vue */ "./resources/assets/js/components/Filterable.vue");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _ViewLabReportModel_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ViewLabReportModel.vue */ "./resources/assets/js/components/ViewLabReportModel.vue");
+/* harmony import */ var _ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ViewLabResultReportModel.vue */ "./resources/assets/js/components/ViewLabResultReportModel.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Filterable: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      filterable: {
+        url: '/data/api/women',
+        orderables: [{
+          title: 'Name',
+          name: 'name'
+        }, {
+          title: 'Age',
+          name: 'age'
+        }, {
+          title: 'Created At',
+          name: 'created_at'
+        }],
+        filterGroups: [{
+          name: 'Patient',
+          filters: [{
+            title: 'Name',
+            name: 'name',
+            type: 'string'
+          }, {
+            title: 'Age',
+            name: 'age',
+            type: 'numeric'
+          }, {
+            title: 'Phone Number',
+            name: 'phone',
+            type: 'numeric'
+          }]
+        }, {
+          name: 'Tests',
+          filters: [{
+            title: 'Created At',
+            name: 'ancs.visit_date',
+            type: 'datetime'
+          }]
+        }]
+      },
+      token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
+      selected: [],
+      allSelected: false,
+      womanTokens: [],
+      provinces: [],
+      municipalities: [],
+      districts: []
+    };
+  },
+  created: function created() {
+    this.fetch();
+  },
+  methods: {
+    selectAll: function selectAll(item) {
+      this.womanTokens = [];
+
+      if (this.allSelected) {
+        console.log(item);
+      }
+    },
+    select: function select() {
+      this.allSelected = false;
+    },
+    viewReport: function viewReport(item) {
+      this.$dlg.modal(_ViewLabReportModel_vue__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        height: 700,
+        width: 800,
+        title: 'Laboratory Sample Collection Form for Suspected COVID-19 Case',
+        params: {
+          data: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
+        }
+      });
+    },
+    viewLabReport: function viewLabReport(item) {
+      this.$dlg.modal(_ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        height: 700,
+        width: 800,
+        title: 'Laboratory Result Form for Suspected COVID-19 Case',
+        params: {
+          item: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
+        }
+      });
+    },
+    fetch: function fetch() {
+      var _this = this;
+
+      var province_url = window.location.protocol + '/api/province';
+      var municipality_url = window.location.protocol + '/api/municipality';
+      var district_url = window.location.protocol + '/api/district';
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(municipality_url).then(function (response) {
+        _this.municipalities = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(district_url).then(function (response) {
+        _this.districts = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(province_url).then(function (response) {
+        _this.provinces = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {});
+    },
+    ad2bs: function ad2bs(date) {
+      var dateObject = new Date(date);
+      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
+      var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default.a.ad2bs(dateFormat);
+      return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
+    },
+    checkDistrict: function checkDistrict(value) {
+      if (value == 0 || value == null || value == '') {
+        return '';
+      } else {
+        return this.districts.find(function (x) {
+          return x.id === value;
+        }).district_name;
+      }
+    },
+    checkMunicipality: function checkMunicipality(value) {
+      if (value == 0 || value == null || value == '') {
+        return '';
+      } else {
+        return this.municipalities.find(function (x) {
+          return x.id === value;
+        }).municipality_name.split(" ").slice(0, -1).join(" ");
+      }
+    },
+    latestLabResult: function latestLabResult(value) {
+      if (value == '0' || value == null || value == '') {
+        return '<span class=\"label label-default\"> Don\'t Know </span>';
+      } else {
+        if (value == '0' || value == null || value == '') {
+          return '<span class=\"label label-default\"> Don\'t Know </span>';
+        } else {
+          if (value.result == '4') {
+            return '<span class=\"label label-success\"> Negative</span>';
+          }
+
+          if (value.result == '2') {
+            return '<span class=\"label label-info\"> Pending</span>';
+          }
+
+          if (value.result == '3') {
+            return '<span class=\"label label-danger\"> Positive</span>';
+          } else {
+            return '<span class=\"label label-default\"> Don\'t Know</span>';
+          }
+        }
+      }
+    },
+    latestLabResultNotNegative: function latestLabResultNotNegative(value) {
+      if (value) {
+        if (value == '0' || value == null || value == '') {
+          return true;
+        } else {
+          if (value == '0' || value == null || value == '') {
+            return true;
+          } else {
+            if (value.result == '4') {
+              return false;
+            } else {
+              return true;
+            }
           }
         }
       }
@@ -5955,7 +6221,7 @@ exports.push([module.i, ".v-select{position:relative;font-family:inherit}.v-sele
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9":
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css":
 /*!***********************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vuetify/dist/vuetify.min.css ***!
   \***********************************************************************************************************************************/
@@ -31451,6 +31717,174 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/WomanListNegative.vue?vue&type=template&id=12d6e7ee&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/WomanListNegative.vue?vue&type=template&id=12d6e7ee& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "filterable",
+        _vm._b(
+          {
+            scopedSlots: _vm._u(
+              [
+                {
+                  key: "default",
+                  fn: function(ref) {
+                    var item = ref.item
+                    return _vm.latestLabResultNegative(item.latest_anc)
+                      ? _c("tr", {}, [
+                          _c("td", [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.womanTokens,
+                                  expression: "womanTokens"
+                                }
+                              ],
+                              attrs: { type: "checkbox" },
+                              domProps: {
+                                value: item.token,
+                                checked: Array.isArray(_vm.womanTokens)
+                                  ? _vm._i(_vm.womanTokens, item.token) > -1
+                                  : _vm.womanTokens
+                              },
+                              on: {
+                                click: _vm.select,
+                                change: function($event) {
+                                  var $$a = _vm.womanTokens,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = item.token,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        (_vm.womanTokens = $$a.concat([$$v]))
+                                    } else {
+                                      $$i > -1 &&
+                                        (_vm.womanTokens = $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1)))
+                                    }
+                                  } else {
+                                    _vm.womanTokens = $$c
+                                  }
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(item.name))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(item.age))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              "One : " +
+                                _vm._s(item.emergency_contact_one) +
+                                " "
+                            ),
+                            _c("br"),
+                            _vm._v(
+                              "\n                    Two : " +
+                                _vm._s(item.emergency_contact_two) +
+                                "\n                "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.checkDistrict(item.district_id)))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.checkMunicipality(item.municipality_id)
+                              )
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("span", { staticClass: "label label-info" }, [
+                              _vm._v(" " + _vm._s(item.ancs.length))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("div", {
+                              domProps: {
+                                innerHTML: _vm._s(
+                                  _vm.latestLabResult(item.latest_anc)
+                                )
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td")
+                        ])
+                      : _vm._e()
+                  }
+                }
+              ],
+              null,
+              true
+            )
+          },
+          "filterable",
+          _vm.filterable,
+          false
+        ),
+        [
+          _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
+            _c("tr", [
+              _c("th", { attrs: { width: "10px" } }),
+              _vm._v(" "),
+              _c("th", [_vm._v("Name")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Age")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Emergency Contact")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("District")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Muicipality")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Total Collection")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Latest Lab Result")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Action")])
+            ])
+          ])
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Women.vue?vue&type=template&id=766d6157&":
 /*!***************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Women.vue?vue&type=template&id=766d6157& ***!
@@ -31473,101 +31907,112 @@ var render = function() {
         "filterable",
         _vm._b(
           {
-            scopedSlots: _vm._u([
-              {
-                key: "default",
-                fn: function(ref) {
-                  var item = ref.item
-                  return _c("tr", {}, [
-                    _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.womanTokens,
-                            expression: "womanTokens"
-                          }
-                        ],
-                        attrs: { type: "checkbox" },
-                        domProps: {
-                          value: item.token,
-                          checked: Array.isArray(_vm.womanTokens)
-                            ? _vm._i(_vm.womanTokens, item.token) > -1
-                            : _vm.womanTokens
-                        },
-                        on: {
-                          click: _vm.select,
-                          change: function($event) {
-                            var $$a = _vm.womanTokens,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = item.token,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 && (_vm.womanTokens = $$a.concat([$$v]))
-                              } else {
-                                $$i > -1 &&
-                                  (_vm.womanTokens = $$a
-                                    .slice(0, $$i)
-                                    .concat($$a.slice($$i + 1)))
+            scopedSlots: _vm._u(
+              [
+                {
+                  key: "default",
+                  fn: function(ref) {
+                    var item = ref.item
+                    return _vm.latestLabResultNotNegative(item.latest_anc)
+                      ? _c("tr", {}, [
+                          _c("td", [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.womanTokens,
+                                  expression: "womanTokens"
+                                }
+                              ],
+                              attrs: { type: "checkbox" },
+                              domProps: {
+                                value: item.token,
+                                checked: Array.isArray(_vm.womanTokens)
+                                  ? _vm._i(_vm.womanTokens, item.token) > -1
+                                  : _vm.womanTokens
+                              },
+                              on: {
+                                click: _vm.select,
+                                change: function($event) {
+                                  var $$a = _vm.womanTokens,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = item.token,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        (_vm.womanTokens = $$a.concat([$$v]))
+                                    } else {
+                                      $$i > -1 &&
+                                        (_vm.womanTokens = $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1)))
+                                    }
+                                  } else {
+                                    _vm.womanTokens = $$c
+                                  }
+                                }
                               }
-                            } else {
-                              _vm.womanTokens = $$c
-                            }
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.name))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.age))]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _vm._v(
-                        "One : " + _vm._s(item.emergency_contact_one) + " "
-                      ),
-                      _c("br"),
-                      _vm._v(
-                        "\n                    Two : " +
-                          _vm._s(item.emergency_contact_two) +
-                          "\n                "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _vm._v(_vm._s(_vm.checkDistrict(item.district_id)))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _vm._v(
-                        _vm._s(_vm.checkMunicipality(item.municipality_id))
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("span", { staticClass: "label label-info" }, [
-                        _vm._v(" " + _vm._s(item.ancs.length))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("div", {
-                        domProps: {
-                          innerHTML: _vm._s(
-                            _vm.latestLabResult(item.latest_anc)
-                          )
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td")
-                  ])
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(item.name))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(item.age))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              "One : " +
+                                _vm._s(item.emergency_contact_one) +
+                                " "
+                            ),
+                            _c("br"),
+                            _vm._v(
+                              "\n                    Two : " +
+                                _vm._s(item.emergency_contact_two) +
+                                "\n                "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.checkDistrict(item.district_id)))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.checkMunicipality(item.municipality_id)
+                              )
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("span", { staticClass: "label label-info" }, [
+                              _vm._v(" " + _vm._s(item.ancs.length))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("div", {
+                              domProps: {
+                                innerHTML: _vm._s(
+                                  _vm.latestLabResult(item.latest_anc)
+                                )
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td")
+                        ])
+                      : _vm._e()
+                  }
                 }
-              }
-            ])
+              ],
+              null,
+              true
+            )
           },
           "filterable",
           _vm.filterable,
@@ -79933,7 +80378,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_vue__;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9");
+var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -80054,10 +80499,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(vuelidate__WEBPACK_IMPORTED_MODULE_13__);
 /* harmony import */ var _components_Women_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/Women.vue */ "./resources/assets/js/components/Women.vue");
 /* harmony import */ var _components_WomenEdit__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/WomenEdit */ "./resources/assets/js/components/WomenEdit.vue");
-/* harmony import */ var _components_BabyList_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/BabyList.vue */ "./resources/assets/js/components/BabyList.vue");
-/* harmony import */ var _components_BabyEdit_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/BabyEdit.vue */ "./resources/assets/js/components/BabyEdit.vue");
-/* harmony import */ var _components_QrCodeGenerate_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/QrCodeGenerate.vue */ "./resources/assets/js/components/QrCodeGenerate.vue");
-/* harmony import */ var _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/SelectYearMonth */ "./resources/assets/js/components/SelectYearMonth.vue");
+/* harmony import */ var _components_WomanListNegative__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/WomanListNegative */ "./resources/assets/js/components/WomanListNegative.vue");
+/* harmony import */ var _components_BabyList_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/BabyList.vue */ "./resources/assets/js/components/BabyList.vue");
+/* harmony import */ var _components_BabyEdit_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/BabyEdit.vue */ "./resources/assets/js/components/BabyEdit.vue");
+/* harmony import */ var _components_QrCodeGenerate_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/QrCodeGenerate.vue */ "./resources/assets/js/components/QrCodeGenerate.vue");
+/* harmony import */ var _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/SelectYearMonth */ "./resources/assets/js/components/SelectYearMonth.vue");
+
 
 
 
@@ -80090,11 +80537,12 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_html_to_paper__WEBPACK_IMPORT
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_10___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('women-list', _components_Women_vue__WEBPACK_IMPORTED_MODULE_14__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('women-edit', _components_WomenEdit__WEBPACK_IMPORTED_MODULE_15__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('baby-list', _components_BabyList_vue__WEBPACK_IMPORTED_MODULE_16__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('baby-edit', _components_BabyEdit_vue__WEBPACK_IMPORTED_MODULE_17__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('women-list-negative', _components_WomanListNegative__WEBPACK_IMPORTED_MODULE_16__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('baby-list', _components_BabyList_vue__WEBPACK_IMPORTED_MODULE_17__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('baby-edit', _components_BabyEdit_vue__WEBPACK_IMPORTED_MODULE_18__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('vaccination-chart');
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('select-year-month', _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_19__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('qr-code-generate', _components_QrCodeGenerate_vue__WEBPACK_IMPORTED_MODULE_18__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('select-year-month', _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_20__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('qr-code-generate', _components_QrCodeGenerate_vue__WEBPACK_IMPORTED_MODULE_19__["default"]);
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app'
 });
@@ -80789,6 +81237,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewLabResultReportModel_vue_vue_type_template_id_2da32967_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewLabResultReportModel_vue_vue_type_template_id_2da32967_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/WomanListNegative.vue":
+/*!**************************************************************!*\
+  !*** ./resources/assets/js/components/WomanListNegative.vue ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _WomanListNegative_vue_vue_type_template_id_12d6e7ee___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./WomanListNegative.vue?vue&type=template&id=12d6e7ee& */ "./resources/assets/js/components/WomanListNegative.vue?vue&type=template&id=12d6e7ee&");
+/* harmony import */ var _WomanListNegative_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WomanListNegative.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/WomanListNegative.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _WomanListNegative_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _WomanListNegative_vue_vue_type_template_id_12d6e7ee___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _WomanListNegative_vue_vue_type_template_id_12d6e7ee___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/WomanListNegative.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/WomanListNegative.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/assets/js/components/WomanListNegative.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WomanListNegative_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./WomanListNegative.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/WomanListNegative.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WomanListNegative_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/WomanListNegative.vue?vue&type=template&id=12d6e7ee&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/assets/js/components/WomanListNegative.vue?vue&type=template&id=12d6e7ee& ***!
+  \*********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_WomanListNegative_vue_vue_type_template_id_12d6e7ee___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./WomanListNegative.vue?vue&type=template&id=12d6e7ee& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/WomanListNegative.vue?vue&type=template&id=12d6e7ee&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_WomanListNegative_vue_vue_type_template_id_12d6e7ee___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_WomanListNegative_vue_vue_type_template_id_12d6e7ee___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

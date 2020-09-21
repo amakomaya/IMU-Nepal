@@ -64,6 +64,7 @@ Route::resource('admin/health-worker', 'Backend\HealthWorkerController');
 
 //Bakend Woman
 Route::resource('admin/patients', 'Backend\WomanController', ['names' => 'woman']);
+Route::get('admin/negative-patients', 'Backend\WomanController@negativeIndex')->name('patients.negative.index');
 
 //Route::delete('admin/woman/{token}','Backend\WomanController@delete');
 

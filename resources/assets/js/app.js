@@ -15,6 +15,7 @@ import Vuelidate from 'vuelidate'
 
 import WomenList from './components/Women.vue'
 import  WomenEdit from './components/WomenEdit'
+import WomanListNegative from './components/WomanListNegative'
 
 import BabyList from './components/BabyList.vue'
 import BabyEdit from './components/BabyEdit.vue'
@@ -36,6 +37,7 @@ Vue.component('v-select', vSelect)
 
 Vue.component('women-list', WomenList);
 Vue.component('women-edit', WomenEdit);
+Vue.component('women-list-negative', WomanListNegative);
 
 Vue.component('baby-list', BabyList);
 Vue.component('baby-edit', BabyEdit);

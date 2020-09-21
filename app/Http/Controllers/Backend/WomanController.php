@@ -35,6 +35,11 @@ class WomanController extends Controller
         return view('backend.woman.index');
     }
 
+    public function negativeIndex()
+    {
+        return view('backend.woman.index-negative');
+    }
+
     public function create()
     {
         $provinces = Province::all();

@@ -14,7 +14,7 @@
                 <th>Action</th>
             </tr>
             </thead>
-            <tr slot-scope="{item}" v-if="latestLabResultNotNegative(item.latest_anc)">
+            <tr slot-scope="{item}" v-if="latestLabResultNegative(item.latest_anc)">
                 <td>
                     <input type="checkbox" v-model="womanTokens" @click="select" :value="item.token">                           
                 </td>
@@ -210,18 +210,18 @@
                     }
                 }
             },
-            latestLabResultNotNegative : function(value){
+            latestLabResultNegative : function(value){
                 if (value) {
                     if (value == '0' || value == null || value == ''){
-                    return true;
+                    return false;
                 }else{
                     if (value == '0' || value == null || value == ''){
-                        return true;
+                        return false;
                     }else{
                         if (value.result == '4') {
-                            return false;
-                        }else{
                             return true;
+                        }else{
+                            return false;
                         }
                     }
                 }
