@@ -239,6 +239,14 @@ Route::get('/v1/client', function(Request $request){
         $response['symptoms_comorbidity_specific'] = $row->symptoms_comorbidity_specific ?? '';
         $response['screening'] = $row->screening ?? '';
         $response['screening_specific'] = $row->screening_specific ?? '';
+        $response['emergency_contact_one'] = $row->emergency_contact_one ?? '';
+        $response['emergency_contact_two'] = $row->emergency_contact_two ?? '';
+        $response['cases'] = $row->cases ?? '';
+        $response['case_where'] = $row->case_where ?? '';
+        $response['end_case'] = $row->end_case ?? '';
+        $response['payment'] = $row->payment ?? '';
+        $response['result'] = $row->result ?? '';
+
 
     return $response;
 });
@@ -303,6 +311,8 @@ Route::get('/v1/client-tests', function(Request $request){
         $response['sample_case_specific'] = $row->sample_case_specific ?? '';
         $response['sample_case'] = $row->sample_case ?? '';
         $response['sample_identification_type'] = $row->sample_identification_type ?? '';
+                $response['service_type'] = $row->service_type ?? '';
+
 
     return $response;
 });
