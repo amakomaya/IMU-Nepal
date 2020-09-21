@@ -67,7 +67,6 @@ class MunicipalityController extends Controller
             $municipalities = $municipalities->where('province_id', $province_id);
        }
        if(Auth::user()->role=="dho"){
-
             $district = District::modelDistrictInfo(Auth::user()->token)->first();
             $districts = $districts->where('id', $district->district_id);
             $provinces = $provinces->where('id', $districts->first()->province_id);

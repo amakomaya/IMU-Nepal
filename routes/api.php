@@ -312,7 +312,7 @@ Route::get('/v1/client-tests', function(Request $request){
         $response['sample_case'] = $row->sample_case ?? '';
         $response['sample_identification_type'] = $row->sample_identification_type ?? '';
                 $response['service_type'] = $row->service_type ?? '';
-
+        $response['result'] = $row->result ?? '';
 
     return $response;
 });
@@ -323,6 +323,7 @@ Route::post('/v1/lab-test', function(Request $request){
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
+            \App\Models\Anc::where('token', $value['token'])->update('result', $value['sample_test_result']);
             \App\Models\LabTest::create($value);
         } catch (\Exception $e) {
             

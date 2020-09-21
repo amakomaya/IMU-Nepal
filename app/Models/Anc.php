@@ -21,7 +21,7 @@ class Anc extends Model
     'current_address', 'current_province', 'current_district', 'current_municipality', 'current_ward', 'current_tole', 'rdt_test', 'rdt_result', 'rdt_test_date', 'pcr_test', 'pcr_result', 'pcr_test_date', 'problem_suggestion', 'checked_by_name', 
 
 
-    'sample_type', 'sample_type_specific', 'sample_case', 'sample_case_specific', 'sample_identification_type', 'service_type',
+    'sample_type', 'sample_type_specific', 'sample_case', 'sample_case_specific', 'sample_identification_type', 'service_type', 'result',
 
     'created_at', 'updated_at', 'situation']; // 24-28 weeks from lmp_date_en
 
