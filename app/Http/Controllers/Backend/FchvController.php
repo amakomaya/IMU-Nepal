@@ -33,21 +33,22 @@ class FchvController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->role=="province"){
-            $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
-            $healthWorkers = HealthWorker::where([['province_id', $province_id],['role', 'fchv']])->latest()->get();
-       }elseif(Auth::user()->role=="dho"){
-            $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
-            $healthWorkers = HealthWorker::where([['district_id', $district_id],['role','fchv']])->latest()->get();
-       }elseif(Auth::user()->role=="healthpost"){
-            $hp_code = Healthpost::where('token', Auth::user()->token)->get()->first()->hp_code;
-            $healthWorkers = HealthWorker::where([['hp_code', $hp_code],['role','fchv']])->latest()->get();
-       }elseif(Auth::user()->role=="healthworker"){
-            $hp_code = HealthWorker::where('token', Auth::user()->token)->get()->first()->hp_code;
-            $healthWorkers = HealthWorker::where([['hp_code', $hp_code],['role','fchv']])->latest()->get();
-       }else{
-            $healthWorkers = HealthWorker::where('role', 'fchv')->latest()->get();
-       }
+       //  if(Auth::user()->role=="province"){
+       //      $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
+       //      $healthWorkers = HealthWorker::where([['province_id', $province_id],['role', 'fchv']])->latest()->get();
+       // }elseif(Auth::user()->role=="dho"){
+       //      $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
+       //      $healthWorkers = HealthWorker::where([['district_id', $district_id],['role','fchv']])->latest()->get();
+       // }elseif(Auth::user()->role=="healthpost"){
+       //      $hp_code = Healthpost::where('token', Auth::user()->token)->get()->first()->hp_code;
+       //      $healthWorkers = HealthWorker::where([['hp_code', $hp_code],['role','fchv']])->latest()->get();
+       // }elseif(Auth::user()->role=="healthworker"){
+       //      $hp_code = HealthWorker::where('token', Auth::user()->token)->get()->first()->hp_code;
+       //      $healthWorkers = HealthWorker::where([['hp_code', $hp_code],['role','fchv']])->latest()->get();
+       // }else{
+            
+       // }
+       $healthWorkers = HealthWorker::where('role', 'fchv')->latest()->get();
         $role = 'fchv';
         return view('backend.fchv.index',compact('healthWorkers','role'));
     }
