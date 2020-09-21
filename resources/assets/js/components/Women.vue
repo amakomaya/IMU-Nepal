@@ -6,10 +6,9 @@
                 <th width="10px"></th>
                 <th>Name</th>
                 <th>Age</th>
-                <th>Phone</th>
+                <th>Emergency Contact</th>
                 <th>District</th>
                 <th>Muicipality</th>
-                <th>Situation</th>
                 <th>Total Collection</th>
                 <th>Latest Lab Result</th>
                 <th>Action</th>
@@ -21,22 +20,11 @@
                 </td>
                 <td>{{item.name}}</td>
                 <td>{{item.age}}</td>
-                <td>{{item.phone}}</td>
+                <td>{{item.emergency_contact_one}} <br>
+                    {{item.emergency_contact_two}}
+                </td>
                 <td>{{ checkDistrict(item.district_id) }}</td>
                 <td>{{ checkMunicipality(item.municipality_id) }}</td>
-                <td>
-                    <div class="row">
-                        <div v-if="item.ancs.length > 0">
-                            <status-indicator status="positive" v-if="item.latest_anc.situation == 1"
-                                              title="समान्य"/>
-                            <status-indicator status="intermediary" v-if="item.latest_anc.situation == 2"
-                                              title="सम्भाब्य जोखिम"/>
-                            <status-indicator status="negative" v-if="item.latest_anc.situation == 3"
-                                              title="जोखिम"/>
-                        </div>
-                            <status-indicator status="negative-semi" v-else pulse title="Not Recorded"/>
-                    </div>
-                </td>
                 <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
                 <td><div v-html="latestLabResult(item.latest_anc)">
                 </div>
@@ -45,9 +33,9 @@
                 </button> -->
                 </td>
                 <td>
-                    <button v-on:click="viewReport(item)" title=" Card Laboratory Sample Collection Form Details">
+                    <!-- <button v-on:click="viewReport(item)" title=" Card Laboratory Sample Collection Form Details">
                         <i class="fa fa-newspaper-o"></i>
-                    </button>
+                    </button> -->
                 </td>              
             </tr>
 <!--            <span>Selected Ids: {{ item }}</span>-->
@@ -201,17 +189,22 @@
                 }
             },
             latestLabResult :function(value){
-                if (value == 0 || value == null || value == ''){
+                if (value == '0' || value == null || value == ''){
                     return '<span class=\"label label-default\"> Don\'t Know </span>';
                 }else{
-                    if (value.labreport == 0 || value.labreport == null || value.labreport == ''){
+                    if (value == '0' || value == null || value == ''){
                         return '<span class=\"label label-default\"> Don\'t Know </span>';
                     }else{
-                        if (value.labreport.sample_test_result == 1) {
+                        if (value.result == '1') {
                             return '<span class=\"label label-danger\"> Positive</span>'
                         }
-                        if (value.labreport.sample_test_result == 2) {
+                        if (value.result == '2') {
                             return '<span class=\"label label-success\"> Negative</span>'
+                        }
+                        if (value.result == '3') {
+                            return '<span class=\"label label-default\"> Don\'t Know</span>'
+                        }else{
+                            return '<span class=\"label label-default\"> Don\'t Know</span>'
                         }
                     }
                 }
