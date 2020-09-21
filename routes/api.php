@@ -177,7 +177,11 @@ Route::post('/v1/client', function(Request $request){
 
 Route::get('/v1/client', function(Request $request){
     $hp_code = $request->hp_code;
-    $data = collect(\DB::table('women')->where('hp_code', $hp_code)->get())->map(function ($row) {        
+    $data = collect(\DB::table('women')
+        ->join('ancs', 'ancs.woman_token', '=', 'women.token')
+        ->where('women.hp_code', $hp_code)
+        ->where('ancs.result', '!=', 4)
+        ->get())->map(function ($row) {        
 
         $response = [];
 
