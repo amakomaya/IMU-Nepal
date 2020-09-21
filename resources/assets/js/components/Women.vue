@@ -195,14 +195,14 @@
                     if (value == '0' || value == null || value == ''){
                         return '<span class=\"label label-default\"> Don\'t Know </span>';
                     }else{
-                        if (value.result == '1') {
-                            return '<span class=\"label label-danger\"> Positive</span>'
-                        }
-                        if (value.result == '2') {
+                        if (value.result == '4') {
                             return '<span class=\"label label-success\"> Negative</span>'
                         }
+                        if (value.result == '2') {
+                            return '<span class=\"label label-info\"> Pending</span>'
+                        }
                         if (value.result == '3') {
-                            return '<span class=\"label label-default\"> Don\'t Know</span>'
+                            return '<span class=\"label label-danger\"> Positive</span>'
                         }else{
                             return '<span class=\"label label-default\"> Don\'t Know</span>'
                         }
