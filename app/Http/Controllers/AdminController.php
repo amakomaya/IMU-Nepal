@@ -12,6 +12,7 @@ use App\Models\Municipality;
 use App\Models\VaccinationRecord;
 use App\Models\Ward;
 use App\Models\Woman;
+use App\Models\LabTest;
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Charts;
@@ -44,6 +45,8 @@ class AdminController extends Controller
         }
 
         $woman = Woman::whereIn('hp_code', $hpCodes)->active();
+        $sample_collection = Anc::whereIn('hp_code', $hpCodes)->active()->orderBy('created_at', 'desc');
+        $tests = LabTest::active()->orderBy('created_at', 'desc');
 
 
         $chartData = $woman->where(\DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))
@@ -55,41 +58,31 @@ class AdminController extends Controller
             ->responsive(true)
             ->groupByMonth(date('Y'), true);
             
-        $tests = collect(Anc::whereIn('hp_code', $hpCodes)->active()->orderBy('created_at', 'desc')->get())->unique('woman_token')->values();
 
-        $ancCount = $tests->count();
 
-        // $forInfected = $tests->filter(function($q) {
-        //           if($q->pcr_test == 1 or $q->rdt_test == 1){
-        //             return $q->pcr_result == 1 or $q->rdt_result == 1;
-        //           };
-        //       });
+        $last_24_hrs_register = $woman->where('created_at', '>', Carbon::now()->subDay())->get()->count();
 
+        $last_24_hrs_sample_collection = $sample_collection->where('created_at', '>', Carbon::now()->subDay())->get()->count();
+        
+        $last_24_hrs_tests = $tests->where('created_at', '>', Carbon::now()->subDay())->get()->count();
+
+        $last_24_hrs_positive = $tests->where('created_at', '>', Carbon::now()->subDay())->where('sample_test_result', 3)->get()->count();
+
+
+       
         $data = [
-                'situation_normal' => $tests->where('situation', 1)->count(),
-                'situation_possible' => $tests->where('situation', 2)->count(),
-                'situation_danger' => $tests->where('situation', 3)->count(),
-
-                // 'infected' => $forInfected->count(),
-
-
-                'pcr_positive' => $tests->where('pcr_test', 1)->count(),
-                'rdt_positive' => $tests->where('rdt_test', 1)->count(),
-                'both_positive' => $tests->where('pcr_test', 1)->where('rdt_test', 1)->count(),
-
-                // 'notTravelled' => $forInfected->where('situation', 3)->count(),
-                // 'domesticTravel' => $forInfected->where('situation', 3)->count(),
-                // 'internationalTravel' => $forInfected->where('situation', 3)->count(),
-
-                'totalOrgQuarintine' => $tests->where('current_address', 0)->count(),
-                'totalOrgIsolation' => $tests->where('current_address', 1)->count(),
-                'totalHealthInstitude' => $tests->where('current_address', 2)->count(),
-                'totalHomeQuarintine' => $tests->where('current_address', 3)->count(),
-                'totalHomeIsolation' => $tests->where('current_address', 4)->count(),
-                'totalOther' => $tests->where('current_address', 5)->count(),
+                'total_register' => Woman::whereIn('hp_code', $hpCodes)->active()->count(),
+                'total_sample_collection' => Anc::whereIn('hp_code', $hpCodes)->active()->count(),
+                'total_tests' => LabTest::active()->count(),
+                'total_positive' => LabTest::active()->where('sample_test_result', 3)->count(),
+                'last_24_hrs_register' => $last_24_hrs_register,
+                'last_24_hrs_sample_collection' => $last_24_hrs_sample_collection,
+                'last_24_hrs_tests' => $last_24_hrs_tests,
+                'last_24_hrs_positive' => $last_24_hrs_positive
+                
         ];
 
-        return view('admin', compact('data','ancCount', 'chartWoman', 'provinces', 'districts', 'options', 'ward_or_healthpost', 'municipalities', 'wards', 'healthposts', 'province_id', 'district_id', 'municipality_id', 'ward_id', 'hp_code', 'from_date', 'to_date'));
+        return view('admin', compact('data', 'chartWoman', 'provinces', 'districts', 'options', 'ward_or_healthpost', 'municipalities', 'wards', 'healthposts', 'province_id', 'district_id', 'municipality_id', 'ward_id', 'hp_code', 'from_date', 'to_date'));
     }
 
     public function districtSelectByProvince(Request $request)
