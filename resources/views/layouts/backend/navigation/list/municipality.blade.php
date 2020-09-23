@@ -1,5 +1,5 @@
 @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main' || \App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Municipality')
-<li>
+<!-- <li>
     <a href="#">
     <i class="fa fa-building-o" aria-hidden="true"></i>
         {{ trans('sidebar.ward') }} <span class="fa arrow"></span>
@@ -13,7 +13,7 @@
             <a href="{{ route('ward.create') }}">{{trans('sidebar.create')}}</a>
         </li>
     </ul>
-</li>
+</li> -->
 <li>
     <a href="#">
     <i class="fa fa-building-o" aria-hidden="true"></i>

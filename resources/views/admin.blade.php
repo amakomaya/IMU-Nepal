@@ -23,7 +23,7 @@
                         </div>
                     @endif
 
-                    You are logged in as Institution Admin !
+                    You are logged in as {{ \App\User::getAppRole() }} !
                 </div>
                 <!-- /.panel-body -->
             </div>
