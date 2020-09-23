@@ -60,21 +60,21 @@ class MunicipalityController extends Controller
         $provinces = Province::all();
         $districts = District::all();
         $municipalities = Municipality::all();
-        if(Auth::user()->role=="province"){
-            $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
-            $districts = $districts->where('province_id', $province_id);
-            $provinces = $provinces->where('id', $province_id);
-            $municipalities = $municipalities->where('province_id', $province_id);
-       }
-       if(Auth::user()->role=="dho"){
-            $district = District::modelDistrictInfo(Auth::user()->token)->first();
-            $districts = $districts->where('id', $district->district_id);
-            $provinces = $provinces->where('id', $districts->first()->province_id);
+       //  if(Auth::user()->role=="province"){
+       //      $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
+       //      $districts = $districts->where('province_id', $province_id);
+       //      $provinces = $provinces->where('id', $province_id);
+       //      $municipalities = $municipalities->where('province_id', $province_id);
+       // }
+       // if(Auth::user()->role=="dho"){
+       //      $district = District::modelDistrictInfo(Auth::user()->token)->first();
+       //      $districts = $districts->where('id', $district->district_id);
+       //      $provinces = $provinces->where('id', $districts->first()->province_id);
 
-            $municipalities = $municipalities->where('district_id', $district->district_id);
+       //      $municipalities = $municipalities->where('district_id', $district->district_id);
 
-           // $municipalityInfos = MunicipalityInfo::where('district_id', $district_id)->latest()->get();
-       }
+       //     // $municipalityInfos = MunicipalityInfo::where('district_id', $district_id)->latest()->get();
+       // }
         return view('backend.municipality.create',compact('provinces','districts','municipalities'));
     }
 
@@ -150,12 +150,12 @@ class MunicipalityController extends Controller
         $districts = District::all();
         $municipalities = Municipality::all();
 
-        if(Auth::user()->role=="province"){
-            $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
-            $districts = $districts->where('province_id', $province_id);
-            $provinces = $provinces->where('id', $province_id);
-            $municipalities = $municipalities->where('province_id', $province_id);
-       }
+       //  if(Auth::user()->role=="province"){
+       //      $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
+       //      $districts = $districts->where('province_id', $province_id);
+       //      $provinces = $provinces->where('id', $province_id);
+       //      $municipalities = $municipalities->where('province_id', $province_id);
+       // }
 
         $user = $this->findModelUser($data->token);
         return view('backend.municipality.edit', compact('data','provinces','districts','municipalities','user'));
