@@ -337,3 +337,19 @@ Route::post('/v1/lab-test', function(Request $request){
     }
     return response()->json(['message' => 'Data Sussessfully Sync']);
 });
+
+
+
+Route::post('/v1/patient-transfer', function(Request $request){
+
+    $data = json_decode($request->getContent(), true);
+
+    // $data['name'] = 'patient';
+    // $transfer = \App\Models\TransferLog::create($data);
+
+    \App\Models\Woman::where('token', $data['token'])
+        ->update(['hp_code' => $data['hp_code']]);
+    \App\Models\Anc::where('woman_token', $data['token'])->update(['hp_code' => $data['hp_code']]);
+    
+    return response()->json($data['token']);
+});

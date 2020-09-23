@@ -33,9 +33,9 @@
                 </button> -->
                 </td>
                 <td>
-                    <!-- <button v-on:click="viewReport(item)" title=" Card Laboratory Sample Collection Form Details">
-                        <i class="fa fa-newspaper-o"></i>
-                    </button> -->
+                    <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
+                        <i class="fa fa-hospital-o"></i>
+                    </button>
                 </td>  
                 <!-- </div>             -->
             </tr>
@@ -51,6 +51,7 @@
     import axios from 'axios'
     import ViewLabReportModel from './ViewLabReportModel.vue'
     import ViewLabResultReportModel from './ViewLabResultReportModel.vue'
+    import SendPatientDataModel from './SendPatientDataModel.vue'
 
     export default {
         components: {Filterable},
@@ -104,11 +105,11 @@
             select: function () {
                 this.allSelected = false;
             },
-            viewReport: function (item) {
-                this.$dlg.modal(ViewLabReportModel, {
+            sendPatientData: function (item) {
+                this.$dlg.modal(SendPatientDataModel, {
                     height : 700,
                     width : 800,
-                    title: 'Laboratory Sample Collection Form for Suspected COVID-19 Case',
+                    title: 'Do you want to send '+item.name+' \'s patients data ?',
                     params: {
                         data : item,
                         provinces : this.provinces,
