@@ -3833,7 +3833,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   break;
                 }
 
-                this.$dlg.toast('Please Select Hosptial !', {
+                this.$dlg.toast('Please Select Hospital !', {
                   messageType: 'warning',
                   closeTime: 3,
                   // auto close dialog time(second)
@@ -4820,9 +4820,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     sendPatientData: function sendPatientData(item) {
       this.$dlg.modal(_SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_5__["default"], {
-        height: 700,
-        width: 800,
         title: 'Do you want to send ' + item.name + ' \'s patients data ?',
+        height: 500,
+        width: 600,
         params: {
           data: item,
           provinces: this.provinces,
@@ -31870,7 +31870,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("h3", [
+        _c("h4", [
           _vm._v(
             "Where do you want to transfer this patient, Please search Hospital"
           )
@@ -31881,7 +31881,7 @@ var render = function() {
           {
             attrs: {
               label: "name",
-              placeholder: "Type to search healthpost informations ..",
+              placeholder: "Type to search Hospital informations ..",
               options: _vm.options
             },
             on: { search: _vm.onSearch },
@@ -31971,7 +31971,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("h3", [_c("u", [_c("strong", [_vm._v("Patient Details :")])])])
+    return _c("h4", [_c("u", [_c("strong", [_vm._v("Patient Details :")])])])
   }
 ]
 render._withStripped = true

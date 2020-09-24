@@ -1,7 +1,7 @@
 <template>
 	<div>
         <div class="form-group">
-            <h3><u><strong>Patient Details :</strong></u></h3>
+            <h4><u><strong>Patient Details :</strong></u></h4>
             <table class="table table-striped">
                 <tbody>
                     <tr>
@@ -27,11 +27,11 @@
                 </tbody>
             </table>
 
-        	<h3>Where do you want to transfer this patient, Please search Hospital</h3>
+        	<h4>Where do you want to transfer this patient, Please search Hospital</h4>
 
             <v-select label="name"
                 v-model="healthpostSelected"
-                placeholder="Type to search healthpost informations .."
+                placeholder="Type to search Hospital informations .."
                 :options="options"
                 @search="onSearch"
             >
@@ -96,7 +96,7 @@
 
             sendPatient: async function (healthpost, token) {
                 if (!healthpost) {
-                    this.$dlg.toast('Please Select Hosptial !', {
+                    this.$dlg.toast('Please Select Hospital !', {
 					  messageType: 'warning',
 					  closeTime: 3, // auto close dialog time(second)
 					  position : 'topCenter',
