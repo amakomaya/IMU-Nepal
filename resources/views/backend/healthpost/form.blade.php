@@ -141,7 +141,7 @@ input:focus ~ div{
                                         {{trans('create.healthpost_code')}}</label>
                                          
                                         <div class="col-md-7">
-                                            <input id="hp_code" type="text" class="form-control" name="hp_code" value="@yield('hp_code')" placeholder="eg. {{ $provinces[0]['id'] }}-{{ $districts[0]['id'] }}-{{ $municipalities->id }}-100">
+                                            <input id="hp_code" type="text" class="form-control" name="hp_code" value="{{ $provinces[0]['id'] }}-{{ $districts[0]['id'] }}-{{ $municipalities->id }}-{{ Illuminate\Support\Str::upper(Illuminate\Support\Str::random(2)) }}" placeholder="eg. {{ $provinces[0]['id'] }}-{{ $districts[0]['id'] }}-{{ $municipalities->id }}-{{ Illuminate\Support\Str::upper(Illuminate\Support\Str::random(2)) }}" readonly>
 
                                             @if ($errors->has('hp_code'))
                                                 <span class="help-block">
@@ -336,4 +336,3 @@ input:focus ~ div{
         </div>
         <!-- /#page-wrapper -->
 @endsection
-                          
