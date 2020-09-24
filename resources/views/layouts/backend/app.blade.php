@@ -361,9 +361,9 @@
                 </li>
                </ul>
                <li class="nav navbar-nav sl-nav userinfo" style="margin: 10px;">
-                    <i class="fa fa-user"></i> :
+                    <i class="fa fa-user"> : </i> 
                     <ul>
-                    <li><b>{{ \Auth::user()->name }}</b> <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    <li><b>{{ \Auth::user()->username }}</b> <i class="fa fa-angle-down" aria-hidden="true"></i>
                         <div class="triangle"></div>
                         <ul>
                           <li>{{ \App\User::getAppRole() }}</li>

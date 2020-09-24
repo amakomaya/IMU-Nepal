@@ -10,19 +10,19 @@
                     </tr>
                     <tr>
                         <td>Age : </td>
-                        <td>{{ data.age }} / <span v-if="data.age_unit == 1">Months</span><span v-if="data.age_unit == 2">Days</span><span v-else>Years</span></td>
+                        <td>{{ data.age }} / <span v-if="data.age_unit == 1">Months</span><span v-if="data.age_unit == 2">Days</span><span v-if="data.age_unit == 0">Years</span></td>
                     </tr>
                     <tr>
                         <td>Gender : </td>
-                        <td><span v-if="data.sex == 1">Male</span><span v-if="data.sex == 2">Female</span><span v-else>Other</span></td>
+                        <td><span v-if="data.sex == 1">Male</span><span v-if="data.sex == 2">Female</span><span v-if="data.sex == 3">Other</span></td>
                     </tr>
                     <tr>
                         <td>Emergency Phone : </td>
                         <td>One : {{ data.emergency_contact_one }} <br> Two : {{ data.emergency_contact_two }}</td>
                     </tr>
                     <tr>
-                        <td>Created At : </td>
-                        <td>{{ data.created_at }}</td>
+                        <td>Current Hospital : </td>
+                        <td>{{ data.healthpost.name }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -72,7 +72,7 @@
         data() {
             return {
                 options: [],
-                healthpostSelected : null
+                healthpostSelected : null,
             }
         },
         methods: {
@@ -103,46 +103,66 @@
 					  language : 'en'
 					});
                     return false;
-                }    
+                }
 
                 var payload = {
                     token: token,
                     hp_code: healthpost.hp_code,
                 };
 
+                this.$swal({
+                    title: 'Are you sure?',
+                    text: "Do you want to transfer this patient!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, send it!',
+                    customClass: {
+                        container: 'my-swal'
+                    }
+                }).then((result) => {
+                    if (result.value) {
+                        this.$swal({
+                        title: "Checking...",
+                        text: "Please wait",
+                        showConfirmButton: false,
+                        allowOutsideClick: false
+                    });
 
-				// this.$dlg.alert('Are you sure? Do you want to transfer this patient!', {
-				//   messageType: 'confirm',
-				//   language : 'en',
-				//   cancelCallback: function(){
-				    
-				//   }
-				// });
-
-
-                axios.post('/api/v1/patient-transfer', payload,{headers: {'Accept': 'application/json'}})
+                    axios.post('/api/v1/patient-transfer', payload,{headers: {'Accept': 'application/json'}})
                         .then(response => {
                             // JSON responses are automatically parsed.
                             if (response.data.length > 0) {
-                            	console.log(response.data);
-                                this.$dlg.toast('Successfully transfer patient, please refresh page to see changes !', {
-								  messageType: 'success',
-								  closeTime: 3, // auto close dialog time(second)
-								  position : 'topCenter',
-								  language : 'en'
-								});                            
+                                this.$swal({
+                                    position: 'top-end',
+                                    type: 'success',
+                                    title: 'Successfully transfer patient, please refresh page to see changes !',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });                
                             }
                         })
                         .catch(function (error) {
-                            this.$dlg.toast('Something went wrong ? Please try again !', {
-								  messageType: 'error',
-								  closeTime: 3, // auto close dialog time(second)
-								  position : 'topCenter',
-								  language : 'en'
-							});  
-                    });
+                            this.$swal({
+                                position: 'top-end',
+                                type: 'error',
+                                title: 'Network error, Please try again...',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        });
+                    }
+                }) 
             },
         }
         
     }
 </script>
+<style>
+
+.swal2-container {
+  z-index: 10000;
+}
+
+</style>

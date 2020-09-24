@@ -244,6 +244,7 @@ class User extends Authenticatable
         if($role=="healthpost"){
             $healthpost = Healthpost::where('token', $token)->get()->first();
             $name = "(".$healthpost->name.")";
+            $role = "Hospital";
         }
 
         if($role=="healthworker"){

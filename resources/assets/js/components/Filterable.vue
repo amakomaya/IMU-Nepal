@@ -138,7 +138,7 @@
                         <option>200</option>
                         <option>250</option>
                     </select>
-                    <small> Showing {{collection.from}} - {{collection.to}} of {{collection.total}} entries.</small>
+                    <small> Showing entries.</small>
                 </div>
                 <div>
                     <button class="btn" :disabled="!collection.prev_page_url || loading"
@@ -374,3 +374,157 @@
         }
     }
 </script>
+<style lang="scss" scoped>
+
+$color-error: #e75650;
+$color-primary: #3aa3e3;
+$color-secondary: #2c405a;
+$text-color: #484746;
+$bg-color: #fafafa;
+$bg-color-light: #fcfcfc;
+$border-color: rgba(63, 63, 68, 0.1);
+
+$font-family: Helvetica, sans-serif;
+
+$box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  color: $text-color;
+  background: $bg-color;
+  font-family: $font-family;
+  font-size: 13px;
+  line-height: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  background: #fff;
+  height: 45px;
+  border-bottom: 2px solid $border-color;
+}
+
+.content {
+  width: 1000px;
+  margin: 0 auto;
+  overflow-y: scroll;
+  padding: 15px;
+}
+
+.panel {
+  background: #fff;
+  margin-bottom: 16px;
+  border-radius: 2px;
+  box-shadow: $box-shadow;
+  &-heading {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid $border-color;
+  }
+  &-title {
+    font-size: 18px;
+    line-height: 24px;
+  }
+  &-body {
+    padding: 8px;
+  }
+  &-footer {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid $border-color;
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  thead {
+    tr {
+      th {
+        text-align: left;
+        border-bottom: 2px solid $border-color;
+        padding: 5px;
+        font-weight: bold;
+      }
+    }
+  }
+  tbody {
+    tr {
+      border-top: 1px solid $border-color;
+      td {
+        vertical-align: top;
+        padding: 5px;
+      }
+      &:nth-of-type(odd) {
+        background: $bg-color-light;
+      }
+    }
+  }
+}
+
+.filter {
+  &-item {
+    margin-bottom: 15px;
+    display: flex;
+  }
+  &-column {
+    padding-right: 15px;
+    width: 25%;
+  }
+  &-operator {
+    padding-right: 15px;
+    width: 25%;
+  }
+  &-query_1 {
+    width: 24%;
+    padding-right: 15px;
+  }
+  &-full {
+    width: 48%;
+  }
+  &-query_2 {
+    width: 24%;
+  }
+  &-remove {
+    width: 2%;
+    text-align: right;
+    button {
+      color: $color-error;
+      background: transparent;
+      border: none;
+      font-weight: bold;
+    }
+  }
+}
+
+.filterable {
+  &-export {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+</style>

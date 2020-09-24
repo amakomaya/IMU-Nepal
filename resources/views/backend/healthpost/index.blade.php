@@ -6,7 +6,6 @@
     <div class="row">
         <div class="col-lg-12">
 
-            @if(\App\User::checkAuthForViewByMunicipality()===true && \App\User::checkAuthForViewByWard()===true)
                 <script type="text/javascript">
                      function confirmDelete(){
                         if(confirm("Are you sure to delete?")){
@@ -33,7 +32,6 @@
                 <div class="form-group">
                     <a class="btn btn-success" href="{{route('healthpost.create') }}">{{trans('index.create')}}</a>
                 </div>
-            @endif
             <div class="panel panel-default">
                 <div class="panel-heading">
                 {{trans('index.healthpost_info')}}
@@ -98,9 +96,9 @@
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
                                                     
-                                                    <!-- {{csrf_field()}}
+                                                    {{csrf_field()}}
                                                     {{method_field('DELETE')}}
-                                                    <button name="submit" class="pull-right" title="Delete" style="border: 0; background: transparent;"><i class="fa fa-trash-o"></i></button> -->
+                                                    <button name="submit" class="pull-right" title="Delete" style="border: 0; background: transparent;"><i class="fa fa-trash-o"></i></button>
                                                     </span>
                                                 @endif
                                             </div>
