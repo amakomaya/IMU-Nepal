@@ -344,8 +344,10 @@ Route::post('/v1/patient-transfer', function(Request $request){
 
     $data = json_decode($request->getContent(), true);
 
-    // $data['name'] = 'patient';
-    // $transfer = \App\Models\TransferLog::create($data);
+    $data['from'] = \App\Models\Woman::where('token', $data['token'])->first()->hp_code;
+    $data['to'] = $data['hp_code'];
+    $data['name'] = 'patient';
+    $transfer = \App\Models\TransferLog::create($data);
 
     \App\Models\Woman::where('token', $data['token'])
         ->update(['hp_code' => $data['hp_code']]);

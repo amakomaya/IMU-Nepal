@@ -4747,6 +4747,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -33204,16 +33205,14 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._v(_vm._s(_vm.checkDistrict(item.district_id)))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
                             _vm._v(
                               _vm._s(
                                 _vm.checkMunicipality(item.municipality_id)
                               )
                             )
                           ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(item.healthpost.name))]),
                           _vm._v(" "),
                           _c("td", [
                             _c("span", { staticClass: "label label-info" }, [
@@ -33272,9 +33271,9 @@ var render = function() {
               _vm._v(" "),
               _c("th", [_vm._v("Emergency Contact")]),
               _vm._v(" "),
-              _c("th", [_vm._v("District")]),
-              _vm._v(" "),
               _c("th", [_vm._v("Muicipality")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Current Hospital")]),
               _vm._v(" "),
               _c("th", [_vm._v("Total Collection")]),
               _vm._v(" "),
