@@ -18,10 +18,10 @@
                                         <tr>
                                             <th>S.N</th>                                     
                                             <th>Hospitals</th>    
-                                            <th>HP Code</th>                                     
-                                            <th>District</th>                                     
+                                            <th>District</th>         
+                                            <th>Municipality</th>                                     
                                             <th>Registers</th>
-                                            <th>Sample Records</th>
+                                            <th>Sample Collections</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -36,10 +36,10 @@
                                                     <a href="#" onclick="this.parentNode.submit()">{{ $d->name }}</a>
                                                 </form>
                                                 </td>
-                                                <td>{{ $d->hp_code }}</td>                                     
-                                                <td>{{ $d->getDistrictName($d->district_id) }}</td>                                     
-                                                <td>{{ $d->getAmcRecords($d->hp_code) }}</td>
-                                                <td>{{ $d->getVtcRecords($d->hp_code) }}</td>
+                                                <td>{{ $d->getDistrictName($d->district_id) }}</td>
+                                                <td>{{ $d->municipality->municipality_name }}</td>                                     
+                                                <td>{{ $d->getRegisters($d->hp_code) }}</td>
+                                                <td>{{ $d->getSampleCollection($d->hp_code) }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

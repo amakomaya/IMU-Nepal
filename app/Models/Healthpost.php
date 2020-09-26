@@ -110,13 +110,13 @@ class Healthpost extends Model
 		return  District::where('id',$token)->first()->district_name;
 	}
 
-	public function getAmcRecords($hp_code)
+	public function getRegisters($hp_code)
 	{
 		return Woman::where('hp_code', $hp_code)->active()->count();
 	}
 
-	public function getVtcRecords($hp_code)
+	public function getSampleCollection($hp_code)
 	{
-		return BabyDetail::where('hp_code', $hp_code)->active()->count();
+		return \App\Models\Anc::where('hp_code', $hp_code)->active()->count();
 	}
 }
