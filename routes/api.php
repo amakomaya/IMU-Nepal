@@ -313,6 +313,7 @@ Route::post('/v1/lab-test', function(Request $request){
 
             if ($value['sample_test_date'] == '') {
                 \App\Models\LabTest::create($value);
+                \App\Models\Anc::where('token', $value['sample_token'])->update(['result' => '9']);
             }else{
 
                 \App\Models\Anc::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);

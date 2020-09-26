@@ -21,7 +21,7 @@
                     <input type="checkbox" v-model="womanTokens" @click="select" :value="item.token">                           
                 </td>
                 <td><div v-if="item.latest_anc.result == '3'">Case ID : {{ item.case_id }}</div>
-                    <div v-if="item.parent_case_id !== null">parent Case ID : {{ item.parent_case_id }}</div>
+                    <div v-if="item.parent_case_id !== null">Parent Case ID : {{ item.parent_case_id }}</div>
                 </td>
                 <td>{{item.name}}</td>
                 <td>{{item.age}}</td>
@@ -33,14 +33,15 @@
                 <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
                 <td><div v-html="latestLabResult(item.latest_anc)">
                 </div>
-                <!-- <button v-on:click="viewLabReport(item)" title="Lab Report">
-                    <i class="fa fa-file"></i>
-                </button> -->
                 </td>
                 <td>
                     <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
                         <i class="fa fa-hospital-o"></i>
                     </button>
+                    |
+                    <button v-if="item.latest_anc.result == '3'" v-on:click="viewConfirmReportForm(item)" title="Confirmed Case Record Form">
+                    <i class="fa fa-file"></i>
+                </button>
                 </td>  
                 <!-- </div>             -->
             </tr>
@@ -57,6 +58,7 @@
     import ViewLabReportModel from './ViewLabReportModel.vue'
     import ViewLabResultReportModel from './ViewLabResultReportModel.vue'
     import SendPatientDataModel from './SendPatientDataModel.vue'
+    import viewConfirmReportFormModel from './viewConfirmReportFormModel.vue'
 
     export default {
         components: {Filterable},
@@ -138,6 +140,19 @@
                 })
             },
 
+            viewConfirmReportForm : function(item){
+                this.$dlg.modal(viewConfirmReportFormModel, {
+                    title: 'Confirmed report form of \'s ' + item.name,
+                    width : 800,
+                    params: {
+                        data : item,
+                        provinces : this.provinces,
+                        districts : this.districts,
+                        municipalities : this.municipalities
+                    },
+                })
+            },
+
             fetch() {
                 let province_url = window.location.protocol + '/api/province';
                 let municipality_url = window.location.protocol + '/api/municipality';
@@ -210,6 +225,9 @@
                         }
                         if (value.result == '3') {
                             return '<span class=\"label label-danger\"> Positive</span>'
+                        }
+                        if (value.result == '9') {
+                            return '<span class=\"label label-warning\"> Recieved</span>'
                         }else{
                             return '<span class=\"label label-default\"> Don\'t Know</span>'
                         }
