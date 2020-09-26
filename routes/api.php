@@ -311,15 +311,28 @@ Route::post('/v1/lab-test', function(Request $request){
     foreach ($data as $value) {
         try {
 
-            if ($data['sample_test_date'] == '') {
+            if ($value['sample_test_date'] == '') {
                 \App\Models\LabTest::create($value);
             }else{
 
                 \App\Models\Anc::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
 
-                $matchThese = ['token'=> $data['token']];
+            $find_test = \App\Models\LabTest::where('token', $value['token']);
 
-                \App\Models\LabTest::updateOrCreate($matchThese, $data);
+            if ($find_test) {
+                $find_test->update([
+                    'sample_test_date' => $value['sample_test_date'],
+                    'sample_test_time' => $value['sample_test_time'], 
+                    'sample_test_result' => $value['sample_test_result'], 
+                    'checked_by' => $value['checked_by'],
+                    'hp_code' => $value['hp_code'],
+                    'status' => $value['status'],
+                    'created_at' => $value['created_at'],
+                    'checked_by_name' => $value['checked_by_name']                ]);
+            }else{
+                \App\Models\LabTest::create($value);
+            }
+
             }
         } catch (\Exception $e) {
             
