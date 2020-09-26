@@ -313,14 +313,14 @@ Route::post('/v1/lab-test', function(Request $request){
 
             if ($data['sample_test_date'] == '') {
                 \App\Models\LabTest::create($value);
+            }else{
+
+                \App\Models\Anc::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
+
+                $matchThese = ['token'=> $data['token']];
+
+                \App\Models\LabTest::updateOrCreate($matchThese, $data);
             }
-
-            \App\Models\Anc::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
-
-            $matchThese = ['token'=> $data['token']];
-
-            \App\Models\LabTest::updateOrCreate($matchThese, $data);
-
         } catch (\Exception $e) {
             
         }
