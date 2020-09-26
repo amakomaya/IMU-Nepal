@@ -310,8 +310,17 @@ Route::post('/v1/lab-test', function(Request $request){
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
-            \App\Models\Anc::where('token', $value['token'])->update(['result' => $value['sample_test_result']]);
-            \App\Models\LabTest::create($value);
+
+            if ($data['sample_test_date'] == '') {
+                \App\Models\LabTest::create($value);
+            }
+
+            \App\Models\Anc::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
+
+            $matchThese = ['token'=> $data['token']];
+
+            \App\Models\LabTest::updateOrCreate($matchThese, $data);
+
         } catch (\Exception $e) {
             
         }
