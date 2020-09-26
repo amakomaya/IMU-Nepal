@@ -35,7 +35,7 @@ class Woman extends Model
         //'covid_infect', 'covid_around_you'
         'family_member','family_chronic_illness','family_above_sixty','family_below_ten',
 
-        'occupation', 'emergency_name_person_phone', 'email', 'nationality', 'country_name', 'passport_no', 'quarantine_type', 'quarantine_specific', 'province_quarantine_id', 'district_quarantine_id', 'municipality_quarantine_id', 'ward_quarantine', 'tole_quarantine', 'pcr_test', 'pcr_test_date','pcr_test_result', 'symptoms_specific', 'symptoms_comorbidity', 'symptoms_comorbidity_specific', 'screening', 'screening_specific', 'age_unit', 'emergency_contact_one', 'emergency_contact_two', 'cases', 'case_where', 'end_case', 'payment', 'result'
+        'occupation', 'emergency_name_person_phone', 'email', 'nationality', 'country_name', 'passport_no', 'quarantine_type', 'quarantine_specific', 'province_quarantine_id', 'district_quarantine_id', 'municipality_quarantine_id', 'ward_quarantine', 'tole_quarantine', 'pcr_test', 'pcr_test_date','pcr_test_result', 'symptoms_specific', 'symptoms_comorbidity', 'symptoms_comorbidity_specific', 'screening', 'screening_specific', 'age_unit', 'emergency_contact_one', 'emergency_contact_two', 'cases', 'case_where', 'end_case', 'payment', 'result', 'case_id', 'parent_case_id'
 
     ];
     protected $dates = ['deleted_at'];

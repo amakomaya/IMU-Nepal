@@ -116,26 +116,6 @@ Route::get('/v1/healthposts', function ()
     return response()->json($healthpost);
 });
 
-Route::post('/v1/vtc/baby-transfer', function(Request $request){
-
-    $data = json_decode($request->getContent(), true);
-
-    // Store in TransferLog Model name : baby, token : token , from : old hp_code and to : new hp_code
-    $data['name'] = 'baby';
-    $transfer = \App\Models\TransferLog::create($data);
-
-    // update baby, vaccination all the child relations
-    \App\Models\BabyDetail::where('token', $data['token'])
-        ->update(['hp_code' => $data['to']]);
-    \App\Models\VaccinationRecord::where('baby_token', $data['token'])
-          ->update(['hp_code' => $data['to']]);
-    \App\Models\BabyWeight::where('baby_token', $data['token'])
-          ->update(['hp_code' => $data['to']]);
-    \App\Models\Aefi::where('baby_token', $data['token'])
-            ->update(['hp_code' => $data['to']]);
-    return response()->json($data['token']);
-});
-
 
 Route::post('/v1/survey', function(Request $request){
 
@@ -167,6 +147,7 @@ Route::post('/v1/client', function(Request $request){
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
+            $value['case_id'] = substr(md5(time()), 0, 5);
             \App\Models\Woman::create($value);
         } catch (\Exception $e) {
             
@@ -252,8 +233,8 @@ Route::get('/v1/client', function(Request $request){
         $response['end_case'] = $row->end_case ?? '';
         $response['payment'] = $row->payment ?? '';
         $response['result'] = $row->result ?? '';
-
-
+        $response['case_id'] = $row->case_id ?? '';
+        $response['parent_case_id'] = $row->parent_case_id ?? '';
     return $response;
 });
     return response()->json($data);
