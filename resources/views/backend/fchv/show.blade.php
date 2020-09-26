@@ -8,7 +8,7 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Healthpost : {{$data->name}}
+                        Lab Users : {{$data->name}}
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -101,6 +101,15 @@
                                         @endif
                                     </td>
                                 </tr>
+
+                                <tr>
+                                    <th>Lab Information</th>
+                                    <td>
+                                        Name : {{ $data->hp_code }}<br>
+                                        Address : {{ $data->municipality->municipality_name }}
+                                    </td>
+                                </tr>
+
                                 <tr>
                                     <th>Created At</th>
                                     <td>{{$data->created_at->diffForHumans()}}</td>
@@ -108,7 +117,8 @@
                                 <tr>
                                     <th>Updated At</th>
                                     <td>{{$data->updated_at->diffForHumans()}}</td>
-                                </tr>                             
+                                </tr>     
+
                         </tbody>
                    </table>
                 </div>

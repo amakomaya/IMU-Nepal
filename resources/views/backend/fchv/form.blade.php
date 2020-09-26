@@ -1,5 +1,9 @@
 @extends('layouts.backend.app')
 
+@section('style')
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+@endsection
+
 @section('content')
     
     <div id="page-wrapper">
@@ -34,78 +38,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="form-group{{ $errors->has('province_id') ? ' has-error' : '' }}" hidden>
-                                    <label for="province_id" class="col-md-3 control-label">Province</label>
-                                    
-                                    <div class="col-md-7">
-                                    <select id="province_id" class="form-control" name="province_id" >
-                                            @foreach ($provinces as $province )
-                                               <option value="{{ $province->id }}" @if($province_id=="$province->id") {{ 'selected' }} @endif >{{ $province->province_name }}</option>
-                                            @endforeach
-                                    </select>
 
-                                        @if ($errors->has('province_id'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('province_id') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="form-group{{ $errors->has('district_id') ? ' has-error' : '' }}" hidden>
-                                    <label for="district_id" class="col-md-3 control-label">District</label>
-                                    
-                                    <div class="col-md-7">
-                                    <select id="district_id" class="form-control" name="district_id" >
-                                            @foreach ($districts as $district )
-                                               <option value="{{ $district->id }}" @if($district_id=="$district->id") {{ 'selected' }} @endif >{{ $district->district_name }}</option>
-                                            @endforeach
-                                    </select>
-
-                                        @if ($errors->has('district_id'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('district_id') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="form-group{{ $errors->has('municipality_id') ? ' has-error' : '' }}" hidden>
-                                    <label for="municipality_id" class="col-md-3 control-label">Municipality</label>
-                                    
-                                    <div class="col-md-7">
-                                    <select id="municipality_id" class="form-control" name="municipality_id" >
-                                            @foreach ($municipalities as $municipality )
-                                               <option value="{{ $municipality->id }}" @if($municipality_id=="$municipality->id") {{ 'selected' }} @endif >{{ $municipality->municipality_name }}</option>
-                                            @endforeach
-                                    </select>
-
-                                        @if ($errors->has('municipality_id'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('municipality_id') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
-                                    
-                                    
-                                <div class="form-group{{ $errors->has('hp_code') ? ' has-error' : '' }}" hidden>
-                                    <label for="hp_code" class="col-md-3 control-label">Healthpost</label>
-                                    
-                                    <div class="col-md-7">
-                                    <select id="hp_code" class="form-control" name="hp_code" >
-                                            @foreach ($healthposts as $healthpost )
-                                               <option value="{{ $healthpost->hp_code }}" @if($hp_code=="$healthpost->hp_code") {{ 'selected' }} @endif >{{ $healthpost->name }}</option>
-                                            @endforeach
-                                    </select>
-
-                                        @if ($errors->has('hp_code'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('hp_code') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
                                 <div class="form-group{{ $errors->has('post') ? ' has-error' : '' }}">
                                         <label for="post" class="col-md-3 control-label"><i data-toggle="tooltip" title="स्वास्थ्यकर्मीको पद लेख्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i> Post</label>
 
@@ -277,6 +210,107 @@
                                             @endif
                                         </div>
                                     </div>
+                                <hr>
+
+                                <div class="form-group">
+                                    <label for="name" class="col-md-3 control-label"><i data-toggle="tooltip" title="Enter Lab Full Information।"class="fa fa-info-circle" aria-hidden="true"></i> <strong>Lab Information</strong> </label>
+                                <div class="col-md-7"></div>
+
+                                </div>
+
+                               <div class="form-group{{ $errors->has('province_id') ? ' has-error' : '' }}">
+                                    <label for="province_id" class="col-md-3 control-label">Province</label>
+                                    
+                                    <div class="col-md-7" id="province">
+                                    <select name="province_id" class="form-control" onchange="provinceOnchange($(this).val())">
+                                        @if(Auth::user()->role!="province" && Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
+                                            <option value="">Select All Provinces</option>
+                                        @endif
+                                        @foreach($provinces as $province)
+                                            @if($province_id==$province->id)
+                                                @php($selectedProvince = "selected")
+                                            @else
+                                                @php($selectedProvince = "")
+                                            @endif
+                                            <option value="{{$province->id}}" {{$selectedProvince}}>{{$province->province_name}}</option>
+                                        @endforeach
+                                    </select>
+
+                                        @if ($errors->has('province_id'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('province_id') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-group{{ $errors->has('district_id') ? ' has-error' : '' }}">
+                                    <label for="district_id" class="col-md-3 control-label">District</label>
+                                    
+                                    <div class="col-md-7" id="district">
+                                    <select name="district_id" class="form-control" onchange="districtOnchange($(this).val())">
+                                        @if(Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
+                                            <option value="">Select All Districts</option>
+                                        @endif
+                                        @foreach($districts as $district)
+                                            @if($district_id==$district->id)
+                                                @php($selectedDistrict = "selected")
+                                            @else
+                                                @php($selectedDistrict = "")
+                                            @endif
+                                            <option value="{{$district->id}}" {{$selectedDistrict}}>{{$district->district_name}}</option>
+                                        @endforeach
+                                    </select>
+
+                                        @if ($errors->has('district_id'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('district_id') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-group{{ $errors->has('municipality_id') ? ' has-error' : '' }}">
+                                    <label for="municipality_id" class="col-md-3 control-label">Municipality</label>
+                                    
+                                    <div class="col-md-7" id="municipality">
+                                    <select name="municipality_id" class="form-control" onchange="municipalityOnchange($(this).val())"
+                                            id="municipality_id">
+                                        @if(Auth::user()->role!="municipality" && Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
+                                            <option value="">Select All Municipalities</option>
+                                        @endif
+                                        @foreach($municipalities as $municipality)
+                                            @if($municipality_id==$municipality->id)
+                                                @php($selectedMunicipality = "selected")
+                                            @else
+                                                @php($selectedMunicipality = "")
+                                            @endif
+                                            <option value="{{$municipality->id}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>
+                                        @endforeach
+                                    </select>
+
+                                        @if ($errors->has('municipality_id'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('municipality_id') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                    
+
+                                <div class="form-group{{ $errors->has('hp_code') ? ' has-error' : '' }}">
+                                    <label for="hp_code" class="col-md-3 control-label"><i data-toggle="tooltip" title=" नाम लेख्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i> Lab Name </label>
+
+                                    <div class="col-md-7">
+                                        <input id="hp_code" type="text" class="form-control" name="hp_code" value="@yield('hp_code')" >
+
+                                        @if ($errors->has('hp_code'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('hp_code') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="col-md-8 col-md-offset-4">
                                         <button type="submit" class="btn btn-success">
@@ -296,4 +330,29 @@
         </div>
         <!-- /#page-wrapper -->
 @endsection
-                              
+                            
+@section('script')
+    <script type="text/javascript">
+        function provinceOnchange(id) {
+            $("#district").text("Loading...").fadeIn("slow");
+            $.get("{{route("district-select-province")}}?id=" + id, function (data) {
+                $("#district").html(data);
+            });
+        }
+
+        function districtOnchange(id) {
+            $("#municipality").text("Loading...").fadeIn("slow");
+            $.get("{{route("municipality-select-district")}}?id=" + id, function (data) {
+                $("#municipality").html(data);
+            });
+        }
+
+        function municipalityOnchange(id) {
+            $("#ward-or-healthpost").text("Loading...").fadeIn("slow");
+            $.get("{{route("ward-or-healthpost-select-municipality")}}?id=" + id, function (data) {
+                $("#ward-or-healthpost").html(data);
+            });
+        }
+    </script>
+    <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
+@endsection

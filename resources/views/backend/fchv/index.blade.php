@@ -33,6 +33,7 @@
                                 <th>Name</th>  
                                 <th>Post</th>                                     
                                 <th>Phone No:</th>  
+                                <th>Lab Info</th>
                                 <th>Status</th>
                                 <th>Options</th>
                             </tr>
@@ -45,7 +46,11 @@
                                 <td> {{ $i }}</td>                                          
                                 <td> {{ $healthWorker->name }} </td>                                   
                                 <td> {{ $healthWorker->post }} </td>                                     
-                                <td> {{ $healthWorker->phone }}</td>                                     
+                                <td> {{ $healthWorker->phone }}</td>   
+                                <td> 
+                                    Name : {{ $healthWorker->hp_code }} <br>
+                                    Address : {{ $healthWorker->municipality->municipality_name ?? '' }}
+                                </td>                                  
                                 <td> 
                                     @if($healthWorker->status=='0')
                                     <span class="label label-danger">Inactive</span>

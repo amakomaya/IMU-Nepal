@@ -33,22 +33,18 @@ class FchvController extends Controller
      */
     public function index()
     {
-       //  if(Auth::user()->role=="province"){
-       //      $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
-       //      $healthWorkers = HealthWorker::where([['province_id', $province_id],['role', 'fchv']])->latest()->get();
-       // }elseif(Auth::user()->role=="dho"){
-       //      $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
-       //      $healthWorkers = HealthWorker::where([['district_id', $district_id],['role','fchv']])->latest()->get();
-       // }elseif(Auth::user()->role=="healthpost"){
-       //      $hp_code = Healthpost::where('token', Auth::user()->token)->get()->first()->hp_code;
-       //      $healthWorkers = HealthWorker::where([['hp_code', $hp_code],['role','fchv']])->latest()->get();
-       // }elseif(Auth::user()->role=="healthworker"){
-       //      $hp_code = HealthWorker::where('token', Auth::user()->token)->get()->first()->hp_code;
-       //      $healthWorkers = HealthWorker::where([['hp_code', $hp_code],['role','fchv']])->latest()->get();
-       // }else{
-            
-       // }
-       $healthWorkers = HealthWorker::where('role', 'fchv')->latest()->get();
+      if(Auth::user()->role=="province"){
+            $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
+            $healthWorkers = HealthWorker::where([['province_id', $province_id],['role', 'fchv']])->with('municipality')->latest()->get();
+       }elseif(Auth::user()->role=="dho"){
+            $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
+            $healthWorkers = HealthWorker::where([['district_id', $district_id],['role','fchv']])->with('municipality')->latest()->get();
+       }elseif(Auth::user()->role=="healthpost"){
+            $hp_code = Healthpost::where('token', Auth::user()->token)->get()->first()->hp_code;
+            $healthWorkers = HealthWorker::where([['hp_code', $hp_code],['role','fchv']])->with('municipality')->latest()->get();
+       }else{
+            $healthWorkers = HealthWorker::where('role', 'fchv')->with('municipality')->latest()->get();
+       }
         $role = 'fchv';
         return view('backend.fchv.index',compact('healthWorkers','role'));
     }
@@ -60,19 +56,27 @@ class FchvController extends Controller
      */
     public function create()
     {
-        // if(User::checkAuthForCreateUpdateDelHealthworker()===false){
-        //     return redirect('/admin');
-        // }
 
-        $token = Auth::user()->token;
-        $healthpost = Healthpost::where('token', $token)->get()->first();
-        $provinces = Province::where('id', $healthpost->province_id ?? '')->get();
-        $districts = District::where('id', $healthpost->district_id ?? '')->get();
-        $municipalities = Municipality::where('id', $healthpost->municipality_id ?? '')->get();
-        $wards = Ward::where([['ward_no', $healthpost->ward_no ?? ''],['municipality_id', $healthpost->municipality_id ?? '']])->get();
-        $healthposts = Healthpost::where('id', $healthpost->id ?? '')->get();
+        if(Auth::user()->role=="province"){
+            $provinceInfo = ProvinceInfo::where('token', Auth::user()->token)->first();
+            $provinces = Province::where('id', $provinceInfo->province_id ?? '')->get();
+            $districts = District::where('province_id', $provinceInfo->province_id ?? '')->get();
+            $municipalities = Municipality::where('province_id', $provinceInfo->province_id ?? '')->get();
+       }elseif(Auth::user()->role=="dho"){
+            $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
+            $healthWorkers = HealthWorker::where([['district_id', $district_id],['role','fchv']])->latest()->get();
+       }elseif(Auth::user()->role=="healthpost"){
+            $hp_code = Healthpost::where('token', Auth::user()->token)->get()->first()->hp_code;
+            $healthWorkers = HealthWorker::where([['hp_code', $hp_code],['role','fchv']])->latest()->get();
+       }else{
+            $healthWorkers = HealthWorker::where('role', 'fchv')->latest()->get();
+       }        
+
+        $provinces = Province::get();
+        $districts = District::get();
+        $municipalities = Municipality::get();
         $role = 'fchv';
-        return view('backend.fchv.create',compact('provinces','districts','municipalities','wards','healthposts','role'));
+        return view('backend.fchv.create',compact('provinces','districts','municipalities','role'));
     }
 
     /**
@@ -160,20 +164,30 @@ class FchvController extends Controller
 
         $data = $this->findModel($id);
 
-        if(HealthWorker::checkValidId($id)===false){
-            return redirect('/admin');
-        }
+        // if(HealthWorker::checkValidId($id)===false){
+        //     return redirect('/admin');
+        // }
         
-        $token = Auth::user()->token;
-        $healthpost = Healthpost::where('token', $token ?? '')->get()->first();
-        $provinces = Province::where('id', $healthpost->province_id ?? '')->get();
-        $districts = District::where('id', $healthpost->district_id ?? '')->get();
-        $municipalities = Municipality::where('id', $healthpost->municipality_id ?? '')->get();
-        $wards = Ward::where([['ward_no', $healthpost->ward_no ?? ''],['municipality_id', $healthpost->municipality_id ?? '']])->get();
-        $healthposts = Healthpost::where('id', $healthpost->id ?? '')->get();
+        if(Auth::user()->role=="province"){
+            $provinceInfo = ProvinceInfo::where('token', Auth::user()->token)->first();
+            $provinces = Province::where('id', $provinceInfo->province_id ?? '')->get();
+            $districts = District::where('province_id', $provinceInfo->province_id ?? '')->get();
+            $municipalities = Municipality::where('province_id', $provinceInfo->province_id ?? '')->get();
+       }elseif(Auth::user()->role=="dho"){
+            $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
+            $healthWorkers = HealthWorker::where([['district_id', $district_id],['role','fchv']])->latest()->get();
+       }elseif(Auth::user()->role=="healthpost"){
+            $hp_code = Healthpost::where('token', Auth::user()->token)->get()->first()->hp_code;
+            $healthWorkers = HealthWorker::where([['hp_code', $hp_code],['role','fchv']])->latest()->get();
+       }else{
+        $provinces = Province::get();
+        $districts = District::get();
+        $municipalities = Municipality::get();       }        
+
+        
         $user = $this->findModelUser($data->token);
         $role = 'fchv';
-        return view('backend.fchv.edit', compact('data','provinces','districts','municipalities','wards','healthposts','user','role'));
+        return view('backend.fchv.edit', compact('data','provinces','districts','municipalities','user','role'));
     }
 
     /**
