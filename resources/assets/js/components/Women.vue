@@ -4,6 +4,7 @@
             <thead slot="thead">
             <tr>
                 <th width="10px"></th>
+                <th>ID</th>
                 <th>Name</th>
                 <th>Age</th>
                 <th>Emergency Contact</th>
@@ -18,6 +19,9 @@
             <tr slot-scope="{item}" v-if="latestLabResultNotNegative(item.latest_anc)">
                 <td>
                     <input type="checkbox" v-model="womanTokens" @click="select" :value="item.token">                           
+                </td>
+                <td><div v-if="item.latest_anc.result == '3'">Case ID : {{ item.case_id }}</div>
+                    <div v-if="item.parent_case_id !== null">parent Case ID : {{ item.parent_case_id }}</div>
                 </td>
                 <td>{{item.name}}</td>
                 <td>{{item.age}}</td>

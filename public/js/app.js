@@ -4748,6 +4748,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -6458,7 +6462,7 @@ exports.push([module.i, ".v-select{position:relative;font-family:inherit}.v-sele
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9":
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css":
 /*!***********************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vuetify/dist/vuetify.min.css ***!
   \***********************************************************************************************************************************/
@@ -33186,6 +33190,23 @@ var render = function() {
                             })
                           ]),
                           _vm._v(" "),
+                          _c("td", [
+                            item.latest_anc.result == "3"
+                              ? _c("div", [
+                                  _vm._v("Case ID : " + _vm._s(item.case_id))
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            item.parent_case_id !== null
+                              ? _c("div", [
+                                  _vm._v(
+                                    "parent Case ID : " +
+                                      _vm._s(item.parent_case_id)
+                                  )
+                                ])
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(item.name))]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(item.age))]),
@@ -33264,6 +33285,8 @@ var render = function() {
           _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
             _c("tr", [
               _c("th", { attrs: { width: "10px" } }),
+              _vm._v(" "),
+              _c("th", [_vm._v("ID")]),
               _vm._v(" "),
               _c("th", [_vm._v("Name")]),
               _vm._v(" "),
@@ -81620,7 +81643,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_vue__;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9");
+var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
