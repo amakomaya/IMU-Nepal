@@ -316,7 +316,7 @@ Route::post('/v1/lab-test', function(Request $request){
                 \App\Models\Anc::where('token', $value['sample_token'])->update(['result' => '9']);
             }else{
 
-                \App\Models\Anc::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
+            \App\Models\Anc::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
 
             $find_test = \App\Models\LabTest::where('token', $value['token']);
 
@@ -329,7 +329,8 @@ Route::post('/v1/lab-test', function(Request $request){
                     'hp_code' => $value['hp_code'],
                     'status' => $value['status'],
                     'created_at' => $value['created_at'],
-                    'checked_by_name' => $value['checked_by_name']                ]);
+                    'checked_by_name' => $value['checked_by_name']                
+                ]);
             }else{
                 \App\Models\LabTest::create($value);
             }
