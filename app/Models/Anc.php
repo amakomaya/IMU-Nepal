@@ -49,6 +49,6 @@ class Anc extends Model
 
     public function labreport()
     {
-        return $this->hasOne('App\Models\LabTest', 'token', 'token');
+        return $this->hasOne('App\Models\LabTest', 'sample_token', 'token');
     }
 }
