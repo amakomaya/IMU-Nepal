@@ -221,9 +221,9 @@ export default {
 
         sampleTestDateAndTime : function(value){
         if (value.labreport.sample_test_date == 0 || value.labreport.sample_test_date == null || value.labreport.sample_test_date == ''){
-                return value.labreport.sample_test_date + ' ' + value.labreport.sample_test_time
-            }else {
                 return '';
+            }else {
+                return value.labreport.sample_test_date + ' ' + value.labreport.sample_test_time
             }
         },
 
