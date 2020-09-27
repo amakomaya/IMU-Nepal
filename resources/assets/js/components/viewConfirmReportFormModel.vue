@@ -28,7 +28,7 @@
         </div>
 
     <br>
-        <table class="table">
+        <table class="table table-striped">
           <thead>
             <tr>
               <h4>1. Personal Information </h4>
@@ -56,6 +56,10 @@
                 <td>One : {{ data.emergency_contact_one }} <br> Two : {{ data.emergency_contact_two }}</td>
             </tr>
             <tr>
+                <td>Occupation : </td>
+                <td>{{ occupationView(data.occupation) }}</td>
+            </tr>
+            <tr>
                 <td>Address : </td>
                 <td>
                     {{ data.tole }} - {{ data.ward }} <br>
@@ -64,43 +68,67 @@
                 </td>
             </tr>
           </tbody>
+          </table>
           <br>
-          <!-- <thead>
+        <table class="table table-striped">
+          <thead>
             <tr>
               <h4>2. Clinical Information </h4>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Case ID : </td>
-              <td>{{ data.case_id }}</td>
+              <td>Symptomatic patient with </td>
+              <td></b> Pneumonia [_<span v-if='data.symptoms.includes("1")'> &#10004; </span>_]</br>
+                    ARDS [_<span v-if='data.symptoms.includes("2")'> &#10004; </span>_] /Influenza-like illness[_<span v-if='data.symptoms.includes("3")'> &#10004; </span>_]</br>
+                    If Other, specify: {{ data.symptoms_specific }}</td>
             </tr>
             <tr>
-              <td>Name : </td>
-              <td>{{ data.name }}</td>
+              <td>Symptomatic patient with comorbidity </td>
+              <td>Diabetes[_<span v-if='data.symptoms_comorbidity.includes("1")'> &#10004; </span>_],HTN[_<span v-if='data.symptoms_comorbidity.includes("2")'> &#10004; </span>_],
+                    Hemodialysis[_<span v-if='data.symptoms_comorbidity.includes("3")'> &#10004; </span>_]</br> immunocompromised[_<span v-if='data.symptoms_comorbidity.includes("4")'> &#10004; </span>_] <br> If other, specify: {{ data.symptoms_comorbidity_specific }}</td>
             </tr>
-            <tr>
-                <td>Age : </td>
-                <td>{{ data.age }} / <span v-if="data.age_unit == 1">Months</span><span v-if="data.age_unit == 2">Days</span><span v-if="data.age_unit == 0">Years</span></td>
-            </tr>
-            <tr>
-                <td>Gender : </td>
-                <td><span v-if="data.sex == 1">Male</span><span v-if="data.sex == 2">Female</span><span v-if="data.sex == 3">Other</span></td>
-            </tr>
-            <tr>
-                <td>Emergency Phone : </td>
-                <td>One : {{ data.emergency_contact_one }} <br> Two : {{ data.emergency_contact_two }}</td>
-            </tr>
-            <tr>
-                <td>Address : </td>
-                <td>
-                    {{ data.tole }} - {{ data.ward }} <br>
-                    Municipality : {{ checkMunicipality(data.municipality_id) }}<br>
-                    District : {{ checkDistrict(data.district_id) }}
-                </td>
-            </tr>
-          </tbody> -->
+          </tbody>
         </table>
+        <br>
+            <table class="table table-striped">
+
+          <thead>
+            <tr>
+              <h4>3. Laboratory Information </h4>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sample Test Date and Time</td>
+              <td>{{ sampleTestDateAndTime(data.latest_anc) }}</td>
+            </tr>
+            <tr>
+              <td> Result : </td>
+              <td>Positive</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+                <!-- <table class="table table-striped">
+
+          <thead>
+            <tr>
+              <h4>4. Travel History </h4>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sample Test Date and Time</td>
+              <td>{{ sampleTestDateAndTime(data.latest_anc) }}</td>
+            </tr>
+            <tr>
+              <td> Result : </td>
+              <td>Positive</td>
+            </tr>
+          </tbody>
+        </table> -->
+
     </div>    
     </div>
 </template>
@@ -189,7 +217,41 @@ export default {
         }else{
         return this.municipalities.find(x => x.id === value).municipality_name.split(" ").slice(0, -1).join(" ");
         }
+        },
+
+        sampleTestDateAndTime : function(value){
+            return value.labreport.sample_test_date + ' ' + value.labreport.sample_test_time
+        },
+
+        occupationView : function (value){
+            switch(value){
+                case '1':
+                return 'Front Line Healthworker';
+
+                case '2':
+                return 'Police / Army';
+
+                case '3':
+                return 'Business';
+
+                case '4':
+                return 'Teacher / Student ( Education )';
+
+                case '5':
+                return 'Skilled';
+
+                case '6':
+                return 'Semi-Skilled';
+
+                case '7':
+                return 'Transport Staff';
+
+                default:
+                return 'Other';
+            }
         }
+
+
     } 
   }
 </script>

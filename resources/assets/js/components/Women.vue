@@ -38,8 +38,9 @@
                     <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
                         <i class="fa fa-hospital-o"></i>
                     </button>
-                    |
+                    
                     <button v-if="item.latest_anc.result == '3'" v-on:click="viewConfirmReportForm(item)" title="Confirmed Case Record Form">
+                        |
                     <i class="fa fa-file"></i>
                 </button>
                 </td>  
@@ -143,6 +144,7 @@
             viewConfirmReportForm : function(item){
                 this.$dlg.modal(viewConfirmReportFormModel, {
                     title: 'Confirmed report form of \'s ' + item.name,
+                    height : 700,
                     width : 800,
                     params: {
                         data : item,

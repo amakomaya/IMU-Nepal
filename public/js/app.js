@@ -4754,6 +4754,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -4855,6 +4856,7 @@ __webpack_require__.r(__webpack_exports__);
     viewConfirmReportForm: function viewConfirmReportForm(item) {
       this.$dlg.modal(_viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_6__["default"], {
         title: 'Confirmed report form of \'s ' + item.name,
+        height: 700,
         width: 800,
         params: {
           data: item,
@@ -6570,6 +6572,34 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -6640,6 +6670,36 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         return this.municipalities.find(function (x) {
           return x.id === value;
         }).municipality_name.split(" ").slice(0, -1).join(" ");
+      }
+    },
+    sampleTestDateAndTime: function sampleTestDateAndTime(value) {
+      return value.labreport.sample_test_date + ' ' + value.labreport.sample_test_time;
+    },
+    occupationView: function occupationView(value) {
+      switch (value) {
+        case '1':
+          return 'Front Line Healthworker';
+
+        case '2':
+          return 'Police / Army';
+
+        case '3':
+          return 'Business';
+
+        case '4':
+          return 'Teacher / Student ( Education )';
+
+        case '5':
+          return 'Skilled';
+
+        case '6':
+          return 'Semi-Skilled';
+
+        case '7':
+          return 'Transport Staff';
+
+        default:
+          return 'Other';
       }
     }
   }
@@ -33539,9 +33599,7 @@ var render = function() {
                               },
                               [_c("i", { staticClass: "fa fa-hospital-o" })]
                             ),
-                            _vm._v(
-                              "\n                    |\n                    "
-                            ),
+                            _vm._v(" "),
                             item.latest_anc.result == "3"
                               ? _c(
                                   "button",
@@ -33555,7 +33613,12 @@ var render = function() {
                                       }
                                     }
                                   },
-                                  [_c("i", { staticClass: "fa fa-file" })]
+                                  [
+                                    _vm._v(
+                                      "\n                        |\n                    "
+                                    ),
+                                    _c("i", { staticClass: "fa fa-file" })
+                                  ]
                                 )
                               : _vm._e()
                           ])
@@ -39877,7 +39940,7 @@ var render = function() {
       _vm._v(" "),
       _c("br"),
       _vm._v(" "),
-      _c("table", { staticClass: "table" }, [
+      _c("table", { staticClass: "table table-striped" }, [
         _vm._m(1),
         _vm._v(" "),
         _c("tbody", [
@@ -39927,6 +39990,12 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("tr", [
+            _c("td", [_vm._v("Occupation : ")]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.occupationView(_vm.data.occupation)))])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
             _c("td", [_vm._v("Address : ")]),
             _vm._v(" "),
             _c("td", [
@@ -39950,10 +40019,94 @@ var render = function() {
               )
             ])
           ])
-        ]),
+        ])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("table", { staticClass: "table table-striped" }, [
+        _vm._m(2),
         _vm._v(" "),
-        _c("br")
-      ])
+        _c("tbody", [
+          _c("tr", [
+            _c("td", [_vm._v("Symptomatic patient with ")]),
+            _vm._v(" "),
+            _c("td", [
+              _vm._v(" Pneumonia [_"),
+              _vm.data.symptoms.includes("1")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_]"),
+              _c("br"),
+              _vm._v("\n                ARDS [_"),
+              _vm.data.symptoms.includes("2")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_] /Influenza-like illness[_"),
+              _vm.data.symptoms.includes("3")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_]"),
+              _c("br"),
+              _vm._v(
+                "\n                If Other, specify: " +
+                  _vm._s(_vm.data.symptoms_specific)
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("Symptomatic patient with comorbidity ")]),
+            _vm._v(" "),
+            _c("td", [
+              _vm._v("Diabetes[_"),
+              _vm.data.symptoms_comorbidity.includes("1")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_],HTN[_"),
+              _vm.data.symptoms_comorbidity.includes("2")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_],\n                Hemodialysis[_"),
+              _vm.data.symptoms_comorbidity.includes("3")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_]"),
+              _c("br"),
+              _vm._v(" immunocompromised[_"),
+              _vm.data.symptoms_comorbidity.includes("4")
+                ? _c("span", [_vm._v(" ✔ ")])
+                : _vm._e(),
+              _vm._v("_] "),
+              _c("br"),
+              _vm._v(
+                " If other, specify: " +
+                  _vm._s(_vm.data.symptoms_comorbidity_specific)
+              )
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("table", { staticClass: "table table-striped" }, [
+        _vm._m(3),
+        _vm._v(" "),
+        _c("tbody", [
+          _c("tr", [
+            _c("td", [_vm._v("Sample Test Date and Time")]),
+            _vm._v(" "),
+            _c("td", [
+              _vm._v(_vm._s(_vm.sampleTestDateAndTime(_vm.data.latest_anc)))
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._m(4)
+        ])
+      ]),
+      _vm._v(" "),
+      _c("br")
     ])
   ])
 }
@@ -39979,6 +40132,32 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [_c("h4", [_vm._v("1. Personal Information ")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [_c("h4", [_vm._v("2. Clinical Information ")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [_c("h4", [_vm._v("3. Laboratory Information ")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", [_vm._v(" Result : ")]),
+      _vm._v(" "),
+      _c("td", [_vm._v("Positive")])
     ])
   }
 ]
