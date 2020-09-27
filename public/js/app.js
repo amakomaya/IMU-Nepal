@@ -6673,10 +6673,10 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       }
     },
     sampleTestDateAndTime: function sampleTestDateAndTime(value) {
-      if (value.labreport.sample_test_date == 0 || value.labreport.sample_test_date == null || value.labreport.sample_test_date == '') {
-        return '';
-      } else {
+      try {
         return value.labreport.sample_test_date + ' ' + value.labreport.sample_test_time;
+      } catch (error) {
+        return '';
       }
     },
     occupationView: function occupationView(value) {
