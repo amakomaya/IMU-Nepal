@@ -220,7 +220,9 @@ export default {
         },
 
         sampleTestDateAndTime : function(value){
-            return value.labreport.sample_test_date + ' ' + value.labreport.sample_test_time
+            if (value.labreport.sample_test_date !== null) {
+                return value.labreport.sample_test_date + ' ' + value.labreport.sample_test_time
+            }
         },
 
         occupationView : function (value){
