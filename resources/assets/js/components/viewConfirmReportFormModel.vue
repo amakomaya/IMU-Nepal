@@ -220,7 +220,7 @@ export default {
         },
 
         sampleTestDateAndTime : function(value){
-        if (labreport.sample_test_date == 0 || labreport.sample_test_date == null || labreport.sample_test_date == ''){
+        if (value.labreport.sample_test_date == 0 || value.labreport.sample_test_date == null || value.labreport.sample_test_date == ''){
                 return value.labreport.sample_test_date + ' ' + value.labreport.sample_test_time
             }else {
                 return '';
