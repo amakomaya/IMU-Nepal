@@ -4635,7 +4635,7 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         return this.municipalities.find(function (x) {
           return x.id === value;
-        }).municipality_name.split(" ").slice(0, -1).join(" ");
+        });
       }
     },
     latestLabResult: function latestLabResult(value) {
@@ -4907,7 +4907,7 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         return this.municipalities.find(function (x) {
           return x.id === value;
-        }).municipality_name.split(" ").slice(0, -1).join(" ");
+        }).municipality_name;
       }
     },
     latestLabResult: function latestLabResult(value) {
@@ -6669,7 +6669,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       } else {
         return this.municipalities.find(function (x) {
           return x.id === value;
-        }).municipality_name.split(" ").slice(0, -1).join(" ");
+        }).municipality_name;
       }
     },
     sampleTestDateAndTime: function sampleTestDateAndTime(value) {
