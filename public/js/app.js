@@ -4635,7 +4635,7 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         return this.municipalities.find(function (x) {
           return x.id === value;
-        });
+        }).municipality_name;
       }
     },
     latestLabResult: function latestLabResult(value) {
