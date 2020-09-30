@@ -4692,15 +4692,29 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filterable.vue */ "./resources/assets/js/components/Filterable.vue");
-/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
-/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _ViewLabReportModel_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ViewLabReportModel.vue */ "./resources/assets/js/components/ViewLabReportModel.vue");
-/* harmony import */ var _ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ViewLabResultReportModel.vue */ "./resources/assets/js/components/ViewLabResultReportModel.vue");
-/* harmony import */ var _SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SendPatientDataModel.vue */ "./resources/assets/js/components/SendPatientDataModel.vue");
-/* harmony import */ var _viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./viewConfirmReportFormModel.vue */ "./resources/assets/js/components/viewConfirmReportFormModel.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filterable.vue */ "./resources/assets/js/components/Filterable.vue");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _ViewLabReportModel_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ViewLabReportModel.vue */ "./resources/assets/js/components/ViewLabReportModel.vue");
+/* harmony import */ var _ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ViewLabResultReportModel.vue */ "./resources/assets/js/components/ViewLabResultReportModel.vue");
+/* harmony import */ var _SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./SendPatientDataModel.vue */ "./resources/assets/js/components/SendPatientDataModel.vue");
+/* harmony import */ var _viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./viewConfirmReportFormModel.vue */ "./resources/assets/js/components/viewConfirmReportFormModel.vue");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4770,7 +4784,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Filterable: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    Filterable: _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
@@ -4810,7 +4824,7 @@ __webpack_require__.r(__webpack_exports__);
           }]
         }]
       },
-      token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
+      token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"].data().collection.data,
       selected: [],
       allSelected: false,
       womanTokens: [],
@@ -4818,47 +4832,53 @@ __webpack_require__.r(__webpack_exports__);
       municipalities: [],
       districts: [],
       json_fields: {
-        'Complete name': 'name',
-        'City': 'city',
-        'Telephone': 'phone.mobile',
-        'Telephone 2': {
-          field: 'phone.landline',
+        'Patient Name': 'name',
+        'Age': 'age',
+        'Age Unit': {
+          field: 'age_unit',
           callback: function callback(value) {
-            return "Landline Phone - ".concat(value);
+            switch (value) {
+              case '1':
+                return "Months";
+
+              case '2':
+                return "Days";
+
+              default:
+                return "Years";
+            }
+          }
+        },
+        'Municipality': 'municipality.municipality_name',
+        'District': 'district.district_name',
+        'Emergency Contact One': 'emergency_contact_one',
+        'Emergency Contact Two': 'emergency_contact_two',
+        'Current Hospital': 'healthpost.name',
+        'Latest Lab Result': {
+          field: 'latest_anc.result',
+          callback: function callback(value) {
+            switch (value) {
+              case '3':
+                return "Positive";
+
+              case '9':
+                return "Recieved";
+
+              case '':
+                return "Pending";
+
+              default:
+                return "Do not know";
+            }
           }
         }
       },
-      json_data: [{
-        'name': 'Tony Peña',
-        'city': 'New York',
-        'country': 'United States',
-        'birthdate': '1978-03-15',
-        'phone': {
-          'mobile': '1-541-754-3010',
-          'landline': '(541) 754-3010'
-        }
-      }, {
-        'name': 'Thessaloniki',
-        'city': 'Athens',
-        'country': 'Greece',
-        'birthdate': '1987-11-23',
-        'phone': {
-          'mobile': '+1 855 275 5071',
-          'landline': '(2741) 2621-244'
-        }
-      }],
       json_meta: [[{
         'key': 'charset',
         'value': 'utf-8'
       }]],
       exportHtml: ''
     };
-  },
-  mounted: function mounted() {
-    this.$refs['exportDiv'].firstChild.addEventListener('click', function (event) {
-      event.preventDefault();
-      console.log('clicked: ', event.target);
-    });
   },
   created: function created() {
     this.fetch();
@@ -4875,7 +4895,7 @@ __webpack_require__.r(__webpack_exports__);
       this.allSelected = false;
     },
     sendPatientData: function sendPatientData(item) {
-      this.$dlg.modal(_SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      this.$dlg.modal(_SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_6__["default"], {
         title: 'Do you want to send ' + item.name + ' \'s patients data ?',
         height: 500,
         width: 600,
@@ -4888,7 +4908,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     viewLabReport: function viewLabReport(item) {
-      this.$dlg.modal(_ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      this.$dlg.modal(_ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_5__["default"], {
         height: 700,
         width: 800,
         title: 'Laboratory Result Form for Suspected COVID-19 Case',
@@ -4901,7 +4921,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     viewConfirmReportForm: function viewConfirmReportForm(item) {
-      this.$dlg.modal(_viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      this.$dlg.modal(_viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_7__["default"], {
         title: 'Confirmed report form of \'s ' + item.name,
         height: 700,
         width: 800,
@@ -4919,15 +4939,15 @@ __webpack_require__.r(__webpack_exports__);
       var province_url = window.location.protocol + '/api/province';
       var municipality_url = window.location.protocol + '/api/municipality';
       var district_url = window.location.protocol + '/api/district';
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(municipality_url).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(municipality_url).then(function (response) {
         _this.municipalities = response.data;
       })["catch"](function (error) {
         console.error(error);
-      })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(district_url).then(function (response) {
+      })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(district_url).then(function (response) {
         _this.districts = response.data;
       })["catch"](function (error) {
         console.error(error);
-      })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(province_url).then(function (response) {
+      })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(province_url).then(function (response) {
         _this.provinces = response.data;
       })["catch"](function (error) {
         console.error(error);
@@ -4936,7 +4956,7 @@ __webpack_require__.r(__webpack_exports__);
     ad2bs: function ad2bs(date) {
       var dateObject = new Date(date);
       var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
-      var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default.a.ad2bs(dateFormat);
+      var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default.a.ad2bs(dateFormat);
       return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
     },
     checkDistrict: function checkDistrict(value) {
@@ -5002,13 +5022,44 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     excelFileName: function excelFileName() {
-      var ext = '.xlxs';
-      return new Date() + ext;
+      var ext = '.xlsx';
+      return 'Patient Details ' + new Date() + ext;
     },
-    excelDownloadConformation: function excelDownloadConformation() {
-      console.log("as0");
-      this.exportHtml = "<download-excel\n            :data   = \"json_data\"\n            :fields = \"json_fields\"\n            :name    = \"excelFileName()\"\n            >\n        </download-excel>";
-    }
+    fetchData: function () {
+      var _fetchData = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!confirm("Do you want to Download all records in excel ! ")) {
+                  _context.next = 5;
+                  break;
+                }
+
+                _context.next = 3;
+                return axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/data/api/patient/export');
+
+              case 3:
+                response = _context.sent;
+                return _context.abrupt("return", response.data);
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function fetchData() {
+        return _fetchData.apply(this, arguments);
+      }
+
+      return fetchData;
+    }()
   }
 });
 
@@ -34145,26 +34196,27 @@ var render = function() {
     [
       _c(
         "div",
-        {
-          staticClass: "btn btn-primary pull right",
-          on: {
-            click: function($event) {
-              return _vm.excelDownloadConformation()
-            }
-          }
-        },
+        { staticClass: "btn btn-primary pull right" },
         [
-          _vm._v("\n            Download Data\n                "),
-          _c("i", {
-            staticClass: "fa fa-file-excel-o",
-            attrs: { "aria-hidden": "true" }
-          }),
-          _vm._v(" "),
-          _c("div", {
-            ref: "exportDiv",
-            domProps: { innerHTML: _vm._s(_vm.exportHtml) }
-          })
-        ]
+          _c(
+            "download-excel",
+            {
+              attrs: {
+                fetch: _vm.fetchData,
+                fields: _vm.json_fields,
+                name: _vm.excelFileName()
+              }
+            },
+            [
+              _vm._v("\n                Download Data\n                "),
+              _c("i", {
+                staticClass: "fa fa-file-excel-o",
+                attrs: { "aria-hidden": "true" }
+              })
+            ]
+          )
+        ],
+        1
       ),
       _vm._v(" "),
       _c(

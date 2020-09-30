@@ -114,4 +114,22 @@ class WomenController extends Controller
             return response()->json(['message' => 'The username already exists. Please use a different username', 'success' => 0]);
         }        
     }
+
+    public function export(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->withAll()->with('municipality', 'district');
+
+        $woman = $woman->get()->filter(function ($item, $key) {
+            if ($item->latestAnc()->exists()) {
+                return $item->latestAnc()->first()->result != "4";
+            }
+            if (!$item->latestAnc()->exists()) {
+                return $item;
+            }
+        })->values();
+
+        return response()->json($woman);
+    }
 }

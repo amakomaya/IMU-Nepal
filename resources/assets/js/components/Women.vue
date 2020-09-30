@@ -1,9 +1,15 @@
 <template>
     <div>
-        <div class="btn btn-primary pull right" v-on:click="excelDownloadConformation()">
-            Download Data
+        <div class="btn btn-primary pull right">
+            
+                <download-excel
+                :fetch   = "fetchData"
+                :fields = "json_fields"
+                :name    = "excelFileName()"
+                >
+                Download Data
                 <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-                <div v-html="exportHtml" ref="exportDiv"></div>
+            </download-excel>
         </div>
         
         <filterable v-bind="filterable">
@@ -103,38 +109,47 @@
                 municipalities : [],
                 districts : [],
                 json_fields: {
-                    'Complete name': 'name',
-                    'City': 'city',
-                    'Telephone': 'phone.mobile',
-                    'Telephone 2' : {
-                        field: 'phone.landline',
+                    'Patient Name': 'name',
+                    'Age': 'age',
+                    'Age Unit' : {
+                        field: 'age_unit',
                         callback: (value) => {
-                            return `Landline Phone - ${value}`;
+                            switch(value){
+                                case '1':
+                                return "Months";
+
+                                case '2':
+                                return "Days";
+
+                                default:
+                                return "Years";
+                            }
+                        }
+                    },
+                    'Municipality' : 'municipality.municipality_name',
+                    'District' : 'district.district_name',
+                    'Emergency Contact One' : 'emergency_contact_one',
+                    'Emergency Contact Two' : 'emergency_contact_two',
+                    'Current Hospital' : 'healthpost.name',
+                    'Latest Lab Result' : {
+                        field: 'latest_anc.result',
+                        callback: (value) => {
+                            switch(value){
+                                case '3':
+                                return "Positive";
+
+                                case '9':
+                                return "Recieved";
+
+                                case '':
+                                return "Pending";
+
+                                default:
+                                return "Do not know";
+                            }
                         }
                     },
                 },
-                json_data: [
-                    {
-                        'name': 'Tony Peña',
-                        'city': 'New York',
-                        'country': 'United States',
-                        'birthdate': '1978-03-15',
-                        'phone': {
-                            'mobile': '1-541-754-3010',
-                            'landline': '(541) 754-3010'
-                        }
-                    },
-                    {
-                        'name': 'Thessaloniki',
-                        'city': 'Athens',
-                        'country': 'Greece',
-                        'birthdate': '1987-11-23',
-                        'phone': {
-                            'mobile': '+1 855 275 5071',
-                            'landline': '(2741) 2621-244'
-                        }
-                    }
-                ],
                 json_meta: [
                     [
                         {
@@ -145,12 +160,6 @@
                 ],
                 exportHtml : ''
             }
-        },
-        mounted() {
-            this.$refs['exportDiv'].firstChild.addEventListener('click', function(event) {
-                  event.preventDefault();
-                  console.log('clicked: ', event.target);
-            })
         },
         created() {
             this.fetch()
@@ -308,18 +317,21 @@
                 }
             },
             excelFileName : function(){
-                var ext = '.xlxs';
-                return new Date()+ext;
+                var ext = '.xlsx';
+                return 'Patient Details '+ new Date()+ext;
             },
-            excelDownloadConformation : function(){
-                console.log("as0");
-                this.exportHtml = `<download-excel
-                :data   = "json_data"
-                :fields = "json_fields"
-                :name    = "excelFileName()"
-                >
-            </download-excel>`;
+            async fetchData(){
+  
+            if(confirm("Do you want to Download all records in excel ! ")){
+
+            const response = await axios.get('/data/api/patient/export');
+            return response.data;
+
+                    //     }
+                    // })
+                }
             }
         }
     }
+            
 </script>

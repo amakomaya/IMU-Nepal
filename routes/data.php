@@ -2,6 +2,7 @@
 
 
 Route::resource('api/women', 'Data\Api\WomenController');
+Route::get('/api/patient/export', 'Data\Api\WomenController@export');
 
 Route::put('api/women/anc/{token}', 'Data\Api\WomenController@updateAnc');
 Route::delete('api/women/anc/{token}', 'Data\Api\WomenController@deleteAnc');
