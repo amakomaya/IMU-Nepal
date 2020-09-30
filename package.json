@@ -27,6 +27,7 @@
         "vue": "^2.6.10",
         "vue-google-charts": "^0.3.2",
         "vue-html-to-paper": "^1.1.1",
+        "vue-json-excel": "^0.2.98",
         "vue-multiselect": "^2.1.6",
         "vue-qrcode-component": "^2.1.1",
         "vue-router": "^3.0.7",

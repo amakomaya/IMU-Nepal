@@ -1,5 +1,11 @@
 <template>
     <div>
+        <div class="btn btn-primary pull right" v-on:click="excelDownloadConformation()">
+            Download Data
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                <div v-html="exportHtml" ref="exportDiv"></div>
+        </div>
+        
         <filterable v-bind="filterable">
             <thead slot="thead">
             <tr>
@@ -95,8 +101,56 @@
                 womanTokens: [],
                 provinces : [],
                 municipalities : [],
-                districts : []
+                districts : [],
+                json_fields: {
+                    'Complete name': 'name',
+                    'City': 'city',
+                    'Telephone': 'phone.mobile',
+                    'Telephone 2' : {
+                        field: 'phone.landline',
+                        callback: (value) => {
+                            return `Landline Phone - ${value}`;
+                        }
+                    },
+                },
+                json_data: [
+                    {
+                        'name': 'Tony Peña',
+                        'city': 'New York',
+                        'country': 'United States',
+                        'birthdate': '1978-03-15',
+                        'phone': {
+                            'mobile': '1-541-754-3010',
+                            'landline': '(541) 754-3010'
+                        }
+                    },
+                    {
+                        'name': 'Thessaloniki',
+                        'city': 'Athens',
+                        'country': 'Greece',
+                        'birthdate': '1987-11-23',
+                        'phone': {
+                            'mobile': '+1 855 275 5071',
+                            'landline': '(2741) 2621-244'
+                        }
+                    }
+                ],
+                json_meta: [
+                    [
+                        {
+                            'key': 'charset',
+                            'value': 'utf-8'
+                        }
+                    ]
+                ],
+                exportHtml : ''
             }
+        },
+        mounted() {
+            this.$refs['exportDiv'].firstChild.addEventListener('click', function(event) {
+                  event.preventDefault();
+                  console.log('clicked: ', event.target);
+            })
         },
         created() {
             this.fetch()
@@ -252,6 +306,19 @@
                     }
                 }
                 }
+            },
+            excelFileName : function(){
+                var ext = '.xlxs';
+                return new Date()+ext;
+            },
+            excelDownloadConformation : function(){
+                console.log("as0");
+                this.exportHtml = `<download-excel
+                :data   = "json_data"
+                :fields = "json_fields"
+                :name    = "excelFileName()"
+                >
+            </download-excel>`;
             }
         }
     }

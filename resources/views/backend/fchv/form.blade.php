@@ -299,7 +299,7 @@
                                     
 
                                 <div class="form-group{{ $errors->has('hp_code') ? ' has-error' : '' }}">
-                                    <label for="hp_code" class="col-md-3 control-label"><i data-toggle="tooltip" title=" नाम लेख्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i> Lab Name </label>
+                                    <label for="hp_code" class="col-md-3 control-label"><i data-toggle="tooltip" title=" नाम लेख्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i> Lab Name or Hospital Code</label>
 
                                     <div class="col-md-7">
                                         <input id="hp_code" type="text" class="form-control" name="hp_code" value="@yield('hp_code')" >

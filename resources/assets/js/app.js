@@ -24,6 +24,11 @@ import QrCodeGenerate from './components/QrCodeGenerate.vue'
 
 import SelectYearMonth from './components/SelectYearMonth'
 
+import JsonExcel from 'vue-json-excel'
+ 
+Vue.component('downloadExcel', JsonExcel)
+
+
 Vue.use(Vuelidate)
 Vue.use(StatusIndicator);
 Vue.use(VueRouter);
