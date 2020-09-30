@@ -37,7 +37,7 @@
                                                 </form>
                                                 </td>
                                                 <td>{{ $d->getDistrictName($d->district_id) }}</td>
-                                                <td>{{ $d->municipality->municipality_name }}</td>                                     
+                                                <td>{{ $d->municipality->municipality_name ?? '' }}</td>                                     
                                                 <td>{{ $d->getRegisters($d->hp_code) }}</td>
                                                 <td>{{ $d->getSampleCollection($d->hp_code) }}</td>
                                                 </tr>
