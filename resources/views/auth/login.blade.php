@@ -124,9 +124,11 @@
     <div class="col-md-4 col-md-offset-4" style="margin-top: 50px;">
 
         <div class="login-panel panel panel-default" style="margin:40px">
-            <img class="text-center" src="{{ asset('images/login-icon.png') }}" style="padding:10px;width: 96px;height: 96px;margin: 0 auto 10px;display: block;-moz-border-radius: 50%;-webkit-border-radius: 50%;border-radius: 50%;">
+          <div class="row text-center">
+              <img class="img-responsive center-block" src="{{ asset('images/login-icon.png') }}">
+          </div>
 
-            <h4 class="text-center"> {{ config('app.name') }} </h4>
+            <!-- <h4 class="text-center"> {{ config('app.name') }} </h4> -->
             @if (Request::session()->has('error_message'))
                 <div class="alert alert-block alert-danger" style="margin:15px; text-align:center;">
                     <button type="button" class="close" data-dismiss="alert">
