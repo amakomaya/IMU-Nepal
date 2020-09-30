@@ -317,7 +317,7 @@
                 }
             },
             excelFileName : function(){
-                var ext = '.xlsx';
+                var ext = '.xls';
                 return 'Patient Details '+ new Date()+ext;
             },
             async fetchData(){

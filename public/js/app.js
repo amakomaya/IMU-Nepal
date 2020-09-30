@@ -5022,7 +5022,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     excelFileName: function excelFileName() {
-      var ext = '.xlsx';
+      var ext = '.xls';
       return 'Patient Details ' + new Date() + ext;
     },
     fetchData: function () {
