@@ -300,6 +300,7 @@ Route::get('/v1/client-tests', function(Request $request){
         $response['sample_identification_type'] = $row->sample_identification_type ?? '';
                 $response['service_type'] = $row->service_type ?? '';
         $response['result'] = $row->result ?? '';
+        $response['infection_type'] = $row->infection_type ?? '';
 
     return $response;
 });
