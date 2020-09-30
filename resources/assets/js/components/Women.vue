@@ -32,7 +32,7 @@
                 <td>
                     <input type="checkbox" v-model="womanTokens" @click="select" :value="item.token">                           
                 </td>
-                <td><div v-if="item.latest_anc.result == '3'">Case ID : {{ item.case_id }}</div>
+                <td><div v-if="checkForPositiveOnly(item.latest_anc)">Case ID : {{ item.case_id }}</div>
                     <div v-if="item.parent_case_id !== null">Parent Case ID : {{ item.parent_case_id }}</div>
                 </td>
                 <td>{{item.name}}</td>
@@ -50,8 +50,7 @@
                     <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
                         <i class="fa fa-hospital-o"></i>
                     </button>
-                    
-                    <button v-if="item.latest_anc.result == '3'" v-on:click="viewConfirmReportForm(item)" title="Confirmed Case Record Form">
+                        <button v-if="checkForPositiveOnly(item.latest_anc)" v-on:click="viewConfirmReportForm(item)" title="Confirmed Case Record Form">
                         |
                     <i class="fa fa-file"></i>
                 </button>
@@ -276,8 +275,9 @@
                 }
             },
             latestLabResult :function(value){
+
                 if (value == '0' || value == null || value == ''){
-                    return '<span class=\"label label-default\"> Don\'t Know </span>';
+                    return '<span class=\"label label-primary\"> Registered Only </span>';
                 }else{
                     if (value == '0' || value == null || value == ''){
                         return '<span class=\"label label-default\"> Don\'t Know </span>';
@@ -299,22 +299,28 @@
                     }
                 }
             },
+            checkForPositiveOnly : function (value){
+
+                if (value !== null) {
+                    if (value.result == '3') {
+                        return true;
+                    }
+                }               
+
+            },
             latestLabResultNotNegative : function(value){
-                if (value) {
-                    if (value == '0' || value == null || value == ''){
-                    return true;
-                }else{
+                
                     if (value == '0' || value == null || value == ''){
                         return true;
-                    }else{
-                        if (value.result == '4') {
-                            return false;
-                        }else{
-                            return true;
-                        }
                     }
-                }
-                }
+                    
+                    if (value.result == '4') {
+                        return false;
+                    }else{
+                        return true;
+                    }
+                    
+                
             },
             excelFileName : function(){
                 var ext = '.xls';

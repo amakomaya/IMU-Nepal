@@ -4774,7 +4774,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 
 
@@ -4979,7 +4978,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     latestLabResult: function latestLabResult(value) {
       if (value == '0' || value == null || value == '') {
-        return '<span class=\"label label-default\"> Don\'t Know </span>';
+        return '<span class=\"label label-primary\"> Registered Only </span>';
       } else {
         if (value == '0' || value == null || value == '') {
           return '<span class=\"label label-default\"> Don\'t Know </span>';
@@ -5004,21 +5003,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       }
     },
-    latestLabResultNotNegative: function latestLabResultNotNegative(value) {
-      if (value) {
-        if (value == '0' || value == null || value == '') {
+    checkForPositiveOnly: function checkForPositiveOnly(value) {
+      if (value !== null) {
+        if (value.result == '3') {
           return true;
-        } else {
-          if (value == '0' || value == null || value == '') {
-            return true;
-          } else {
-            if (value.result == '4') {
-              return false;
-            } else {
-              return true;
-            }
-          }
         }
+      }
+    },
+    latestLabResultNotNegative: function latestLabResultNotNegative(value) {
+      if (value == '0' || value == null || value == '') {
+        return true;
+      }
+
+      if (value.result == '4') {
+        return false;
+      } else {
+        return true;
       }
     },
     excelFileName: function excelFileName() {
@@ -34275,7 +34275,7 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("td", [
-                            item.latest_anc.result == "3"
+                            _vm.checkForPositiveOnly(item.latest_anc)
                               ? _c("div", [
                                   _vm._v("Case ID : " + _vm._s(item.case_id))
                                 ])
@@ -34352,7 +34352,7 @@ var render = function() {
                               [_c("i", { staticClass: "fa fa-hospital-o" })]
                             ),
                             _vm._v(" "),
-                            item.latest_anc.result == "3"
+                            _vm.checkForPositiveOnly(item.latest_anc)
                               ? _c(
                                   "button",
                                   {
