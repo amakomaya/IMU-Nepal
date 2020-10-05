@@ -22,7 +22,7 @@
                 <th>Emergency Contact</th>
                 <!-- <th>District</th> -->
                 <th>Muicipality</th>
-                <th>Current Hospital</th>
+                <th>Case</th>
                 <th>Total Collection</th>
                 <th>Latest Lab Result</th>
                 <th>Action</th>
@@ -41,7 +41,11 @@
                     Two : {{item.emergency_contact_two}}
                 </td>
                 <td>{{ checkMunicipality(item.municipality_id) }}</td>
-                <td>{{ item.healthpost.name }}</td>
+                <td>
+                    Place : {{ item.healthpost.name }} <br>
+                    Type : {{ checkCaseType(item.cases) }} <br>
+                    Management : {{ checkCaseManagement(item.cases, item.case_where) }}
+                </td>
                 <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
                 <td><div v-html="latestLabResult(item.latest_anc)">
                 </div>
@@ -336,6 +340,57 @@
                     //     }
                     // })
                 }
+            },
+
+            checkCaseType : function(type){
+                switch(type){
+                    case '0':
+                    return 'N/A';
+
+                    case '1':
+                    return 'Asymptomatic / Mild Case';
+
+                    case '2':
+                    return 'Moderate / Severe Case';
+
+                    default:
+                    return 'N/A';
+                }
+            },
+
+            checkCaseManagement : function (type, management){
+                if (type == '1') {
+                    switch(management){
+                        case '0':
+                        return 'Home';
+
+                        case '1':
+                        return 'Hotel';
+
+                        case '2':
+                        return 'Institution';
+
+                        default:
+                        return 'N/A';
+                    }
+                }
+
+                if (type == '2') {
+                    switch(management){
+                        case '0':
+                        return 'General Ward';
+
+                        case '0':
+                        return 'ICU';
+
+                        case '0':
+                        return 'Ventilator';
+
+                        default:
+                        return 'N/A';
+                    }
+                }
+                return 'N/A';
             }
         }
     }

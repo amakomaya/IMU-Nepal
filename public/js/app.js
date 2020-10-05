@@ -4774,6 +4774,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -5059,7 +5063,57 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return fetchData;
-    }()
+    }(),
+    checkCaseType: function checkCaseType(type) {
+      switch (type) {
+        case '0':
+          return 'N/A';
+
+        case '1':
+          return 'Asymptomatic / Mild Case';
+
+        case '2':
+          return 'Moderate / Severe Case';
+
+        default:
+          return 'N/A';
+      }
+    },
+    checkCaseManagement: function checkCaseManagement(type, management) {
+      if (type == '1') {
+        switch (management) {
+          case '0':
+            return 'Home';
+
+          case '1':
+            return 'Hotel';
+
+          case '2':
+            return 'Institution';
+
+          default:
+            return 'N/A';
+        }
+      }
+
+      if (type == '2') {
+        switch (management) {
+          case '0':
+            return 'General Ward';
+
+          case '0':
+            return 'ICU';
+
+          case '0':
+            return 'Ventilator';
+
+          default:
+            return 'N/A';
+        }
+      }
+
+      return 'N/A';
+    }
   }
 });
 
@@ -34317,7 +34371,30 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(item.healthpost.name))]),
+                          _c("td", [
+                            _vm._v(
+                              "\n                    Place : " +
+                                _vm._s(item.healthpost.name) +
+                                " "
+                            ),
+                            _c("br"),
+                            _vm._v(
+                              "\n                    Type : " +
+                                _vm._s(_vm.checkCaseType(item.cases)) +
+                                " "
+                            ),
+                            _c("br"),
+                            _vm._v(
+                              "\n                    Management : " +
+                                _vm._s(
+                                  _vm.checkCaseManagement(
+                                    item.cases,
+                                    item.case_where
+                                  )
+                                ) +
+                                "\n                "
+                            )
+                          ]),
                           _vm._v(" "),
                           _c("td", [
                             _c("span", { staticClass: "label label-info" }, [
@@ -34402,7 +34479,7 @@ var render = function() {
               _vm._v(" "),
               _c("th", [_vm._v("Muicipality")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Current Hospital")]),
+              _c("th", [_vm._v("Case")]),
               _vm._v(" "),
               _c("th", [_vm._v("Total Collection")]),
               _vm._v(" "),
