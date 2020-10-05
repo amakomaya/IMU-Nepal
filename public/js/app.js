@@ -4843,6 +4843,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 
@@ -5046,30 +5047,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     latestLabResult: function latestLabResult(value) {
-      if (value == '0' || value == null || value == '') {
-        return '<span class=\"label label-primary\"> Registered Only </span>';
-      } else {
-        if (value == '0' || value == null || value == '') {
-          return '<span class=\"label label-default\"> Don\'t Know </span>';
-        } else {
-          if (value.result == '4') {
-            return '<span class=\"label label-success\"> Negative</span>';
-          }
+      switch (value.result) {
+        case '4':
+          return '<span class=\"label label-success\"> Negative</span>';
 
-          if (value.result == '2') {
-            return '<span class=\"label label-info\"> Pending</span>';
-          }
+        case '2':
+          return '<span class=\"label label-info\"> Pending</span>';
 
-          if (value.result == '3') {
-            return '<span class=\"label label-danger\"> Positive</span>';
-          }
+        case '3':
+          return '<span class=\"label label-danger\"> Positive</span>';
 
-          if (value.result == '9') {
-            return '<span class=\"label label-warning\"> Recieved</span>';
-          } else {
-            return '<span class=\"label label-default\"> Don\'t Know</span>';
-          }
-        }
+        case '9':
+          return '<span class=\"label label-warning\"> Recieved</span>';
+
+        default:
+          return '<span class=\"label label-default\"> Don\'t Know</span>';
       }
     },
     checkForPositiveOnly: function checkForPositiveOnly(value) {
@@ -34497,13 +34489,21 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("td", [
-                            _c("div", {
-                              domProps: {
-                                innerHTML: _vm._s(
-                                  _vm.latestLabResult(item.latest_anc)
-                                )
-                              }
-                            })
+                            item.ancs.length > 0
+                              ? _c("div", {
+                                  domProps: {
+                                    innerHTML: _vm._s(
+                                      _vm.latestLabResult(item.latest_anc)
+                                    )
+                                  }
+                                })
+                              : _c("div", [
+                                  _c(
+                                    "span",
+                                    { staticClass: "label label-primary" },
+                                    [_vm._v(" Registred ")]
+                                  )
+                                ])
                           ]),
                           _vm._v(" "),
                           _c("td", [
@@ -34577,7 +34577,7 @@ var render = function() {
               _vm._v(" "),
               _c("th", [_vm._v("Total Collection")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Latest Lab Result")]),
+              _c("th", [_vm._v("Lab Result")]),
               _vm._v(" "),
               _c("th", [_vm._v("Action")])
             ])

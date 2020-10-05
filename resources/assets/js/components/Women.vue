@@ -24,7 +24,7 @@
                 <th>Muicipality</th>
                 <th>Case</th>
                 <th>Total Collection</th>
-                <th>Latest Lab Result</th>
+                <th>Lab Result</th>
                 <th>Action</th>
             </tr>
             </thead>
@@ -47,8 +47,9 @@
                     Management : {{ checkCaseManagement(item.cases, item.case_where) }}
                 </td>
                 <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
-                <td><div v-html="latestLabResult(item.latest_anc)">
-                </div>
+                <td>
+                    <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"></div>
+                    <div v-else><span class="label label-primary"> Registred </span></div>
                 </td>
                 <td>
                     <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
@@ -279,38 +280,29 @@
                 }
             },
             latestLabResult :function(value){
+                switch(value.result){
+                    case '4':
+                    return '<span class=\"label label-success\"> Negative</span>';
 
-                if (value == '0' || value == null || value == ''){
-                    return '<span class=\"label label-primary\"> Registered Only </span>';
-                }else{
-                    if (value == '0' || value == null || value == ''){
-                        return '<span class=\"label label-default\"> Don\'t Know </span>';
-                    }else{
-                        if (value.result == '4') {
-                            return '<span class=\"label label-success\"> Negative</span>'
-                        }
-                        if (value.result == '2') {
-                            return '<span class=\"label label-info\"> Pending</span>'
-                        }
-                        if (value.result == '3') {
-                            return '<span class=\"label label-danger\"> Positive</span>'
-                        }
-                        if (value.result == '9') {
-                            return '<span class=\"label label-warning\"> Recieved</span>'
-                        }else{
-                            return '<span class=\"label label-default\"> Don\'t Know</span>'
-                        }
-                    }
+                    case '2':
+                    return '<span class=\"label label-info\"> Pending</span>';
+
+                    case '3':
+                    return '<span class=\"label label-danger\"> Positive</span>';
+
+                    case '9':
+                    return '<span class=\"label label-warning\"> Recieved</span>';
+
+                    default:
+                    return '<span class=\"label label-default\"> Don\'t Know</span>';                    
                 }
             },
             checkForPositiveOnly : function (value){
-
                 if (value !== null) {
                     if (value.result == '3') {
                         return true;
                     }
-                }               
-
+                }
             },
             latestLabResultNotNegative : function(value){
                 
