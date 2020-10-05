@@ -54,7 +54,6 @@
                     </div>
                 </div>
             </div>
-            </a>
         </div>
     </div>
 
@@ -71,7 +70,6 @@
                     </div>
                 </div>
             </div>
-            </a>
         </div>
     </div>
     
@@ -88,7 +86,6 @@
                     </div>
                 </div>
             </div>
-            </a>
         </div>
     </div>
        <div class="col-lg-3">
@@ -104,7 +101,6 @@
                     </div>
                 </div>
             </div>
-            </a>
         </div>
     </div>
 </div>
@@ -124,7 +120,6 @@
                     </div>
                 </div>
             </div>
-            </a>
         </div>
     </div>
 
@@ -141,7 +136,6 @@
                     </div>
                 </div>
             </div>
-            </a>
         </div>
     </div>
     
@@ -158,7 +152,6 @@
                     </div>
                 </div>
             </div>
-            </a>
         </div>
     </div>
        <div class="col-lg-3">
@@ -174,7 +167,38 @@
                     </div>
                 </div>
             </div>
-            </a>
+        </div>
+    </div>
+</div>
+<div class="row" style="padding: 15px;">
+    <div class="col-lg-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-user fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ $data['mild_cases_home'] }}</div>
+                        <div><h4>Asymptomatic / Mild Case at Home </h4></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-user fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ $data['severe_cases_home'] }}</div>
+                        <div><h4>Moderate / Severe Case at General Ward </h4></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

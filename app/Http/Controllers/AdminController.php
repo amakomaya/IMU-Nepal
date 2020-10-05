@@ -44,23 +44,20 @@ class AdminController extends Controller
             $$key = $value;
         }
 
-        $woman = Woman::whereIn('hp_code', $hpCodes)->active();
+        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->get(['created_at', 'hp_code', 'token', 'cases', 'case_where']);
         $sample_collection = Anc::whereIn('hp_code', $hpCodes)->active()->orderBy('created_at', 'desc');
         $tests = LabTest::active()->orderBy('created_at', 'desc');
 
-
         $chartData = $woman->where(\DB::raw("(DATE_FORMAT(created_at,'%Y'))"), date('Y'))
-            ->get();
+            ;
 
         $chartWoman = Charts::database($chartData, 'bar', 'highcharts')
             ->title("Total Registered = " . Woman::whereIn('hp_code', $hpCodes)->active()->count())
             ->dimensions(800, 400)
             ->responsive(true)
             ->groupByMonth(date('Y'), true);
-            
 
-
-        $last_24_hrs_register = $woman->where('created_at', '>', Carbon::now()->subDay())->get()->count();
+        $last_24_hrs_register = $woman->where('created_at', '>', Carbon::now()->subDay())->count();
 
         $last_24_hrs_sample_collection = $sample_collection->where('created_at', '>', Carbon::now()->subDay())->get()->count();
         
@@ -68,18 +65,17 @@ class AdminController extends Controller
 
         $last_24_hrs_positive = $tests->where('created_at', '>', Carbon::now()->subDay())->where('sample_test_result', 3)->get()->count();
 
-
-       
         $data = [
-                'total_register' => Woman::whereIn('hp_code', $hpCodes)->active()->count(),
+                'total_register' => $woman->count(),
                 'total_sample_collection' => Anc::whereIn('hp_code', $hpCodes)->active()->count(),
                 'total_tests' => LabTest::active()->count(),
                 'total_positive' => LabTest::active()->where('sample_test_result', 3)->count(),
                 'last_24_hrs_register' => $last_24_hrs_register,
                 'last_24_hrs_sample_collection' => $last_24_hrs_sample_collection,
                 'last_24_hrs_tests' => $last_24_hrs_tests,
-                'last_24_hrs_positive' => $last_24_hrs_positive
-                
+                'last_24_hrs_positive' => $last_24_hrs_positive,
+                'mild_cases_home' => $woman->where('cases', '1')->where('case_where', '0')->count(),
+                'severe_cases_home' => $woman->where('cases', '2')->where('case_where', '0')->count()
         ];
 
         return view('admin', compact('data', 'chartWoman', 'provinces', 'districts', 'options', 'ward_or_healthpost', 'municipalities', 'wards', 'healthposts', 'province_id', 'district_id', 'municipality_id', 'ward_id', 'hp_code', 'from_date', 'to_date'));
