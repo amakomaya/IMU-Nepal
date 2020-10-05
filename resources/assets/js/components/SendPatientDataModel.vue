@@ -4,6 +4,10 @@
             <h4><u><strong>Patient Details :</strong></u></h4>
             <table class="table table-striped">
                 <tbody>
+                    <tr v-if="checkForPositiveOnly(data.latest_anc)">
+                        <td>Case ID : </td>
+                        <td>{{ data.case_id }}</td>
+                    </tr>
                     <tr>
                         <td>Name : </td>
                         <td>{{ data.name }}</td>
@@ -21,22 +25,26 @@
                         <td>One : {{ data.emergency_contact_one }} <br> Two : {{ data.emergency_contact_two }}</td>
                     </tr>
                     <tr>
-                        <td>Current Hospital : </td>
-                        <td>{{ data.healthpost.name }}</td>
+                        <td>Case : </td>
+                        <td>
+                            Place : {{ data.healthpost.name }} <br>
+                            Type : {{ checkCaseType(data.cases) }} <br>
+                            Management : {{ checkCaseManagement(data.cases, data.case_where) }}
+                        </td>
                     </tr>
                 </tbody>
             </table>
 
-        	<h4>Where do you want to transfer this patient, Please search Hospital</h4>
+        	<h4>Where do you want to transfer this patient, Please search </h4>
 
             <v-select label="name"
                 v-model="healthpostSelected"
-                placeholder="Type to search Hospital informations .."
+                placeholder="Type to search informations .."
                 :options="options"
                 @search="onSearch"
             >
                 <template vslot="no-options">
-                    type to search Hospital informations ...
+                    type to search informations ...
                 </template>
                 <template slot="option" slot-scope="option">
                     {{ option.name }} <br>
@@ -155,6 +163,66 @@
                     }
                 }) 
             },
+            checkCaseType : function(type){
+                switch(type){
+                    case '0':
+                    return 'N/A';
+
+                    case '1':
+                    return 'Asymptomatic / Mild Case';
+
+                    case '2':
+                    return 'Moderate / Severe Case';
+
+                    default:
+                    return 'N/A';
+                }
+            },
+
+            checkForPositiveOnly : function (value){
+
+                if (value !== null) {
+                    if (value.result == '3') {
+                        return true;
+                    }
+                }               
+
+            },
+
+            checkCaseManagement : function (type, management){
+                if (type == '1') {
+                    switch(management){
+                        case '0':
+                        return 'Home';
+
+                        case '1':
+                        return 'Hotel';
+
+                        case '2':
+                        return 'Institution';
+
+                        default:
+                        return 'N/A';
+                    }
+                }
+
+                if (type == '2') {
+                    switch(management){
+                        case '0':
+                        return 'General Ward';
+
+                        case '0':
+                        return 'ICU';
+
+                        case '0':
+                        return 'Ventilator';
+
+                        default:
+                        return 'N/A';
+                    }
+                }
+                return 'N/A';
+            }
         }
         
     }

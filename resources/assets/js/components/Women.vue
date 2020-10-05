@@ -182,8 +182,8 @@
             sendPatientData: function (item) {
                 this.$dlg.modal(SendPatientDataModel, {
                     title: 'Do you want to send '+item.name+' \'s patients data ?',
-                    height : 500,
-                    width : 600,
+                    height : 600,
+                    width : 700,
                     params: {
                         data : item,
                         provinces : this.provinces,

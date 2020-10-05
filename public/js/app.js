@@ -3789,6 +3789,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -3907,7 +3915,64 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return sendPatient;
-    }()
+    }(),
+    checkCaseType: function checkCaseType(type) {
+      switch (type) {
+        case '0':
+          return 'N/A';
+
+        case '1':
+          return 'Asymptomatic / Mild Case';
+
+        case '2':
+          return 'Moderate / Severe Case';
+
+        default:
+          return 'N/A';
+      }
+    },
+    checkForPositiveOnly: function checkForPositiveOnly(value) {
+      if (value !== null) {
+        if (value.result == '3') {
+          return true;
+        }
+      }
+    },
+    checkCaseManagement: function checkCaseManagement(type, management) {
+      if (type == '1') {
+        switch (management) {
+          case '0':
+            return 'Home';
+
+          case '1':
+            return 'Hotel';
+
+          case '2':
+            return 'Institution';
+
+          default:
+            return 'N/A';
+        }
+      }
+
+      if (type == '2') {
+        switch (management) {
+          case '0':
+            return 'General Ward';
+
+          case '0':
+            return 'ICU';
+
+          case '0':
+            return 'Ventilator';
+
+          default:
+            return 'N/A';
+        }
+      }
+
+      return 'N/A';
+    }
   }
 });
 
@@ -4900,8 +4965,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     sendPatientData: function sendPatientData(item) {
       this.$dlg.modal(_SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_6__["default"], {
         title: 'Do you want to send ' + item.name + ' \'s patients data ?',
-        height: 500,
-        width: 600,
+        height: 600,
+        width: 700,
         params: {
           data: item,
           provinces: this.provinces,
@@ -6909,7 +6974,7 @@ exports.push([module.i, ".v-select{position:relative;font-family:inherit}.v-sele
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9":
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css":
 /*!***********************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vuetify/dist/vuetify.min.css ***!
   \***********************************************************************************************************************************/
@@ -32937,6 +33002,14 @@ var render = function() {
         _vm._v(" "),
         _c("table", { staticClass: "table table-striped" }, [
           _c("tbody", [
+            _vm.checkForPositiveOnly(_vm.data.latest_anc)
+              ? _c("tr", [
+                  _c("td", [_vm._v("Case ID : ")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm.data.case_id))])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
             _c("tr", [
               _c("td", [_vm._v("Name : ")]),
               _vm._v(" "),
@@ -32981,17 +33054,38 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("tr", [
-              _c("td", [_vm._v("Current Hospital : ")]),
+              _c("td", [_vm._v("Case : ")]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(_vm.data.healthpost.name))])
+              _c("td", [
+                _vm._v(
+                  "\n                            Place : " +
+                    _vm._s(_vm.data.healthpost.name) +
+                    " "
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n                            Type : " +
+                    _vm._s(_vm.checkCaseType(_vm.data.cases)) +
+                    " "
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n                            Management : " +
+                    _vm._s(
+                      _vm.checkCaseManagement(
+                        _vm.data.cases,
+                        _vm.data.case_where
+                      )
+                    ) +
+                    "\n                        "
+                )
+              ])
             ])
           ])
         ]),
         _vm._v(" "),
         _c("h4", [
-          _vm._v(
-            "Where do you want to transfer this patient, Please search Hospital"
-          )
+          _vm._v("Where do you want to transfer this patient, Please search ")
         ]),
         _vm._v(" "),
         _c(
@@ -32999,7 +33093,7 @@ var render = function() {
           {
             attrs: {
               label: "name",
-              placeholder: "Type to search Hospital informations ..",
+              placeholder: "Type to search informations ..",
               options: _vm.options
             },
             on: { search: _vm.onSearch },
@@ -33057,7 +33151,7 @@ var render = function() {
           [
             [
               _vm._v(
-                "\n                    type to search Hospital informations ...\n                "
+                "\n                    type to search informations ...\n                "
               )
             ]
           ],
@@ -83126,7 +83220,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_vue__;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9");
+var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
