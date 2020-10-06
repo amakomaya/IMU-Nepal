@@ -74,8 +74,10 @@ class AdminController extends Controller
                 'last_24_hrs_sample_collection' => $last_24_hrs_sample_collection,
                 'last_24_hrs_tests' => $last_24_hrs_tests,
                 'last_24_hrs_positive' => $last_24_hrs_positive,
-                'mild_cases_home' => $woman->where('cases', '1')->where('case_where', '0')->count(),
-                'severe_cases_home' => $woman->where('cases', '2')->where('case_where', '0')->count()
+                // 'mild_cases_home' => $woman->where('cases', '1')->where('case_where', '0')->count(),
+                // 'severe_cases_home' => $woman->where('cases', '2')->where('case_where', '0')->count()
+                'mild_cases_home' => $woman->where('cases', '1')->count(),
+                'severe_cases_home' => $woman->where('cases', '2')->count()
         ];
 
         return view('admin', compact('data', 'chartWoman', 'provinces', 'districts', 'options', 'ward_or_healthpost', 'municipalities', 'wards', 'healthposts', 'province_id', 'district_id', 'municipality_id', 'ward_id', 'hp_code', 'from_date', 'to_date'));

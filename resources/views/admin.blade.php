@@ -180,7 +180,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">{{ $data['mild_cases_home'] }}</div>
-                        <div><h4>Asymptomatic / Mild Case at Home </h4></div>
+                        <div><h4>Asymptomatic / Mild Case</h4></div>
                     </div>
                 </div>
             </div>
@@ -195,7 +195,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">{{ $data['severe_cases_home'] }}</div>
-                        <div><h4>Moderate / Severe Case at General Ward </h4></div>
+                        <div><h4>Moderate / Severe Case</h4></div>
                     </div>
                 </div>
             </div>
