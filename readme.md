@@ -1,4 +1,6 @@
-# Amakomaya Web based Reporting and Recording
+
+
+#  Web based Reporting and Recording
 
 Amakomaya Project is based on the collection of pregnant woman and babies ( From pregnancy period 9 month( ANC visit, Delilvery, PNC visit, Labtest ) to vaccination of babies upto 2 years ) data from tablet based application. On the website, government officer analysis and visualize records.
 
