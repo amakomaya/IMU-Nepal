@@ -11,10 +11,6 @@ Route::get('/', function(){
     return redirect('/login');
 });
 
-Route::get('/welcome', function(){
-    return view('welcome');
-});
-
 //Auth
 Auth::routes();
 
@@ -66,71 +62,6 @@ Route::resource('admin/health-worker', 'Backend\HealthWorkerController');
 Route::resource('admin/patients', 'Backend\WomanController', ['names' => 'woman']);
 Route::get('admin/negative-patients', 'Backend\WomanController@negativeIndex')->name('patients.negative.index');
 
-//Route::delete('admin/woman/{token}','Backend\WomanController@delete');
-
-Route::get('/admin/woman/{id}/checkup', 'Backend\WomanController@checkup')->name('woman.checkup');
-Route::get('/admin/safe-maternity-program', 'Backend\WomanController@safeMaternityProgram')->name('woman.safe-maternity-program');
-Route::get('/admin/woman-information', 'Backend\WomanController@information')->name('woman.information');
-Route::get('/admin/woman-register-again/{id}', 'Backend\WomanController@registerAgain')->name('woman.register-again');
-Route::put('/admin/womanregister-again-store/{id}', 'Backend\WomanController@registerAgainStore')->name('woman.register-again-store');
-Route::get('/admin/report/{id}', 'Backend\WomanController@report')->name('woman.report');
-Route::get('/admin/safe-maternity-program-report', 'Backend\WomanController@safeMaternityProgramReport')->name('woman.safe-maternity-program-report');
-Route::get('/admin/delivery-service-according-to-castes', 'Backend\WomanController@deliveryServiceAccordingToCastes')->name('woman.delivery-service-according-to-castes');
-Route::get('/admin/delivery-service-according-to-castes-report', 'Backend\WomanController@deliveryServiceAccordingToCastesReport')->name('woman.delivery-service-according-to-castes-report');
-Route::get('/admin/td-vaccine-service', 'Backend\WomanController@tdVaccineService')->name('woman.td-vaccine-service');
-Route::get('/admin/woman.td-vaccine-report', 'Backend\WomanController@tdVaccineReport')->name('woman.td-vaccine-report');
-Route::get('/admin/details-about-maternal-and-newborn-infants', 'Backend\WomanController@detailsAboutMaternalAndNewbornInfants')->name('woman.details-about-maternal-and-newborn-infants');
-Route::get('/admin/details-about-maternal-and-newborn-infants-report', 'Backend\WomanController@detailsAboutMaternalAndNewbornInfantsReport')->name('woman.details-about-maternal-and-newborn-infants-report');
-Route::get('/admin/report-health-service-register','Backend\WomanController@WomanHealthServiceRegisterReport')->name('woman.report.health-service-register');
-Route::get('/admin/report-health-service-register','Backend\WomanController@WomanHealthServiceRegisterReport')->name('woman.report.health-service-register');
-Route::get('/admin/security-program-of-mother','Backend\WomanController@securityProgramOfMother')->name('woman.security-program-of-mother');
-
-
-// Route::get('/admin/vaccination-program-report','Backend\WomanController@vaccinationProgram')->name('woman.vaccination-program');
-Route::get('/admin/woman/{id}/anc-visit-schedule','Backend\WomanController@ancVisitSchedule')->name('woman.anc-visit-schedule');
-Route::get('/admin/patients-map', 'Backend\WomanController@womanMaps')->name('woman.map');
-Route::get('/admin/vaccine-detail-list','Backend\WomanController@vaccineDetailList')->name('woman.vaccination-detail-list');
-Route::get('/admin/raw-details-about-maternal-and-newborn-infants','Backend\WomanController@rawDetailsAboutMaternalAndNewbornInfantsReport')->name('woman.raw-details-about-maternal-and-newborn-infants-report');
-Route::get('/admin/woman-anc-visit-schedule','Backend\WomanController@womanANCVisitSchedule')->name('woman.visit-schedule');
-
-Route::get('/admin/vaccination-program-report','Reports\VaccineProgramController@vaccinationProgram')->name('woman.vaccination-program');
-
-
-//Backend ChildReport
-Route::get('/admin/vaccine-received-usage-wastage','Backend\ChildReportController@vaccineReceivedUsageWastage')->name('child-report.vaccine-received-usage-wastage');
-Route::get('/admin/registered-child','Backend\ChildReportController@registeredChild')->name('child-report.registered-child');
-Route::get('/admin/immunized-child','Backend\ChildReportController@immunizedChild')->name('child-report.immunized-child');
-Route::get('/admin/droupout-child','Backend\ChildReportController@droupoutChild')->name('child-report.droupout-child');
-Route::get('/admin/eligible-child','Backend\ChildReportController@eligibleChild')->name('child-report.eligible-child');
-
-Route::get('/admin/vaccinated-child-report','Backend\ChildReportController@vaccinatedChildReport')->name('child.raw-details-about-vaccinated-child');
-Route::get('/admin/child-health-report-card/{id}','Backend\ChildReportController@healthReport')->name('child-report.health-report-card');
-
-//Bakend Anc
-Route::resource('admin/anc', 'Backend\Woman\AncController');
-
-//Bakend Delivery
-Route::resource('admin/delivery', 'Backend\Woman\DeliveryController');
-
-//Bakend BabyDetail
-Route::resource('admin/baby-detail', 'Backend\Woman\Delivery\BabyDetailController');
-Route::get('/admin/baby', 'Backend\Woman\Delivery\BabyDetailController@baby')->name('baby.baby');
-Route::get('/admin/baby/{id}/show', 'Backend\Woman\Delivery\BabyDetailController@babyShow')->name('baby-detail.baby-show');
-
-//Bakend LabTest
-Route::resource('admin/lab-test', 'Backend\Woman\LabTestController');
-
-//Bakend Pnc
-Route::resource('admin/pnc', 'Backend\Woman\PncController');
-
-//Backend TransferWoman
-Route::get('/transfer-woman/transfer/{from_hp_code}/{woman_token}', 'Backend\TransferWomanController@transfer')->name('transfer-woman.transfer');
-Route::post('/transfer-woman/transfer-store', 'Backend\TransferWomanController@transferStore')->name('transfer-woman.transfer-store');
-Route::get('/transfer-woman/transfer-confirm/{from_hp_code}/{woman_token}', 'Backend\TransferWomanController@transferConfirm')->name('transfer-woman.transfer-confirm');
-Route::post('/transfer-woman/transfer-complete/{id}', 'Backend\TransferWomanController@transferComplete')->name('transfer-woman.transfer-complete');
-
-//Bakend OutReachClinic
-Route::resource('admin/out-reach-clinic', 'Backend\OutReachClinicController');
 
 //Bakend Api
 Route::get('/api/healthpost', 'Api\HealthpostController@index')->name('api.healthpost.index');
@@ -192,21 +123,6 @@ Route::get('/admin/overview-data', 'Backend\OverviewController@index')->name('ad
 Route::get('/admin/fchv-overview', 'Backend\OverviewController@fchv')->name('admin.fchv-overview'); 
 
 Route::resource('/admin/download-dev-apks', 'Backend\DownloadApksController');
-
-Route::resource('/admin/content-app/multimedia', 'ContentApp\MultimediaController');
-Route::resource('/admin/content-app/news-feed', 'ContentApp\NewsFeedController');
-Route::resource('/admin/content-app/advertisement', 'ContentApp\AdvertisementController');
-Route::get('/admin/content-app/woman-registered', 'ContentApp\WomanRegistrationController@index')->name('content-app.reg.woman.index');
-Route::delete('/admin/content-app/woman-registered/{id}', 'ContentApp\WomanRegistrationController@delete')->name('content-app.reg.woman.delete');
-Route::get('/admin/content-app/woman-registered/{id}', 'ContentApp\WomanRegistrationController@edit')->name('content-app.reg.woman.edit');
-Route::patch('/admin/content-app/woman-registered/{id}', 'ContentApp\WomanRegistrationController@update')->name('content-app.reg.woman.update');
-
-Route::post('/admin/content-app/woman-registered-send-care', 'ContentApp\WomanRegistrationController@sendCare')->name('content-app.reg.woman.send-care');
-Route::get('/admin/content-app/woman-registered-send-care/{id}', 'ContentApp\WomanRegistrationController@showSendCare')->name('content-app.reg.woman.show');
-
-Route::get('/admin/content-app/map', 'ContentApp\WomanMapController@index');
-
-Route::get('/report/woman/self-evaluation', 'ContentApp\SelfEvaluationController@report')->name('woman-self-evaluation.report');
 
 Route::resource('/admin/backup-restore', 'Backend\BackupRestoreController');
 
