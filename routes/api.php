@@ -13,40 +13,6 @@ Route::post('/baby-detail-new', 'Api\BabyDetailController@newStore');
 Route::post('/vial-to-child/create-baby-new', 'Api\VialToChildController@storeBabyNew');
 Route::put('/vial-to-child/update-baby-new/{token}', 'Api\VialToChildController@updateBabyNew');
 
-Route::post('/vial-to-child/baby', 'Api\VialToChildController@batchStore');
-Route::post('/vial-to-child/baby-update', 'Api\VialToChildController@batchUpdate');
-Route::post('/vaccination-record-new', 'Api\VaccinationRecordController@batchStore');
-Route::post('/vaccination-record-new-update', 'Api\VaccinationRecordController@batchUpdate');
-
-Route::get('/vial-detail', 'Api\VialDetailController@index');
-Route::post('/vial-detail', 'Api\VialDetailController@batchStore');
-Route::post('/vial-detail-update', 'Api\VialDetailController@batchUpdate');
-
-// Content App Apis
-Route::post('/v1/woman-login', 'Api\WomanController@womanLogin');
-Route::post('/v1/woman-qrlogin', 'Api\WomanController@womanQRLogin');
-
-Route::post('/v1/woman-registration', 'Api\WomanController@womanRregistrationStore');
-Route::post('/v1/woman-update', 'Api\WomanController@womanUpdate');
-Route::get('/v1/woman-ancs/{token}', 'Api\WomanController@womanAnc');
-Route::get('/v1/woman-vaccination/{token}', 'Api\WomanController@womanVaccination');
-
-Route::post('/v1/woman-survey', 'Api\WomanController@WomanSurvey');
-
-Route::post('/v1/registration/woman', 'Api\WomanController@registrationWoman');
-
-Route::get('/v1/woman-delivery/{token}', 'Api\WomanController@womanDelivery');
-Route::get('/v1/woman-pnc/{token}', 'Api\WomanController@womanPnc');
-Route::get('/v1/woman-labtest/{token}', 'Api\WomanController@womanLabTest');
-Route::get('/v1/amc-baby/{token}', 'Api\WomanController@babyDetails');
-Route::get('/v1/amc-baby-vaccination/{token}', 'Api\WomanController@babyVaccination');
-Route::get('/v1/amc-baby-weight/{token}', 'Api\WomanController@babyWeight');
-Route::get('/v1/amc-baby-aefi/{token}', 'Api\WomanController@babyAefi');
-
-Route::post('/v3/content-app/login', 'Api\v3\ContentAppController@login');
-Route::post('/v3/content-app/qrlogin', 'Api\v3\ContentAppController@qrlogin');
-Route::post('/v3/content-app/register', 'Api\v3\ContentAppController@register');
-
 // Care App Apis
 Route::get('/v1/woman-vaccination', 'Api\WomanVaccinationController@index');
 Route::post('/v1/woman-vaccination', 'Api\WomanVaccinationController@store');
@@ -82,10 +48,6 @@ Route::get('/v2/content-app/appointment/history', 'Api\v2\ContentAppAppointmentC
 Route::post('/v2/woman', 'Api\v2\WomanRegisterController@store');
 Route::post('/v2/anc', 'Api\v2\AncController@store');
 
-// HMIS
-Route::post('/hmis/vaccination-program', 'Hmis\VaccinationProgramController@send');
-Route::post('/hmis/safe-maternity-program', 'Hmis\SafeMaternityProgramController@send');
-
 // New Login
 Route::post('/v2/amc/login', 'Api\LoginController@v2AmcLogin');
 
@@ -115,33 +77,6 @@ Route::get('/v1/healthposts', function ()
     $healthpost = \App\Models\Healthpost::with(['province', 'municipality', 'district'])->get();
     return response()->json($healthpost);
 });
-
-
-Route::post('/v1/survey', function(Request $request){
-
-    $data = $request->json()->all();
-
-    foreach ($data as $value) {
-        $record = json_encode($value);
-            \App\Models\Survey::create(['data' => $record ]);
-    }
-
-    return response()->json(['message' => 'Data Sussessfully Sync']);
-});
-
-Route::post('/v1/raw/fhr', function(Request $request){
-    try{
-        $data = json_decode($request->getContent(), true);
-        if (!empty($data)) {
-            $final_data = json_encode($data);
-            \DB::table('raw_data')->insert(['data' => $final_data]);
-        }
-        return response()->json(['message' => 'Data Sussessfully Sync']);
-    }catch(\Exception $e){
-        return response()->json(['message'=> 'Error in Sync']);
-    }
-});
-
 
 Route::post('/v1/client', function(Request $request){
     $data = $request->json()->all();
@@ -235,6 +170,13 @@ Route::get('/v1/client', function(Request $request){
         $response['result'] = $row->result ?? '';
         $response['case_id'] = $row->case_id ?? '';
         $response['parent_case_id'] = $row->parent_case_id ?? '';
+
+        $response['symptoms_recent'] = $row->symptoms_recent ?? '';
+        $response['symptoms_within_four_week'] = $row->symptoms_within_four_week ?? '';
+        $response['symptoms_date'] = $row->symptoms_date ?? '';
+        $response['case_reason'] = $row->case_reason ?? '';
+        $response['temperature'] = $row->temperature ?? '';
+
     return $response;
 });
     return response()->json($data);
@@ -360,4 +302,59 @@ Route::post('/v1/patient-transfer', function(Request $request){
     \App\Models\Anc::where('woman_token', $data['token'])->update(['hp_code' => $data['hp_code']]);
     
     return response()->json($data['token']);
+});
+
+
+Route::post('/v1/patient-symptoms', function(Request $request){
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            \App\Models\Symptoms::create($value);
+        } catch (\Exception $e) {
+            
+        }
+    }
+    return response()->json(['message' => 'Data Sussessfully Sync']);
+});
+
+Route::get('/v1/patient-symptoms', function(Request $request){
+    $hp_code = $request->hp_code;
+    $data = \App\Models\Symptoms::where('hp_code', $hp_code)->get();
+    return response()->json($data);
+});
+
+Route::post('/v1/patient-clinical-parameters', function(Request $request){
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            \App\Models\ClinicalParameter::create($value);
+        } catch (\Exception $e) {
+            
+        }
+    }
+    return response()->json(['message' => 'Data Sussessfully Sync']);
+});
+
+Route::get('/v1/patient-clinical-parameters', function(Request $request){
+    $hp_code = $request->hp_code;
+    $data = \App\Models\ClinicalParameter::where('hp_code', $hp_code)->get();
+    return response()->json($data);
+});
+
+Route::post('/v1/patient-laboratory-parameter', function(Request $request){
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            \App\Models\LaboratoryParameter::create($value);
+        } catch (\Exception $e) {
+            
+        }
+    }
+    return response()->json(['message' => 'Data Sussessfully Sync']);
+});
+
+Route::get('/v1/patient-laboratory-parameter', function(Request $request){
+    $hp_code = $request->hp_code;
+    $data = \App\Models\LaboratoryParameter::where('hp_code', $hp_code)->get();
+    return response()->json($data);
 });
