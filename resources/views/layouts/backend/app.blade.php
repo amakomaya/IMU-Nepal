@@ -321,7 +321,7 @@
                 </li>
                 <ul class="nav navbar-nav" style="margin-top: -5px;">
 
-                <li class="dropdown">
+                {{-- <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-bell fa-fw"></i>
                         @if(count(\App\Models\TransferWoman::healthpostTransferMessage())>0)
@@ -358,7 +358,7 @@
                         
                     </ul>
                     <!-- /.dropdown-messages -->
-                </li>
+                </li> --}}
                </ul>
                <li class="nav navbar-nav sl-nav userinfo" style="margin: 10px;">
                     <i class="fa fa-user"> : </i> 
