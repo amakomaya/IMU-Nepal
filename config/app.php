@@ -166,7 +166,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        App\Providers\ContentApp\NewsFeedServiceProvider::class,
         App\Providers\AncServiceProvider::class,
 
     ],
