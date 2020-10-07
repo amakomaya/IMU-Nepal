@@ -8,9 +8,11 @@
         <li>
             <a href="{{ route('health-worker.index') }}">{{ trans('sidebar.list') }}</a>
         </li>
+        @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
         <li>
             <a href="{{ route('health-worker.create') }}">{{ trans('sidebar.create') }}</a>
         </li>
+        @endif
     </ul>
 </li>
 <li>
@@ -24,9 +26,11 @@
         <li>
             <a href="{{ route('fchv.index') }}">{{ trans('sidebar.list') }}</a>
         </li>
+        @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
         <li>
             <a href="{{ route('fchv.create') }}">{{ trans('sidebar.create') }}</a>
         </li>
+        @endif
     </ul>
 </li>
 <li>
@@ -45,10 +49,9 @@
 
     </a>
 </li>
-
 <li>
-    <a href="{{ route('woman.map') }}">
+    <a href="{{ route('center.woman.map') }}">
     <i class="fa fa-globe" aria-hidden="true"></i>
         Map
     </a>
-</li>
+</li> 

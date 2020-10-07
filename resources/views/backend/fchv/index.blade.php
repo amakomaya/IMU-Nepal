@@ -14,10 +14,11 @@
 
                     </div>
                 @endif
-                
+                @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
                 <div class="form-group">
                         <a class="btn btn-success" href="{{route('fchv.create') }}">Create</a>
                 </div>
+                @endif
             <div class="panel panel-default">
                 <div class="panel-heading">
                    Lab Users
@@ -62,13 +63,16 @@
                                     <form method="post" action="{{route('fchv.destroy', $healthWorker->id)}}" onsubmit="return confirm('Are you sure?')">
                                         <div class="icon">
                                             <a  href="{{route('fchv.show', $healthWorker->id) }}" title="View">
-                                            <span class="glyphicon glyphicon-eye-open"></span>                                            </a>
+                                                <span class="glyphicon glyphicon-eye-open"></span>                                            
+                                            </a>
                                                 <a href="{{route('fchv.edit', $healthWorker->id) }}" title="Edit">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
+                                                @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
                                                 {{csrf_field()}}
                                                 {{method_field('DELETE')}}
                                                 <button name="submit" class="pull-right" style="border: 0; background: transparent;" title="Delete"><i class="fa fa-trash-o"></i></button>
+                                                @endif
                                         </div>
                                     </form>
                                     <a class="btn btn-xs btn-primary"  href="{{route('user-manager.change-paswword', \App\User::getUserId($healthWorker->token) ) }}">

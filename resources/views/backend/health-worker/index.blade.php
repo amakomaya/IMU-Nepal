@@ -5,7 +5,7 @@
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-12">
-            @if(\App\User::checkAuthForViewByHealthpost()===true)
+            @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
                 <script type="text/javascript">
                      function confirmDelete(){
                         if(confirm("Are you sure to delete?")){
@@ -110,9 +110,11 @@
                                                 <a href="{{route('fchv.edit', $healthWorker->id) }}" title="Edit">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
+                                            @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
                                                 {{csrf_field()}}
                                                 {{method_field('DELETE')}}
                                                 <button name="submit" class="pull-right" style="border: 0; background: transparent;" title="Delete"><i class="fa fa-trash-o"></i></button>
+                                            @endif
                                             @endif
                                         </div>
                                     </form>

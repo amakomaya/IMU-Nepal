@@ -7,9 +7,11 @@
         <li>
             <a href="{{ route('province.index') }}">{{ trans('sidebar.list') }}</a>
         </li>
+        @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
         <li>
             <a href="{{ route('province.create') }}">{{ trans('sidebar.create') }}</a>
         </li>
+        @endif
     </ul>
 </li>
 <li>
@@ -21,9 +23,11 @@
         <li>
             <a href="{{ route('dho.index') }}">{{ trans('sidebar.list') }}</a>
         </li>
+        @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
         <li>
             <a href="{{ route('dho.create') }}">{{ trans('sidebar.create') }}</a>
         </li>
+        @endif
     </ul>
 </li>
 <li>
@@ -35,9 +39,11 @@
         <li>
             <a href="{{ route('municipality.index') }}">{{ trans('sidebar.list') }}</a>
         </li>
+        @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
         <li>
             <a href="{{ route('municipality.create') }}">{{ trans('sidebar.create') }}</a>
         </li>
+        @endif
     </ul>
 </li>
  <li>

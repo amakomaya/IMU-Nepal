@@ -5,7 +5,7 @@
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
-                    @if(\App\User::checkAuthForViewByMain()===true || Auth::user()->role === "province" || Auth::user()->role === "dho")
+                    @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
                         <div class="form-group">
                             <a class="btn btn-success" href="{{route('municipality.create') }}">{{trans('index.create')}}</a>
                         </div>
@@ -90,11 +90,10 @@
                                                 <a  href="{{route('municipality.show', $municipalityInfo->id) }}">
                                                 <span class="glyphicon glyphicon-eye-open"></span>                                                </a>
 
-                                                @if(\App\User::checkAuthForViewByMain()===true || Auth::user()->role === "center"  || Auth::user()->role === "province" || Auth::user()->role === "dho")
                                                     <a href="{{route('municipality.edit', $municipalityInfo->id) }}">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
-                                                    
+                                                @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
                                                     {{csrf_field()}}
                                                     {{method_field('DELETE')}}
                                                     <button name="submit" class="pull-right" title="Delete" style="border: 0; background: transparent;"><i class="fa fa-trash-o"></i></button>

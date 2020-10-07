@@ -28,10 +28,11 @@
 
                     </div>
                 @endif
-                
+                @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
                 <div class="form-group">
                     <a class="btn btn-success" href="{{route('healthpost.create') }}">{{trans('index.create')}}</a>
                 </div>
+                @endif
             <div class="panel panel-default">
                 <div class="panel-heading">
                 {{trans('index.healthpost_info')}}
@@ -95,10 +96,11 @@
                                                     <a href="{{route('healthpost.edit', $healthpost->id) }}">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
-                                                    
+                                                    @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
                                                     {{csrf_field()}}
                                                     {{method_field('DELETE')}}
                                                     <button name="submit" class="pull-right" title="Delete" style="border: 0; background: transparent;"><i class="fa fa-trash-o"></i></button>
+                                                    @endif
                                                     </span>
                                                 @endif
                                             </div>

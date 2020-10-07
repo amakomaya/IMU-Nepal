@@ -10,11 +10,6 @@
                     Municipality 
             </a>
         </li>
-         <!-- <li>
-            <a href="{{ route('ward.index') }}">
-                    Ward 
-            </a>
-        </li> -->
          <li>
             <a href="{{ route('healthpost.index') }}">
                     Hospitals 
