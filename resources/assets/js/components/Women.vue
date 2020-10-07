@@ -49,7 +49,7 @@
                 <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
                 <td>
                     <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"></div>
-                    <div v-else><span class="label label-primary"> Registred </span></div>
+                    <div v-else><span class="label label-primary"> Registered </span></div>
                 </td>
                 <td>
                     <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">

@@ -34501,7 +34501,7 @@ var render = function() {
                                   _c(
                                     "span",
                                     { staticClass: "label label-primary" },
-                                    [_vm._v(" Registred ")]
+                                    [_vm._v(" Registered ")]
                                   )
                                 ])
                           ]),
