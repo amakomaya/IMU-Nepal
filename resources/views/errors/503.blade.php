@@ -15,10 +15,8 @@
 
 
 <body>
-	<img class="image" src="{{ asset('images/maintainance-logo.png') }}" >
 	<div class="container">
 
-		<img src="{{ asset('images/maintainance.png') }}">
 		<h1>Under Maintenance</h1>
 		<p class="text">
 			Our website is under maintenance.
