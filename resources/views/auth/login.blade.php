@@ -1,109 +1,114 @@
 <!doctype html>
 <html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="shortcut icon" type="image/png" href="{{ asset('favicon.png') }}"/>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="{{ asset('favicon.png') }}"/>
 
-        <title>{{ config('app.name') }}</title>
+  <title>{{ config('app.name') }}</title>
 
-        <link href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
 
-        <style>
+  <style>
             
   .sl-nav {
-  display: inline;
-}
-.sl-nav ul {
-  margin:0;
-  padding:0;
-  list-style: none;
-  position: relative;
-  display: inline-block;
-}
-.sl-nav li {
-  cursor: pointer;
-  padding-bottom:10px;
-}
-.sl-nav li ul {
-  display: none;
-}
-.sl-nav li:hover ul {
-  position: absolute;
-  top:29px;
-  right:-15px;
-  display: block;
-  background: #fff;
-  width: 120px;
-  padding-top: 0px;
-  z-index: 1;
-  border-radius:5px;
-  box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
-}
-.sl-nav li:hover .triangle {
-  position: absolute;
-  top: 15px;
-  right: -10px;
-  z-index:10;
-  height: 14px;
-  overflow:hidden;
-  width: 30px;
-  background: transparent;
-}
-.sl-nav li:hover .triangle:after {
-  content: '';
-  display: block;
-  z-index: 20;
-  width: 15px;
-  transform: rotate(45deg) translateY(0px) translatex(10px);
-  height: 15px;
-  background: #fff;
-  border-radius:2px 0px 0px 0px;
-  box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
-}
-.sl-nav li ul li {
-  position: relative;
-  text-align: left;
-  background: transparent;
-  padding: 15px 15px;
-  padding-bottom:0;
-  z-index: 2;
-  font-size: 15px;
-  color: #3c3c3c;
-}
-.sl-nav li ul li:last-of-type {
-  padding-bottom: 15px;
-}
-.sl-nav li ul li span {
-  padding-left: 5px;
-}
-.sl-nav li ul li span:hover, .sl-nav li ul li span.active {
-  color: #146c78;
-}
-.sl-flag {
-  display: inline-block;
-  box-shadow: 0px 0px 3px rgba(0,0,0,0.4);
-  width: 15px;
-  height: 15px;
-  background: #aaa;
-  border-radius: 50%;
-  position: relative;
-  top: 2px;
-  overflow: hidden;
-}
-.flag-np {
-  background: url('/images/np.png');  
-  background-size: cover;
-  background-position: center center;
-}
-.flag-usa {
-  background-size: cover;
-  background-position: center center;
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAIAAAAC64paAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTM0A1t6AAABhUlEQVQ4T2Ows82PjGixsc4LD2tysC/09Kjw8622tyuICG8u0w/cpGSCBzF4e1VmZkzw9anOzOj38a4KCW4IC22ECHYk1l9tn4gHMeTlTnZxLikvm+XiUpKW2hvgX+vnV5OVOQEoOGfOtv94AYOzU3Fd7XxHh6Lq6rlurqUx0W0J8Z1AnbW18yotonaYuOJBDBXls4A+bGpaBCTz86YEBtQCvVBSPAPIbY0oP1/aiAcxABU1Ny+2tclvbFjo5FgUF9uenNwNDLnmpkWEnV1TPRcY1O1tS4H6i4umA/0MDK2K8tlAwRqHpP1uoXgQKKraWpcClTY3LQZaCLQ5NaUX5OaWJY3++SeTC/AgBmA4AXUClUJs9ver8fKsAAYEUJCws4G21dXNB1oFdD/Qz8DQTk4C+bm2dn6DZ9bRiDQ8iAEYt8CoBpK5YBIYw0AEEZwSXX4oMB4PYoC6gCzAcDqrjGzEsMfen2xEmbMv1rSTjRi26dqRjShz9o2+6WQjBrSShQSkZAIADvW/HLrLY6cAAAAASUVORK5CYII=');
-}
-        </style>
-    </head>
+    display: inline;
+  }
+  .sl-nav ul {
+    margin:0;
+    padding:0;
+    list-style: none;
+    position: relative;
+    display: inline-block;
+  }
+  .sl-nav li {
+    cursor: pointer;
+    padding-bottom:10px;
+  }
+  .sl-nav li ul {
+    display: none;
+  }
+  .sl-nav li:hover ul {
+    position: absolute;
+    top:29px;
+    right:-15px;
+    display: block;
+    background: #fff;
+    width: 120px;
+    padding-top: 0px;
+    z-index: 1;
+    border-radius:5px;
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+  }
+  .sl-nav li:hover .triangle {
+    position: absolute;
+    top: 15px;
+    right: -10px;
+    z-index:10;
+    height: 14px;
+    overflow:hidden;
+    width: 30px;
+    background: transparent;
+  }
+  .sl-nav li:hover .triangle:after {
+    content: '';
+    display: block;
+    z-index: 20;
+    width: 15px;
+    transform: rotate(45deg) translateY(0px) translatex(10px);
+    height: 15px;
+    background: #fff;
+    border-radius:2px 0px 0px 0px;
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+  }
+  .sl-nav li ul li {
+    position: relative;
+    text-align: left;
+    background: transparent;
+    padding: 15px 15px;
+    padding-bottom:0;
+    z-index: 2;
+    font-size: 15px;
+    color: #3c3c3c;
+  }
+  .sl-nav li ul li:last-of-type {
+    padding-bottom: 15px;
+  }
+  .sl-nav li ul li span {
+    padding-left: 5px;
+  }
+  .sl-nav li ul li span:hover, .sl-nav li ul li span.active {
+    color: #146c78;
+  }
+  .sl-flag {
+    display: inline-block;
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.4);
+    width: 15px;
+    height: 15px;
+    background: #aaa;
+    border-radius: 50%;
+    position: relative;
+    top: 2px;
+    overflow: hidden;
+  }
+  .flag-np {
+    background: url('/images/np.png');  
+    background-size: cover;
+    background-position: center center;
+  }
+  .flag-usa {
+    background-size: cover;
+    background-position: center center;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAIAAAAC64paAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTM0A1t6AAABhUlEQVQ4T2Ows82PjGixsc4LD2tysC/09Kjw8622tyuICG8u0w/cpGSCBzF4e1VmZkzw9anOzOj38a4KCW4IC22ECHYk1l9tn4gHMeTlTnZxLikvm+XiUpKW2hvgX+vnV5OVOQEoOGfOtv94AYOzU3Fd7XxHh6Lq6rlurqUx0W0J8Z1AnbW18yotonaYuOJBDBXls4A+bGpaBCTz86YEBtQCvVBSPAPIbY0oP1/aiAcxABU1Ny+2tclvbFjo5FgUF9uenNwNDLnmpkWEnV1TPRcY1O1tS4H6i4umA/0MDK2K8tlAwRqHpP1uoXgQKKraWpcClTY3LQZaCLQ5NaUX5OaWJY3++SeTC/AgBmA4AXUClUJs9ver8fKsAAYEUJCws4G21dXNB1oFdD/Qz8DQTk4C+bm2dn6DZ9bRiDQ8iAEYt8CoBpK5YBIYw0AEEZwSXX4oMB4PYoC6gCzAcDqrjGzEsMfen2xEmbMv1rSTjRi26dqRjShz9o2+6WQjBrSShQSkZAIADvW/HLrLY6cAAAAASUVORK5CYII=');
+  }
+
+  .input-group-addon .fa {
+    font-size: 18px;
+  }
+  </style>
+</head>
 <body style="background-color: #F7F7F7;">
     <br>
     <div class="container">
@@ -124,11 +129,12 @@
     <div class="col-md-4 col-md-offset-4" style="margin-top: 50px;">
 
         <div class="login-panel panel panel-default" style="margin:40px">
-          <div class="row text-center">
-              <img class="img-responsive center-block" src="{{ asset('images/login-icon.png') }}">
-          </div>
+          <div style="display:inline-block; width:100%; height:auto;">
 
-            <!-- <h4 class="text-center"> {{ config('app.name') }} </h4> -->
+              <img class="img-responsive center-block" src="{{ asset('images/login-icon.png') }}">
+        </div>
+
+            <h4 class="text-center"> {{ config('app.name') }} </h4>
             @if (Request::session()->has('error_message'))
                 <div class="alert alert-block alert-danger" style="margin:15px; text-align:center;">
                     <button type="button" class="close" data-dismiss="alert">
@@ -143,31 +149,40 @@
                     {{ csrf_field() }}
                     <fieldset>
                         <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                          <div class="input-group">
+                             <span class="input-group-addon" title="@lang('login.username')"><i class="fa fa-user"></i></span>
                             <input class="form-control" placeholder="@lang('login.username')" id="username" name="username" value="{{ old('username') }}" type="text" autofocus>
                             @if ($errors->has('username'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('username') }}</strong>
                                 </span>
                             @endif
+                          </div>
                         </div>
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                          <div class="input-group">
+                            <span class="input-group-addon" title="@lang('login.password')"><i class="fa fa-lock"></i></span>
                             <input class="form-control" id="password" placeholder="@lang('login.password')" name="password" type="password" value="">
                             @if ($errors->has('password'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('password') }}</strong>
                                 </span>
                             @endif
-                            <input type="checkbox" onclick="TogglePassword()"> 
+                          </div>
+                          <input type="checkbox" onclick="TogglePassword()"> 
                             <b>@lang('login.show_password')</b> 
                         </div>
-                        
-                      <input type="submit" class="btn btn-md btn-success btn-block" value="@lang('login.login')">
+                      <input type="submit" class="btn btn-md btn-primary btn-block" value="@lang('login.login')">
                     </fieldset>
-                    <div class="checkbox" align="right">
+                    <br>
+                    <div class="clearfix">
+                      <a href="#" class="pull-right">Forgot Password ?</a>
+                  </div>  
+                    <!-- <div class="checkbox" align="right">
                         <label>
                             <input name="remember" type="checkbox" value="{{ old('remember') ? 'checked' : '' }}">@lang('login.remember_me')
                         </label>
-                    </div>
+                    </div> -->
                 </form>
             </div>
         </div>
