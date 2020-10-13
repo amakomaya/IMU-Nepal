@@ -220,8 +220,8 @@ Route::post('/v1/client-tests', function(Request $request){
 
 Route::get('/v1/client-tests', function(Request $request){
     $hp_code = $request->hp_code;
-    $data = collect(\DB::table('ancs')->where('hp_code', $hp_code)->get())->map(function ($row) {
-
+    $record = \DB::table('ancs')->where('hp_code', $hp_code)->get();
+    $data = collect($record)->map(function ($row) {
         $response = [];
         $response['token'] = $row->token;
         $response['woman_token'] = $row->woman_token ?? '';
@@ -246,18 +246,17 @@ Route::get('/v1/client-tests', function(Request $request){
         $response['created_at'] = $row->created_at ?? '';
         $response['updated_at'] = $row->updated_at ?? '';
         $response['checked_by_name'] = $row->checked_by_name ?? '';
-
         $response['sample_type'] = $row->sample_type ?? '';
         $response['sample_type_specific'] = $row->sample_type_specific ?? '';
         $response['sample_case_specific'] = $row->sample_case_specific ?? '';
         $response['sample_case'] = $row->sample_case ?? '';
         $response['sample_identification_type'] = $row->sample_identification_type ?? '';
-                $response['service_type'] = $row->service_type ?? '';
+        $response['service_type'] = $row->service_type ?? '';
         $response['result'] = $row->result ?? '';
         $response['infection_type'] = $row->infection_type ?? '';
 
     return $response;
-});
+})->values();
     return response()->json($data);
 });
 
