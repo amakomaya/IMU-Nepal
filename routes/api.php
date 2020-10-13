@@ -96,9 +96,12 @@ Route::get('/v1/client', function(Request $request){
     $data = collect(\DB::table('women')
         ->leftJoin('ancs', 'ancs.woman_token', '=', 'women.token')
         ->where('women.hp_code', $hp_code)
-        ->where('ancs.result', '!=', 4)
-        ->select('women.*', 'ancs.result')
-        ->get())->map(function ($row) {        
+        ->select('women.*', 'ancs.result as sample_result')
+        ->get())->filter(function ($row) {   
+
+        if ($row->sample_result == 4) {
+            return;
+        }
 
         $response = [];
 
@@ -184,7 +187,7 @@ Route::get('/v1/client', function(Request $request){
         $response['temperature'] = $row->temperature ?? '';
 
     return $response;
-});
+})->values();
     return response()->json($data);
 });
 
