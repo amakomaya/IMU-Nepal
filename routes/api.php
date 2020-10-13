@@ -172,11 +172,11 @@ Route::get('/v1/client', function(Request $request){
         $response['payment'] = $row->payment ?? '';
         $response['result'] = $row->result ?? '';
 
-        if ($response['result'] == '4') {
-            $response['case_id'] = $row->case_id ?? '';
-        }else{
+        // if ($response['result'] == '4') {
+        //     $response['case_id'] = $row->case_id ?? '';
+        // }else{
             $response['case_id'] = '';
-        }
+        // }
 
         $response['parent_case_id'] = $row->parent_case_id ?? '';
 
