@@ -82,7 +82,7 @@ Route::post('/v1/client', function(Request $request){
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
-            $value['case_id'] = substr(md5(time()), 0, 5);
+            $value['case_id'] = bin2hex(random_bytes(5));
             \App\Models\Woman::create($value);
         } catch (\Exception $e) {
             
