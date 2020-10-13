@@ -96,10 +96,10 @@ Route::get('/v1/client', function(Request $request){
     $data = collect(\DB::table('women')
         ->leftJoin('ancs', 'ancs.woman_token', '=', 'women.token')
         ->where('women.hp_code', $hp_code)
-        ->select('women.*', 'ancs.result as sample_result')
+        ->select('women.*', 'ancs.result as result')
         ->get())->filter(function ($row) {   
 
-        if ($row->sample_result == 4) {
+        if ($row->result == 4) {
             return;
         }
 
@@ -172,7 +172,7 @@ Route::get('/v1/client', function(Request $request){
         $response['payment'] = $row->payment ?? '';
         $response['result'] = $row->result ?? '';
 
-        if ($response['result'] == '3') {
+        if ($response['result'] == '4') {
             $response['case_id'] = $row->case_id ?? '';
         }else{
             $response['case_id'] = '';
