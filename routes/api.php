@@ -93,15 +93,13 @@ Route::post('/v1/client', function(Request $request){
 
 Route::get('/v1/client', function(Request $request){
     $hp_code = $request->hp_code;
-    $data = collect(\DB::table('women')
+    $record = \DB::table('women')
         ->leftJoin('ancs', 'ancs.woman_token', '=', 'women.token')
         ->where('women.hp_code', $hp_code)
-        ->select('women.*', 'ancs.result as result')
-        ->get())->filter(function ($row) {   
+        ->select('women.*', 'ancs.result as sample_result')
+        ->get();
 
-        if ($row->result == 4) {
-            return;
-        }
+    $data = collect($record)->map(function ($row) {
 
         $response = [];
 
@@ -170,13 +168,13 @@ Route::get('/v1/client', function(Request $request){
         $response['case_where'] = $row->case_where ?? '';
         $response['end_case'] = $row->end_case ?? '';
         $response['payment'] = $row->payment ?? '';
-        $response['result'] = $row->result ?? '';
+        $response['result'] = $row->sample_result ?? '';
 
-        // if ($response['result'] == '4') {
-        //     $response['case_id'] = $row->case_id ?? '';
-        // }else{
+         if ($response['result'] == '4') {
+             $response['case_id'] = $row->case_id ?? '';
+         }else{
             $response['case_id'] = '';
-        // }
+         }
 
         $response['parent_case_id'] = $row->parent_case_id ?? '';
 
@@ -186,9 +184,14 @@ Route::get('/v1/client', function(Request $request){
         $response['case_reason'] = $row->case_reason ?? '';
         $response['temperature'] = $row->temperature ?? '';
 
-    return $response;
+        return $response;
 })->values();
-    return response()->json($data);
+
+    $filtered = $data->filter(function ($value, $key){
+        return $value['result'] !== '4';
+    })->values();
+
+    return response()->json($filtered);
 });
 
 Route::post('/v1/client-update', function(Request $request){
