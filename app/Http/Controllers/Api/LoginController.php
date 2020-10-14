@@ -26,7 +26,7 @@ class LoginController extends Controller
         if (!empty($user)) {
             $healthworker = HealthWorker::where('token',$user->token)->get()->first();
 //            if($healthworker->hp_code == "amh" || $healthworker->district_id == 65 || $request->root() == 'http://demo.aamakomaya.com'){
-                $response = ['name'=>$healthworker->name,'role'=>$healthworker->role,'token'=>$user->token,'hp_code'=>$healthworker->hp_code,  'municipality_id'=>$healthworker->municipality_id, 'district_id'=>$healthworker->district_id ];
+                $response = ['id'=>$healthworker->id,'name'=>$healthworker->name,'role'=>$healthworker->role,'token'=>$user->token,'hp_code'=>$healthworker->hp_code,  'municipality_id'=>$healthworker->municipality_id, 'district_id'=>$healthworker->district_id ];
 //            }else{
 //                $check_imei = User::where('imei', $imei)->get()->first();
 //                if(isset($check_imei)){
