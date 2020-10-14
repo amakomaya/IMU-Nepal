@@ -34528,13 +34528,19 @@ var render = function() {
                             item.ancs.length > 0 && item.latest_anc.result == 9
                               ? _c("div", [
                                   _vm._v(
-                                    _vm._s(item.latest_anc.labreport.token)
+                                    _vm._s(
+                                      item.latest_anc.labreport.token.split(
+                                        ",",
+                                        2
+                                      )[1]
+                                    )
                                   )
                                 ])
                               : _vm._e()
                           ]),
                           _vm._v(" "),
                           _c("td", [
+                            _vm._v("s\n                    "),
                             _c(
                               "button",
                               {
