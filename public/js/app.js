@@ -4844,6 +4844,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -4923,6 +4927,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         'Emergency Contact One': 'emergency_contact_one',
         'Emergency Contact Two': 'emergency_contact_two',
         'Current Hospital': 'healthpost.name',
+        'Sample Token': 'latest_anc.token',
+        'Created AT': 'created_at',
         'Latest Lab Result': {
           field: 'latest_anc.result',
           callback: function callback(value) {
@@ -6966,7 +6972,7 @@ exports.push([module.i, ".v-select{position:relative;font-family:inherit}.v-sele
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9":
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css":
 /*!***********************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vuetify/dist/vuetify.min.css ***!
   \***********************************************************************************************************************************/
@@ -34482,10 +34488,25 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(item.created_at))]),
+                          _vm._v(" "),
                           _c("td", [
                             _c("span", { staticClass: "label label-info" }, [
                               _vm._v(" " + _vm._s(item.ancs.length))
-                            ])
+                            ]),
+                            _vm._v(" "),
+                            item.latest_anc
+                              ? _c(
+                                  "div",
+                                  { attrs: { title: "Sample token" } },
+                                  [
+                                    _vm._v("ST : "),
+                                    _c("strong", [
+                                      _vm._v(_vm._s(item.latest_anc.token))
+                                    ])
+                                  ]
+                                )
+                              : _vm._e()
                           ]),
                           _vm._v(" "),
                           _c("td", [
@@ -34574,6 +34595,8 @@ var render = function() {
               _c("th", [_vm._v("Muicipality")]),
               _vm._v(" "),
               _c("th", [_vm._v("Case")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Created At")]),
               _vm._v(" "),
               _c("th", [_vm._v("Total Collection")]),
               _vm._v(" "),
@@ -83220,7 +83243,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_vue__;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9");
+var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 

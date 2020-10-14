@@ -23,6 +23,7 @@
                 <!-- <th>District</th> -->
                 <th>Muicipality</th>
                 <th>Case</th>
+                <th>Created At</th>
                 <th>Total Collection</th>
                 <th>Lab Result</th>
                 <th>Action</th>
@@ -46,7 +47,10 @@
                     Type : {{ checkCaseType(item.cases) }} <br>
                     Management : {{ checkCaseManagement(item.cases, item.case_where) }}
                 </td>
-                <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
+              <td>{{ item.created_at }}</td>
+                <td><span class="label label-info"> {{ item.ancs.length }}</span>
+                    <div v-if="item.latest_anc" title="Sample token">ST : <strong>{{ item.latest_anc.token }}</strong></div>
+                </td>
                 <td>
                     <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"></div>
                     <div v-else><span class="label label-primary"> Registered </span></div>
@@ -135,6 +139,8 @@
                     'Emergency Contact One' : 'emergency_contact_one',
                     'Emergency Contact Two' : 'emergency_contact_two',
                     'Current Hospital' : 'healthpost.name',
+                    'Sample Token' : 'latest_anc.token',
+                    'Created AT' : 'created_at',
                     'Latest Lab Result' : {
                         field: 'latest_anc.result',
                         callback: (value) => {
@@ -323,7 +329,7 @@
                 return 'Patient Details '+ new Date()+ext;
             },
             async fetchData(){
-  
+
             if(confirm("Do you want to Download all records in excel ! ")){
 
             const response = await axios.get('/data/api/patient/export');
