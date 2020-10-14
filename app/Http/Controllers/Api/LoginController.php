@@ -100,6 +100,7 @@ class LoginController extends Controller
         if (!empty($user)) {
             $healthworker = HealthWorker::where('token',$user->token)->get()->first();
             $response = [
+                'id' => $healthworker->id,
                 'name'=>$healthworker->name,
                 'role'=>$healthworker->role,
                 'token'=>$user->token,
