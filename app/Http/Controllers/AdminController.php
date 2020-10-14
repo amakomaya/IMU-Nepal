@@ -71,8 +71,8 @@ class AdminController extends Controller
         $data = [
                 'total_register' => $woman->count(),
                 'total_sample_collection' => Anc::whereIn('hp_code', $hpCodes)->active()->count(),
-                'total_tests' => LabTest::active()->count(),
-                'total_positive' => LabTest::active()->where('sample_test_result', 3)->count(),
+                'total_tests' => 0,
+                'total_positive' => 0,
                 'last_24_hrs_register' => $last_24_hrs_register,
                 'last_24_hrs_sample_collection' => $last_24_hrs_sample_collection,
                 'last_24_hrs_tests' => $last_24_hrs_tests,
