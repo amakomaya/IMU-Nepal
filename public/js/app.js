@@ -34529,10 +34529,10 @@ var render = function() {
                               ? _c("div", [
                                   _vm._v(
                                     _vm._s(
-                                      item.latest_anc.labreport.token.split(
-                                        "-",
-                                        2
-                                      )[1]
+                                      item.latest_anc.labreport.token
+                                        .split("-")
+                                        .splice(1)
+                                        .join("-")
                                     )
                                   )
                                 ])
