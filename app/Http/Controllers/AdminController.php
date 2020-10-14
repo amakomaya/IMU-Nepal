@@ -61,9 +61,12 @@ class AdminController extends Controller
 
         $last_24_hrs_sample_collection = $sample_collection->where('created_at', '>', Carbon::now()->subDay())->get()->count();
         
-        $last_24_hrs_tests = $tests->where('created_at', '>', Carbon::now()->subDay())->get()->count();
+//        $last_24_hrs_tests = $tests->whereIn('hp_code', $hpCodes)->where('created_at', '>', Carbon::now()->subDay())->get()->count();
 
-        $last_24_hrs_positive = $tests->where('created_at', '>', Carbon::now()->subDay())->where('sample_test_result', 3)->get()->count();
+        $last_24_hrs_tests = 0;
+        $last_24_hrs_positive = 0;
+
+//        $last_24_hrs_positive = $tests->whereIn('hp_code', $hpCodes)->where('created_at', '>', Carbon::now()->subDay())->where('sample_test_result', 3)->get()->count();
 
         $data = [
                 'total_register' => $woman->count(),
@@ -79,6 +82,12 @@ class AdminController extends Controller
                 'mild_cases_home' => $woman->where('cases', '1')->count(),
                 'severe_cases_home' => $woman->where('cases', '2')->count()
         ];
+
+        $update_profile_expiration = Carbon::parse(auth()->user()->updated_at)->addMonth();
+//
+//        if ($update_profile_expiration < Carbon::now() ) {
+//            $request->session()->flash('message', 'Update your account\'s information ! <a href="/admin/profile">Edit Profile</a>');
+//        }
 
         return view('admin', compact('data', 'chartWoman', 'provinces', 'districts', 'options', 'ward_or_healthpost', 'municipalities', 'wards', 'healthposts', 'province_id', 'district_id', 'municipality_id', 'ward_id', 'hp_code', 'from_date', 'to_date'));
     }
