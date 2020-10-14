@@ -4848,6 +4848,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 
@@ -34488,7 +34489,9 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(item.created_at))]),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.ad2bs(item.created_at)))
+                          ]),
                           _vm._v(" "),
                           _c("td", [
                             _c("span", { staticClass: "label label-info" }, [
@@ -34496,16 +34499,12 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             item.latest_anc
-                              ? _c(
-                                  "div",
-                                  { attrs: { title: "Sample token" } },
-                                  [
-                                    _vm._v("ST : "),
-                                    _c("strong", [
-                                      _vm._v(_vm._s(item.latest_anc.token))
-                                    ])
-                                  ]
-                                )
+                              ? _c("div", { attrs: { title: "Swab ID" } }, [
+                                  _vm._v("SID : "),
+                                  _c("strong", [
+                                    _vm._v(_vm._s(item.latest_anc.token))
+                                  ])
+                                ])
                               : _vm._e()
                           ]),
                           _vm._v(" "),
@@ -34524,7 +34523,15 @@ var render = function() {
                                     { staticClass: "label label-primary" },
                                     [_vm._v(" Registered ")]
                                   )
+                                ]),
+                            _vm._v(" "),
+                            item.ancs.length > 0 && item.latest_anc.result == 9
+                              ? _c("div", [
+                                  _vm._v(
+                                    _vm._s(item.latest_anc.labreport.token)
+                                  )
                                 ])
+                              : _vm._e()
                           ]),
                           _vm._v(" "),
                           _c("td", [

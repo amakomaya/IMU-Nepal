@@ -47,13 +47,14 @@
                     Type : {{ checkCaseType(item.cases) }} <br>
                     Management : {{ checkCaseManagement(item.cases, item.case_where) }}
                 </td>
-              <td>{{ item.created_at }}</td>
+              <td>{{ ad2bs(item.created_at) }}</td>
                 <td><span class="label label-info"> {{ item.ancs.length }}</span>
-                    <div v-if="item.latest_anc" title="Sample token">ST : <strong>{{ item.latest_anc.token }}</strong></div>
+                    <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
                 </td>
                 <td>
                     <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"></div>
                     <div v-else><span class="label label-primary"> Registered </span></div>
+                    <div v-if="item.ancs.length > 0 && item.latest_anc.result == 9">{{ item.latest_anc.labreport.token }}</div>
                 </td>
                 <td>
                     <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
