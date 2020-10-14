@@ -54,7 +54,7 @@
                 <td>
                     <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"></div>
                     <div v-else><span class="label label-primary"> Registered </span></div>
-                    <div v-if="item.ancs.length > 0 && item.latest_anc.result == 9">{{ item.latest_anc.labreport.token.split('-', 2)[1] }}</div>
+                    <div v-if="item.ancs.length > 0 && item.latest_anc.result == 9">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
                 </td>
                 <td>
                     <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
