@@ -34530,7 +34530,7 @@ var render = function() {
                                   _vm._v(
                                     _vm._s(
                                       item.latest_anc.labreport.token.split(
-                                        ",",
+                                        "-",
                                         2
                                       )[1]
                                     )
@@ -34540,7 +34540,6 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._v("s\n                    "),
                             _c(
                               "button",
                               {
