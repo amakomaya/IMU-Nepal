@@ -159,7 +159,7 @@
                                 return "Do not know";
                             }
                         },
-                      'Lab ID' : 'item.latest_anc.labreport.formated_token'
+                      'Lab ID' : 'latest_anc.labreport.formated_token'
                     },
                 },
                 json_meta: [
