@@ -4946,7 +4946,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               default:
                 return "Do not know";
             }
-          }
+          },
+          'Lab ID': 'item.latest_anc.labreport.formated_token'
         }
       },
       json_meta: [[{

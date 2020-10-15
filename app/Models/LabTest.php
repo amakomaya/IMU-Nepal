@@ -18,6 +18,8 @@ class LabTest extends Model
         'sample_recv_date', 'sample_test_date', 'sample_test_time', 'sample_test_result', 'checked_by', 'td_reg_no', 'checked_by_name', 'sample_token'
 ];
 
+    protected $appends = ['formated_token'];
+
     public function woman()
     {
         return $this->belongsTo('App\Models\Woman','woman_token','token');
@@ -31,6 +33,13 @@ class LabTest extends Model
     public function scopeFromToDate($query, $from, $to)
     {
         return $query->whereBetween('test_date', [$from, $to]);
+    }
+
+    public function getFormatedTokenAttribute()
+    {
+
+        return explode('-', $this->token,2)[1] ?? $this->token;
+
     }
 
 }
