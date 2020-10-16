@@ -58,9 +58,11 @@ Route::resource('admin/lab-user', 'Backend\FchvController', ['names' => 'fchv'])
 //Backend Health Worker
 Route::resource('admin/health-worker', 'Backend\HealthWorkerController');
 
-//Bakend Woman
+//Bakend Patients
 Route::resource('admin/patients', 'Backend\WomanController', ['names' => 'woman']);
 Route::get('admin/negative-patients', 'Backend\WomanController@negativeIndex')->name('patients.negative.index');
+
+Route::resource('admin/profile', 'Backend\ProfileController');
 
 
 //Bakend Api

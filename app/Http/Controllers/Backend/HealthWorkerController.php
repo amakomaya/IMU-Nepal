@@ -77,7 +77,7 @@ class HealthWorkerController extends Controller
         // $wards = Ward::where([['ward_no', $healthpost->ward_no],['municipality_id', $healthpost->municipality_id]])->get();
         $healthposts = Healthpost::where('id', $healthpost->id)->get();
         $role = "healthworker";
-        return view('backend.health-worker.create',compact('provinces','districts','municipalities','wards','healthposts','role'));
+        return view('backend.health-worker.create',compact('provinces','districts','municipalities','healthposts','role'));
     }
 
     /**

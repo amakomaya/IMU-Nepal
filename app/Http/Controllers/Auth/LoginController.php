@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use Carbon\Carbon;
 
 class LoginController extends Controller
 {
@@ -72,6 +73,13 @@ class LoginController extends Controller
                 ->performedOn(new User())
                 ->withProperties($request)
                 ->log(json_encode($details_log));
+
+            $update_profile_expiration = Carbon::parse($user->updated_at)->addMonth();
+
+            if ($update_profile_expiration < Carbon::now() ) {
+                $request->session()->flash('message', 'Update your account\'s information ! <a href="/admin/profile">Edit Profile</a>');
+                return redirect('/admin');
+            }
             return redirect('/admin');
         }else{
             $request->session()->flash('error_message', 'Username or Password Incorrect!');

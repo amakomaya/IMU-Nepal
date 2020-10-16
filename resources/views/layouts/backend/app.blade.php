@@ -96,6 +96,7 @@
                         <div class="triangle"></div>
                         <ul>
                           <li>{{ \App\User::getAppRole() }}</li>
+                          <li><a href="/admin/profile">Edit Profile</a></li>
                         </ul>
                       </li>
                     </ul>

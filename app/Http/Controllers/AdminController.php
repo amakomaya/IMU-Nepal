@@ -84,7 +84,7 @@ class AdminController extends Controller
         ];
 
         $update_profile_expiration = Carbon::parse(auth()->user()->updated_at)->addMonth();
-//
+
 //        if ($update_profile_expiration < Carbon::now() ) {
 //            $request->session()->flash('message', 'Update your account\'s information ! <a href="/admin/profile">Edit Profile</a>');
 //        }
