@@ -184,6 +184,11 @@
                     </div> -->
                 </form>
             </div>
+
+        </div>
+        <div style="display:inline-block; width:100%; height:auto;">
+
+            <a target="_blank" href="https://play.google.com/store/apps/details?id=com.aamakomaya.hamrosurvey"><img class="img-responsive center-block" src="{{ asset('images/google-play-badge.png') }}"></a>
         </div>
     </div>
 
