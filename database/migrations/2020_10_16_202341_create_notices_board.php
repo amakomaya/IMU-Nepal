@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWomenSurveyTable extends Migration
+class CreateNoticesBoard extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateWomenSurveyTable extends Migration
      */
     public function up()
     {
-        Schema::create('women_survey', function (Blueprint $table) {
+        Schema::create('notices_board', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('data');
+            $table->string('title')->nullable();
+            $table->longText('description')->nullable();
+            $table->string('type');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateWomenSurveyTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('women_survey');
+        Schema::dropIfExists('notices_board');
     }
 }

@@ -124,17 +124,16 @@
               </li>
             </ul>
           </div>
-    </div>
+    <div class="row">
+        <div style="display:inline-block; width:100%; height:auto;">
 
-    <div class="col-md-4 col-md-offset-4" style="margin-top: 50px;">
-
-        <div class="login-panel panel panel-default" style="margin:40px">
-          <div style="display:inline-block; width:100%; height:auto;">
-
-              <img class="img-responsive center-block" src="{{ asset('images/login-icon.png') }}">
+            <img class="img-responsive center-block" src="{{ asset('images/login-icon.png') }}">
         </div>
-
-            <h4 class="text-center"> {{ config('app.name') }} </h4>
+    </div>
+        <div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default" style="margin-top:30px">
+            <h3 class="text-center"> {{ config('app.name') }} Login</h3>
             @if (Request::session()->has('error_message'))
                 <div class="alert alert-block alert-danger" style="margin:15px; text-align:center;">
                     <button type="button" class="close" data-dismiss="alert">
@@ -147,38 +146,38 @@
             <div class="panel-body">
                 <form role="form" method="POST" action="{{ route('login') }}">
                     {{ csrf_field() }}
-                    <fieldset>
+{{--                    <fieldset>--}}
                         <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-                          <div class="input-group">
-                             <span class="input-group-addon" title="@lang('login.username')"><i class="fa fa-user"></i></span>
-                            <input class="form-control" placeholder="@lang('login.username')" id="username" name="username" value="{{ old('username') }}" type="text" autofocus>
-                            @if ($errors->has('username'))
-                                <span class="help-block">
+                            <div class="input-group">
+                                <span class="input-group-addon" title="@lang('login.username')"><i class="fa fa-user"></i></span>
+                                <input class="form-control" placeholder="@lang('login.username')" id="username" name="username" value="{{ old('username') }}" type="text" autofocus>
+                                @if ($errors->has('username'))
+                                    <span class="help-block">
                                     <strong>{{ $errors->first('username') }}</strong>
                                 </span>
-                            @endif
-                          </div>
+                                @endif
+                            </div>
                         </div>
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                          <div class="input-group">
-                            <span class="input-group-addon" title="@lang('login.password')"><i class="fa fa-lock"></i></span>
-                            <input class="form-control" id="password" placeholder="@lang('login.password')" name="password" type="password" value="">
-                            @if ($errors->has('password'))
-                                <span class="help-block">
+                            <div class="input-group">
+                                <span class="input-group-addon" title="@lang('login.password')"><i class="fa fa-lock"></i></span>
+                                <input class="form-control" id="password" placeholder="@lang('login.password')" name="password" type="password" value="">
+                                @if ($errors->has('password'))
+                                    <span class="help-block">
                                     <strong>{{ $errors->first('password') }}</strong>
                                 </span>
-                            @endif
-                          </div>
-                          <input type="checkbox" onclick="TogglePassword()"> 
-                            <b>@lang('login.show_password')</b> 
+                                @endif
+                            </div>
+                            <input type="checkbox" onclick="TogglePassword()">
+                            <b>@lang('login.show_password')</b>
                         </div>
-                      <input type="submit" class="btn btn-md btn-primary btn-block" value="@lang('login.login')">
-                    </fieldset>
+                        <input type="submit" class="btn btn-md btn-primary btn-block" value="@lang('login.login')">
+{{--                    </fieldset>--}}
                     <br>
                     <div class="clearfix">
-                      <a href="#" class="pull-right">Forgot Password ?</a>
-                  </div>  
-                    <!-- <div class="checkbox" align="right">
+                        <a href="#" class="pull-right">Forgot Password ?</a>
+                    </div>
+                <!-- <div class="checkbox" align="right">
                         <label>
                             <input name="remember" type="checkbox" value="{{ old('remember') ? 'checked' : '' }}">@lang('login.remember_me')
                         </label>
@@ -187,17 +186,68 @@
             </div>
         </div>
     </div>
-    <script> 
-        // Change the type of input to password or text 
-            function TogglePassword() { 
-                var temp = document.getElementById("password"); 
-                if (temp.type === "password") { 
-                    temp.type = "text"; 
-                } 
-                else { 
-                    temp.type = "password"; 
-                } 
-            } 
-    </script> 
+
+    <div class="col-md-4" style="margin-top: 30px";>
+        @foreach(App\Models\NoticeBoard::latest()->get() as $row)
+            @if($row->type == 'Warning')
+                <div class="panel panel-warning">
+                    @elseif($row->type == 'Danger')
+                        <div class="panel panel-danger">
+                            @else
+                                <div class="panel panel-info">
+                                    @endif
+            <div class="panel-heading"><h4>{{ $row->title }}</h4></div>
+            <div class="panel-body">
+                {!! $row->description !!}
+                <span class="badge">Posted {{ $row->created_at->diffForHumans() }}</span>
+
+            </div>
+        </div>
+        @endforeach
+    </div>
+                        <div class="col-md-4" style="margin-top: 30px";>
+
+                        <iframe width="100%" height="315" src="https://www.youtube.com/embed/videoseries?list=PLDauIRTtxpwjUbaKjZuPX5l9W4BwsUvGu" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                </div>
+                <!-- Load Facebook SDK for JavaScript -->
+                <div id="fb-root"></div>
+                <script>
+                    window.fbAsyncInit = function() {
+                        FB.init({
+                            xfbml            : true,
+                            version          : 'v8.0'
+                        });
+                    };
+
+                    (function(d, s, id) {
+                        var js, fjs = d.getElementsByTagName(s)[0];
+                        if (d.getElementById(id)) return;
+                        js = d.createElement(s); js.id = id;
+                        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }(document, 'script', 'facebook-jssdk'));</script>
+
+                <!-- Your Chat Plugin code -->
+                <div class="fb-customerchat"
+                     attribution=setup_tool
+                     page_id="100681058478904">
+                </div>
+                <script>
+        // Change the type of input to password or text
+            function TogglePassword() {
+                var temp = document.getElementById("password");
+                if (temp.type === "password") {
+                    temp.type = "text";
+                }
+                else {
+                    temp.type = "password";
+                }
+            }
+
+    </script>
+                </div>
+
+    </div>
 </body>
 </html>

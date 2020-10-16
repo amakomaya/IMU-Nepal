@@ -145,6 +145,8 @@ Route::post('/api/v2/send_message', 'Backend\SendMessageController@fromWebAdmin'
 Route::get('/admin/qrcode', 'Backend\AamakomayaGenerateQrcode@get')->name('aamakomaya.qrcode');
 Route::get('/admin/activity-log', 'Backend\ActivityLogController@index')->name('activity-log.index');
 
+Route::resource('admin/notice-board', 'NoticeBoardController');
+
 Route::get('/artisan-clear', function() {
     Artisan::call('cache:clear');
     Artisan::call('config:clear');
