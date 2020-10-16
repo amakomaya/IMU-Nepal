@@ -32,7 +32,7 @@
 </li>
  <li>
     <a href="{{ route('admin.overview') }}">
-            <i class="fa fa-hospital-o" aria-hidden="true"></i> Hospitals
+            <i class="fa fa-hospital-o" aria-hidden="true"></i> Hospitals / CICT Teams
     </a>
 </li>
 <li>

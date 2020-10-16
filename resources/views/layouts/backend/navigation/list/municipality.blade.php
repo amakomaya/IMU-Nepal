@@ -2,7 +2,7 @@
 <li>
     <a href="#">
     <i class="fa fa-building-o" aria-hidden="true"></i>
-    {{trans('sidebar.health_post')}} <span class="fa arrow"></span>
+        Hospitals / CICT Teams <span class="fa arrow"></span>
     </a>
 
     <ul class="nav nav-second-level">
@@ -20,7 +20,7 @@
 <li>
     <a href="{{ route('healthpost.index') }}">
     <i class="fa fa-building-o"></i>
-    {{trans('sidebar.health_post')}}
+        Hospitals / CICT Teams
     </a>
 </li>
 @endif

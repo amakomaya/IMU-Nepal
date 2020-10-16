@@ -16,6 +16,9 @@ class ProfileController extends Controller
     public function index()
     {
         $user = auth()->user();
+        if ($user->role == 'main'){
+            return redirect('/admin');
+        }
         switch ($user->role) {
             case 'center':
             $data = Center::where('token', $user->token)->first();
@@ -47,10 +50,18 @@ class ProfileController extends Controller
     public function update($id, Request $request)
     {
         $user = auth()->user();
+        if ($user->role == 'main'){
+            return redirect('/admin');
+        }
+        $customMessages = [
+            'required' => 'The :attribute field is required.',
+            'confirmed' => 'The :attribute must equal to confirm new password.'
+        ];
+
         $request->validate([
             'phone' => 'required',
             'password' => 'confirmed|min:4|nullable',
-        ]);
+        ], $customMessages);
         switch ($user->role) {
             case 'center':
                 $data = Center::where('token', $user->token)->first();

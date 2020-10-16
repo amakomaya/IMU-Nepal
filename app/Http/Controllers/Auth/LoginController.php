@@ -76,7 +76,7 @@ class LoginController extends Controller
 
             $update_profile_expiration = Carbon::parse($user->updated_at)->addMonth();
 
-            if ($update_profile_expiration < Carbon::now() ) {
+            if (auth()->user()->role != 'main' && $update_profile_expiration < Carbon::now() ) {
                 $request->session()->flash('message', 'Update your account\'s information ! <a href="/admin/profile">Edit Profile</a>');
                 return redirect('/admin');
             }

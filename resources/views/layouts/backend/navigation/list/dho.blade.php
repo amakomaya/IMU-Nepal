@@ -12,7 +12,7 @@
         </li>
          <li>
             <a href="{{ route('healthpost.index') }}">
-                    Hospitals 
+                Hospitals / CICT Teams
             </a>
         </li>
     </ul>

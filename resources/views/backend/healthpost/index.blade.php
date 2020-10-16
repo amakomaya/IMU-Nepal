@@ -35,7 +35,7 @@
                 @endif
             <div class="panel panel-default">
                 <div class="panel-heading">
-                {{trans('index.healthpost_info')}}
+                    Hospitals / CICT Teams
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">

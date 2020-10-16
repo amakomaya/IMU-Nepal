@@ -31,7 +31,8 @@
                             <thead>
                             <tr>
                                 <th>S.N</th>                                      
-                                <th>Name</th>  
+                                <th>Name</th>
+                                <th>User ID</th>
                                 <th>Post</th>                                     
                                 <th>Phone No:</th>  
                                 <th>Lab Info</th>
@@ -45,7 +46,8 @@
                             @php $i++ @endphp
                             <tr>
                                 <td> {{ $i }}</td>                                          
-                                <td> {{ $healthWorker->name }} </td>                                   
+                                <td> {{ $healthWorker->name }} </td>
+                                <td> {{ str_pad($healthWorker->id, 4, '0', STR_PAD_LEFT)  }}</td>
                                 <td> {{ $healthWorker->post }} </td>                                     
                                 <td> {{ $healthWorker->phone }}</td>   
                                 <td> 

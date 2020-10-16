@@ -85,9 +85,9 @@ class AdminController extends Controller
 
         $update_profile_expiration = Carbon::parse(auth()->user()->updated_at)->addMonth();
 
-//        if ($update_profile_expiration < Carbon::now() ) {
-//            $request->session()->flash('message', 'Update your account\'s information ! <a href="/admin/profile">Edit Profile</a>');
-//        }
+        if (auth()->user()->role != 'main' && $update_profile_expiration < Carbon::now() ) {
+            $request->session()->flash('message', 'Update your account\'s information ! <a href="/admin/profile">Edit Profile</a>');
+        }
 
         return view('admin', compact('data', 'chartWoman', 'provinces', 'districts', 'options', 'ward_or_healthpost', 'municipalities', 'wards', 'healthposts', 'province_id', 'district_id', 'municipality_id', 'ward_id', 'hp_code', 'from_date', 'to_date'));
     }

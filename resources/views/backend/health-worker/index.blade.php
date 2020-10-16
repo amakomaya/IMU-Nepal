@@ -53,7 +53,8 @@
                             <thead>
                             <tr>
                                 <th>S.N</th>                                      
-                                <th>Name</th>  
+                                <th>Name</th>
+                                <th>User ID</th>
                                 @if(Auth::user()->role!="main")
                                 <th>Districts</th>                                     
                                 <th>Health Post</th> 
@@ -71,6 +72,7 @@
                             <tr>
                                 <td> {{ $i }}</td>                                          
                                 <td> {{ $healthWorker->name }} </td>
+                                <td>{{ str_pad($healthWorker->id, 4, '0', STR_PAD_LEFT) }}</td>
                                 @if(Auth::user()->role!="main")
                                     <td>{{ $healthWorker->district->district_name }}</td>                                     
                                     <td>{{ $healthWorker->getHealthpost($healthWorker->hp_code) }}</td> 
