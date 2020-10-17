@@ -28,6 +28,7 @@ import JsonExcel from 'vue-json-excel'
  
 Vue.component('downloadExcel', JsonExcel)
 
+Vue.prototype.$userRole = document.querySelector("meta[name='user-role']").getAttribute('content');
 
 Vue.use(Vuelidate)
 Vue.use(StatusIndicator);

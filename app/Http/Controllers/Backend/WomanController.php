@@ -9,6 +9,7 @@ use App\Models\Anc;
 use App\Models\Delivery;
 use App\Models\District;
 use App\Models\Healthpost;
+use App\Models\HealthWorker;
 use App\Models\Municipality;
 use App\Models\Province;
 use App\Models\VaccineVial;
@@ -40,61 +41,94 @@ class WomanController extends Controller
         return view('backend.woman.index-negative');
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $provinces = Province::all();
-        $districts = District::all();
-        $municipalities = Municipality::all();
-
-        return view('backend.woman.create', compact('provinces', 'districts', 'municipalities'));
+        $response = FilterRequest::filter($request);
+        foreach ($response as $key => $value) {
+            $$key = $value;
+        }
+        return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id','district_id','municipality_id'));
     }
 
-    public function store(WomenRequest $request)
+    public function store(Request $request)
     {
-        $hp_code = Healthpost::getHpCodeWoman();
+        $customMessages = [
+            'required' => 'The :attribute field is required.',
+        ];
 
-        $lmp_date_en_array = explode("-", $request->get('lmp_date_en'));
-        $lmp_date_en = Calendar::nep_to_eng($lmp_date_en_array[0], $lmp_date_en_array[1], $lmp_date_en_array[2])->getYearMonthDay();
-
-        $woman = Woman::create([
-            'token' => uniqid() . time(),
-            'name' => $request->get('name'),
-            'mool_darta_no' => $request->get('mool_darta_no'),
-            'sewa_darta_no' => $request->get('sewa_darta_no'),
-            'orc_darta_no' => $request->get('orc_darta_no'),
-            'phone' => $request->get('phone'),
-            'height' => $request->get('height'),
-            'age' => $request->get('age'),
-            'lmp_date_en' => $lmp_date_en,
-            'blood_group' => $request->get('blood_group'),
-            'province_id' => $request->get('province_id'),
-            'district_id' => $request->get('district_id'),
-            'municipality_id' => $request->get('municipality_id'),
-            'hp_code' => $hp_code,
-            'tole' => $request->get('tole'),
-            'ward' => $request->get('ward'),
-            'husband_name' => $request->get('husband_name'),
-            'anc_status' => $request->get('anc_status'),
-            'delivery_status' => $request->get('delivery_status'),
-            'pnc_status' => $request->get('pnc_status'),
-            'labtest_status' => $request->get('labtest_status'),
-            'registered_device' => 'web',
-            'created_by' => Auth::user()->token,
-            'longitude' => $request->get('longitude'),
-            'latitude' => $request->get('latitude'),
-            'status' => $request->get('status'),
-        ]);
-
-        User::create([
-            'token' => $woman->token,
-            'username' => $request->get('username'),
-            'email' => $request->get('email'),
-            'password' => md5($request->get('password')),
-            'role' => "woman",
-        ]);
+        $request->validate([
+            'name' => 'required',
+            'age' => 'required',
+            'ward' => 'required',
+            'tole' => 'required',
+            'emergency_contact_one' => 'required',
+            'occupation' => 'required',
+        ], $customMessages);
+        $response = FilterRequest::filter($request);
+        foreach ($response as $key => $value) {
+            $$key = $value;
+        }
+        $row = $request->all();
+        $row['token'] = md5(microtime(true).mt_Rand());
+        $row['status'] = 1;
+        $row['created_by'] = auth()->user()->token;
+        switch (auth()->user()->role){
+            case 'healthpost':
+                $row['hp_code'] = Healthpost::where('token', auth()->user()->token)->first()->hp_code;
+            case 'healthworker':
+                $row['hp_code'] = HealthWorker::where('token', auth()->user()->token)->first()->hp_code;
+        }
+        Woman::create($row);
 
         $request->session()->flash('message', 'Data Inserted successfully');
+        if ($request->swab_collection_conformation == '1'){
+            return $this->sampleCollectionCreate($row['token']);
+        }
+        return redirect()->route('woman.index');
+    }
 
+    public function sampleCollectionCreate($token){
+        $swab_id = str_pad(auth()->user()->id, 5, '0', STR_PAD_LEFT).'-'.Carbon::now()->format('ymd').'-'.$this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
+        ;
+        return view('backend.patient.sample-create', compact('token', 'swab_id'));
+    }
+
+    private function convertTimeToSecond(string $time): int
+    {
+        $d = explode(':', $time);
+        return ($d[0] * 3600) + ($d[1] * 60) + $d[2];
+    }
+
+    public function sampleCollectionStore(Request $request){
+        $customMessages = [
+            'required' => 'The :attribute field is required.',
+        ];
+
+        $request->validate([
+            'sample_type' => 'required',
+            'infection_type' => 'required',
+            'service_type' => 'required',
+        ], $customMessages);
+        $row = $request->all();
+        $row['created_by'] = auth()->user()->token;
+        $row['status'] = 1;
+        $row['result'] = 2;
+        $row['sample_identification_type'] = 'unique_id';
+        switch (auth()->user()->role){
+            case 'healthpost':
+                $healthpost = Healthpost::where('token', auth()->user()->token)->first();
+                $row['hp_code'] = $healthpost->hp_code;
+                $row['created_by_name'] = $healthpost->name;
+
+            case 'healthworker':
+                $healthworker = HealthWorker::where('token', auth()->user()->token)->first();
+                $row['hp_code'] = $healthworker->hp_code;
+                $row['created_by_name'] = $healthworker->name;
+
+        }
+        $row['sample_type'] = "[".implode(', ', $row['sample_type'])."]";
+        Anc::create($row);
+        $request->session()->flash('message', 'Data Inserted successfully');
         return redirect()->route('woman.index');
     }
 

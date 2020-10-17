@@ -39,7 +39,9 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
 
-    @yield('style')
+    <meta name="user-role" content="{{ Auth::user()->role }}">
+
+@yield('style')
   
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -71,7 +73,7 @@
                     @else
                     <a class="navbar-brand navbar-brand-small"><small class="text-primary"></small></a>
                     @endif
-                    
+
             </div>
             <!-- /.navbar-header -->
 
@@ -90,7 +92,7 @@
                     </ul>
                 </li>
                <li class="nav navbar-nav sl-nav userinfo" style="margin: 10px;">
-                    <i class="fa fa-user"> : </i> 
+                    <i class="fa fa-user"> : </i>
                     <ul>
                     <li><b>{{ \Auth::user()->username }}</b> <i class="fa fa-angle-down" aria-hidden="true"></i>
                         <div class="triangle"></div>
@@ -111,7 +113,7 @@
             <!-- /.navbar-static-side -->
         </nav>
 
-        
+
         @yield('content')
     </div>
     <!-- /#wrapper -->

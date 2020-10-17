@@ -57,6 +57,9 @@
                     <div v-if="item.ancs.length > 0 && item.latest_anc.result == 9">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
                 </td>
                 <td>
+                  <button v-if="item.ancs.length == 0" v-on:click="aadSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
+                     <i class="fa fa-medkit" aria-hidden="true"></i> |
+                  </button>
                     <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
                         <i class="fa fa-hospital-o"></i>
                     </button>
@@ -70,6 +73,19 @@
 <!--            <span>Selected Ids: {{ item }}</span>-->
 
         </filterable>
+      <div v-if="this.$userRole == 'healthpost' || this.$userRole == 'healthworker'">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+
+        <fab
+            :position="fabOptions.position"
+            :bg-color="fabOptions.bgColor"
+            :actions="fabActions"
+            :start-opened = true
+            @addPatient="addPatient"
+        ></fab>
+      </div>
+
     </div>
 </template>
 
@@ -77,13 +93,13 @@
     import Filterable from './Filterable.vue'
     import DataConverter from 'ad-bs-converter'
     import axios from 'axios'
-    import ViewLabReportModel from './ViewLabReportModel.vue'
     import ViewLabResultReportModel from './ViewLabResultReportModel.vue'
     import SendPatientDataModel from './SendPatientDataModel.vue'
     import viewConfirmReportFormModel from './viewConfirmReportFormModel.vue'
+    import fab from 'vue-fab'
 
     export default {
-        components: {Filterable},
+        components: {Filterable, fab},
         data() {
             return {
                 filterable: {
@@ -170,7 +186,18 @@
                         }
                     ]
                 ],
-                exportHtml : ''
+                exportHtml : '',
+              fabOptions : {
+                bgColor: '#778899',
+                position: 'bottom-right',
+              },
+              fabActions: [
+                {
+                  name: 'addPatient',
+                  icon: 'group_add',
+                  tooltip: "Add Covid 19 Cases"
+                }
+              ]
             }
         },
         created() {
@@ -391,6 +418,13 @@
                     }
                 }
                 return 'N/A';
+            },
+
+            aadSampleCollection(token){
+              window.location.href = '/admin/sample-collection/create/'+token;
+            },
+            addPatient(){
+              window.location.href = '/admin/patients/create'
             }
         }
     }

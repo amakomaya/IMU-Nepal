@@ -61,6 +61,8 @@ Route::resource('admin/health-worker', 'Backend\HealthWorkerController');
 //Bakend Patients
 Route::resource('admin/patients', 'Backend\WomanController', ['names' => 'woman']);
 Route::get('admin/negative-patients', 'Backend\WomanController@negativeIndex')->name('patients.negative.index');
+Route::get('admin/sample-collection/create/{token}', 'Backend\WomanController@sampleCollectionCreate')->name('patients.sample-collection.store');
+Route::post('admin/sample-collection', 'Backend\WomanController@sampleCollectionStore')->name('patient.sample.store');
 
 Route::resource('admin/profile', 'Backend\ProfileController');
 
