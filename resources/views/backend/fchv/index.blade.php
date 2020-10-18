@@ -36,6 +36,7 @@
                                 <th>Post</th>                                     
                                 <th>Phone No:</th>  
                                 <th>Lab Info</th>
+                                <th>Sample Received</th>
                                 <th>Status</th>
                                 <th>Options</th>
                             </tr>
@@ -53,7 +54,8 @@
                                 <td> 
                                     Name : {{ $healthWorker->hp_code }} <br>
                                     Address : {{ $healthWorker->municipality->municipality_name ?? '' }}
-                                </td>                                  
+                                </td>
+                                <td>{{ \App\Models\LabTest::where('checked_by', $healthWorker->token)->get()->count()}}</td>
                                 <td> 
                                     @if($healthWorker->status=='0')
                                     <span class="label label-danger">Inactive</span>
@@ -79,7 +81,11 @@
                                     </form>
                                     <a class="btn btn-xs btn-primary"  href="{{route('user-manager.change-paswword', \App\User::getUserId($healthWorker->token) ) }}">
                                         Change Password
-                                    </a> 
+                                    </a>
+                                    <form method="post" action="{{url('admin/user-manager/'.\App\User::getUserId($healthWorker->token).'/login-as')}}" >
+                                        {{csrf_field()}}
+                                        <a href="#" class="btn btn-xs btn-primary" onclick="this.parentNode.submit()">Login As</a>
+                                    </form>
                                 </td>
                             </tr>
                             @endforeach
