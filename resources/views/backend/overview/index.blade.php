@@ -17,7 +17,8 @@
                                     <thead>
                                         <tr>
                                             <th>S.N</th>                                     
-                                            <th>Hospitals</th>    
+                                            <th>Hospitals</th>
+                                            <th>Username</th>
                                             <th>District</th>         
                                             <th>Municipality</th>                                     
                                             <th>Registers</th>
@@ -36,6 +37,7 @@
                                                     <a href="#" onclick="this.parentNode.submit()">{{ $d->name }}</a>
                                                 </form>
                                                 </td>
+                                                <td>{{ $d->user->username ?? '' }}</td>
                                                 <td>{{ $d->getDistrictName($d->district_id) }}</td>
                                                 <td>{{ $d->municipality->municipality_name ?? '' }}</td>                                     
                                                 <td>{{ $d->getRegisters($d->hp_code) }}</td>

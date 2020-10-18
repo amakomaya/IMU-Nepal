@@ -95,5 +95,8 @@ class HealthWorker extends Model
 		}
 		return false;
 	}
-	
+
+    public function user(){
+        return $this->belongsTo('App\User', 'token', 'token');
+    }
 }

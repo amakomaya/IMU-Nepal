@@ -33,7 +33,7 @@
                                 <th>S.N</th>                                      
                                 <th>Name</th>
                                 <th>User ID</th>
-                                <th>Post</th>                                     
+                                <th>Username</th>
                                 <th>Phone No:</th>  
                                 <th>Lab Info</th>
                                 <th>Sample Received</th>
@@ -49,7 +49,7 @@
                                 <td> {{ $i }}</td>                                          
                                 <td> {{ $healthWorker->name }} </td>
                                 <td> {{ str_pad($healthWorker->id, 4, '0', STR_PAD_LEFT)  }}</td>
-                                <td> {{ $healthWorker->post }} </td>                                     
+                                <td> {{ $healthWorker->user->username ?? '' }} </td>
                                 <td> {{ $healthWorker->phone }}</td>   
                                 <td> 
                                     Name : {{ $healthWorker->hp_code }} <br>
