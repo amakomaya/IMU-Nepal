@@ -54,7 +54,9 @@ Route::resource('admin/ward', 'Backend\WardController');
 
 //Bakend Fchv
 Route::resource('admin/lab-user', 'Backend\FchvController', ['names' => 'fchv']);
-
+Route::get('/admin/lab-patients', function (){
+    return view('backend.lab.index');
+})->name('lab.patient.index');
 //Backend Health Worker
 Route::resource('admin/health-worker', 'Backend\HealthWorkerController');
 

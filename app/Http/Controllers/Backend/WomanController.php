@@ -72,12 +72,9 @@ class WomanController extends Controller
         $row['token'] = md5(microtime(true).mt_Rand());
         $row['status'] = 1;
         $row['created_by'] = auth()->user()->token;
-        switch (auth()->user()->role){
-            case 'healthpost':
-                $row['hp_code'] = Healthpost::where('token', auth()->user()->token)->first()->hp_code;
-            case 'healthworker':
-                $row['hp_code'] = HealthWorker::where('token', auth()->user()->token)->first()->hp_code;
-        }
+
+        $row['hp_code'] = HealthWorker::where('token', auth()->user()->token)->first()->hp_code;
+
         Woman::create($row);
 
         $request->session()->flash('message', 'Data Inserted successfully');
@@ -88,7 +85,8 @@ class WomanController extends Controller
     }
 
     public function sampleCollectionCreate($token){
-        $swab_id = str_pad(auth()->user()->id, 5, '0', STR_PAD_LEFT).'-'.Carbon::now()->format('ymd').'-'.$this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
+        $id = HealthWorker::where('token', auth()->user()->token)->first()->id;
+        $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT).'-'.Carbon::now()->format('ymd').'-'.$this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
         ;
         return view('backend.patient.sample-create', compact('token', 'swab_id'));
     }

@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\Anc;
+use App\Models\HealthWorker;
+use App\Models\LabTest;
+use App\Models\Woman;
 use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
@@ -83,7 +87,7 @@ Route::post('/v1/client', function(Request $request){
     foreach ($data as $value) {
         try {
             $value['case_id'] = bin2hex(random_bytes(3));
-            \App\Models\Woman::create($value);
+            Woman::create($value);
         } catch (\Exception $e) {
             
         }
@@ -198,7 +202,7 @@ Route::post('/v1/client-update', function(Request $request){
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
-            \App\Models\Woman::where('token', $value['token'])->update($value);
+            Woman::where('token', $value['token'])->update($value);
         } catch (\Exception $e) {
             
         }
@@ -210,7 +214,7 @@ Route::post('/v1/client-tests', function(Request $request){
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
-            \App\Models\Anc::create($value);
+            Anc::create($value);
         } catch (\Exception $e) {
             
         }
@@ -266,13 +270,13 @@ Route::post('/v1/lab-test', function(Request $request){
         try {
 
             if ($value['sample_test_date'] == '') {
-                \App\Models\LabTest::create($value);
-                \App\Models\Anc::where('token', $value['sample_token'])->update(['result' => '9']);
+                LabTest::create($value);
+                Anc::where('token', $value['sample_token'])->update(['result' => '9']);
             }else{
 
-            \App\Models\Anc::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
+            Anc::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
 
-            $find_test = \App\Models\LabTest::where('token', $value['token']);
+            $find_test = LabTest::where('token', $value['token']);
 
             if ($find_test) {
                 $find_test->update([
@@ -286,7 +290,7 @@ Route::post('/v1/lab-test', function(Request $request){
                     'checked_by_name' => $value['checked_by_name']                
                 ]);
             }else{
-                \App\Models\LabTest::create($value);
+                LabTest::create($value);
             }
 
             }
@@ -303,14 +307,14 @@ Route::post('/v1/patient-transfer', function(Request $request){
 
     $data = json_decode($request->getContent(), true);
 
-    $data['from'] = \App\Models\Woman::where('token', $data['token'])->first()->hp_code;
+    $data['from'] = Woman::where('token', $data['token'])->first()->hp_code;
     $data['to'] = $data['hp_code'];
     $data['name'] = 'patient';
     $transfer = \App\Models\TransferLog::create($data);
 
-    \App\Models\Woman::where('token', $data['token'])
+    Woman::where('token', $data['token'])
         ->update(['hp_code' => $data['hp_code']]);
-    \App\Models\Anc::where('woman_token', $data['token'])->update(['hp_code' => $data['hp_code']]);
+    Anc::where('woman_token', $data['token'])->update(['hp_code' => $data['hp_code']]);
     
     return response()->json($data['token']);
 });
@@ -369,3 +373,29 @@ Route::get('/v1/patient-laboratory-parameter', function(Request $request){
     $data = \App\Models\LaboratoryParameter::where('hp_code', $hp_code)->get();
     return response()->json($data);
 });
+
+
+// For web apis
+Route::get('/v1/recieved-in-lab', function(Request $request){
+    $user = auth()->user();
+    $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
+    $token = Anc::whereIn('token', $sample_token)->pluck('woman_token');
+    $data = Woman::whereIn('token', $token)->active()->withAll();
+    return response()->json([
+        'collection' => $data->advancedFilter()
+    ]);
+});
+
+Route::post('/v1/received-in-lab', function(Request $request){
+    $data = $request->all();
+    $healthworker = HealthWorker::where('token', auth()->user()->token)->first();
+    $data['hp_code'] = $healthworker->hp_code;
+    $data['created_by_name'] = $healthworker->name;
+    $data['status'] = 1;
+    $to_date_array = explode("-",  \Carbon\Carbon::now()->format('Y-m-d'));
+    $data['sample_recv_date'] = \Yagiten\Nepalicalendar\Calendar::eng_to_nep($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay();
+    LabTest::create($data);
+    return response()->json("Recieved");
+});
+
+//

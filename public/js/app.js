@@ -2221,6 +2221,160 @@ module.exports = function isBuffer (obj) {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/AddRecievedInLabModal.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/AddRecievedInLabModal.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      data: {}
+    };
+  },
+  methods: {
+    submitLabIdToSampleId: function submitLabIdToSampleId(data) {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/v1/received-in-lab', data).then(function (response) {
+        if (response.status === 200) {
+          _this.$swal({
+            title: 'Record recieved in lab',
+            type: 'success',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+        } else {
+          _this.$swal({
+            title: 'Oops. Something went wrong. Please try again later.',
+            type: 'error',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/AddResultInLabModal.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/AddResultInLabModal.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      data: []
+    };
+  },
+  methods: {
+    submitLabIdToSampleId: function submitLabIdToSampleId(data) {
+      console.log(data);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/BabyEdit.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/BabyEdit.vue?vue&type=script&lang=js& ***!
@@ -3514,6 +3668,483 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         parent: ['counter'],
         component: 'single'
       }];
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabPatientList.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LabPatientList.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filterable.vue */ "./resources/assets/js/components/Filterable.vue");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ViewLabResultReportModel.vue */ "./resources/assets/js/components/ViewLabResultReportModel.vue");
+/* harmony import */ var _SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SendPatientDataModel.vue */ "./resources/assets/js/components/SendPatientDataModel.vue");
+/* harmony import */ var _viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./viewConfirmReportFormModel.vue */ "./resources/assets/js/components/viewConfirmReportFormModel.vue");
+/* harmony import */ var vue_fab__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-fab */ "./node_modules/vue-fab/src/index.js");
+/* harmony import */ var vue_fab__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vue_fab__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _AddRecievedInLabModal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./AddRecievedInLabModal */ "./resources/assets/js/components/AddRecievedInLabModal.vue");
+/* harmony import */ var _AddResultInLabModal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./AddResultInLabModal */ "./resources/assets/js/components/AddResultInLabModal.vue");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Filterable: _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    fab: vue_fab__WEBPACK_IMPORTED_MODULE_7___default.a
+  },
+  data: function data() {
+    return {
+      filterable: {
+        url: '/api/v1/recieved-in-lab',
+        orderables: [{
+          title: 'Name',
+          name: 'name'
+        }, {
+          title: 'Age',
+          name: 'age'
+        }, {
+          title: 'Created At',
+          name: 'created_at'
+        }],
+        filterGroups: [{
+          name: 'Patient',
+          filters: [{
+            title: 'Name',
+            name: 'name',
+            type: 'string'
+          }, {
+            title: 'Age',
+            name: 'age',
+            type: 'numeric'
+          }, {
+            title: 'Phone Number',
+            name: 'phone',
+            type: 'numeric'
+          }]
+        }, {
+          name: 'Tests',
+          filters: [{
+            title: 'Created At',
+            name: 'ancs.visit_date',
+            type: 'datetime'
+          }]
+        }]
+      },
+      token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"].data().collection.data,
+      selected: [],
+      allSelected: false,
+      womanTokens: [],
+      provinces: [],
+      municipalities: [],
+      districts: [],
+      json_fields: {
+        'Patient Name': 'name',
+        'Age': 'age',
+        'Age Unit': {
+          field: 'age_unit',
+          callback: function callback(value) {
+            switch (value) {
+              case '1':
+                return "Months";
+
+              case '2':
+                return "Days";
+
+              default:
+                return "Years";
+            }
+          }
+        },
+        'Municipality': 'municipality.municipality_name',
+        'District': 'district.district_name',
+        'Emergency Contact One': 'emergency_contact_one',
+        'Emergency Contact Two': 'emergency_contact_two',
+        'Current Hospital': 'healthpost.name',
+        'Sample Token': 'latest_anc.token',
+        'Created AT': 'created_at',
+        'Latest Lab Result': {
+          field: 'latest_anc.result',
+          callback: function callback(value) {
+            switch (value) {
+              case '3':
+                return "Positive";
+
+              case '9':
+                return "Recieved";
+
+              case '':
+                return "Pending";
+
+              default:
+                return "Do not know";
+            }
+          },
+          'Lab ID': 'latest_anc.labreport.formated_token'
+        }
+      },
+      json_meta: [[{
+        'key': 'charset',
+        'value': 'utf-8'
+      }]],
+      exportHtml: '',
+      fabOptions: {
+        bgColor: '#778899',
+        position: 'bottom-right'
+      },
+      fabActions: [{
+        name: 'addRecievedInLab',
+        icon: 'group_add',
+        tooltip: "Add Recieved in Lab"
+      }, {
+        name: 'addResultInLab',
+        icon: 'biotech',
+        tooltip: "Add Result in Lab"
+      }]
+    };
+  },
+  created: function created() {
+    this.fetch();
+  },
+  methods: {
+    selectAll: function selectAll(item) {
+      this.womanTokens = [];
+
+      if (this.allSelected) {
+        console.log(item);
+      }
+    },
+    select: function select() {
+      this.allSelected = false;
+    },
+    sendPatientData: function sendPatientData(item) {
+      this.$dlg.modal(_SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        title: 'Do you want to send ' + item.name + ' \'s patients data ?',
+        height: 600,
+        width: 700,
+        params: {
+          data: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
+        }
+      });
+    },
+    viewLabReport: function viewLabReport(item) {
+      this.$dlg.modal(_ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        height: 700,
+        width: 800,
+        title: 'Laboratory Result Form for Suspected COVID-19 Case',
+        params: {
+          item: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
+        }
+      });
+    },
+    viewConfirmReportForm: function viewConfirmReportForm(item) {
+      this.$dlg.modal(_viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        title: 'Confirmed report form of \'s ' + item.name,
+        height: 700,
+        width: 800,
+        params: {
+          data: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
+        }
+      });
+    },
+    fetch: function fetch() {
+      var _this = this;
+
+      var province_url = window.location.protocol + '/api/province';
+      var municipality_url = window.location.protocol + '/api/municipality';
+      var district_url = window.location.protocol + '/api/district';
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(municipality_url).then(function (response) {
+        _this.municipalities = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(district_url).then(function (response) {
+        _this.districts = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(province_url).then(function (response) {
+        _this.provinces = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {});
+    },
+    ad2bs: function ad2bs(date) {
+      var dateObject = new Date(date);
+      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
+      var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default.a.ad2bs(dateFormat);
+      return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
+    },
+    checkDistrict: function checkDistrict(value) {
+      if (value == 0 || value == null || value == '') {
+        return '';
+      } else {
+        return this.districts.find(function (x) {
+          return x.id === value;
+        }).district_name;
+      }
+    },
+    checkMunicipality: function checkMunicipality(value) {
+      if (value == 0 || value == null || value == '') {
+        return '';
+      } else {
+        return this.municipalities.find(function (x) {
+          return x.id === value;
+        }).municipality_name;
+      }
+    },
+    latestLabResult: function latestLabResult(value) {
+      switch (value.result) {
+        case '4':
+          return '<span class=\"label label-success\"> Negative</span>';
+
+        case '2':
+          return '<span class=\"label label-info\"> Pending</span>';
+
+        case '3':
+          return '<span class=\"label label-danger\"> Positive</span>';
+
+        case '9':
+          return '<span class=\"label label-warning\"> Recieved</span>';
+
+        default:
+          return '<span class=\"label label-default\"> Don\'t Know</span>';
+      }
+    },
+    checkForPositiveOnly: function checkForPositiveOnly(value) {
+      if (value !== null) {
+        if (value.result == '3') {
+          return true;
+        }
+      }
+    },
+    latestLabResultNotNegative: function latestLabResultNotNegative(value) {
+      if (value == '0' || value == null || value == '') {
+        return true;
+      }
+
+      if (value.result == '4') {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    excelFileName: function excelFileName() {
+      var ext = '.xls';
+      return 'Patient Details ' + new Date() + ext;
+    },
+    fetchData: function () {
+      var _fetchData = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!confirm("Do you want to Download all records in excel ! ")) {
+                  _context.next = 5;
+                  break;
+                }
+
+                _context.next = 3;
+                return axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/data/api/patient/export');
+
+              case 3:
+                response = _context.sent;
+                return _context.abrupt("return", response.data);
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function fetchData() {
+        return _fetchData.apply(this, arguments);
+      }
+
+      return fetchData;
+    }(),
+    checkCaseType: function checkCaseType(type) {
+      switch (type) {
+        case '0':
+          return 'N/A';
+
+        case '1':
+          return 'Asymptomatic / Mild Case';
+
+        case '2':
+          return 'Moderate / Severe Case';
+
+        default:
+          return 'N/A';
+      }
+    },
+    checkCaseManagement: function checkCaseManagement(type, management) {
+      if (type == '1') {
+        switch (management) {
+          case '0':
+            return 'Home';
+
+          case '1':
+            return 'Hotel';
+
+          case '2':
+            return 'Institution';
+
+          default:
+            return 'N/A';
+        }
+      }
+
+      if (type == '2') {
+        switch (management) {
+          case '0':
+            return 'General Ward';
+
+          case '0':
+            return 'ICU';
+
+          case '0':
+            return 'Ventilator';
+
+          default:
+            return 'N/A';
+        }
+      }
+
+      return 'N/A';
+    },
+    addRecievedInLab: function addRecievedInLab() {
+      this.$dlg.modal(_AddRecievedInLabModal__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        title: 'Received  Cases in Lab',
+        width: 700
+      });
+    },
+    addResultInLab: function addResultInLab() {
+      this.$dlg.modal(_AddResultInLabModal__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        title: 'Lab Result',
+        width: 700
+      });
     }
   }
 });
@@ -34834,6 +35465,385 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/AddRecievedInLabModal.vue?vue&type=template&id=4c0b5e08&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/AddRecievedInLabModal.vue?vue&type=template&id=4c0b5e08& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "form-group" }, [
+      _c("label", { staticClass: "control-label" }, [
+        _vm._v("Enter Received Swab")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "inputGroupContainer" }, [
+        _c("div", { staticClass: "input-group" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.data.sample_token,
+                expression: "data.sample_token"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              id: "sample_id",
+              name: "",
+              placeholder: "Enter Received Swab",
+              required: "true",
+              type: "text"
+            },
+            domProps: { value: _vm.data.sample_token },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.data, "sample_token", $event.target.value)
+              }
+            }
+          })
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group" }, [
+      _c("label", { staticClass: "control-label" }, [
+        _vm._v("Enter Registered Lab ID ( Unique )")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "inputGroupContainer" }, [
+        _c("div", { staticClass: "input-group" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.data.token,
+                expression: "data.token"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              id: "full_name",
+              name: "",
+              placeholder: "Enter Registered Lab ID ( Unique )",
+              required: "true",
+              type: "text"
+            },
+            domProps: { value: _vm.data.token },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.data, "token", $event.target.value)
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary btn-sm btn-block",
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.submitLabIdToSampleId(_vm.data)
+            }
+          }
+        },
+        [_vm._v("\n        Submit\n      ")]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-addon" }, [
+      _c("i", { staticClass: "fa fa-key" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-addon" }, [
+      _c("i", { staticClass: "fa fa-key" })
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/AddResultInLabModal.vue?vue&type=template&id=1f79a588&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/AddResultInLabModal.vue?vue&type=template&id=1f79a588& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "form-group" }, [
+      _c("label", { staticClass: "control-label" }, [
+        _vm._v("Enter Registered Lab ID ( Unique )")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "inputGroupContainer" }, [
+        _c("div", { staticClass: "input-group" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.data.token,
+                expression: "data.token"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              id: "token",
+              name: "",
+              placeholder: "Enter Registered Lab ID ( Unique )",
+              required: "true",
+              type: "text"
+            },
+            domProps: { value: _vm.data.token },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.data, "token", $event.target.value)
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("label", { staticClass: "control-label" }, [
+        _vm._v("Sample Test Date")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "inputGroupContainer" }, [
+        _c("div", { staticClass: "input-group" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.data.sample_test_date,
+                expression: "data.sample_test_date"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              id: "sample_test_date",
+              name: "",
+              placeholder: "Sample Test Date",
+              required: "true",
+              type: "text"
+            },
+            domProps: { value: _vm.data.sample_test_date },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.data, "sample_test_date", $event.target.value)
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("label", { staticClass: "control-label" }, [
+        _vm._v("Sample Test Time")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "inputGroupContainer" }, [
+        _c("div", { staticClass: "input-group" }, [
+          _vm._m(2),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.data.sample_test_time,
+                expression: "data.sample_test_time"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              id: "sample_test_time",
+              name: "",
+              placeholder: "Sample Test Time",
+              required: "true",
+              type: "text"
+            },
+            domProps: { value: _vm.data.sample_test_time },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.data, "sample_test_time", $event.target.value)
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", [_vm._v("Sample Test Result")]),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.data.sample_test_result,
+              expression: "data.sample_test_result"
+            }
+          ],
+          attrs: { value: "1", type: "radio" },
+          domProps: { checked: _vm._q(_vm.data.sample_test_result, "1") },
+          on: {
+            change: function($event) {
+              return _vm.$set(_vm.data, "sample_test_result", "1")
+            }
+          }
+        }),
+        _vm._v("Negative\n      "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.data.sample_test_result,
+              expression: "data.sample_test_result"
+            }
+          ],
+          attrs: { value: "2", type: "radio" },
+          domProps: { checked: _vm._q(_vm.data.sample_test_result, "2") },
+          on: {
+            change: function($event) {
+              return _vm.$set(_vm.data, "sample_test_result", "2")
+            }
+          }
+        }),
+        _vm._v("Positive\n      "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.data.sample_test_result,
+              expression: "data.sample_test_result"
+            }
+          ],
+          attrs: { value: "3", type: "radio", checked: "" },
+          domProps: { checked: _vm._q(_vm.data.sample_test_result, "3") },
+          on: {
+            change: function($event) {
+              return _vm.$set(_vm.data, "sample_test_result", "3")
+            }
+          }
+        }),
+        _vm._v("Don't Know\n      "),
+        _c("br")
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary btn-sm btn-block",
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.submitLabIdToSampleId(_vm.data)
+            }
+          }
+        },
+        [_vm._v("\n        Submit\n      ")]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-addon" }, [
+      _c("i", { staticClass: "fa fa-key" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-addon" }, [
+      _c("i", { staticClass: "fa fa-calendar" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-addon" }, [
+      _c("i", { staticClass: "fa fa-times" })
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/BabyEdit.vue?vue&type=template&id=41fb0537&scoped=true&":
 /*!******************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/BabyEdit.vue?vue&type=template&id=41fb0537&scoped=true& ***!
@@ -37027,6 +38037,327 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabPatientList.vue?vue&type=template&id=eff0c726&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LabPatientList.vue?vue&type=template&id=eff0c726& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "div",
+        { staticClass: "btn btn-primary pull right" },
+        [
+          _c(
+            "download-excel",
+            {
+              attrs: {
+                fetch: _vm.fetchData,
+                fields: _vm.json_fields,
+                name: _vm.excelFileName()
+              }
+            },
+            [
+              _vm._v("\n      Download Data\n      "),
+              _c("i", {
+                staticClass: "fa fa-file-excel-o",
+                attrs: { "aria-hidden": "true" }
+              })
+            ]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "filterable",
+        _vm._b(
+          {
+            scopedSlots: _vm._u(
+              [
+                {
+                  key: "default",
+                  fn: function(ref) {
+                    var item = ref.item
+                    return _vm.latestLabResultNotNegative(item.latest_anc)
+                      ? _c("tr", {}, [
+                          _c("td", [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.womanTokens,
+                                  expression: "womanTokens"
+                                }
+                              ],
+                              attrs: { type: "checkbox" },
+                              domProps: {
+                                value: item.token,
+                                checked: Array.isArray(_vm.womanTokens)
+                                  ? _vm._i(_vm.womanTokens, item.token) > -1
+                                  : _vm.womanTokens
+                              },
+                              on: {
+                                click: _vm.select,
+                                change: function($event) {
+                                  var $$a = _vm.womanTokens,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = item.token,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        (_vm.womanTokens = $$a.concat([$$v]))
+                                    } else {
+                                      $$i > -1 &&
+                                        (_vm.womanTokens = $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1)))
+                                    }
+                                  } else {
+                                    _vm.womanTokens = $$c
+                                  }
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm.checkForPositiveOnly(item.latest_anc)
+                              ? _c("div", [
+                                  _vm._v("Case ID : " + _vm._s(item.case_id))
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            item.parent_case_id !== null
+                              ? _c("div", [
+                                  _vm._v(
+                                    "Parent Case ID : " +
+                                      _vm._s(item.parent_case_id)
+                                  )
+                                ])
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(item.name))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(item.age))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              "One : " +
+                                _vm._s(item.emergency_contact_one) +
+                                " "
+                            ),
+                            _c("br"),
+                            _vm._v(
+                              "\n        Two : " +
+                                _vm._s(item.emergency_contact_two) +
+                                "\n      "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.checkMunicipality(item.municipality_id)
+                              )
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              "\n        Place : " +
+                                _vm._s(item.healthpost.name) +
+                                " "
+                            ),
+                            _c("br"),
+                            _vm._v(
+                              "\n        Type : " +
+                                _vm._s(_vm.checkCaseType(item.cases)) +
+                                " "
+                            ),
+                            _c("br"),
+                            _vm._v(
+                              "\n        Management : " +
+                                _vm._s(
+                                  _vm.checkCaseManagement(
+                                    item.cases,
+                                    item.case_where
+                                  )
+                                ) +
+                                "\n      "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.ad2bs(item.created_at)))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("span", { staticClass: "label label-info" }, [
+                              _vm._v(" " + _vm._s(item.ancs.length))
+                            ]),
+                            _vm._v(" "),
+                            item.latest_anc
+                              ? _c("div", { attrs: { title: "Swab ID" } }, [
+                                  _vm._v("SID : "),
+                                  _c("strong", [
+                                    _vm._v(_vm._s(item.latest_anc.token))
+                                  ])
+                                ])
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            item.ancs.length > 0
+                              ? _c("div", {
+                                  domProps: {
+                                    innerHTML: _vm._s(
+                                      _vm.latestLabResult(item.latest_anc)
+                                    )
+                                  }
+                                })
+                              : _c("div", [
+                                  _c(
+                                    "span",
+                                    { staticClass: "label label-primary" },
+                                    [_vm._v(" Registered ")]
+                                  )
+                                ]),
+                            _vm._v(" "),
+                            item.ancs.length > 0 && item.latest_anc.result == 9
+                              ? _c("div", [
+                                  _vm._v(
+                                    _vm._s(
+                                      item.latest_anc.labreport.token
+                                        .split("-")
+                                        .splice(1)
+                                        .join("-")
+                                    )
+                                  )
+                                ])
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            item.latest_anc.result == 9
+                              ? _c(
+                                  "button",
+                                  {
+                                    attrs: { title: "Add Result" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.addResultInLab(item)
+                                      }
+                                    }
+                                  },
+                                  [_c("i", { staticClass: "fa fa-medkit" })]
+                                )
+                              : _vm._e()
+                          ])
+                        ])
+                      : _vm._e()
+                  }
+                }
+              ],
+              null,
+              true
+            )
+          },
+          "filterable",
+          _vm.filterable,
+          false
+        ),
+        [
+          _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
+            _c("tr", [
+              _c("th", { attrs: { width: "10px" } }),
+              _vm._v(" "),
+              _c("th", [_vm._v("ID")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Name")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Age")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Emergency Contact")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Muicipality")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Case")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Created At")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Total Collection")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Lab Result")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Action")])
+            ])
+          ])
+        ]
+      ),
+      _vm._v("\n  " + _vm._s(this.$userRole) + "\n  "),
+      this.$userRole == "healthworker"
+        ? _c(
+            "div",
+            [
+              _c("link", {
+                attrs: {
+                  rel: "stylesheet",
+                  href:
+                    "https://fonts.googleapis.com/icon?family=Material+Icons"
+                }
+              }),
+              _vm._v(" "),
+              _c("link", {
+                attrs: {
+                  rel: "stylesheet",
+                  href:
+                    "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
+                }
+              }),
+              _vm._v(" "),
+              _c("fab", {
+                attrs: {
+                  position: _vm.fabOptions.position,
+                  "bg-color": _vm.fabOptions.bgColor,
+                  actions: _vm.fabActions,
+                  "start-opened": true
+                },
+                on: {
+                  addRecievedInLab: _vm.addRecievedInLab,
+                  addResultInLab: _vm.addResultInLab
+                }
+              })
+            ],
+            1
+          )
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/QrCodeGenerate.vue?vue&type=template&id=067e8fba&":
 /*!************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/QrCodeGenerate.vue?vue&type=template&id=067e8fba& ***!
@@ -38832,7 +40163,7 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      this.$userRole == "healthpost" || this.$userRole == "healthworker"
+      this.$userRole == "healthworker"
         ? _c(
             "div",
             [
@@ -87750,11 +89081,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Women_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/Women.vue */ "./resources/assets/js/components/Women.vue");
 /* harmony import */ var _components_WomenEdit__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/WomenEdit */ "./resources/assets/js/components/WomenEdit.vue");
 /* harmony import */ var _components_WomanListNegative__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/WomanListNegative */ "./resources/assets/js/components/WomanListNegative.vue");
-/* harmony import */ var _components_BabyList_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/BabyList.vue */ "./resources/assets/js/components/BabyList.vue");
-/* harmony import */ var _components_BabyEdit_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/BabyEdit.vue */ "./resources/assets/js/components/BabyEdit.vue");
-/* harmony import */ var _components_QrCodeGenerate_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/QrCodeGenerate.vue */ "./resources/assets/js/components/QrCodeGenerate.vue");
-/* harmony import */ var _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/SelectYearMonth */ "./resources/assets/js/components/SelectYearMonth.vue");
-/* harmony import */ var vue_json_excel__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! vue-json-excel */ "./node_modules/vue-json-excel/JsonExcel.vue");
+/* harmony import */ var _components_LabPatientList__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/LabPatientList */ "./resources/assets/js/components/LabPatientList.vue");
+/* harmony import */ var _components_BabyList_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/BabyList.vue */ "./resources/assets/js/components/BabyList.vue");
+/* harmony import */ var _components_BabyEdit_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/BabyEdit.vue */ "./resources/assets/js/components/BabyEdit.vue");
+/* harmony import */ var _components_QrCodeGenerate_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/QrCodeGenerate.vue */ "./resources/assets/js/components/QrCodeGenerate.vue");
+/* harmony import */ var _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/SelectYearMonth */ "./resources/assets/js/components/SelectYearMonth.vue");
+/* harmony import */ var vue_json_excel__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! vue-json-excel */ "./node_modules/vue-json-excel/JsonExcel.vue");
 
 
 
@@ -87777,7 +89109,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('downloadExcel', vue_json_excel__WEBPACK_IMPORTED_MODULE_21__["default"]);
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('downloadExcel', vue_json_excel__WEBPACK_IMPORTED_MODULE_22__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$userRole = document.querySelector("meta[name='user-role']").getAttribute('content');
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_13___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_status_indicator__WEBPACK_IMPORTED_MODULE_2__["default"]);
@@ -87792,14 +89125,153 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('v-select', vue_select__WEB
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('women-list', _components_Women_vue__WEBPACK_IMPORTED_MODULE_14__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('women-edit', _components_WomenEdit__WEBPACK_IMPORTED_MODULE_15__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('women-list-negative', _components_WomanListNegative__WEBPACK_IMPORTED_MODULE_16__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('baby-list', _components_BabyList_vue__WEBPACK_IMPORTED_MODULE_17__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('baby-edit', _components_BabyEdit_vue__WEBPACK_IMPORTED_MODULE_18__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-patient-list', _components_LabPatientList__WEBPACK_IMPORTED_MODULE_17__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('baby-list', _components_BabyList_vue__WEBPACK_IMPORTED_MODULE_18__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('baby-edit', _components_BabyEdit_vue__WEBPACK_IMPORTED_MODULE_19__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('vaccination-chart');
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('select-year-month', _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_20__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('qr-code-generate', _components_QrCodeGenerate_vue__WEBPACK_IMPORTED_MODULE_19__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('select-year-month', _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_21__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('qr-code-generate', _components_QrCodeGenerate_vue__WEBPACK_IMPORTED_MODULE_20__["default"]);
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app'
 });
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/AddRecievedInLabModal.vue":
+/*!******************************************************************!*\
+  !*** ./resources/assets/js/components/AddRecievedInLabModal.vue ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AddRecievedInLabModal_vue_vue_type_template_id_4c0b5e08___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AddRecievedInLabModal.vue?vue&type=template&id=4c0b5e08& */ "./resources/assets/js/components/AddRecievedInLabModal.vue?vue&type=template&id=4c0b5e08&");
+/* harmony import */ var _AddRecievedInLabModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AddRecievedInLabModal.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/AddRecievedInLabModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AddRecievedInLabModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AddRecievedInLabModal_vue_vue_type_template_id_4c0b5e08___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AddRecievedInLabModal_vue_vue_type_template_id_4c0b5e08___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/AddRecievedInLabModal.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/AddRecievedInLabModal.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/assets/js/components/AddRecievedInLabModal.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AddRecievedInLabModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./AddRecievedInLabModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/AddRecievedInLabModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AddRecievedInLabModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/AddRecievedInLabModal.vue?vue&type=template&id=4c0b5e08&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/assets/js/components/AddRecievedInLabModal.vue?vue&type=template&id=4c0b5e08& ***!
+  \*************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddRecievedInLabModal_vue_vue_type_template_id_4c0b5e08___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./AddRecievedInLabModal.vue?vue&type=template&id=4c0b5e08& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/AddRecievedInLabModal.vue?vue&type=template&id=4c0b5e08&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddRecievedInLabModal_vue_vue_type_template_id_4c0b5e08___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddRecievedInLabModal_vue_vue_type_template_id_4c0b5e08___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/AddResultInLabModal.vue":
+/*!****************************************************************!*\
+  !*** ./resources/assets/js/components/AddResultInLabModal.vue ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AddResultInLabModal_vue_vue_type_template_id_1f79a588___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AddResultInLabModal.vue?vue&type=template&id=1f79a588& */ "./resources/assets/js/components/AddResultInLabModal.vue?vue&type=template&id=1f79a588&");
+/* harmony import */ var _AddResultInLabModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AddResultInLabModal.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/AddResultInLabModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AddResultInLabModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AddResultInLabModal_vue_vue_type_template_id_1f79a588___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AddResultInLabModal_vue_vue_type_template_id_1f79a588___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/AddResultInLabModal.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/AddResultInLabModal.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/assets/js/components/AddResultInLabModal.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AddResultInLabModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./AddResultInLabModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/AddResultInLabModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AddResultInLabModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/AddResultInLabModal.vue?vue&type=template&id=1f79a588&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/assets/js/components/AddResultInLabModal.vue?vue&type=template&id=1f79a588& ***!
+  \***********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddResultInLabModal_vue_vue_type_template_id_1f79a588___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./AddResultInLabModal.vue?vue&type=template&id=1f79a588& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/AddResultInLabModal.vue?vue&type=template&id=1f79a588&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddResultInLabModal_vue_vue_type_template_id_1f79a588___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddResultInLabModal_vue_vue_type_template_id_1f79a588___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 
@@ -88197,6 +89669,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filterable_vue_vue_type_template_id_25c67949_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filterable_vue_vue_type_template_id_25c67949_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/LabPatientList.vue":
+/*!***********************************************************!*\
+  !*** ./resources/assets/js/components/LabPatientList.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LabPatientList_vue_vue_type_template_id_eff0c726___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LabPatientList.vue?vue&type=template&id=eff0c726& */ "./resources/assets/js/components/LabPatientList.vue?vue&type=template&id=eff0c726&");
+/* harmony import */ var _LabPatientList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LabPatientList.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/LabPatientList.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LabPatientList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LabPatientList_vue_vue_type_template_id_eff0c726___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LabPatientList_vue_vue_type_template_id_eff0c726___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/LabPatientList.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/LabPatientList.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/assets/js/components/LabPatientList.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LabPatientList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LabPatientList.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabPatientList.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LabPatientList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/LabPatientList.vue?vue&type=template&id=eff0c726&":
+/*!******************************************************************************************!*\
+  !*** ./resources/assets/js/components/LabPatientList.vue?vue&type=template&id=eff0c726& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LabPatientList_vue_vue_type_template_id_eff0c726___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LabPatientList.vue?vue&type=template&id=eff0c726& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabPatientList.vue?vue&type=template&id=eff0c726&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LabPatientList_vue_vue_type_template_id_eff0c726___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LabPatientList_vue_vue_type_template_id_eff0c726___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
