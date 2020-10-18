@@ -3787,7 +3787,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 
 
@@ -5497,6 +5496,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 
 
 
@@ -5511,6 +5513,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
+      role: this.$userRole,
       filterable: {
         url: '/data/api/women',
         orderables: [{
@@ -38310,7 +38313,7 @@ var render = function() {
           ])
         ]
       ),
-      _vm._v("\n  " + _vm._s(this.$userRole) + "\n  "),
+      _vm._v(" "),
       this.$userRole == "healthworker"
         ? _c(
             "div",
@@ -40057,30 +40060,34 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("td", [
-                            item.ancs.length == 0
-                              ? _c(
-                                  "button",
-                                  {
-                                    attrs: {
-                                      title:
-                                        "Add Sample Collection / Swab Collection Report"
-                                    },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.aadSampleCollection(
-                                          item.token
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("i", {
-                                      staticClass: "fa fa-medkit",
-                                      attrs: { "aria-hidden": "true" }
-                                    }),
-                                    _vm._v(" |\n                  ")
-                                  ]
-                                )
+                            _vm.role == "healthworker"
+                              ? _c("div", [
+                                  item.ancs.length == 0
+                                    ? _c(
+                                        "button",
+                                        {
+                                          attrs: {
+                                            title:
+                                              "Add Sample Collection / Swab Collection Report"
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.aadSampleCollection(
+                                                item.token
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c("i", {
+                                            staticClass: "fa fa-medkit",
+                                            attrs: { "aria-hidden": "true" }
+                                          }),
+                                          _vm._v(" |\n                  ")
+                                        ]
+                                      )
+                                    : _vm._e()
+                                ])
                               : _vm._e(),
                             _vm._v(" "),
                             _c(

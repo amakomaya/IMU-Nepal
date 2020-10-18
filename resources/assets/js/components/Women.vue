@@ -57,9 +57,11 @@
                     <div v-if="item.ancs.length > 0 && item.latest_anc.result == 9">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
                 </td>
                 <td>
+                  <div v-if="role  == 'healthworker'">
                   <button v-if="item.ancs.length == 0" v-on:click="aadSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
                      <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
+                  </div>
                     <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
                         <i class="fa fa-hospital-o"></i>
                     </button>
@@ -73,6 +75,7 @@
 <!--            <span>Selected Ids: {{ item }}</span>-->
 
         </filterable>
+
       <div v-if="this.$userRole == 'healthworker'">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
@@ -102,6 +105,7 @@
         components: {Filterable, fab},
         data() {
             return {
+              role : this.$userRole,
                 filterable: {
                     url: '/data/api/women',
                     orderables: [
