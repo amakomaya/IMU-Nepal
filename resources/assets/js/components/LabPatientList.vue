@@ -29,7 +29,7 @@
         <th>Action</th>
       </tr>
       </thead>
-      <tr slot-scope="{item}" v-if="latestLabResultNotNegative(item.latest_anc)">
+      <tr slot-scope="{item}">
         <td>
           <input type="checkbox" v-model="womanTokens" @click="select" :value="item.token">
         </td>

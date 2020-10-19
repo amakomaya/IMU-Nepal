@@ -38087,199 +38087,180 @@ var render = function() {
         "filterable",
         _vm._b(
           {
-            scopedSlots: _vm._u(
-              [
-                {
-                  key: "default",
-                  fn: function(ref) {
-                    var item = ref.item
-                    return _vm.latestLabResultNotNegative(item.latest_anc)
-                      ? _c("tr", {}, [
-                          _c("td", [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.womanTokens,
-                                  expression: "womanTokens"
-                                }
-                              ],
-                              attrs: { type: "checkbox" },
-                              domProps: {
-                                value: item.token,
-                                checked: Array.isArray(_vm.womanTokens)
-                                  ? _vm._i(_vm.womanTokens, item.token) > -1
-                                  : _vm.womanTokens
-                              },
-                              on: {
-                                click: _vm.select,
-                                change: function($event) {
-                                  var $$a = _vm.womanTokens,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = item.token,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        (_vm.womanTokens = $$a.concat([$$v]))
-                                    } else {
-                                      $$i > -1 &&
-                                        (_vm.womanTokens = $$a
-                                          .slice(0, $$i)
-                                          .concat($$a.slice($$i + 1)))
-                                    }
-                                  } else {
-                                    _vm.womanTokens = $$c
-                                  }
-                                }
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var item = ref.item
+                  return _c("tr", {}, [
+                    _c("td", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.womanTokens,
+                            expression: "womanTokens"
+                          }
+                        ],
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          value: item.token,
+                          checked: Array.isArray(_vm.womanTokens)
+                            ? _vm._i(_vm.womanTokens, item.token) > -1
+                            : _vm.womanTokens
+                        },
+                        on: {
+                          click: _vm.select,
+                          change: function($event) {
+                            var $$a = _vm.womanTokens,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = item.token,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 && (_vm.womanTokens = $$a.concat([$$v]))
+                              } else {
+                                $$i > -1 &&
+                                  (_vm.womanTokens = $$a
+                                    .slice(0, $$i)
+                                    .concat($$a.slice($$i + 1)))
                               }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm.checkForPositiveOnly(item.latest_anc)
-                              ? _c("div", [
-                                  _vm._v("Case ID : " + _vm._s(item.case_id))
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            item.parent_case_id !== null
-                              ? _c("div", [
-                                  _vm._v(
-                                    "Parent Case ID : " +
-                                      _vm._s(item.parent_case_id)
-                                  )
-                                ])
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(item.name))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(item.age))]),
-                          _vm._v(" "),
-                          _c("td", [
+                            } else {
+                              _vm.womanTokens = $$c
+                            }
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm.checkForPositiveOnly(item.latest_anc)
+                        ? _c("div", [
+                            _vm._v("Case ID : " + _vm._s(item.case_id))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      item.parent_case_id !== null
+                        ? _c("div", [
                             _vm._v(
-                              "One : " +
-                                _vm._s(item.emergency_contact_one) +
-                                " "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n        Two : " +
-                                _vm._s(item.emergency_contact_two) +
-                                "\n      "
+                              "Parent Case ID : " + _vm._s(item.parent_case_id)
                             )
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.age))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "One : " + _vm._s(item.emergency_contact_one) + " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Two : " +
+                          _vm._s(item.emergency_contact_two) +
+                          "\n      "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(_vm.checkMunicipality(item.municipality_id))
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n        Place : " +
+                          _vm._s(item.healthpost.name) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Type : " +
+                          _vm._s(_vm.checkCaseType(item.cases)) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Management : " +
+                          _vm._s(
+                            _vm.checkCaseManagement(item.cases, item.case_where)
+                          ) +
+                          "\n      "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.ad2bs(item.created_at)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("span", { staticClass: "label label-info" }, [
+                        _vm._v(" " + _vm._s(item.ancs.length))
+                      ]),
+                      _vm._v(" "),
+                      item.latest_anc
+                        ? _c("div", { attrs: { title: "Swab ID" } }, [
+                            _vm._v("SID : "),
+                            _c("strong", [
+                              _vm._v(_vm._s(item.latest_anc.token))
+                            ])
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      item.ancs.length > 0
+                        ? _c("div", {
+                            domProps: {
+                              innerHTML: _vm._s(
+                                _vm.latestLabResult(item.latest_anc)
+                              )
+                            }
+                          })
+                        : _c("div", [
+                            _c("span", { staticClass: "label label-primary" }, [
+                              _vm._v(" Registered ")
+                            ])
                           ]),
-                          _vm._v(" "),
-                          _c("td", [
+                      _vm._v(" "),
+                      item.ancs.length > 0 && item.latest_anc.result == 9
+                        ? _c("div", [
                             _vm._v(
                               _vm._s(
-                                _vm.checkMunicipality(item.municipality_id)
+                                item.latest_anc.labreport.token
+                                  .split("-")
+                                  .splice(1)
+                                  .join("-")
                               )
                             )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "\n        Place : " +
-                                _vm._s(item.healthpost.name) +
-                                " "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n        Type : " +
-                                _vm._s(_vm.checkCaseType(item.cases)) +
-                                " "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n        Management : " +
-                                _vm._s(
-                                  _vm.checkCaseManagement(
-                                    item.cases,
-                                    item.case_where
-                                  )
-                                ) +
-                                "\n      "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.ad2bs(item.created_at)))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("span", { staticClass: "label label-info" }, [
-                              _vm._v(" " + _vm._s(item.ancs.length))
-                            ]),
-                            _vm._v(" "),
-                            item.latest_anc
-                              ? _c("div", { attrs: { title: "Swab ID" } }, [
-                                  _vm._v("SID : "),
-                                  _c("strong", [
-                                    _vm._v(_vm._s(item.latest_anc.token))
-                                  ])
-                                ])
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            item.ancs.length > 0
-                              ? _c("div", {
-                                  domProps: {
-                                    innerHTML: _vm._s(
-                                      _vm.latestLabResult(item.latest_anc)
-                                    )
-                                  }
-                                })
-                              : _c("div", [
-                                  _c(
-                                    "span",
-                                    { staticClass: "label label-primary" },
-                                    [_vm._v(" Registered ")]
-                                  )
-                                ]),
-                            _vm._v(" "),
-                            item.ancs.length > 0 && item.latest_anc.result == 9
-                              ? _c("div", [
-                                  _vm._v(
-                                    _vm._s(
-                                      item.latest_anc.labreport.token
-                                        .split("-")
-                                        .splice(1)
-                                        .join("-")
-                                    )
-                                  )
-                                ])
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            item.latest_anc.result == 9
-                              ? _c(
-                                  "button",
-                                  {
-                                    attrs: { title: "Add Result" },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.addResultInLab(item)
-                                      }
-                                    }
-                                  },
-                                  [_c("i", { staticClass: "fa fa-medkit" })]
-                                )
-                              : _vm._e()
                           ])
-                        ])
-                      : _vm._e()
-                  }
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      item.latest_anc.result == 9
+                        ? _c(
+                            "button",
+                            {
+                              attrs: { title: "Add Result" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.addResultInLab(item)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fa fa-medkit" })]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
                 }
-              ],
-              null,
-              true
-            )
+              }
+            ])
           },
           "filterable",
           _vm.filterable,
