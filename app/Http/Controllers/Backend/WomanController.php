@@ -72,8 +72,16 @@ class WomanController extends Controller
         $row['token'] = md5(microtime(true).mt_Rand());
         $row['status'] = 1;
         $row['created_by'] = auth()->user()->token;
-
+        $row['symptoms'] = "[]";
+        $row['travelled_where'] = "[]";
         $row['hp_code'] = HealthWorker::where('token', auth()->user()->token)->first()->hp_code;
+        $row['symptoms_comorbidity'] = "[]";
+        $row['cases'] = 0;
+        $row['case_where'] = 0;
+        $row['end_case'] = 0;
+        $row['payment'] = 0;
+        $row['case_id'] = HealthWorker::where('token', auth()->user()->token)->first()->id.'-'.bin2hex(random_bytes(3));
+        $row['registered_device'] = 'web';
 
         Woman::create($row);
 
