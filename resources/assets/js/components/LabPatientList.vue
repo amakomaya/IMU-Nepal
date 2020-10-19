@@ -66,18 +66,18 @@
       <!--            <span>Selected Ids: {{ item }}</span>-->
 
     </filterable>
-    <div v-if="this.$userRole == 'healthworker'">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-      <fab
-          :position="fabOptions.position"
-          :bg-color="fabOptions.bgColor"
-          :actions="fabActions"
-          :start-opened = true
-          @addRecievedInLab="addRecievedInLab"
-          @addResultInLab="addResultInLab"
-      ></fab>
-    </div>
+<!--    <div v-if="this.$userRole == 'healthworker'">-->
+<!--      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">-->
+<!--      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">-->
+<!--      <fab-->
+<!--          :position="fabOptions.position"-->
+<!--          :bg-color="fabOptions.bgColor"-->
+<!--          :actions="fabActions"-->
+<!--          :start-opened = true-->
+<!--          @addRecievedInLab="addRecievedInLab"-->
+<!--          @addResultInLab="addResultInLab"-->
+<!--      ></fab>-->
+<!--    </div>-->
 
   </div>
 </template>

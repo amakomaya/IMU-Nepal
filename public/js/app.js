@@ -7641,7 +7641,7 @@ exports.push([module.i, ".v-select{position:relative;font-family:inherit}.v-sele
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9":
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css":
 /*!***********************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vuetify/dist/vuetify.min.css ***!
   \***********************************************************************************************************************************/
@@ -38072,7 +38072,7 @@ var render = function() {
               }
             },
             [
-              _vm._v("\n      Download Data\n      "),
+              _vm._v("\n        Download Data\n        "),
               _c("i", {
                 staticClass: "fa fa-file-excel-o",
                 attrs: { "aria-hidden": "true" }
@@ -38161,9 +38161,9 @@ var render = function() {
                       ),
                       _c("br"),
                       _vm._v(
-                        "\n        Two : " +
+                        "\n          Two : " +
                           _vm._s(item.emergency_contact_two) +
-                          "\n      "
+                          "\n        "
                       )
                     ]),
                     _vm._v(" "),
@@ -38175,23 +38175,23 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [
                       _vm._v(
-                        "\n        Place : " +
+                        "\n          Place : " +
                           _vm._s(item.healthpost.name) +
                           " "
                       ),
                       _c("br"),
                       _vm._v(
-                        "\n        Type : " +
+                        "\n          Type : " +
                           _vm._s(_vm.checkCaseType(item.cases)) +
                           " "
                       ),
                       _c("br"),
                       _vm._v(
-                        "\n        Management : " +
+                        "\n          Management : " +
                           _vm._s(
                             _vm.checkCaseManagement(item.cases, item.case_where)
                           ) +
-                          "\n      "
+                          "\n        "
                       )
                     ]),
                     _vm._v(" "),
@@ -38293,44 +38293,7 @@ var render = function() {
             ])
           ])
         ]
-      ),
-      _vm._v(" "),
-      this.$userRole == "healthworker"
-        ? _c(
-            "div",
-            [
-              _c("link", {
-                attrs: {
-                  rel: "stylesheet",
-                  href:
-                    "https://fonts.googleapis.com/icon?family=Material+Icons"
-                }
-              }),
-              _vm._v(" "),
-              _c("link", {
-                attrs: {
-                  rel: "stylesheet",
-                  href:
-                    "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
-                }
-              }),
-              _vm._v(" "),
-              _c("fab", {
-                attrs: {
-                  position: _vm.fabOptions.position,
-                  "bg-color": _vm.fabOptions.bgColor,
-                  actions: _vm.fabActions,
-                  "start-opened": true
-                },
-                on: {
-                  addRecievedInLab: _vm.addRecievedInLab,
-                  addResultInLab: _vm.addResultInLab
-                }
-              })
-            ],
-            1
-          )
-        : _vm._e()
+      )
     ],
     1
   )
@@ -88947,7 +88910,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_vue__;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9");
+var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
