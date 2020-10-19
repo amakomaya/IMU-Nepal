@@ -10,6 +10,7 @@ use App\Models\Delivery;
 use App\Models\LabTest;
 use App\Models\Woman;
 use App\Reports\FilterRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yagiten\Nepalicalendar\Calendar;
 use App\User;
@@ -131,6 +132,26 @@ class WomenController extends Controller
             }
         })->values();
 
+        $formated_data = $woman->map(function ($item, $key) {
+            $data = [];
+            $data['serial_number'] = $key + 1;
+            $data['name'] = $item['name'];
+            $data['age'] = $item['age'];
+            $data['age_unit'] = $this->ageUnitCheck($item['age_unit']);
+
+            $data['emergency_contact_one'] = $item['emergency_contact_one'];
+            $data['emergency_contact_two'] = $item['emergency_contact_two'];
+            $data['district'] = $item['district']['district_name'];
+            $data['municipality'] = $item['municipality']['municipality_name'];
+            $data['current_hospital'] = $item['healthpost']['name'];
+            $data['swab_id'] = $item['latestAnc']['token'];
+            $data['lab_id'] = $item['latestAnc']['labreport']['formated_token'];
+            $data['created_at'] = Carbon::parse($item['created_at'])->format('Y-m-d');
+            return $data;
+        })->values();
+
+        return response()->json($formated_data);
+
         return response()->json($woman);
     }
 
@@ -138,7 +159,35 @@ class WomenController extends Controller
         $user = auth()->user();
         $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
         $token = Anc::whereIn('token', $sample_token)->pluck('woman_token');
-        $data = Woman::whereIn('token', $token)->active()->withAll()->get();
-        return response()->json($data);
+        $data = Woman::whereIn('token', $token)->latest()->active()->withAll()->get();
+
+        $final_data = $data->map(function ($item, $key) {
+            $data = [];
+            $data['serial_number'] = $key + 1;
+            $data['name'] = $item['name'];
+            $data['age'] = $item['age'];
+            $data['age_unit'] = $this->ageUnitCheck($item['age_unit']);
+
+            $data['emergency_contact_one'] = $item['emergency_contact_one'];
+            $data['emergency_contact_two'] = $item['emergency_contact_two'];
+            $data['district'] = $item['district']['district_name'];
+            $data['municipality'] = $item['municipality']['municipality_name'];
+            $data['current_hospital'] = $item['healthpost']['name'];
+            $data['swab_id'] = $item['latestAnc']['token'];
+            $data['lab_id'] = $item['latestAnc']['labreport']['formated_token'];
+            $data['created_at'] = Carbon::parse($item['created_at'])->format('Y-m-d');
+            return $data;
+        })->values();
+        return response()->json($final_data);
+    }
+    private function ageUnitCheck($data){
+        switch($data){
+            case '1':
+                return 'Months';
+            case '2':
+                return 'Days';
+            default:
+                return 'Years';
+        }
     }
 }

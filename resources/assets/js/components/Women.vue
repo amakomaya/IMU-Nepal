@@ -138,49 +138,18 @@
                 municipalities : [],
                 districts : [],
                 json_fields: {
-                    'Patient Name': 'name',
-                    'Age': 'age',
-                    'Age Unit' : {
-                        field: 'age_unit',
-                        callback: (value) => {
-                            switch(value){
-                                case '1':
-                                return "Months";
-
-                                case '2':
-                                return "Days";
-
-                                default:
-                                return "Years";
-                            }
-                        }
-                    },
-                    'Municipality' : 'municipality.municipality_name',
-                    'District' : 'district.district_name',
-                    'Emergency Contact One' : 'emergency_contact_one',
-                    'Emergency Contact Two' : 'emergency_contact_two',
-                    'Current Hospital' : 'healthpost.name',
-                    'Sample Token' : 'latest_anc.token',
-                    'Created AT' : 'created_at',
-                    'Latest Lab Result' : {
-                        field: 'latest_anc.result',
-                        callback: (value) => {
-                            switch(value){
-                                case '3':
-                                return "Positive";
-
-                                case '9':
-                                return "Recieved";
-
-                                case '':
-                                return "Pending";
-
-                                default:
-                                return "Do not know";
-                            }
-                        },
-                      'Lab ID' : 'latest_anc.labreport.formated_token'
-                    },
+                  'S.N' : 'serial_number',
+                  'Case Name': 'name',
+                  'Age': 'age',
+                  'Age Unit' : 'age_unit',
+                  'District' : 'district',
+                  'Municipality' : 'municipality',
+                  'Emergency Contact One' : 'emergency_contact_one',
+                  'Emergency Contact Two' : 'emergency_contact_two',
+                  'Current Hospital' : 'current_hospital',
+                  'Swab ID' : 'swab_id',
+                  'Lab ID' : 'lab_id',
+                  'Created At' : 'created_at'
                 },
                 json_meta: [
                     [
