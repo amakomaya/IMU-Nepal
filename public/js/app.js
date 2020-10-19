@@ -4063,7 +4063,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/data/api/patient/export');
+                return axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/data/api/lab-patient/export');
 
               case 3:
                 response = _context.sent;

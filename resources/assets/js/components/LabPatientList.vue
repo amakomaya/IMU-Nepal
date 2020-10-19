@@ -362,7 +362,7 @@ export default {
 
       if(confirm("Do you want to Download all records in excel ! ")){
 
-        const response = await axios.get('/data/api/patient/export');
+        const response = await axios.get('/data/api/lab-patient/export');
         return response.data;
 
         //     }

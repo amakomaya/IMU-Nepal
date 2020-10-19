@@ -7,6 +7,7 @@ use App\Helpers\GetHealthpostCodes;
 use App\Http\Controllers\Controller;
 use App\Models\Anc;
 use App\Models\Delivery;
+use App\Models\LabTest;
 use App\Models\Woman;
 use App\Reports\FilterRequest;
 use Illuminate\Http\Request;
@@ -131,5 +132,13 @@ class WomenController extends Controller
         })->values();
 
         return response()->json($woman);
+    }
+
+    public function labExport(){
+        $user = auth()->user();
+        $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
+        $token = Anc::whereIn('token', $sample_token)->pluck('woman_token');
+        $data = Woman::whereIn('token', $token)->active()->withAll()->get();
+        return response()->json($data);
     }
 }
