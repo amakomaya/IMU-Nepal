@@ -4,6 +4,32 @@
         .earning {
             display: none;
         }
+        form {
+            background: #ecf5fc;
+            padding: 40px 50px 45px;
+        }
+
+        .form-control:focus {
+            border-color: #000;
+            box-shadow: none;
+        }
+
+        label {
+            font-weight: 600;
+        }
+
+        .error {
+            color: red;
+            font-weight: 400;
+            display: block;
+            padding: 6px 0;
+            font-size: 14px;
+        }
+
+        .form-control.error {
+            border-color: red;
+            padding: .375rem .75rem;
+        }
     </style>
 @endsection
 @section('content')
@@ -19,7 +45,7 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        {!! rcForm::open('POST', route('woman.store')) !!}
+                        {!! rcForm::open('POST', route('woman.store'), ['name' => 'createCase']) !!}
                         <div class="panel-body">
                             <div class="form-group">
                                 <label class="control-label">Is Detected From Contract Tracing ?</label>
@@ -40,7 +66,7 @@
                             </div>
                             <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
                                 <label for="name">Full Name</label>
-                                <input type="text" class="form-control" value="{{ old('name') }}" name="name" aria-describedby="help" placeholder="Enter Full Name"
+                                <input type="text" id="name" class="form-control" value="{{ old('name') }}" name="name" aria-describedby="help" placeholder="Enter Full Name"
                                 >
                                 @if ($errors->has('name'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('name') }}</small>
@@ -48,7 +74,7 @@
                             </div>
                             <div class="form-group {{ $errors->has('age') ? 'has-error' : '' }}">
                                 <label for="age">Age</label>
-                                <input type="text" {{ old('age') }} class="form-control col-xs-9" name="age" placeholder="Enter Age"
+                                <input type="text" id="age" value="{{ old('age') }}" class="form-control col-xs-9" name="age" placeholder="Enter Age"
                                 ><br>
                                 <input type="radio" name="age_unit" {{ old('age_unit') == "0" ? 'checked' : '' }} value="0" data-rel="earning" checked>Years
                                 <input type="radio" name="age_unit" {{ old('age_unit') == "1" ? 'checked' : '' }} value="1" data-rel="earning">Months
@@ -61,13 +87,13 @@
                             <div class="form-group">
                                 <label class="control-label" for="caste">Caste</label>
                                     <select name="caste" class="form-control">
-                                        <option {{ old('caste') == '0' ? "selected" : "" }} value="0">Don't Know</option>
-                                        <option {{ old('caste') == '1' ? "selected" : "" }} value="1">Dalit</option>
-                                        <option {{ old('caste') == '2' ? "selected" : "" }} value="2">Janajati</option>
-                                        <option {{ old('caste') == '3' ? "selected" : "" }} value="3">Madheshi</option>
-                                        <option {{ old('caste') == '4' ? "selected" : "" }} value="4">Muslim</option>
-                                        <option {{ old('caste') == '5' ? "selected" : "" }} value="5">Brahmin/Chhetrai</option>
-                                        <option {{ old('caste') == '6' ? "selected" : "" }} value="6">Other</option>
+                                        <option {{ old('caste') == '6' ? "selected" : "" }} value="6">Don't Know</option>
+                                        <option {{ old('caste') == '0' ? "selected" : "" }} value="0">Dalit</option>
+                                        <option {{ old('caste') == '1' ? "selected" : "" }} value="1">Janajati</option>
+                                        <option {{ old('caste') == '2' ? "selected" : "" }} value="2">Madheshi</option>
+                                        <option {{ old('caste') == '3' ? "selected" : "" }} value="3">Muslim</option>
+                                        <option {{ old('caste') == '4' ? "selected" : "" }} value="4">Brahmin/Chhetrai</option>
+                                        <option {{ old('caste') == '5' ? "selected" : "" }} value="5">Other</option>
                                     </select>
                             </div>
                             <div class="form-group">
@@ -222,7 +248,8 @@
     <!-- /#page-wrapper -->
 @endsection
 @section('script')
-    <script type="text/javascript">
+            <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+            <script type="text/javascript">
         $(':radio[data-rel]').change(function() {
             var rel = $("." + $(this).data('rel'));
             if ($(this).val() == 'yes') {
@@ -246,12 +273,56 @@
                 $("#municipality").html(data);
             });
         }
+        $(function () {
+            $.validator.addMethod("nameCustom", function(value, element) {
+                return this.optional(element) || /^[a-zA-Z\.\'\-]{2,50}(?: [a-zA-Z\.\'\-]{2,50})+$/i.test(value);
+            }, "Email Address is invalid: Please enter a valid email address.");
 
-        function municipalityOnchange(id) {
-            $("#ward-or-healthpost").text("Loading...").fadeIn("slow");
-            $.get("{{route("ward-or-healthpost-select-municipality")}}?id=" + id, function (data) {
-                $("#ward-or-healthpost").html(data);
+            $.validator.addMethod("ageCustom", function(value, element) {
+                return this.optional(element) || /^(12[0-7]|1[01][0-9]|[1-9]?[0-9])$/i.test(value);
+            }, "Age is invalid: Please enter a valid age.");
+
+            $.validator.addMethod("phoneCustom", function(value, element) {
+                return this.optional(element) || /^((984|985|986|974|975|980|981|982|961|988|972|963)\d{7})|((097|095|081|053|084|083|029|056|096|089|093|010|026|041|068|049|094|064|079|027|046|087|091|076|061|036|025|066|077|099|044|057|023|021|069|055|037|075|024|067|051|086|082|071|033|031|092|047|038|063|035)(4|5|6)\d{5})|(01)(4|5|6)\d{6}$/i.test(value);
+            }, "Contact number is invalid: Please enter a valid phone number.");
+            $("form[name='createCase']").validate({
+                // Define validation rules
+                rules: {
+                    name: {
+                        required: true,
+                        nameCustom : true
+                    },
+                    age : {
+                        required : true,
+                        ageCustom: true,
+                    },
+                    sex : {
+                        required : true,
+                    },
+                    ward : {
+                        required : true,
+                    },
+                    tole : {
+                        required : true,
+                    },
+                    emergency_contact_one : {
+                        required : true,
+                        phoneCustom : true
+                    },
+                    occupation : {
+                        required : true,
+                    }
+                },
+                // Specify validation error messages
+                messages: {
+                    name: "Please provide a valid name.",
+                    age: "Please provide a valid age.",
+
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
             });
-        }
-    </script>
+        });
+            </script>
 @endsection
