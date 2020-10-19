@@ -193,7 +193,18 @@
     </div>
 
     <div class="col-md-4" style="margin-top: 30px";>
-        @foreach(App\Models\NoticeBoard::latest()->get() as $row)
+        <div class="panel panel-danger">
+            <div class="panel-heading"><h4>Username and Password पठाएको बारे |</h4></div>
+            <div class="panel-body">
+                <div class="thumbnail">
+                    <a href="{{ asset('images/notice.jpg') }}" target="_blank">
+                <img src="{{ asset('images/notice.jpg') }}" class="img-rounded" alt="Important notice from MOHP"></a>
+                </div>
+
+        </div>
+        </div>
+
+    @foreach(App\Models\NoticeBoard::latest()->get() as $row)
             @if($row->type == 'Warning')
                 <div class="panel panel-warning">
                     @elseif($row->type == 'Danger')
