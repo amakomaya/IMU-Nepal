@@ -55,7 +55,7 @@
                                     Name : {{ $healthWorker->hp_code }} <br>
                                     Address : {{ $healthWorker->municipality->municipality_name ?? '' }}
                                 </td>
-                                <td>{{ \App\Models\LabTest::where('checked_by', $healthWorker->token)->get()->count()}}</td>
+                                <td>{{ \App\Models\LabTest::where('hp_code', $healthWorker->hp_code)->get()->count()}}</td>
                                 <td> 
                                     @if($healthWorker->status=='0')
                                     <span class="label label-danger">Inactive</span>

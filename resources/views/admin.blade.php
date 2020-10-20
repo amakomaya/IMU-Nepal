@@ -32,16 +32,10 @@
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
-    <div class="row" style="padding: 15px;">
-{{--    <div class="panel panel-default col-lg-12">--}}
-{{--        <div class="panel-body">--}}
-{{--                {!! $chartWoman->html() !!}--}}
-{{--        </div>--}}
-{{--    </div>--}}
-    </div>
+
 <div class="row" style="padding: 15px;">
     <h3 class="align-center">Last 24 hours Update</h3>
-    <div class="col-lg-3">
+    <div class="col-lg-4">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <div class="row">
@@ -57,7 +51,7 @@
         </div>
     </div>
 
-    <div class="col-lg-3">
+    <div class="col-lg-4">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="row">
@@ -73,41 +67,26 @@
         </div>
     </div>
     
-{{--    <div class="col-lg-3">--}}
-{{--        <div class="panel panel-primary">--}}
-{{--            <div class="panel-heading">--}}
-{{--                <div class="row">--}}
-{{--                    <div class="col-xs-3">--}}
-{{--                        <i class="fa fa-user fa-5x"></i>--}}
-{{--                    </div>--}}
-{{--                    <div class="col-xs-9 text-right">--}}
-{{--                        <div class="huge">{{ $data['last_24_hrs_tests'] }}</div>--}}
-{{--                        <div><h4>New Tests</h4></div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--       <div class="col-lg-3">--}}
-{{--        <div class="panel panel-danger">--}}
-{{--            <div class="panel-heading">--}}
-{{--                <div class="row">--}}
-{{--                    <div class="col-xs-3">--}}
-{{--                        <i class="fa fa-user fa-5x"></i>--}}
-{{--                    </div>--}}
-{{--                    <div class="col-xs-9 text-right">--}}
-{{--                        <div class="huge">{{ $data['last_24_hrs_positive'] }}</div>--}}
-{{--                        <div><h4>New Cases </h4></div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+    <div class="col-lg-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-user fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ $data['last_24_hrs_lab_received_count'] }}</div>
+                        <div><h4>Received In Lab</h4></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row" style="padding: 15px;">
     <h3 class="align-center">Total Records</h3>
-    <div class="col-lg-3">
+    <div class="col-lg-4">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <div class="row">
@@ -123,7 +102,7 @@
         </div>
     </div>
 
-    <div class="col-lg-3">
+    <div class="col-lg-4">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="row">
@@ -139,39 +118,24 @@
         </div>
     </div>
     
-{{--    <div class="col-lg-3">--}}
-{{--        <div class="panel panel-primary">--}}
-{{--            <div class="panel-heading">--}}
-{{--                <div class="row">--}}
-{{--                    <div class="col-xs-3">--}}
-{{--                        <i class="fa fa-user fa-5x"></i>--}}
-{{--                    </div>--}}
-{{--                    <div class="col-xs-9 text-right">--}}
-{{--                        <div class="huge">{{ $data['total_tests'] }}</div>--}}
-{{--                        <div><h4>Total Tests</h4></div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--       <div class="col-lg-3">--}}
-{{--        <div class="panel panel-danger">--}}
-{{--            <div class="panel-heading">--}}
-{{--                <div class="row">--}}
-{{--                    <div class="col-xs-3">--}}
-{{--                        <i class="fa fa-user fa-5x"></i>--}}
-{{--                    </div>--}}
-{{--                    <div class="col-xs-9 text-right">--}}
-{{--                        <div class="huge">{{ $data['total_positive'] }}</div>--}}
-{{--                        <div><h4>Total Cases </h4></div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+      <div class="col-lg-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-user fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ $data['total_lab_received'] }}</div>
+                        <div><h4>Received In Lab</h4></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="row" style="padding: 15px;">
-    <div class="col-lg-3">
+    <div class="col-lg-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="row">
@@ -186,7 +150,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="row">
@@ -204,6 +168,4 @@
 </div>
 </div>
 <!-- /#page-wrapper -->
-{!! $chartWoman->script() !!}
-{!! Charts::scripts() !!}
 @endsection

@@ -299,10 +299,10 @@
                                     
 
                                 <div class="form-group{{ $errors->has('hp_code') ? ' has-error' : '' }}">
-                                    <label for="hp_code" class="col-md-3 control-label"><i data-toggle="tooltip" title=" नाम लेख्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i> Lab Name or Hospital Code</label>
+                                    <label for="hp_code" class="col-md-3 control-label"><i data-toggle="tooltip" title=" नाम लेख्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i> Unique Lab Code</label>
 
                                     <div class="col-md-7">
-                                        <input id="hp_code" type="text" class="form-control" name="hp_code" value="@yield('hp_code')" >
+                                        <input id="hp_code" type="text" class="form-control" name="hp_code" value="<?php echo uniqid(); ?>" readonly>
 
                                         @if ($errors->has('hp_code'))
                                             <span class="help-block">
