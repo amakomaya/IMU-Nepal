@@ -262,13 +262,17 @@ export default {
     exportableData.name = data.name;
     exportableData.age = data.age;
     exportableData.gender = data.formated_gender;
-    exportableData.mobile_no = data.emergency_contact_one;
     if(data.latest_anc){
       exportableData.form_no = data.latest_anc.token;
+    }else {
+      exportableData.form_no = '';
     }
+    exportableData.mobile_no = data.emergency_contact_one;
+
     list.push(exportableData);
   });
-  return list;
+  console.log(list);
+  // return list;
 }
     },
     exportToExcel() {
@@ -291,7 +295,11 @@ export default {
             exportableData.swab_id = data.latest_anc.token;
             if(data.latest_anc.labreport){
               exportableData.swab_id = data.latest_anc.token;
+            }else {
+              exportableData.swab_id = '';
             }
+          }else {
+            exportableData.swab_id = '';
           }
           exportableData.created_at = data.created_at;
           list.push(exportableData);
