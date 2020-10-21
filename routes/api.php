@@ -2,6 +2,7 @@
 
 use App\Models\Anc;
 use App\Models\HealthWorker;
+use App\Models\LaboratoryParameter;
 use App\Models\LabTest;
 use App\Models\Woman;
 use Illuminate\Http\Request;
@@ -360,7 +361,7 @@ Route::post('/v1/patient-laboratory-parameter', function(Request $request){
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
-            \App\Models\LaboratoryParameter::create($value);
+            LaboratoryParameter::create($value);
         } catch (\Exception $e) {
             
         }
@@ -370,7 +371,7 @@ Route::post('/v1/patient-laboratory-parameter', function(Request $request){
 
 Route::get('/v1/patient-laboratory-parameter', function(Request $request){
     $hp_code = $request->hp_code;
-    $data = \App\Models\LaboratoryParameter::where('hp_code', $hp_code)->get();
+    $data = LaboratoryParameter::where('hp_code', $hp_code)->get();
     return response()->json($data);
 });
 

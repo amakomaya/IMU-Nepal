@@ -3715,7 +3715,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filterable.vue */ "./resources/assets/js/components/Filterable.vue");
+/* harmony import */ var _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WomanFilterable.vue */ "./resources/assets/js/components/WomanFilterable.vue");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -3805,18 +3805,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -3828,7 +3816,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Filterable: _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Filterable: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     fab: vue_fab__WEBPACK_IMPORTED_MODULE_7___default.a
   },
   data: function data() {
@@ -3869,7 +3857,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }]
         }]
       },
-      token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"].data().collection.data,
+      token: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"].data().collection.data,
       selected: [],
       allSelected: false,
       womanTokens: [],
@@ -38570,31 +38558,6 @@ var render = function() {
   return _c(
     "div",
     [
-      _c(
-        "div",
-        { staticClass: "btn btn-primary pull right" },
-        [
-          _c(
-            "download-excel",
-            {
-              attrs: {
-                fetch: _vm.fetchData,
-                fields: _vm.json_fields,
-                name: _vm.excelFileName()
-              }
-            },
-            [
-              _vm._v("\n        Download Data\n        "),
-              _c("i", {
-                staticClass: "fa fa-file-excel-o",
-                attrs: { "aria-hidden": "true" }
-              })
-            ]
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
       _c(
         "filterable",
         _vm._b(

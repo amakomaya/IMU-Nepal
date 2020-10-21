@@ -1,17 +1,5 @@
 <template>
   <div>
-    <div class="btn btn-primary pull right">
-
-      <download-excel
-          :fetch   = "fetchData"
-          :fields = "json_fields"
-          :name    = "excelFileName()"
-      >
-        Download Data
-        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-      </download-excel>
-    </div>
-
     <filterable v-bind="filterable">
       <thead slot="thead">
       <tr>
@@ -83,7 +71,7 @@
 </template>
 
 <script type="text/javascript">
-import Filterable from './Filterable.vue'
+import Filterable from './WomanFilterable.vue'
 import DataConverter from 'ad-bs-converter'
 import axios from 'axios'
 import ViewLabResultReportModel from './ViewLabResultReportModel.vue'
