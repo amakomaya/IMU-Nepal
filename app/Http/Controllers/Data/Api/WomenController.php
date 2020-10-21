@@ -33,6 +33,26 @@ class WomenController extends Controller
         ]);
     }
 
+    public function activeIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->activePatientList()->withAll();
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
+
+    public function passiveIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->passivePatientList()->withAll();
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
+
     public function show($token){
 
         $data = Woman::withAll()->where('token', $token)->first();
@@ -151,8 +171,6 @@ class WomenController extends Controller
         })->values();
 
         return response()->json($formated_data);
-
-        return response()->json($woman);
     }
 
     public function labExport(){

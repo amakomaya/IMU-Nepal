@@ -99,20 +99,30 @@
       </div>
     </div>
     <div class="filterable-export">
-      <div>
-        <div class="btn btn-primary pull right">
+        <div class="btn btn-primary">
 
           <download-excel
               :fetch   = "exportToExcel"
-              :fields = "convertArrayToObject(jsonFields)"
+              :fields = "json_fields"
               :name    = "excelFileName()"
           >
             Download Data
             <i class="fa fa-file-excel-o" aria-hidden="true"></i>
           </download-excel>
+
         </div>
-<!--        <button @click="exportToCSV()">Export</button>-->
-      </div>
+        <div class="btn btn-secondary">
+
+          <download-excel
+              :fetch   = "exportToExcelForDolphins"
+              :fields = "json_fields_for_dolphins"
+              :name    = "excelFileName()"
+          >
+            Download Data for Dolphins
+            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+          </download-excel>
+        </div>
+        <!--        <button @click="exportToCSV()">Export</button>-->
       <div>
         <span>Order by:</span>
         <select :disabled="loading" @input="updateOrderColumn">
@@ -170,7 +180,6 @@ export default {
     url: String,
     filterGroups: Array,
     orderables: Array,
-    jsonFields : Array
   },
   data() {
     return {
@@ -186,7 +195,28 @@ export default {
       },
       collection: {
         data: []
-      }
+      },
+      json_fields: {
+        'S.N': 'serial_number',
+        'Case Name': 'name',
+        'Age': 'age',
+        'Age Unit': 'age_unit',
+        'District' : 'district',
+        'Municipality' : 'municipality',
+        'Emergency Contact One' : 'emergency_contact_one',
+        'Emergency Contact Two'	: 'emergency_contact_two',
+        'Current Hospital' : 'current_hospital',
+        'Swab ID' : 'swab_id',
+        'Lab ID' : 'lab_id',
+        'Created At' : 'created_at'
+      },
+      json_fields_for_dolphins : {
+        'name': 'name',
+        'age': 'age',
+        'gender': 'gender',
+        'form_no' : 'swab_id',
+        'mobile_no' : 'emergency_contact_one'
+      },
     }
   },
   computed: {
@@ -222,25 +252,53 @@ export default {
       var ext = '.xls';
       return 'IMU Nepal Export Data '+ new Date()+ext;
     },
-    convertArrayToObject : function (array) {
-      return Object.assign({}, array);
+    exportToExcelForDolphins() {
+      if (confirm("Do you want to Download all records in excel ! ")) {
+  // console.log(this.collection.data);
+  // console.log(this.jsonFields);
+  let list=[];
+  $.each(this.collection.data, function(key, data) {
+    let exportableData = {};
+    exportableData.name = data.name;
+    exportableData.age = data.age;
+    exportableData.gender = data.formated_gender;
+    exportableData.mobile_no = data.emergency_contact_one;
+    if(data.latest_anc){
+      exportableData.form_no = data.latest_anc.token;
+    }
+    list.push(exportableData);
+  });
+  return list;
+}
     },
-     exportToExcel() {
-       if (confirm("Do you want to Download all records in excel ! ")) {
-         // console.log(this.collection.data);
-         // console.log(this.jsonFields);
-         let list=[];
-         $.each(this.collection.data, function(key, data) {
-           console.log(data);
-         });
-
-         // const response = await axios.get('/data/api/patient/export');
-         // return response.data;
-
-         //     }
-         // })
-       }
-     },
+    exportToExcel() {
+      if (confirm("Do you want to Download all records in excel ! ")) {
+        // console.log(this.collection.data);
+        // console.log(this.jsonFields);
+        let list=[];
+        $.each(this.collection.data, function(key, data) {
+          let exportableData = {};
+          exportableData.serial_number = key +1;
+          exportableData.name = data.name;
+          exportableData.age = data.age;
+          exportableData.age_unit = data.formated_age_unit;
+          exportableData.district = data.district.district_name;
+          exportableData.municipality = data.municipality.municipality_name;
+          exportableData.emergency_contact_one = data.emergency_contact_one;
+          exportableData.emergency_contact_two = data.emergency_contact_two;
+          exportableData.current_hospital = data.healthpost.name;
+          if(data.latest_anc){
+            exportableData.swab_id = data.latest_anc.token;
+            if(data.latest_anc.labreport){
+              exportableData.swab_id = data.latest_anc.token;
+            }
+          }
+          exportableData.created_at = data.created_at;
+          list.push(exportableData);
+        });
+        return list;
+      }
+    },
     resetFilter() {
       this.appliedFilters.splice(0)
       this.filterCandidates.splice(0)

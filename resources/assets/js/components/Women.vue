@@ -1,17 +1,5 @@
 <template>
     <div>
-        <div class="btn btn-primary pull right">
-            
-                <download-excel
-                :fetch   = "fetchData"
-                :fields = "json_fields"
-                :name    = "excelFileName()"
-                >
-                Download Data
-                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-            </download-excel>
-        </div>
-        
         <filterable v-bind="filterable">
             <thead slot="thead">
             <tr>
@@ -72,8 +60,6 @@
                 </td>  
                 <!-- </div>             -->
             </tr>
-<!--            <span>Selected Ids: {{ item }}</span>-->
-
         </filterable>
 
       <div v-if="this.$userRole == 'healthworker'">
@@ -93,7 +79,7 @@
 </template>
 
 <script type="text/javascript">
-    import Filterable from './Filterable.vue'
+    import Filterable from './WomanFilterable.vue'
     import DataConverter from 'ad-bs-converter'
     import axios from 'axios'
     import ViewLabResultReportModel from './ViewLabResultReportModel.vue'
@@ -107,7 +93,7 @@
             return {
               role : this.$userRole,
                 filterable: {
-                    url: '/data/api/women',
+                    url: '/data/api/active-patient',
                     orderables: [
                         {title: 'Name', name: 'name'},
                         {title: 'Age', name: 'age'},
@@ -115,20 +101,21 @@
                     ],
                     filterGroups: [
                         {
-                            name: 'Patient',
+                            name: 'Case',
                             filters: [
                                 {title: 'Name', name: 'name', type: 'string'},
                                 {title: 'Age', name: 'age', type: 'numeric'},
                                 {title: 'Phone Number', name: 'phone', type: 'numeric'},
+                                {title: 'Created At', name: 'created_at', type: 'datetime'},
                             ]
                         },
                         {
-                            name: 'Tests',
+                            name: 'Sample Collection',
                             filters: [
-                                {title: 'Created At', name: 'ancs.visit_date', type: 'datetime'}
+                                {title: 'Created At', name: 'ancs.created_at', type: 'datetime'}
                             ]
                         }
-                    ]
+                    ],
                 },
                 token : Filterable.data().collection.data,
                 selected: [],
@@ -137,28 +124,6 @@
                 provinces : [],
                 municipalities : [],
                 districts : [],
-                json_fields: {
-                  'S.N' : 'serial_number',
-                  'Case Name': 'name',
-                  'Age': 'age',
-                  'Age Unit' : 'age_unit',
-                  'District' : 'district',
-                  'Municipality' : 'municipality',
-                  'Emergency Contact One' : 'emergency_contact_one',
-                  'Emergency Contact Two' : 'emergency_contact_two',
-                  'Current Hospital' : 'current_hospital',
-                  'Swab ID' : 'swab_id',
-                  'Lab ID' : 'lab_id',
-                  'Created At' : 'created_at'
-                },
-                json_meta: [
-                    [
-                        {
-                            'key': 'charset',
-                            'value': 'utf-8'
-                        }
-                    ]
-                ],
                 exportHtml : '',
               fabOptions : {
                 bgColor: '#778899',
@@ -326,22 +291,6 @@
                     
                 
             },
-            excelFileName : function(){
-                var ext = '.xls';
-                return 'Patient Details '+ new Date()+ext;
-            },
-            async fetchData(){
-
-            if(confirm("Do you want to Download all records in excel ! ")){
-
-            const response = await axios.get('/data/api/patient/export');
-            return response.data;
-
-                    //     }
-                    // })
-                }
-            },
-
             checkCaseType : function(type){
                 switch(type){
                     case '0':

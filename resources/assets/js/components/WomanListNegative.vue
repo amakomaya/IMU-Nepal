@@ -46,7 +46,7 @@
 </template>
 
 <script type="text/javascript">
-    import Filterable from './Filterable.vue'
+    import Filterable from './WomanFilterable.vue'
     import DataConverter from 'ad-bs-converter'
     import axios from 'axios'
     import ViewLabReportModel from './ViewLabReportModel.vue'
@@ -57,7 +57,7 @@
         data() {
             return {
                 filterable: {
-                    url: '/data/api/women',
+                    url: '/data/api/passive-patient',
                     orderables: [
                         {title: 'Name', name: 'name'},
                         {title: 'Age', name: 'age'},
@@ -73,9 +73,9 @@
                             ]
                         },
                         {
-                            name: 'Tests',
+                            name: 'Sample Collection',
                             filters: [
-                                {title: 'Created At', name: 'ancs.visit_date', type: 'datetime'}
+                                {title: 'Created At', name: 'ancs.created_at', type: 'datetime'}
                             ]
                         }
                     ]

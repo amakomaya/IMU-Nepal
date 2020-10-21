@@ -44,16 +44,17 @@ class Woman extends Model
     protected $allowedFilters = [
         'name', 'phone', 'height', 'age', 'lmp_date_en', 'blood_group', 'province_id', 'district_id',
         'municipality_id', 'hp_code', 'caste', 'anc_status', 'delivery_status', 'labtest_status', 'pnc_status', 'created_by',
-
+        'created_at',
 
         // nested
         'ancs.created_at'
 
     ];
+    protected $appends = ['formated_age_unit', 'formated_gender'];
     // protected $appends = ['anc_with_protocol', 'anc_visits'];
     protected $orderable = ['name', 'phone', 'age', 'lmp_date_en', 'created_at'];
 
-    protected $supportedRelations = ['ancs', 'latestAnc', 'healthworker' ,'healthpost'];
+    protected $supportedRelations = ['ancs', 'latestAnc', 'healthworker' ,'healthpost', 'district', 'municipality'];
 
     public static function getWomanName($womanToken)
     {
@@ -178,5 +179,45 @@ class Woman extends Model
         if (count($healthpost) > 0) {
             return $healthpost->name;
         }
+    }
+
+    public function getFormatedAgeUnitAttribute(){
+        return $this->ageUnitCheck($this->age_unit);
+    }
+
+    private function ageUnitCheck($data){
+        switch($data){
+            case '1':
+                return 'Months';
+            case '2':
+                return 'Days';
+            default:
+                return 'Years';
+        }
+    }
+
+    public function getFormatedGenderAttribute(){
+
+        switch($this->sex){
+            case '1':
+                return 'Male';
+            case '2':
+                return 'Female';
+            default:
+                return 'Don\'t Know';
+        }
+    }
+
+    public function scopeActivePatientList(){
+            if ($this->latestAnc()->exists()) {
+                return $this->latestAnc()->first()->result != "4";
+            }
+            if ($this->latestAnc()->exists()) {
+                return $this;
+            }
+    }
+
+    public function scopePassivePatientList(){
+            return $this->latestAnc()->first()->result != "4";
     }
 }
