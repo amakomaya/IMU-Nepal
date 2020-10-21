@@ -5411,7 +5411,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           exportableData.mobile_no = data.emergency_contact_one;
           list.push(exportableData);
         });
-        console.log(list); // return list;
+        return list;
       }
     },
     exportToExcel: function exportToExcel() {
@@ -5436,11 +5436,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
             if (data.latest_anc.labreport) {
               exportableData.swab_id = data.latest_anc.token;
-            } else {
-              exportableData.swab_id = '';
             }
-          } else {
-            exportableData.swab_id = '';
           }
 
           exportableData.created_at = data.created_at;
