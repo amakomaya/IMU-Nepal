@@ -263,11 +263,9 @@ export default {
     exportableData.age = data.age;
     exportableData.gender = data.formated_gender;
     if(data.latest_anc){
-      exportableData.form_no = data.latest_anc.token;
-    }else {
-      exportableData.form_no = '';
+      exportableData.swab_id = data.latest_anc.token;
     }
-    exportableData.mobile_no = data.emergency_contact_one;
+    exportableData.emergency_contact_one = data.emergency_contact_one;
 
     list.push(exportableData);
   });
