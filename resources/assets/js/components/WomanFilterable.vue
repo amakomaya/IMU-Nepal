@@ -263,15 +263,16 @@ export default {
     exportableData.age = data.age;
     exportableData.gender = data.formated_gender;
     if(data.latest_anc){
-      exportableData.swab_id = data.latest_anc.token;
+      if(data.latest_anc.labreport){
+        exportableData.swab_id = data.latest_anc.labreport.formated_token;
+      }
     }
     exportableData.emergency_contact_one = data.emergency_contact_one;
-
     list.push(exportableData);
   });
   return list;
-}
-    },
+  }
+      },
     exportToExcel() {
       if (confirm("Do you want to Download all records in excel ! ")) {
         // console.log(this.collection.data);
@@ -291,7 +292,7 @@ export default {
           if(data.latest_anc){
             exportableData.swab_id = data.latest_anc.token;
             if(data.latest_anc.labreport){
-              exportableData.swab_id = data.latest_anc.token;
+              exportableData.lab_id = data.latest_anc.labreport.formated_token;
             }
           }
           exportableData.created_at = data.created_at;

@@ -5403,7 +5403,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           exportableData.gender = data.formated_gender;
 
           if (data.latest_anc) {
-            exportableData.swab_id = data.latest_anc.token;
+            if (data.latest_anc.labreport) {
+              exportableData.swab_id = data.latest_anc.labreport.formated_token;
+            }
           }
 
           exportableData.emergency_contact_one = data.emergency_contact_one;
@@ -5433,7 +5435,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             exportableData.swab_id = data.latest_anc.token;
 
             if (data.latest_anc.labreport) {
-              exportableData.swab_id = data.latest_anc.token;
+              exportableData.lab_id = data.latest_anc.labreport.formated_token;
             }
           }
 
