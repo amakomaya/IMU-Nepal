@@ -27,7 +27,9 @@ import QrCodeGenerate from './components/QrCodeGenerate.vue'
 import SelectYearMonth from './components/SelectYearMonth'
 
 import JsonExcel from 'vue-json-excel'
- 
+import VueMask from 'v-mask'
+Vue.use(VueMask);
+
 Vue.component('downloadExcel', JsonExcel)
 
 Vue.prototype.$userRole = document.querySelector("meta[name='user-role']").getAttribute('content');

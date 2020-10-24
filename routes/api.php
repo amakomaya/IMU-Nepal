@@ -5,7 +5,9 @@ use App\Models\HealthWorker;
 use App\Models\LaboratoryParameter;
 use App\Models\LabTest;
 use App\Models\Woman;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Yagiten\Nepalicalendar\Calendar;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -391,12 +393,17 @@ Route::post('/v1/received-in-lab', function(Request $request){
     $data = $request->all();
     $healthworker = HealthWorker::where('token', auth()->user()->token)->first();
     $data['hp_code'] = $healthworker->hp_code;
-    $data['created_by_name'] = $healthworker->name;
+    $data['checked_by_name'] = $healthworker->name;
+    $data['checked_by'] = $healthworker->token;
     $data['status'] = 1;
-    $to_date_array = explode("-",  \Carbon\Carbon::now()->format('Y-m-d'));
-    $data['sample_recv_date'] = \Yagiten\Nepalicalendar\Calendar::eng_to_nep($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay();
-    LabTest::create($data);
-    return response()->json("Recieved");
+    $to_date_array = explode("-",  Carbon::now()->format('Y-m-d'));
+    $data['sample_recv_date'] = Calendar::eng_to_nep($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay();
+    try {
+        LabTest::create($data);
+        return response()->json('success');
+    }catch (\Exception $e){
+        return response()->json('error');
+    }
 });
 
 //
