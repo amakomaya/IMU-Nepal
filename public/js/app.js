@@ -5393,13 +5393,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     exportToExcelForDolphins: function exportToExcelForDolphins() {
       if (confirm("Do you want to Download all records in excel ! ")) {
-        // console.log(this.collection.data);
-        // console.log(this.jsonFields);
         var list = [];
+        var role = this.$userRole;
         $.each(this.collection.data, function (key, data) {
           var exportableData = {};
           exportableData.name = data.name;
-          exportableData.age = data.age;
+
+          if (role == 'dho' || role == 'province' || role == 'center') {
+            exportableData.name = '** ***';
+            exportableData.emergency_contact_one = '** ***';
+          } else {
+            exportableData.name = data.name;
+            exportableData.emergency_contact_one = data.emergency_contact_one;
+          }
+
           exportableData.gender = data.formated_gender;
 
           if (data.latest_anc) {
@@ -5408,7 +5415,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             }
           }
 
-          exportableData.emergency_contact_one = data.emergency_contact_one;
           list.push(exportableData);
         });
         return list;
@@ -5416,19 +5422,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     exportToExcel: function exportToExcel() {
       if (confirm("Do you want to Download all records in excel ! ")) {
-        // console.log(this.collection.data);
-        // console.log(this.jsonFields);
         var list = [];
-        $.each(this.collection.data, function (key, data) {
+        var role = this.$userRole;
+        this.collection.data.map(function (data, key) {
           var exportableData = {};
           exportableData.serial_number = key + 1;
-          exportableData.name = data.name;
+
+          if (role == 'dho' || role == 'province' || role == 'center') {
+            exportableData.name = '** ***';
+            exportableData.emergency_contact_one = '** ***';
+            exportableData.emergency_contact_two = '** ***';
+          } else {
+            exportableData.name = data.name;
+            exportableData.emergency_contact_one = data.emergency_contact_one;
+            exportableData.emergency_contact_two = data.emergency_contact_two;
+          }
+
           exportableData.age = data.age;
           exportableData.age_unit = data.formated_age_unit;
           exportableData.district = data.district.district_name;
           exportableData.municipality = data.municipality.municipality_name;
-          exportableData.emergency_contact_one = data.emergency_contact_one;
-          exportableData.emergency_contact_two = data.emergency_contact_two;
           exportableData.current_hospital = data.healthpost.name;
 
           if (data.latest_anc) {
@@ -6011,6 +6024,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -6267,6 +6282,25 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return 'N/A';
+    },
+    gender: function gender(type) {
+      switch (type) {
+        case '1':
+          return 'M';
+
+        case '2':
+          return 'F';
+
+        default:
+          return 'O';
+      }
+    },
+    roleVisibility: function roleVisibility(data) {
+      if (this.role == 'dho' || this.role == 'province' || this.role == 'center') {
+        return '** ***';
+      }
+
+      return data;
     },
     aadSampleCollection: function aadSampleCollection(token) {
       window.location.href = '/admin/sample-collection/create/' + token;
@@ -40115,7 +40149,7 @@ var render = function() {
     _c("div", { staticClass: "panel" }, [
       _c("div", { staticClass: "panel-heading" }, [
         _c("div", { staticClass: "panel-title" }, [
-          _c("span", [_vm._v("Customers match")]),
+          _c("span", [_vm._v("Case Records match")]),
           _vm._v(" "),
           _c(
             "select",
@@ -41016,35 +41050,46 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [
                             _vm.checkForPositiveOnly(item.latest_anc)
-                              ? _c("div", [
-                                  _vm._v("Case ID : " + _vm._s(item.case_id))
+                              ? _c("div", { attrs: { title: "Case ID" } }, [
+                                  _vm._v("C ID : " + _vm._s(item.case_id))
                                 ])
                               : _vm._e(),
                             _vm._v(" "),
                             item.parent_case_id !== null
-                              ? _c("div", [
-                                  _vm._v(
-                                    "Parent Case ID : " +
-                                      _vm._s(item.parent_case_id)
-                                  )
-                                ])
+                              ? _c(
+                                  "div",
+                                  { attrs: { title: "Parent Case ID" } },
+                                  [
+                                    _vm._v(
+                                      "PC ID : " + _vm._s(item.parent_case_id)
+                                    )
+                                  ]
+                                )
                               : _vm._e()
                           ]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(item.name))]),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm.roleVisibility(item.name)))
+                          ]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(item.age))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(_vm.gender(item.sex)))]),
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(
                               "One : " +
-                                _vm._s(item.emergency_contact_one) +
+                                _vm._s(
+                                  _vm.roleVisibility(item.emergency_contact_one)
+                                ) +
                                 " "
                             ),
                             _c("br"),
                             _vm._v(
                               "\n                Two : " +
-                                _vm._s(item.emergency_contact_two) +
+                                _vm._s(
+                                  _vm.roleVisibility(item.emergency_contact_two)
+                                ) +
                                 "\n            "
                             )
                           ]),
@@ -41224,6 +41269,8 @@ var render = function() {
               _c("th", [_vm._v("Name")]),
               _vm._v(" "),
               _c("th", [_vm._v("Age")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Gender")]),
               _vm._v(" "),
               _c("th", [_vm._v("Emergency Contact")]),
               _vm._v(" "),

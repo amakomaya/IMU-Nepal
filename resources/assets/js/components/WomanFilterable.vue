@@ -3,7 +3,7 @@
     <div class="panel">
       <div class="panel-heading">
         <div class="panel-title">
-          <span>Customers match</span>
+          <span>Case Records match</span>
           <select v-model="query.filter_match">
             <option value="and">All</option>
             <option value="or">Any</option>
@@ -254,40 +254,49 @@ export default {
     },
     exportToExcelForDolphins() {
       if (confirm("Do you want to Download all records in excel ! ")) {
-  // console.log(this.collection.data);
-  // console.log(this.jsonFields);
-  let list=[];
-  $.each(this.collection.data, function(key, data) {
-    let exportableData = {};
-    exportableData.name = data.name;
-    exportableData.age = data.age;
-    exportableData.gender = data.formated_gender;
-    if(data.latest_anc){
-      if(data.latest_anc.labreport){
-        exportableData.swab_id = data.latest_anc.labreport.formated_token;
+      let list=[];
+        let role = this.$userRole;
+        $.each(this.collection.data, function(key, data) {
+        let exportableData = {};
+          exportableData.name = data.name;
+          if(role == 'dho' || role == 'province' || role == 'center'){
+            exportableData.name = '** ***';
+            exportableData.emergency_contact_one = '** ***';
+          }else {
+            exportableData.name = data.name;
+            exportableData.emergency_contact_one = data.emergency_contact_one;
+          }    exportableData.gender = data.formated_gender;
+        if(data.latest_anc){
+          if(data.latest_anc.labreport){
+            exportableData.swab_id = data.latest_anc.labreport.formated_token;
+          }
+        }
+        list.push(exportableData);
+      });
+      return list;
       }
-    }
-    exportableData.emergency_contact_one = data.emergency_contact_one;
-    list.push(exportableData);
-  });
-  return list;
-  }
-      },
+    },
+
     exportToExcel() {
       if (confirm("Do you want to Download all records in excel ! ")) {
-        // console.log(this.collection.data);
-        // console.log(this.jsonFields);
         let list=[];
-        $.each(this.collection.data, function(key, data) {
+        let role = this.$userRole;
+        this.collection.data.map(function(data, key) {
           let exportableData = {};
           exportableData.serial_number = key +1;
-          exportableData.name = data.name;
+          if(role == 'dho' || role == 'province' || role == 'center'){
+              exportableData.name = '** ***';
+              exportableData.emergency_contact_one = '** ***';
+              exportableData.emergency_contact_two = '** ***';
+              }else {
+            exportableData.name = data.name;
+            exportableData.emergency_contact_one = data.emergency_contact_one;
+            exportableData.emergency_contact_two = data.emergency_contact_two;
+          }
           exportableData.age = data.age;
           exportableData.age_unit = data.formated_age_unit;
           exportableData.district = data.district.district_name;
           exportableData.municipality = data.municipality.municipality_name;
-          exportableData.emergency_contact_one = data.emergency_contact_one;
-          exportableData.emergency_contact_two = data.emergency_contact_two;
           exportableData.current_hospital = data.healthpost.name;
           if(data.latest_anc){
             exportableData.swab_id = data.latest_anc.token;

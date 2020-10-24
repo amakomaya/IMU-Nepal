@@ -7,6 +7,7 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Age</th>
+                <th>Gender</th>
                 <th>Emergency Contact</th>
                 <!-- <th>District</th> -->
                 <th>Muicipality</th>
@@ -21,13 +22,14 @@
                 <td>
                     <input type="checkbox" v-model="womanTokens" @click="select" :value="item.token">                           
                 </td>
-                <td><div v-if="checkForPositiveOnly(item.latest_anc)">Case ID : {{ item.case_id }}</div>
-                    <div v-if="item.parent_case_id !== null">Parent Case ID : {{ item.parent_case_id }}</div>
+                <td><div v-if="checkForPositiveOnly(item.latest_anc)" title="Case ID">C ID : {{ item.case_id }}</div>
+                    <div v-if="item.parent_case_id !== null" title="Parent Case ID">PC ID : {{ item.parent_case_id }}</div>
                 </td>
-                <td>{{item.name}}</td>
+                <td>{{ roleVisibility(item.name)}}</td>
                 <td>{{item.age}}</td>
-                <td>One : {{item.emergency_contact_one}} <br>
-                    Two : {{item.emergency_contact_two}}
+                <td>{{ gender(item.sex)}}</td>
+                <td>One : {{ roleVisibility(item.emergency_contact_one) }} <br>
+                    Two : {{ roleVisibility(item.emergency_contact_two) }}
                 </td>
                 <td>{{ checkMunicipality(item.municipality_id) }}</td>
                 <td>
@@ -341,6 +343,24 @@
                 }
                 return 'N/A';
             },
+
+          gender(type){
+            switch (type){
+              case '1':
+                return 'M';
+                case '2':
+                  return  'F';
+                  default:
+                    return 'O';
+            }
+          },
+
+          roleVisibility(data){
+            if(this.role == 'dho' || this.role == 'province' || this.role == 'center'){
+              return '** ***';
+            }
+            return data;
+          },
 
             aadSampleCollection(token){
               window.location.href = '/admin/sample-collection/create/'+token;
