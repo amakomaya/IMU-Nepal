@@ -2338,6 +2338,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 //
 //
 //
@@ -2386,16 +2392,86 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    item: Object
+  },
   data: function data() {
     return {
-      data: []
+      data: {}
     };
+  },
+  validations: {
+    data: {
+      token: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
+        minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(1)
+      },
+      sample_test_date: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+      },
+      sample_test_time: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+      },
+      sample_test_result: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+      }
+    }
   },
   methods: {
     submitLabIdToSampleId: function submitLabIdToSampleId(data) {
-      console.log(data);
+      var _this = this;
+
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
+        return false;
+      }
+
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/api/v1/result-in-lab-from-web', data).then(function (response) {
+        if (response.data === 'success') {
+          _this.$swal({
+            title: 'Record received in lab',
+            type: 'success',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+
+          _this.data = {};
+        } else {
+          _this.$swal({
+            title: 'Oops. Something went wrong.',
+            type: 'error',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+        }
+      });
+    },
+    ad2bs: function ad2bs(date) {
+      var dateObject = new Date(date);
+      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
+      var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default.a.ad2bs(dateFormat);
+      return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
     }
+  },
+  created: function created() {
+    if (this.item) {
+      this.data.token = this.item.latest_anc.labreport.token;
+    }
+
+    var today = new Date();
+    this.data.sample_test_date = this.ad2bs(today);
+    this.data.sample_test_time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
   }
 });
 
@@ -4152,10 +4228,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         width: 700
       });
     },
-    addResultInLab: function addResultInLab() {
+    addResultInLab: function addResultInLab(item) {
       this.$dlg.modal(_AddResultInLabModal__WEBPACK_IMPORTED_MODULE_9__["default"], {
         title: 'Lab Result',
-        width: 700
+        width: 700,
+        params: {
+          item: item
+        }
       });
     }
   }
@@ -25874,6 +25953,500 @@ module.exports = function (inp, opts) {
 
 /***/ }),
 
+/***/ "./node_modules/nepali-date/cjs/NepaliDate.js":
+/*!****************************************************!*\
+  !*** ./node_modules/nepali-date/cjs/NepaliDate.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _config = __webpack_require__(/*! ./config */ "./node_modules/nepali-date/cjs/config.js");
+
+var _format2 = __webpack_require__(/*! ./format */ "./node_modules/nepali-date/cjs/format.js");
+
+var _format3 = _interopRequireDefault(_format2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var SUM_IDX = 14;
+
+function _parse(dateString) {
+  // Expected date formats are yyyy-mm-dd, yyyy.mm.dd yyyy/mm/dd
+  var parts = dateString.split(/[-./]/, 3);
+
+  var _parts$map = parts.map(function (d) {
+    var n = parseInt(d, 10);
+    if (Number.isNaN(n)) {
+      throw new Error('Invalid date');
+    }
+    return n;
+  }),
+      _parts$map2 = _slicedToArray(_parts$map, 3),
+      year = _parts$map2[0],
+      _parts$map2$ = _parts$map2[1],
+      month = _parts$map2$ === undefined ? 1 : _parts$map2$,
+      _parts$map2$2 = _parts$map2[2],
+      day = _parts$map2$2 === undefined ? 1 : _parts$map2$2;
+
+  // Make sure we are within range
+
+
+  if (year < _config.START_YEAR || year >= _config.START_YEAR + _config.NEPALI_DATE_MAP.length) {
+    throw new Error('Nepal year out of range');
+  }
+
+  if (month < 1 || month > 12) {
+    throw new Error('Invalid nepali month must be between 1 - 12');
+  }
+
+  var daysInMonth = _config.NEPALI_DATE_MAP[year - _config.START_YEAR][month];
+  if (day < 1 || day > daysInMonth) {
+    throw new Error('Invalid nepali date must be between 1 - ' + daysInMonth + ' in ' + year + ' ' + month);
+  }
+
+  return [year, month - 1, day];
+}
+
+var NepaliDate = function () {
+  function NepaliDate() {
+    _classCallCheck(this, NepaliDate);
+
+    if (arguments.length === 0) {
+      this.setEnglishDate(new Date());
+    } else if (arguments.length === 1) {
+      var e = arguments.length <= 0 ? undefined : arguments[0];
+      if ((typeof e === 'undefined' ? 'undefined' : _typeof(e)) === 'object') {
+        if (e instanceof Date) {
+          this.setEnglishDate(e);
+        } else if (e instanceof NepaliDate) {
+          this.timestamp = e.timestamp;
+          this.year = e.year;
+          this.month = e.month;
+          this.day = e.day;
+        } else if (typeof e === 'number') {
+          this.setEnglishDate(new Date(e));
+        } else {
+          throw new Error('Invalid date argument');
+        }
+      } else if (typeof e === 'string') {
+        // Try to parse the date
+        this.set.apply(this, _toConsumableArray(_parse(e)));
+      } else {
+        throw new Error('Invalid date argument');
+      }
+    } else if (arguments.length === 3) {
+      this.set(arguments.length <= 0 ? undefined : arguments[0], arguments.length <= 1 ? undefined : arguments[1], arguments.length <= 2 ? undefined : arguments[2]);
+    } else {
+      throw new Error('Invalid argument syntax');
+    }
+  }
+
+  _createClass(NepaliDate, [{
+    key: 'setEnglishDate',
+    value: function setEnglishDate(date) {
+      this.timestamp = date;
+      var daysCount = Math.floor((this.timestamp - _config.EPOCH) / 86400000);
+      // Look for a index based on number of days since epoch.
+      // it is just to save some iterations searching from idx 0.
+      // So dividing by a number slightly higher than number of days in a year (365.25)
+      var idx = Math.floor(daysCount / 366);
+      while (daysCount >= _config.NEPALI_DATE_MAP[idx][SUM_IDX]) {
+        idx += 1;
+      }
+
+      daysCount -= _config.NEPALI_DATE_MAP[idx - 1][SUM_IDX];
+      var tmp = _config.NEPALI_DATE_MAP[idx];
+
+      // eslint-disable-next-line prefer-destructuring
+      this.year = tmp[0];
+
+      // Month starts at 0, check for remaining days left
+      this.month = 0;
+      while (daysCount >= tmp[this.month + 1]) {
+        this.month += 1;
+        daysCount -= tmp[this.month];
+      }
+
+      // The day of month is the remaining days + 1
+      this.day = daysCount + 1;
+    }
+  }, {
+    key: 'getEnglishDate',
+    value: function getEnglishDate() {
+      return this.timestamp;
+    }
+  }, {
+    key: 'parse',
+    value: function parse(dateString) {
+      this.set.apply(this, _toConsumableArray(_parse(dateString)));
+    }
+  }, {
+    key: 'getYear',
+    value: function getYear() {
+      return this.year;
+    }
+  }, {
+    key: 'getMonth',
+    value: function getMonth() {
+      return this.month;
+    }
+  }, {
+    key: 'getDate',
+    value: function getDate() {
+      return this.day;
+    }
+  }, {
+    key: 'getDay',
+    value: function getDay() {
+      return this.timestamp.getDay();
+    }
+  }, {
+    key: 'getHours',
+    value: function getHours() {
+      return this.timestamp.getHours();
+    }
+  }, {
+    key: 'getMinutes',
+    value: function getMinutes() {
+      return this.timestamp.getMinutes();
+    }
+  }, {
+    key: 'getSeconds',
+    value: function getSeconds() {
+      return this.timestamp.getSeconds();
+    }
+  }, {
+    key: 'getMilliseconds',
+    value: function getMilliseconds() {
+      return this.timestamp.getMilliseconds();
+    }
+  }, {
+    key: 'getTime',
+    value: function getTime() {
+      return this.timestamp.getTime();
+    }
+  }, {
+    key: 'setYear',
+    value: function setYear(year) {
+      this.set(year, this.month, this.day);
+    }
+  }, {
+    key: 'setMonth',
+    value: function setMonth(month) {
+      this.set(this.year, month, this.day);
+    }
+  }, {
+    key: 'setDate',
+    value: function setDate(day) {
+      this.set(this.year, this.month, day);
+    }
+  }, {
+    key: 'set',
+    value: function set(year, month, date) {
+      var idx = year + Math.floor(month / 12) - _config.START_YEAR;
+      var tmp = _config.NEPALI_DATE_MAP[idx];
+      var d = tmp[SUM_IDX] - tmp[SUM_IDX - 1];
+
+      var m = month % 12;
+      var mm = m < 0 ? 12 + m : m;
+
+      for (var i = 0; i < mm; i += 1) {
+        d += tmp[i + 1];
+      }
+      d += date - 1;
+      this.setEnglishDate(new Date(_config.EPOCH + d * 86400000));
+    }
+  }, {
+    key: 'format',
+    value: function format(formatStr) {
+      return (0, _format3.default)(this, formatStr);
+    }
+  }, {
+    key: 'toString',
+    value: function toString() {
+      return this.year + '/' + (this.month + 1) + '/' + this.day;
+    }
+  }]);
+
+  return NepaliDate;
+}();
+
+NepaliDate.minimum = function () {
+  return new Date(_config.EPOCH);
+};
+NepaliDate.maximum = function () {
+  return new Date(_config.EPOCH + _config.NEPALI_DATE_MAP[_config.NEPALI_DATE_MAP.length - 1][SUM_IDX] * 86400000);
+};
+
+exports.default = NepaliDate;
+
+/***/ }),
+
+/***/ "./node_modules/nepali-date/cjs/config.js":
+/*!************************************************!*\
+  !*** ./node_modules/nepali-date/cjs/config.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.EPOCH = new Date(1943, 3, 14).getTime();
+exports.START_YEAR = 2000;
+// const MAX_DATE = new Date(2032, 4, 14);
+
+exports.NEPALI_DATE_MAP = [[2000, 30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31, 365], [2001, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2002, 31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30, 365], [2003, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31, 366], [2004, 30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31, 365], [2005, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2006, 31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30, 365], [2007, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31, 366], [2008, 31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31, 365], [2009, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2010, 31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30, 365], [2011, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31, 366], [2012, 31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30, 365], [2013, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2014, 31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30, 365], [2015, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31, 366], [2016, 31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30, 365], [2017, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2018, 31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30, 365], [2019, 31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31, 366], [2020, 31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2021, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2022, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30, 365], [2023, 31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31, 366], [2024, 31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2025, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2026, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31, 366], [2027, 30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31, 365], [2028, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2029, 31, 31, 32, 31, 32, 30, 30, 29, 30, 29, 30, 30, 365], [2030, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31, 366], [2031, 30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31, 365], [2032, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2033, 31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30, 365], [2034, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31, 366], [2035, 30, 32, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31, 365], [2036, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2037, 31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30, 365], [2038, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31, 366], [2039, 31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30, 365], [2040, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2041, 31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30, 365], [2042, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31, 366], [2043, 31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30, 365], [2044, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2045, 31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30, 365], [2046, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31, 366], [2047, 31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2048, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2049, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30, 365], [2050, 31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31, 366], [2051, 31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2052, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2053, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30, 365], [2054, 31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31, 366], [2055, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2056, 31, 31, 32, 31, 32, 30, 30, 29, 30, 29, 30, 30, 365], [2057, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31, 366], [2058, 30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31, 365], [2059, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2060, 31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30, 365], [2061, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31, 366], [2062, 30, 32, 31, 32, 31, 31, 29, 30, 29, 30, 29, 31, 365], [2063, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2064, 31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30, 365], [2065, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31, 366], [2066, 31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31, 365], [2067, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2068, 31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30, 365], [2069, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31, 366], [2070, 31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30, 365], [2071, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2072, 31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30, 365], [2073, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31, 366], [2074, 31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2075, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2076, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30, 365], [2077, 31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31, 366], [2078, 31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2079, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30, 365], [2080, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30, 365], [2081, 31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 30, 30, 366], [2082, 30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30, 365], [2083, 31, 31, 32, 31, 31, 30, 30, 30, 29, 30, 30, 30, 365], [2084, 31, 31, 32, 31, 31, 30, 30, 30, 29, 30, 30, 30, 365], [2085, 31, 32, 31, 32, 30, 31, 30, 30, 29, 30, 30, 30, 366], [2086, 30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30, 365], [2087, 31, 31, 32, 31, 31, 31, 30, 30, 29, 30, 30, 30, 366], [2088, 30, 31, 32, 32, 30, 31, 30, 30, 29, 30, 30, 30, 365]];
+
+// Include the progressive sum at the end of the array
+exports.NEPALI_DATE_MAP.forEach(function (l, idx, arr) {
+  l.push(l[13] + (idx === 0 ? 0 : arr[idx - 1][14]));
+});
+
+/***/ }),
+
+/***/ "./node_modules/nepali-date/cjs/format.js":
+/*!************************************************!*\
+  !*** ./node_modules/nepali-date/cjs/format.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = format;
+var MONTHS_EN = ['Baisakh', 'Jestha', 'Asar', 'Shrawan', 'Bhadra', 'Aswin', 'Kartik', 'Mangsir', 'Poush', 'Magh', 'Falgun', 'Chaitra'];
+var MONTHS_SHORT_EN = ['Bai', 'Jes', 'Asa', 'Shr', 'Bhd', 'Asw', 'Kar', 'Man', 'Pou', 'Mag', 'Fal', 'Cha'];
+var MONTHS_NP = ['बैशाख', 'जेठ', 'असार', 'श्रावण', 'भाद्र', 'आश्विन', 'कार्तिक', 'मंसिर', 'पौष', 'माघ', 'फाल्गुण', 'चैत्र'];
+var MONTHS_SHORT_NP = ['बै', 'जे', 'अ', 'श्रा', 'भा', 'आ', 'का', 'मं', 'पौ', 'मा', 'फा', 'चै'];
+var NUM_NP = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+var WEEKDAYS_SHORT_EN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+var WEEKDAYS_LONG_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+var WEEKDAYS_SHORT_NP = ['आइत', 'सोम', 'मंगल', 'बुध', 'बिहि', 'शुक्र', 'शनि'];
+var WEEKDAYS_LONG_NP = ['आइतबार', 'सोमबार', 'मंगलबार', 'बुधबार', 'बिहिबार', 'शुक्रबार', 'शनिबार'];
+
+function pad(n) {
+  if (n < 10) {
+    return '0' + n;
+  }
+  return '' + n;
+}
+
+function npDigit(str) {
+  var res = '';
+  for (var i = 0; i < str.length; i += 1) {
+    res += NUM_NP[str.charCodeAt(i) - 48];
+  }
+  return res;
+}
+
+function yearEn(size) {
+  return function (date) {
+    if (size <= 2) {
+      return String(date.year).substring(2);
+    }
+    if (size === 3) {
+      return String(date.year).substring(1);
+    }
+    return date.year;
+  };
+}
+
+function yearNp(size) {
+  return function (date) {
+    if (size <= 2) {
+      return npDigit(String(date.year).substring(2));
+    }
+    if (size === 3) {
+      return npDigit(String(date.year).substring(1));
+    }
+    return npDigit(String(date.year));
+  };
+}
+
+function monthEn(size) {
+  return function (date) {
+    if (size === 1) {
+      return String(date.month + 1);
+    }
+    if (size === 2) {
+      return pad(date.month + 1);
+    }
+    if (size === 3) {
+      return MONTHS_SHORT_EN[date.month];
+    }
+    return MONTHS_EN[date.month];
+  };
+}
+
+function monthNp(size) {
+  return function (date) {
+    if (size === 1) {
+      return npDigit(String(date.month + 1));
+    }
+    if (size === 2) {
+      return npDigit(pad(date.month + 1));
+    }
+    if (size === 3) {
+      return MONTHS_SHORT_NP[date.month];
+    }
+    return MONTHS_NP[date.month];
+  };
+}
+
+function dateEn(size) {
+  return function (date) {
+    if (size === 1) {
+      return String(date.day);
+    }
+    if (size === 2) {
+      return pad(date.day);
+    }
+    if (size === 3) {
+      return WEEKDAYS_SHORT_EN[date.getDay()];
+    }
+    return WEEKDAYS_LONG_EN[date.getDay()];
+  };
+}
+
+function dateNp(size) {
+  return function (date) {
+    if (size === 1) {
+      return npDigit(String(date.day));
+    }
+    if (size === 2) {
+      return npDigit(pad(date.day));
+    }
+    if (size === 3) {
+      return WEEKDAYS_SHORT_NP[date.getDay()];
+    }
+    return WEEKDAYS_LONG_NP[date.getDay()];
+  };
+}
+
+function pass(seq) {
+  return function () {
+    return seq;
+  };
+}
+
+var fn = {
+  Y: yearEn,
+  y: yearNp,
+  M: monthEn,
+  m: monthNp,
+  D: dateEn,
+  d: dateNp
+};
+
+function isSpecial(ch) {
+  return ch in fn;
+}
+
+function tokenize(formatStr) {
+  var inQuote = false;
+  var seq = '';
+  var special = '';
+  var specialSize = 0;
+
+  var tokens = [];
+
+  for (var i = 0; i < formatStr.length; i += 1) {
+    var ch = formatStr[i];
+    if (ch === special) {
+      specialSize += 1;
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    // Time to process special
+    if (special !== '') {
+      tokens.push(fn[special](specialSize));
+      special = '';
+      specialSize = 0;
+    }
+
+    if (ch === '"') {
+      inQuote = !inQuote;
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (!isSpecial(ch) || inQuote) {
+      seq += ch;
+    } else {
+      // got a special character
+      if (seq) {
+        tokens.push(pass(seq));
+        seq = '';
+      }
+
+      special = ch;
+      specialSize = 1;
+    }
+  }
+
+  if (seq) {
+    tokens.push(pass(seq));
+  } else if (special) {
+    tokens.push(fn[special](specialSize));
+  }
+
+  return tokens;
+}
+
+// Parse the format string for special characters
+// YY     2 digit year
+// YYY    3 digit year
+// YYYY   4 digit year
+// yy     2 digit year in Nepali
+// yyy    3 digit year in Nepali
+// yyyy   4 digit year in Nepali
+// M      month number
+// MM     0 padded 2 digit month
+// MMM    3 character month name
+// MMMM   Full month name
+// m      digit month in nepali unicode
+// mm     0 padded 2 digit month in nepali unicode
+// mmm    Partial Month name in nepali unicode
+// mmmm   Full month name in nepali unicode
+// D      date number
+// DD     0 padded date number (2 digit)
+// DDD    week day english short form
+// DDDD   week day english full form
+// d      date number in nepali
+// dd     0 padded date number in nepali (2 digit)
+// ddd    week day nepali short form
+// dddd   week day nepali full form
+function format(nepaliDate, formatStr) {
+  return tokenize(formatStr).map(function (f) {
+    return f(nepaliDate);
+  }).join('');
+}
+
+/***/ }),
+
 /***/ "./node_modules/process/browser.js":
 /*!*****************************************!*\
   !*** ./node_modules/process/browser.js ***!
@@ -31926,6 +32499,904 @@ var plugin = (function (Vue) {
 
 /***/ }),
 
+/***/ "./node_modules/v-nepalidatepicker/dist/v-nepalidatepicker.esm.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/v-nepalidatepicker/dist/v-nepalidatepicker.esm.js ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! nepali-date/cjs/NepaliDate */ "./node_modules/nepali-date/cjs/NepaliDate.js");
+/* harmony import */ var nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0__);
+
+
+const YEAR_DATES = [{
+  year: 2000,
+  value: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31]
+}, {
+  year: 2001,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2002,
+  value: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2003,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
+}, {
+  year: 2004,
+  value: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31]
+}, {
+  year: 2005,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2006,
+  value: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2007,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
+}, {
+  year: 2007,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
+}, {
+  year: 2008,
+  value: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31]
+}, {
+  year: 2009,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2010,
+  value: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2011,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
+}, {
+  year: 2012,
+  value: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30]
+}, {
+  year: 2013,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2014,
+  value: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2015,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
+}, {
+  year: 2016,
+  value: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30]
+}, {
+  year: 2017,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2018,
+  value: [31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2019,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31]
+}, {
+  year: 2020,
+  value: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2021,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2022,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30]
+}, {
+  year: 2023,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31]
+}, {
+  year: 2024,
+  value: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2025,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2026,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
+}, {
+  year: 2027,
+  value: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31]
+}, {
+  year: 2028,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2029,
+  value: [31, 31, 32, 31, 32, 30, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2030,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
+}, {
+  year: 2031,
+  value: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31]
+}, {
+  year: 2032,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2033,
+  value: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2034,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
+}, {
+  year: 2035,
+  value: [30, 32, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31]
+}, {
+  year: 2036,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2037,
+  value: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2038,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
+}, {
+  year: 2039,
+  value: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30]
+}, {
+  year: 2040,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2041,
+  value: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2042,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
+}, {
+  year: 2043,
+  value: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30]
+}, {
+  year: 2044,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2045,
+  value: [31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2046,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
+}, {
+  year: 2047,
+  value: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2048,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2049,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30]
+}, {
+  year: 2050,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31]
+}, {
+  year: 2051,
+  value: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2052,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2053,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30]
+}, {
+  year: 2054,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31]
+}, {
+  year: 2055,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2056,
+  value: [31, 31, 32, 31, 32, 30, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2057,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
+}, {
+  year: 2058,
+  value: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31]
+}, {
+  year: 2059,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2060,
+  value: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2061,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
+}, {
+  year: 2062,
+  value: [30, 32, 31, 32, 31, 31, 29, 30, 29, 30, 29, 31]
+}, {
+  year: 2063,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2064,
+  value: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2065,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
+}, {
+  year: 2066,
+  value: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31]
+}, {
+  year: 2067,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2068,
+  value: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2069,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
+}, {
+  year: 2070,
+  value: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30]
+}, {
+  year: 2071,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2072,
+  value: [31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2073,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31]
+}, {
+  year: 2074,
+  value: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2075,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2076,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30]
+}, {
+  year: 2077,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31]
+}, {
+  year: 2078,
+  value: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2079,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2080,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30]
+}, {
+  year: 2081,
+  value: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 30, 30]
+}, {
+  year: 2082,
+  value: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30]
+}, {
+  year: 2083,
+  value: [31, 31, 32, 31, 31, 30, 30, 30, 29, 30, 30, 30]
+}, {
+  year: 2084,
+  value: [31, 31, 32, 31, 31, 30, 30, 30, 29, 30, 30, 30]
+}, {
+  year: 2085,
+  value: [31, 32, 31, 32, 30, 31, 30, 30, 29, 30, 30, 30]
+}, {
+  year: 2086,
+  value: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30]
+}, {
+  year: 2087,
+  value: [31, 31, 32, 31, 31, 31, 30, 30, 29, 30, 30, 30]
+}, {
+  year: 2088,
+  value: [30, 31, 32, 32, 30, 31, 30, 30, 29, 30, 30, 30]
+}, {
+  year: 2089,
+  value: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30]
+}, {
+  year: 2090,
+  value: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30]
+}, {
+  year: 2091,
+  value: [31, 31, 32, 31, 31, 31, 30, 30, 29, 30, 30, 30]
+}, {
+  year: 2092,
+  value: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 30, 30]
+}, {
+  year: 2093,
+  value: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30]
+}, {
+  year: 2094,
+  value: [31, 31, 32, 31, 31, 30, 30, 30, 29, 30, 30, 30]
+}, {
+  year: 2095,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 30, 30, 30, 30]
+}, {
+  year: 2096,
+  value: [30, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30]
+}, {
+  year: 2097,
+  value: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30]
+}, {
+  year: 2098,
+  value: [31, 31, 32, 31, 31, 31, 29, 30, 29, 30, 29, 31]
+}, {
+  year: 2099,
+  value: [31, 31, 32, 31, 31, 31, 30, 29, 29, 30, 30, 30]
+}];
+const ENGLISH_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const NEPALI_WEEK = ["आइत", "सोम", "मंगल", "बुध", "बिहि", "शुक्र", "शनि"];
+const ENGLISH_NEPALI_MONTH = ["Baisakh", "Jestha", "Asar", "Shrawan", "Bhadra", "Aswin", "Kartik", "Mangsir", "Poush", "Magh", "Falgun", "Chaitra"];
+const NEPALI_MONTH = ["बैशाख", "जेठ", "असार", "श्रावण", "भाद्र", "आश्विन", "कार्तिक", "मंसिर", "पौष", "माघ", "फाल्गुण", "चैत्र"];
+
+//
+var script = {
+  name: "VNepalidatepicker",
+  // vue component name
+  props: {
+    value: {
+      type: String,
+      default: ""
+    },
+    format: {
+      type: String,
+      default: "YYYY-MM-DD"
+    },
+    calenderType: {
+      type: String,
+      default: "English"
+    },
+    yearSelect: {
+      type: Boolean,
+      default: true
+    },
+    monthSelect: {
+      type: Boolean,
+      default: true
+    },
+    classValue: {
+      type: String,
+      default: ""
+    },
+    placeholder: {
+      type: String,
+      default: ""
+    }
+  },
+  model: {
+    event: "change"
+  },
+
+  data() {
+    return {
+      date: this.value == "" ? new nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0___default.a() : new nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0___default.a(this.value),
+      formatedValue: this.value,
+      visible: false,
+      startingYear: 2001,
+      numberofYears: 87,
+      formatNepali: this.calenderType == "Nepali" ? true : false,
+      endDay: null,
+      yearValue: this.value == "" ? new nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0___default.a().getYear() : new nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0___default.a(this.value).getYear(),
+      monthValue: this.value == "" ? new nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0___default.a().getMonth() : new nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0___default.a(this.value).getMonth(),
+      startMonthValue: null,
+      currentDateValue: undefined
+    };
+  },
+
+  computed: {
+    getMonthsList() {
+      return this.formatNepali ? NEPALI_MONTH : ENGLISH_NEPALI_MONTH;
+    },
+
+    year() {
+      return this.date.year;
+    },
+
+    weekdays() {
+      return this.formatNepali ? NEPALI_WEEK : ENGLISH_WEEK;
+    },
+
+    days() {
+      YEAR_DATES.forEach(yearData => {
+        if (yearData.year == this.date.year) {
+          yearData.value.forEach((data, index) => {
+            // compare monthValue selected to index of yearData value
+            if (index == this.date.month) {
+              this.endDay = data; // eslint-disable-line
+            }
+          });
+        }
+      });
+      return Array(this.endDay).fill().map((_, idx) => new nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0___default.a(this.year, this.date.month, idx + 1));
+    },
+
+    startweek() {
+      let currentDateValue = new nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0___default.a(this.yearValue, this.monthValue, 1);
+      ENGLISH_WEEK.forEach((data, index) => {
+        if (currentDateValue.format("DDD") == "Sun") {
+          this.startMonthValue = 7; // eslint-disable-line
+        } else if (currentDateValue.format("DDD") == data) {
+          this.startMonthValue = index; // eslint-disable-line
+        }
+      });
+      return this.startMonthValue;
+    },
+
+    formatedYearOrMonth() {
+      if (this.monthSelect == false && this.yearSelect == false) {
+        return this.formatNepali ? this.date.format("mmmm yyyy") : this.date.format("MMMM YYYY");
+      }
+
+      if (this.monthSelect == false) {
+        return this.formatNepali ? this.date.format("mmmm") : this.date.format("MMMM");
+      }
+
+      if (this.yearSelect == false) {
+        return this.formatNepali ? this.date.format("yyyy") : this.date.format("YYYY");
+      }
+
+      return "";
+    },
+
+    formatedYear() {
+      return this.formatNepali ? this.date.format("yyyy") : this.date.format("YYYY");
+    },
+
+    formatedDate() {
+      return this.formatNepali ? this.date.format("dddd, dd mmmm") : this.date.format("DDDD, DD MMMM");
+    },
+
+    formatedTodayText() {
+      return this.formatNepali ? "आज" : "Today";
+    }
+
+  },
+  methods: {
+    convertToNepali(date) {
+      return new nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0___default.a(date).format("yyyy-mm-d");
+    },
+
+    getNepaliDateWithYear(year) {
+      return new nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0___default.a(year, 0, 1).format("yyyy-mm-d");
+    },
+
+    active(date) {
+      return this.date.getTime() === date.getTime();
+    },
+
+    checkToday(date) {
+      let today = new nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0___default.a();
+      return date.day == today.day && date.year == today.year && date.month == today.month;
+    },
+
+    next() {
+      let _month = this.date.month + 1;
+
+      let _year = this.date.year;
+
+      if (_month > 11) {
+        _year++;
+        _month = 0;
+      }
+
+      this.setMonthAndYear(_month, _year);
+      this.date = new nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0___default.a(_year, _month, 1);
+    },
+
+    prev() {
+      let _month = this.date.month - 1;
+
+      let _year = this.date.year;
+
+      if (_month < 0) {
+        _year--;
+        _month = 11;
+      }
+
+      this.setMonthAndYear(_month, _year);
+      this.date = new nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0___default.a(_year, _month, 1);
+    },
+
+    monthSelectChange() {
+      this.date.setMonth(this.monthValue);
+    },
+
+    yearSelectChange() {
+      this.date.setYear(this.yearValue);
+    },
+
+    select(date) {
+      this.date = date;
+      this.formatedValue = this.date.format(this.format);
+      this.$emit("change", this.formatedValue);
+      this.hide();
+    },
+
+    show() {
+      this.visible = true;
+      setTimeout(() => document.addEventListener("click", this.hide), 200);
+    },
+
+    hide() {
+      this.visible = false;
+      document.removeEventListener("click", this.hide);
+    },
+
+    today() {
+      this.select(new nepali_date_cjs_NepaliDate__WEBPACK_IMPORTED_MODULE_0___default.a());
+      this.setMonthAndYear(this.date.getMonth(), this.date.getYear());
+    },
+
+    setMonthAndYear(month, year) {
+      this.monthValue = month;
+      this.yearValue = year;
+    }
+
+  }
+};
+
+function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
+    if (typeof shadowMode !== 'boolean') {
+        createInjectorSSR = createInjector;
+        createInjector = shadowMode;
+        shadowMode = false;
+    }
+    // Vue.extend constructor export interop.
+    const options = typeof script === 'function' ? script.options : script;
+    // render functions
+    if (template && template.render) {
+        options.render = template.render;
+        options.staticRenderFns = template.staticRenderFns;
+        options._compiled = true;
+        // functional template
+        if (isFunctionalTemplate) {
+            options.functional = true;
+        }
+    }
+    // scopedId
+    if (scopeId) {
+        options._scopeId = scopeId;
+    }
+    let hook;
+    if (moduleIdentifier) {
+        // server build
+        hook = function (context) {
+            // 2.3 injection
+            context =
+                context || // cached call
+                    (this.$vnode && this.$vnode.ssrContext) || // stateful
+                    (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
+            // 2.2 with runInNewContext: true
+            if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+                context = __VUE_SSR_CONTEXT__;
+            }
+            // inject component styles
+            if (style) {
+                style.call(this, createInjectorSSR(context));
+            }
+            // register component module identifier for async chunk inference
+            if (context && context._registeredComponents) {
+                context._registeredComponents.add(moduleIdentifier);
+            }
+        };
+        // used by ssr in case component is cached and beforeCreate
+        // never gets called
+        options._ssrRegister = hook;
+    }
+    else if (style) {
+        hook = shadowMode
+            ? function (context) {
+                style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
+            }
+            : function (context) {
+                style.call(this, createInjector(context));
+            };
+    }
+    if (hook) {
+        if (options.functional) {
+            // register for functional component in vue file
+            const originalRender = options.render;
+            options.render = function renderWithStyleInjection(h, context) {
+                hook.call(context);
+                return originalRender(h, context);
+            };
+        }
+        else {
+            // inject component registration as beforeCreate hook
+            const existing = options.beforeCreate;
+            options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+        }
+    }
+    return script;
+}
+
+const isOldIE = typeof navigator !== 'undefined' &&
+    /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
+function createInjector(context) {
+    return (id, style) => addStyle(id, style);
+}
+let HEAD;
+const styles = {};
+function addStyle(id, css) {
+    const group = isOldIE ? css.media || 'default' : id;
+    const style = styles[group] || (styles[group] = { ids: new Set(), styles: [] });
+    if (!style.ids.has(id)) {
+        style.ids.add(id);
+        let code = css.source;
+        if (css.map) {
+            // https://developer.chrome.com/devtools/docs/javascript-debugging
+            // this makes source maps inside style tags work properly in Chrome
+            code += '\n/*# sourceURL=' + css.map.sources[0] + ' */';
+            // http://stackoverflow.com/a/26603875
+            code +=
+                '\n/*# sourceMappingURL=data:application/json;base64,' +
+                    btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) +
+                    ' */';
+        }
+        if (!style.element) {
+            style.element = document.createElement('style');
+            style.element.type = 'text/css';
+            if (css.media)
+                style.element.setAttribute('media', css.media);
+            if (HEAD === undefined) {
+                HEAD = document.head || document.getElementsByTagName('head')[0];
+            }
+            HEAD.appendChild(style.element);
+        }
+        if ('styleSheet' in style.element) {
+            style.styles.push(code);
+            style.element.styleSheet.cssText = style.styles
+                .filter(Boolean)
+                .join('\n');
+        }
+        else {
+            const index = style.ids.size - 1;
+            const textNode = document.createTextNode(code);
+            const nodes = style.element.childNodes;
+            if (nodes[index])
+                style.element.removeChild(nodes[index]);
+            if (nodes.length)
+                style.element.insertBefore(textNode, nodes[index]);
+            else
+                style.element.appendChild(textNode);
+        }
+    }
+}
+
+/* script */
+const __vue_script__ = script;
+/* template */
+
+var __vue_render__ = function () {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c('div', {
+    staticClass: "datepicker",
+    on: {
+      "click": function ($event) {
+        $event.stopPropagation();
+      }
+    }
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.formatedValue,
+      expression: "formatedValue"
+    }],
+    class: this.classValue,
+    attrs: {
+      "type": "text",
+      "placeholder": this.placeholder
+    },
+    domProps: {
+      "value": _vm.formatedValue
+    },
+    on: {
+      "focus": function ($event) {
+        return _vm.show();
+      },
+      "input": function ($event) {
+        if ($event.target.composing) {
+          return;
+        }
+
+        _vm.formatedValue = $event.target.value;
+      }
+    }
+  }), _vm._v(" "), _vm.visible ? _c('div', {
+    class: ['calendar', {
+      show: _vm.visible
+    }]
+  }, [_c('div', {
+    staticClass: "calendar__header"
+  }, [_c('div', {
+    staticClass: "calendar__year"
+  }, [_vm._v(_vm._s(_vm.formatedYear))]), _vm._v(" "), _c('div', {
+    staticClass: "calendar__date"
+  }, [_vm._v(_vm._s(_vm.formatedDate))])]), _vm._v(" "), _c('div', {
+    staticClass: "calendar__body"
+  }, [_c('div', {
+    staticClass: "calendar__month"
+  }, [_c('button', {
+    staticClass: "calendar__month__prev",
+    on: {
+      "click": function ($event) {
+        return _vm.prev();
+      }
+    }
+  }, [_c('b', [_vm._v(">")])]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.formatedYearOrMonth))]), _vm._v(" "), this.monthSelect ? _c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.monthValue,
+      expression: "monthValue"
+    }],
+    staticStyle: {},
+    attrs: {
+      "size": "mini"
+    },
+    on: {
+      "change": [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.monthValue = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      }, _vm.monthSelectChange]
+    }
+  }, _vm._l(_vm.getMonthsList, function (month, index) {
+    return _c('option', {
+      key: month,
+      staticStyle: {
+        "text-align-last": "center"
+      },
+      attrs: {
+        "label": month
+      },
+      domProps: {
+        "value": index
+      }
+    });
+  }), 0) : _vm._e(), _vm._v(" "), this.yearSelect ? _c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.yearValue,
+      expression: "yearValue"
+    }],
+    staticStyle: {
+      "margin-left": "5px"
+    },
+    attrs: {
+      "size": "mini"
+    },
+    on: {
+      "change": [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.yearValue = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      }, _vm.yearSelectChange]
+    }
+  }, _vm._l(_vm.numberofYears, function (i) {
+    return _c('option', {
+      key: i,
+      staticStyle: {
+        "text-align-last": "center"
+      },
+      attrs: {
+        "label": _vm.formatNepali ? _vm.getNepaliDateWithYear(_vm.startingYear + (i - 1)).substr(0, 4) : _vm.startingYear + (i - 1)
+      },
+      domProps: {
+        "value": _vm.startingYear + (i - 1)
+      }
+    });
+  }), 0) : _vm._e(), _vm._v(" "), _c('button', {
+    attrs: {
+      "icon": "el-icon-arrow-right"
+    },
+    on: {
+      "click": function ($event) {
+        return _vm.next();
+      }
+    }
+  }, [_c('b', [_vm._v(">")])])]), _vm._v(" "), _c('div', {
+    staticStyle: {
+      "padding": "3px"
+    }
+  }, [_c('div', {
+    staticClass: "calendar__weeks"
+  }, _vm._l(_vm.weekdays, function (weekday, w) {
+    return _c('div', {
+      key: w,
+      staticClass: "calendar__weekday",
+      staticStyle: {
+        "font-weight": "bold"
+      }
+    }, [_vm._v("\n            " + _vm._s(weekday) + "\n          ")]);
+  }), 0), _vm._v(" "), _c('div', {
+    staticClass: "calendar__days"
+  }, [_c('div', {
+    staticClass: "calendar__day_spacer",
+    style: {
+      gridColumn: "span " + _vm.startweek
+    }
+  }), _vm._v(" "), _vm._l(_vm.days, function (day, d) {
+    return _c('div', {
+      key: d,
+      class: ['calendar__day', {
+        selected: _vm.active(day)
+      }, {
+        today: _vm.checkToday(day)
+      }],
+      on: {
+        "click": function ($event) {
+          return _vm.select(day);
+        }
+      }
+    }, [_vm._v("\n            " + _vm._s(_vm.formatNepali ? _vm.convertToNepali(day).substr(8, 10) : day.day) + "\n          ")]);
+  })], 2)])]), _vm._v(" "), _c('div', {
+    staticClass: "calendar__footer"
+  }, [_c('button', {
+    on: {
+      "click": function ($event) {
+        return _vm.today();
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.formatedTodayText))])])]) : _vm._e()]);
+};
+
+var __vue_staticRenderFns__ = [];
+/* style */
+
+const __vue_inject_styles__ = function (inject) {
+  if (!inject) return;
+  inject("data-v-74a859b2_0", {
+    source: "*[data-v-74a859b2]{margin:0;box-sizing:border-box;font-family:\"Open Sans\",sans-serif}.datepicker[data-v-74a859b2]{position:relative}.datepicker button[data-v-74a859b2]{outline:0;border:0;background:0 0;cursor:pointer;transition:all .2s ease-in-out}.calendar[data-v-74a859b2]{z-index:9;position:absolute;width:260px;top:100%;box-shadow:0 14px 45px rgba(0,0,0,.25),0 10px 18px rgba(0,0,0,.22);background:#fff;visibility:hidden;opacity:0}.calendar.show[data-v-74a859b2]{visibility:visible;opacity:1}.calendar__header[data-v-74a859b2]{padding:15px 10px;background:#5495c5;color:#fff}.calendar__year[data-v-74a859b2]{opacity:.6;font-size:1rem;line-height:1.2rem}.calendar__date[data-v-74a859b2]{font-size:1.2rem;line-height:1.5rem}.calendar__month[data-v-74a859b2]{padding:5px 3px;display:flex;justify-content:space-between;align-items:center}.calendar__month select[data-v-74a859b2]{height:28px;width:100px;border-radius:5px;border-color:#7ca3f1;text-align-last:center}.calendar__month button[data-v-74a859b2]{width:25px;margin-right:4px;height:28px;margin-left:4px;border-radius:5px;color:#fff;text-align:center;background:#247ac4}.calendar__month button[data-v-74a859b2]:hover{background:#663399}.calendar__month__prev[data-v-74a859b2]{transform:rotate(180deg)}.calendar__days[data-v-74a859b2],.calendar__weeks[data-v-74a859b2]{display:grid;grid-template-columns:repeat(7,1fr)}.calendar__days[data-v-74a859b2]{gap:4px}.calendar__day[data-v-74a859b2],.calendar__weekday[data-v-74a859b2]{text-align:center;font-size:12px}.calendar__weekday[data-v-74a859b2]{opacity:.8;font-weight:300}.calendar__day[data-v-74a859b2]{width:32px;height:32px;line-height:32px;font-weight:300;color:#1c94b8;font-weight:700;cursor:pointer;border-radius:5px;background:#dfeffc}.calendar__day.selected[data-v-74a859b2]{background:#663399;color:#fff}.calendar__day.today[data-v-74a859b2]{background:#f77777;color:#fff}.calendar__day[data-v-74a859b2]:hover{background:#663399;color:#fff;opacity:.8}.calendar__footer[data-v-74a859b2]{text-align:right}.calendar__footer button[data-v-74a859b2]{padding:8px 10px;text-transform:uppercase;font-weight:700;color:#663399;opacity:.9}.calendar__footer button[data-v-74a859b2]:hover{opacity:1}",
+    map: undefined,
+    media: undefined
+  });
+};
+/* scoped */
+
+
+const __vue_scope_id__ = "data-v-74a859b2";
+/* module identifier */
+
+const __vue_module_identifier__ = undefined;
+/* functional template */
+
+const __vue_is_functional_template__ = false;
+/* style inject SSR */
+
+/* style inject shadow dom */
+
+const __vue_component__ = /*#__PURE__*/normalizeComponent({
+  render: __vue_render__,
+  staticRenderFns: __vue_staticRenderFns__
+}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, createInjector, undefined, undefined);
+
+// Import vue component
+
+const install = function installVNepalidatepicker(Vue) {
+  if (install.installed) return;
+  install.installed = true;
+  Vue.component('VNepalidatepicker', __vue_component__);
+}; // Create module definition for Vue.use()
+// to be registered via Vue.use() as well as Vue.component()
+
+
+__vue_component__.install = install; // Export component by default
+// also be used as directives, etc. - eg. import { RollupDemoDirective } from 'rollup-demo';
+// export const RollupDemoDirective = component;
+
+/* harmony default export */ __webpack_exports__["default"] = (__vue_component__);
+
+
+/***/ }),
+
 /***/ "./node_modules/v-tooltip/dist/v-tooltip.common.js":
 /*!*********************************************************!*\
   !*** ./node_modules/v-tooltip/dist/v-tooltip.common.js ***!
@@ -36715,123 +38186,185 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { staticClass: "control-label" }, [
-        _vm._v("Enter Registered Lab ID ( Unique )")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "inputGroupContainer" }, [
-        _c("div", { staticClass: "input-group" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.data.token,
-                expression: "data.token"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: {
-              id: "token",
-              name: "",
-              placeholder: "Enter Registered Lab ID ( Unique )",
-              required: "true",
-              type: "text"
-            },
-            domProps: { value: _vm.data.token },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+    _c(
+      "div",
+      {
+        staticClass: "form-group",
+        class: { "has-error": _vm.$v.data.token.$error }
+      },
+      [
+        _c("label", { staticClass: "control-label" }, [
+          _vm._v("Enter Registered Lab ID ( Unique )")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "inputGroupContainer" }, [
+          _c("div", { staticClass: "input-group" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model.trim",
+                  value: _vm.data.token,
+                  expression: "data.token",
+                  modifiers: { trim: true }
                 }
-                _vm.$set(_vm.data, "token", $event.target.value)
-              }
-            }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("label", { staticClass: "control-label" }, [
-        _vm._v("Sample Test Date")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "inputGroupContainer" }, [
-        _c("div", { staticClass: "input-group" }, [
-          _vm._m(1),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.data.sample_test_date,
-                expression: "data.sample_test_date"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: {
-              id: "sample_test_date",
-              name: "",
-              placeholder: "Sample Test Date",
-              required: "true",
-              type: "text"
-            },
-            domProps: { value: _vm.data.sample_test_date },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+              ],
+              staticClass: "form-control",
+              attrs: {
+                id: "token",
+                name: "",
+                placeholder: "Enter Registered Lab ID ( Unique )",
+                required: "true",
+                type: "text"
+              },
+              domProps: { value: _vm.data.token },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.data, "token", $event.target.value.trim())
+                },
+                blur: function($event) {
+                  return _vm.$forceUpdate()
                 }
-                _vm.$set(_vm.data, "sample_test_date", $event.target.value)
               }
-            }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("label", { staticClass: "control-label" }, [
-        _vm._v("Sample Test Time")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "inputGroupContainer" }, [
-        _c("div", { staticClass: "input-group" }, [
-          _vm._m(2),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.data.sample_test_time,
-                expression: "data.sample_test_time"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: {
-              id: "sample_test_time",
-              name: "",
-              placeholder: "Sample Test Time",
-              required: "true",
-              type: "text"
-            },
-            domProps: { value: _vm.data.sample_test_time },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        !_vm.$v.data.token.required
+          ? _c("div", { staticClass: "help-block" }, [
+              _vm._v("Field is required.")
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        !_vm.$v.data.token.minLength
+          ? _c("div", { staticClass: "help-block" }, [
+              _vm._v("Field must have valid numbers length.")
+            ])
+          : _vm._e()
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "form-group",
+        class: { "has-error": _vm.$v.data.sample_test_date.$error }
+      },
+      [
+        _c("label", { staticClass: "control-label" }, [
+          _vm._v("Sample Test Date")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "inputGroupContainer" }, [
+          _c(
+            "div",
+            { staticClass: "input-group" },
+            [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("v-nepalidatepicker", {
+                attrs: {
+                  classValue: "form-control",
+                  calenderType: "Nepali",
+                  placeholder: "YYYY-MM-DD",
+                  format: "YYYY-MM-DD",
+                  yearSelect: false,
+                  monthSelect: false
+                },
+                model: {
+                  value: _vm.data.sample_test_date,
+                  callback: function($$v) {
+                    _vm.$set(_vm.data, "sample_test_date", $$v)
+                  },
+                  expression: "data.sample_test_date"
                 }
-                _vm.$set(_vm.data, "sample_test_time", $event.target.value)
+              })
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
+        !_vm.$v.data.sample_test_date.required
+          ? _c("div", { staticClass: "help-block" }, [
+              _vm._v("Field is required.")
+            ])
+          : _vm._e()
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "form-group",
+        class: { "has-error": _vm.$v.data.sample_test_time.$error }
+      },
+      [
+        _c("label", { staticClass: "control-label" }, [
+          _vm._v("Sample Test Time")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "inputGroupContainer" }, [
+          _c("div", { staticClass: "input-group" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.data.sample_test_time,
+                  expression: "data.sample_test_time"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                id: "sample_test_time",
+                name: "",
+                placeholder: "Sample Test Time",
+                required: "true",
+                type: "text"
+              },
+              domProps: { value: _vm.data.sample_test_time },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.data, "sample_test_time", $event.target.value)
+                }
               }
-            }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", [_vm._v("Sample Test Result")]),
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        !_vm.$v.data.sample_test_time.required
+          ? _c("div", { staticClass: "help-block" }, [
+              _vm._v("Field is required.")
+            ])
+          : _vm._e()
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "form-group",
+        class: { "has-error": _vm.$v.data.sample_test_result.$error }
+      },
+      [
+        _c("label", [
+          _vm._v("Sample Test Result "),
+          !_vm.$v.data.sample_test_result.required
+            ? _c("span", { staticClass: "text-danger" }, [
+                _vm._v(" ( * Field is required. )")
+              ])
+            : _vm._e()
+        ]),
         _c("br"),
         _vm._v(" "),
         _c("input", {
@@ -36843,11 +38376,11 @@ var render = function() {
               expression: "data.sample_test_result"
             }
           ],
-          attrs: { value: "1", type: "radio" },
-          domProps: { checked: _vm._q(_vm.data.sample_test_result, "1") },
+          attrs: { value: "4", type: "radio" },
+          domProps: { checked: _vm._q(_vm.data.sample_test_result, "4") },
           on: {
             change: function($event) {
-              return _vm.$set(_vm.data, "sample_test_result", "1")
+              return _vm.$set(_vm.data, "sample_test_result", "4")
             }
           }
         }),
@@ -36861,11 +38394,11 @@ var render = function() {
               expression: "data.sample_test_result"
             }
           ],
-          attrs: { value: "2", type: "radio" },
-          domProps: { checked: _vm._q(_vm.data.sample_test_result, "2") },
+          attrs: { value: "3", type: "radio" },
+          domProps: { checked: _vm._q(_vm.data.sample_test_result, "3") },
           on: {
             change: function($event) {
-              return _vm.$set(_vm.data, "sample_test_result", "2")
+              return _vm.$set(_vm.data, "sample_test_result", "3")
             }
           }
         }),
@@ -36879,34 +38412,31 @@ var render = function() {
               expression: "data.sample_test_result"
             }
           ],
-          attrs: { value: "3", type: "radio", checked: "" },
-          domProps: { checked: _vm._q(_vm.data.sample_test_result, "3") },
+          attrs: { value: "5", type: "radio", checked: "" },
+          domProps: { checked: _vm._q(_vm.data.sample_test_result, "5") },
           on: {
             change: function($event) {
-              return _vm.$set(_vm.data, "sample_test_result", "3")
+              return _vm.$set(_vm.data, "sample_test_result", "5")
             }
           }
         }),
-        _vm._v("Don't Know\n      "),
-        _c("br")
-      ]),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary btn-sm btn-block",
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.submitLabIdToSampleId(_vm.data)
-            }
+        _vm._v("Don't Know\n    ")
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-primary btn-sm btn-block",
+        on: {
+          click: function($event) {
+            $event.preventDefault()
+            return _vm.submitLabIdToSampleId(_vm.data)
           }
-        },
-        [_vm._v("\n        Submit\n      ")]
-      )
-    ])
+        }
+      },
+      [_vm._v("\n      Submit\n    ")]
+    )
   ])
 }
 var staticRenderFns = [
@@ -91813,8 +93343,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_BabyEdit_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/BabyEdit.vue */ "./resources/assets/js/components/BabyEdit.vue");
 /* harmony import */ var _components_QrCodeGenerate_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/QrCodeGenerate.vue */ "./resources/assets/js/components/QrCodeGenerate.vue");
 /* harmony import */ var _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/SelectYearMonth */ "./resources/assets/js/components/SelectYearMonth.vue");
-/* harmony import */ var vue_json_excel__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! vue-json-excel */ "./node_modules/vue-json-excel/JsonExcel.vue");
-/* harmony import */ var v_mask__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! v-mask */ "./node_modules/v-mask/dist/v-mask.esm.js");
+/* harmony import */ var v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! v-nepalidatepicker */ "./node_modules/v-nepalidatepicker/dist/v-nepalidatepicker.esm.js");
+/* harmony import */ var vue_json_excel__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! vue-json-excel */ "./node_modules/vue-json-excel/JsonExcel.vue");
+/* harmony import */ var v_mask__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! v-mask */ "./node_modules/v-mask/dist/v-mask.esm.js");
 
 
 
@@ -91839,8 +93370,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_mask__WEBPACK_IMPORTED_MODULE_23__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('downloadExcel', vue_json_excel__WEBPACK_IMPORTED_MODULE_22__["default"]);
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_mask__WEBPACK_IMPORTED_MODULE_24__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_22__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('downloadExcel', vue_json_excel__WEBPACK_IMPORTED_MODULE_23__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$userRole = document.querySelector("meta[name='user-role']").getAttribute('content');
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_13___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_status_indicator__WEBPACK_IMPORTED_MODULE_2__["default"]);

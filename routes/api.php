@@ -399,11 +399,32 @@ Route::post('/v1/received-in-lab', function(Request $request){
     $to_date_array = explode("-",  Carbon::now()->format('Y-m-d'));
     $data['sample_recv_date'] = Calendar::eng_to_nep($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay();
     try {
+        Anc::where('token', $data['sample_token'])->update(['result' => 9]);
         LabTest::create($data);
         return response()->json('success');
     }catch (\Exception $e){
         return response()->json('error');
     }
+});
+
+Route::post('/v1/result-in-lab-from-web', function(Request $request){
+
+    $value = $request->all();
+    try {
+        $find_test = LabTest::where('token', $value['token'])->first();
+        Anc::where('token', $find_test->sample_token)->update(['result' => $value['sample_test_result']]);
+        if ($find_test) {
+            $find_test->update([
+                'sample_test_date' => $value['sample_test_date'],
+                'sample_test_time' => $value['sample_test_time'],
+                'sample_test_result' => $value['sample_test_result'],
+            ]);
+        }
+        return response()->json('success');
+    }catch (\Exception $e){
+        return response()->json('error');
+    }
+
 });
 
 //

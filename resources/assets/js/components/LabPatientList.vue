@@ -384,10 +384,13 @@ export default {
         width : 700
       })
     },
-    addResultInLab(){
+    addResultInLab(item){
       this.$dlg.modal(AddResultInLabModal, {
         title: 'Lab Result',
-        width : 700
+        width : 700,
+        params: {
+          item : item,
+        },
       })
     },
 

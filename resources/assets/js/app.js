@@ -25,10 +25,12 @@ import BabyEdit from './components/BabyEdit.vue'
 import QrCodeGenerate from './components/QrCodeGenerate.vue'
 
 import SelectYearMonth from './components/SelectYearMonth'
+import VNepaliDatePicker from 'v-nepalidatepicker';
 
 import JsonExcel from 'vue-json-excel'
 import VueMask from 'v-mask'
 Vue.use(VueMask);
+Vue.use(VNepaliDatePicker);
 
 Vue.component('downloadExcel', JsonExcel)
 
