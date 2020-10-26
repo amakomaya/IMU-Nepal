@@ -273,6 +273,7 @@ Route::post('/v1/lab-test', function(Request $request){
         try {
 
             if ($value['sample_test_date'] == '') {
+                $value['sample_test_result'] = 9;
                 LabTest::create($value);
                 Anc::where('token', $value['sample_token'])->update(['result' => '9']);
             }else{
