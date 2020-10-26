@@ -251,8 +251,8 @@ class User extends Authenticatable
             $healthworker = HealthWorker::where('token', $token)->get()->first();
             $name = "(".$healthworker->name.")";
             $role = $healthworker->role;
-            if($role=="doctor"){
-                $role = "healthworker";
+            if($role=="fchv"){
+                $role = "Lab";
             }
         }
 
