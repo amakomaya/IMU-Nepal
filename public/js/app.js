@@ -2466,7 +2466,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     if (this.item) {
-      this.data.token = this.item.latest_anc.labreport.token;
+      this.data.token = this.item.latest_anc.labreport.token.split('-').splice(1).join('-');
     }
 
     var today = new Date();

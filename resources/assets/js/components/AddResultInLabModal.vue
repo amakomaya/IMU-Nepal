@@ -123,7 +123,7 @@ export default {
   },
   created(){
     if(this.item){
-      this.data.token = this.item.latest_anc.labreport.token;
+      this.data.token = this.item.latest_anc.labreport.token.split('-').splice(1).join('-');
     }
     var today = new Date();
     this.data.sample_test_date = this.ad2bs(today);

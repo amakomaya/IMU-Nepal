@@ -411,6 +411,7 @@ Route::post('/v1/result-in-lab-from-web', function(Request $request){
 
     $value = $request->all();
     try {
+        $value['token'] = auth()->user()->token.'-'.$value['token'];
         $find_test = LabTest::where('token', $value['token'])->first();
         Anc::where('token', $find_test->sample_token)->update(['result' => $value['sample_test_result']]);
         if ($find_test) {
@@ -426,5 +427,3 @@ Route::post('/v1/result-in-lab-from-web', function(Request $request){
     }
 
 });
-
-//
