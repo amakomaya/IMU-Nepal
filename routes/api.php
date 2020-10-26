@@ -392,6 +392,7 @@ Route::get('/v1/recieved-in-lab', function(Request $request){
 Route::post('/v1/received-in-lab', function(Request $request){
     $data = $request->all();
     $healthworker = HealthWorker::where('token', auth()->user()->token)->first();
+    $data['token'] = auth()->user()->token.'-'.$data['token'];
     $data['hp_code'] = $healthworker->hp_code;
     $data['checked_by_name'] = $healthworker->name;
     $data['checked_by'] = $healthworker->token;
