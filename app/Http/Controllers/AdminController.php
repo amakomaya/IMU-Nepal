@@ -73,7 +73,18 @@ class AdminController extends Controller
         $woman = Woman::whereIn('hp_code', $hpCodes)->active()->get(['created_at', 'hp_code', 'token', 'cases', 'case_where']);
         $sample_collection = Anc::whereIn('hp_code', $hpCodes)->active()->orderBy('created_at', 'desc');
 
-        $total_lab_received = LabTest::whereIn('hp_code', $hp_codes_for_lab)->get();
+//        $total_lab_received = LabTest::whereIn('hp_code', $hp_codes_for_lab)->get()->pluck(['sample_token']);
+//
+//
+//        $valid_total_lab = Anc::WhereIn('token', $total_lab_received)->get()->pluck(['token']);
+
+        $total_lab_received = LabTest::whereIn('lab_tests.hp_code', $hp_codes_for_lab)->leftJoin('ancs', function($join) {
+            $join->on('lab_tests.sample_token', '=', 'ancs.token');
+        })
+            ->whereNotNull('ancs.token')
+            ->get();
+
+//        dd($total_lab_received);
 
         $last_24_hrs_lab_received_count = $total_lab_received->where('created_at', '>', Carbon::now()->subDay())->count();
 
