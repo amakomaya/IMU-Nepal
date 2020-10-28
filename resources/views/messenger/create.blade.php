@@ -160,3 +160,10 @@
         </div>
     </div>
 @endsection
+@section('script')
+    <script language="JavaScript">
+        $( '.toggle-checkbox' ).click( function () {
+            $( 'input[type="checkbox"]' ).prop('checked', this.checked)
+        })
+    </script>
+@endsection
