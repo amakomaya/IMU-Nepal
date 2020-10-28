@@ -165,6 +165,9 @@
 .userinfo li:hover ul {
   width: 400px;
 }
+.messageInfo li:hover ul {
+    width: 200px;
+}
 .sl-nav li:hover .triangle {
   position: absolute;
   top: 15px;

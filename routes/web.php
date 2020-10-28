@@ -132,10 +132,8 @@ Route::resource('/admin/download-dev-apks', 'Backend\DownloadApksController');
 
 Route::resource('/admin/backup-restore', 'Backend\BackupRestoreController');
 
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/filemanager', '\UniSharp\LaravelFilemanager\Controllers\LfmController@show');
-    Route::post('/filemanager/upload', '\UniSharp\LaravelFilemanager\Controllers\UploadController@upload');
-    // list all lfm routes here...
+Route::group(['prefix' => 'filemanager', 'middleware' => ['web', 'auth']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
 });
 
 if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
@@ -157,4 +155,12 @@ Route::get('/artisan-clear', function() {
     Artisan::call('config:cache');
     Artisan::call('view:clear');
     return "Cleared!";
+});
+
+Route::group(['prefix' => 'admin/messages'], function () {
+    Route::get('/', ['as' => 'messages', 'uses' => 'MessagesController@index']);
+    Route::get('create', ['as' => 'messages.create', 'uses' => 'MessagesController@create']);
+    Route::post('/', ['as' => 'messages.store', 'uses' => 'MessagesController@store']);
+    Route::get('{id}', ['as' => 'messages.show', 'uses' => 'MessagesController@show']);
+    Route::put('{id}', ['as' => 'messages.update', 'uses' => 'MessagesController@update']);
 });

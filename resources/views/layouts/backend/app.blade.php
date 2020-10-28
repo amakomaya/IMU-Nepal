@@ -79,6 +79,18 @@
 
             {{-- <ul class="nav navbar-nav navbar-top-links navbar-right"> --}}
             <div class="navbar-right">
+                <li class="nav navbar-nav sl-nav messageInfo" style="margin: 10px;">
+                    <i class="fa fa-envelope-o"> : </i>
+                    <ul>
+                        <li><b>Messages @include('messenger.unread-count')</b> <i class="fa fa-angle-down" aria-hidden="true"></i>
+                            <div class="triangle"></div>
+                            <ul>
+                                <li><a href="/admin/messages">Messages</a></li>
+                                <li><a href="/admin/messages/create">Create New Message</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav navbar-nav sl-nav" style="margin: 10px;">
                     @lang('app.language') :
                     <ul>
@@ -105,6 +117,7 @@
                 </li>
                 <ul class="nav navbar-nav" style="margin-top: -5px;">
             </div>
+
             {{-- </ul> --}}
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
