@@ -123,11 +123,13 @@ export default {
         'Age Unit' : 'age_unit',
         'District' : 'district',
         'Municipality' : 'municipality',
+        'Ward' : 'ward',
         'Emergency Contact One' : 'emergency_contact_one',
         'Emergency Contact Two' : 'emergency_contact_two',
         'Current Hospital' : 'current_hospital',
         'Swab ID' : 'swab_id',
         'Lab ID' : 'lab_id',
+        'Result' : 'result',
         'Created At' : 'created_at'
       },
       json_meta: [
@@ -284,7 +286,7 @@ export default {
           return '<span class=\"label label-danger\"> Positive</span>';
 
         case '9':
-          return '<span class=\"label label-warning\"> Recieved</span>';
+          return '<span class=\"label label-warning\"> Received</span>';
 
         default:
           return '<span class=\"label label-default\"> Don\'t Know</span>';

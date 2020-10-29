@@ -27,6 +27,8 @@ class Anc extends Model
 
     protected $dates = ['deleted_at'];
 
+    protected $appends = ['formatted_result'];
+
     public function woman()
     {
         return $this->belongsTo('App\Models\Woman', 'woman_token', 'token');
@@ -50,5 +52,20 @@ class Anc extends Model
     public function labreport()
     {
         return $this->hasOne('App\Models\LabTest', 'sample_token', 'token');
+    }
+
+    public function getFormattedResultAttribute(){
+        switch($this->result){
+            case 2:
+                return 'Pending';
+            case 3:
+                return 'Positive';
+            case 4:
+                return 'Negative';
+            case 9:
+                return 'Received';
+            default:
+                return 'Don\'t Know';
+        }
     }
 }

@@ -208,16 +208,16 @@ class Woman extends Model
         }
     }
 
-    public function scopeActivePatientList(){
-            if ($this->latestAnc()->exists()) {
-                return $this->latestAnc()->first()->result != "4";
-            }
-            if ($this->latestAnc()->exists()) {
-                return $this;
-            }
+    public function scopeActivePatientList($query){
+        return $query->whereHas('latestAnc', function ($query) {
+            $query->where('ancs.result' ,'!=', 4);
+        })->doesntHave('latestAnc', 'or');
+//        return $query->where($this->latestAnc()->first()->result, '4');
     }
 
-    public function scopePassivePatientList(){
-            return $this->latestAnc()->first()->result != "4";
+    public function scopePassivePatientList($query){
+        return $query->whereHas('latestAnc', function ($query) {
+            $query->where('result', 4);
+        });
     }
 }

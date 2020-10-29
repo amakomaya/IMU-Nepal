@@ -203,11 +203,13 @@ export default {
         'Age Unit': 'age_unit',
         'District' : 'district',
         'Municipality' : 'municipality',
+        'Ward' : 'ward',
         'Emergency Contact One' : 'emergency_contact_one',
         'Emergency Contact Two'	: 'emergency_contact_two',
         'Current Hospital' : 'current_hospital',
         'Swab ID' : 'swab_id',
         'Lab ID' : 'lab_id',
+        'Result' : 'result',
         'Created At' : 'created_at'
       },
       json_fields_for_dolphins : {
@@ -297,12 +299,14 @@ export default {
           exportableData.age_unit = data.formated_age_unit;
           exportableData.district = data.district.district_name;
           exportableData.municipality = data.municipality.municipality_name;
+          exportableData.ward = data.ward;
           exportableData.current_hospital = data.healthpost.name;
           if(data.latest_anc){
             exportableData.swab_id = data.latest_anc.token;
             if(data.latest_anc.labreport){
               exportableData.lab_id = data.latest_anc.labreport.formated_token;
             }
+            exportableData.result = data.latest_anc.formatted_result;
           }
           exportableData.created_at = data.created_at;
           list.push(exportableData);

@@ -163,9 +163,11 @@ class WomenController extends Controller
             $data['emergency_contact_two'] = $item['emergency_contact_two'];
             $data['district'] = $item['district']['district_name'];
             $data['municipality'] = $item['municipality']['municipality_name'];
+            $data['ward'] = $item['ward'];
             $data['current_hospital'] = $item['healthpost']['name'];
             $data['swab_id'] = $item['latestAnc']['token'];
             $data['lab_id'] = $item['latestAnc']['labreport']['formated_token'];
+            $data['result'] = $item['latestAnc']['formatted_result'];
             $data['created_at'] = Carbon::parse($item['created_at'])->format('Y-m-d');
             return $data;
         })->values();
@@ -190,9 +192,11 @@ class WomenController extends Controller
             $data['emergency_contact_two'] = $item['emergency_contact_two'];
             $data['district'] = $item['district']['district_name'];
             $data['municipality'] = $item['municipality']['municipality_name'];
+            $data['ward'] = $item['ward'];
             $data['current_hospital'] = $item['healthpost']['name'];
             $data['swab_id'] = $item['latestAnc']['token'];
             $data['lab_id'] = $item['latestAnc']['labreport']['formated_token'];
+            $data['result'] = $item['latestAnc']['formatted_result'];
             $data['created_at'] = Carbon::parse($item['created_at'])->format('Y-m-d');
             return $data;
         })->values();
