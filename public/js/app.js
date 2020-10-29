@@ -2271,19 +2271,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      sample_lot_id: String,
       data: {}
     };
   },
   validations: {
+    sample_lot_id: {
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
+      minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["minLength"])(11)
+    },
     data: {
-      sample_token: {
+      unique_id: {
         required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
-        minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["minLength"])(13)
+        minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["minLength"])(3)
       },
       token: {
         required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"]
@@ -2291,7 +2304,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    submitLabIdToSampleId: function submitLabIdToSampleId(data) {
+    submitLabIdToSampleId: function submitLabIdToSampleId() {
       var _this = this;
 
       this.$v.$touch();
@@ -2300,7 +2313,12 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/v1/received-in-lab', data).then(function (response) {
+      this.data.sample_token = this.sample_lot_id + '-' + this.data.unique_id;
+      var payload = {
+        'sample_token': this.data.sample_token,
+        'token': this.data.token
+      };
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/v1/received-in-lab', payload).then(function (response) {
         if (response.data === 'success') {
           _this.$swal({
             title: 'Record received in lab',
@@ -2311,10 +2329,12 @@ __webpack_require__.r(__webpack_exports__);
             timer: 3000
           });
 
+          _this.$v.$reset();
+
           _this.data = {};
         } else {
           _this.$swal({
-            title: 'Oops. Something went wrong. \n Already received Swab ID : ' + data.sample_token + ' \n\t or Lab Unique ID : ' + data.token,
+            title: 'Oops. Something went wrong. \n Already received Swab ID : ' + _this.data.sample_token + ' \n\t or Lab Unique ID : ' + _this.data.token,
             type: 'error',
             toast: true,
             position: 'top-end',
@@ -2444,7 +2464,14 @@ __webpack_require__.r(__webpack_exports__);
             timer: 3000
           });
 
+          _this.$v.$reset();
+
           _this.data = {};
+
+          if (_this.item) {
+            _this.$dlg.closeAll(function () {// do something after all dialog closed
+            });
+          }
         } else {
           _this.$swal({
             title: 'Oops. Something went wrong.',
@@ -8227,7 +8254,7 @@ exports.push([module.i, ".v-select{position:relative;font-family:inherit}.v-sele
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9":
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css":
 /*!***********************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vuetify/dist/vuetify.min.css ***!
   \***********************************************************************************************************************************/
@@ -38017,11 +38044,11 @@ var render = function() {
       "div",
       {
         staticClass: "form-group",
-        class: { "has-error": _vm.$v.data.sample_token.$error }
+        class: { "has-error": _vm.$v.sample_lot_id.$error }
       },
       [
         _c("label", { staticClass: "control-label" }, [
-          _vm._v("Enter Received Swab")
+          _vm._v("Enter Received Swab Lot ID ( First ten lot numbers )")
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "inputGroupContainer" }, [
@@ -38033,41 +38060,102 @@ var render = function() {
                 {
                   name: "mask",
                   rawName: "v-mask",
-                  value: "####-######-#####",
-                  expression: "'####-######-#####'"
+                  value: "####-######",
+                  expression: "'####-######'"
                 },
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.data.sample_token,
-                  expression: "data.sample_token"
+                  value: _vm.sample_lot_id,
+                  expression: "sample_lot_id"
                 }
               ],
               staticClass: "form-control",
               attrs: {
-                placeholder: "#### - ###### - #####",
-                id: "sample_id",
+                placeholder: "#### - ######",
+                id: "sample_lot_id",
                 type: "text"
               },
-              domProps: { value: _vm.data.sample_token },
+              domProps: { value: _vm.sample_lot_id },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.data, "sample_token", $event.target.value)
+                  _vm.sample_lot_id = $event.target.value
                 }
               }
             })
           ]),
           _vm._v(" "),
-          !_vm.$v.data.sample_token.required
+          !_vm.$v.sample_lot_id.required
             ? _c("div", { staticClass: "help-block" }, [
                 _vm._v("Field is required.")
               ])
             : _vm._e(),
           _vm._v(" "),
-          !_vm.$v.data.sample_token.minLength
+          !_vm.$v.sample_lot_id.minLength
+            ? _c("div", { staticClass: "help-block" }, [
+                _vm._v("Field must have valid numbers length.")
+              ])
+            : _vm._e()
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "form-group",
+        class: { "has-error": _vm.$v.data.unique_id.$error }
+      },
+      [
+        _c("label", { staticClass: "control-label" }, [
+          _vm._v(
+            "Enter Unique Received Swab ID ( Only unique last five digits )"
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "inputGroupContainer" }, [
+          _c("div", { staticClass: "input-group" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "mask",
+                  rawName: "v-mask",
+                  value: "#####",
+                  expression: "'#####'"
+                },
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.data.unique_id,
+                  expression: "data.unique_id"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { placeholder: "#####", id: "unique_id", type: "text" },
+              domProps: { value: _vm.data.unique_id },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.data, "unique_id", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          !_vm.$v.data.unique_id.required
+            ? _c("div", { staticClass: "help-block" }, [
+                _vm._v("Field is required.")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          !_vm.$v.data.unique_id.minLength
             ? _c("div", { staticClass: "help-block" }, [
                 _vm._v("Field must have valid numbers length.")
               ])
@@ -38089,7 +38177,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "inputGroupContainer" }, [
           _c("div", { staticClass: "input-group" }, [
-            _vm._m(1),
+            _vm._m(2),
             _vm._v(" "),
             _c("input", {
               directives: [
@@ -38136,17 +38224,25 @@ var render = function() {
             on: {
               click: function($event) {
                 $event.preventDefault()
-                return _vm.submitLabIdToSampleId(_vm.data)
+                return _vm.submitLabIdToSampleId()
               }
             }
           },
-          [_vm._v("\n          Submit\n        ")]
+          [_vm._v("\n        Submit\n      ")]
         )
       ]
     )
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-addon" }, [
+      _c("i", { staticClass: "fa fa-key" })
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -93216,7 +93312,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_vue__;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9");
+var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 

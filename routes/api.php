@@ -401,7 +401,11 @@ Route::post('/v1/received-in-lab', function(Request $request){
     $to_date_array = explode("-",  Carbon::now()->format('Y-m-d'));
     $data['sample_recv_date'] = Calendar::eng_to_nep($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay();
     try {
-        Anc::where('token', $data['sample_token'])->update(['result' => 9]);
+        $sample = Anc::where('token', $data['sample_token']);
+        if($sample->count() < 1){
+            return response()->json('error');
+        }
+        $sample->update(['result' => 9]);
         LabTest::create($data);
         return response()->json('success');
     }catch (\Exception $e){

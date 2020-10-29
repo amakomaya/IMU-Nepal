@@ -97,7 +97,13 @@ export default {
                 showConfirmButton: false,
                 timer: 3000
               })
+              this.$v.$reset();
               this.data = {};
+              if (this.item){
+                this.$dlg.closeAll(function(){
+                  // do something after all dialog closed
+                })
+              }
             } else {
               this.$swal({
                 title: 'Oops. Something went wrong.',
