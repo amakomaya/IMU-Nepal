@@ -40803,6 +40803,13 @@ var render = function() {
   return _c(
     "div",
     [
+      _c("link", {
+        attrs: {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/icon?family=Material+Icons"
+        }
+      }),
+      _vm._v(" "),
       _c(
         "filterable",
         _vm._b(
@@ -40973,7 +40980,11 @@ var render = function() {
                                 }
                               }
                             },
-                            [_c("i", { staticClass: "fa fa-medkit" })]
+                            [
+                              _c("i", { staticClass: "material-icons" }, [
+                                _vm._v("biotech")
+                              ])
+                            ]
                           )
                         : _vm._e()
                     ])
@@ -41019,14 +41030,6 @@ var render = function() {
         ? _c(
             "div",
             [
-              _c("link", {
-                attrs: {
-                  rel: "stylesheet",
-                  href:
-                    "https://fonts.googleapis.com/icon?family=Material+Icons"
-                }
-              }),
-              _vm._v(" "),
               _c("link", {
                 attrs: {
                   rel: "stylesheet",

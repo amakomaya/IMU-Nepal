@@ -1,5 +1,6 @@
 <template>
   <div>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <filterable v-bind="filterable">
       <thead slot="thead">
       <tr>
@@ -46,7 +47,7 @@
         </td>
         <td>
            <button v-if="item.latest_anc.result == 9" v-on:click="addResultInLab(item)" title="Add Result">
-            <i class="fa fa-medkit"></i>
+             <i class = "material-icons">biotech</i>
           </button>
         </td>
         <!-- </div>             -->
@@ -55,7 +56,6 @@
 
     </filterable>
     <div v-if="this.$userRole == 'healthworker'">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
       <fab
           :position="fabOptions.position"
