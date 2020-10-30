@@ -201,6 +201,7 @@ export default {
         'Case Name': 'name',
         'Age': 'age',
         'Age Unit': 'age_unit',
+        'Gender': 'gender',
         'District' : 'district',
         'Municipality' : 'municipality',
         'Ward' : 'ward',
@@ -267,7 +268,9 @@ export default {
           }else {
             exportableData.name = data.name;
             exportableData.emergency_contact_one = data.emergency_contact_one;
-          }    exportableData.gender = data.formated_gender;
+          }
+          exportableData.age = data.age;
+          exportableData.gender = data.formated_gender;
         if(data.latest_anc){
           if(data.latest_anc.labreport){
             exportableData.swab_id = data.latest_anc.labreport.formated_token;
@@ -297,6 +300,7 @@ export default {
           }
           exportableData.age = data.age;
           exportableData.age_unit = data.formated_age_unit;
+          exportableData.gender = data.formated_gender;
           exportableData.district = data.district.district_name;
           exportableData.municipality = data.municipality.municipality_name;
           exportableData.ward = data.ward;

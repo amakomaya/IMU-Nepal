@@ -2605,6 +2605,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 
 
@@ -2647,12 +2649,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             title: 'Phone Number',
             name: 'phone',
             type: 'numeric'
+          }, {
+            title: 'Created At',
+            name: 'created_at',
+            type: 'datetime'
           }]
         }, {
-          name: 'Tests',
+          name: 'Sample Collection',
           filters: [{
             title: 'Created At',
-            name: 'ancs.visit_date',
+            name: 'ancs.created_at',
             type: 'datetime'
           }]
         }]
@@ -2936,6 +2942,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           item: item
         }
       });
+    },
+    gender: function gender(type) {
+      switch (type) {
+        case '1':
+          return 'M';
+
+        case '2':
+          return 'F';
+
+        default:
+          return 'O';
+      }
     }
   }
 });
@@ -4054,6 +4072,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         'Case Name': 'name',
         'Age': 'age',
         'Age Unit': 'age_unit',
+        'Gender': 'gender',
         'District': 'district',
         'Municipality': 'municipality',
         'Ward': 'ward',
@@ -4126,6 +4145,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             exportableData.emergency_contact_one = data.emergency_contact_one;
           }
 
+          exportableData.age = data.age;
           exportableData.gender = data.formated_gender;
 
           if (data.latest_anc) {
@@ -4159,6 +4179,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
           exportableData.age = data.age;
           exportableData.age_unit = data.formated_age_unit;
+          exportableData.gender = data.formated_gender;
           exportableData.district = data.district.district_name;
           exportableData.municipality = data.municipality.municipality_name;
           exportableData.ward = data.ward;
@@ -5339,7 +5360,7 @@ exports.push([module.i, ".v-select{position:relative;font-family:inherit}.v-sele
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9":
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css":
 /*!***********************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vuetify/dist/vuetify.min.css ***!
   \***********************************************************************************************************************************/
@@ -35540,6 +35561,8 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(item.age))]),
                     _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.gender(item.sex)))]),
+                    _vm._v(" "),
                     _c("td", [
                       _vm._v(
                         "One : " + _vm._s(item.emergency_contact_one) + " "
@@ -35665,6 +35688,8 @@ var render = function() {
               _c("th", [_vm._v("Name")]),
               _vm._v(" "),
               _c("th", [_vm._v("Age")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Gender")]),
               _vm._v(" "),
               _c("th", [_vm._v("Emergency Contact")]),
               _vm._v(" "),
@@ -81713,7 +81738,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_vue__;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9");
+var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 

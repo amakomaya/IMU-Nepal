@@ -196,7 +196,6 @@ class User extends Authenticatable
         } 
         $role = str_replace("_", " ", $role);
         $role = ucwords($role);
-
         return $role;
     }
 
@@ -212,6 +211,7 @@ class User extends Authenticatable
                 ->get()
                 ->first();
             $name = "(".$province->name.")";
+            $role = "Province";
         }
 
         if($role=="dho"){
@@ -221,6 +221,7 @@ class User extends Authenticatable
                 ->get()
                 ->first();
             $name = "(".$district->name.")";
+            $role = "DHO";
         }
 
         if($role=="municipality"){
@@ -230,23 +231,13 @@ class User extends Authenticatable
                 ->get()
                 ->first();
             $name = "(".$municipality->name.")";
-        }   
-
-
-        if($role=="ward"){
-            $ward = Ward::select('wards.ward_no', 'municipalities.municipality_name')
-                ->join('municipalities','municipalities.id','=','wards.municipality_id')
-                ->where('wards.token', $token)
-                ->get()
-                ->first();
-            $name = "(".$ward->municipality_name." Ward No. ".$ward->ward_no.")";
+            $role = "Municipality";
         }
-
 
         if($role=="healthpost"){
             $healthpost = Healthpost::where('token', $token)->get()->first();
             $name = "(".$healthpost->name.")";
-            $role = "Hospital";
+            $role = "Hospital / CICT";
         }
 
         if($role=="healthworker"){

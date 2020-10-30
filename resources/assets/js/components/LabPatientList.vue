@@ -8,6 +8,7 @@
         <th>ID</th>
         <th>Name</th>
         <th>Age</th>
+        <th>Gender</th>
         <th>Emergency Contact</th>
         <!-- <th>District</th> -->
         <th>Muicipality</th>
@@ -27,6 +28,7 @@
         </td>
         <td>{{item.name}}</td>
         <td>{{item.age}}</td>
+        <td>{{ gender(item.sex)}}</td>
         <td>One : {{item.emergency_contact_one}} <br>
           Two : {{item.emergency_contact_two}}
         </td>
@@ -99,12 +101,13 @@ export default {
               {title: 'Name', name: 'name', type: 'string'},
               {title: 'Age', name: 'age', type: 'numeric'},
               {title: 'Phone Number', name: 'phone', type: 'numeric'},
+              {title: 'Created At', name: 'created_at', type: 'datetime'}
             ]
           },
           {
-            name: 'Tests',
+            name: 'Sample Collection',
             filters: [
-              {title: 'Created At', name: 'ancs.visit_date', type: 'datetime'}
+              {title: 'Created At', name: 'ancs.created_at', type: 'datetime'}
             ]
           }
         ]
@@ -394,6 +397,16 @@ export default {
           item : item,
         },
       })
+    },
+    gender(type){
+      switch (type){
+        case '1':
+          return 'M';
+        case '2':
+          return  'F';
+        default:
+          return 'O';
+      }
     },
   }
 }
