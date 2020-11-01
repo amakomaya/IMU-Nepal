@@ -164,3 +164,7 @@ Route::group(['prefix' => 'admin/messages'], function () {
     Route::get('{id}', ['as' => 'messages.show', 'uses' => 'MessagesController@show']);
     Route::put('{id}', ['as' => 'messages.update', 'uses' => 'MessagesController@update']);
 });
+
+Route::post('/password-reset', function(\Illuminate\Http\Request $request){
+    dd($request->all());
+})->name('password-reset.store');
