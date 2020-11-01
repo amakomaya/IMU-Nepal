@@ -8,9 +8,10 @@
 
   <title>{{ config('app.name') }}</title>
 
-  <link href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
-  <link href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
-
+    <link href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+    <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
   <style>
             
   .sl-nav {
@@ -175,7 +176,7 @@
 {{--                    </fieldset>--}}
                     <br>
                     <div class="clearfix">
-                        <a href="#" class="pull-right">Forgot Password ?</a>
+                        <a href="#" class="pull-right" data-toggle="modal" data-target="#forgetPasswordModel">Forgot Password ?</a>
                     </div>
                 <!-- <div class="checkbox" align="right">
                         <label>
@@ -193,16 +194,16 @@
     </div>
 
     <div class="col-md-4" style="margin-top: 30px";>
-        <div class="panel panel-danger">
-            <div class="panel-heading"><h4>Username and Password पठाएको बारे |</h4></div>
-            <div class="panel-body">
-                <div class="thumbnail">
-                    <a href="{{ asset('images/notice.jpg') }}" target="_blank">
-                <img src="{{ asset('images/notice.jpg') }}" class="img-rounded" alt="Important notice from MOHP"></a>
-                </div>
+{{--        <div class="panel panel-danger">--}}
+{{--            <div class="panel-heading"><h4>Username and Password पठाएको बारे |</h4></div>--}}
+{{--            <div class="panel-body">--}}
+{{--                <div class="thumbnail">--}}
+{{--                    <a href="{{ asset('images/notice.jpg') }}" target="_blank">--}}
+{{--                <img src="{{ asset('images/notice.jpg') }}" class="img-rounded" alt="Important notice from MOHP"></a>--}}
+{{--                </div>--}}
 
-        </div>
-        </div>
+{{--        </div>--}}
+{{--        </div>--}}
 
     @foreach(App\Models\NoticeBoard::latest()->get() as $row)
             @if($row->type == 'Warning')
@@ -226,6 +227,8 @@
                         <iframe width="100%" height="315" src="https://www.youtube.com/embed/videoseries?list=PLDauIRTtxpwjUbaKjZuPX5l9W4BwsUvGu" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                 </div>
+                @include('auth.passwords.reset')
+
                 <!-- Load Facebook SDK for JavaScript -->
                 <div id="fb-root"></div>
                 <script>
