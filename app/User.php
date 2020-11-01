@@ -252,8 +252,7 @@ class User extends Authenticatable
         $name = ucwords($name)." ";
         $role = str_replace("_", " ", $role);
         $role = ucwords($role);
-        $string = $role." Admin ".$name;
-        return (strlen($string) > 54)? substr($string, 0, 50) . "...": $string;
+        return $role." Admin ".$name;
     }
 
     public function scopeGetUserIdByToken($query, $token)

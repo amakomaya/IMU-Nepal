@@ -75,7 +75,13 @@
                     @endif
             </div>
             <div class="navbar-nav" style="margin: 15px 0px 15px 100px">
-                <span><strong>Welcome, </strong> You are logged in as {{ \App\User::getAppRole() }} !</span>
+                <span title="{{ \App\User::getAppRole() }}"><strong>Welcome, </strong> You are logged in as
+                    @if(strlen(\App\User::getAppRole()) > 30)
+                    {{ substr(\App\User::getAppRole(), 0, 28) . "..." }}
+                @else
+                    {!! \App\User::getAppRole() !!}
+                    @endif
+                </span>
             </div>
             <div class="navbar-right" style="margin: 0px 10px">
                 <li class="nav navbar-nav" style="margin: 10px;">
