@@ -2,8 +2,7 @@
 
 @section('content')
 <div id="page-wrapper">
-
-<div class="row" style="padding: 15px;">
+    <div class="row" style="padding: 15px;">
     <h3 class="align-center">Last 24 hours Update</h3>
     <div class="col-lg-4">
         <div class="panel panel-primary">

@@ -2,6 +2,9 @@
 
 namespace App\Support;
 
+use Carbon\Carbon;
+use Yagiten\Nepalicalendar\Calendar;
+
 class CustomQueryBuilder {
 
     public function apply($query, $data)
@@ -197,8 +200,20 @@ class CustomQueryBuilder {
             default:
                 break;
         }
-
         return $query->whereBetween($filter['column'], [$begin, $end], $filter['match']);
+    }
+
+    public function inTheCustomSelectedPeriod($filter, $query)
+    {
+        $begin = $this->dateConversionBStoAD($filter['query_1'])->startOfDay();
+        $end = $this->dateConversionBStoAD($filter['query_2'])->endOfDay();
+        return $query->whereBetween($filter['column'], [$begin, $end], $filter['match']);
+    }
+
+    private function dateConversionBStoAD($date){
+        $date_array = explode("-", $date);
+        $date_eng = Calendar::nep_to_eng($date_array[0],$date_array[1],$date_array[2])->getYearMonthDay();
+        return Carbon::parse($date_eng);;
     }
 
     public function equalToCount($filter, $query, $relation)

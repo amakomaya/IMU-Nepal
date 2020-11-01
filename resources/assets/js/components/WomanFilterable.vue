@@ -81,6 +81,14 @@
                   </select>
                 </div>
               </template>
+              <template v-if="f.operator.component === 'datetime_3'">
+                <div class="filter-query_1">
+                  <v-nepalidatepicker title="Start of the Day" class="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD" format="YYYY-MM-DD" v-model="f.query_1" :yearSelect="true" :monthSelect="true" />
+                </div>
+                <div class="filter-query_2">
+                  <v-nepalidatepicker title="End of the day" class="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD" format="YYYY-MM-DD" v-model="f.query_2" :yearSelect="true" :monthSelect="true" />
+                </div>
+              </template>
             </template>
             <div class="filter-remove" v-if="f">
               <button @click="removeFilter(f, i)">x</button>
@@ -154,10 +162,10 @@
       <div class="panel-footer">
         <div>
           <select v-model="query.limit" :disabled="loading" @change="updateLimit">
-            <option>50</option>
             <option>100</option>
             <option>250</option>
             <option>500</option>
+            <option>1000</option>
           </select>
           <small> Showing {{collection.from}} - {{collection.to}} of {{collection.total}} entries.</small>
         </div>
@@ -174,6 +182,7 @@
 <script type="text/javascript">
 import Vue from 'vue'
 import axios from 'axios'
+import DataConverter from "ad-bs-converter";
 
 export default {
   props: {
@@ -190,7 +199,7 @@ export default {
         order_column: 'created_at',
         order_direction: 'desc',
         filter_match: 'and',
-        limit: 50,
+        limit: 100,
         page: 1
       },
       collection: {
@@ -238,6 +247,16 @@ export default {
     this.addFilter()
   },
   methods: {
+    ad2bs: function () {
+      var dateObject = new Date();
+
+      var dateFormat = dateObject.getFullYear()  + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getDate();
+
+      let dateConverter = DataConverter.ad2bs(dateFormat);
+
+      return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
+
+    },
     updateOrderDirection() {
       if(this.query.order_direction === 'desc') {
         this.query.order_direction = 'asc'
@@ -360,6 +379,10 @@ export default {
         case 'in_the_peroid':
           this.filterCandidates[i].query_1 = 'today'
           break;
+        case 'in_the_custom_selected_period':
+          this.filterCandidates[i].query_1 = this.ad2bs()
+          this.filterCandidates[i].query_2 = this.ad2bs()
+                break;
       }
     },
     selectColumn(f, i, e) {
@@ -472,7 +495,8 @@ export default {
 
         {title: 'in the past', name: 'in_the_past', parent: ['datetime'], component: 'datetime_1'},
         {title: 'in the next', name: 'in_the_next', parent: ['datetime'], component: 'datetime_1'},
-        {title: 'in the peroid', name: 'in_the_peroid', parent: ['datetime'], component: 'datetime_2'},
+        {title: 'in the period', name: 'in_the_peroid', parent: ['datetime'], component: 'datetime_2'},
+        {title: 'in the custom selected period', name: 'in_the_custom_selected_period', parent: ['datetime'], component: 'datetime_3'},
 
         {title: 'equal to', name: 'equal_to_count', parent: ['counter'], component: 'single'},
         {title: 'not equal to', name: 'not_equal_to_count', parent: ['counter'], component: 'single'},

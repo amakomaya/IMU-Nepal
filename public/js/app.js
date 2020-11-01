@@ -2632,11 +2632,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           title: 'Age',
           name: 'age'
         }, {
-          title: 'Created At',
+          title: 'Case Created At',
           name: 'created_at'
         }],
         filterGroups: [{
-          name: 'Patient',
+          name: 'Case',
           filters: [{
             title: 'Name',
             name: 'name',
@@ -2650,14 +2650,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             name: 'phone',
             type: 'numeric'
           }, {
-            title: 'Created At',
+            title: 'Case Created At',
             name: 'created_at',
             type: 'datetime'
           }]
         }, {
-          name: 'Sample Collection',
+          name: 'Swab Collection',
           filters: [{
-            title: 'Created At',
+            title: 'Swab Created At',
             name: 'ancs.created_at',
             type: 'datetime'
           }]
@@ -3865,6 +3865,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__);
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -4044,6 +4046,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4061,7 +4072,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         order_column: 'created_at',
         order_direction: 'desc',
         filter_match: 'and',
-        limit: 50,
+        limit: 100,
         page: 1
       },
       collection: {
@@ -4111,6 +4122,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.addFilter();
   },
   methods: {
+    ad2bs: function ad2bs() {
+      var dateObject = new Date();
+      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
+      var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default.a.ad2bs(dateFormat);
+      return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
+    },
     updateOrderDirection: function updateOrderDirection() {
       if (this.query.order_direction === 'desc') {
         this.query.order_direction = 'asc';
@@ -4238,6 +4255,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         case 'in_the_peroid':
           this.filterCandidates[i].query_1 = 'today';
+          break;
+
+        case 'in_the_custom_selected_period':
+          this.filterCandidates[i].query_1 = this.ad2bs();
+          this.filterCandidates[i].query_2 = this.ad2bs();
           break;
       }
     },
@@ -4389,10 +4411,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         parent: ['datetime'],
         component: 'datetime_1'
       }, {
-        title: 'in the peroid',
+        title: 'in the period',
         name: 'in_the_peroid',
         parent: ['datetime'],
         component: 'datetime_2'
+      }, {
+        title: 'in the custom selected period',
+        name: 'in_the_custom_selected_period',
+        parent: ['datetime'],
+        component: 'datetime_3'
       }, {
         title: 'equal to',
         name: 'equal_to_count',
@@ -4503,7 +4530,7 @@ __webpack_require__.r(__webpack_exports__);
           title: 'Age',
           name: 'age'
         }, {
-          title: 'Created At',
+          title: 'Case Created At',
           name: 'created_at'
         }],
         filterGroups: [{
@@ -4520,11 +4547,15 @@ __webpack_require__.r(__webpack_exports__);
             title: 'Phone Number',
             name: 'phone',
             type: 'numeric'
+          }, {
+            title: 'Case Created At',
+            name: 'created_at',
+            type: 'datetime'
           }]
         }, {
-          name: 'Sample Collection',
+          name: 'Swab Collection',
           filters: [{
-            title: 'Created At',
+            title: 'Swab Created At',
             name: 'ancs.created_at',
             type: 'datetime'
           }]
@@ -4793,7 +4824,7 @@ __webpack_require__.r(__webpack_exports__);
           title: 'Age',
           name: 'age'
         }, {
-          title: 'Created At',
+          title: 'Case Created At',
           name: 'created_at'
         }],
         filterGroups: [{
@@ -4811,14 +4842,14 @@ __webpack_require__.r(__webpack_exports__);
             name: 'phone',
             type: 'numeric'
           }, {
-            title: 'Created At',
+            title: 'Case Created At',
             name: 'created_at',
             type: 'datetime'
           }]
         }, {
-          name: 'Sample Collection',
+          name: 'Swab Collection',
           filters: [{
-            title: 'Created At',
+            title: 'Swab Created At',
             name: 'ancs.created_at',
             type: 'datetime'
           }]
@@ -37419,6 +37450,62 @@ var render = function() {
                                 )
                               ])
                             ]
+                          : _vm._e(),
+                        _vm._v(" "),
+                        f.operator.component === "datetime_3"
+                          ? [
+                              _c(
+                                "div",
+                                { staticClass: "filter-query_1" },
+                                [
+                                  _c("v-nepalidatepicker", {
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      title: "Start of the Day",
+                                      calenderType: "Nepali",
+                                      placeholder: "YYYY-MM-DD",
+                                      format: "YYYY-MM-DD",
+                                      yearSelect: true,
+                                      monthSelect: true
+                                    },
+                                    model: {
+                                      value: f.query_1,
+                                      callback: function($$v) {
+                                        _vm.$set(f, "query_1", $$v)
+                                      },
+                                      expression: "f.query_1"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "filter-query_2" },
+                                [
+                                  _c("v-nepalidatepicker", {
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      title: "End of the day",
+                                      calenderType: "Nepali",
+                                      placeholder: "YYYY-MM-DD",
+                                      format: "YYYY-MM-DD",
+                                      yearSelect: true,
+                                      monthSelect: true
+                                    },
+                                    model: {
+                                      value: f.query_2,
+                                      callback: function($$v) {
+                                        _vm.$set(f, "query_2", $$v)
+                                      },
+                                      expression: "f.query_2"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ]
                           : _vm._e()
                       ]
                     : _vm._e(),
@@ -37619,13 +37706,13 @@ var render = function() {
               }
             },
             [
-              _c("option", [_vm._v("50")]),
-              _vm._v(" "),
               _c("option", [_vm._v("100")]),
               _vm._v(" "),
               _c("option", [_vm._v("250")]),
               _vm._v(" "),
-              _c("option", [_vm._v("500")])
+              _c("option", [_vm._v("500")]),
+              _vm._v(" "),
+              _c("option", [_vm._v("1000")])
             ]
           ),
           _vm._v(" "),

@@ -75,7 +75,7 @@
                     @endif
             </div>
             <div class="navbar-nav" style="margin: 15px 0px 15px 100px">
-                <span><strong>Welcome, </strong>You are logged in as {{ \App\User::getAppRole() }} !</span>
+                <span><strong>Welcome, </strong> You are logged in as {{ \App\User::getAppRole() }} !</span>
             </div>
             <div class="navbar-right" style="margin: 0px 10px">
                 <li class="nav navbar-nav" style="margin: 10px;">

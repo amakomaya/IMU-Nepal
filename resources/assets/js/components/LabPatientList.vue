@@ -92,22 +92,22 @@ export default {
         orderables: [
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},
-          {title: 'Created At', name: 'created_at'}
+          {title: 'Case Created At', name: 'created_at'}
         ],
         filterGroups: [
           {
-            name: 'Patient',
+            name: 'Case',
             filters: [
               {title: 'Name', name: 'name', type: 'string'},
               {title: 'Age', name: 'age', type: 'numeric'},
               {title: 'Phone Number', name: 'phone', type: 'numeric'},
-              {title: 'Created At', name: 'created_at', type: 'datetime'}
+              {title: 'Case Created At', name: 'created_at', type: 'datetime'}
             ]
           },
           {
-            name: 'Sample Collection',
+            name: 'Swab Collection',
             filters: [
-              {title: 'Created At', name: 'ancs.created_at', type: 'datetime'}
+              {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
             ]
           }
         ]
