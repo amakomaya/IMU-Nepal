@@ -227,7 +227,7 @@
                         <iframe width="100%" height="315" src="https://www.youtube.com/embed/videoseries?list=PLDauIRTtxpwjUbaKjZuPX5l9W4BwsUvGu" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                 </div>
-                @include('auth.passwords.reset')
+{{--                @include('auth.passwords.reset')--}}
 
                 <!-- Load Facebook SDK for JavaScript -->
                 <div id="fb-root"></div>
