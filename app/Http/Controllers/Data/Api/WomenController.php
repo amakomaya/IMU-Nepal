@@ -34,15 +34,7 @@ class WomenController extends Controller
     }
 
     public function show($token){
-
         $data = Woman::withAll()->where('token', $token)->first();
-        $date_array = explode("-", $data['lmp_date_en']);
-        $data['lmp_date_en'] = Calendar::eng_to_nep($date_array[0], $date_array[1], $date_array[2])->getYearMonthDay();
-        foreach ($data->ancs as $anc){
-            $date_array = explode("-", $anc['visit_date']);
-            $anc['visit_date'] = Calendar::eng_to_nep($date_array[0], $date_array[1], $date_array[2])->getYearMonthDay();
-        }
-
         return response()->json([
             'record' => $data
         ]);

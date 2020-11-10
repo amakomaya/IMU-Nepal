@@ -158,3 +158,9 @@ Route::get('/artisan-clear', function() {
     Artisan::call('view:clear');
     return "Cleared!";
 });
+
+Route::get('/admin/patient', function(Illuminate\Http\Request $request){
+        $token = $request->token;
+        $data = \App\Models\Woman::withAll()->where('token', $token)->first();
+        return view('backend.patient.detail', compact('data'));
+});
