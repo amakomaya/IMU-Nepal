@@ -15,7 +15,7 @@ class LabTest extends Model
 
     protected $fillable = ['token','test_date','woman_token','urine_protin','urine_sugar','blood_sugar','hbsag','vdrl','retro_virus','other', 'status','created_at','updated_at',
 
-        'sample_recv_date', 'sample_test_date', 'sample_test_time', 'sample_test_result', 'checked_by', 'td_reg_no', 'checked_by_name', 'sample_token'
+        'sample_recv_date', 'sample_test_date', 'sample_test_time', 'sample_test_result', 'checked_by', 'td_reg_no', 'checked_by_name', 'sample_token', 'hp_code'
 ];
 
     protected $appends = ['formated_token'];

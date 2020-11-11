@@ -61,6 +61,7 @@ trait Dataviewer {
             'in_the_past',
             'in_the_next',
             'in_the_peroid',
+            'in_the_custom_selected_period',
             'less_than_count',
             'greater_than_count',
             'equal_to_count',

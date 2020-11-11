@@ -57,7 +57,7 @@
     <div id="wrapper">
 
         <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -73,12 +73,33 @@
                     @else
                     <a class="navbar-brand navbar-brand-small"><small class="text-primary"></small></a>
                     @endif
-
             </div>
-            <!-- /.navbar-header -->
-
-            {{-- <ul class="nav navbar-nav navbar-top-links navbar-right"> --}}
-            <div class="navbar-right">
+            <div class="navbar-nav" style="margin: 15px 0px 15px 100px">
+                <span title="{{ \App\User::getAppRole() }}"><strong>Welcome, </strong> You are logged in as
+                    @if(strlen(\App\User::getAppRole()) > 30)
+                    {{ substr(\App\User::getAppRole(), 0, 28) . "..." }}
+                @else
+                    {!! \App\User::getAppRole() !!}
+                    @endif
+                </span>
+            </div>
+            <div class="navbar-right" style="margin: 0px 10px">
+                <li class="nav navbar-nav" style="margin: 10px;">
+                    <button onClick="window.location.href=window.location.href"> <i class="fa fa-refresh" aria-hidden="true"></i>
+                        Refresh Page</button>
+                </li>
+                <li class="nav navbar-nav sl-nav messageInfo" style="margin: 10px;">
+                    <i class="fa fa-envelope-o"> : </i>
+                    <ul>
+                        <li><b>Messages @include('messenger.unread-count')</b> <i class="fa fa-angle-down" aria-hidden="true"></i>
+                            <div class="triangle"></div>
+                            <ul>
+                                <li><a href="/admin/messages">Messages</a></li>
+                                <li><a href="/admin/messages/create">Create New Message</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav navbar-nav sl-nav" style="margin: 10px;">
                     @lang('app.language') :
                     <ul>
@@ -103,8 +124,8 @@
                       </li>
                     </ul>
                 </li>
-                <ul class="nav navbar-nav" style="margin-top: -5px;">
             </div>
+
             {{-- </ul> --}}
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
@@ -113,8 +134,11 @@
             <!-- /.navbar-static-side -->
         </nav>
 
+        <div style="margin: 40px 0px 0px 0px">
+            @yield('content')
 
-        @yield('content')
+        </div>
+
     </div>
     <!-- /#wrapper -->
 

@@ -33,6 +33,26 @@ class WomenController extends Controller
         ]);
     }
 
+    public function activeIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->activePatientList()->withAll();
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
+
+    public function passiveIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->passivePatientList()->withAll();
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
+
     public function show($token){
         $data = Woman::withAll()->where('token', $token)->first();
         return response()->json([
@@ -135,16 +155,16 @@ class WomenController extends Controller
             $data['emergency_contact_two'] = $item['emergency_contact_two'];
             $data['district'] = $item['district']['district_name'];
             $data['municipality'] = $item['municipality']['municipality_name'];
+            $data['ward'] = $item['ward'];
             $data['current_hospital'] = $item['healthpost']['name'];
             $data['swab_id'] = $item['latestAnc']['token'];
             $data['lab_id'] = $item['latestAnc']['labreport']['formated_token'];
+            $data['result'] = $item['latestAnc']['formatted_result'];
             $data['created_at'] = Carbon::parse($item['created_at'])->format('Y-m-d');
             return $data;
         })->values();
 
         return response()->json($formated_data);
-
-        return response()->json($woman);
     }
 
     public function labExport(){
@@ -164,9 +184,11 @@ class WomenController extends Controller
             $data['emergency_contact_two'] = $item['emergency_contact_two'];
             $data['district'] = $item['district']['district_name'];
             $data['municipality'] = $item['municipality']['municipality_name'];
+            $data['ward'] = $item['ward'];
             $data['current_hospital'] = $item['healthpost']['name'];
             $data['swab_id'] = $item['latestAnc']['token'];
             $data['lab_id'] = $item['latestAnc']['labreport']['formated_token'];
+            $data['result'] = $item['latestAnc']['formatted_result'];
             $data['created_at'] = Carbon::parse($item['created_at'])->format('Y-m-d');
             return $data;
         })->values();

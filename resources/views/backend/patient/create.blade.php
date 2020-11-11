@@ -116,7 +116,7 @@
                                         @if(Auth::user()->role!="province" && Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
                                             <option value="">Select All Provinces</option>
                                         @endif
-                                        @foreach($provinces as $province)
+                                        @foreach(App\Models\province::all() as $province)
                                             @if($province_id==$province->id)
                                                 @php($selectedProvince = "selected")
                                             @else
@@ -131,7 +131,7 @@
                                         @if(Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
                                             <option value="">Select All Districts</option>
                                         @endif
-                                        @foreach($districts as $district)
+                                        @foreach(App\Models\District::where('province_id', $province_id)->get() as $district)
                                             @if($district_id==$district->id)
                                                 @php($selectedDistrict = "selected")
                                             @else
@@ -147,7 +147,7 @@
                                         @if(Auth::user()->role!="municipality" && Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
                                             <option value="">Select All Municipalities</option>
                                         @endif
-                                        @foreach($municipalities as $municipality)
+                                        @foreach(\App\Models\Municipality::where('district_id', $district_id)->get() as $municipality)
                                             @if($municipality_id==$municipality->id)
                                                 @php($selectedMunicipality = "selected")
                                             @else

@@ -132,11 +132,9 @@ Route::resource('/admin/download-dev-apks', 'Backend\DownloadApksController');
 
 Route::resource('/admin/backup-restore', 'Backend\BackupRestoreController');
 
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/filemanager', '\UniSharp\LaravelFilemanager\Controllers\LfmController@show');
-    Route::post('/filemanager/upload', '\UniSharp\LaravelFilemanager\Controllers\UploadController@upload');
-    // list all lfm routes here...
-});
+// Route::group(['prefix' => 'filemanager', 'middleware' => ['web', 'auth']], function () {
+//     \UniSharp\LaravelFilemanager\Lfm::routes();
+// });
 
 if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
     // Ignores notices and reports all other kinds... and warnings
@@ -159,8 +157,16 @@ Route::get('/artisan-clear', function() {
     return "Cleared!";
 });
 
-Route::get('/admin/patient', function(Illuminate\Http\Request $request){
-        $token = $request->token;
-        $data = \App\Models\Woman::withAll()->where('token', $token)->first();
-        return view('backend.patient.detail', compact('data'));
+Route::group(['prefix' => 'admin/messages'], function () {
+    Route::get('/', ['as' => 'messages', 'uses' => 'MessagesController@index']);
+    Route::get('create', ['as' => 'messages.create', 'uses' => 'MessagesController@create']);
+    Route::post('/', ['as' => 'messages.store', 'uses' => 'MessagesController@store']);
+    Route::get('{id}', ['as' => 'messages.show', 'uses' => 'MessagesController@show']);
+    Route::put('{id}', ['as' => 'messages.update', 'uses' => 'MessagesController@update']);
 });
+
+Route::post('/password-reset', function(\Illuminate\Http\Request $request){
+    dd($request->all());
+})->name('password-reset.store');
+
+Route::get('/admin/patient', 'Reports\CaseDetailController@getCaseDetail');

@@ -1,70 +1,69 @@
-@extends('layouts.backend.app')
+<div class="modal fade" id="forgetPasswordModel" tabindex="-1" role="dialog" aria-labelledby="forgetPasswordModelLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Password reset request form</h4>
+            </div>
+            <div class="modal-body">
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
-
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('password.request') }}">
-                        {{ csrf_field() }}
-
-                        <input type="hidden" name="token" value="{{ $token }}">
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ $email or old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+                <form class="form-horizontal" role="form" method="POST" action="{{ route('password-reset.store') }}" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="fullname">Full Name *:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="fullname" placeholder="Enter your full name" name="fullname" required>
                         </div>
+                    </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="email">Organization Name *:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="organization_name" placeholder="Enter Organization name with address" name="organization_name" required>
                         </div>
+                    </div>
 
-                        <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-
-                                @if ($errors->has('password_confirmation'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="designation">Designation *:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="designation" placeholder="Enter your designation" name="designation" required>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Reset Password
-                                </button>
-                            </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="email">Email *:</label>
+                        <div class="col-sm-9">
+                            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
                         </div>
-                    </form>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="email">Phone *:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="phone" placeholder="Enter email" name="phone" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="email">Username *:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="username" placeholder="Enter username" name="username" required>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary pull-right">Submit Request</button>
+                        </div>
+                    </div>
+                </form>
                 </div>
+
+            <div class="modal-footer">
+                Note : * Required Fields
             </div>
         </div>
     </div>
 </div>
-@endsection

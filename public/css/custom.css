@@ -163,7 +163,10 @@
   box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
 }
 .userinfo li:hover ul {
-  width: 400px;
+  width: 200px;
+}
+.messageInfo li:hover ul {
+    width: 200px;
 }
 .sl-nav li:hover .triangle {
   position: absolute;

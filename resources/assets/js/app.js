@@ -14,20 +14,18 @@ import _ from 'lodash'
 import Vuelidate from 'vuelidate'
 
 import WomenList from './components/Women.vue'
-import  WomenEdit from './components/WomenEdit'
 import WomanListNegative from './components/WomanListNegative'
 
 import LabPatientList from './components/LabPatientList'
 
-import BabyList from './components/BabyList.vue'
-import BabyEdit from './components/BabyEdit.vue'
-
-import QrCodeGenerate from './components/QrCodeGenerate.vue'
-
 import SelectYearMonth from './components/SelectYearMonth'
+import VNepaliDatePicker from 'v-nepalidatepicker';
 
 import JsonExcel from 'vue-json-excel'
- 
+import VueMask from 'v-mask'
+Vue.use(VueMask);
+Vue.use(VNepaliDatePicker);
+
 Vue.component('downloadExcel', JsonExcel)
 
 Vue.prototype.$userRole = document.querySelector("meta[name='user-role']").getAttribute('content');
@@ -44,18 +42,13 @@ Vue.use(VueHtmlToPaper);
 Vue.component('v-select', vSelect)
 
 Vue.component('women-list', WomenList);
-Vue.component('women-edit', WomenEdit);
 Vue.component('women-list-negative', WomanListNegative);
 Vue.component('lab-patient-list', LabPatientList);
 
-Vue.component('baby-list', BabyList);
-Vue.component('baby-edit', BabyEdit);
 
 Vue.component('vaccination-chart');
 
 Vue.component('select-year-month', SelectYearMonth)
-
-Vue.component('qr-code-generate', QrCodeGenerate)
 
 const app = new Vue({
     el: '#app'

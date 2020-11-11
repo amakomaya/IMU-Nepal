@@ -1,17 +1,5 @@
 <template>
     <div>
-        <div class="btn btn-primary pull right">
-            
-                <download-excel
-                :fetch   = "fetchData"
-                :fields = "json_fields"
-                :name    = "excelFileName()"
-                >
-                Download Data
-                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-            </download-excel>
-        </div>
-        
         <filterable v-bind="filterable">
             <thead slot="thead">
             <tr>
@@ -19,6 +7,7 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Age</th>
+                <th>Gender</th>
                 <th>Emergency Contact</th>
                 <!-- <th>District</th> -->
                 <th>Muicipality</th>
@@ -33,13 +22,14 @@
                 <td>
                     <input type="checkbox" v-model="womanTokens" @click="select" :value="item.token">                           
                 </td>
-                <td><div v-if="checkForPositiveOnly(item.latest_anc)">Case ID : {{ item.case_id }}</div>
-                    <div v-if="item.parent_case_id !== null">Parent Case ID : {{ item.parent_case_id }}</div>
+                <td><div v-if="checkForPositiveOnly(item.latest_anc)" title="Case ID">C ID : {{ item.case_id }}</div>
+                    <div v-if="item.parent_case_id !== null" title="Parent Case ID">PC ID : {{ item.parent_case_id }}</div>
                 </td>
-                <td>{{item.name}}</td>
+                <td>{{ roleVisibility(item.name)}}</td>
                 <td>{{item.age}}</td>
-                <td>One : {{item.emergency_contact_one}} <br>
-                    Two : {{item.emergency_contact_two}}
+                <td>{{ gender(item.sex)}}</td>
+                <td>One : {{ roleVisibility(item.emergency_contact_one) }} <br>
+                    Two : {{ roleVisibility(item.emergency_contact_two) }}
                 </td>
                 <td>{{ checkMunicipality(item.municipality_id) }}</td>
                 <td>
@@ -58,7 +48,7 @@
                 </td>
                 <td>
                 <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
-                     <i class="fa fa-file" aria-hidden="true">Report</i> |
+                     <i class="fa fa-file" aria-hidden="true"></i> |
                   </button>
                   <div v-if="role  == 'healthworker'">
                   <button v-if="item.ancs.length == 0" v-on:click="aadSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
@@ -76,8 +66,6 @@
                 </td>  
                 <!-- </div>             -->
             </tr>
-<!--            <span>Selected Ids: {{ item }}</span>-->
-
         </filterable>
 
       <div v-if="this.$userRole == 'healthworker'">
@@ -97,7 +85,7 @@
 </template>
 
 <script type="text/javascript">
-    import Filterable from './Filterable.vue'
+    import Filterable from './WomanFilterable.vue'
     import DataConverter from 'ad-bs-converter'
     import axios from 'axios'
     import ViewLabResultReportModel from './ViewLabResultReportModel.vue'
@@ -111,28 +99,29 @@
             return {
               role : this.$userRole,
                 filterable: {
-                    url: '/data/api/women',
+                    url: '/data/api/active-patient',
                     orderables: [
                         {title: 'Name', name: 'name'},
                         {title: 'Age', name: 'age'},
-                        {title: 'Created At', name: 'created_at'}
+                        {title: 'Case Created At', name: 'created_at'},
                     ],
                     filterGroups: [
                         {
-                            name: 'Patient',
+                            name: 'Case',
                             filters: [
                                 {title: 'Name', name: 'name', type: 'string'},
                                 {title: 'Age', name: 'age', type: 'numeric'},
                                 {title: 'Phone Number', name: 'phone', type: 'numeric'},
+                                {title: 'Case Created At', name: 'created_at', type: 'datetime'},
                             ]
                         },
                         {
-                            name: 'Tests',
+                            name: 'Swab Collection',
                             filters: [
-                                {title: 'Created At', name: 'ancs.visit_date', type: 'datetime'}
+                                {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
                             ]
                         }
-                    ]
+                    ],
                 },
                 token : Filterable.data().collection.data,
                 selected: [],
@@ -141,28 +130,6 @@
                 provinces : [],
                 municipalities : [],
                 districts : [],
-                json_fields: {
-                  'S.N' : 'serial_number',
-                  'Case Name': 'name',
-                  'Age': 'age',
-                  'Age Unit' : 'age_unit',
-                  'District' : 'district',
-                  'Municipality' : 'municipality',
-                  'Emergency Contact One' : 'emergency_contact_one',
-                  'Emergency Contact Two' : 'emergency_contact_two',
-                  'Current Hospital' : 'current_hospital',
-                  'Swab ID' : 'swab_id',
-                  'Lab ID' : 'lab_id',
-                  'Created At' : 'created_at'
-                },
-                json_meta: [
-                    [
-                        {
-                            'key': 'charset',
-                            'value': 'utf-8'
-                        }
-                    ]
-                ],
                 exportHtml : '',
               fabOptions : {
                 bgColor: '#778899',
@@ -330,22 +297,6 @@
                     
                 
             },
-            excelFileName : function(){
-                var ext = '.xls';
-                return 'Patient Details '+ new Date()+ext;
-            },
-            async fetchData(){
-
-            if(confirm("Do you want to Download all records in excel ! ")){
-
-            const response = await axios.get('/data/api/patient/export');
-            return response.data;
-
-                    //     }
-                    // })
-                }
-            },
-
             checkCaseType : function(type){
                 switch(type){
                     case '0':
@@ -396,6 +347,24 @@
                 }
                 return 'N/A';
             },
+
+          gender(type){
+            switch (type){
+              case '1':
+                return 'M';
+                case '2':
+                  return  'F';
+                  default:
+                    return 'O';
+            }
+          },
+
+          roleVisibility(data){
+            if(this.role == 'dho' || this.role == 'province' || this.role == 'center'){
+              return '** ***';
+            }
+            return data;
+          },
 
             aadSampleCollection(token){
               window.location.href = '/admin/sample-collection/create/'+token;

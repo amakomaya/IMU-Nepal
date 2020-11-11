@@ -2,9 +2,12 @@
 
 use App\Models\Anc;
 use App\Models\HealthWorker;
+use App\Models\LaboratoryParameter;
 use App\Models\LabTest;
 use App\Models\Woman;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Yagiten\Nepalicalendar\Calendar;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -270,6 +273,7 @@ Route::post('/v1/lab-test', function(Request $request){
         try {
 
             if ($value['sample_test_date'] == '') {
+                $value['sample_test_result'] = 9;
                 LabTest::create($value);
                 Anc::where('token', $value['sample_token'])->update(['result' => '9']);
             }else{
@@ -360,7 +364,7 @@ Route::post('/v1/patient-laboratory-parameter', function(Request $request){
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
-            \App\Models\LaboratoryParameter::create($value);
+            LaboratoryParameter::create($value);
         } catch (\Exception $e) {
             
         }
@@ -370,7 +374,7 @@ Route::post('/v1/patient-laboratory-parameter', function(Request $request){
 
 Route::get('/v1/patient-laboratory-parameter', function(Request $request){
     $hp_code = $request->hp_code;
-    $data = \App\Models\LaboratoryParameter::where('hp_code', $hp_code)->get();
+    $data = LaboratoryParameter::where('hp_code', $hp_code)->get();
     return response()->json($data);
 });
 
@@ -389,13 +393,43 @@ Route::get('/v1/recieved-in-lab', function(Request $request){
 Route::post('/v1/received-in-lab', function(Request $request){
     $data = $request->all();
     $healthworker = HealthWorker::where('token', auth()->user()->token)->first();
+    $data['token'] = auth()->user()->token.'-'.$data['token'];
     $data['hp_code'] = $healthworker->hp_code;
-    $data['created_by_name'] = $healthworker->name;
+    $data['checked_by_name'] = $healthworker->name;
+    $data['checked_by'] = $healthworker->token;
     $data['status'] = 1;
-    $to_date_array = explode("-",  \Carbon\Carbon::now()->format('Y-m-d'));
-    $data['sample_recv_date'] = \Yagiten\Nepalicalendar\Calendar::eng_to_nep($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay();
-    LabTest::create($data);
-    return response()->json("Recieved");
+    $to_date_array = explode("-",  Carbon::now()->format('Y-m-d'));
+    $data['sample_recv_date'] = Calendar::eng_to_nep($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay();
+    try {
+        $sample = Anc::where('token', $data['sample_token']);
+        if($sample->count() < 1){
+            return response()->json('error');
+        }
+        $sample->update(['result' => 9]);
+        LabTest::create($data);
+        return response()->json('success');
+    }catch (\Exception $e){
+        return response()->json('error');
+    }
 });
 
-//
+Route::post('/v1/result-in-lab-from-web', function(Request $request){
+
+    $value = $request->all();
+    try {
+        $value['token'] = auth()->user()->token.'-'.$value['token'];
+        $find_test = LabTest::where('token', $value['token'])->first();
+        Anc::where('token', $find_test->sample_token)->update(['result' => $value['sample_test_result']]);
+        if ($find_test) {
+            $find_test->update([
+                'sample_test_date' => $value['sample_test_date'],
+                'sample_test_time' => $value['sample_test_time'],
+                'sample_test_result' => $value['sample_test_result'],
+            ]);
+        }
+        return response()->json('success');
+    }catch (\Exception $e){
+        return response()->json('error');
+    }
+
+});

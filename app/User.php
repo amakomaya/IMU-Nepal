@@ -13,10 +13,12 @@ use App\Models\Ward;
 use App\Models\Healthpost;
 use App\Models\HealthWorker;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Cmgmyr\Messenger\Traits\Messagable;
+
 
 class User extends Authenticatable
 {
-    use Notifiable, LogsActivity;
+    use Notifiable, LogsActivity, Messagable;
 
     protected static $ignoreChangedAttributes = ['remember_token','updated_at'];
 
@@ -194,7 +196,6 @@ class User extends Authenticatable
         } 
         $role = str_replace("_", " ", $role);
         $role = ucwords($role);
-
         return $role;
     }
 
@@ -210,6 +211,7 @@ class User extends Authenticatable
                 ->get()
                 ->first();
             $name = "(".$province->name.")";
+            $role = "Province";
         }
 
         if($role=="dho"){
@@ -219,6 +221,7 @@ class User extends Authenticatable
                 ->get()
                 ->first();
             $name = "(".$district->name.")";
+            $role = "DHO";
         }
 
         if($role=="municipality"){
@@ -228,31 +231,21 @@ class User extends Authenticatable
                 ->get()
                 ->first();
             $name = "(".$municipality->name.")";
-        }   
-
-
-        if($role=="ward"){
-            $ward = Ward::select('wards.ward_no', 'municipalities.municipality_name')
-                ->join('municipalities','municipalities.id','=','wards.municipality_id')
-                ->where('wards.token', $token)
-                ->get()
-                ->first();
-            $name = "(".$ward->municipality_name." Ward No. ".$ward->ward_no.")";
+            $role = "Municipality";
         }
-
 
         if($role=="healthpost"){
             $healthpost = Healthpost::where('token', $token)->get()->first();
             $name = "(".$healthpost->name.")";
-            $role = "Hospital";
+            $role = "Hospital / CICT";
         }
 
         if($role=="healthworker"){
             $healthworker = HealthWorker::where('token', $token)->get()->first();
             $name = "(".$healthworker->name.")";
             $role = $healthworker->role;
-            if($role=="doctor"){
-                $role = "healthworker";
+            if($role=="fchv"){
+                $role = "Lab";
             }
         }
 
@@ -265,5 +258,54 @@ class User extends Authenticatable
     public function scopeGetUserIdByToken($query, $token)
     {
         return $query->where('token', $token)->get();
+    }
+
+    public static function getUserFullInformation($user){
+        $role = $user->role;
+        $token = $user->token;
+        $name = "";
+        $address = '';
+
+        switch ($role){
+            case 'province':
+                $province = ProvinceInfo::select('*', 'provinces.province_name as name')
+                    ->join('provinces','provinces.id','=','province_infos.province_id')
+                    ->where('province_infos.token', $token)
+                    ->get()
+                    ->first();
+                $name = $province->name;
+                $address = $province->office_address;
+                break;
+            case 'dho':
+                $district = DistrictInfo::select('districts.district_name as name')
+                    ->join('districts','districts.id','=','district_infos.district_id')
+                    ->where('district_infos.token', $token)
+                    ->get()
+                    ->first();
+                $name = $district->name;
+                $address = $district->office_address;
+                break;
+            case 'municipality':
+                $municipality = MunicipalityInfo::select('municipalities.municipality_name as name')
+                    ->join('municipalities','municipalities.id','=','municipality_infos.municipality_id')
+                    ->where('municipality_infos.token', $token)
+                    ->get()
+                    ->first();
+                $name = $municipality->name;
+                $address = $municipality->office_address;
+                break;
+            case 'healthpost':
+                $healthpost = Healthpost::where('token', $token)->get()->first();
+                $name = $healthpost->name;
+                $address = $healthpost->address;
+                break;
+            case 'healthworker':
+                $healthworker = HealthWorker::where('token', $token)->get()->first();
+                $name = $healthworker->name;
+                $address = $healthworker->tole;
+                break;
+        }
+        if(strlen($name) > 45) { $name =  substr(ucwords($name), 0, 44) . '...'; }
+        return 'Name : '.$name .'<br>'. 'Address : '.$address;
     }
 }

@@ -1,17 +1,6 @@
 <template>
   <div>
-    <div class="btn btn-primary pull right">
-
-      <download-excel
-          :fetch   = "fetchData"
-          :fields = "json_fields"
-          :name    = "excelFileName()"
-      >
-        Download Data
-        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-      </download-excel>
-    </div>
-
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <filterable v-bind="filterable">
       <thead slot="thead">
       <tr>
@@ -19,6 +8,7 @@
         <th>ID</th>
         <th>Name</th>
         <th>Age</th>
+        <th>Gender</th>
         <th>Emergency Contact</th>
         <!-- <th>District</th> -->
         <th>Muicipality</th>
@@ -38,6 +28,7 @@
         </td>
         <td>{{item.name}}</td>
         <td>{{item.age}}</td>
+        <td>{{ gender(item.sex)}}</td>
         <td>One : {{item.emergency_contact_one}} <br>
           Two : {{item.emergency_contact_two}}
         </td>
@@ -58,7 +49,7 @@
         </td>
         <td>
            <button v-if="item.latest_anc.result == 9" v-on:click="addResultInLab(item)" title="Add Result">
-            <i class="fa fa-medkit"></i>
+             <i class = "material-icons">biotech</i>
           </button>
         </td>
         <!-- </div>             -->
@@ -66,24 +57,23 @@
       <!--            <span>Selected Ids: {{ item }}</span>-->
 
     </filterable>
-<!--    <div v-if="this.$userRole == 'healthworker'">-->
-<!--      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">-->
-<!--      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">-->
-<!--      <fab-->
-<!--          :position="fabOptions.position"-->
-<!--          :bg-color="fabOptions.bgColor"-->
-<!--          :actions="fabActions"-->
-<!--          :start-opened = true-->
-<!--          @addRecievedInLab="addRecievedInLab"-->
-<!--          @addResultInLab="addResultInLab"-->
-<!--      ></fab>-->
-<!--    </div>-->
+    <div v-if="this.$userRole == 'healthworker'">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+      <fab
+          :position="fabOptions.position"
+          :bg-color="fabOptions.bgColor"
+          :actions="fabActions"
+          :start-opened = true
+          @addRecievedInLab="addRecievedInLab"
+          @addResultInLab="addResultInLab"
+      ></fab>
+    </div>
 
   </div>
 </template>
 
 <script type="text/javascript">
-import Filterable from './Filterable.vue'
+import Filterable from './WomanFilterable.vue'
 import DataConverter from 'ad-bs-converter'
 import axios from 'axios'
 import ViewLabResultReportModel from './ViewLabResultReportModel.vue'
@@ -102,21 +92,22 @@ export default {
         orderables: [
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},
-          {title: 'Created At', name: 'created_at'}
+          {title: 'Case Created At', name: 'created_at'}
         ],
         filterGroups: [
           {
-            name: 'Patient',
+            name: 'Case',
             filters: [
               {title: 'Name', name: 'name', type: 'string'},
               {title: 'Age', name: 'age', type: 'numeric'},
               {title: 'Phone Number', name: 'phone', type: 'numeric'},
+              {title: 'Case Created At', name: 'created_at', type: 'datetime'}
             ]
           },
           {
-            name: 'Tests',
+            name: 'Swab Collection',
             filters: [
-              {title: 'Created At', name: 'ancs.visit_date', type: 'datetime'}
+              {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
             ]
           }
         ]
@@ -135,11 +126,13 @@ export default {
         'Age Unit' : 'age_unit',
         'District' : 'district',
         'Municipality' : 'municipality',
+        'Ward' : 'ward',
         'Emergency Contact One' : 'emergency_contact_one',
         'Emergency Contact Two' : 'emergency_contact_two',
         'Current Hospital' : 'current_hospital',
         'Swab ID' : 'swab_id',
         'Lab ID' : 'lab_id',
+        'Result' : 'result',
         'Created At' : 'created_at'
       },
       json_meta: [
@@ -296,7 +289,7 @@ export default {
           return '<span class=\"label label-danger\"> Positive</span>';
 
         case '9':
-          return '<span class=\"label label-warning\"> Recieved</span>';
+          return '<span class=\"label label-warning\"> Received</span>';
 
         default:
           return '<span class=\"label label-default\"> Don\'t Know</span>';
@@ -396,13 +389,25 @@ export default {
         width : 700
       })
     },
-    addResultInLab(){
+    addResultInLab(item){
       this.$dlg.modal(AddResultInLabModal, {
         title: 'Lab Result',
-        width : 700
+        width : 700,
+        params: {
+          item : item,
+        },
       })
     },
-
+    gender(type){
+      switch (type){
+        case '1':
+          return 'M';
+        case '2':
+          return  'F';
+        default:
+          return 'O';
+      }
+    },
   }
 }
 
