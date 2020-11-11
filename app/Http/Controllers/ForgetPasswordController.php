@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Session;
 
 class ForgetPasswordController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $rows = ForgetPassword::all()->sortByDesc('created_at')->map(function ($data){

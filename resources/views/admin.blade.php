@@ -3,7 +3,16 @@
 @section('content')
 <div id="page-wrapper">
     <div class="row" style="padding: 15px;">
-    <h3 class="align-center">Last 24 hours Update</h3>
+        @if (Request::session()->has('message'))
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                {!! Request::session()->get('message') !!}
+                <br>
+            </div>
+        @endif
+        <h3 class="align-center">Last 24 hours Update</h3>
     <div class="col-lg-4">
         <div class="panel panel-primary">
             <div class="panel-heading">

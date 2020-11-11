@@ -80,7 +80,9 @@
                                     <br>
                                     <div class="form-group"> <div class="col-md-7 col-md-offset-3">
                                         
-                                    <h4>Change Password</h4> </div></div>
+                                    <h4>Change Password</h4>
+                                            You need to change password every month
+                                        </div></div>
                                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                                             <label for="password" class="col-md-3 control-label"><i data-toggle="tooltip" title="पासवर्ड लेख्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i>New Password</label>
 
