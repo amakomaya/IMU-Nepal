@@ -125,11 +125,23 @@
               </li>
             </ul>
           </div>
-    <div class="row">
+    <div class="rows">
         <div style="display:inline-block; width:100%; height:auto;">
 
             <img class="img-responsive center-block" src="{{ asset('images/login-icon.png') }}">
         </div>
+        @if (Request::session()->has('forget_password_message'))
+            <div class="alert alert-block alert-success" style="margin:15px; text-align:center;">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="ace-icon fa fa-times"></i>
+                </button>
+                <p>
+                    <strong>Thank you !</strong><br>
+                    If the username, email or phone you entered exists in our system. We will provide you new password through email or your phone number.
+                </p>
+
+            </div>
+        @endif
     </div>
         <div class="row">
     <div class="col-md-4">
@@ -204,7 +216,6 @@
 
 {{--        </div>--}}
 {{--        </div>--}}
-
     @foreach(App\Models\NoticeBoard::latest()->get() as $row)
             @if($row->type == 'Warning')
                 <div class="panel panel-warning">
@@ -227,7 +238,7 @@
                         <iframe width="100%" height="315" src="https://www.youtube.com/embed/videoseries?list=PLDauIRTtxpwjUbaKjZuPX5l9W4BwsUvGu" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                 </div>
-{{--                @include('auth.passwords.reset')--}}
+                @include('auth.passwords.reset')
 
                 <!-- Load Facebook SDK for JavaScript -->
                 <div id="fb-root"></div>

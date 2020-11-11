@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePasswordResetRequestTable extends Migration
+class CreateForgetPasswordTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreatePasswordResetRequestTable extends Migration
      */
     public function up()
     {
-        Schema::create('password_reset_request', function (Blueprint $table) {
+        Schema::create('forget_password', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->longText('data');
+            $table->string('read_at');
             $table->timestamps();
         });
     }
@@ -24,9 +25,9 @@ class CreatePasswordResetRequestTable extends Migration
      * Reverse the migrations.
      *
      * @return void
-     **/
+     */
     public function down()
     {
-        Schema::dropIfExists('password_reset_request');
+        Schema::dropIfExists('forget_password');
     }
 }

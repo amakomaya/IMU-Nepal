@@ -103,7 +103,12 @@
         <i class="fa fa-undo" aria-hidden="true"></i> {{ trans('sidebar.backup_restore') }}
     </a>
 </li> -->
-
+<li>
+    <a href="{{ route('password-reset.index') }}">
+        <i class="fa fa-key" aria-hidden="true"></i> User Forget Password
+        <span class="badge">{{ \App\Models\ForgetPassword::whereNull('read_at')->count() }}</span>
+    </a>
+</li>
 <li>
     <a href="{{ route('activity-log.index') }}">
         <i class="fa fa-history" aria-hidden="true"></i> {{ trans('sidebar.activity_log') }}

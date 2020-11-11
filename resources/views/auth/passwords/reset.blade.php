@@ -38,14 +38,14 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-3" for="email">Phone *:</label>
+                        <label class="control-label col-sm-3" for="phone">Phone *:</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="phone" placeholder="Enter email" name="phone" required>
+                            <input type="tel" class="form-control" id="phone" placeholder="Enter phone" name="phone" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-3" for="email">Username *:</label>
+                        <label class="control-label col-sm-3" for="username">Username *:</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="username" placeholder="Enter username" name="username" required>
                         </div>

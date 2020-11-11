@@ -21,7 +21,7 @@
                                     <label for="username" class="col-md-4 control-label">Username</label>
 
                                     <div class="col-md-6">
-                                        <input id="username" type="text" class="form-control" name="username" value="{{!!old('username')? old('username') : $user->username }}" autofocus>
+                                        <input id="username" type="text" class="form-control" name="username" value="{{!!old('username')? old('username') : $user->username }}" readonly>
 
                                         @if ($errors->has('username'))
                                             <span class="help-block">
@@ -35,7 +35,7 @@
                                     <label for="password" class="col-md-4 control-label">Password</label>
 
                                     <div class="col-md-6">
-                                        <input id="password" type="password" class="form-control" name="password" >
+                                        <input id="password" type="password" class="form-control" name="password" autofocus>
 
                                         @if ($errors->has('password'))
                                             <span class="help-block">

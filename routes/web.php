@@ -165,6 +165,5 @@ Route::group(['prefix' => 'admin/messages'], function () {
     Route::put('{id}', ['as' => 'messages.update', 'uses' => 'MessagesController@update']);
 });
 
-Route::post('/password-reset', function(\Illuminate\Http\Request $request){
-    dd($request->all());
-})->name('password-reset.store');
+Route::resource('/password-reset', 'ForgetPasswordController', ['names' => 'password-reset']);
+Route::POST('/password-reset-user', 'ForgetPasswordController@updateUserPassword')->name('password-reset-user.update');

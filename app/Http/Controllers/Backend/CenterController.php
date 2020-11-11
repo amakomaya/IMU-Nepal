@@ -31,7 +31,6 @@ class CenterController extends Controller
     public function index()
     {        
         User::checkAuthForCenter();
-
         $centers = Center::all();
         return view('backend.center.index',compact('centers'));
     }
