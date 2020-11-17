@@ -130,11 +130,10 @@ class MessagesController extends Controller
         $municipality_users = $users->whereIn('token', $municipality_token);
         $hospital_or_cict_users = $users->whereIn('token', $hospital_or_cict_tokens);
         $center_users = $users->whereIn('token', $center_tokens);
-
-
+        $main_users = $users->where('role', 'main');
         $thread->markAsRead($user->id);
 
-        return view('messenger.show', compact('thread', 'users', 'lab_users', 'province_users','district_users', 'municipality_users', 'hospital_or_cict_users', 'center_users'));
+        return view('messenger.show', compact('thread', 'users', 'lab_users', 'province_users','district_users', 'municipality_users', 'hospital_or_cict_users', 'center_users', 'main_users'));
     }
 
     /**
@@ -210,7 +209,9 @@ class MessagesController extends Controller
         $municipality_users = $users->whereIn('token', $municipality_token);
         $hospital_or_cict_users = $users->whereIn('token', $hospital_or_cict_tokens);
         $center_users = $users->whereIn('token', $center_tokens);
-        return view('messenger.create', compact('lab_users', 'province_users','district_users', 'municipality_users', 'hospital_or_cict_users', 'center_users'));
+        $main_users = $users->where('role', 'main');
+
+        return view('messenger.create', compact('lab_users', 'main_users','province_users','district_users', 'municipality_users', 'hospital_or_cict_users', 'center_users'));
     }
 
     /**
@@ -222,24 +223,6 @@ class MessagesController extends Controller
     {
         $input = Request::all();
 
-        if($input['attachment']) {
-            $allowedfileExtension=['pdf','jpg','png','docx','xlsx', 'csv', 'xls'];
-
-            $extension = $input['attachment']->getClientOriginalExtension();
-            $check=in_array($extension,$allowedfileExtension);
-
-            if (!$check){
-                Session::flash('error_message', 'File format not supported.');
-                return redirect()->route('messages');
-            }
-
-            $fileName = time().'_'.$input['attachment']->getClientOriginalName();
-            $filePath = $input['attachment']->storeAs('uploads', $fileName, 'public');
-
-            $input['attachment'] = '/storage/' . $filePath;
-
-        }
-
         $thread = Thread::create([
             'subject' => $input['subject'],
         ]);
@@ -248,7 +231,6 @@ class MessagesController extends Controller
             'thread_id' => $thread->id,
             'user_id' => Auth::id(),
             'body' => $input['message'],
-            'attachment' => $input['attachment'],
         ]);
 
         // Sender

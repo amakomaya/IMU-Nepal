@@ -11,7 +11,27 @@
     </div>
 
     <input type="checkbox" class="toggle-checkbox" onClick="toggle(this)" /><span> Select All</span><br/><br>
+    @if($main_users->count() > 0)
+        <label>Contact IMU Nepal technical support team</label>
+        <div class="row">
+            <div class="checkbox">
+                @foreach($main_users as $user)
+                    <div class="col-lg-4">
+                        <label title="IMU Nepal support team">
+                            <input type="checkbox" name="recipients[]"
+                                   value="{{ $user->id }}">IMU Nepal support team
+                            <br>
+                            Lazimpat, Kathmandu <br>
+                            Email : imucovidnepal@gmail.com <br>
+                            Phone No : 01-4428090
+                        </label>
+                        <hr>
+                    </div>
 
+                @endforeach
+            </div>
+        </div>
+    @endif
     @if($center_users->count() > 0)
         <label>Center Recipients</label>
         <div class="row">
