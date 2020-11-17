@@ -13,6 +13,7 @@ Route::get('/', function(){
 
 //Auth
 Auth::routes();
+Route::resource('admin/permissions','PermissionController', ['name' => 'permissions']);
 
 //Backend Home
 Route::get('/admin', 'AdminController@index')->name('admin');

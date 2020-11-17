@@ -57,24 +57,8 @@ Route::post('/v2/anc', 'Api\v2\AncController@store');
 
 // New Login
 Route::post('/v2/amc/login', 'Api\LoginController@v2AmcLogin');
+Route::post('/v3/amc/login', 'Api\LoginController@v3AmcLogin');
 
-// V3
-Route::post('/v3/amc/login', 'Api\v3\AmakomayaCareController@login');
-Route::post('/v3/vtc/login', 'Api\v3\VialToChildController@login');
-
-Route::get('/v3/vtc', 'Api\v3\VialToChildController@index');
-Route::post('/v3/vtc', 'Api\v3\VialToChildController@store');
-Route::post('/v3/vtc-update', 'Api\v3\VialToChildController@update');
-Route::get('/v3/vtc/quick/baby', 'Api\v3\VialToChildController@quickDataBaby');
-Route::get('/v3/vtc/quick/vaccination', 'Api\v3\VialToChildController@quickDataVaccination');
-
-Route::get('/v3/amc', 'Api\v3\AmakomayaCareController@index');
-Route::get('/v3/amc/ancs', 'Api\v3\AmakomayaCareController@ancs');
-Route::get('/v3/amc/hiv-syphillis-tests', 'Api\v3\HIVSyphillisTestController@index');
-Route::post('/v3/amc/hiv-syphillis-tests', 'Api\v3\HIVSyphillisTestController@store');
-Route::post('/v3/amc/hiv-syphillis-tests-update', 'Api\v3\HIVSyphillisTestController@update');
-
-Route::resource('/v3/baby', 'Api\v3\BabyController');
 
 // QrCode Download
 Route::post('/aamakomaya-qrcode-download', 'Backend\AamakomayaGenerateQrcode@download')->name('aamakomaya.qrcode-download');

@@ -75,8 +75,12 @@
                                 <tr>
                                     <th>Tole</th>
                                     <td>{{$data->tole}}</td>
-                                </tr>                                     
-                                                                
+                                </tr>
+                                <tr>
+                                    <th>Assigned Permission</th>
+                                    <td>{{ implode(',', $data->user->getAllPermissions()->pluck('name')->toArray()) }}</td>
+                                </tr>
+
                                 <!-- <tr>
                                     <th>Role</th>
                                     <td>{{$data->role}}</td>

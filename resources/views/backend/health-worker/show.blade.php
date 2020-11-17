@@ -111,7 +111,11 @@
                                             Healthworker
                                         @endif
                                     </td>
-                                </tr>                                     
+                                </tr>
+                                <tr>
+                                    <th>Assigned Permission</th>
+                                    <td>{{ implode(',', $data->user->getAllPermissions()->pluck('name')->toArray()) }}</td>
+                                </tr>
                                 <!-- <tr>
                                     <th>Longitude</th>
                                     <td>{{$data->longitude}}</td>

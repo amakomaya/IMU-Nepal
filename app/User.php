@@ -14,11 +14,12 @@ use App\Models\Healthpost;
 use App\Models\HealthWorker;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Cmgmyr\Messenger\Traits\Messagable;
+use Spatie\Permission\Traits\HasRoles;
 
 
 class User extends Authenticatable
 {
-    use Notifiable, LogsActivity, Messagable;
+    use Notifiable, LogsActivity, Messagable, HasRoles;
 
     protected static $ignoreChangedAttributes = ['remember_token','updated_at'];
 

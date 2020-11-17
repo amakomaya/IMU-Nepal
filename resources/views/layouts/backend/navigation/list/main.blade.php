@@ -98,11 +98,11 @@
         </li>
     </ul>
 </li>
-<!-- <li>
-    <a href="{{ route('backup-restore.index') }}">
-        <i class="fa fa-undo" aria-hidden="true"></i> {{ trans('sidebar.backup_restore') }}
+<li>
+    <a href="{{ route('permissions.index') }}">
+        <i class="fa fa-lock" aria-hidden="true"></i> Permission Management
     </a>
-</li> -->
+</li>
 <li>
     <a href="{{ route('password-reset.index') }}">
         <i class="fa fa-key" aria-hidden="true"></i> User Forget Password

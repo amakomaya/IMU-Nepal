@@ -13,6 +13,7 @@ use App\Models\Healthpost;
 use App\Models\Ward;
 use App\User;
 use Auth;
+use Spatie\Permission\Models\Permission;
 
 class FchvController extends Controller
 {
@@ -75,8 +76,9 @@ class FchvController extends Controller
         $provinces = Province::get();
         $districts = District::get();
         $municipalities = Municipality::get();
+        $permissions = Permission::all();
         $role = 'fchv';
-        return view('backend.fchv.create',compact('provinces','districts','municipalities','role'));
+        return view('backend.fchv.create',compact('provinces','districts','municipalities','role', 'permissions'));
     }
 
     /**
@@ -90,8 +92,6 @@ class FchvController extends Controller
         // if(User::checkAuthForCreateUpdateDelHealthworker()===false){
         //     return redirect('/admin');
         // }
-
-        // dd($request->all());
 
         $request->validate([
             'username' => 'required|unique:users',
@@ -118,7 +118,7 @@ class FchvController extends Controller
         ]);
 
 
-         User::create([
+         $user = User::create([
             'token'               => $healthWorker->token,
             'username'               => $request->get('username'),
             'email'               => $request->get('email'),
@@ -126,6 +126,8 @@ class FchvController extends Controller
             'password'               => md5($request->get('password')),
             'role'               => "healthworker",
         ]);
+
+         $user->givePermissionTo($request->get('permissions'));
 
         $request->session()->flash('message', 'Data Inserted successfully');
 
@@ -182,12 +184,12 @@ class FchvController extends Controller
        }else{
         $provinces = Province::get();
         $districts = District::get();
-        $municipalities = Municipality::get();       }        
-
-        
+        $municipalities = Municipality::get();
+        }
+        $permissions = Permission::all();
         $user = $this->findModelUser($data->token);
         $role = 'fchv';
-        return view('backend.fchv.edit', compact('data','provinces','districts','municipalities','user','role'));
+        return view('backend.fchv.edit', compact('permissions','data','provinces','districts','municipalities','user','role'));
     }
 
     /**
@@ -234,6 +236,7 @@ class FchvController extends Controller
             'imei'               => $request->get('imei')
         ]);
 
+        $user->givePermissionTo($request->get('permissions'));
         $request->session()->flash('message', 'Data Updated successfully');
 
         return redirect()->route('fchv.index');

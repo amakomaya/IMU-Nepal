@@ -16,6 +16,7 @@ use App\User;
 use Auth;
 use App\Helpers\BackendHelper;
 use Illuminate\Routing\UrlGenerator;
+use Spatie\Permission\Models\Permission;
 
 class HealthWorkerController extends Controller
 {
@@ -77,7 +78,8 @@ class HealthWorkerController extends Controller
         // $wards = Ward::where([['ward_no', $healthpost->ward_no],['municipality_id', $healthpost->municipality_id]])->get();
         $healthposts = Healthpost::where('id', $healthpost->id)->get();
         $role = "healthworker";
-        return view('backend.health-worker.create',compact('provinces','districts','municipalities','healthposts','role'));
+        $permissions = Permission::all();
+        return view('backend.health-worker.create',compact('provinces','districts','municipalities','healthposts','role', 'permissions'));
     }
 
     /**
@@ -122,7 +124,7 @@ class HealthWorkerController extends Controller
         ]);
 
 
-         User::create([
+         $user = User::create([
             'token'               => $healthWorker->token,
             'username'               => $request->get('username'),
             'email'               => $request->get('email'),
@@ -130,6 +132,7 @@ class HealthWorkerController extends Controller
             'password'               => md5($request->get('password')),
             'role'               => "healthworker",
         ]);
+        $user->givePermissionTo($request->get('permissions'));
 
         $request->session()->flash('message', 'Data Inserted successfully');
 
@@ -179,7 +182,8 @@ class HealthWorkerController extends Controller
         $healthposts = Healthpost::where('id', $healthpost->id)->get();
         $user = $this->findModelUser($data->token);
         $role = "healthworker";
-        return view('backend.health-worker.edit', compact('data','provinces','districts','municipalities','wards','healthposts','user','role'));
+        $permissions = Permission::all();
+        return view('backend.health-worker.edit', compact('data','provinces','districts','municipalities','wards','healthposts','user','role', 'permissions'));
     }
 
     /**
@@ -238,6 +242,7 @@ class HealthWorkerController extends Controller
             'email'               => $request->get('email'),
             'imei'               => $request->get('imei'),
         ]);
+        $user->givePermissionTo($request->get('permissions'));
 
         $request->session()->flash('message', 'Data Updated successfully');
 

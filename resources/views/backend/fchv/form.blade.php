@@ -311,10 +311,31 @@
                                         @endif
                                     </div>
                                 </div>
+                                <hr>
                                 <div class="form-group">
-                                    <div class="col-md-8 col-md-offset-4">
-                                        <button type="submit" class="btn btn-success">
-                                            Submit
+                                <strong class="col-md-3 control-label">Assign Permissions</strong>
+                                    <div class="col-md-7 checkbox">
+                                        @foreach($permissions as $permission)
+                                            <div class="col-lg-4">
+                                                <label title="{{ $permission->name }}">
+                                                    <input type="checkbox" name="permissions[]"
+                                                           value="{{ $permission->name }}"
+                                                           @if(isset($data))
+                                                                   @if(in_array($permission->name ,$data->user->getAllPermissions()->pluck('name')->toArray()))
+                                                           checked
+                                                           @endif
+                                                            @endif
+                                                    >{!!$permission->name!!}
+                                                </label>
+                                                <hr>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div>
+                                        <button type="submit" class="btn btn-success btn-block">
+                                            Save
                                         </button>
                                     </div>
                                 </div>
