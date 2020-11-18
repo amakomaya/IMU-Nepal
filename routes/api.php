@@ -71,15 +71,17 @@ Route::get('/v1/healthposts', function ()
 
 Route::post('/v1/client', function(Request $request){
     $data = $request->json()->all();
+
     foreach ($data as $value) {
         try {
             $value['case_id'] = bin2hex(random_bytes(3));
+
             Woman::create($value);
         } catch (\Exception $e) {
             
         }
     }
-    return response()->json(['message' => 'Data Sussessfully Sync']);
+    return response()->json(['message' => 'Data Successfully Sync']);
 });
 
 Route::get('/v1/client', function(Request $request){
@@ -161,7 +163,7 @@ Route::get('/v1/client', function(Request $request){
         $response['payment'] = $row->payment ?? '';
         $response['result'] = $row->sample_result ?? '';
 
-         if ($response['result'] == '4') {
+         if ($row->sample_result == '4') {
              $response['case_id'] = $row->case_id ?? '';
          }else{
             $response['case_id'] = '';
@@ -194,7 +196,7 @@ Route::post('/v1/client-update', function(Request $request){
             
         }
     }
-    return response()->json(['message' => 'Data Sussessfully Sync and Update']);
+    return response()->json(['message' => 'Data Successfully Sync and Update']);
 });
 
 Route::post('/v1/client-tests', function(Request $request){
@@ -286,7 +288,7 @@ Route::post('/v1/lab-test', function(Request $request){
             
         }
     }
-    return response()->json(['message' => 'Data Sussessfully Sync']);
+    return response()->json(['message' => 'Data Successfully Sync']);
 });
 
 
@@ -353,7 +355,7 @@ Route::post('/v1/patient-laboratory-parameter', function(Request $request){
             
         }
     }
-    return response()->json(['message' => 'Data Sussessfully Sync']);
+    return response()->json(['message' => 'Data Successfully Sync']);
 });
 
 Route::get('/v1/patient-laboratory-parameter', function(Request $request){
