@@ -17,7 +17,8 @@ import WomenList from './components/CasesRegisteredOrPending.vue'
 import WomanListNegative from './components/CasesNegative'
 import WomanListPositive from "./components/CasesPositive";
 import PatientListLabReceived from './components/CasesLabRecieved'
-
+import CasesClosedRecovered from './components/CasesClosedRecovered'
+import CasesClosedDeath from './components/CasesClosedDeath'
 import LabPatientList from './components/LabCases'
 
 import SelectYearMonth from './components/SelectYearMonth'
@@ -48,7 +49,8 @@ Vue.component('women-list-negative', WomanListNegative);
 Vue.component('women-list-positive', WomanListPositive);
 Vue.component('lab-patient-list', LabPatientList);
 Vue.component('women-list-lab-received', PatientListLabReceived)
-
+Vue.component('cases-closed-recovered', CasesClosedRecovered)
+Vue.component('cases-closed-death', CasesClosedDeath)
 Vue.component('vaccination-chart');
 
 Vue.component('select-year-month', SelectYearMonth)

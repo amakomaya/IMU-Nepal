@@ -72,6 +72,26 @@ class WomenController extends Controller
         ]);
     }
 
+    public function casesRecoveredIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->casesRecoveredList()->withAll();
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
+
+    public function casesDeathIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->casesDeathList()->withAll();
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
+
     public function show($token){
         $data = Woman::withAll()->where('token', $token)->first();
         return response()->json([

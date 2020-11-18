@@ -232,4 +232,12 @@ class Woman extends Model
             $query->where('result', 9)->whereHas('labReport');
         });
     }
+
+    public function scopeCasesRecoveredList($query){
+        return $query->where('end_case', 1);
+    }
+
+    public function scopeCasesDeathList($query){
+        return $query->where('end_case', 2);
+    }
 }
