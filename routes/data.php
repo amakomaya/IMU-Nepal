@@ -4,7 +4,8 @@
 Route::resource('api/women', 'Data\Api\WomenController');
 Route::get('api/active-patient', 'Data\Api\WomenController@activeIndex');
 Route::get('api/passive-patient', 'Data\Api\WomenController@passiveIndex');
-
+Route::get('api/positive-patient', 'Data\Api\WomenController@positiveIndex');
+Route::get('api/lab-received', 'Data\Api\WomenController@labReceivedIndex');
 
 Route::get('/api/patient/export', 'Data\Api\WomenController@export');
 Route::get('/api/lab-patient/export', 'Data\Api\WomenController@labExport');

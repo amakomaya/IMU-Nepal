@@ -86,11 +86,11 @@ class AdminController extends Controller
 
 //        dd($total_lab_received);
 
-        $last_24_hrs_lab_received_count = $total_lab_received->where('created_at', '>', Carbon::now()->subDay())->count();
+        $last_24_hrs_lab_received_count = $total_lab_received->where('created_at', '>=', Carbon::now()->subDay()->toDateTimeString())->count();
 
-        $last_24_hrs_register = $woman->where('created_at', '>', Carbon::now()->subDay())->count();
+        $last_24_hrs_register = $woman->where('created_at', '>=', Carbon::now()->subDay()->toDateTimeString())->count();
 
-        $last_24_hrs_sample_collection = $sample_collection->where('created_at', '>', Carbon::now()->subDay())->get()->count();
+        $last_24_hrs_sample_collection = $sample_collection->where('created_at', '>=', Carbon::now()->subDay()->toDateTimeString())->get()->count();
         
 //        $last_24_hrs_tests = $tests->whereIn('hp_code', $hpCodes)->where('created_at', '>', Carbon::now()->subDay())->get()->count();
 

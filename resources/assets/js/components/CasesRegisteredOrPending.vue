@@ -47,17 +47,17 @@
                     <div v-if="item.ancs.length > 0 && item.latest_anc.result == 9">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
                 </td>
                 <td>
+                <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
+                     <i class="fa fa-file" aria-hidden="true"></i> |
+                  </button>
                   <div v-if="role  == 'healthworker'">
                   <button v-if="item.ancs.length == 0" v-on:click="aadSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
                      <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
+                   
                   </div>
                     <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
                         <i class="fa fa-hospital-o"></i>
-                    </button>
-                        <button v-if="checkForPositiveOnly(item.latest_anc)" v-on:click="viewConfirmReportForm(item)" title="Confirmed Case Record Form">
-                        |
-                    <i class="fa fa-file"></i>
                 </button>
                 </td>  
                 <!-- </div>             -->
@@ -367,6 +367,9 @@
             },
             addPatient(){
               window.location.href = '/admin/patients/create'
+            },
+            viewCaseDetails(token){
+                window.location.href = '/admin/patient?token='+token;
             }
         }
     }

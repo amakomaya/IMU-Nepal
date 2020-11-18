@@ -1,6 +1,5 @@
 <template>
   <div>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <filterable v-bind="filterable">
       <thead slot="thead">
       <tr>
@@ -19,18 +18,18 @@
         <th>Action</th>
       </tr>
       </thead>
-      <tr slot-scope="{item}">
+      <tr slot-scope="{item}" v-if="latestLabResultNotNegative(item.latest_anc)">
         <td>
           <input type="checkbox" v-model="womanTokens" @click="select" :value="item.token">
         </td>
-        <td><div v-if="checkForPositiveOnly(item.latest_anc)">Case ID : {{ item.case_id }}</div>
-          <div v-if="item.parent_case_id !== null">Parent Case ID : {{ item.parent_case_id }}</div>
+        <td><div v-if="checkForPositiveOnly(item.latest_anc)" title="Case ID">C ID : {{ item.case_id }}</div>
+          <div v-if="item.parent_case_id !== null" title="Parent Case ID">PC ID : {{ item.parent_case_id }}</div>
         </td>
-        <td>{{item.name}}</td>
+        <td>{{ roleVisibility(item.name)}}</td>
         <td>{{item.age}}</td>
         <td>{{ gender(item.sex)}}</td>
-        <td>One : {{item.emergency_contact_one}} <br>
-          Two : {{item.emergency_contact_two}}
+        <td>One : {{ roleVisibility(item.emergency_contact_one) }} <br>
+          Two : {{ roleVisibility(item.emergency_contact_two) }}
         </td>
         <td>{{ checkMunicipality(item.municipality_id) }}</td>
         <td>
@@ -48,24 +47,33 @@
           <div v-if="item.ancs.length > 0 && item.latest_anc.result == 9">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
         </td>
         <td>
-           <button v-if="item.latest_anc.result == 9" v-on:click="addResultInLab(item)" title="Add Result">
-             <i class = "material-icons">biotech</i>
+          <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
+            <i class="fa fa-file" aria-hidden="true"></i> |
+          </button>
+          <div v-if="role  == 'healthworker'">
+            <button v-if="item.ancs.length == 0" v-on:click="aadSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
+              <i class="fa fa-medkit" aria-hidden="true"></i> |
+            </button>
+
+          </div>
+          <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
+            <i class="fa fa-hospital-o"></i>
           </button>
         </td>
         <!-- </div>             -->
       </tr>
-      <!--            <span>Selected Ids: {{ item }}</span>-->
-
     </filterable>
+
     <div v-if="this.$userRole == 'healthworker'">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+
       <fab
           :position="fabOptions.position"
           :bg-color="fabOptions.bgColor"
           :actions="fabActions"
           :start-opened = true
-          @addRecievedInLab="addRecievedInLab"
-          @addResultInLab="addResultInLab"
+          @addPatient="addPatient"
       ></fab>
     </div>
 
@@ -80,19 +88,18 @@ import ViewLabResultReportModel from './ViewLabResultReportModel.vue'
 import SendPatientDataModel from './SendPatientDataModel.vue'
 import viewConfirmReportFormModel from './viewConfirmReportFormModel.vue'
 import fab from 'vue-fab'
-import AddRecievedInLabModal from "./AddRecievedInLabModal";
-import AddResultInLabModal from "./AddResultInLabModal";
 
 export default {
   components: {Filterable, fab},
   data() {
     return {
+      role : this.$userRole,
       filterable: {
-        url: '/api/v1/recieved-in-lab',
+        url: '/data/api/lab-received',
         orderables: [
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},
-          {title: 'Case Created At', name: 'created_at'}
+          {title: 'Case Created At', name: 'created_at'},
         ],
         filterGroups: [
           {
@@ -101,7 +108,7 @@ export default {
               {title: 'Name', name: 'name', type: 'string'},
               {title: 'Age', name: 'age', type: 'numeric'},
               {title: 'Phone Number', name: 'phone', type: 'numeric'},
-              {title: 'Case Created At', name: 'created_at', type: 'datetime'}
+              {title: 'Case Created At', name: 'created_at', type: 'datetime'},
             ]
           },
           {
@@ -110,7 +117,7 @@ export default {
               {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
             ]
           }
-        ]
+        ],
       },
       token : Filterable.data().collection.data,
       selected: [],
@@ -119,30 +126,6 @@ export default {
       provinces : [],
       municipalities : [],
       districts : [],
-      json_fields: {
-        'S.N' : 'serial_number',
-        'Case Name': 'name',
-        'Age': 'age',
-        'Age Unit' : 'age_unit',
-        'District' : 'district',
-        'Municipality' : 'municipality',
-        'Ward' : 'ward',
-        'Emergency Contact One' : 'emergency_contact_one',
-        'Emergency Contact Two' : 'emergency_contact_two',
-        'Current Hospital' : 'current_hospital',
-        'Swab ID' : 'swab_id',
-        'Lab ID' : 'lab_id',
-        'Result' : 'result',
-        'Created At' : 'created_at'
-      },
-      json_meta: [
-        [
-          {
-            'key': 'charset',
-            'value': 'utf-8'
-          }
-        ]
-      ],
       exportHtml : '',
       fabOptions : {
         bgColor: '#778899',
@@ -150,16 +133,10 @@ export default {
       },
       fabActions: [
         {
-          name: 'addRecievedInLab',
+          name: 'addPatient',
           icon: 'group_add',
-          tooltip: "Add Recieved in Lab"
-        },
-        {
-          name: 'addResultInLab',
-          icon: 'biotech',
-          tooltip: "Add Result in Lab"
+          tooltip: "Add Covid 19 Cases"
         }
-
       ]
     }
   },
@@ -289,7 +266,7 @@ export default {
           return '<span class=\"label label-danger\"> Positive</span>';
 
         case '9':
-          return '<span class=\"label label-warning\"> Received</span>';
+          return '<span class=\"label label-warning\"> Recieved</span>';
 
         default:
           return '<span class=\"label label-default\"> Don\'t Know</span>';
@@ -316,22 +293,6 @@ export default {
 
 
     },
-    excelFileName : function(){
-      var ext = '.xls';
-      return 'Patient Details '+ new Date()+ext;
-    },
-    async fetchData(){
-
-      if(confirm("Do you want to Download all records in excel ! ")){
-
-        const response = await axios.get('/data/api/lab-patient/export');
-        return response.data;
-
-        //     }
-        // })
-      }
-    },
-
     checkCaseType : function(type){
       switch(type){
         case '0':
@@ -383,21 +344,6 @@ export default {
       return 'N/A';
     },
 
-    addRecievedInLab(){
-      this.$dlg.modal(AddRecievedInLabModal, {
-        title: 'Received  Cases in Lab',
-        width : 700
-      })
-    },
-    addResultInLab(item){
-      this.$dlg.modal(AddResultInLabModal, {
-        title: 'Lab Result',
-        width : 700,
-        params: {
-          item : item,
-        },
-      })
-    },
     gender(type){
       switch (type){
         case '1':
@@ -408,6 +354,23 @@ export default {
           return 'O';
       }
     },
+
+    roleVisibility(data){
+      if(this.role == 'dho' || this.role == 'province' || this.role == 'center'){
+        return '** ***';
+      }
+      return data;
+    },
+
+    aadSampleCollection(token){
+      window.location.href = '/admin/sample-collection/create/'+token;
+    },
+    addPatient(){
+      window.location.href = '/admin/patients/create'
+    },
+    viewCaseDetails(token){
+      window.location.href = '/admin/patient?token='+token;
+    }
   }
 }
 

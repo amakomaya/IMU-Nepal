@@ -13,10 +13,12 @@ import 'vue-select/dist/vue-select.css';
 import _ from 'lodash'
 import Vuelidate from 'vuelidate'
 
-import WomenList from './components/Women.vue'
-import WomanListNegative from './components/WomanListNegative'
+import WomenList from './components/CasesRegisteredOrPending.vue'
+import WomanListNegative from './components/CasesNegative'
+import WomanListPositive from "./components/CasesPositive";
+import PatientListLabReceived from './components/CasesLabRecieved'
 
-import LabPatientList from './components/LabPatientList'
+import LabPatientList from './components/LabCases'
 
 import SelectYearMonth from './components/SelectYearMonth'
 import VNepaliDatePicker from 'v-nepalidatepicker';
@@ -43,8 +45,9 @@ Vue.component('v-select', vSelect)
 
 Vue.component('women-list', WomenList);
 Vue.component('women-list-negative', WomanListNegative);
+Vue.component('women-list-positive', WomanListPositive);
 Vue.component('lab-patient-list', LabPatientList);
-
+Vue.component('women-list-lab-received', PatientListLabReceived)
 
 Vue.component('vaccination-chart');
 

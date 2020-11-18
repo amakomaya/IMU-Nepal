@@ -210,7 +210,7 @@ class Woman extends Model
 
     public function scopeActivePatientList($query){
         return $query->whereHas('latestAnc', function ($query) {
-            $query->where('ancs.result' ,'!=', 4);
+            $query->whereNotIn('ancs.result' ,[ 3, 4, 9]);
         })->doesntHave('latestAnc', 'or');
 //        return $query->where($this->latestAnc()->first()->result, '4');
     }
@@ -218,6 +218,18 @@ class Woman extends Model
     public function scopePassivePatientList($query){
         return $query->whereHas('latestAnc', function ($query) {
             $query->where('result', 4);
+        });
+    }
+
+    public function scopePositivePatientList($query){
+        return $query->whereHas('latestAnc', function ($query) {
+            $query->where('result', 3);
+        });
+    }
+
+    public function scopeLabReceivedList($query){
+        return $query->whereHas('latestAnc', function ($query) {
+            $query->where('result', 9)->whereHas('labReport');
         });
     }
 }

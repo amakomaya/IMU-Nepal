@@ -41,6 +41,15 @@ class WomanController extends Controller
         return view('backend.woman.index-negative');
     }
 
+    public function positiveIndex()
+    {
+        return view('backend.woman.index-positive');
+    }
+
+    public function labReceivedIndex(){
+        return view('backend.woman.index-lab-received');
+    }
+
     public function create(Request $request)
     {
         $response = FilterRequest::filter($request);

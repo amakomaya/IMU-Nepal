@@ -64,6 +64,8 @@ Route::resource('admin/health-worker', 'Backend\HealthWorkerController');
 //Bakend Patients
 Route::resource('admin/patients', 'Backend\WomanController', ['names' => 'woman']);
 Route::get('admin/negative-patients', 'Backend\WomanController@negativeIndex')->name('patients.negative.index');
+Route::get('admin/positive-patients', 'Backend\WomanController@positiveIndex')->name('patients.positive.index');
+Route::get('admin/lab-received-patients', 'Backend\WomanController@labReceivedIndex')->name('patients.lab-received.index');
 Route::get('admin/sample-collection/create/{token}', 'Backend\WomanController@sampleCollectionCreate')->name('patients.sample-collection.store');
 Route::post('admin/sample-collection', 'Backend\WomanController@sampleCollectionStore')->name('patient.sample.store');
 
@@ -133,9 +135,9 @@ Route::resource('/admin/download-dev-apks', 'Backend\DownloadApksController');
 
 Route::resource('/admin/backup-restore', 'Backend\BackupRestoreController');
 
-Route::group(['prefix' => 'filemanager', 'middleware' => ['web', 'auth']], function () {
-    \UniSharp\LaravelFilemanager\Lfm::routes();
-});
+// Route::group(['prefix' => 'filemanager', 'middleware' => ['web', 'auth']], function () {
+//     \UniSharp\LaravelFilemanager\Lfm::routes();
+// });
 
 if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
     // Ignores notices and reports all other kinds... and warnings
@@ -168,3 +170,5 @@ Route::group(['prefix' => 'admin/messages'], function () {
 
 Route::resource('/password-reset', 'ForgetPasswordController', ['names' => 'password-reset']);
 Route::POST('/password-reset-user', 'ForgetPasswordController@updateUserPassword')->name('password-reset-user.update');
+
+Route::get('/admin/patient', 'Reports\CaseDetailController@getCaseDetail');

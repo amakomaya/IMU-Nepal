@@ -52,17 +52,28 @@ class WomenController extends Controller
             'collection' => $woman->advancedFilter()
         ]);
     }
+    public function positiveIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->positivePatientList()->withAll();
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
+
+    public function labReceivedIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->labReceivedList()->withAll();
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
 
     public function show($token){
-
         $data = Woman::withAll()->where('token', $token)->first();
-        $date_array = explode("-", $data['lmp_date_en']);
-        $data['lmp_date_en'] = Calendar::eng_to_nep($date_array[0], $date_array[1], $date_array[2])->getYearMonthDay();
-        foreach ($data->ancs as $anc){
-            $date_array = explode("-", $anc['visit_date']);
-            $anc['visit_date'] = Calendar::eng_to_nep($date_array[0], $date_array[1], $date_array[2])->getYearMonthDay();
-        }
-
         return response()->json([
             'record' => $data
         ]);
