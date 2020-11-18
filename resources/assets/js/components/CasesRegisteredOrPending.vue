@@ -10,7 +10,7 @@
                 <th>Gender</th>
                 <th>Emergency Contact</th>
                 <!-- <th>District</th> -->
-                <th>Muicipality</th>
+                <th>Municipality</th>
                 <th>Case</th>
                 <th>Created At</th>
                 <th>Total Collection</th>

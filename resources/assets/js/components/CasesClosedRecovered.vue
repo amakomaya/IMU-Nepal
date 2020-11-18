@@ -8,7 +8,7 @@
         <th>Age</th>
         <th>Emergency Contact</th>
         <th>District</th>
-        <th>Muicipality</th>
+        <th>Municipality</th>
         <th>Total Collection</th>
         <th>Latest Lab Result</th>
         <th>Action</th>
