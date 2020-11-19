@@ -32,97 +32,9 @@ class AdminController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function index(Request $request)
+    public function index()
     {
-        $response = FilterRequest::filter($request);
-        $hpCodes = GetHealthpostCodes::filter($response);
-
-        foreach ($response as $key => $value) {
-            $$key = $value;
-        }
-
-        $hp_codes_for_lab = [];
-        switch (auth()->user()->role){
-            case 'province':
-                $hp_codes_for_lab = HealthWorker::where('role', 'fchv')->where('province_id', $response['province_id'])->pluck('hp_code');
-                break;
-            case 'municipality':
-                $hp_codes_for_lab = HealthWorker::where('role', 'fchv')->where('municipality_id', $response['municipality_id'])->pluck('hp_code');
-                break;
-            case 'dho':
-                $hp_codes_for_lab = HealthWorker::where('role', 'fchv')->where('district_id', $response['district_id'])->pluck('hp_code');
-                break;
-            case 'heathpost':
-                $hp_codes_for_lab = HealthWorker::where('role', 'fchv')->where('hp_code', $response['hp_code'])->pluck('hp_code');
-                break;
-            case 'healthworker':
-                $hp_codes_for_lab = HealthWorker::where('role', 'fchv')->where('token', auth()->user()->token)->pluck('hp_code');
-                break;
-            case 'main':
-            case 'center':
-                $hp_codes_for_lab = HealthWorker::where('role', 'fchv')->pluck('hp_code');
-                break;
-        }
-
-        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->get(['created_at', 'hp_code', 'token', 'cases', 'case_where']);
-        $sample_collection = Anc::whereIn('hp_code', $hpCodes)->active()->orderBy('created_at', 'desc');
-
-//        $total_lab_received = LabTest::whereIn('hp_code', $hp_codes_for_lab)->get()->pluck(['sample_token']);
-//
-//
-//        $valid_total_lab = Anc::WhereIn('token', $total_lab_received)->get()->pluck(['token']);
-
-        $total_lab_received = LabTest::whereIn('lab_tests.hp_code', $hp_codes_for_lab)->leftJoin('ancs', function($join) {
-            $join->on('lab_tests.sample_token', '=', 'ancs.token');
-        })
-            ->whereNotNull('ancs.token')
-            ->get();
-
-//        dd($total_lab_received);
-
-        $last_24_hrs_lab_received_count = $total_lab_received->where('created_at', '>=', Carbon::now()->subDay()->toDateTimeString())->count();
-
-        $last_24_hrs_register = $woman->where('created_at', '>=', Carbon::now()->subDay()->toDateTimeString())->count();
-
-        $last_24_hrs_sample_collection = $sample_collection->where('created_at', '>=', Carbon::now()->subDay()->toDateTimeString())->get()->count();
-        
-//        $last_24_hrs_tests = $tests->whereIn('hp_code', $hpCodes)->where('created_at', '>', Carbon::now()->subDay())->get()->count();
-
-        $last_24_hrs_tests = 0;
-        $last_24_hrs_positive = 0;
-
-//        $last_24_hrs_positive = $tests->whereIn('hp_code', $hpCodes)->where('created_at', '>', Carbon::now()->subDay())->where('sample_test_result', 3)->get()->count();
-
-        $data = [
-                'total_register' => $woman->count(),
-                'total_sample_collection' => Anc::whereIn('hp_code', $hpCodes)->active()->count(),
-                'total_lab_received' => $total_lab_received->count(),
-                'total_tests' => 0,
-                'total_positive' => 0,
-                'last_24_hrs_register' => $last_24_hrs_register,
-                'last_24_hrs_sample_collection' => $last_24_hrs_sample_collection,
-                'last_24_hrs_lab_received_count' => $last_24_hrs_lab_received_count,
-                'last_24_hrs_tests' => $last_24_hrs_tests,
-                'last_24_hrs_positive' => $last_24_hrs_positive,
-                // 'mild_cases_home' => $woman->where('cases', '1')->where('case_where', '0')->count(),
-                // 'severe_cases_home' => $woman->where('cases', '2')->where('case_where', '0')->count()
-                'mild_cases_home' => $woman->where('cases', '1')->count(),
-                'severe_cases_home' => $woman->where('cases', '2')->count()
-        ];
-
-        $update_profile_expiration = Carbon::parse(auth()->user()->updated_at)->addMonth();
-
-        if (auth()->user()->role != 'main' && $update_profile_expiration < Carbon::now() ) {
-            $request->session()->flash('message', 'Update your account\'s information ! <a href="/admin/profile">Edit Profile</a>');
-        }
-
-        return view('admin', compact('data', 'provinces', 'districts', 'options', 'ward_or_healthpost', 'municipalities', 'wards', 'healthposts', 'province_id', 'district_id', 'municipality_id', 'ward_id', 'hp_code', 'from_date', 'to_date'));
+        return view('admin');
     }
 
     public function districtSelectByProvince(Request $request)

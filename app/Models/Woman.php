@@ -240,4 +240,60 @@ class Woman extends Model
     public function scopeCasesDeathList($query){
         return $query->where('end_case', 2);
     }
+
+    public function scopeDashboardSampleCollection($query){
+        return $query->withAll()->whereHas('latestAnc');
+    }
+
+    public function scopeDashboardSampleCollectionIn24hrs($query){
+        return $query->withAll()->whereHas('latestAnc', function ($query) {
+            $query->where('created_at', '>=', Carbon::now()->subDay()->toDateTimeString());
+        });
+    }
+
+    public function scopeDashboardSampleReceivedInLab($query){
+        return $query->withAll()->whereHas('latestAnc', function ($query) {
+            $query->whereHas('labReport');
+        });
+    }
+
+    public function scopeDashboardSampleReceivedInLabIn24hrs($query){
+        return $query->withAll()->whereHas('latestAnc', function ($query) {
+            $query->whereHas('labReport', function ($lab_query){
+                $lab_query->where('created_at', Carbon::now()->subDay()->toDateTimeString());
+            });
+        });
+    }
+
+    public function scopeDashboardLabReceivedPositive($query){
+        return $query->withAll()->whereHas('latestAnc', function ($query) {
+            $query->whereHas('labReport', function ($lab_query){
+                $lab_query->where('sample_test_result', 3);
+            });
+        });
+    }
+
+    public function scopeDashboardLabReceivedPositiveIn24hrs($query){
+        return $query->withAll()->whereHas('latestAnc', function ($query) {
+            $query->whereHas('labReport', function ($lab_query){
+                $lab_query->where('sample_test_result', 3)->where('created_at', Carbon::now()->subDay()->toDateTimeString());
+            });
+        });
+    }
+
+    public function scopeDashboardLabReceivedNegative($query){
+        return $query->withAll()->whereHas('latestAnc', function ($query) {
+            $query->whereHas('labReport', function ($lab_query){
+                $lab_query->where('sample_test_result', 4);
+            });
+        });
+    }
+
+    public function scopeDashboardLabReceivedNegativeIn24hrs($query){
+        return $query->withAll()->whereHas('latestAnc', function ($query) {
+            $query->whereHas('labReport', function ($lab_query){
+                $lab_query->where('sample_test_result', 4)->where('created_at', Carbon::now()->subDay()->toDateTimeString());
+            });
+        });
+    }
 }

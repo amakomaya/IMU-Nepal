@@ -2504,6 +2504,202 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/AdminDashboard.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/AdminDashboard.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      report: []
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    var url = window.location.protocol + '/data/api/admin/dashboard';
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(url).then(function (response) {
+      _this.report = response.data;
+    })["catch"](function (error) {
+      console.error(error);
+    })["finally"](function () {});
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/CasesClosedDeath.vue?vue&type=script&lang=js&":
 /*!**********************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/CasesClosedDeath.vue?vue&type=script&lang=js& ***!
@@ -36775,6 +36971,339 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("span", { staticClass: "input-group-addon" }, [
       _c("i", { staticClass: "fa fa-times" })
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/AdminDashboard.vue?vue&type=template&id=ecdce908&scoped=true&":
+/*!************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/AdminDashboard.vue?vue&type=template&id=ecdce908&scoped=true& ***!
+  \************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-lg-12" }, [
+      _c("h3", [
+        _vm._v("Last 24 hours update | "),
+        _c("sub", [
+          _vm._v(
+            " Registered : " + _vm._s(_vm.report.registered_in_24_hrs || "xxxx")
+          )
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+      _c("div", { staticClass: "panel panel-info" }, [
+        _c("div", { staticClass: "panel-heading" }, [
+          _c("div", { staticClass: "row" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-9 text-right" }, [
+              _c("div", { staticClass: "huge" }, [
+                _vm._v(_vm._s(_vm.report.registered_in_24_hrs || "xxxx"))
+              ]),
+              _vm._v(" "),
+              _c("div", [_vm._v("Pending")])
+            ])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+      _c("div", { staticClass: "panel panel-warning" }, [
+        _c("div", { staticClass: "panel-heading" }, [
+          _c("div", { staticClass: "row" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-9 text-right" }, [
+              _c("div", { staticClass: "huge" }, [
+                _vm._v(
+                  _vm._s(_vm.report.sample_received_in_lab_in_24_hrs || "xxxx")
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", [_vm._v("Lab Received")])
+            ])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+      _c("div", { staticClass: "panel panel-danger" }, [
+        _c("div", { staticClass: "panel-heading" }, [
+          _c("div", { staticClass: "row" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-9 text-right" }, [
+              _c("div", { staticClass: "huge" }, [
+                _vm._v(
+                  _vm._s(_vm.report.lab_result_positive_in_24_hrs || "xxxx")
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", [_vm._v("Positive")])
+            ])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+      _c("div", { staticClass: "panel panel-success" }, [
+        _c("div", { staticClass: "panel-heading" }, [
+          _c("div", { staticClass: "row" }, [
+            _vm._m(3),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-9 text-right" }, [
+              _c("div", { staticClass: "huge" }, [
+                _vm._v(
+                  _vm._s(_vm.report.lab_result_negative_in_24_hrs || "xxxx")
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", [_vm._v("Negative")])
+            ])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-lg-12" }, [
+      _c("hr"),
+      _vm._v(" "),
+      _c("h3", [
+        _vm._v("Total Records | "),
+        _c("sub", [
+          _vm._v(" Registered : " + _vm._s(_vm.report.registered || "xxxx"))
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+      _c("div", { staticClass: "panel panel-info" }, [
+        _c("div", { staticClass: "panel-heading" }, [
+          _c("div", { staticClass: "row" }, [
+            _vm._m(4),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-9 text-right" }, [
+              _c("div", { staticClass: "huge" }, [
+                _vm._v(_vm._s(_vm.report.sample_collection || "xxxx"))
+              ]),
+              _vm._v(" "),
+              _c("div", [_vm._v("Pending")])
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(5)
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+      _c("div", { staticClass: "panel panel-warning" }, [
+        _c("div", { staticClass: "panel-heading" }, [
+          _c("div", { staticClass: "row" }, [
+            _vm._m(6),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-9 text-right" }, [
+              _c("div", { staticClass: "huge" }, [
+                _vm._v(_vm._s(_vm.report.sample_received_in_lab || "xxxx"))
+              ]),
+              _vm._v(" "),
+              _c("div", [_vm._v("Lab Received")])
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(7)
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+      _c("div", { staticClass: "panel panel-danger" }, [
+        _c("div", { staticClass: "panel-heading" }, [
+          _c("div", { staticClass: "row" }, [
+            _vm._m(8),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-9 text-right" }, [
+              _c("div", { staticClass: "huge" }, [
+                _vm._v(_vm._s(_vm.report.lab_result_positive || "xxxx"))
+              ]),
+              _vm._v(" "),
+              _c("div", [_vm._v("Positive")])
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(9)
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+      _c("div", { staticClass: "panel panel-success" }, [
+        _c("div", { staticClass: "panel-heading" }, [
+          _c("div", { staticClass: "row" }, [
+            _vm._m(10),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-9 text-right" }, [
+              _c("div", { staticClass: "huge" }, [
+                _vm._v(_vm._s(_vm.report.lab_result_negative || "xxxx"))
+              ]),
+              _vm._v(" "),
+              _c("div", [_vm._v("Negative")])
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(11)
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-flask fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-check-square-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-frown-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-smile-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-flask fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "/admin/patients" } }, [
+      _c("div", { staticClass: "panel-footer" }, [
+        _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "pull-right" }, [
+          _c("i", { staticClass: "fa fa-arrow-circle-right" })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-check-square-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "/admin/lab-received-patients" } }, [
+      _c("div", { staticClass: "panel-footer" }, [
+        _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "pull-right" }, [
+          _c("i", { staticClass: "fa fa-arrow-circle-right" })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-frown-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "/admin/positive-patients" } }, [
+      _c("div", { staticClass: "panel-footer" }, [
+        _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "pull-right" }, [
+          _c("i", { staticClass: "fa fa-arrow-circle-right" })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-smile-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "/admin/negative-patients" } }, [
+      _c("div", { staticClass: "panel-footer" }, [
+        _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "pull-right" }, [
+          _c("i", { staticClass: "fa fa-arrow-circle-right" })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" })
+      ])
     ])
   }
 ]
@@ -84263,10 +84792,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_CasesClosedRecovered__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/CasesClosedRecovered */ "./resources/assets/js/components/CasesClosedRecovered.vue");
 /* harmony import */ var _components_CasesClosedDeath__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/CasesClosedDeath */ "./resources/assets/js/components/CasesClosedDeath.vue");
 /* harmony import */ var _components_LabCases__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/LabCases */ "./resources/assets/js/components/LabCases.vue");
-/* harmony import */ var _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/SelectYearMonth */ "./resources/assets/js/components/SelectYearMonth.vue");
-/* harmony import */ var v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! v-nepalidatepicker */ "./node_modules/v-nepalidatepicker/dist/v-nepalidatepicker.esm.js");
-/* harmony import */ var vue_json_excel__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! vue-json-excel */ "./node_modules/vue-json-excel/JsonExcel.vue");
-/* harmony import */ var v_mask__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! v-mask */ "./node_modules/v-mask/dist/v-mask.esm.js");
+/* harmony import */ var _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/AdminDashboard */ "./resources/assets/js/components/AdminDashboard.vue");
+/* harmony import */ var _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/SelectYearMonth */ "./resources/assets/js/components/SelectYearMonth.vue");
+/* harmony import */ var v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! v-nepalidatepicker */ "./node_modules/v-nepalidatepicker/dist/v-nepalidatepicker.esm.js");
+/* harmony import */ var vue_json_excel__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! vue-json-excel */ "./node_modules/vue-json-excel/JsonExcel.vue");
+/* harmony import */ var v_mask__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! v-mask */ "./node_modules/v-mask/dist/v-mask.esm.js");
 
 
 
@@ -84292,9 +84822,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_mask__WEBPACK_IMPORTED_MODULE_24__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_22__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('downloadExcel', vue_json_excel__WEBPACK_IMPORTED_MODULE_23__["default"]);
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_mask__WEBPACK_IMPORTED_MODULE_25__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_23__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('downloadExcel', vue_json_excel__WEBPACK_IMPORTED_MODULE_24__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$userRole = document.querySelector("meta[name='user-role']").getAttribute('content');
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_13___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_status_indicator__WEBPACK_IMPORTED_MODULE_2__["default"]);
@@ -84314,7 +84845,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('women-list-lab-received', 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('cases-closed-recovered', _components_CasesClosedRecovered__WEBPACK_IMPORTED_MODULE_18__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('cases-closed-death', _components_CasesClosedDeath__WEBPACK_IMPORTED_MODULE_19__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('vaccination-chart');
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('select-year-month', _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_21__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('admin-dashboard', _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_21__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('select-year-month', _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_22__["default"]);
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app'
 });
@@ -84454,6 +84986,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddResultInLabModal_vue_vue_type_template_id_1f79a588___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddResultInLabModal_vue_vue_type_template_id_1f79a588___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/AdminDashboard.vue":
+/*!***********************************************************!*\
+  !*** ./resources/assets/js/components/AdminDashboard.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AdminDashboard_vue_vue_type_template_id_ecdce908_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AdminDashboard.vue?vue&type=template&id=ecdce908&scoped=true& */ "./resources/assets/js/components/AdminDashboard.vue?vue&type=template&id=ecdce908&scoped=true&");
+/* harmony import */ var _AdminDashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AdminDashboard.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/AdminDashboard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AdminDashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AdminDashboard_vue_vue_type_template_id_ecdce908_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AdminDashboard_vue_vue_type_template_id_ecdce908_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "ecdce908",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/AdminDashboard.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/AdminDashboard.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/assets/js/components/AdminDashboard.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminDashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./AdminDashboard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/AdminDashboard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminDashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/AdminDashboard.vue?vue&type=template&id=ecdce908&scoped=true&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/assets/js/components/AdminDashboard.vue?vue&type=template&id=ecdce908&scoped=true& ***!
+  \******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminDashboard_vue_vue_type_template_id_ecdce908_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./AdminDashboard.vue?vue&type=template&id=ecdce908&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/AdminDashboard.vue?vue&type=template&id=ecdce908&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminDashboard_vue_vue_type_template_id_ecdce908_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminDashboard_vue_vue_type_template_id_ecdce908_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

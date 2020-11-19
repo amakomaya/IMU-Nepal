@@ -20,6 +20,7 @@ import PatientListLabReceived from './components/CasesLabRecieved'
 import CasesClosedRecovered from './components/CasesClosedRecovered'
 import CasesClosedDeath from './components/CasesClosedDeath'
 import LabPatientList from './components/LabCases'
+import AdminDashboard from "./components/AdminDashboard";
 
 import SelectYearMonth from './components/SelectYearMonth'
 import VNepaliDatePicker from 'v-nepalidatepicker';
@@ -52,7 +53,7 @@ Vue.component('women-list-lab-received', PatientListLabReceived)
 Vue.component('cases-closed-recovered', CasesClosedRecovered)
 Vue.component('cases-closed-death', CasesClosedDeath)
 Vue.component('vaccination-chart');
-
+Vue.component('admin-dashboard', AdminDashboard)
 Vue.component('select-year-month', SelectYearMonth)
 
 const app = new Vue({
