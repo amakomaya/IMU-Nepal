@@ -38187,7 +38187,9 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
                     _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.registered_in_24_hrs || "xxxx"))
+                      _vm._v(
+                        _vm._s(_vm.report.sample_collection_in_24_hrs || "xxxx")
+                      )
                     ]),
                     _vm._v(" "),
                     _c("div", [_vm._v("Swab Collection")])

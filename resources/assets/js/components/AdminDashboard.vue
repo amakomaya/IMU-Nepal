@@ -135,7 +135,7 @@
                 <i class="fa fa-flask fa-3x"></i>
               </div>
               <div class="col-xs-9 text-right">
-                <div class="huge">{{ report.registered_in_24_hrs || 'xxxx' }}</div>
+                <div class="huge">{{ report.sample_collection_in_24_hrs || 'xxxx' }}</div>
                 <div>Swab Collection</div>
               </div>
             </div>
