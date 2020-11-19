@@ -278,7 +278,7 @@ class Woman extends Model
     public function scopeDashboardSampleReceivedInLabIn24hrs($query){
         return $query->withAll()->whereHas('latestAnc', function ($latest_anc_query) {
             $latest_anc_query->whereHas('labReport', function ($lab_query){
-                $lab_query->where('created_at', Carbon::now()->subDay()->toDateTimeString());
+                $lab_query->where('created_at', '>=', Carbon::now()->subDay()->toDateTimeString());
             });
         });
     }
@@ -294,7 +294,7 @@ class Woman extends Model
     public function scopeDashboardLabReceivedPositiveIn24hrs($query){
         return $query->withAll()->whereHas('latestAnc', function ($latest_anc_query) {
             $latest_anc_query->whereHas('labReport', function ($lab_query){
-                $lab_query->where('sample_test_result', 3)->where('created_at', Carbon::now()->subDay()->toDateTimeString());
+                $lab_query->where('sample_test_result', 3)->where('updated_at', '>=', Carbon::now()->subDay()->toDateTimeString());
             });
         });
     }
@@ -310,7 +310,7 @@ class Woman extends Model
     public function scopeDashboardLabReceivedNegativeIn24hrs($query){
         return $query->withAll()->whereHas('latestAnc', function ($latest_anc_query) {
             $latest_anc_query->whereHas('labReport', function ($lab_query){
-                $lab_query->where('sample_test_result', 4)->where('created_at', Carbon::now()->subDay()->toDateTimeString());
+                $lab_query->where('sample_test_result', 4)->where('updated_at', '>=', Carbon::now()->subDay()->toDateTimeString());
             });
         });
     }
@@ -336,7 +336,7 @@ class Woman extends Model
     public function scopeDashboardLabAddReceivedIn24hrs($query){
         return $query->withAll()->whereHas('latestAnc', function ($latest_anc_query) {
             $latest_anc_query->whereHas('labReport', function ($lab_query){
-                $lab_query->where('created_at', Carbon::now()->subDay()->toDateTimeString());
+                $lab_query->where('created_at', '>=', Carbon::now()->subDay()->toDateTimeString());
             });
         });
     }
@@ -344,7 +344,7 @@ class Woman extends Model
     public function scopeDashboardLabAddReceivedNegativeIn24hrs($query){
         return $query->withAll()->whereHas('latestAnc', function ($latest_anc_query) {
             $latest_anc_query->whereHas('labReport', function ($lab_query){
-                $lab_query->where('sample_test_result', 4)->where('created_at', Carbon::now()->subDay()->toDateTimeString());
+                $lab_query->where('sample_test_result', 4)->where('updated_at', '>=', Carbon::now()->subDay()->toDateTimeString());
             });
         });
     }
@@ -352,9 +352,8 @@ class Woman extends Model
     public function scopeDashboardLabAddReceivedPositiveIn24hrs($query){
         return $query->withAll()->whereHas('latestAnc', function ($latest_anc_query) {
             $latest_anc_query->whereHas('labReport', function ($lab_query){
-                $lab_query->where('sample_test_result', 3)->where('created_at', Carbon::now()->subDay()->toDateTimeString());
+                $lab_query->where('sample_test_result', 3)->where('updated_at', '>=', Carbon::now()->subDay()->toDateTimeString());
             });
         });
     }
-
 }
