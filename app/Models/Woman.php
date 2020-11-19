@@ -233,6 +233,25 @@ class Woman extends Model
         });
     }
 
+    public function scopeLabAddReceived($query){
+        return $query->whereHas('latestAnc', function ($query) {
+            $query->where('result', 9)->whereHas('labReport');
+        });
+    }
+
+    public function scopeLabAddReceivedNegative($query){
+        return $query->whereHas('latestAnc', function ($query) {
+            $query->where('result', 4)->whereHas('labReport');
+        });
+    }
+
+    public function scopeLabAddReceivedPositive($query){
+        return $query->whereHas('latestAnc', function ($query) {
+            $query->where('result', 3)->whereHas('labReport');
+        });
+    }
+
+
     public function scopeCasesRecoveredList($query){
         return $query->where('end_case', 1);
     }

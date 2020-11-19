@@ -72,6 +72,39 @@ class WomenController extends Controller
         ]);
     }
 
+    public function labAddReceivedIndex(Request $request)
+    {
+        $user = auth()->user();
+        $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
+        $token = Anc::whereIn('token', $sample_token)->pluck('woman_token');
+        $data = Woman::whereIn('token', $token)->active()->withAll()->labAddReceived();
+        return response()->json([
+            'collection' => $data->advancedFilter()
+        ]);
+    }
+
+    public function labAddResultPositiveIndex(Request $request)
+    {
+        $user = auth()->user();
+        $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
+        $token = Anc::whereIn('token', $sample_token)->pluck('woman_token');
+        $data = Woman::whereIn('token', $token)->active()->withAll()->labAddReceivedPositive();
+        return response()->json([
+            'collection' => $data->advancedFilter()
+        ]);
+    }
+
+    public function labAddResultNegativeIndex(Request $request)
+    {
+        $user = auth()->user();
+        $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
+        $token = Anc::whereIn('token', $sample_token)->pluck('woman_token');
+        $data = Woman::whereIn('token', $token)->active()->withAll()->labAddReceivedNegative();
+        return response()->json([
+            'collection' => $data->advancedFilter()
+        ]);
+    }
+
     public function casesRecoveredIndex(Request $request)
     {
         $response = FilterRequest::filter($request);

@@ -38,8 +38,15 @@
     <script src="{{ asset('js/pace.min.js') }}"></script>
 
     <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
-
-    <meta name="user-role" content="{{ Auth::user()->role }}">
+    @php
+        if (auth()->user()->role == 'healthworker'){
+            $role = \App\Models\HealthWorker::where('token', Auth::user()->token)->first()->role;
+        }
+    else{
+          $role = auth()->user()->role;
+          }
+    @endphp
+    <meta name="user-role" content="{{  $role }}">
 
 @yield('style')
   

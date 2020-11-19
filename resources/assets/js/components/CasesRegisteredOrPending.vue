@@ -50,13 +50,10 @@
                 <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
                      <i class="fa fa-file" aria-hidden="true"></i> |
                   </button>
-                  <div v-if="role  == 'healthworker'">
-                  <button v-if="item.ancs.length == 0" v-on:click="aadSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
+                  <button v-if="item.ancs.length == 0 && role  == 'healthworker'" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
                      <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
-                   
-                  </div>
-                    <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
+                  <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
                         <i class="fa fa-hospital-o"></i>
                 </button>
                 </td>  
@@ -362,7 +359,7 @@
             return data;
           },
 
-            aadSampleCollection(token){
+            addSampleCollection(token){
               window.location.href = '/admin/sample-collection/create/'+token;
             },
             addPatient(){

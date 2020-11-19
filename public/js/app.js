@@ -2679,6 +2679,131 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -4336,9 +4461,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 
@@ -4615,7 +4737,7 @@ __webpack_require__.r(__webpack_exports__);
 
       return data;
     },
-    aadSampleCollection: function aadSampleCollection(token) {
+    addSampleCollection: function addSampleCollection(token) {
       window.location.href = '/admin/sample-collection/create/' + token;
     },
     addPatient: function addPatient() {
@@ -4749,7 +4871,919 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       filterable: {
-        url: '/api/v1/recieved-in-lab',
+        url: '/data/api/lab/received-sample',
+        orderables: [{
+          title: 'Name',
+          name: 'name'
+        }, {
+          title: 'Age',
+          name: 'age'
+        }, {
+          title: 'Case Created At',
+          name: 'created_at'
+        }],
+        filterGroups: [{
+          name: 'Case',
+          filters: [{
+            title: 'Name',
+            name: 'name',
+            type: 'string'
+          }, {
+            title: 'Age',
+            name: 'age',
+            type: 'numeric'
+          }, {
+            title: 'Phone Number',
+            name: 'phone',
+            type: 'numeric'
+          }, {
+            title: 'Case Created At',
+            name: 'created_at',
+            type: 'datetime'
+          }]
+        }, {
+          name: 'Swab Collection',
+          filters: [{
+            title: 'Swab Created At',
+            name: 'ancs.created_at',
+            type: 'datetime'
+          }]
+        }]
+      },
+      token: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"].data().collection.data,
+      selected: [],
+      allSelected: false,
+      womanTokens: [],
+      provinces: [],
+      municipalities: [],
+      districts: [],
+      json_fields: {
+        'S.N': 'serial_number',
+        'Case Name': 'name',
+        'Age': 'age',
+        'Age Unit': 'age_unit',
+        'District': 'district',
+        'Municipality': 'municipality',
+        'Ward': 'ward',
+        'Emergency Contact One': 'emergency_contact_one',
+        'Emergency Contact Two': 'emergency_contact_two',
+        'Current Hospital': 'current_hospital',
+        'Swab ID': 'swab_id',
+        'Lab ID': 'lab_id',
+        'Result': 'result',
+        'Created At': 'created_at'
+      },
+      json_meta: [[{
+        'key': 'charset',
+        'value': 'utf-8'
+      }]],
+      exportHtml: '',
+      fabOptions: {
+        bgColor: '#778899',
+        position: 'bottom-right'
+      },
+      fabActions: [{
+        name: 'addRecievedInLab',
+        icon: 'group_add',
+        tooltip: "Add Recieved in Lab"
+      }, {
+        name: 'addResultInLab',
+        icon: 'biotech',
+        tooltip: "Add Result in Lab"
+      }]
+    };
+  },
+  created: function created() {
+    this.fetch();
+  },
+  methods: {
+    selectAll: function selectAll(item) {
+      this.womanTokens = [];
+
+      if (this.allSelected) {
+        console.log(item);
+      }
+    },
+    select: function select() {
+      this.allSelected = false;
+    },
+    sendPatientData: function sendPatientData(item) {
+      this.$dlg.modal(_SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        title: 'Do you want to send ' + item.name + ' \'s patients data ?',
+        height: 600,
+        width: 700,
+        params: {
+          data: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
+        }
+      });
+    },
+    viewLabReport: function viewLabReport(item) {
+      this.$dlg.modal(_ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        height: 700,
+        width: 800,
+        title: 'Laboratory Result Form for Suspected COVID-19 Case',
+        params: {
+          item: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
+        }
+      });
+    },
+    viewConfirmReportForm: function viewConfirmReportForm(item) {
+      this.$dlg.modal(_viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        title: 'Confirmed report form of \'s ' + item.name,
+        height: 700,
+        width: 800,
+        params: {
+          data: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
+        }
+      });
+    },
+    fetch: function fetch() {
+      var _this = this;
+
+      var province_url = window.location.protocol + '/api/province';
+      var municipality_url = window.location.protocol + '/api/municipality';
+      var district_url = window.location.protocol + '/api/district';
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(municipality_url).then(function (response) {
+        _this.municipalities = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(district_url).then(function (response) {
+        _this.districts = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(province_url).then(function (response) {
+        _this.provinces = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {});
+    },
+    ad2bs: function ad2bs(date) {
+      var dateObject = new Date(date);
+      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
+      var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default.a.ad2bs(dateFormat);
+      return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
+    },
+    checkDistrict: function checkDistrict(value) {
+      if (value == 0 || value == null || value == '') {
+        return '';
+      } else {
+        return this.districts.find(function (x) {
+          return x.id === value;
+        }).district_name;
+      }
+    },
+    checkMunicipality: function checkMunicipality(value) {
+      if (value == 0 || value == null || value == '') {
+        return '';
+      } else {
+        return this.municipalities.find(function (x) {
+          return x.id === value;
+        }).municipality_name;
+      }
+    },
+    latestLabResult: function latestLabResult(value) {
+      switch (value.result) {
+        case '4':
+          return '<span class=\"label label-success\"> Negative</span>';
+
+        case '2':
+          return '<span class=\"label label-info\"> Pending</span>';
+
+        case '3':
+          return '<span class=\"label label-danger\"> Positive</span>';
+
+        case '9':
+          return '<span class=\"label label-warning\"> Received</span>';
+
+        default:
+          return '<span class=\"label label-default\"> Don\'t Know</span>';
+      }
+    },
+    checkForPositiveOnly: function checkForPositiveOnly(value) {
+      if (value !== null) {
+        if (value.result == '3') {
+          return true;
+        }
+      }
+    },
+    latestLabResultNotNegative: function latestLabResultNotNegative(value) {
+      if (value == '0' || value == null || value == '') {
+        return true;
+      }
+
+      if (value.result == '4') {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    excelFileName: function excelFileName() {
+      var ext = '.xls';
+      return 'Patient Details ' + new Date() + ext;
+    },
+    fetchData: function () {
+      var _fetchData = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!confirm("Do you want to Download all records in excel ! ")) {
+                  _context.next = 5;
+                  break;
+                }
+
+                _context.next = 3;
+                return axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/data/api/lab-patient/export');
+
+              case 3:
+                response = _context.sent;
+                return _context.abrupt("return", response.data);
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function fetchData() {
+        return _fetchData.apply(this, arguments);
+      }
+
+      return fetchData;
+    }(),
+    checkCaseType: function checkCaseType(type) {
+      switch (type) {
+        case '0':
+          return 'N/A';
+
+        case '1':
+          return 'Asymptomatic / Mild Case';
+
+        case '2':
+          return 'Moderate / Severe Case';
+
+        default:
+          return 'N/A';
+      }
+    },
+    checkCaseManagement: function checkCaseManagement(type, management) {
+      if (type == '1') {
+        switch (management) {
+          case '0':
+            return 'Home';
+
+          case '1':
+            return 'Hotel';
+
+          case '2':
+            return 'Institution';
+
+          default:
+            return 'N/A';
+        }
+      }
+
+      if (type == '2') {
+        switch (management) {
+          case '0':
+            return 'General Ward';
+
+          case '0':
+            return 'ICU';
+
+          case '0':
+            return 'Ventilator';
+
+          default:
+            return 'N/A';
+        }
+      }
+
+      return 'N/A';
+    },
+    addRecievedInLab: function addRecievedInLab() {
+      this.$dlg.modal(_AddRecievedInLabModal__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        title: 'Received  Cases in Lab',
+        width: 700
+      });
+    },
+    addResultInLab: function addResultInLab(item) {
+      this.$dlg.modal(_AddResultInLabModal__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        title: 'Lab Result',
+        width: 700,
+        params: {
+          item: item
+        }
+      });
+    },
+    gender: function gender(type) {
+      switch (type) {
+        case '1':
+          return 'M';
+
+        case '2':
+          return 'F';
+
+        default:
+          return 'O';
+      }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabNegativeCases.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LabNegativeCases.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WomanFilterable.vue */ "./resources/assets/js/components/WomanFilterable.vue");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ViewLabResultReportModel.vue */ "./resources/assets/js/components/ViewLabResultReportModel.vue");
+/* harmony import */ var _SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SendPatientDataModel.vue */ "./resources/assets/js/components/SendPatientDataModel.vue");
+/* harmony import */ var _viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./viewConfirmReportFormModel.vue */ "./resources/assets/js/components/viewConfirmReportFormModel.vue");
+/* harmony import */ var vue_fab__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-fab */ "./node_modules/vue-fab/src/index.js");
+/* harmony import */ var vue_fab__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vue_fab__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _AddRecievedInLabModal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./AddRecievedInLabModal */ "./resources/assets/js/components/AddRecievedInLabModal.vue");
+/* harmony import */ var _AddResultInLabModal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./AddResultInLabModal */ "./resources/assets/js/components/AddResultInLabModal.vue");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Filterable: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    fab: vue_fab__WEBPACK_IMPORTED_MODULE_7___default.a
+  },
+  data: function data() {
+    return {
+      filterable: {
+        url: '/data/api/lab/add-result-negative',
+        orderables: [{
+          title: 'Name',
+          name: 'name'
+        }, {
+          title: 'Age',
+          name: 'age'
+        }, {
+          title: 'Case Created At',
+          name: 'created_at'
+        }],
+        filterGroups: [{
+          name: 'Case',
+          filters: [{
+            title: 'Name',
+            name: 'name',
+            type: 'string'
+          }, {
+            title: 'Age',
+            name: 'age',
+            type: 'numeric'
+          }, {
+            title: 'Phone Number',
+            name: 'phone',
+            type: 'numeric'
+          }, {
+            title: 'Case Created At',
+            name: 'created_at',
+            type: 'datetime'
+          }]
+        }, {
+          name: 'Swab Collection',
+          filters: [{
+            title: 'Swab Created At',
+            name: 'ancs.created_at',
+            type: 'datetime'
+          }]
+        }]
+      },
+      token: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"].data().collection.data,
+      selected: [],
+      allSelected: false,
+      womanTokens: [],
+      provinces: [],
+      municipalities: [],
+      districts: [],
+      json_fields: {
+        'S.N': 'serial_number',
+        'Case Name': 'name',
+        'Age': 'age',
+        'Age Unit': 'age_unit',
+        'District': 'district',
+        'Municipality': 'municipality',
+        'Ward': 'ward',
+        'Emergency Contact One': 'emergency_contact_one',
+        'Emergency Contact Two': 'emergency_contact_two',
+        'Current Hospital': 'current_hospital',
+        'Swab ID': 'swab_id',
+        'Lab ID': 'lab_id',
+        'Result': 'result',
+        'Created At': 'created_at'
+      },
+      json_meta: [[{
+        'key': 'charset',
+        'value': 'utf-8'
+      }]],
+      exportHtml: '',
+      fabOptions: {
+        bgColor: '#778899',
+        position: 'bottom-right'
+      },
+      fabActions: [{
+        name: 'addRecievedInLab',
+        icon: 'group_add',
+        tooltip: "Add Recieved in Lab"
+      }, {
+        name: 'addResultInLab',
+        icon: 'biotech',
+        tooltip: "Add Result in Lab"
+      }]
+    };
+  },
+  created: function created() {
+    this.fetch();
+  },
+  methods: {
+    selectAll: function selectAll(item) {
+      this.womanTokens = [];
+
+      if (this.allSelected) {
+        console.log(item);
+      }
+    },
+    select: function select() {
+      this.allSelected = false;
+    },
+    sendPatientData: function sendPatientData(item) {
+      this.$dlg.modal(_SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        title: 'Do you want to send ' + item.name + ' \'s patients data ?',
+        height: 600,
+        width: 700,
+        params: {
+          data: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
+        }
+      });
+    },
+    viewLabReport: function viewLabReport(item) {
+      this.$dlg.modal(_ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        height: 700,
+        width: 800,
+        title: 'Laboratory Result Form for Suspected COVID-19 Case',
+        params: {
+          item: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
+        }
+      });
+    },
+    viewConfirmReportForm: function viewConfirmReportForm(item) {
+      this.$dlg.modal(_viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        title: 'Confirmed report form of \'s ' + item.name,
+        height: 700,
+        width: 800,
+        params: {
+          data: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
+        }
+      });
+    },
+    fetch: function fetch() {
+      var _this = this;
+
+      var province_url = window.location.protocol + '/api/province';
+      var municipality_url = window.location.protocol + '/api/municipality';
+      var district_url = window.location.protocol + '/api/district';
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(municipality_url).then(function (response) {
+        _this.municipalities = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(district_url).then(function (response) {
+        _this.districts = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(province_url).then(function (response) {
+        _this.provinces = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {});
+    },
+    ad2bs: function ad2bs(date) {
+      var dateObject = new Date(date);
+      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
+      var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default.a.ad2bs(dateFormat);
+      return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
+    },
+    checkDistrict: function checkDistrict(value) {
+      if (value == 0 || value == null || value == '') {
+        return '';
+      } else {
+        return this.districts.find(function (x) {
+          return x.id === value;
+        }).district_name;
+      }
+    },
+    checkMunicipality: function checkMunicipality(value) {
+      if (value == 0 || value == null || value == '') {
+        return '';
+      } else {
+        return this.municipalities.find(function (x) {
+          return x.id === value;
+        }).municipality_name;
+      }
+    },
+    latestLabResult: function latestLabResult(value) {
+      switch (value.result) {
+        case '4':
+          return '<span class=\"label label-success\"> Negative</span>';
+
+        case '2':
+          return '<span class=\"label label-info\"> Pending</span>';
+
+        case '3':
+          return '<span class=\"label label-danger\"> Positive</span>';
+
+        case '9':
+          return '<span class=\"label label-warning\"> Received</span>';
+
+        default:
+          return '<span class=\"label label-default\"> Don\'t Know</span>';
+      }
+    },
+    checkForPositiveOnly: function checkForPositiveOnly(value) {
+      if (value !== null) {
+        if (value.result == '3') {
+          return true;
+        }
+      }
+    },
+    latestLabResultNotNegative: function latestLabResultNotNegative(value) {
+      if (value == '0' || value == null || value == '') {
+        return true;
+      }
+
+      if (value.result == '4') {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    excelFileName: function excelFileName() {
+      var ext = '.xls';
+      return 'Patient Details ' + new Date() + ext;
+    },
+    fetchData: function () {
+      var _fetchData = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!confirm("Do you want to Download all records in excel ! ")) {
+                  _context.next = 5;
+                  break;
+                }
+
+                _context.next = 3;
+                return axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/data/api/lab-patient/export');
+
+              case 3:
+                response = _context.sent;
+                return _context.abrupt("return", response.data);
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function fetchData() {
+        return _fetchData.apply(this, arguments);
+      }
+
+      return fetchData;
+    }(),
+    checkCaseType: function checkCaseType(type) {
+      switch (type) {
+        case '0':
+          return 'N/A';
+
+        case '1':
+          return 'Asymptomatic / Mild Case';
+
+        case '2':
+          return 'Moderate / Severe Case';
+
+        default:
+          return 'N/A';
+      }
+    },
+    checkCaseManagement: function checkCaseManagement(type, management) {
+      if (type == '1') {
+        switch (management) {
+          case '0':
+            return 'Home';
+
+          case '1':
+            return 'Hotel';
+
+          case '2':
+            return 'Institution';
+
+          default:
+            return 'N/A';
+        }
+      }
+
+      if (type == '2') {
+        switch (management) {
+          case '0':
+            return 'General Ward';
+
+          case '0':
+            return 'ICU';
+
+          case '0':
+            return 'Ventilator';
+
+          default:
+            return 'N/A';
+        }
+      }
+
+      return 'N/A';
+    },
+    addRecievedInLab: function addRecievedInLab() {
+      this.$dlg.modal(_AddRecievedInLabModal__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        title: 'Received  Cases in Lab',
+        width: 700
+      });
+    },
+    addResultInLab: function addResultInLab(item) {
+      this.$dlg.modal(_AddResultInLabModal__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        title: 'Lab Result',
+        width: 700,
+        params: {
+          item: item
+        }
+      });
+    },
+    gender: function gender(type) {
+      switch (type) {
+        case '1':
+          return 'M';
+
+        case '2':
+          return 'F';
+
+        default:
+          return 'O';
+      }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabPositiveCases.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LabPositiveCases.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WomanFilterable.vue */ "./resources/assets/js/components/WomanFilterable.vue");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ViewLabResultReportModel.vue */ "./resources/assets/js/components/ViewLabResultReportModel.vue");
+/* harmony import */ var _SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SendPatientDataModel.vue */ "./resources/assets/js/components/SendPatientDataModel.vue");
+/* harmony import */ var _viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./viewConfirmReportFormModel.vue */ "./resources/assets/js/components/viewConfirmReportFormModel.vue");
+/* harmony import */ var vue_fab__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-fab */ "./node_modules/vue-fab/src/index.js");
+/* harmony import */ var vue_fab__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vue_fab__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _AddRecievedInLabModal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./AddRecievedInLabModal */ "./resources/assets/js/components/AddRecievedInLabModal.vue");
+/* harmony import */ var _AddResultInLabModal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./AddResultInLabModal */ "./resources/assets/js/components/AddResultInLabModal.vue");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Filterable: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    fab: vue_fab__WEBPACK_IMPORTED_MODULE_7___default.a
+  },
+  data: function data() {
+    return {
+      filterable: {
+        url: '/data/api/lab/add-result-positive',
         orderables: [{
           title: 'Name',
           name: 'name'
@@ -36996,188 +38030,449 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-lg-12" }, [
-      _c("h3", [
-        _vm._v("Last 24 hours update | "),
-        _c("sub", [
-          _vm._v(
-            " Registered : " + _vm._s(_vm.report.registered_in_24_hrs || "xxxx")
-          )
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-lg-3 col-md-6" }, [
-      _c("div", { staticClass: "panel panel-info" }, [
-        _c("div", { staticClass: "panel-heading" }, [
-          _c("div", { staticClass: "row" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-9 text-right" }, [
-              _c("div", { staticClass: "huge" }, [
-                _vm._v(_vm._s(_vm.report.registered_in_24_hrs || "xxxx"))
+    this.$userRole == "fchv"
+      ? _c("div", [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-4 col-md-6" }, [
+            _c("div", { staticClass: "panel panel-warning" }, [
+              _c("div", { staticClass: "panel-heading" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    _c("div", { staticClass: "huge" }, [
+                      _vm._v(
+                        _vm._s(
+                          _vm.report.sample_received_in_lab_in_24_hrs || "xxxx"
+                        )
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [_vm._v("Lab Received")])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-4 col-md-6" }, [
+            _c("div", { staticClass: "panel panel-danger" }, [
+              _c("div", { staticClass: "panel-heading" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    _c("div", { staticClass: "huge" }, [
+                      _vm._v(
+                        _vm._s(
+                          _vm.report.lab_result_positive_in_24_hrs || "xxxx"
+                        )
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [_vm._v("Positive")])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-4 col-md-6" }, [
+            _c("div", { staticClass: "panel panel-success" }, [
+              _c("div", { staticClass: "panel-heading" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(3),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    _c("div", { staticClass: "huge" }, [
+                      _vm._v(
+                        _vm._s(
+                          _vm.report.lab_result_negative_in_24_hrs || "xxxx"
+                        )
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [_vm._v("Negative")])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._m(4),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-4 col-md-6" }, [
+            _c("div", { staticClass: "panel panel-warning" }, [
+              _c("div", { staticClass: "panel-heading" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(5),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    _c("div", { staticClass: "huge" }, [
+                      _vm._v(
+                        _vm._s(_vm.report.sample_received_in_lab || "xxxx")
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [_vm._v("Lab Received")])
+                  ])
+                ])
               ]),
               _vm._v(" "),
-              _c("div", [_vm._v("Pending")])
+              _vm._m(6)
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-4 col-md-6" }, [
+            _c("div", { staticClass: "panel panel-danger" }, [
+              _c("div", { staticClass: "panel-heading" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(7),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    _c("div", { staticClass: "huge" }, [
+                      _vm._v(_vm._s(_vm.report.lab_result_positive || "xxxx"))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [_vm._v("Positive")])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(8)
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-4 col-md-6" }, [
+            _c("div", { staticClass: "panel panel-success" }, [
+              _c("div", { staticClass: "panel-heading" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(9),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    _c("div", { staticClass: "huge" }, [
+                      _vm._v(_vm._s(_vm.report.lab_result_negative || "xxxx"))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [_vm._v("Negative")])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(10)
             ])
           ])
         ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-lg-3 col-md-6" }, [
-      _c("div", { staticClass: "panel panel-warning" }, [
-        _c("div", { staticClass: "panel-heading" }, [
-          _c("div", { staticClass: "row" }, [
-            _vm._m(1),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-9 text-right" }, [
-              _c("div", { staticClass: "huge" }, [
+      : _c("div", [
+          _c("div", { staticClass: "col-lg-12" }, [
+            _c("h3", [
+              _vm._v("Last 24 hours update | "),
+              _c("sub", [
                 _vm._v(
-                  _vm._s(_vm.report.sample_received_in_lab_in_24_hrs || "xxxx")
+                  " Registered : " +
+                    _vm._s(_vm.report.registered_in_24_hrs || "xxxx")
                 )
-              ]),
-              _vm._v(" "),
-              _c("div", [_vm._v("Lab Received")])
+              ])
             ])
-          ])
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-lg-3 col-md-6" }, [
-      _c("div", { staticClass: "panel panel-danger" }, [
-        _c("div", { staticClass: "panel-heading" }, [
-          _c("div", { staticClass: "row" }, [
-            _vm._m(2),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+            _c("div", { staticClass: "panel panel-info" }, [
+              _c("div", { staticClass: "panel-heading" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(11),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    _c("div", { staticClass: "huge" }, [
+                      _vm._v(_vm._s(_vm.report.registered_in_24_hrs || "xxxx"))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [_vm._v("Swab Collection")])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+            _c("div", { staticClass: "panel panel-warning" }, [
+              _c("div", { staticClass: "panel-heading" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(12),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    _c("div", { staticClass: "huge" }, [
+                      _vm._v(
+                        _vm._s(
+                          _vm.report.sample_received_in_lab_in_24_hrs || "xxxx"
+                        )
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [_vm._v("Lab Received")])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+            _c("div", { staticClass: "panel panel-danger" }, [
+              _c("div", { staticClass: "panel-heading" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(13),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    _c("div", { staticClass: "huge" }, [
+                      _vm._v(
+                        _vm._s(
+                          _vm.report.lab_result_positive_in_24_hrs || "xxxx"
+                        )
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [_vm._v("Positive")])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+            _c("div", { staticClass: "panel panel-success" }, [
+              _c("div", { staticClass: "panel-heading" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(14),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    _c("div", { staticClass: "huge" }, [
+                      _vm._v(
+                        _vm._s(
+                          _vm.report.lab_result_negative_in_24_hrs || "xxxx"
+                        )
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [_vm._v("Negative")])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-12" }, [
+            _c("hr"),
             _vm._v(" "),
-            _c("div", { staticClass: "col-xs-9 text-right" }, [
-              _c("div", { staticClass: "huge" }, [
+            _c("h3", [
+              _vm._v("Total Records | "),
+              _c("sub", [
                 _vm._v(
-                  _vm._s(_vm.report.lab_result_positive_in_24_hrs || "xxxx")
+                  " Registered : " + _vm._s(_vm.report.registered || "xxxx")
                 )
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+            _c("div", { staticClass: "panel panel-info" }, [
+              _c("div", { staticClass: "panel-heading" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(15),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    _c("div", { staticClass: "huge" }, [
+                      _vm._v(_vm._s(_vm.report.sample_collection || "xxxx"))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [_vm._v("Swab Collection")])
+                  ])
+                ])
               ]),
               _vm._v(" "),
-              _c("div", [_vm._v("Positive")])
+              _vm._m(16)
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+            _c("div", { staticClass: "panel panel-warning" }, [
+              _c("div", { staticClass: "panel-heading" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(17),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    _c("div", { staticClass: "huge" }, [
+                      _vm._v(
+                        _vm._s(_vm.report.sample_received_in_lab || "xxxx")
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [_vm._v("Lab Received")])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(18)
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+            _c("div", { staticClass: "panel panel-danger" }, [
+              _c("div", { staticClass: "panel-heading" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(19),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    _c("div", { staticClass: "huge" }, [
+                      _vm._v(_vm._s(_vm.report.lab_result_positive || "xxxx"))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [_vm._v("Positive")])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(20)
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+            _c("div", { staticClass: "panel panel-success" }, [
+              _c("div", { staticClass: "panel-heading" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(21),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    _c("div", { staticClass: "huge" }, [
+                      _vm._v(_vm._s(_vm.report.lab_result_negative || "xxxx"))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [_vm._v("Negative")])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(22)
             ])
           ])
         ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-lg-3 col-md-6" }, [
-      _c("div", { staticClass: "panel panel-success" }, [
-        _c("div", { staticClass: "panel-heading" }, [
-          _c("div", { staticClass: "row" }, [
-            _vm._m(3),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-9 text-right" }, [
-              _c("div", { staticClass: "huge" }, [
-                _vm._v(
-                  _vm._s(_vm.report.lab_result_negative_in_24_hrs || "xxxx")
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", [_vm._v("Negative")])
-            ])
-          ])
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-lg-12" }, [
-      _c("hr"),
-      _vm._v(" "),
-      _c("h3", [
-        _vm._v("Total Records | "),
-        _c("sub", [
-          _vm._v(" Registered : " + _vm._s(_vm.report.registered || "xxxx"))
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-lg-3 col-md-6" }, [
-      _c("div", { staticClass: "panel panel-info" }, [
-        _c("div", { staticClass: "panel-heading" }, [
-          _c("div", { staticClass: "row" }, [
-            _vm._m(4),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-9 text-right" }, [
-              _c("div", { staticClass: "huge" }, [
-                _vm._v(_vm._s(_vm.report.sample_collection || "xxxx"))
-              ]),
-              _vm._v(" "),
-              _c("div", [_vm._v("Pending")])
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _vm._m(5)
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-lg-3 col-md-6" }, [
-      _c("div", { staticClass: "panel panel-warning" }, [
-        _c("div", { staticClass: "panel-heading" }, [
-          _c("div", { staticClass: "row" }, [
-            _vm._m(6),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-9 text-right" }, [
-              _c("div", { staticClass: "huge" }, [
-                _vm._v(_vm._s(_vm.report.sample_received_in_lab || "xxxx"))
-              ]),
-              _vm._v(" "),
-              _c("div", [_vm._v("Lab Received")])
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _vm._m(7)
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-lg-3 col-md-6" }, [
-      _c("div", { staticClass: "panel panel-danger" }, [
-        _c("div", { staticClass: "panel-heading" }, [
-          _c("div", { staticClass: "row" }, [
-            _vm._m(8),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-9 text-right" }, [
-              _c("div", { staticClass: "huge" }, [
-                _vm._v(_vm._s(_vm.report.lab_result_positive || "xxxx"))
-              ]),
-              _vm._v(" "),
-              _c("div", [_vm._v("Positive")])
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _vm._m(9)
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-lg-3 col-md-6" }, [
-      _c("div", { staticClass: "panel panel-success" }, [
-        _c("div", { staticClass: "panel-heading" }, [
-          _c("div", { staticClass: "row" }, [
-            _vm._m(10),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-9 text-right" }, [
-              _c("div", { staticClass: "huge" }, [
-                _vm._v(_vm._s(_vm.report.lab_result_negative || "xxxx"))
-              ]),
-              _vm._v(" "),
-              _c("div", [_vm._v("Negative")])
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _vm._m(11)
-      ])
-    ])
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-lg-12" }, [
+      _c("h3", [_vm._v("Last 24 hours update ")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-check-square-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-frown-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-smile-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-lg-12" }, [
+      _c("hr"),
+      _vm._v(" "),
+      _c("h3", [_vm._v("Total Records ")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-check-square-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "/admin/lab-received-patients" } }, [
+      _c("div", { staticClass: "panel-footer" }, [
+        _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "pull-right" }, [
+          _c("i", { staticClass: "fa fa-arrow-circle-right" })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-frown-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "/admin/positive-patients" } }, [
+      _c("div", { staticClass: "panel-footer" }, [
+        _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "pull-right" }, [
+          _c("i", { staticClass: "fa fa-arrow-circle-right" })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-smile-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "/admin/negative-patients" } }, [
+      _c("div", { staticClass: "panel-footer" }, [
+        _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "pull-right" }, [
+          _c("i", { staticClass: "fa fa-arrow-circle-right" })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" })
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -38729,34 +40024,30 @@ var render = function() {
                               ]
                             ),
                             _vm._v(" "),
-                            _vm.role == "healthworker"
-                              ? _c("div", [
-                                  item.ancs.length == 0
-                                    ? _c(
-                                        "button",
-                                        {
-                                          attrs: {
-                                            title:
-                                              "Add Sample Collection / Swab Collection Report"
-                                          },
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.aadSampleCollection(
-                                                item.token
-                                              )
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _c("i", {
-                                            staticClass: "fa fa-medkit",
-                                            attrs: { "aria-hidden": "true" }
-                                          }),
-                                          _vm._v(" |\n              ")
-                                        ]
-                                      )
-                                    : _vm._e()
-                                ])
+                            item.ancs.length == 0 && _vm.role == "healthworker"
+                              ? _c(
+                                  "button",
+                                  {
+                                    attrs: {
+                                      title:
+                                        "Add Sample Collection / Swab Collection Report"
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.addSampleCollection(
+                                          item.token
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fa fa-medkit",
+                                      attrs: { "aria-hidden": "true" }
+                                    }),
+                                    _vm._v(" |\n              ")
+                                  ]
+                                )
                               : _vm._e(),
                             _vm._v(" "),
                             _c(
@@ -39108,7 +40399,575 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      this.$userRole == "healthworker"
+      this.$userRole == "fchv"
+        ? _c(
+            "div",
+            [
+              _c("link", {
+                attrs: {
+                  rel: "stylesheet",
+                  href:
+                    "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
+                }
+              }),
+              _vm._v(" "),
+              _c("fab", {
+                attrs: {
+                  position: _vm.fabOptions.position,
+                  "bg-color": _vm.fabOptions.bgColor,
+                  actions: _vm.fabActions,
+                  "start-opened": true
+                },
+                on: {
+                  addRecievedInLab: _vm.addRecievedInLab,
+                  addResultInLab: _vm.addResultInLab
+                }
+              })
+            ],
+            1
+          )
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabNegativeCases.vue?vue&type=template&id=c96b7590&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LabNegativeCases.vue?vue&type=template&id=c96b7590& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("link", {
+        attrs: {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/icon?family=Material+Icons"
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "filterable",
+        _vm._b(
+          {
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var item = ref.item
+                  return _c("tr", {}, [
+                    _c("td", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.womanTokens,
+                            expression: "womanTokens"
+                          }
+                        ],
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          value: item.token,
+                          checked: Array.isArray(_vm.womanTokens)
+                            ? _vm._i(_vm.womanTokens, item.token) > -1
+                            : _vm.womanTokens
+                        },
+                        on: {
+                          click: _vm.select,
+                          change: function($event) {
+                            var $$a = _vm.womanTokens,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = item.token,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 && (_vm.womanTokens = $$a.concat([$$v]))
+                              } else {
+                                $$i > -1 &&
+                                  (_vm.womanTokens = $$a
+                                    .slice(0, $$i)
+                                    .concat($$a.slice($$i + 1)))
+                              }
+                            } else {
+                              _vm.womanTokens = $$c
+                            }
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm.checkForPositiveOnly(item.latest_anc)
+                        ? _c("div", [
+                            _vm._v("Case ID : " + _vm._s(item.case_id))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      item.parent_case_id !== null
+                        ? _c("div", [
+                            _vm._v(
+                              "Parent Case ID : " + _vm._s(item.parent_case_id)
+                            )
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.age))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.gender(item.sex)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "One : " + _vm._s(item.emergency_contact_one) + " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Two : " +
+                          _vm._s(item.emergency_contact_two) +
+                          "\n      "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(_vm.checkMunicipality(item.municipality_id))
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n        Place : " +
+                          _vm._s(item.healthpost.name) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Type : " +
+                          _vm._s(_vm.checkCaseType(item.cases)) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Management : " +
+                          _vm._s(
+                            _vm.checkCaseManagement(item.cases, item.case_where)
+                          ) +
+                          "\n      "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.ad2bs(item.created_at)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("span", { staticClass: "label label-info" }, [
+                        _vm._v(" " + _vm._s(item.ancs.length))
+                      ]),
+                      _vm._v(" "),
+                      item.latest_anc
+                        ? _c("div", { attrs: { title: "Swab ID" } }, [
+                            _vm._v("SID : "),
+                            _c("strong", [
+                              _vm._v(_vm._s(item.latest_anc.token))
+                            ])
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      item.ancs.length > 0
+                        ? _c("div", {
+                            domProps: {
+                              innerHTML: _vm._s(
+                                _vm.latestLabResult(item.latest_anc)
+                              )
+                            }
+                          })
+                        : _c("div", [
+                            _c("span", { staticClass: "label label-primary" }, [
+                              _vm._v(" Registered ")
+                            ])
+                          ]),
+                      _vm._v(" "),
+                      item.ancs.length > 0 && item.latest_anc.result == 9
+                        ? _c("div", [
+                            _vm._v(
+                              _vm._s(
+                                item.latest_anc.labreport.token
+                                  .split("-")
+                                  .splice(1)
+                                  .join("-")
+                              )
+                            )
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      item.latest_anc.result == 9
+                        ? _c(
+                            "button",
+                            {
+                              attrs: { title: "Add Result" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.addResultInLab(item)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", { staticClass: "material-icons" }, [
+                                _vm._v("biotech")
+                              ])
+                            ]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
+                }
+              }
+            ])
+          },
+          "filterable",
+          _vm.filterable,
+          false
+        ),
+        [
+          _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
+            _c("tr", [
+              _c("th", { attrs: { width: "10px" } }),
+              _vm._v(" "),
+              _c("th", [_vm._v("ID")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Name")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Age")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Gender")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Emergency Contact")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Municipality")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Case")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Created At")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Total Collection")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Lab Result")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Action")])
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      this.$userRole == "fchv"
+        ? _c(
+            "div",
+            [
+              _c("link", {
+                attrs: {
+                  rel: "stylesheet",
+                  href:
+                    "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
+                }
+              }),
+              _vm._v(" "),
+              _c("fab", {
+                attrs: {
+                  position: _vm.fabOptions.position,
+                  "bg-color": _vm.fabOptions.bgColor,
+                  actions: _vm.fabActions,
+                  "start-opened": true
+                },
+                on: {
+                  addRecievedInLab: _vm.addRecievedInLab,
+                  addResultInLab: _vm.addResultInLab
+                }
+              })
+            ],
+            1
+          )
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabPositiveCases.vue?vue&type=template&id=5187f3f4&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LabPositiveCases.vue?vue&type=template&id=5187f3f4& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("link", {
+        attrs: {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/icon?family=Material+Icons"
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "filterable",
+        _vm._b(
+          {
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var item = ref.item
+                  return _c("tr", {}, [
+                    _c("td", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.womanTokens,
+                            expression: "womanTokens"
+                          }
+                        ],
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          value: item.token,
+                          checked: Array.isArray(_vm.womanTokens)
+                            ? _vm._i(_vm.womanTokens, item.token) > -1
+                            : _vm.womanTokens
+                        },
+                        on: {
+                          click: _vm.select,
+                          change: function($event) {
+                            var $$a = _vm.womanTokens,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = item.token,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 && (_vm.womanTokens = $$a.concat([$$v]))
+                              } else {
+                                $$i > -1 &&
+                                  (_vm.womanTokens = $$a
+                                    .slice(0, $$i)
+                                    .concat($$a.slice($$i + 1)))
+                              }
+                            } else {
+                              _vm.womanTokens = $$c
+                            }
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm.checkForPositiveOnly(item.latest_anc)
+                        ? _c("div", [
+                            _vm._v("Case ID : " + _vm._s(item.case_id))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      item.parent_case_id !== null
+                        ? _c("div", [
+                            _vm._v(
+                              "Parent Case ID : " + _vm._s(item.parent_case_id)
+                            )
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.age))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.gender(item.sex)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "One : " + _vm._s(item.emergency_contact_one) + " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Two : " +
+                          _vm._s(item.emergency_contact_two) +
+                          "\n      "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(_vm.checkMunicipality(item.municipality_id))
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n        Place : " +
+                          _vm._s(item.healthpost.name) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Type : " +
+                          _vm._s(_vm.checkCaseType(item.cases)) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Management : " +
+                          _vm._s(
+                            _vm.checkCaseManagement(item.cases, item.case_where)
+                          ) +
+                          "\n      "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.ad2bs(item.created_at)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("span", { staticClass: "label label-info" }, [
+                        _vm._v(" " + _vm._s(item.ancs.length))
+                      ]),
+                      _vm._v(" "),
+                      item.latest_anc
+                        ? _c("div", { attrs: { title: "Swab ID" } }, [
+                            _vm._v("SID : "),
+                            _c("strong", [
+                              _vm._v(_vm._s(item.latest_anc.token))
+                            ])
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      item.ancs.length > 0
+                        ? _c("div", {
+                            domProps: {
+                              innerHTML: _vm._s(
+                                _vm.latestLabResult(item.latest_anc)
+                              )
+                            }
+                          })
+                        : _c("div", [
+                            _c("span", { staticClass: "label label-primary" }, [
+                              _vm._v(" Registered ")
+                            ])
+                          ]),
+                      _vm._v(" "),
+                      item.ancs.length > 0 && item.latest_anc.result == 9
+                        ? _c("div", [
+                            _vm._v(
+                              _vm._s(
+                                item.latest_anc.labreport.token
+                                  .split("-")
+                                  .splice(1)
+                                  .join("-")
+                              )
+                            )
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      item.latest_anc.result == 9
+                        ? _c(
+                            "button",
+                            {
+                              attrs: { title: "Add Result" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.addResultInLab(item)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", { staticClass: "material-icons" }, [
+                                _vm._v("biotech")
+                              ])
+                            ]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
+                }
+              }
+            ])
+          },
+          "filterable",
+          _vm.filterable,
+          false
+        ),
+        [
+          _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
+            _c("tr", [
+              _c("th", { attrs: { width: "10px" } }),
+              _vm._v(" "),
+              _c("th", [_vm._v("ID")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Name")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Age")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Gender")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Emergency Contact")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Municipality")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Case")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Created At")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Total Collection")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Lab Result")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Action")])
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      this.$userRole == "fchv"
         ? _c(
             "div",
             [
@@ -84792,11 +86651,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_CasesClosedRecovered__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/CasesClosedRecovered */ "./resources/assets/js/components/CasesClosedRecovered.vue");
 /* harmony import */ var _components_CasesClosedDeath__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/CasesClosedDeath */ "./resources/assets/js/components/CasesClosedDeath.vue");
 /* harmony import */ var _components_LabCases__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/LabCases */ "./resources/assets/js/components/LabCases.vue");
-/* harmony import */ var _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/AdminDashboard */ "./resources/assets/js/components/AdminDashboard.vue");
-/* harmony import */ var _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/SelectYearMonth */ "./resources/assets/js/components/SelectYearMonth.vue");
-/* harmony import */ var v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! v-nepalidatepicker */ "./node_modules/v-nepalidatepicker/dist/v-nepalidatepicker.esm.js");
-/* harmony import */ var vue_json_excel__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! vue-json-excel */ "./node_modules/vue-json-excel/JsonExcel.vue");
-/* harmony import */ var v_mask__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! v-mask */ "./node_modules/v-mask/dist/v-mask.esm.js");
+/* harmony import */ var _components_LabNegativeCases__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/LabNegativeCases */ "./resources/assets/js/components/LabNegativeCases.vue");
+/* harmony import */ var _components_LabPositiveCases__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/LabPositiveCases */ "./resources/assets/js/components/LabPositiveCases.vue");
+/* harmony import */ var _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./components/AdminDashboard */ "./resources/assets/js/components/AdminDashboard.vue");
+/* harmony import */ var _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/SelectYearMonth */ "./resources/assets/js/components/SelectYearMonth.vue");
+/* harmony import */ var v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! v-nepalidatepicker */ "./node_modules/v-nepalidatepicker/dist/v-nepalidatepicker.esm.js");
+/* harmony import */ var vue_json_excel__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! vue-json-excel */ "./node_modules/vue-json-excel/JsonExcel.vue");
+/* harmony import */ var v_mask__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! v-mask */ "./node_modules/v-mask/dist/v-mask.esm.js");
 
 
 
@@ -84823,9 +86684,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_mask__WEBPACK_IMPORTED_MODULE_25__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_23__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('downloadExcel', vue_json_excel__WEBPACK_IMPORTED_MODULE_24__["default"]);
+
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_mask__WEBPACK_IMPORTED_MODULE_27__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_25__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('downloadExcel', vue_json_excel__WEBPACK_IMPORTED_MODULE_26__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$userRole = document.querySelector("meta[name='user-role']").getAttribute('content');
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_13___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_status_indicator__WEBPACK_IMPORTED_MODULE_2__["default"]);
@@ -84844,9 +86707,11 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-patient-list', _compon
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('women-list-lab-received', _components_CasesLabRecieved__WEBPACK_IMPORTED_MODULE_17__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('cases-closed-recovered', _components_CasesClosedRecovered__WEBPACK_IMPORTED_MODULE_18__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('cases-closed-death', _components_CasesClosedDeath__WEBPACK_IMPORTED_MODULE_19__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-negative-patient-list', _components_LabNegativeCases__WEBPACK_IMPORTED_MODULE_21__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-positive-patient-list', _components_LabPositiveCases__WEBPACK_IMPORTED_MODULE_22__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('vaccination-chart');
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('admin-dashboard', _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_21__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('select-year-month', _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_22__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('admin-dashboard', _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_23__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('select-year-month', _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_24__["default"]);
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app'
 });
@@ -85538,6 +87403,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LabCases_vue_vue_type_template_id_908e1026___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LabCases_vue_vue_type_template_id_908e1026___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/LabNegativeCases.vue":
+/*!*************************************************************!*\
+  !*** ./resources/assets/js/components/LabNegativeCases.vue ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LabNegativeCases_vue_vue_type_template_id_c96b7590___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LabNegativeCases.vue?vue&type=template&id=c96b7590& */ "./resources/assets/js/components/LabNegativeCases.vue?vue&type=template&id=c96b7590&");
+/* harmony import */ var _LabNegativeCases_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LabNegativeCases.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/LabNegativeCases.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LabNegativeCases_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LabNegativeCases_vue_vue_type_template_id_c96b7590___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LabNegativeCases_vue_vue_type_template_id_c96b7590___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/LabNegativeCases.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/LabNegativeCases.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/assets/js/components/LabNegativeCases.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LabNegativeCases_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LabNegativeCases.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabNegativeCases.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LabNegativeCases_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/LabNegativeCases.vue?vue&type=template&id=c96b7590&":
+/*!********************************************************************************************!*\
+  !*** ./resources/assets/js/components/LabNegativeCases.vue?vue&type=template&id=c96b7590& ***!
+  \********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LabNegativeCases_vue_vue_type_template_id_c96b7590___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LabNegativeCases.vue?vue&type=template&id=c96b7590& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabNegativeCases.vue?vue&type=template&id=c96b7590&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LabNegativeCases_vue_vue_type_template_id_c96b7590___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LabNegativeCases_vue_vue_type_template_id_c96b7590___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/LabPositiveCases.vue":
+/*!*************************************************************!*\
+  !*** ./resources/assets/js/components/LabPositiveCases.vue ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LabPositiveCases_vue_vue_type_template_id_5187f3f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LabPositiveCases.vue?vue&type=template&id=5187f3f4& */ "./resources/assets/js/components/LabPositiveCases.vue?vue&type=template&id=5187f3f4&");
+/* harmony import */ var _LabPositiveCases_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LabPositiveCases.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/LabPositiveCases.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LabPositiveCases_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LabPositiveCases_vue_vue_type_template_id_5187f3f4___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LabPositiveCases_vue_vue_type_template_id_5187f3f4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/LabPositiveCases.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/LabPositiveCases.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/assets/js/components/LabPositiveCases.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LabPositiveCases_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LabPositiveCases.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabPositiveCases.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LabPositiveCases_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/LabPositiveCases.vue?vue&type=template&id=5187f3f4&":
+/*!********************************************************************************************!*\
+  !*** ./resources/assets/js/components/LabPositiveCases.vue?vue&type=template&id=5187f3f4& ***!
+  \********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LabPositiveCases_vue_vue_type_template_id_5187f3f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LabPositiveCases.vue?vue&type=template&id=5187f3f4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabPositiveCases.vue?vue&type=template&id=5187f3f4&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LabPositiveCases_vue_vue_type_template_id_5187f3f4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LabPositiveCases_vue_vue_type_template_id_5187f3f4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

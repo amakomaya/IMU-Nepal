@@ -9,7 +9,11 @@ Route::get('api/lab-received', 'Data\Api\WomenController@labReceivedIndex');
 Route::get('api/cases-recovered', 'Data\Api\WomenController@casesRecoveredIndex');
 Route::get('api/cases-death', 'Data\Api\WomenController@casesDeathIndex');
 
-Route::get('api/admin/dashboard', 'Data\Api\DashboardController@index');
+Route::get('api/lab/received-sample', 'Data\Api\WomenController@labAddReceivedIndex');
+Route::get('api/lab/add-result-negative', 'Data\Api\WomenController@labAddResultNegativeIndex');
+Route::get('api/lab/add-result-positive', 'Data\Api\WomenController@labAddResultPositiveIndex');
+
+Route::get('api/admin/dashboard', 'Data\Api\AdminDashboardController@index');
 
 Route::get('/api/patient/export', 'Data\Api\WomenController@export');
 Route::get('/api/lab-patient/export', 'Data\Api\WomenController@labExport');

@@ -48,8 +48,8 @@
           <div v-if="item.ancs.length > 0 && item.latest_anc.result == 9">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
         </td>
         <td>
-           <button v-if="item.latest_anc.result == 9" v-on:click="addResultInLab(item)" title="Add Result">
-             <i class = "material-icons">biotech</i>
+          <button v-if="item.latest_anc.result == 9" v-on:click="addResultInLab(item)" title="Add Result">
+            <i class = "material-icons">biotech</i>
           </button>
         </td>
         <!-- </div>             -->
@@ -88,7 +88,7 @@ export default {
   data() {
     return {
       filterable: {
-        url: '/data/api/lab/received-sample',
+        url: '/data/api/lab/add-result-negative',
         orderables: [
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},

@@ -20,6 +20,9 @@ import PatientListLabReceived from './components/CasesLabRecieved'
 import CasesClosedRecovered from './components/CasesClosedRecovered'
 import CasesClosedDeath from './components/CasesClosedDeath'
 import LabPatientList from './components/LabCases'
+import LabNegativeCases from "./components/LabNegativeCases";
+import LabPositiveCases from "./components/LabPositiveCases";
+
 import AdminDashboard from "./components/AdminDashboard";
 
 import SelectYearMonth from './components/SelectYearMonth'
@@ -52,9 +55,12 @@ Vue.component('lab-patient-list', LabPatientList);
 Vue.component('women-list-lab-received', PatientListLabReceived)
 Vue.component('cases-closed-recovered', CasesClosedRecovered)
 Vue.component('cases-closed-death', CasesClosedDeath)
+Vue.component('lab-negative-patient-list', LabNegativeCases)
+Vue.component('lab-positive-patient-list', LabPositiveCases)
 Vue.component('vaccination-chart');
 Vue.component('admin-dashboard', AdminDashboard)
 Vue.component('select-year-month', SelectYearMonth)
+
 
 const app = new Vue({
     el: '#app'

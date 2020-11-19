@@ -32,6 +32,7 @@ class DashboardController extends Controller
             'lab_result_positive_in_24_hrs' => Woman::whereIn('hp_code', $hpCodes)->active()->dashboardLabReceivedPositiveIn24hrs()->count(),
             'lab_result_negative' => Woman::whereIn('hp_code', $hpCodes)->active()->dashboardLabReceivedNegative()->count(),
             'lab_result_negative_in_24_hrs' => Woman::whereIn('hp_code', $hpCodes)->active()->dashboardLabReceivedNegativeIn24hrs()->count(),
+
         ];
         return response()->json($data);
     }
