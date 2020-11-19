@@ -12,7 +12,7 @@
                 <i class="fa fa-check-square-o fa-3x"></i>
               </div>
               <div class="col-xs-9 text-right">
-                <div class="huge">{{ report.sample_received_in_lab_in_24_hrs || 'xxxx' }}</div>
+                <div class="huge">{{ report.in_lab_received_in_24_hrs || 'xxxx' }}</div>
                 <div>Lab Received</div>
               </div>
             </div>
@@ -27,7 +27,7 @@
                 <i class="fa fa-frown-o fa-3x"></i>
               </div>
               <div class="col-xs-9 text-right">
-                <div class="huge">{{ report.lab_result_positive_in_24_hrs || 'xxxx' }}</div>
+                <div class="huge">{{ report.in_lab_received_positive_in_24_hrs || 'xxxx' }}</div>
                 <div>Positive</div>
               </div>
             </div>
@@ -42,7 +42,7 @@
                 <i class="fa fa-smile-o fa-3x"></i>
               </div>
               <div class="col-xs-9 text-right">
-                <div class="huge">{{ report.lab_result_negative_in_24_hrs || 'xxxx' }}</div>
+                <div class="huge">{{ report.in_lab_received_negative_in_24_hrs || 'xxxx' }}</div>
                 <div>Negative</div>
               </div>
             </div>
@@ -61,7 +61,7 @@
                 <i class="fa fa-check-square-o fa-3x"></i>
               </div>
               <div class="col-xs-9 text-right">
-                <div class="huge">{{ report.sample_received_in_lab || 'xxxx' }}</div>
+                <div class="huge">{{ report.in_lab_received || 'xxxx' }}</div>
                 <div>Lab Received</div>
               </div>
             </div>
@@ -84,7 +84,7 @@
                 <i class="fa fa-frown-o fa-3x"></i>
               </div>
               <div class="col-xs-9 text-right">
-                <div class="huge">{{ report.lab_result_positive || 'xxxx' }}</div>
+                <div class="huge">{{ report.in_lab_received_positive || 'xxxx' }}</div>
                 <div>Positive</div>
               </div>
             </div>
@@ -107,7 +107,7 @@
               <i class="fa fa-smile-o fa-3x"></i>
             </div>
             <div class="col-xs-9 text-right">
-              <div class="huge">{{ report.lab_result_negative || 'xxxx' }}</div>
+              <div class="huge">{{ report.in_lab_received_negative || 'xxxx' }}</div>
               <div>Negative</div>
             </div>
           </div>

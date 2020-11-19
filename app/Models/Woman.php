@@ -232,7 +232,6 @@ class Woman extends Model
             $query->where('result', 9)->whereHas('labReport');
         });
     }
-
     public function scopeLabAddReceived($query){
         return $query->whereHas('latestAnc', function ($query) {
             $query->where('result', 9)->whereHas('labReport');
@@ -315,4 +314,47 @@ class Woman extends Model
             });
         });
     }
+
+    public function scopeDashboardLabAddReceived($query){
+        return $query->whereHas('latestAnc', function ($query) {
+            $query->whereHas('labReport');
+        });
+    }
+
+    public function scopeDashboardLabAddReceivedNegative($query){
+        return $query->whereHas('latestAnc', function ($query) {
+            $query->where('result', 4)->whereHas('labReport');
+        });
+    }
+
+    public function scopeDashboardLabAddReceivedPositive($query){
+        return $query->whereHas('latestAnc', function ($query) {
+            $query->where('result', 3)->whereHas('labReport');
+        });
+    }
+
+    public function scopeDashboardLabAddReceivedIn24hrs($query){
+        return $query->withAll()->whereHas('latestAnc', function ($query) {
+            $query->whereHas('labReport', function ($lab_query){
+                $lab_query->where('created_at', Carbon::now()->subDay()->toDateTimeString());
+            });
+        });
+    }
+
+    public function scopeDashboardLabAddReceivedNegativeIn24hrs($query){
+        return $query->withAll()->whereHas('latestAnc', function ($query) {
+            $query->whereHas('labReport', function ($lab_query){
+                $lab_query->where('sample_test_result', 4)->where('created_at', Carbon::now()->subDay()->toDateTimeString());
+            });
+        });
+    }
+
+    public function scopeDashboardLabAddReceivedPositiveIn24hrs($query){
+        return $query->withAll()->whereHas('latestAnc', function ($query) {
+            $query->whereHas('labReport', function ($lab_query){
+                $lab_query->where('sample_test_result', 3)->where('created_at', Carbon::now()->subDay()->toDateTimeString());
+            });
+        });
+    }
+
 }

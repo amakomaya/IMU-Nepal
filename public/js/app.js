@@ -38043,9 +38043,7 @@ var render = function() {
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
                     _c("div", { staticClass: "huge" }, [
                       _vm._v(
-                        _vm._s(
-                          _vm.report.sample_received_in_lab_in_24_hrs || "xxxx"
-                        )
+                        _vm._s(_vm.report.in_lab_received_in_24_hrs || "xxxx")
                       )
                     ]),
                     _vm._v(" "),
@@ -38066,7 +38064,8 @@ var render = function() {
                     _c("div", { staticClass: "huge" }, [
                       _vm._v(
                         _vm._s(
-                          _vm.report.lab_result_positive_in_24_hrs || "xxxx"
+                          _vm.report.in_lab_received_positive_in_24_hrs ||
+                            "xxxx"
                         )
                       )
                     ]),
@@ -38088,7 +38087,8 @@ var render = function() {
                     _c("div", { staticClass: "huge" }, [
                       _vm._v(
                         _vm._s(
-                          _vm.report.lab_result_negative_in_24_hrs || "xxxx"
+                          _vm.report.in_lab_received_negative_in_24_hrs ||
+                            "xxxx"
                         )
                       )
                     ]),
@@ -38110,9 +38110,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
                     _c("div", { staticClass: "huge" }, [
-                      _vm._v(
-                        _vm._s(_vm.report.sample_received_in_lab || "xxxx")
-                      )
+                      _vm._v(_vm._s(_vm.report.in_lab_received || "xxxx"))
                     ]),
                     _vm._v(" "),
                     _c("div", [_vm._v("Lab Received")])
@@ -38132,7 +38130,9 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
                     _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.lab_result_positive || "xxxx"))
+                      _vm._v(
+                        _vm._s(_vm.report.in_lab_received_positive || "xxxx")
+                      )
                     ]),
                     _vm._v(" "),
                     _c("div", [_vm._v("Positive")])
@@ -38152,7 +38152,9 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
                     _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.lab_result_negative || "xxxx"))
+                      _vm._v(
+                        _vm._s(_vm.report.in_lab_received_negative || "xxxx")
+                      )
                     ]),
                     _vm._v(" "),
                     _c("div", [_vm._v("Negative")])
