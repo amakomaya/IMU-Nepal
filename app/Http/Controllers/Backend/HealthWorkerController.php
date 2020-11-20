@@ -242,7 +242,7 @@ class HealthWorkerController extends Controller
             'email'               => $request->get('email'),
             'imei'               => $request->get('imei'),
         ]);
-        $user->givePermissionTo($request->get('permissions'));
+        $user->syncPermissions($request->get('permissions'));
 
         $request->session()->flash('message', 'Data Updated successfully');
 
