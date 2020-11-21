@@ -24,8 +24,9 @@ class DashboardController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
 
         $user = auth()->user();
-        $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
-        $token = Anc::whereIn('token', $sample_token)->pluck('woman_token');
+
+        $lab_received_collection = LabTest::where('checked_by', $user->token)->active()->get();
+
 
         $cases = Woman::whereIn('hp_code', $hpCodes)->active()->with('ancs')->get();
 
@@ -96,7 +97,40 @@ class DashboardController extends Controller
             return $data;
         });
 
-       $data = [
+        $dashboardLabCases = $lab_received_collection->map(function ($value){
+            $data = [];
+            $data['token'] = $value['token'];
+
+            $data['in_lab_received_in_24_hrs'] = $value['created_at'] >= Carbon::now()->subDay()->toDateTimeString() ? 1 : 0 ;
+
+            $data['in_lab_received_in_24_hrs'] = $value['created_at'] >= Carbon::now()->subDay()->toDateTimeString() ? 1 : 0 ;
+
+            $data['in_lab_received_positive'] = 0;
+            $data['in_lab_received_negative'] = 0;
+            $data['in_lab_received_positive_in_24_hrs'] = 0;
+            $data['in_lab_received_negative_in_24_hrs'] = 0;
+            switch ($value->sample_test_result){
+                case '3':
+                    $data['in_lab_received_positive']++;
+                    try {
+                        if($value->updated_at >= Carbon::now()->subDay()->toDateTimeString()) {
+                            $data['in_lab_received_positive_in_24_hrs']++;
+                        }
+                    }catch (\Exception $e){}
+                    break;
+                case '4':
+                    $data['in_lab_received_negative']++;
+                    try {
+                        if($value->updated_at >= Carbon::now()->subDay()->toDateTimeString()) {
+                            $data['in_lab_received_negative_in_24_hrs']++;
+                        }
+                    }catch (\Exception $e){}
+                    break;
+            }
+            return $data;
+        });
+
+        $data = [
             'registered' => $dashboardCases->count(),
             'registered_in_24_hrs' => $dashboardCases->sum('case_created_at_in_24_hrs'),
             'sample_collection' => $dashboardCases->sum('sample_collection_count'),
@@ -108,13 +142,12 @@ class DashboardController extends Controller
             'lab_result_negative' => $dashboardCases->sum('lab_result_negative'),
             'lab_result_negative_in_24_hrs' => $dashboardCases->sum('lab_result_negative_in_24_hrs'),
 
-            'in_lab_received' => Woman::whereIn('token', $token)->active()->dashboardLabAddReceived()->count(),
-            'in_lab_received_in_24_hrs' => Woman::whereIn('token', $token)->active()->dashboardLabAddReceivedIn24hrs()->count(),
-            'in_lab_received_positive' => Woman::whereIn('token', $token)->active()->dashboardLabAddReceivedPositive()->count(),
-            'in_lab_received_positive_in_24_hrs' => Woman::whereIn('token', $token)->active()->dashboardLabAddReceivedPositiveIn24hrs()->count(),
-            'in_lab_received_negative' => Woman::whereIn('token', $token)->active()->dashboardLabAddReceivedNegative()->count(),
-            'in_lab_received_negative_in_24_hrs' => Woman::whereIn('token', $token)->active()->dashboardLabAddReceivedNegativeIn24hrs()->count(),
-
+            'in_lab_received' => $lab_received_collection->count(),
+            'in_lab_received_in_24_hrs' => $dashboardLabCases->sum('in_lab_received_in_24_hrs'),
+            'in_lab_received_positive' => $dashboardLabCases->sum('in_lab_received_positive'),
+            'in_lab_received_positive_in_24_hrs' => $dashboardLabCases->sum('in_lab_received_positive_in_24_hrs'),
+            'in_lab_received_negative' => $dashboardLabCases->sum('in_lab_received_negative'),
+            'in_lab_received_negative_in_24_hrs' => $dashboardLabCases->sum('in_lab_received_negative_in_24_hrs'),
         ];
         return response()->json($data);
     }
