@@ -26,39 +26,87 @@ class DashboardController extends Controller
         $user = auth()->user();
         $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
         $token = Anc::whereIn('token', $sample_token)->pluck('woman_token');
-        $cases = collect(Woman::whereIn('hp_code', $hpCodes)->active()->with('latestAnc')->get());
-        $registered_in_24_hrs = $cases->filter(function ($value){
-            return  $value->created_at >= Carbon::now()->subDay()->toDateTimeString();
-        });
-        $sample_collection = $cases->filter(function ($value){
-            return $value->latestAnc !== null;
-        });
-        $sample_collection_in_24_hrs = $sample_collection->filter(function ($value){
-            return  $value->created_at >= Carbon::now()->subDay()->toDateTimeString();
-        });
-        $sample_received_in_lab = [];
-//        $sample_received_in_lab = $sample_collection->filter(function ($value){
-//                return $value->latestAnc->labReport !== null;
-//        });
-//        $sample_received_in_lab_in_24_hrs = $sample_received_in_lab->filter(function ($value){
-//            return  $value->latestAnc->labReport->created_at >= Carbon::now()->subDay()->toDateTimeString();
-//        });
 
+        $cases = Woman::whereIn('hp_code', $hpCodes)->active()->with('ancs')->get();
 
-//        return $query->with('latestAnc')->whereHas('latestAnc', function ($latest_anc_query) {
-//            $latest_anc_query->whereHas('labReport');
-//        });
-        $data = [
-            'registered' => $cases->count(),
-            'registered_in_24_hrs' => $registered_in_24_hrs->count(),
-            'sample_collection' => $sample_collection->count(),
-            'sample_collection_in_24_hrs' => $sample_collection_in_24_hrs->count(),
-            'sample_received_in_lab' => $sample_received_in_lab->count(),
-//            'sample_received_in_lab_in_24_hrs' => $sample_received_in_lab_in_24_hrs->count(),
-//            'lab_result_positive' => Woman::whereIn('hp_code', $hpCodes)->active()->dashboardLabReceivedPositive()->count(),
-//            'lab_result_positive_in_24_hrs' => Woman::whereIn('hp_code', $hpCodes)->active()->dashboardLabReceivedPositiveIn24hrs()->count(),
-//            'lab_result_negative' => Woman::whereIn('hp_code', $hpCodes)->active()->dashboardLabReceivedNegative()->count(),
-//            'lab_result_negative_in_24_hrs' => Woman::whereIn('hp_code', $hpCodes)->active()->dashboardLabReceivedNegativeIn24hrs()->count(),
+        $dashboardCases = $cases->map(function ($value){
+            $data = [];
+            $data['token'] = $value['token'];
+            $data['case_created_at_in_24_hrs'] = $value['created_at'] >= Carbon::now()->subDay()->toDateTimeString() ? 1 : 0 ;
+
+            $sample_collection = $value->ancs;
+            $data['sample_collection_count'] = $sample_collection->count();
+
+            $filtered_sample = $sample_collection->map(function ($sample){
+                $sample_data = [];
+                $sample_data['sample_collection_in_24_hrs'] = 0;
+
+                $sample_data['sample_received'] = 0;
+                $sample_data['sample_received_in_24_hrs'] = 0;
+
+                $sample_data['lab_result_positive'] = 0;
+                $sample_data['lab_result_positive_in_24_hrs'] = 0;
+
+                $sample_data['lab_result_negative'] = 0;
+                $sample_data['lab_result_negative_in_24_hrs'] = 0;
+                if($sample['created_at'] >= Carbon::now()->subDay()->toDateTimeString()){
+                    $sample_data['sample_collection_in_24_hrs']++;
+                }
+                if ($sample->result != 2){
+                    $sample_data['sample_received']++;
+                    switch ($sample->result){
+                        case '3':
+                            $sample_data['lab_result_positive']++;
+                            try {
+                                if($sample->labreport->updated_at >= Carbon::now()->subDay()->toDateTimeString()) {
+                                    $sample_data['lab_result_positive_in_24_hrs']++;
+                                }
+                            }catch (\Exception $e){}
+                            break;
+                        case '4':
+                            $sample_data['lab_result_negative']++;
+                            try {
+                                if($sample->labreport->updated_at >= Carbon::now()->subDay()->toDateTimeString()) {
+                                    $sample_data['lab_result_negative_in_24_hrs']++;
+                                }
+                            }catch (\Exception $e){}
+                            break;
+                    }
+
+                    try {
+                        if($sample->labreport->created_at >= Carbon::now()->subDay()->toDateTimeString()) {
+                            $sample_data['sample_received_in_24_hrs']++;
+                        }
+                    }catch (\Exception $e){}
+                }
+                return $sample_data;
+            })->values();
+
+            $data['sample_collection_in_24_hrs'] = $filtered_sample->sum('sample_collection_in_24_hrs');
+
+            $data['sample_received'] = $filtered_sample->sum('sample_received');
+            $data['sample_received_in_24_hrs'] = $filtered_sample->sum('sample_received_in_24_hrs');
+
+            $data['lab_result_positive'] = $filtered_sample->sum('lab_result_positive');
+            $data['lab_result_positive_in_24_hrs'] = $filtered_sample->sum('lab_result_positive_in_24_hrs');
+
+            $data['lab_result_negative'] = $filtered_sample->sum('lab_result_negative');
+            $data['lab_result_negative_in_24_hrs'] = $filtered_sample->sum('lab_result_negative_in_24_hrs');
+
+            return $data;
+        });
+
+       $data = [
+            'registered' => $dashboardCases->count(),
+            'registered_in_24_hrs' => $dashboardCases->sum('case_created_at_in_24_hrs'),
+            'sample_collection' => $dashboardCases->sum('sample_collection_count'),
+            'sample_collection_in_24_hrs' => $dashboardCases->sum('sample_collection_in_24_hrs'),
+            'sample_received_in_lab' => $dashboardCases->sum('sample_received'),
+            'sample_received_in_lab_in_24_hrs' => $dashboardCases->sum('sample_received_in_24_hrs'),
+            'lab_result_positive' => $dashboardCases->sum('lab_result_positive'),
+            'lab_result_positive_in_24_hrs' => $dashboardCases->sum('lab_result_positive_in_24_hrs'),
+            'lab_result_negative' => $dashboardCases->sum('lab_result_negative'),
+            'lab_result_negative_in_24_hrs' => $dashboardCases->sum('lab_result_negative_in_24_hrs'),
 
             'in_lab_received' => Woman::whereIn('token', $token)->active()->dashboardLabAddReceived()->count(),
             'in_lab_received_in_24_hrs' => Woman::whereIn('token', $token)->active()->dashboardLabAddReceivedIn24hrs()->count(),
