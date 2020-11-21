@@ -46,13 +46,15 @@ class Woman extends Model
         'municipality_id', 'hp_code', 'caste', 'anc_status', 'delivery_status', 'labtest_status', 'pnc_status', 'created_by',
         'created_at',
 
+        'emergency_contact_one',
+
         // nested
-        'ancs.created_at'
+        'ancs.created_at', 'ancs.token',
 
     ];
     protected $appends = ['formated_age_unit', 'formated_gender'];
     // protected $appends = ['anc_with_protocol', 'anc_visits'];
-    protected $orderable = ['name', 'phone', 'age', 'lmp_date_en', 'created_at'];
+    protected $orderable = ['name', 'age', 'lmp_date_en', 'created_at'];
 
     protected $supportedRelations = ['ancs', 'latestAnc', 'healthworker' ,'healthpost', 'district', 'municipality'];
 

@@ -2912,7 +2912,7 @@ __webpack_require__.r(__webpack_exports__);
           name: 'created_at'
         }],
         filterGroups: [{
-          name: 'Patient',
+          name: 'Case',
           filters: [{
             title: 'Name',
             name: 'name',
@@ -2923,8 +2923,8 @@ __webpack_require__.r(__webpack_exports__);
             type: 'numeric'
           }, {
             title: 'Phone Number',
-            name: 'phone',
-            type: 'numeric'
+            name: 'emergency_contact_one',
+            type: 'text'
           }, {
             title: 'Case Created At',
             name: 'created_at',
@@ -2933,6 +2933,10 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           name: 'Swab Collection',
           filters: [{
+            title: 'Swab ID ',
+            name: 'ancs.token',
+            type: 'string'
+          }, {
             title: 'Swab Created At',
             name: 'ancs.created_at',
             type: 'datetime'
@@ -3164,7 +3168,7 @@ __webpack_require__.r(__webpack_exports__);
           name: 'created_at'
         }],
         filterGroups: [{
-          name: 'Patient',
+          name: 'Case',
           filters: [{
             title: 'Name',
             name: 'name',
@@ -3175,8 +3179,8 @@ __webpack_require__.r(__webpack_exports__);
             type: 'numeric'
           }, {
             title: 'Phone Number',
-            name: 'phone',
-            type: 'numeric'
+            name: 'emergency_contact_one',
+            type: 'text'
           }, {
             title: 'Case Created At',
             name: 'created_at',
@@ -3185,6 +3189,10 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           name: 'Swab Collection',
           filters: [{
+            title: 'Swab ID ',
+            name: 'ancs.token',
+            type: 'string'
+          }, {
             title: 'Swab Created At',
             name: 'ancs.created_at',
             type: 'datetime'
@@ -3469,8 +3477,8 @@ __webpack_require__.r(__webpack_exports__);
             type: 'numeric'
           }, {
             title: 'Phone Number',
-            name: 'phone',
-            type: 'numeric'
+            name: 'emergency_contact_one',
+            type: 'text'
           }, {
             title: 'Case Created At',
             name: 'created_at',
@@ -3479,6 +3487,10 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           name: 'Swab Collection',
           filters: [{
+            title: 'Swab ID ',
+            name: 'ancs.token',
+            type: 'string'
+          }, {
             title: 'Swab Created At',
             name: 'ancs.created_at',
             type: 'datetime'
@@ -3807,7 +3819,7 @@ __webpack_require__.r(__webpack_exports__);
           name: 'created_at'
         }],
         filterGroups: [{
-          name: 'Patient',
+          name: 'Case',
           filters: [{
             title: 'Name',
             name: 'name',
@@ -3818,8 +3830,8 @@ __webpack_require__.r(__webpack_exports__);
             type: 'numeric'
           }, {
             title: 'Phone Number',
-            name: 'phone',
-            type: 'numeric'
+            name: 'emergency_contact_one',
+            type: 'text'
           }, {
             title: 'Case Created At',
             name: 'created_at',
@@ -3828,6 +3840,10 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           name: 'Swab Collection',
           filters: [{
+            title: 'Swab ID ',
+            name: 'ancs.token',
+            type: 'string'
+          }, {
             title: 'Swab Created At',
             name: 'ancs.created_at',
             type: 'datetime'
@@ -4112,8 +4128,8 @@ __webpack_require__.r(__webpack_exports__);
             type: 'numeric'
           }, {
             title: 'Phone Number',
-            name: 'phone',
-            type: 'numeric'
+            name: 'emergency_contact_one',
+            type: 'text'
           }, {
             title: 'Case Created At',
             name: 'created_at',
@@ -4122,6 +4138,10 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           name: 'Swab Collection',
           filters: [{
+            title: 'Swab ID ',
+            name: 'ancs.token',
+            type: 'string'
+          }, {
             title: 'Swab Created At',
             name: 'ancs.created_at',
             type: 'datetime'
@@ -4500,8 +4520,8 @@ __webpack_require__.r(__webpack_exports__);
             type: 'numeric'
           }, {
             title: 'Phone Number',
-            name: 'phone',
-            type: 'numeric'
+            name: 'emergency_contact_one',
+            type: 'text'
           }, {
             title: 'Case Created At',
             name: 'created_at',
@@ -4510,6 +4530,10 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           name: 'Swab Collection',
           filters: [{
+            title: 'Swab ID ',
+            name: 'ancs.token',
+            type: 'string'
+          }, {
             title: 'Swab Created At',
             name: 'ancs.created_at',
             type: 'datetime'
@@ -4894,8 +4918,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             type: 'numeric'
           }, {
             title: 'Phone Number',
-            name: 'phone',
-            type: 'numeric'
+            name: 'emergency_contact_one',
+            type: 'text'
           }, {
             title: 'Case Created At',
             name: 'created_at',
@@ -4904,6 +4928,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, {
           name: 'Swab Collection',
           filters: [{
+            title: 'Swab ID ',
+            name: 'ancs.token',
+            type: 'string'
+          }, {
             title: 'Swab Created At',
             name: 'ancs.created_at',
             type: 'datetime'
@@ -5350,8 +5378,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             type: 'numeric'
           }, {
             title: 'Phone Number',
-            name: 'phone',
-            type: 'numeric'
+            name: 'emergency_contact_one',
+            type: 'text'
           }, {
             title: 'Case Created At',
             name: 'created_at',
@@ -5360,6 +5388,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, {
           name: 'Swab Collection',
           filters: [{
+            title: 'Swab ID ',
+            name: 'ancs.token',
+            type: 'string'
+          }, {
             title: 'Swab Created At',
             name: 'ancs.created_at',
             type: 'datetime'
@@ -5806,8 +5838,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             type: 'numeric'
           }, {
             title: 'Phone Number',
-            name: 'phone',
-            type: 'numeric'
+            name: 'emergency_contact_one',
+            type: 'text'
           }, {
             title: 'Case Created At',
             name: 'created_at',
@@ -5816,6 +5848,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, {
           name: 'Swab Collection',
           filters: [{
+            title: 'Swab ID ',
+            name: 'ancs.token',
+            type: 'string'
+          }, {
             title: 'Swab Created At',
             name: 'ancs.created_at',
             type: 'datetime'

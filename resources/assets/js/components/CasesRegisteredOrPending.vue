@@ -104,14 +104,15 @@
                             filters: [
                                 {title: 'Name', name: 'name', type: 'string'},
                                 {title: 'Age', name: 'age', type: 'numeric'},
-                                {title: 'Phone Number', name: 'phone', type: 'numeric'},
+                                {title: 'Phone Number', name: 'emergency_contact_one', type: 'text'},
                                 {title: 'Case Created At', name: 'created_at', type: 'datetime'},
                             ]
                         },
                         {
                             name: 'Swab Collection',
                             filters: [
-                                {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
+                              {title: 'Swab ID ', name: 'ancs.token', type: 'string'},
+                              {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
                             ]
                         }
                     ],
