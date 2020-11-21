@@ -176,6 +176,8 @@ Route::get('/v1/client', function(Request $request){
         $response['symptoms_date'] = $row->symptoms_date ?? '';
         $response['case_reason'] = $row->case_reason ?? '';
         $response['temperature'] = $row->temperature ?? '';
+        $response['date_of_onset_of_first_symptom'] = $row->date_of_onset_of_first_symptom ?? '';
+        $response['reson_for_testing'] = $row->reson_for_testing ?? '';
 
         return $response;
 })->values();
@@ -247,6 +249,7 @@ Route::get('/v1/client-tests', function(Request $request){
         $response['service_type'] = $row->service_type ?? '';
         $response['result'] = $row->result ?? '';
         $response['infection_type'] = $row->infection_type ?? '';
+        $response['service_for'] = $row->service_for ?? '';
 
     return $response;
 })->values();
