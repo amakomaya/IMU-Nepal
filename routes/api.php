@@ -1,6 +1,10 @@
 <?php
 
 use App\Models\Anc;
+use App\Models\CaseManagement;
+use App\Models\ContactDetail;
+use App\Models\ContactFollowUp;
+use App\Models\ContactTracing;
 use App\Models\HealthWorker;
 use App\Models\LaboratoryParameter;
 use App\Models\LabTest;
@@ -422,3 +426,92 @@ Route::post('/v1/result-in-lab-from-web', function(Request $request){
     }
 });
 
+Route::get('/v1/contact-tracing', function(Request $request){
+    $hp_code = $request->hp_code;
+    $data = ContactTracing::where('hp_code', $hp_code)->get();
+    return response()->json($data);
+});
+
+Route::post('/v1/contact-tracing', function(Request $request){
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            ContactTracing::create($value);
+        } catch (\Exception $e) { }
+    }
+    return response()->json(['message' => 'Data Sussessfully Sync']);
+});
+
+Route::get('/v1/case-mgmt', function(Request $request){
+    $hp_code = $request->hp_code;
+    $data = CaseManagement::where('hp_code', $hp_code)->get();
+    return response()->json($data);
+});
+
+Route::post('/v1/case-mgmt', function(Request $request){
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            CaseManagement::create($value);
+        } catch (\Exception $e) { }
+    }
+    return response()->json(['message' => 'Data Sussessfully Sync']);
+});
+
+Route::post('/v1/case-mgmt-update', function(Request $request){
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            CaseManagement::where('token', $value['token'])->update($value);
+        } catch (\Exception $e) {
+
+        }
+    }
+    return response()->json(['message' => 'Data Successfully Sync and Update']);
+});
+
+Route::get('/v1/contact-follow-up', function(Request $request){
+    $hp_code = $request->hp_code;
+    $data = ContactFollowUp::where('hp_code', $hp_code)->get();
+    return response()->json($data);
+});
+
+Route::post('/v1/contact-follow-up', function(Request $request){
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            ContactFollowUp::create($value);
+        } catch (\Exception $e) {
+
+        }
+    }
+    return response()->json(['message' => 'Data Successfully Sync']);
+});
+
+Route::get('/v1/contact-detail', function(Request $request){
+    $hp_code = $request->hp_code;
+    $data = ContactDetail::where('hp_code', $hp_code)->get();
+    return response()->json($data);
+});
+
+Route::post('/v1/contact-detail', function(Request $request){
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            ContactDetail::create($value);
+        } catch (\Exception $e) { }
+    }
+    return response()->json(['message' => 'Data Sussessfully Sync']);
+});
+
+Route::post('/v1/contact-detail-update', function(Request $request){
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            ContactDetail::where('token', $value['token'])->update($value);
+        } catch (\Exception $e) {
+
+        }
+    }
+    return response()->json(['message' => 'Data Successfully Sync and Update']);
+});
