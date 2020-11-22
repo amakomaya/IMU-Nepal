@@ -3,33 +3,29 @@
         <filterable v-bind="filterable">
             <thead slot="thead">
             <tr>
-                <th width="10px"></th>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Gender</th>
-                <th>Emergency Contact</th>
-                <!-- <th>District</th> -->
-                <th>Municipality</th>
-                <th>Case</th>
-                <th>Created At</th>
-                <th>Total Collection</th>
-                <th>Lab Result</th>
-                <th>Action</th>
+              <th width="6%">ID</th>
+              <th width="10%">Name</th>
+              <th width="7%">Age</th>
+              <th width="6%" title="Gender">G</th>
+              <th width="10%" title="Emergency Contact Number">Phone</th>
+              <!-- <th>District</th> -->
+              <th width="10%" title="Municipality">Municipality</th>
+              <th width="15%">Case</th>
+              <th width="10%" title="Case Created Date">Date</th>
+              <th width="10%" title="Sample Collection Details">Sample</th>
+              <th width="8%" title="Latest Lab Result">Result</th>
+              <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
             </tr>
             </thead>
-            <tr slot-scope="{item}" v-if="latestLabResultNotNegative(item.latest_anc)">
-                <td>
-                    <input type="checkbox" v-model="womanTokens" @click="select" :value="item.token">                           
-                </td>
+            <tr slot-scope="{item}">
                 <td><div v-if="checkForPositiveOnly(item.latest_anc)" title="Case ID">C ID : {{ item.case_id }}</div>
                     <div v-if="item.parent_case_id !== null" title="Parent Case ID">PC ID : {{ item.parent_case_id }}</div>
                 </td>
                 <td>{{ roleVisibility(item.name)}}</td>
                 <td>{{item.age}}</td>
                 <td>{{ gender(item.sex)}}</td>
-                <td>One : {{ roleVisibility(item.emergency_contact_one) }} <br>
-                    Two : {{ roleVisibility(item.emergency_contact_two) }}
+                <td>{{ roleVisibility(item.emergency_contact_one) }} <br>
+                    {{ roleVisibility(item.emergency_contact_two) }}
                 </td>
                 <td>{{ checkMunicipality(item.municipality_id) }}</td>
                 <td>
@@ -78,7 +74,7 @@
 </template>
 
 <script type="text/javascript">
-    import Filterable from './WomanFilterable.vue'
+    import Filterable from './Filterable.vue'
     import DataConverter from 'ad-bs-converter'
     import axios from 'axios'
     import ViewLabResultReportModel from './ViewLabResultReportModel.vue'

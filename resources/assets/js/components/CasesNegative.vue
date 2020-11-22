@@ -3,29 +3,33 @@
         <filterable v-bind="filterable">
             <thead slot="thead">
             <tr>
-                <th width="10px"></th>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Emergency Contact</th>
-                <th>District</th>
-                <th>Municipality</th>
-                <th>Total Collection</th>
-                <th>Latest Lab Result</th>
-                <th>Action</th>
+              <th width="7%">ID</th>
+              <th width="15%">Name</th>
+              <th width="10%">Age</th>
+              <th width="7%" title="Gender">G</th>
+              <th width="10%" title="Emergency Contact Number">Phone</th>
+              <th>District</th>
+              <th width="10%" title="Municipality">Municipality</th>
+<!--              <th width="15%">Case</th>-->
+              <th width="10%" title="Case Created Date">Date</th>
+              <th width="10%" title="Sample Collection Details">Sample</th>
+              <th width="10%" title="Latest Lab Result">Result</th>
+              <th width="10%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
             </tr>
             </thead>
-            <tr slot-scope="{item}" v-if="latestLabResultNegative(item.latest_anc)">
-                <td>
-                    <input type="checkbox" v-model="womanTokens" @click="select" :value="item.token">                           
-                </td>
+            <tr slot-scope="{item}">
+                <td></td>
                 <td>{{item.name}}</td>
                 <td>{{item.age}}</td>
-                <td>One : {{item.emergency_contact_one}} <br>
-                    Two : {{item.emergency_contact_two}}
+                <td>{{ gender(item.sex)}}</td>
+                <td>{{item.emergency_contact_one}} <br>
+                    {{item.emergency_contact_two}}
                 </td>
                 <td>{{ checkDistrict(item.district_id) }}</td>
                 <td>{{ checkMunicipality(item.municipality_id) }}</td>
-                <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
+                <td>{{ ad2bs(item.created_at) }}</td>
+
+              <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
                 <td><div v-html="latestLabResult(item.latest_anc)">
                 </div>
                 <!-- <button v-on:click="viewLabReport(item)" title="Lab Report">
@@ -46,7 +50,7 @@
 </template>
 
 <script type="text/javascript">
-    import Filterable from './WomanFilterable.vue'
+    import Filterable from './Filterable.vue'
     import DataConverter from 'ad-bs-converter'
     import axios from 'axios'
     import ViewLabReportModel from './ViewLabReportModel.vue'
@@ -228,7 +232,17 @@
                     }
                 }
                 }
+            },
+          gender(type){
+            switch (type){
+              case '1':
+                return 'M';
+              case '2':
+                return  'F';
+              default:
+                return 'O';
             }
+          },
         }
     }
 </script>

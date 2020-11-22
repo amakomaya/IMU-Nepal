@@ -36,7 +36,6 @@
     <!-- jQuery -->
     <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('js/pace.min.js') }}"></script>
-
     <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
     @php
         if (auth()->user()->role == 'healthworker'){
@@ -47,6 +46,7 @@
           }
     @endphp
     <meta name="user-role" content="{{  $role }}">
+    <script src="{{ asset('js/sortable.js') }}"></script>
 
 @yield('style')
   

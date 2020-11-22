@@ -2834,7 +2834,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./WomanFilterable.vue */ "./resources/assets/js/components/WomanFilterable.vue");
+/* harmony import */ var _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filterable.vue */ "./resources/assets/js/components/Filterable.vue");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -2895,7 +2895,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Filterable: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    Filterable: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
     return {
@@ -2943,7 +2943,7 @@ __webpack_require__.r(__webpack_exports__);
           }]
         }]
       },
-      token: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
+      token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
       selected: [],
       allSelected: false,
       womanTokens: [],
@@ -3090,7 +3090,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./WomanFilterable.vue */ "./resources/assets/js/components/WomanFilterable.vue");
+/* harmony import */ var _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filterable.vue */ "./resources/assets/js/components/Filterable.vue");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -3151,7 +3151,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Filterable: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    Filterable: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
     return {
@@ -3199,7 +3199,7 @@ __webpack_require__.r(__webpack_exports__);
           }]
         }]
       },
-      token: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
+      token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
       selected: [],
       allSelected: false,
       womanTokens: [],
@@ -3346,7 +3346,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./WomanFilterable.vue */ "./resources/assets/js/components/WomanFilterable.vue");
+/* harmony import */ var _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filterable.vue */ "./resources/assets/js/components/Filterable.vue");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -3434,10 +3434,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -3447,7 +3443,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Filterable: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Filterable: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     fab: vue_fab__WEBPACK_IMPORTED_MODULE_6___default.a
   },
   data: function data() {
@@ -3497,7 +3493,7 @@ __webpack_require__.r(__webpack_exports__);
           }]
         }]
       },
-      token: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
+      token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
       selected: [],
       allSelected: false,
       womanTokens: [],
@@ -3741,13 +3737,17 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./WomanFilterable.vue */ "./resources/assets/js/components/WomanFilterable.vue");
+/* harmony import */ var _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filterable.vue */ "./resources/assets/js/components/Filterable.vue");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _ViewLabReportModel_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ViewLabReportModel.vue */ "./resources/assets/js/components/ViewLabReportModel.vue");
 /* harmony import */ var _ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ViewLabResultReportModel.vue */ "./resources/assets/js/components/ViewLabResultReportModel.vue");
+//
+//
+//
+//
 //
 //
 //
@@ -3802,7 +3802,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Filterable: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    Filterable: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
     return {
@@ -3850,7 +3850,7 @@ __webpack_require__.r(__webpack_exports__);
           }]
         }]
       },
-      token: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
+      token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
       selected: [],
       allSelected: false,
       womanTokens: [],
@@ -3982,6 +3982,18 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
       }
+    },
+    gender: function gender(type) {
+      switch (type) {
+        case '1':
+          return 'M';
+
+        case '2':
+          return 'F';
+
+        default:
+          return 'O';
+      }
     }
   }
 });
@@ -3997,7 +4009,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./WomanFilterable.vue */ "./resources/assets/js/components/WomanFilterable.vue");
+/* harmony import */ var _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filterable.vue */ "./resources/assets/js/components/Filterable.vue");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -4085,10 +4097,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -4098,7 +4106,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Filterable: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Filterable: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     fab: vue_fab__WEBPACK_IMPORTED_MODULE_6___default.a
   },
   data: function data() {
@@ -4148,7 +4156,7 @@ __webpack_require__.r(__webpack_exports__);
           }]
         }]
       },
-      token: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
+      token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
       selected: [],
       allSelected: false,
       womanTokens: [],
@@ -4392,7 +4400,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./WomanFilterable.vue */ "./resources/assets/js/components/WomanFilterable.vue");
+/* harmony import */ var _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filterable.vue */ "./resources/assets/js/components/Filterable.vue");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -4477,10 +4485,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -4490,7 +4494,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Filterable: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Filterable: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     fab: vue_fab__WEBPACK_IMPORTED_MODULE_6___default.a
   },
   data: function data() {
@@ -4540,7 +4544,7 @@ __webpack_require__.r(__webpack_exports__);
           }]
         }]
       },
-      token: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
+      token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
       selected: [],
       allSelected: false,
       womanTokens: [],
@@ -4775,6 +4779,601 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Filterable.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Filterable.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    url: String,
+    filterGroups: Array,
+    orderables: Array
+  },
+  data: function data() {
+    return {
+      loading: true,
+      appliedFilters: [],
+      filterCandidates: [],
+      query: {
+        order_column: 'created_at',
+        order_direction: 'desc',
+        filter_match: 'and',
+        limit: 100,
+        page: 1
+      },
+      collection: {
+        data: []
+      },
+      json_fields: {
+        'S.N': 'serial_number',
+        'Case Name': 'name',
+        'Age': 'age',
+        'Age Unit': 'age_unit',
+        'Gender': 'gender',
+        'District': 'district',
+        'Municipality': 'municipality',
+        'Ward': 'ward',
+        'Emergency Contact One': 'emergency_contact_one',
+        'Emergency Contact Two': 'emergency_contact_two',
+        'Current Hospital': 'current_hospital',
+        'Swab ID': 'swab_id',
+        'Lab ID': 'lab_id',
+        'Result': 'result',
+        'Created At': 'created_at'
+      },
+      json_fields_for_dolphins: {
+        'name': 'name',
+        'age': 'age',
+        'gender': 'gender',
+        'form_no': 'swab_id',
+        'mobile_no': 'emergency_contact_one'
+      }
+    };
+  },
+  computed: {
+    fetchOperators: function fetchOperators() {
+      var _this = this;
+
+      return function (f) {
+        return _this.availableOperators().filter(function (operator) {
+          if (f.column && operator.parent.includes(f.column.type)) {
+            return operator;
+          }
+        });
+      };
+    }
+  },
+  mounted: function mounted() {
+    this.fetch();
+    this.addFilter();
+  },
+  methods: {
+    ad2bs: function ad2bs() {
+      var dateObject = new Date();
+      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
+      var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default.a.ad2bs(dateFormat);
+      return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
+    },
+    updateOrderDirection: function updateOrderDirection() {
+      if (this.query.order_direction === 'desc') {
+        this.query.order_direction = 'asc';
+      } else {
+        this.query.order_direction = 'desc';
+      }
+
+      this.applyChange();
+    },
+    updateOrderColumn: function updateOrderColumn(e) {
+      var value = e.target.value;
+      vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.query, 'order_column', value);
+      this.applyChange();
+    },
+    excelFileName: function excelFileName() {
+      var ext = '.xls';
+      return 'IMU Nepal Export Data ' + new Date() + ext;
+    },
+    exportToExcelForDolphins: function exportToExcelForDolphins() {
+      if (confirm("Do you want to Download all records in excel ! ")) {
+        var list = [];
+        var role = this.$userRole;
+        $.each(this.collection.data, function (key, data) {
+          var exportableData = {};
+          exportableData.name = data.name;
+
+          if (role == 'dho' || role == 'province' || role == 'center') {
+            exportableData.name = '** ***';
+            exportableData.emergency_contact_one = '** ***';
+          } else {
+            exportableData.name = data.name;
+            exportableData.emergency_contact_one = data.emergency_contact_one;
+          }
+
+          exportableData.age = data.age;
+          exportableData.gender = data.formated_gender;
+
+          if (data.latest_anc) {
+            if (data.latest_anc.labreport) {
+              exportableData.swab_id = data.latest_anc.labreport.formated_token;
+            }
+          }
+
+          list.push(exportableData);
+        });
+        return list;
+      }
+    },
+    exportToExcel: function exportToExcel() {
+      if (confirm("Do you want to Download all records in excel ! ")) {
+        var list = [];
+        var role = this.$userRole;
+        this.collection.data.map(function (data, key) {
+          var exportableData = {};
+          exportableData.serial_number = key + 1;
+
+          if (role == 'dho' || role == 'province' || role == 'center') {
+            exportableData.name = '** ***';
+            exportableData.emergency_contact_one = '** ***';
+            exportableData.emergency_contact_two = '** ***';
+          } else {
+            exportableData.name = data.name;
+            exportableData.emergency_contact_one = data.emergency_contact_one;
+            exportableData.emergency_contact_two = data.emergency_contact_two;
+          }
+
+          exportableData.age = data.age;
+          exportableData.age_unit = data.formated_age_unit;
+          exportableData.gender = data.formated_gender;
+          exportableData.district = data.district.district_name;
+          exportableData.municipality = data.municipality.municipality_name;
+          exportableData.ward = data.ward;
+          exportableData.current_hospital = data.healthpost.name;
+
+          if (data.latest_anc) {
+            exportableData.swab_id = data.latest_anc.token;
+
+            if (data.latest_anc.labreport) {
+              exportableData.lab_id = data.latest_anc.labreport.formated_token;
+            }
+
+            exportableData.result = data.latest_anc.formatted_result;
+          }
+
+          exportableData.created_at = data.created_at;
+          list.push(exportableData);
+        });
+        return list;
+      }
+    },
+    resetFilter: function resetFilter() {
+      this.appliedFilters.splice(0);
+      this.filterCandidates.splice(0);
+      this.addFilter();
+      this.query.page = 1;
+      this.applyChange();
+    },
+    applyFilter: function applyFilter() {
+      vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.$data, 'appliedFilters', JSON.parse(JSON.stringify(this.filterCandidates)));
+      this.query.page = 1;
+      this.applyChange();
+    },
+    removeFilter: function removeFilter(f, i) {
+      this.filterCandidates.splice(i, 1);
+    },
+    selectOperator: function selectOperator(f, i, e) {
+      var value = e.target.value;
+
+      if (value.length === 0) {
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.filterCandidates[i], 'operator', value);
+        return;
+      }
+
+      var obj = JSON.parse(value);
+      vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.filterCandidates[i], 'operator', obj);
+      this.filterCandidates[i].query_1 = null;
+      this.filterCandidates[i].query_2 = null; // set default query
+
+      switch (obj.name) {
+        case 'in_the_past':
+        case 'in_the_next':
+          this.filterCandidates[i].query_1 = 28;
+          this.filterCandidates[i].query_2 = 'days';
+          break;
+
+        case 'in_the_peroid':
+          this.filterCandidates[i].query_1 = 'today';
+          break;
+
+        case 'in_the_custom_selected_period':
+          this.filterCandidates[i].query_1 = this.ad2bs();
+          this.filterCandidates[i].query_2 = this.ad2bs();
+          break;
+      }
+    },
+    selectColumn: function selectColumn(f, i, e) {
+      var value = e.target.value;
+
+      if (value.length === 0) {
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.filterCandidates[i], 'column', value);
+        return;
+      }
+
+      var obj = JSON.parse(value);
+      vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.filterCandidates[i], 'column', obj); // set default operator: todo
+
+      switch (obj.type) {
+        case 'numeric':
+          this.filterCandidates[i].operator = this.availableOperators()[4];
+          this.filterCandidates[i].query_1 = null;
+          this.filterCandidates[i].query_2 = null;
+          break;
+
+        case 'string':
+          this.filterCandidates[i].operator = this.availableOperators()[6];
+          this.filterCandidates[i].query_1 = null;
+          this.filterCandidates[i].query_2 = null;
+          break;
+
+        case 'datetime':
+          this.filterCandidates[i].operator = this.availableOperators()[9];
+          this.filterCandidates[i].query_1 = 28;
+          this.filterCandidates[i].query_2 = 'days';
+          break;
+
+        case 'counter':
+          this.filterCandidates[i].operator = this.availableOperators()[14];
+          this.filterCandidates[i].query_1 = null;
+          this.filterCandidates[i].query_2 = null;
+          break;
+      }
+    },
+    addFilter: function addFilter() {
+      this.filterCandidates.push({
+        column: '',
+        operator: '',
+        query_1: null,
+        query_2: null
+      });
+    },
+    applyChange: function applyChange() {
+      this.fetch();
+    },
+    updateLimit: function updateLimit() {
+      this.query.page = 1;
+      this.applyChange();
+    },
+    prevPage: function prevPage() {
+      if (this.collection.prev_page_url) {
+        this.query.page = Number(this.query.page) - 1;
+        this.applyChange();
+      }
+    },
+    nextPage: function nextPage() {
+      if (this.collection.next_page_url) {
+        this.query.page = Number(this.query.page) + 1;
+        this.applyChange();
+      }
+    },
+    getFilters: function getFilters() {
+      var f = {};
+      this.appliedFilters.forEach(function (filter, i) {
+        f["f[".concat(i, "][column]")] = filter.column.name;
+        f["f[".concat(i, "][operator]")] = filter.operator.name;
+        f["f[".concat(i, "][query_1]")] = filter.query_1;
+        f["f[".concat(i, "][query_2]")] = filter.query_2;
+      });
+      return f;
+    },
+    fetch: function fetch() {
+      var _this2 = this;
+
+      this.loading = true;
+      var filters = this.getFilters();
+
+      var params = _objectSpread({}, filters, {}, this.query);
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(this.url, {
+        params: params
+      }).then(function (res) {
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(_this2.$data, 'collection', res.data.collection);
+        _this2.query.page = res.data.collection.current_page;
+      })["catch"](function (error) {})["finally"](function () {
+        _this2.loading = false;
+      });
+    },
+    availableOperators: function availableOperators() {
+      return [{
+        title: 'equal to',
+        name: 'equal_to',
+        parent: ['numeric', 'string'],
+        component: 'single'
+      }, {
+        title: 'not equal to',
+        name: 'not_equal_to',
+        parent: ['numeric', 'string'],
+        component: 'single'
+      }, {
+        title: 'less than',
+        name: 'less_than',
+        parent: ['numeric'],
+        component: 'single'
+      }, {
+        title: 'greater than',
+        name: 'greater_than',
+        parent: ['numeric'],
+        component: 'single'
+      }, {
+        title: 'between',
+        name: 'between',
+        parent: ['numeric'],
+        component: 'double'
+      }, {
+        title: 'not between',
+        name: 'not_between',
+        parent: ['numeric'],
+        component: 'double'
+      }, {
+        title: 'contains',
+        name: 'contains',
+        parent: ['string'],
+        component: 'single'
+      }, {
+        title: 'starts with',
+        name: 'starts_with',
+        parent: ['string'],
+        component: 'single'
+      }, {
+        title: 'ends with',
+        name: 'ends_with',
+        parent: ['string'],
+        component: 'single'
+      }, {
+        title: 'in the past',
+        name: 'in_the_past',
+        parent: ['datetime'],
+        component: 'datetime_1'
+      }, {
+        title: 'in the next',
+        name: 'in_the_next',
+        parent: ['datetime'],
+        component: 'datetime_1'
+      }, {
+        title: 'in the period',
+        name: 'in_the_peroid',
+        parent: ['datetime'],
+        component: 'datetime_2'
+      }, {
+        title: 'in the custom selected period',
+        name: 'in_the_custom_selected_period',
+        parent: ['datetime'],
+        component: 'datetime_3'
+      }, {
+        title: 'equal to',
+        name: 'equal_to_count',
+        parent: ['counter'],
+        component: 'single'
+      }, {
+        title: 'not equal to',
+        name: 'not_equal_to_count',
+        parent: ['counter'],
+        component: 'single'
+      }, {
+        title: 'less than',
+        name: 'less_than_count',
+        parent: ['counter'],
+        component: 'single'
+      }, {
+        title: 'greater than',
+        name: 'greater_than_count',
+        parent: ['counter'],
+        component: 'single'
+      }];
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabCases.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LabCases.vue?vue&type=script&lang=js& ***!
@@ -4786,7 +5385,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WomanFilterable.vue */ "./resources/assets/js/components/WomanFilterable.vue");
+/* harmony import */ var _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filterable.vue */ "./resources/assets/js/components/Filterable.vue");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -4889,7 +5488,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Filterable: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Filterable: _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     fab: vue_fab__WEBPACK_IMPORTED_MODULE_7___default.a
   },
   data: function data() {
@@ -4938,7 +5537,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }]
         }]
       },
-      token: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"].data().collection.data,
+      token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"].data().collection.data,
       selected: [],
       allSelected: false,
       womanTokens: [],
@@ -5246,7 +5845,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WomanFilterable.vue */ "./resources/assets/js/components/WomanFilterable.vue");
+/* harmony import */ var _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filterable.vue */ "./resources/assets/js/components/Filterable.vue");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -5349,7 +5948,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Filterable: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Filterable: _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     fab: vue_fab__WEBPACK_IMPORTED_MODULE_7___default.a
   },
   data: function data() {
@@ -5398,7 +5997,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }]
         }]
       },
-      token: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"].data().collection.data,
+      token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"].data().collection.data,
       selected: [],
       allSelected: false,
       womanTokens: [],
@@ -5706,7 +6305,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WomanFilterable.vue */ "./resources/assets/js/components/WomanFilterable.vue");
+/* harmony import */ var _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filterable.vue */ "./resources/assets/js/components/Filterable.vue");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
 /* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -5809,7 +6408,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Filterable: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Filterable: _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     fab: vue_fab__WEBPACK_IMPORTED_MODULE_7___default.a
   },
   data: function data() {
@@ -5858,7 +6457,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }]
         }]
       },
-      token: _WomanFilterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"].data().collection.data,
+      token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"].data().collection.data,
       selected: [],
       allSelected: false,
       womanTokens: [],
@@ -7047,601 +7646,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/WomanFilterable.vue?vue&type=script&lang=js&":
-/*!*********************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/WomanFilterable.vue?vue&type=script&lang=js& ***!
-  \*********************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
-/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__);
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    url: String,
-    filterGroups: Array,
-    orderables: Array
-  },
-  data: function data() {
-    return {
-      loading: true,
-      appliedFilters: [],
-      filterCandidates: [],
-      query: {
-        order_column: 'created_at',
-        order_direction: 'desc',
-        filter_match: 'and',
-        limit: 100,
-        page: 1
-      },
-      collection: {
-        data: []
-      },
-      json_fields: {
-        'S.N': 'serial_number',
-        'Case Name': 'name',
-        'Age': 'age',
-        'Age Unit': 'age_unit',
-        'Gender': 'gender',
-        'District': 'district',
-        'Municipality': 'municipality',
-        'Ward': 'ward',
-        'Emergency Contact One': 'emergency_contact_one',
-        'Emergency Contact Two': 'emergency_contact_two',
-        'Current Hospital': 'current_hospital',
-        'Swab ID': 'swab_id',
-        'Lab ID': 'lab_id',
-        'Result': 'result',
-        'Created At': 'created_at'
-      },
-      json_fields_for_dolphins: {
-        'name': 'name',
-        'age': 'age',
-        'gender': 'gender',
-        'form_no': 'swab_id',
-        'mobile_no': 'emergency_contact_one'
-      }
-    };
-  },
-  computed: {
-    fetchOperators: function fetchOperators() {
-      var _this = this;
-
-      return function (f) {
-        return _this.availableOperators().filter(function (operator) {
-          if (f.column && operator.parent.includes(f.column.type)) {
-            return operator;
-          }
-        });
-      };
-    }
-  },
-  mounted: function mounted() {
-    this.fetch();
-    this.addFilter();
-  },
-  methods: {
-    ad2bs: function ad2bs() {
-      var dateObject = new Date();
-      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
-      var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default.a.ad2bs(dateFormat);
-      return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
-    },
-    updateOrderDirection: function updateOrderDirection() {
-      if (this.query.order_direction === 'desc') {
-        this.query.order_direction = 'asc';
-      } else {
-        this.query.order_direction = 'desc';
-      }
-
-      this.applyChange();
-    },
-    updateOrderColumn: function updateOrderColumn(e) {
-      var value = e.target.value;
-      vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.query, 'order_column', value);
-      this.applyChange();
-    },
-    excelFileName: function excelFileName() {
-      var ext = '.xls';
-      return 'IMU Nepal Export Data ' + new Date() + ext;
-    },
-    exportToExcelForDolphins: function exportToExcelForDolphins() {
-      if (confirm("Do you want to Download all records in excel ! ")) {
-        var list = [];
-        var role = this.$userRole;
-        $.each(this.collection.data, function (key, data) {
-          var exportableData = {};
-          exportableData.name = data.name;
-
-          if (role == 'dho' || role == 'province' || role == 'center') {
-            exportableData.name = '** ***';
-            exportableData.emergency_contact_one = '** ***';
-          } else {
-            exportableData.name = data.name;
-            exportableData.emergency_contact_one = data.emergency_contact_one;
-          }
-
-          exportableData.age = data.age;
-          exportableData.gender = data.formated_gender;
-
-          if (data.latest_anc) {
-            if (data.latest_anc.labreport) {
-              exportableData.swab_id = data.latest_anc.labreport.formated_token;
-            }
-          }
-
-          list.push(exportableData);
-        });
-        return list;
-      }
-    },
-    exportToExcel: function exportToExcel() {
-      if (confirm("Do you want to Download all records in excel ! ")) {
-        var list = [];
-        var role = this.$userRole;
-        this.collection.data.map(function (data, key) {
-          var exportableData = {};
-          exportableData.serial_number = key + 1;
-
-          if (role == 'dho' || role == 'province' || role == 'center') {
-            exportableData.name = '** ***';
-            exportableData.emergency_contact_one = '** ***';
-            exportableData.emergency_contact_two = '** ***';
-          } else {
-            exportableData.name = data.name;
-            exportableData.emergency_contact_one = data.emergency_contact_one;
-            exportableData.emergency_contact_two = data.emergency_contact_two;
-          }
-
-          exportableData.age = data.age;
-          exportableData.age_unit = data.formated_age_unit;
-          exportableData.gender = data.formated_gender;
-          exportableData.district = data.district.district_name;
-          exportableData.municipality = data.municipality.municipality_name;
-          exportableData.ward = data.ward;
-          exportableData.current_hospital = data.healthpost.name;
-
-          if (data.latest_anc) {
-            exportableData.swab_id = data.latest_anc.token;
-
-            if (data.latest_anc.labreport) {
-              exportableData.lab_id = data.latest_anc.labreport.formated_token;
-            }
-
-            exportableData.result = data.latest_anc.formatted_result;
-          }
-
-          exportableData.created_at = data.created_at;
-          list.push(exportableData);
-        });
-        return list;
-      }
-    },
-    resetFilter: function resetFilter() {
-      this.appliedFilters.splice(0);
-      this.filterCandidates.splice(0);
-      this.addFilter();
-      this.query.page = 1;
-      this.applyChange();
-    },
-    applyFilter: function applyFilter() {
-      vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.$data, 'appliedFilters', JSON.parse(JSON.stringify(this.filterCandidates)));
-      this.query.page = 1;
-      this.applyChange();
-    },
-    removeFilter: function removeFilter(f, i) {
-      this.filterCandidates.splice(i, 1);
-    },
-    selectOperator: function selectOperator(f, i, e) {
-      var value = e.target.value;
-
-      if (value.length === 0) {
-        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.filterCandidates[i], 'operator', value);
-        return;
-      }
-
-      var obj = JSON.parse(value);
-      vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.filterCandidates[i], 'operator', obj);
-      this.filterCandidates[i].query_1 = null;
-      this.filterCandidates[i].query_2 = null; // set default query
-
-      switch (obj.name) {
-        case 'in_the_past':
-        case 'in_the_next':
-          this.filterCandidates[i].query_1 = 28;
-          this.filterCandidates[i].query_2 = 'days';
-          break;
-
-        case 'in_the_peroid':
-          this.filterCandidates[i].query_1 = 'today';
-          break;
-
-        case 'in_the_custom_selected_period':
-          this.filterCandidates[i].query_1 = this.ad2bs();
-          this.filterCandidates[i].query_2 = this.ad2bs();
-          break;
-      }
-    },
-    selectColumn: function selectColumn(f, i, e) {
-      var value = e.target.value;
-
-      if (value.length === 0) {
-        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.filterCandidates[i], 'column', value);
-        return;
-      }
-
-      var obj = JSON.parse(value);
-      vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.filterCandidates[i], 'column', obj); // set default operator: todo
-
-      switch (obj.type) {
-        case 'numeric':
-          this.filterCandidates[i].operator = this.availableOperators()[4];
-          this.filterCandidates[i].query_1 = null;
-          this.filterCandidates[i].query_2 = null;
-          break;
-
-        case 'string':
-          this.filterCandidates[i].operator = this.availableOperators()[6];
-          this.filterCandidates[i].query_1 = null;
-          this.filterCandidates[i].query_2 = null;
-          break;
-
-        case 'datetime':
-          this.filterCandidates[i].operator = this.availableOperators()[9];
-          this.filterCandidates[i].query_1 = 28;
-          this.filterCandidates[i].query_2 = 'days';
-          break;
-
-        case 'counter':
-          this.filterCandidates[i].operator = this.availableOperators()[14];
-          this.filterCandidates[i].query_1 = null;
-          this.filterCandidates[i].query_2 = null;
-          break;
-      }
-    },
-    addFilter: function addFilter() {
-      this.filterCandidates.push({
-        column: '',
-        operator: '',
-        query_1: null,
-        query_2: null
-      });
-    },
-    applyChange: function applyChange() {
-      this.fetch();
-    },
-    updateLimit: function updateLimit() {
-      this.query.page = 1;
-      this.applyChange();
-    },
-    prevPage: function prevPage() {
-      if (this.collection.prev_page_url) {
-        this.query.page = Number(this.query.page) - 1;
-        this.applyChange();
-      }
-    },
-    nextPage: function nextPage() {
-      if (this.collection.next_page_url) {
-        this.query.page = Number(this.query.page) + 1;
-        this.applyChange();
-      }
-    },
-    getFilters: function getFilters() {
-      var f = {};
-      this.appliedFilters.forEach(function (filter, i) {
-        f["f[".concat(i, "][column]")] = filter.column.name;
-        f["f[".concat(i, "][operator]")] = filter.operator.name;
-        f["f[".concat(i, "][query_1]")] = filter.query_1;
-        f["f[".concat(i, "][query_2]")] = filter.query_2;
-      });
-      return f;
-    },
-    fetch: function fetch() {
-      var _this2 = this;
-
-      this.loading = true;
-      var filters = this.getFilters();
-
-      var params = _objectSpread({}, filters, {}, this.query);
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(this.url, {
-        params: params
-      }).then(function (res) {
-        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(_this2.$data, 'collection', res.data.collection);
-        _this2.query.page = res.data.collection.current_page;
-      })["catch"](function (error) {})["finally"](function () {
-        _this2.loading = false;
-      });
-    },
-    availableOperators: function availableOperators() {
-      return [{
-        title: 'equal to',
-        name: 'equal_to',
-        parent: ['numeric', 'string'],
-        component: 'single'
-      }, {
-        title: 'not equal to',
-        name: 'not_equal_to',
-        parent: ['numeric', 'string'],
-        component: 'single'
-      }, {
-        title: 'less than',
-        name: 'less_than',
-        parent: ['numeric'],
-        component: 'single'
-      }, {
-        title: 'greater than',
-        name: 'greater_than',
-        parent: ['numeric'],
-        component: 'single'
-      }, {
-        title: 'between',
-        name: 'between',
-        parent: ['numeric'],
-        component: 'double'
-      }, {
-        title: 'not between',
-        name: 'not_between',
-        parent: ['numeric'],
-        component: 'double'
-      }, {
-        title: 'contains',
-        name: 'contains',
-        parent: ['string'],
-        component: 'single'
-      }, {
-        title: 'starts with',
-        name: 'starts_with',
-        parent: ['string'],
-        component: 'single'
-      }, {
-        title: 'ends with',
-        name: 'ends_with',
-        parent: ['string'],
-        component: 'single'
-      }, {
-        title: 'in the past',
-        name: 'in_the_past',
-        parent: ['datetime'],
-        component: 'datetime_1'
-      }, {
-        title: 'in the next',
-        name: 'in_the_next',
-        parent: ['datetime'],
-        component: 'datetime_1'
-      }, {
-        title: 'in the period',
-        name: 'in_the_peroid',
-        parent: ['datetime'],
-        component: 'datetime_2'
-      }, {
-        title: 'in the custom selected period',
-        name: 'in_the_custom_selected_period',
-        parent: ['datetime'],
-        component: 'datetime_3'
-      }, {
-        title: 'equal to',
-        name: 'equal_to_count',
-        parent: ['counter'],
-        component: 'single'
-      }, {
-        title: 'not equal to',
-        name: 'not_equal_to_count',
-        parent: ['counter'],
-        component: 'single'
-      }, {
-        title: 'less than',
-        name: 'less_than_count',
-        parent: ['counter'],
-        component: 'single'
-      }, {
-        title: 'greater than',
-        name: 'greater_than_count',
-        parent: ['counter'],
-        component: 'single'
-      }];
-    }
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/viewConfirmReportFormModel.vue?vue&type=script&lang=js&":
 /*!********************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/viewConfirmReportFormModel.vue?vue&type=script&lang=js& ***!
@@ -7908,10 +7912,10 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/WomanFilterable.vue?vue&type=style&index=0&id=137dbf0d&lang=scss&scoped=true&":
-/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/lib/loader.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/WomanFilterable.vue?vue&type=style&index=0&id=137dbf0d&lang=scss&scoped=true& ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Filterable.vue?vue&type=style&index=0&id=25c67949&lang=scss&scoped=true&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/lib/loader.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Filterable.vue?vue&type=style&index=0&id=25c67949&lang=scss&scoped=true& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7920,7 +7924,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "html[data-v-137dbf0d] {\n  width: 100%;\n  height: 100%;\n}\nbody[data-v-137dbf0d] {\n  width: 100%;\n  height: 100%;\n  margin: 0;\n  color: #484746;\n  background: #fafafa;\n  font-family: Helvetica, sans-serif;\n  font-size: 13px;\n  line-height: 16px;\n  -webkit-font-smoothing: antialiased;\n}\n*[data-v-137dbf0d] {\n  box-sizing: border-box;\n}\n.container[data-v-137dbf0d] {\n  width: 100%;\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n}\n.navbar[data-v-137dbf0d] {\n  background: #fff;\n  height: 45px;\n  border-bottom: 2px solid rgba(63, 63, 68, 0.1);\n}\n.content[data-v-137dbf0d] {\n  width: 1000px;\n  margin: 0 auto;\n  overflow-y: scroll;\n  padding: 15px;\n}\n.panel[data-v-137dbf0d] {\n  background: #fff;\n  margin-bottom: 16px;\n  border-radius: 2px;\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);\n}\n.panel-heading[data-v-137dbf0d] {\n  padding: 8px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  border-bottom: 1px solid rgba(63, 63, 68, 0.1);\n}\n.panel-title[data-v-137dbf0d] {\n  font-size: 18px;\n  line-height: 24px;\n}\n.panel-body[data-v-137dbf0d] {\n  padding: 8px;\n}\n.panel-footer[data-v-137dbf0d] {\n  padding: 8px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  border-top: 1px solid rgba(63, 63, 68, 0.1);\n}\n.table[data-v-137dbf0d] {\n  width: 100%;\n  border-collapse: collapse;\n}\n.table thead tr th[data-v-137dbf0d] {\n  text-align: left;\n  border-bottom: 2px solid rgba(63, 63, 68, 0.1);\n  padding: 5px;\n  font-weight: bold;\n}\n.table tbody tr[data-v-137dbf0d] {\n  border-top: 1px solid rgba(63, 63, 68, 0.1);\n}\n.table tbody tr td[data-v-137dbf0d] {\n  vertical-align: top;\n  padding: 5px;\n}\n.table tbody tr[data-v-137dbf0d]:nth-of-type(odd) {\n  background: #fcfcfc;\n}\nselect[data-v-137dbf0d] {\n  background: #fafafa;\n  border: none;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.01);\n  border-radius: 1px;\n  box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.1);\n}\n.form-control[data-v-137dbf0d] {\n  color: #484746;\n  line-height: 13px;\n  font-size: 13px;\n  height: 32px;\n  background: #fafafa;\n  border: none;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.01);\n  border-radius: 1px;\n  box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.1);\n  padding: 8px;\n  width: 100%;\n  display: block;\n}\n.filter-item[data-v-137dbf0d] {\n  margin-bottom: 15px;\n  display: flex;\n}\n.filter-column[data-v-137dbf0d] {\n  padding-right: 15px;\n  width: 25%;\n}\n.filter-operator[data-v-137dbf0d] {\n  padding-right: 15px;\n  width: 25%;\n}\n.filter-query_1[data-v-137dbf0d] {\n  width: 24%;\n  padding-right: 15px;\n}\n.filter-full[data-v-137dbf0d] {\n  width: 48%;\n}\n.filter-query_2[data-v-137dbf0d] {\n  width: 24%;\n}\n.filter-remove[data-v-137dbf0d] {\n  width: 2%;\n  text-align: right;\n}\n.filter-remove button[data-v-137dbf0d] {\n  color: #e75650;\n  background: transparent;\n  border: none;\n  font-weight: bold;\n}\n.btn[data-v-137dbf0d] {\n  border: none;\n  border-radius: 2px;\n  padding: 5px 10px;\n  display: inline-block;\n  position: relative;\n  text-shadow: none;\n  cursor: pointer;\n  transition: background 0.2s;\n  color: #484746;\n  background: #ececec;\n  border-bottom: 1px solid lightgray;\n}\n.btn-primary[data-v-137dbf0d] {\n  background: #3aa3e3;\n  color: #fff;\n  border-bottom: 1px solid #1d8acd;\n}\n.btn-secondary[data-v-137dbf0d] {\n  background: #2c405a;\n  color: #fff;\n  border-bottom: 1px solid #1b2838;\n}\n.filterable-export[data-v-137dbf0d] {\n  margin-bottom: 15px;\n  display: flex;\n  justify-content: space-between;\n}", ""]);
+exports.push([module.i, "html[data-v-25c67949] {\n  width: 100%;\n  height: 100%;\n}\nbody[data-v-25c67949] {\n  width: 100%;\n  height: 100%;\n  margin: 0;\n  color: #484746;\n  background: #fafafa;\n  font-family: Helvetica, sans-serif;\n  font-size: 13px;\n  line-height: 16px;\n  -webkit-font-smoothing: antialiased;\n}\n*[data-v-25c67949] {\n  box-sizing: border-box;\n}\n.container[data-v-25c67949] {\n  width: 100%;\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n}\n.navbar[data-v-25c67949] {\n  background: #fff;\n  height: 45px;\n  border-bottom: 2px solid rgba(63, 63, 68, 0.1);\n}\n.content[data-v-25c67949] {\n  width: 1000px;\n  margin: 0 auto;\n  overflow-y: scroll;\n  padding: 15px;\n}\n.panel[data-v-25c67949] {\n  background: #fff;\n  margin-bottom: 16px;\n  border-radius: 2px;\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);\n}\n.panel-heading[data-v-25c67949] {\n  padding: 8px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  border-bottom: 1px solid rgba(63, 63, 68, 0.1);\n}\n.panel-title[data-v-25c67949] {\n  font-size: 18px;\n  line-height: 24px;\n}\n.panel-body[data-v-25c67949] {\n  padding: 8px;\n}\n.panel-footer[data-v-25c67949] {\n  padding: 8px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  border-top: 1px solid rgba(63, 63, 68, 0.1);\n}\n.table[data-v-25c67949] {\n  width: 100%;\n  border-collapse: collapse;\n}\n.table thead tr th[data-v-25c67949] {\n  text-align: left;\n  border-bottom: 2px solid rgba(63, 63, 68, 0.1);\n  padding: 5px;\n  font-weight: bold;\n}\n.table tbody tr[data-v-25c67949] {\n  border-top: 1px solid rgba(63, 63, 68, 0.1);\n}\n.table tbody tr td[data-v-25c67949] {\n  vertical-align: top;\n  padding: 5px;\n}\n.table tbody tr[data-v-25c67949]:nth-of-type(odd) {\n  background: #fcfcfc;\n}\nselect[data-v-25c67949] {\n  background: #fafafa;\n  border: none;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.01);\n  border-radius: 1px;\n  box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.1);\n}\n.form-control[data-v-25c67949] {\n  color: #484746;\n  line-height: 13px;\n  font-size: 13px;\n  height: 32px;\n  background: #fafafa;\n  border: none;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.01);\n  border-radius: 1px;\n  box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.1);\n  padding: 8px;\n  width: 100%;\n  display: block;\n}\n.filter-item[data-v-25c67949] {\n  margin-bottom: 15px;\n  display: flex;\n}\n.filter-column[data-v-25c67949] {\n  padding-right: 15px;\n  width: 25%;\n}\n.filter-operator[data-v-25c67949] {\n  padding-right: 15px;\n  width: 25%;\n}\n.filter-query_1[data-v-25c67949] {\n  width: 24%;\n  padding-right: 15px;\n}\n.filter-full[data-v-25c67949] {\n  width: 48%;\n}\n.filter-query_2[data-v-25c67949] {\n  width: 24%;\n}\n.filter-remove[data-v-25c67949] {\n  width: 2%;\n  text-align: right;\n}\n.filter-remove button[data-v-25c67949] {\n  color: #e75650;\n  background: transparent;\n  border: none;\n  font-weight: bold;\n}\n.btn[data-v-25c67949] {\n  border: none;\n  border-radius: 2px;\n  padding: 5px 10px;\n  display: inline-block;\n  position: relative;\n  text-shadow: none;\n  cursor: pointer;\n  transition: background 0.2s;\n  color: #484746;\n  background: #ececec;\n  border-bottom: 1px solid lightgray;\n}\n.btn-primary[data-v-25c67949] {\n  background: #3aa3e3;\n  color: #fff;\n  border-bottom: 1px solid #1d8acd;\n}\n.btn-secondary[data-v-25c67949] {\n  background: #2c405a;\n  color: #fff;\n  border-bottom: 1px solid #1b2838;\n}\n.filterable-export[data-v-25c67949] {\n  margin-bottom: 15px;\n  display: flex;\n  justify-content: space-between;\n}", ""]);
 
 // exports
 
@@ -27869,15 +27873,15 @@ try {
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/WomanFilterable.vue?vue&type=style&index=0&id=137dbf0d&lang=scss&scoped=true&":
-/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/lib/loader.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/WomanFilterable.vue?vue&type=style&index=0&id=137dbf0d&lang=scss&scoped=true& ***!
-  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Filterable.vue?vue&type=style&index=0&id=25c67949&lang=scss&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/lib/loader.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Filterable.vue?vue&type=style&index=0&id=25c67949&lang=scss&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/lib/loader.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./WomanFilterable.vue?vue&type=style&index=0&id=137dbf0d&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/WomanFilterable.vue?vue&type=style&index=0&id=137dbf0d&lang=scss&scoped=true&");
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/lib/loader.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./Filterable.vue?vue&type=style&index=0&id=25c67949&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Filterable.vue?vue&type=style&index=0&id=25c67949&lang=scss&scoped=true&");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -38984,260 +38988,193 @@ var render = function() {
         "filterable",
         _vm._b(
           {
-            scopedSlots: _vm._u(
-              [
-                {
-                  key: "default",
-                  fn: function(ref) {
-                    var item = ref.item
-                    return _vm.latestLabResultNotNegative(item.latest_anc)
-                      ? _c("tr", {}, [
-                          _c("td", [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.womanTokens,
-                                  expression: "womanTokens"
-                                }
-                              ],
-                              attrs: { type: "checkbox" },
-                              domProps: {
-                                value: item.token,
-                                checked: Array.isArray(_vm.womanTokens)
-                                  ? _vm._i(_vm.womanTokens, item.token) > -1
-                                  : _vm.womanTokens
-                              },
-                              on: {
-                                click: _vm.select,
-                                change: function($event) {
-                                  var $$a = _vm.womanTokens,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = item.token,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        (_vm.womanTokens = $$a.concat([$$v]))
-                                    } else {
-                                      $$i > -1 &&
-                                        (_vm.womanTokens = $$a
-                                          .slice(0, $$i)
-                                          .concat($$a.slice($$i + 1)))
-                                    }
-                                  } else {
-                                    _vm.womanTokens = $$c
-                                  }
-                                }
-                              }
-                            })
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var item = ref.item
+                  return _c("tr", {}, [
+                    _c("td", [
+                      _vm.checkForPositiveOnly(item.latest_anc)
+                        ? _c("div", { attrs: { title: "Case ID" } }, [
+                            _vm._v("C ID : " + _vm._s(item.case_id))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      item.parent_case_id !== null
+                        ? _c("div", { attrs: { title: "Parent Case ID" } }, [
+                            _vm._v("PC ID : " + _vm._s(item.parent_case_id))
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.roleVisibility(item.name)))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.age))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.gender(item.sex)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "One : " +
+                          _vm._s(
+                            _vm.roleVisibility(item.emergency_contact_one)
+                          ) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Two : " +
+                          _vm._s(
+                            _vm.roleVisibility(item.emergency_contact_two)
+                          ) +
+                          "\n      "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(_vm.checkMunicipality(item.municipality_id))
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n        Place : " +
+                          _vm._s(item.healthpost.name) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Type : " +
+                          _vm._s(_vm.checkCaseType(item.cases)) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Management : " +
+                          _vm._s(
+                            _vm.checkCaseManagement(item.cases, item.case_where)
+                          ) +
+                          "\n      "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.ad2bs(item.created_at)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("span", { staticClass: "label label-info" }, [
+                        _vm._v(" " + _vm._s(item.ancs.length))
+                      ]),
+                      _vm._v(" "),
+                      item.latest_anc
+                        ? _c("div", { attrs: { title: "Swab ID" } }, [
+                            _vm._v("SID : "),
+                            _c("strong", [
+                              _vm._v(_vm._s(item.latest_anc.token))
+                            ])
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      item.ancs.length > 0
+                        ? _c("div", {
+                            domProps: {
+                              innerHTML: _vm._s(
+                                _vm.latestLabResult(item.latest_anc)
+                              )
+                            }
+                          })
+                        : _c("div", [
+                            _c("span", { staticClass: "label label-primary" }, [
+                              _vm._v(" Registered ")
+                            ])
                           ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm.checkForPositiveOnly(item.latest_anc)
-                              ? _c("div", { attrs: { title: "Case ID" } }, [
-                                  _vm._v("C ID : " + _vm._s(item.case_id))
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            item.parent_case_id !== null
+                      _vm._v(" "),
+                      item.ancs.length > 0 && item.latest_anc.result == 9
+                        ? _c("div", [
+                            _vm._v(
+                              _vm._s(
+                                item.latest_anc.labreport.token
+                                  .split("-")
+                                  .splice(1)
+                                  .join("-")
+                              )
+                            )
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          attrs: { title: "Case Details Report" },
+                          on: {
+                            click: function($event) {
+                              return _vm.viewCaseDetails(item.token)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "fa fa-file",
+                            attrs: { "aria-hidden": "true" }
+                          }),
+                          _vm._v(" |\n        ")
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm.role == "healthworker"
+                        ? _c("div", [
+                            item.ancs.length == 0
                               ? _c(
-                                  "div",
-                                  { attrs: { title: "Parent Case ID" } },
+                                  "button",
+                                  {
+                                    attrs: {
+                                      title:
+                                        "Add Sample Collection / Swab Collection Report"
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.aadSampleCollection(
+                                          item.token
+                                        )
+                                      }
+                                    }
+                                  },
                                   [
-                                    _vm._v(
-                                      "PC ID : " + _vm._s(item.parent_case_id)
-                                    )
+                                    _c("i", {
+                                      staticClass: "fa fa-medkit",
+                                      attrs: { "aria-hidden": "true" }
+                                    }),
+                                    _vm._v(" |\n          ")
                                   ]
                                 )
                               : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.roleVisibility(item.name)))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(item.age))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(_vm.gender(item.sex)))]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "One : " +
-                                _vm._s(
-                                  _vm.roleVisibility(item.emergency_contact_one)
-                                ) +
-                                " "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n        Two : " +
-                                _vm._s(
-                                  _vm.roleVisibility(item.emergency_contact_two)
-                                ) +
-                                "\n      "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              _vm._s(
-                                _vm.checkMunicipality(item.municipality_id)
-                              )
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "\n        Place : " +
-                                _vm._s(item.healthpost.name) +
-                                " "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n        Type : " +
-                                _vm._s(_vm.checkCaseType(item.cases)) +
-                                " "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n        Management : " +
-                                _vm._s(
-                                  _vm.checkCaseManagement(
-                                    item.cases,
-                                    item.case_where
-                                  )
-                                ) +
-                                "\n      "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.ad2bs(item.created_at)))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("span", { staticClass: "label label-info" }, [
-                              _vm._v(" " + _vm._s(item.ancs.length))
-                            ]),
-                            _vm._v(" "),
-                            item.latest_anc
-                              ? _c("div", { attrs: { title: "Swab ID" } }, [
-                                  _vm._v("SID : "),
-                                  _c("strong", [
-                                    _vm._v(_vm._s(item.latest_anc.token))
-                                  ])
-                                ])
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            item.ancs.length > 0
-                              ? _c("div", {
-                                  domProps: {
-                                    innerHTML: _vm._s(
-                                      _vm.latestLabResult(item.latest_anc)
-                                    )
-                                  }
-                                })
-                              : _c("div", [
-                                  _c(
-                                    "span",
-                                    { staticClass: "label label-primary" },
-                                    [_vm._v(" Registered ")]
-                                  )
-                                ]),
-                            _vm._v(" "),
-                            item.ancs.length > 0 && item.latest_anc.result == 9
-                              ? _c("div", [
-                                  _vm._v(
-                                    _vm._s(
-                                      item.latest_anc.labreport.token
-                                        .split("-")
-                                        .splice(1)
-                                        .join("-")
-                                    )
-                                  )
-                                ])
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c(
-                              "button",
-                              {
-                                attrs: { title: "Case Details Report" },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.viewCaseDetails(item.token)
-                                  }
-                                }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "fa fa-file",
-                                  attrs: { "aria-hidden": "true" }
-                                }),
-                                _vm._v(" |\n        ")
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _vm.role == "healthworker"
-                              ? _c("div", [
-                                  item.ancs.length == 0
-                                    ? _c(
-                                        "button",
-                                        {
-                                          attrs: {
-                                            title:
-                                              "Add Sample Collection / Swab Collection Report"
-                                          },
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.aadSampleCollection(
-                                                item.token
-                                              )
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _c("i", {
-                                            staticClass: "fa fa-medkit",
-                                            attrs: { "aria-hidden": "true" }
-                                          }),
-                                          _vm._v(" |\n          ")
-                                        ]
-                                      )
-                                    : _vm._e()
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _c(
-                              "button",
-                              {
-                                attrs: {
-                                  title:
-                                    "Send / Transfer Patient to other Hospital"
-                                },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.sendPatientData(item)
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "fa fa-hospital-o" })]
-                            )
                           ])
-                        ])
-                      : _vm._e()
-                  }
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          attrs: {
+                            title: "Send / Transfer Patient to other Hospital"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.sendPatientData(item)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-hospital-o" })]
+                      )
+                    ])
+                  ])
                 }
-              ],
-              null,
-              true
-            )
+              }
+            ])
           },
           "filterable",
           _vm.filterable,
@@ -39246,29 +39183,50 @@ var render = function() {
         [
           _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
             _c("tr", [
-              _c("th", { attrs: { width: "10px" } }),
+              _c("th", { attrs: { width: "6%" } }, [_vm._v("ID")]),
               _vm._v(" "),
-              _c("th", [_vm._v("ID")]),
+              _c("th", { attrs: { width: "10%" } }, [_vm._v("Name")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Name")]),
+              _c("th", { attrs: { width: "7%" } }, [_vm._v("Age")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Age")]),
+              _c("th", { attrs: { width: "6%", title: "Gender" } }, [
+                _vm._v("G")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Gender")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Emergency Contact Number" } },
+                [_vm._v("Phone")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Emergency Contact")]),
+              _c("th", { attrs: { width: "10%", title: "Municipality" } }, [
+                _vm._v("Municipality")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Municipality")]),
+              _c("th", { attrs: { width: "15%" } }, [_vm._v("Case")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Case")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Case Created Date" } },
+                [_vm._v("Date")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Created At")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Sample Collection Details" } },
+                [_vm._v("Sample")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Total Collection")]),
+              _c("th", { attrs: { width: "8%", title: "Latest Lab Result" } }, [
+                _vm._v("Result")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Lab Result")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Action")])
+              _c("th", { attrs: { width: "8%", title: "Actions" } }, [
+                _c("i", {
+                  staticClass: "fa fa-cogs",
+                  attrs: { "aria-hidden": "true" }
+                })
+              ])
             ])
           ])
         ]
@@ -39340,112 +39298,63 @@ var render = function() {
         "filterable",
         _vm._b(
           {
-            scopedSlots: _vm._u(
-              [
-                {
-                  key: "default",
-                  fn: function(ref) {
-                    var item = ref.item
-                    return _vm.latestLabResultNegative(item.latest_anc)
-                      ? _c("tr", {}, [
-                          _c("td", [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.womanTokens,
-                                  expression: "womanTokens"
-                                }
-                              ],
-                              attrs: { type: "checkbox" },
-                              domProps: {
-                                value: item.token,
-                                checked: Array.isArray(_vm.womanTokens)
-                                  ? _vm._i(_vm.womanTokens, item.token) > -1
-                                  : _vm.womanTokens
-                              },
-                              on: {
-                                click: _vm.select,
-                                change: function($event) {
-                                  var $$a = _vm.womanTokens,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = item.token,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        (_vm.womanTokens = $$a.concat([$$v]))
-                                    } else {
-                                      $$i > -1 &&
-                                        (_vm.womanTokens = $$a
-                                          .slice(0, $$i)
-                                          .concat($$a.slice($$i + 1)))
-                                    }
-                                  } else {
-                                    _vm.womanTokens = $$c
-                                  }
-                                }
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(item.name))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(item.age))]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "One : " +
-                                _vm._s(item.emergency_contact_one) +
-                                " "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n                    Two : " +
-                                _vm._s(item.emergency_contact_two) +
-                                "\n                "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.checkDistrict(item.district_id)))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              _vm._s(
-                                _vm.checkMunicipality(item.municipality_id)
-                              )
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("span", { staticClass: "label label-info" }, [
-                              _vm._v(" " + _vm._s(item.ancs.length))
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("div", {
-                              domProps: {
-                                innerHTML: _vm._s(
-                                  _vm.latestLabResult(item.latest_anc)
-                                )
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("td")
-                        ])
-                      : _vm._e()
-                  }
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var item = ref.item
+                  return _c("tr", {}, [
+                    _c("td"),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.age))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.gender(item.sex)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(item.emergency_contact_one) + " "),
+                      _c("br"),
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(item.emergency_contact_two) +
+                          "\n                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(_vm.checkDistrict(item.district_id)))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(_vm.checkMunicipality(item.municipality_id))
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.ad2bs(item.created_at)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("span", { staticClass: "label label-info" }, [
+                        _vm._v(" " + _vm._s(item.ancs.length))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("div", {
+                        domProps: {
+                          innerHTML: _vm._s(
+                            _vm.latestLabResult(item.latest_anc)
+                          )
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td")
+                  ])
                 }
-              ],
-              null,
-              true
-            )
+              }
+            ])
           },
           "filterable",
           _vm.filterable,
@@ -39454,23 +39363,52 @@ var render = function() {
         [
           _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
             _c("tr", [
-              _c("th", { attrs: { width: "10px" } }),
+              _c("th", { attrs: { width: "7%" } }, [_vm._v("ID")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Name")]),
+              _c("th", { attrs: { width: "15%" } }, [_vm._v("Name")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Age")]),
+              _c("th", { attrs: { width: "10%" } }, [_vm._v("Age")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Emergency Contact")]),
+              _c("th", { attrs: { width: "7%", title: "Gender" } }, [
+                _vm._v("G")
+              ]),
+              _vm._v(" "),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Emergency Contact Number" } },
+                [_vm._v("Phone")]
+              ),
               _vm._v(" "),
               _c("th", [_vm._v("District")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Municipality")]),
+              _c("th", { attrs: { width: "10%", title: "Municipality" } }, [
+                _vm._v("Municipality")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Total Collection")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Case Created Date" } },
+                [_vm._v("Date")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Latest Lab Result")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Sample Collection Details" } },
+                [_vm._v("Sample")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Action")])
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Latest Lab Result" } },
+                [_vm._v("Result")]
+              ),
+              _vm._v(" "),
+              _c("th", { attrs: { width: "10%", title: "Actions" } }, [
+                _c("i", {
+                  staticClass: "fa fa-cogs",
+                  attrs: { "aria-hidden": "true" }
+                })
+              ])
             ])
           ])
         ]
@@ -39508,260 +39446,193 @@ var render = function() {
         "filterable",
         _vm._b(
           {
-            scopedSlots: _vm._u(
-              [
-                {
-                  key: "default",
-                  fn: function(ref) {
-                    var item = ref.item
-                    return _vm.latestLabResultNotNegative(item.latest_anc)
-                      ? _c("tr", {}, [
-                          _c("td", [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.womanTokens,
-                                  expression: "womanTokens"
-                                }
-                              ],
-                              attrs: { type: "checkbox" },
-                              domProps: {
-                                value: item.token,
-                                checked: Array.isArray(_vm.womanTokens)
-                                  ? _vm._i(_vm.womanTokens, item.token) > -1
-                                  : _vm.womanTokens
-                              },
-                              on: {
-                                click: _vm.select,
-                                change: function($event) {
-                                  var $$a = _vm.womanTokens,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = item.token,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        (_vm.womanTokens = $$a.concat([$$v]))
-                                    } else {
-                                      $$i > -1 &&
-                                        (_vm.womanTokens = $$a
-                                          .slice(0, $$i)
-                                          .concat($$a.slice($$i + 1)))
-                                    }
-                                  } else {
-                                    _vm.womanTokens = $$c
-                                  }
-                                }
-                              }
-                            })
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var item = ref.item
+                  return _c("tr", {}, [
+                    _c("td", [
+                      _vm.checkForPositiveOnly(item.latest_anc)
+                        ? _c("div", { attrs: { title: "Case ID" } }, [
+                            _vm._v("C ID : " + _vm._s(item.case_id))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      item.parent_case_id !== null
+                        ? _c("div", { attrs: { title: "Parent Case ID" } }, [
+                            _vm._v("PC ID : " + _vm._s(item.parent_case_id))
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.roleVisibility(item.name)))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.age))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.gender(item.sex)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "One : " +
+                          _vm._s(
+                            _vm.roleVisibility(item.emergency_contact_one)
+                          ) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Two : " +
+                          _vm._s(
+                            _vm.roleVisibility(item.emergency_contact_two)
+                          ) +
+                          "\n      "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(_vm.checkMunicipality(item.municipality_id))
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n        Place : " +
+                          _vm._s(item.healthpost.name) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Type : " +
+                          _vm._s(_vm.checkCaseType(item.cases)) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Management : " +
+                          _vm._s(
+                            _vm.checkCaseManagement(item.cases, item.case_where)
+                          ) +
+                          "\n      "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.ad2bs(item.created_at)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("span", { staticClass: "label label-info" }, [
+                        _vm._v(" " + _vm._s(item.ancs.length))
+                      ]),
+                      _vm._v(" "),
+                      item.latest_anc
+                        ? _c("div", { attrs: { title: "Swab ID" } }, [
+                            _vm._v("SID : "),
+                            _c("strong", [
+                              _vm._v(_vm._s(item.latest_anc.token))
+                            ])
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      item.ancs.length > 0
+                        ? _c("div", {
+                            domProps: {
+                              innerHTML: _vm._s(
+                                _vm.latestLabResult(item.latest_anc)
+                              )
+                            }
+                          })
+                        : _c("div", [
+                            _c("span", { staticClass: "label label-primary" }, [
+                              _vm._v(" Registered ")
+                            ])
                           ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm.checkForPositiveOnly(item.latest_anc)
-                              ? _c("div", { attrs: { title: "Case ID" } }, [
-                                  _vm._v("C ID : " + _vm._s(item.case_id))
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            item.parent_case_id !== null
+                      _vm._v(" "),
+                      item.ancs.length > 0 && item.latest_anc.result == 9
+                        ? _c("div", [
+                            _vm._v(
+                              _vm._s(
+                                item.latest_anc.labreport.token
+                                  .split("-")
+                                  .splice(1)
+                                  .join("-")
+                              )
+                            )
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          attrs: { title: "Case Details Report" },
+                          on: {
+                            click: function($event) {
+                              return _vm.viewCaseDetails(item.token)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "fa fa-file",
+                            attrs: { "aria-hidden": "true" }
+                          }),
+                          _vm._v(" |\n        ")
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm.role == "healthworker"
+                        ? _c("div", [
+                            item.ancs.length == 0
                               ? _c(
-                                  "div",
-                                  { attrs: { title: "Parent Case ID" } },
+                                  "button",
+                                  {
+                                    attrs: {
+                                      title:
+                                        "Add Sample Collection / Swab Collection Report"
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.aadSampleCollection(
+                                          item.token
+                                        )
+                                      }
+                                    }
+                                  },
                                   [
-                                    _vm._v(
-                                      "PC ID : " + _vm._s(item.parent_case_id)
-                                    )
+                                    _c("i", {
+                                      staticClass: "fa fa-medkit",
+                                      attrs: { "aria-hidden": "true" }
+                                    }),
+                                    _vm._v(" |\n          ")
                                   ]
                                 )
                               : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.roleVisibility(item.name)))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(item.age))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(_vm.gender(item.sex)))]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "One : " +
-                                _vm._s(
-                                  _vm.roleVisibility(item.emergency_contact_one)
-                                ) +
-                                " "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n        Two : " +
-                                _vm._s(
-                                  _vm.roleVisibility(item.emergency_contact_two)
-                                ) +
-                                "\n      "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              _vm._s(
-                                _vm.checkMunicipality(item.municipality_id)
-                              )
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "\n        Place : " +
-                                _vm._s(item.healthpost.name) +
-                                " "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n        Type : " +
-                                _vm._s(_vm.checkCaseType(item.cases)) +
-                                " "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n        Management : " +
-                                _vm._s(
-                                  _vm.checkCaseManagement(
-                                    item.cases,
-                                    item.case_where
-                                  )
-                                ) +
-                                "\n      "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.ad2bs(item.created_at)))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("span", { staticClass: "label label-info" }, [
-                              _vm._v(" " + _vm._s(item.ancs.length))
-                            ]),
-                            _vm._v(" "),
-                            item.latest_anc
-                              ? _c("div", { attrs: { title: "Swab ID" } }, [
-                                  _vm._v("SID : "),
-                                  _c("strong", [
-                                    _vm._v(_vm._s(item.latest_anc.token))
-                                  ])
-                                ])
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            item.ancs.length > 0
-                              ? _c("div", {
-                                  domProps: {
-                                    innerHTML: _vm._s(
-                                      _vm.latestLabResult(item.latest_anc)
-                                    )
-                                  }
-                                })
-                              : _c("div", [
-                                  _c(
-                                    "span",
-                                    { staticClass: "label label-primary" },
-                                    [_vm._v(" Registered ")]
-                                  )
-                                ]),
-                            _vm._v(" "),
-                            item.ancs.length > 0 && item.latest_anc.result == 9
-                              ? _c("div", [
-                                  _vm._v(
-                                    _vm._s(
-                                      item.latest_anc.labreport.token
-                                        .split("-")
-                                        .splice(1)
-                                        .join("-")
-                                    )
-                                  )
-                                ])
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c(
-                              "button",
-                              {
-                                attrs: { title: "Case Details Report" },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.viewCaseDetails(item.token)
-                                  }
-                                }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "fa fa-file",
-                                  attrs: { "aria-hidden": "true" }
-                                }),
-                                _vm._v(" |\n        ")
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _vm.role == "healthworker"
-                              ? _c("div", [
-                                  item.ancs.length == 0
-                                    ? _c(
-                                        "button",
-                                        {
-                                          attrs: {
-                                            title:
-                                              "Add Sample Collection / Swab Collection Report"
-                                          },
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.aadSampleCollection(
-                                                item.token
-                                              )
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _c("i", {
-                                            staticClass: "fa fa-medkit",
-                                            attrs: { "aria-hidden": "true" }
-                                          }),
-                                          _vm._v(" |\n          ")
-                                        ]
-                                      )
-                                    : _vm._e()
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _c(
-                              "button",
-                              {
-                                attrs: {
-                                  title:
-                                    "Send / Transfer Patient to other Hospital"
-                                },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.sendPatientData(item)
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "fa fa-hospital-o" })]
-                            )
                           ])
-                        ])
-                      : _vm._e()
-                  }
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          attrs: {
+                            title: "Send / Transfer Patient to other Hospital"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.sendPatientData(item)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-hospital-o" })]
+                      )
+                    ])
+                  ])
                 }
-              ],
-              null,
-              true
-            )
+              }
+            ])
           },
           "filterable",
           _vm.filterable,
@@ -39770,29 +39641,50 @@ var render = function() {
         [
           _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
             _c("tr", [
-              _c("th", { attrs: { width: "10px" } }),
+              _c("th", { attrs: { width: "6%" } }, [_vm._v("ID")]),
               _vm._v(" "),
-              _c("th", [_vm._v("ID")]),
+              _c("th", { attrs: { width: "10%" } }, [_vm._v("Name")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Name")]),
+              _c("th", { attrs: { width: "7%" } }, [_vm._v("Age")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Age")]),
+              _c("th", { attrs: { width: "6%", title: "Gender" } }, [
+                _vm._v("G")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Gender")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Emergency Contact Number" } },
+                [_vm._v("Phone")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Emergency Contact")]),
+              _c("th", { attrs: { width: "10%", title: "Municipality" } }, [
+                _vm._v("Municipality")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Municipality")]),
+              _c("th", { attrs: { width: "15%" } }, [_vm._v("Case")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Case")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Case Created Date" } },
+                [_vm._v("Date")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Created At")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Sample Collection Details" } },
+                [_vm._v("Sample")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Total Collection")]),
+              _c("th", { attrs: { width: "8%", title: "Latest Lab Result" } }, [
+                _vm._v("Result")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Lab Result")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Action")])
+              _c("th", { attrs: { width: "8%", title: "Actions" } }, [
+                _c("i", {
+                  staticClass: "fa fa-cogs",
+                  attrs: { "aria-hidden": "true" }
+                })
+              ])
             ])
           ])
         ]
@@ -39864,256 +39756,184 @@ var render = function() {
         "filterable",
         _vm._b(
           {
-            scopedSlots: _vm._u(
-              [
-                {
-                  key: "default",
-                  fn: function(ref) {
-                    var item = ref.item
-                    return _vm.latestLabResultNotNegative(item.latest_anc)
-                      ? _c("tr", {}, [
-                          _c("td", [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.womanTokens,
-                                  expression: "womanTokens"
-                                }
-                              ],
-                              attrs: { type: "checkbox" },
-                              domProps: {
-                                value: item.token,
-                                checked: Array.isArray(_vm.womanTokens)
-                                  ? _vm._i(_vm.womanTokens, item.token) > -1
-                                  : _vm.womanTokens
-                              },
-                              on: {
-                                click: _vm.select,
-                                change: function($event) {
-                                  var $$a = _vm.womanTokens,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = item.token,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        (_vm.womanTokens = $$a.concat([$$v]))
-                                    } else {
-                                      $$i > -1 &&
-                                        (_vm.womanTokens = $$a
-                                          .slice(0, $$i)
-                                          .concat($$a.slice($$i + 1)))
-                                    }
-                                  } else {
-                                    _vm.womanTokens = $$c
-                                  }
-                                }
-                              }
-                            })
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var item = ref.item
+                  return _c("tr", {}, [
+                    _c("td", [
+                      _vm.checkForPositiveOnly(item.latest_anc)
+                        ? _c("div", { attrs: { title: "Case ID" } }, [
+                            _vm._v("C ID : " + _vm._s(item.case_id))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      item.parent_case_id !== null
+                        ? _c("div", { attrs: { title: "Parent Case ID" } }, [
+                            _vm._v("PC ID : " + _vm._s(item.parent_case_id))
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.roleVisibility(item.name)))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.age))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.gender(item.sex)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(_vm.roleVisibility(item.emergency_contact_one)) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(
+                            _vm.roleVisibility(item.emergency_contact_two)
+                          ) +
+                          "\n            "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(_vm.checkMunicipality(item.municipality_id))
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n                Place : " +
+                          _vm._s(item.healthpost.name) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n                Type : " +
+                          _vm._s(_vm.checkCaseType(item.cases)) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n                Management : " +
+                          _vm._s(
+                            _vm.checkCaseManagement(item.cases, item.case_where)
+                          ) +
+                          "\n            "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.ad2bs(item.created_at)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("span", { staticClass: "label label-info" }, [
+                        _vm._v(" " + _vm._s(item.ancs.length))
+                      ]),
+                      _vm._v(" "),
+                      item.latest_anc
+                        ? _c("div", { attrs: { title: "Swab ID" } }, [
+                            _vm._v("SID : "),
+                            _c("strong", [
+                              _vm._v(_vm._s(item.latest_anc.token))
+                            ])
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      item.ancs.length > 0
+                        ? _c("div", {
+                            domProps: {
+                              innerHTML: _vm._s(
+                                _vm.latestLabResult(item.latest_anc)
+                              )
+                            }
+                          })
+                        : _c("div", [
+                            _c("span", { staticClass: "label label-primary" }, [
+                              _vm._v(" Registered ")
+                            ])
                           ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm.checkForPositiveOnly(item.latest_anc)
-                              ? _c("div", { attrs: { title: "Case ID" } }, [
-                                  _vm._v("C ID : " + _vm._s(item.case_id))
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            item.parent_case_id !== null
-                              ? _c(
-                                  "div",
-                                  { attrs: { title: "Parent Case ID" } },
-                                  [
-                                    _vm._v(
-                                      "PC ID : " + _vm._s(item.parent_case_id)
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.roleVisibility(item.name)))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(item.age))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(_vm.gender(item.sex)))]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "One : " +
-                                _vm._s(
-                                  _vm.roleVisibility(item.emergency_contact_one)
-                                ) +
-                                " "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n                Two : " +
-                                _vm._s(
-                                  _vm.roleVisibility(item.emergency_contact_two)
-                                ) +
-                                "\n            "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
+                      _vm._v(" "),
+                      item.ancs.length > 0 && item.latest_anc.result == 9
+                        ? _c("div", [
                             _vm._v(
                               _vm._s(
-                                _vm.checkMunicipality(item.municipality_id)
+                                item.latest_anc.labreport.token
+                                  .split("-")
+                                  .splice(1)
+                                  .join("-")
                               )
                             )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "\n                Place : " +
-                                _vm._s(item.healthpost.name) +
-                                " "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n                Type : " +
-                                _vm._s(_vm.checkCaseType(item.cases)) +
-                                " "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n                Management : " +
-                                _vm._s(
-                                  _vm.checkCaseManagement(
-                                    item.cases,
-                                    item.case_where
-                                  )
-                                ) +
-                                "\n            "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.ad2bs(item.created_at)))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("span", { staticClass: "label label-info" }, [
-                              _vm._v(" " + _vm._s(item.ancs.length))
-                            ]),
-                            _vm._v(" "),
-                            item.latest_anc
-                              ? _c("div", { attrs: { title: "Swab ID" } }, [
-                                  _vm._v("SID : "),
-                                  _c("strong", [
-                                    _vm._v(_vm._s(item.latest_anc.token))
-                                  ])
-                                ])
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            item.ancs.length > 0
-                              ? _c("div", {
-                                  domProps: {
-                                    innerHTML: _vm._s(
-                                      _vm.latestLabResult(item.latest_anc)
-                                    )
-                                  }
-                                })
-                              : _c("div", [
-                                  _c(
-                                    "span",
-                                    { staticClass: "label label-primary" },
-                                    [_vm._v(" Registered ")]
-                                  )
-                                ]),
-                            _vm._v(" "),
-                            item.ancs.length > 0 && item.latest_anc.result == 9
-                              ? _c("div", [
-                                  _vm._v(
-                                    _vm._s(
-                                      item.latest_anc.labreport.token
-                                        .split("-")
-                                        .splice(1)
-                                        .join("-")
-                                    )
-                                  )
-                                ])
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c(
-                              "button",
-                              {
-                                attrs: { title: "Case Details Report" },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.viewCaseDetails(item.token)
-                                  }
-                                }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "fa fa-file",
-                                  attrs: { "aria-hidden": "true" }
-                                }),
-                                _vm._v(" |\n              ")
-                              ]
-                            ),
-                            _vm._v(" "),
-                            item.ancs.length == 0 && _vm.role == "healthworker"
-                              ? _c(
-                                  "button",
-                                  {
-                                    attrs: {
-                                      title:
-                                        "Add Sample Collection / Swab Collection Report"
-                                    },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.addSampleCollection(
-                                          item.token
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("i", {
-                                      staticClass: "fa fa-medkit",
-                                      attrs: { "aria-hidden": "true" }
-                                    }),
-                                    _vm._v(" |\n              ")
-                                  ]
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _c(
-                              "button",
-                              {
-                                attrs: {
-                                  title:
-                                    "Send / Transfer Patient to other Hospital"
-                                },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.sendPatientData(item)
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "fa fa-hospital-o" })]
-                            )
                           ])
-                        ])
-                      : _vm._e()
-                  }
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          attrs: { title: "Case Details Report" },
+                          on: {
+                            click: function($event) {
+                              return _vm.viewCaseDetails(item.token)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "fa fa-file",
+                            attrs: { "aria-hidden": "true" }
+                          }),
+                          _vm._v(" |\n              ")
+                        ]
+                      ),
+                      _vm._v(" "),
+                      item.ancs.length == 0 && _vm.role == "healthworker"
+                        ? _c(
+                            "button",
+                            {
+                              attrs: {
+                                title:
+                                  "Add Sample Collection / Swab Collection Report"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.addSampleCollection(item.token)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-medkit",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _vm._v(" |\n              ")
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          attrs: {
+                            title: "Send / Transfer Patient to other Hospital"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.sendPatientData(item)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-hospital-o" })]
+                      )
+                    ])
+                  ])
                 }
-              ],
-              null,
-              true
-            )
+              }
+            ])
           },
           "filterable",
           _vm.filterable,
@@ -40122,29 +39942,50 @@ var render = function() {
         [
           _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
             _c("tr", [
-              _c("th", { attrs: { width: "10px" } }),
+              _c("th", { attrs: { width: "6%" } }, [_vm._v("ID")]),
               _vm._v(" "),
-              _c("th", [_vm._v("ID")]),
+              _c("th", { attrs: { width: "10%" } }, [_vm._v("Name")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Name")]),
+              _c("th", { attrs: { width: "7%" } }, [_vm._v("Age")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Age")]),
+              _c("th", { attrs: { width: "6%", title: "Gender" } }, [
+                _vm._v("G")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Gender")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Emergency Contact Number" } },
+                [_vm._v("Phone")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Emergency Contact")]),
+              _c("th", { attrs: { width: "10%", title: "Municipality" } }, [
+                _vm._v("Municipality")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Municipality")]),
+              _c("th", { attrs: { width: "15%" } }, [_vm._v("Case")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Case")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Case Created Date" } },
+                [_vm._v("Date")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Created At")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Sample Collection Details" } },
+                [_vm._v("Sample")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Total Collection")]),
+              _c("th", { attrs: { width: "8%", title: "Latest Lab Result" } }, [
+                _vm._v("Result")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Lab Result")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Action")])
+              _c("th", { attrs: { width: "8%", title: "Actions" } }, [
+                _c("i", {
+                  staticClass: "fa fa-cogs",
+                  attrs: { "aria-hidden": "true" }
+                })
+              ])
             ])
           ])
         ]
@@ -40186,6 +40027,739 @@ var render = function() {
     ],
     1
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Filterable.vue?vue&type=template&id=25c67949&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Filterable.vue?vue&type=template&id=25c67949&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "filterable" }, [
+    _c("div", { staticClass: "panel" }, [
+      _c("div", { staticClass: "panel-heading" }, [
+        _c("div", { staticClass: "panel-title" }, [
+          _c("span", [_vm._v("Case Records match")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.query.filter_match,
+                  expression: "query.filter_match"
+                }
+              ],
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.query,
+                    "filter_match",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
+              }
+            },
+            [
+              _c("option", { attrs: { value: "and" } }, [_vm._v("All")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "or" } }, [_vm._v("Any")])
+            ]
+          ),
+          _vm._v(" "),
+          _c("span", [_vm._v("of the following:")])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "panel-body" }, [
+        _c(
+          "div",
+          { staticClass: "filter" },
+          [
+            _vm._l(_vm.filterCandidates, function(f, i) {
+              return _c(
+                "div",
+                { staticClass: "filter-item" },
+                [
+                  _c("div", { staticClass: "filter-column" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "select",
+                        {
+                          staticClass: "form-control",
+                          on: {
+                            input: function($event) {
+                              return _vm.selectColumn(f, i, $event)
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "" } }, [
+                            _vm._v("Select a filter")
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.filterGroups, function(group) {
+                            return _c(
+                              "optgroup",
+                              { attrs: { label: group.name } },
+                              _vm._l(group.filters, function(x) {
+                                return _c(
+                                  "option",
+                                  {
+                                    domProps: {
+                                      value: JSON.stringify(x),
+                                      selected:
+                                        f.column && x.name === f.column.name
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                    " +
+                                        _vm._s(x.title) +
+                                        "\n                  "
+                                    )
+                                  ]
+                                )
+                              }),
+                              0
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  f.column
+                    ? _c("div", { staticClass: "filter-operator" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c(
+                            "select",
+                            {
+                              staticClass: "form-control",
+                              on: {
+                                input: function($event) {
+                                  return _vm.selectOperator(f, i, $event)
+                                }
+                              }
+                            },
+                            _vm._l(_vm.fetchOperators(f), function(y) {
+                              return _c(
+                                "option",
+                                {
+                                  domProps: {
+                                    value: JSON.stringify(y),
+                                    selected:
+                                      f.operator && y.name === f.operator.name
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                  " +
+                                      _vm._s(y.title) +
+                                      "\n                "
+                                  )
+                                ]
+                              )
+                            }),
+                            0
+                          )
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  f.column && f.operator
+                    ? [
+                        f.operator.component === "single"
+                          ? _c("div", { staticClass: "filter-full" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: f.query_1,
+                                    expression: "f.query_1"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "text" },
+                                domProps: { value: f.query_1 },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(f, "query_1", $event.target.value)
+                                  }
+                                }
+                              })
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        f.operator.component === "double"
+                          ? [
+                              _c("div", { staticClass: "filter-query_1" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: f.query_1,
+                                      expression: "f.query_1"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: { type: "text" },
+                                  domProps: { value: f.query_1 },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        f,
+                                        "query_1",
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "filter-query_2" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: f.query_2,
+                                      expression: "f.query_2"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: { type: "text" },
+                                  domProps: { value: f.query_2 },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        f,
+                                        "query_2",
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
+                              ])
+                            ]
+                          : _vm._e(),
+                        _vm._v(" "),
+                        f.operator.component === "datetime_1"
+                          ? [
+                              _c("div", { staticClass: "filter-query_1" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: f.query_1,
+                                      expression: "f.query_1"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: { type: "text" },
+                                  domProps: { value: f.query_1 },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        f,
+                                        "query_1",
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "filter-query_2" }, [
+                                _c(
+                                  "select",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: f.query_2,
+                                        expression: "f.query_2"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    on: {
+                                      change: function($event) {
+                                        var $$selectedVal = Array.prototype.filter
+                                          .call($event.target.options, function(
+                                            o
+                                          ) {
+                                            return o.selected
+                                          })
+                                          .map(function(o) {
+                                            var val =
+                                              "_value" in o ? o._value : o.value
+                                            return val
+                                          })
+                                        _vm.$set(
+                                          f,
+                                          "query_2",
+                                          $event.target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("option", [_vm._v("hours")]),
+                                    _vm._v(" "),
+                                    _c("option", [_vm._v("days")]),
+                                    _vm._v(" "),
+                                    _c("option", [_vm._v("months")]),
+                                    _vm._v(" "),
+                                    _c("option", [_vm._v("years")])
+                                  ]
+                                )
+                              ])
+                            ]
+                          : _vm._e(),
+                        _vm._v(" "),
+                        f.operator.component === "datetime_2"
+                          ? [
+                              _c("div", { staticClass: "filter-query_2" }, [
+                                _c(
+                                  "select",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: f.query_1,
+                                        expression: "f.query_1"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    on: {
+                                      change: function($event) {
+                                        var $$selectedVal = Array.prototype.filter
+                                          .call($event.target.options, function(
+                                            o
+                                          ) {
+                                            return o.selected
+                                          })
+                                          .map(function(o) {
+                                            var val =
+                                              "_value" in o ? o._value : o.value
+                                            return val
+                                          })
+                                        _vm.$set(
+                                          f,
+                                          "query_1",
+                                          $event.target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c(
+                                      "option",
+                                      { attrs: { value: "yesterday" } },
+                                      [_vm._v("yesterday")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "option",
+                                      { attrs: { value: "today" } },
+                                      [_vm._v("today")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "option",
+                                      { attrs: { value: "tomorrow" } },
+                                      [_vm._v("tomorrow")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "option",
+                                      { attrs: { value: "last_month" } },
+                                      [_vm._v("last month")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "option",
+                                      { attrs: { value: "this_month" } },
+                                      [_vm._v("this month")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "option",
+                                      { attrs: { value: "next_month" } },
+                                      [_vm._v("next month")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "option",
+                                      { attrs: { value: "last_year" } },
+                                      [_vm._v("last year")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "option",
+                                      { attrs: { value: "this_year" } },
+                                      [_vm._v("this year")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "option",
+                                      { attrs: { value: "next_year" } },
+                                      [_vm._v("next year")]
+                                    )
+                                  ]
+                                )
+                              ])
+                            ]
+                          : _vm._e(),
+                        _vm._v(" "),
+                        f.operator.component === "datetime_3"
+                          ? [
+                              _c(
+                                "div",
+                                { staticClass: "filter-query_1" },
+                                [
+                                  _c("v-nepalidatepicker", {
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      title: "Start of the Day",
+                                      calenderType: "Nepali",
+                                      placeholder: "YYYY-MM-DD",
+                                      format: "YYYY-MM-DD",
+                                      yearSelect: true,
+                                      monthSelect: true
+                                    },
+                                    model: {
+                                      value: f.query_1,
+                                      callback: function($$v) {
+                                        _vm.$set(f, "query_1", $$v)
+                                      },
+                                      expression: "f.query_1"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "filter-query_2" },
+                                [
+                                  _c("v-nepalidatepicker", {
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      title: "End of the day",
+                                      calenderType: "Nepali",
+                                      placeholder: "YYYY-MM-DD",
+                                      format: "YYYY-MM-DD",
+                                      yearSelect: true,
+                                      monthSelect: true
+                                    },
+                                    model: {
+                                      value: f.query_2,
+                                      callback: function($$v) {
+                                        _vm.$set(f, "query_2", $$v)
+                                      },
+                                      expression: "f.query_2"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ]
+                          : _vm._e()
+                      ]
+                    : _vm._e(),
+                  _vm._v(" "),
+                  f
+                    ? _c("div", { staticClass: "filter-remove" }, [
+                        _c(
+                          "button",
+                          {
+                            on: {
+                              click: function($event) {
+                                return _vm.removeFilter(f, i)
+                              }
+                            }
+                          },
+                          [_vm._v("x")]
+                        )
+                      ])
+                    : _vm._e()
+                ],
+                2
+              )
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "filter-controls" }, [
+              _c(
+                "button",
+                { staticClass: "btn", on: { click: _vm.addFilter } },
+                [_vm._v("+")]
+              ),
+              _vm._v(" "),
+              this.appliedFilters.length > 0
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      on: { click: _vm.resetFilter }
+                    },
+                    [_vm._v("\n            Reset\n          ")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  on: { click: _vm.applyFilter }
+                },
+                [_vm._v("Apply Filter")]
+              )
+            ])
+          ],
+          2
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "filterable-export" }, [
+      _c(
+        "div",
+        { staticClass: "btn btn-primary" },
+        [
+          _c(
+            "download-excel",
+            {
+              attrs: {
+                fetch: _vm.exportToExcel,
+                fields: _vm.json_fields,
+                name: _vm.excelFileName()
+              }
+            },
+            [
+              _vm._v("\n          Download Data\n          "),
+              _c("i", {
+                staticClass: "fa fa-file-excel-o",
+                attrs: { "aria-hidden": "true" }
+              })
+            ]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "btn btn-secondary" },
+        [
+          _c(
+            "download-excel",
+            {
+              attrs: {
+                fetch: _vm.exportToExcelForDolphins,
+                fields: _vm.json_fields_for_dolphins,
+                name: _vm.excelFileName()
+              }
+            },
+            [
+              _vm._v("\n          Download Data for Dolphins\n          "),
+              _c("i", {
+                staticClass: "fa fa-file-excel-o",
+                attrs: { "aria-hidden": "true" }
+              })
+            ]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", [
+        _c("span", [_vm._v("Order by:")]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            attrs: { disabled: _vm.loading },
+            on: { input: _vm.updateOrderColumn }
+          },
+          _vm._l(_vm.orderables, function(column) {
+            return _c(
+              "option",
+              {
+                domProps: {
+                  value: column.name,
+                  selected: column && column.name == _vm.query.order_column
+                }
+              },
+              [_vm._v("\n          " + _vm._s(column.title) + "\n        ")]
+            )
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _c("strong", { on: { click: _vm.updateOrderDirection } }, [
+          _vm.query.order_direction === "asc"
+            ? _c("span", [_vm._v("↑")])
+            : _c("span", [_vm._v("↓")])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "panel" }, [
+      _c("div", { staticClass: "panel-body" }, [
+        _c(
+          "table",
+          { staticClass: "table table-striped sortable" },
+          [
+            _vm._t("thead"),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              [
+                _vm._l(_vm.collection.data, function(item) {
+                  return _vm.collection.data && _vm.collection.data.length
+                    ? _vm._t("default", null, { item: item })
+                    : _vm._e()
+                })
+              ],
+              2
+            )
+          ],
+          2
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "panel-footer" }, [
+        _c("div", [
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.query.limit,
+                  expression: "query.limit"
+                }
+              ],
+              attrs: { disabled: _vm.loading },
+              on: {
+                change: [
+                  function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.query,
+                      "limit",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  },
+                  _vm.updateLimit
+                ]
+              }
+            },
+            [
+              _c("option", [_vm._v("100")]),
+              _vm._v(" "),
+              _c("option", [_vm._v("250")]),
+              _vm._v(" "),
+              _c("option", [_vm._v("500")]),
+              _vm._v(" "),
+              _c("option", [_vm._v("1000")])
+            ]
+          ),
+          _vm._v(" "),
+          _c("small", [
+            _vm._v(
+              " Showing " +
+                _vm._s(_vm.collection.from) +
+                " - " +
+                _vm._s(_vm.collection.to) +
+                " of " +
+                _vm._s(_vm.collection.total) +
+                " entries."
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c(
+            "button",
+            {
+              staticClass: "btn",
+              attrs: { disabled: !_vm.collection.prev_page_url || _vm.loading },
+              on: { click: _vm.prevPage }
+            },
+            [_vm._v("« Prev")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn",
+              attrs: { disabled: !_vm.collection.next_page_url || _vm.loading },
+              on: { click: _vm.nextPage }
+            },
+            [_vm._v("Next »")]
+          )
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -42289,739 +42863,6 @@ var staticRenderFns = [
     ])
   }
 ]
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/WomanFilterable.vue?vue&type=template&id=137dbf0d&scoped=true&":
-/*!*************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/WomanFilterable.vue?vue&type=template&id=137dbf0d&scoped=true& ***!
-  \*************************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "filterable" }, [
-    _c("div", { staticClass: "panel" }, [
-      _c("div", { staticClass: "panel-heading" }, [
-        _c("div", { staticClass: "panel-title" }, [
-          _c("span", [_vm._v("Case Records match")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.query.filter_match,
-                  expression: "query.filter_match"
-                }
-              ],
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.query,
-                    "filter_match",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
-            },
-            [
-              _c("option", { attrs: { value: "and" } }, [_vm._v("All")]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "or" } }, [_vm._v("Any")])
-            ]
-          ),
-          _vm._v(" "),
-          _c("span", [_vm._v("of the following:")])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "panel-body" }, [
-        _c(
-          "div",
-          { staticClass: "filter" },
-          [
-            _vm._l(_vm.filterCandidates, function(f, i) {
-              return _c(
-                "div",
-                { staticClass: "filter-item" },
-                [
-                  _c("div", { staticClass: "filter-column" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c(
-                        "select",
-                        {
-                          staticClass: "form-control",
-                          on: {
-                            input: function($event) {
-                              return _vm.selectColumn(f, i, $event)
-                            }
-                          }
-                        },
-                        [
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("Select a filter")
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(_vm.filterGroups, function(group) {
-                            return _c(
-                              "optgroup",
-                              { attrs: { label: group.name } },
-                              _vm._l(group.filters, function(x) {
-                                return _c(
-                                  "option",
-                                  {
-                                    domProps: {
-                                      value: JSON.stringify(x),
-                                      selected:
-                                        f.column && x.name === f.column.name
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                    " +
-                                        _vm._s(x.title) +
-                                        "\n                  "
-                                    )
-                                  ]
-                                )
-                              }),
-                              0
-                            )
-                          })
-                        ],
-                        2
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  f.column
-                    ? _c("div", { staticClass: "filter-operator" }, [
-                        _c("div", { staticClass: "form-group" }, [
-                          _c(
-                            "select",
-                            {
-                              staticClass: "form-control",
-                              on: {
-                                input: function($event) {
-                                  return _vm.selectOperator(f, i, $event)
-                                }
-                              }
-                            },
-                            _vm._l(_vm.fetchOperators(f), function(y) {
-                              return _c(
-                                "option",
-                                {
-                                  domProps: {
-                                    value: JSON.stringify(y),
-                                    selected:
-                                      f.operator && y.name === f.operator.name
-                                  }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                  " +
-                                      _vm._s(y.title) +
-                                      "\n                "
-                                  )
-                                ]
-                              )
-                            }),
-                            0
-                          )
-                        ])
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  f.column && f.operator
-                    ? [
-                        f.operator.component === "single"
-                          ? _c("div", { staticClass: "filter-full" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: f.query_1,
-                                    expression: "f.query_1"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: { type: "text" },
-                                domProps: { value: f.query_1 },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(f, "query_1", $event.target.value)
-                                  }
-                                }
-                              })
-                            ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        f.operator.component === "double"
-                          ? [
-                              _c("div", { staticClass: "filter-query_1" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: f.query_1,
-                                      expression: "f.query_1"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: { type: "text" },
-                                  domProps: { value: f.query_1 },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        f,
-                                        "query_1",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "filter-query_2" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: f.query_2,
-                                      expression: "f.query_2"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: { type: "text" },
-                                  domProps: { value: f.query_2 },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        f,
-                                        "query_2",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]
-                          : _vm._e(),
-                        _vm._v(" "),
-                        f.operator.component === "datetime_1"
-                          ? [
-                              _c("div", { staticClass: "filter-query_1" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: f.query_1,
-                                      expression: "f.query_1"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: { type: "text" },
-                                  domProps: { value: f.query_1 },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        f,
-                                        "query_1",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "filter-query_2" }, [
-                                _c(
-                                  "select",
-                                  {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: f.query_2,
-                                        expression: "f.query_2"
-                                      }
-                                    ],
-                                    staticClass: "form-control",
-                                    on: {
-                                      change: function($event) {
-                                        var $$selectedVal = Array.prototype.filter
-                                          .call($event.target.options, function(
-                                            o
-                                          ) {
-                                            return o.selected
-                                          })
-                                          .map(function(o) {
-                                            var val =
-                                              "_value" in o ? o._value : o.value
-                                            return val
-                                          })
-                                        _vm.$set(
-                                          f,
-                                          "query_2",
-                                          $event.target.multiple
-                                            ? $$selectedVal
-                                            : $$selectedVal[0]
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("option", [_vm._v("hours")]),
-                                    _vm._v(" "),
-                                    _c("option", [_vm._v("days")]),
-                                    _vm._v(" "),
-                                    _c("option", [_vm._v("months")]),
-                                    _vm._v(" "),
-                                    _c("option", [_vm._v("years")])
-                                  ]
-                                )
-                              ])
-                            ]
-                          : _vm._e(),
-                        _vm._v(" "),
-                        f.operator.component === "datetime_2"
-                          ? [
-                              _c("div", { staticClass: "filter-query_2" }, [
-                                _c(
-                                  "select",
-                                  {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: f.query_1,
-                                        expression: "f.query_1"
-                                      }
-                                    ],
-                                    staticClass: "form-control",
-                                    on: {
-                                      change: function($event) {
-                                        var $$selectedVal = Array.prototype.filter
-                                          .call($event.target.options, function(
-                                            o
-                                          ) {
-                                            return o.selected
-                                          })
-                                          .map(function(o) {
-                                            var val =
-                                              "_value" in o ? o._value : o.value
-                                            return val
-                                          })
-                                        _vm.$set(
-                                          f,
-                                          "query_1",
-                                          $event.target.multiple
-                                            ? $$selectedVal
-                                            : $$selectedVal[0]
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c(
-                                      "option",
-                                      { attrs: { value: "yesterday" } },
-                                      [_vm._v("yesterday")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "option",
-                                      { attrs: { value: "today" } },
-                                      [_vm._v("today")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "option",
-                                      { attrs: { value: "tomorrow" } },
-                                      [_vm._v("tomorrow")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "option",
-                                      { attrs: { value: "last_month" } },
-                                      [_vm._v("last month")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "option",
-                                      { attrs: { value: "this_month" } },
-                                      [_vm._v("this month")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "option",
-                                      { attrs: { value: "next_month" } },
-                                      [_vm._v("next month")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "option",
-                                      { attrs: { value: "last_year" } },
-                                      [_vm._v("last year")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "option",
-                                      { attrs: { value: "this_year" } },
-                                      [_vm._v("this year")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "option",
-                                      { attrs: { value: "next_year" } },
-                                      [_vm._v("next year")]
-                                    )
-                                  ]
-                                )
-                              ])
-                            ]
-                          : _vm._e(),
-                        _vm._v(" "),
-                        f.operator.component === "datetime_3"
-                          ? [
-                              _c(
-                                "div",
-                                { staticClass: "filter-query_1" },
-                                [
-                                  _c("v-nepalidatepicker", {
-                                    staticClass: "form-control",
-                                    attrs: {
-                                      title: "Start of the Day",
-                                      calenderType: "Nepali",
-                                      placeholder: "YYYY-MM-DD",
-                                      format: "YYYY-MM-DD",
-                                      yearSelect: true,
-                                      monthSelect: true
-                                    },
-                                    model: {
-                                      value: f.query_1,
-                                      callback: function($$v) {
-                                        _vm.$set(f, "query_1", $$v)
-                                      },
-                                      expression: "f.query_1"
-                                    }
-                                  })
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                { staticClass: "filter-query_2" },
-                                [
-                                  _c("v-nepalidatepicker", {
-                                    staticClass: "form-control",
-                                    attrs: {
-                                      title: "End of the day",
-                                      calenderType: "Nepali",
-                                      placeholder: "YYYY-MM-DD",
-                                      format: "YYYY-MM-DD",
-                                      yearSelect: true,
-                                      monthSelect: true
-                                    },
-                                    model: {
-                                      value: f.query_2,
-                                      callback: function($$v) {
-                                        _vm.$set(f, "query_2", $$v)
-                                      },
-                                      expression: "f.query_2"
-                                    }
-                                  })
-                                ],
-                                1
-                              )
-                            ]
-                          : _vm._e()
-                      ]
-                    : _vm._e(),
-                  _vm._v(" "),
-                  f
-                    ? _c("div", { staticClass: "filter-remove" }, [
-                        _c(
-                          "button",
-                          {
-                            on: {
-                              click: function($event) {
-                                return _vm.removeFilter(f, i)
-                              }
-                            }
-                          },
-                          [_vm._v("x")]
-                        )
-                      ])
-                    : _vm._e()
-                ],
-                2
-              )
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "filter-controls" }, [
-              _c(
-                "button",
-                { staticClass: "btn", on: { click: _vm.addFilter } },
-                [_vm._v("+")]
-              ),
-              _vm._v(" "),
-              this.appliedFilters.length > 0
-                ? _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-secondary",
-                      on: { click: _vm.resetFilter }
-                    },
-                    [_vm._v("\n            Reset\n          ")]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  on: { click: _vm.applyFilter }
-                },
-                [_vm._v("Apply Filter")]
-              )
-            ])
-          ],
-          2
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "filterable-export" }, [
-      _c(
-        "div",
-        { staticClass: "btn btn-primary" },
-        [
-          _c(
-            "download-excel",
-            {
-              attrs: {
-                fetch: _vm.exportToExcel,
-                fields: _vm.json_fields,
-                name: _vm.excelFileName()
-              }
-            },
-            [
-              _vm._v("\n          Download Data\n          "),
-              _c("i", {
-                staticClass: "fa fa-file-excel-o",
-                attrs: { "aria-hidden": "true" }
-              })
-            ]
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "btn btn-secondary" },
-        [
-          _c(
-            "download-excel",
-            {
-              attrs: {
-                fetch: _vm.exportToExcelForDolphins,
-                fields: _vm.json_fields_for_dolphins,
-                name: _vm.excelFileName()
-              }
-            },
-            [
-              _vm._v("\n          Download Data for Dolphins\n          "),
-              _c("i", {
-                staticClass: "fa fa-file-excel-o",
-                attrs: { "aria-hidden": "true" }
-              })
-            ]
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("div", [
-        _c("span", [_vm._v("Order by:")]),
-        _vm._v(" "),
-        _c(
-          "select",
-          {
-            attrs: { disabled: _vm.loading },
-            on: { input: _vm.updateOrderColumn }
-          },
-          _vm._l(_vm.orderables, function(column) {
-            return _c(
-              "option",
-              {
-                domProps: {
-                  value: column.name,
-                  selected: column && column.name == _vm.query.order_column
-                }
-              },
-              [_vm._v("\n          " + _vm._s(column.title) + "\n        ")]
-            )
-          }),
-          0
-        ),
-        _vm._v(" "),
-        _c("strong", { on: { click: _vm.updateOrderDirection } }, [
-          _vm.query.order_direction === "asc"
-            ? _c("span", [_vm._v("↑")])
-            : _c("span", [_vm._v("↓")])
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "panel" }, [
-      _c("div", { staticClass: "panel-body" }, [
-        _c(
-          "table",
-          { staticClass: "table" },
-          [
-            _vm._t("thead"),
-            _vm._v(" "),
-            _c(
-              "tbody",
-              [
-                _vm._l(_vm.collection.data, function(item) {
-                  return _vm.collection.data && _vm.collection.data.length
-                    ? _vm._t("default", null, { item: item })
-                    : _vm._e()
-                })
-              ],
-              2
-            )
-          ],
-          2
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "panel-footer" }, [
-        _c("div", [
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.query.limit,
-                  expression: "query.limit"
-                }
-              ],
-              attrs: { disabled: _vm.loading },
-              on: {
-                change: [
-                  function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.query,
-                      "limit",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  },
-                  _vm.updateLimit
-                ]
-              }
-            },
-            [
-              _c("option", [_vm._v("100")]),
-              _vm._v(" "),
-              _c("option", [_vm._v("250")]),
-              _vm._v(" "),
-              _c("option", [_vm._v("500")]),
-              _vm._v(" "),
-              _c("option", [_vm._v("1000")])
-            ]
-          ),
-          _vm._v(" "),
-          _c("small", [
-            _vm._v(
-              " Showing " +
-                _vm._s(_vm.collection.from) +
-                " - " +
-                _vm._s(_vm.collection.to) +
-                " of " +
-                _vm._s(_vm.collection.total) +
-                " entries."
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", [
-          _c(
-            "button",
-            {
-              staticClass: "btn",
-              attrs: { disabled: !_vm.collection.prev_page_url || _vm.loading },
-              on: { click: _vm.prevPage }
-            },
-            [_vm._v("« Prev")]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn",
-              attrs: { disabled: !_vm.collection.next_page_url || _vm.loading },
-              on: { click: _vm.nextPage }
-            },
-            [_vm._v("Next »")]
-          )
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = []
 render._withStripped = true
 
 
@@ -87379,6 +87220,93 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/Filterable.vue":
+/*!*******************************************************!*\
+  !*** ./resources/assets/js/components/Filterable.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Filterable_vue_vue_type_template_id_25c67949_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filterable.vue?vue&type=template&id=25c67949&scoped=true& */ "./resources/assets/js/components/Filterable.vue?vue&type=template&id=25c67949&scoped=true&");
+/* harmony import */ var _Filterable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filterable.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/Filterable.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _Filterable_vue_vue_type_style_index_0_id_25c67949_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Filterable.vue?vue&type=style&index=0&id=25c67949&lang=scss&scoped=true& */ "./resources/assets/js/components/Filterable.vue?vue&type=style&index=0&id=25c67949&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _Filterable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Filterable_vue_vue_type_template_id_25c67949_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Filterable_vue_vue_type_template_id_25c67949_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "25c67949",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/Filterable.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Filterable.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/assets/js/components/Filterable.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Filterable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Filterable.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Filterable.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Filterable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Filterable.vue?vue&type=style&index=0&id=25c67949&lang=scss&scoped=true&":
+/*!*****************************************************************************************************************!*\
+  !*** ./resources/assets/js/components/Filterable.vue?vue&type=style&index=0&id=25c67949&lang=scss&scoped=true& ***!
+  \*****************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Filterable_vue_vue_type_style_index_0_id_25c67949_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/lib/loader.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./Filterable.vue?vue&type=style&index=0&id=25c67949&lang=scss&scoped=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Filterable.vue?vue&type=style&index=0&id=25c67949&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Filterable_vue_vue_type_style_index_0_id_25c67949_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Filterable_vue_vue_type_style_index_0_id_25c67949_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Filterable_vue_vue_type_style_index_0_id_25c67949_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Filterable_vue_vue_type_style_index_0_id_25c67949_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Filterable_vue_vue_type_style_index_0_id_25c67949_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Filterable.vue?vue&type=template&id=25c67949&scoped=true&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/assets/js/components/Filterable.vue?vue&type=template&id=25c67949&scoped=true& ***!
+  \**************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filterable_vue_vue_type_template_id_25c67949_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Filterable.vue?vue&type=template&id=25c67949&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Filterable.vue?vue&type=template&id=25c67949&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filterable_vue_vue_type_template_id_25c67949_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filterable_vue_vue_type_template_id_25c67949_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/LabCases.vue":
 /*!*****************************************************!*\
   !*** ./resources/assets/js/components/LabCases.vue ***!
@@ -87911,93 +87839,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewLabResultReportModel_vue_vue_type_template_id_2da32967_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ViewLabResultReportModel_vue_vue_type_template_id_2da32967_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/WomanFilterable.vue":
-/*!************************************************************!*\
-  !*** ./resources/assets/js/components/WomanFilterable.vue ***!
-  \************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _WomanFilterable_vue_vue_type_template_id_137dbf0d_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./WomanFilterable.vue?vue&type=template&id=137dbf0d&scoped=true& */ "./resources/assets/js/components/WomanFilterable.vue?vue&type=template&id=137dbf0d&scoped=true&");
-/* harmony import */ var _WomanFilterable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WomanFilterable.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/WomanFilterable.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _WomanFilterable_vue_vue_type_style_index_0_id_137dbf0d_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./WomanFilterable.vue?vue&type=style&index=0&id=137dbf0d&lang=scss&scoped=true& */ "./resources/assets/js/components/WomanFilterable.vue?vue&type=style&index=0&id=137dbf0d&lang=scss&scoped=true&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _WomanFilterable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _WomanFilterable_vue_vue_type_template_id_137dbf0d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _WomanFilterable_vue_vue_type_template_id_137dbf0d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  "137dbf0d",
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/assets/js/components/WomanFilterable.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/WomanFilterable.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************!*\
-  !*** ./resources/assets/js/components/WomanFilterable.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WomanFilterable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./WomanFilterable.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/WomanFilterable.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WomanFilterable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/WomanFilterable.vue?vue&type=style&index=0&id=137dbf0d&lang=scss&scoped=true&":
-/*!**********************************************************************************************************************!*\
-  !*** ./resources/assets/js/components/WomanFilterable.vue?vue&type=style&index=0&id=137dbf0d&lang=scss&scoped=true& ***!
-  \**********************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_WomanFilterable_vue_vue_type_style_index_0_id_137dbf0d_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/lib/loader.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./WomanFilterable.vue?vue&type=style&index=0&id=137dbf0d&lang=scss&scoped=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/WomanFilterable.vue?vue&type=style&index=0&id=137dbf0d&lang=scss&scoped=true&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_WomanFilterable_vue_vue_type_style_index_0_id_137dbf0d_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_WomanFilterable_vue_vue_type_style_index_0_id_137dbf0d_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_WomanFilterable_vue_vue_type_style_index_0_id_137dbf0d_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_WomanFilterable_vue_vue_type_style_index_0_id_137dbf0d_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_WomanFilterable_vue_vue_type_style_index_0_id_137dbf0d_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/WomanFilterable.vue?vue&type=template&id=137dbf0d&scoped=true&":
-/*!*******************************************************************************************************!*\
-  !*** ./resources/assets/js/components/WomanFilterable.vue?vue&type=template&id=137dbf0d&scoped=true& ***!
-  \*******************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_WomanFilterable_vue_vue_type_template_id_137dbf0d_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./WomanFilterable.vue?vue&type=template&id=137dbf0d&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/WomanFilterable.vue?vue&type=template&id=137dbf0d&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_WomanFilterable_vue_vue_type_template_id_137dbf0d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_WomanFilterable_vue_vue_type_template_id_137dbf0d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

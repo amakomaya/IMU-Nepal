@@ -149,7 +149,7 @@
     </div>
     <div class="panel">
       <div class="panel-body">
-        <table class="table">
+        <table class="table table-striped sortable">
           <slot name="thead"></slot>
           <tbody>
           <slot v-if="collection.data && collection.data.length"

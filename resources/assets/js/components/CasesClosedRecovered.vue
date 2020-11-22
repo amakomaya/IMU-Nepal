@@ -46,7 +46,7 @@
 </template>
 
 <script type="text/javascript">
-import Filterable from './WomanFilterable.vue'
+import Filterable from './Filterable.vue'
 import DataConverter from 'ad-bs-converter'
 import axios from 'axios'
 import ViewLabReportModel from './ViewLabReportModel.vue'
