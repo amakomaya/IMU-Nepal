@@ -260,6 +260,12 @@ Route::get('/v1/client-tests', function(Request $request){
     return response()->json($data);
 });
 
+Route::get('/v1/lab-test', function(Request $request){
+    $hp_code = $request->hp_code;
+    $data = LabTest::where('hp_code', $hp_code)->get();
+    return response()->json($data);
+});
+
 Route::post('/v1/lab-test', function(Request $request){
     $data = $request->json()->all();
     foreach ($data as $value) {
@@ -426,6 +432,8 @@ Route::post('/v1/result-in-lab-from-web', function(Request $request){
     }
 });
 
+
+// New update
 Route::get('/v1/contact-tracing', function(Request $request){
     $hp_code = $request->hp_code;
     $data = ContactTracing::where('hp_code', $hp_code)->get();
