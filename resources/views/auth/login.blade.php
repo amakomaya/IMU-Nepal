@@ -238,6 +238,55 @@
                         <iframe width="100%" height="315" src="https://www.youtube.com/embed/videoseries?list=PLDauIRTtxpwjUbaKjZuPX5l9W4BwsUvGu" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                 </div>
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">IMU Nepal मोबाएल एपमा नयाँ अपडेट आएको छ !</h4> <strong>८ मंसिर २०७७, सोमवार</strong>
+                            </div>
+                            <div class="modal-body">
+                                <h3 class="align-center">कृपया अनिबार्य रुपमा अपडेट गर्नुहोला</h3> <br>
+                                <ul>IMU Nepal एप मा अपडेट गरिएको छ। कृपया तल दिइको बिधि अनुसार एप अपडेट गर्नुहोस।
+                                    <li>अपडेट गर्नु अगाडि IMU Nepal एपमा भएको सबै डाटालाई सर्भरमा पठाउनुहोस।
+                                        जस्को लागि IMU Nepal एप को अघिल्लो होम स्क्रिनमा आएर रिफ्रेस गर्नुहोस।
+                                        वा औलाले थिचेर तल तान्नुहोस।
+                                    </li>
+                                    <li>
+                                        IMU Nepal एपमा भएका सबै डाटा सर्भरमा पुग्यो वा पुगेन एकिन वा निश्चित गर्नुहोस।
+                                        त्यसको लागि कम्पयुटरमा गएर पालिका वा CICT वा Hospital वा
+                                        Lab को नाममा दिइएको युजरनेमबाट लगइन गरि हेर्नुहोस।
+                                    </li>
+                                    <li>
+                                        मोबाएलको Setting  मा गएर निम्न अनुसारको बिधि पुरा गर्नुहोस
+                                        Setting -->  Apps --> IMU Nepal--> Storage --> मा पुगे पछि
+                                        Clear Cache र Data clear दुबै गर्नुहोस।  अब IMU Nepal एप खोल्दा लगआउट भएको हुनु पर्दछ।
+                                        यदि IMU Nepal एपमा खोल्दा लगइन भएको देखियो भने पुनः यो प्रक्रिया दोहोर्याउनु पर्दछ।
+                                    </li>
+                                    <li>
+                                        अब गुगल प्ले स्टोरमा गएर IMU Nepal एप टाइप गरि खोज्दा Update देखिनु पर्दछ।
+                                        यदि देखिएको छैन भने त्यहि बाट IMU Nepal एप लाई Uninstall (अनइन्स्टल)
+                                        गरि पुनः IMU Nepal एपको install (इन्स्टल) गर्नुहोस र लगइन गर्नुहोस।
+                                    </li>
+                                </ul>
+                                <strong>यो अपडेटमा थपिएका बिशेषताहरु</strong>
+                                    <ol>
+                                        <li>Contract Tracing Feature- Contract Tracing Feature बाट अब तपाईहरुले  positive आएको cases हरु को  व्यवस्थापन गर्न सक्नु हुनेछ। तपाईहरुले अब B1, B2 फारम एप बाटै भर्न सक्नु हुनेछ।</li>
+                                        <li>Permission Feature - User लाई कस्तो अनुमति दिने कुरा IMU Nepal को website  https://imucovid19.mohp.gov.np/ मा गएर दिन सक्नुहुन्छ। यो Feature मा तपाईहरुले User लाई कुन कुन permission दिने भन्ने कुरा छुटाउन सक्नुहुनेछ।  जस्तै: कुन User लाई Case Registration र sample collect गर्न दिने।</li>
+                                        <li>Antigen Feature-  तपाईहरुले अब Antigen फारम एप बाटै भर्न सक्नु हुनेछ।
+                                            - case को कहिले लक्षण देखिएको हो त्यो मिति भर्ने field थपिएको छ।
+                                            - यदि कुनै पनि लक्षण देखिएको छैन वा contact tracing बाट पनि हैन छैन भने तपाईहरुले Reason for testing मा कारण खुलाउनु पर्ने छ।
+                                            - तपाईहरुले Testing मा swap collection गर्ने होकी antigen टेस्ट हो छान्न सक्नु हुनेछ।</li>
+                                </ol>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
                 @include('auth.passwords.reset')
 
                 <!-- Load Facebook SDK for JavaScript -->
@@ -279,5 +328,10 @@
                 </div>
 
     </div>
+        <script type="text/javascript">
+            $(window).on('load',function(){
+                $('#myModal').modal('show');
+            });
+        </script>
 </body>
 </html>
