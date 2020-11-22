@@ -420,5 +420,5 @@ Route::post('/v1/result-in-lab-from-web', function(Request $request){
     }catch (\Exception $e){
         return response()->json('error');
     }
-
 });
+

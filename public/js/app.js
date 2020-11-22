@@ -5473,10 +5473,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -5933,10 +5929,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -6323,10 +6315,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-//
-//
-//
-//
 //
 //
 //
@@ -40804,48 +40792,6 @@ var render = function() {
                   var item = ref.item
                   return _c("tr", {}, [
                     _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.womanTokens,
-                            expression: "womanTokens"
-                          }
-                        ],
-                        attrs: { type: "checkbox" },
-                        domProps: {
-                          value: item.token,
-                          checked: Array.isArray(_vm.womanTokens)
-                            ? _vm._i(_vm.womanTokens, item.token) > -1
-                            : _vm.womanTokens
-                        },
-                        on: {
-                          click: _vm.select,
-                          change: function($event) {
-                            var $$a = _vm.womanTokens,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = item.token,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 && (_vm.womanTokens = $$a.concat([$$v]))
-                              } else {
-                                $$i > -1 &&
-                                  (_vm.womanTokens = $$a
-                                    .slice(0, $$i)
-                                    .concat($$a.slice($$i + 1)))
-                              }
-                            } else {
-                              _vm.womanTokens = $$c
-                            }
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
                       _vm.checkForPositiveOnly(item.latest_anc)
                         ? _c("div", [
                             _vm._v("Case ID : " + _vm._s(item.case_id))
@@ -40985,29 +40931,50 @@ var render = function() {
         [
           _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
             _c("tr", [
-              _c("th", { attrs: { width: "10px" } }),
+              _c("th", { attrs: { width: "6%" } }, [_vm._v("ID")]),
               _vm._v(" "),
-              _c("th", [_vm._v("ID")]),
+              _c("th", { attrs: { width: "10%" } }, [_vm._v("Name")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Name")]),
+              _c("th", { attrs: { width: "7%" } }, [_vm._v("Age")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Age")]),
+              _c("th", { attrs: { width: "6%", title: "Gender" } }, [
+                _vm._v("G")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Gender")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Emergency Contact Number" } },
+                [_vm._v("Phone")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Emergency Contact")]),
+              _c("th", { attrs: { width: "10%", title: "Municipality" } }, [
+                _vm._v("Municipality")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Municipality")]),
+              _c("th", { attrs: { width: "15%" } }, [_vm._v("Case")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Case")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Case Created Date" } },
+                [_vm._v("Date")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Created At")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Sample Collection Details" } },
+                [_vm._v("Sample")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Total Collection")]),
+              _c("th", { attrs: { width: "8%", title: "Latest Lab Result" } }, [
+                _vm._v("Result")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Lab Result")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Action")])
+              _c("th", { attrs: { width: "8%", title: "Actions" } }, [
+                _c("i", {
+                  staticClass: "fa fa-cogs",
+                  attrs: { "aria-hidden": "true" }
+                })
+              ])
             ])
           ])
         ]
@@ -41088,48 +41055,6 @@ var render = function() {
                   var item = ref.item
                   return _c("tr", {}, [
                     _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.womanTokens,
-                            expression: "womanTokens"
-                          }
-                        ],
-                        attrs: { type: "checkbox" },
-                        domProps: {
-                          value: item.token,
-                          checked: Array.isArray(_vm.womanTokens)
-                            ? _vm._i(_vm.womanTokens, item.token) > -1
-                            : _vm.womanTokens
-                        },
-                        on: {
-                          click: _vm.select,
-                          change: function($event) {
-                            var $$a = _vm.womanTokens,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = item.token,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 && (_vm.womanTokens = $$a.concat([$$v]))
-                              } else {
-                                $$i > -1 &&
-                                  (_vm.womanTokens = $$a
-                                    .slice(0, $$i)
-                                    .concat($$a.slice($$i + 1)))
-                              }
-                            } else {
-                              _vm.womanTokens = $$c
-                            }
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
                       _vm.checkForPositiveOnly(item.latest_anc)
                         ? _c("div", [
                             _vm._v("Case ID : " + _vm._s(item.case_id))
@@ -41269,29 +41194,50 @@ var render = function() {
         [
           _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
             _c("tr", [
-              _c("th", { attrs: { width: "10px" } }),
+              _c("th", { attrs: { width: "6%" } }, [_vm._v("ID")]),
               _vm._v(" "),
-              _c("th", [_vm._v("ID")]),
+              _c("th", { attrs: { width: "10%" } }, [_vm._v("Name")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Name")]),
+              _c("th", { attrs: { width: "7%" } }, [_vm._v("Age")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Age")]),
+              _c("th", { attrs: { width: "6%", title: "Gender" } }, [
+                _vm._v("G")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Gender")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Emergency Contact Number" } },
+                [_vm._v("Phone")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Emergency Contact")]),
+              _c("th", { attrs: { width: "10%", title: "Municipality" } }, [
+                _vm._v("Municipality")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Municipality")]),
+              _c("th", { attrs: { width: "15%" } }, [_vm._v("Case")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Case")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Case Created Date" } },
+                [_vm._v("Date")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Created At")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Sample Collection Details" } },
+                [_vm._v("Sample")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Total Collection")]),
+              _c("th", { attrs: { width: "8%", title: "Latest Lab Result" } }, [
+                _vm._v("Result")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Lab Result")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Action")])
+              _c("th", { attrs: { width: "8%", title: "Actions" } }, [
+                _c("i", {
+                  staticClass: "fa fa-cogs",
+                  attrs: { "aria-hidden": "true" }
+                })
+              ])
             ])
           ])
         ]
@@ -41372,48 +41318,6 @@ var render = function() {
                   var item = ref.item
                   return _c("tr", {}, [
                     _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.womanTokens,
-                            expression: "womanTokens"
-                          }
-                        ],
-                        attrs: { type: "checkbox" },
-                        domProps: {
-                          value: item.token,
-                          checked: Array.isArray(_vm.womanTokens)
-                            ? _vm._i(_vm.womanTokens, item.token) > -1
-                            : _vm.womanTokens
-                        },
-                        on: {
-                          click: _vm.select,
-                          change: function($event) {
-                            var $$a = _vm.womanTokens,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = item.token,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 && (_vm.womanTokens = $$a.concat([$$v]))
-                              } else {
-                                $$i > -1 &&
-                                  (_vm.womanTokens = $$a
-                                    .slice(0, $$i)
-                                    .concat($$a.slice($$i + 1)))
-                              }
-                            } else {
-                              _vm.womanTokens = $$c
-                            }
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
                       _vm.checkForPositiveOnly(item.latest_anc)
                         ? _c("div", [
                             _vm._v("Case ID : " + _vm._s(item.case_id))
@@ -41553,29 +41457,50 @@ var render = function() {
         [
           _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
             _c("tr", [
-              _c("th", { attrs: { width: "10px" } }),
+              _c("th", { attrs: { width: "6%" } }, [_vm._v("ID")]),
               _vm._v(" "),
-              _c("th", [_vm._v("ID")]),
+              _c("th", { attrs: { width: "10%" } }, [_vm._v("Name")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Name")]),
+              _c("th", { attrs: { width: "7%" } }, [_vm._v("Age")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Age")]),
+              _c("th", { attrs: { width: "6%", title: "Gender" } }, [
+                _vm._v("G")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Gender")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Emergency Contact Number" } },
+                [_vm._v("Phone")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Emergency Contact")]),
+              _c("th", { attrs: { width: "10%", title: "Municipality" } }, [
+                _vm._v("Municipality")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Municipality")]),
+              _c("th", { attrs: { width: "15%" } }, [_vm._v("Case")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Case")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Case Created Date" } },
+                [_vm._v("Date")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Created At")]),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Sample Collection Details" } },
+                [_vm._v("Sample")]
+              ),
               _vm._v(" "),
-              _c("th", [_vm._v("Total Collection")]),
+              _c("th", { attrs: { width: "8%", title: "Latest Lab Result" } }, [
+                _vm._v("Result")
+              ]),
               _vm._v(" "),
-              _c("th", [_vm._v("Lab Result")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Action")])
+              _c("th", { attrs: { width: "8%", title: "Actions" } }, [
+                _c("i", {
+                  staticClass: "fa fa-cogs",
+                  attrs: { "aria-hidden": "true" }
+                })
+              ])
             ])
           ])
         ]
