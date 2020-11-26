@@ -113,12 +113,6 @@
                                             <div class="tab-pane active" id="tab_default_1">
                                                 <br><br>
                                                 {!! rcForm::open('POST', route('backup-restore.store')) !!}
-                                                {!! rcForm::selectOptions('Backup Application for :', 'type', ['Amakomaya Care', 'Vial To Child']) !!}
-
-                                                @if(Auth::user()->role=="main")
-                                                    {!! rcForm::standalone('Choose Backup file to restore', 'file_path') !!}
-                                                @else
-                                                    <br>
                                                     <div class="form-group">
                                                         <div class="input-group input-file" name="file_path">
                                                                 <span class="input-group-btn">
@@ -128,7 +122,6 @@
                                                                    placeholder='Choose a file...'/>
                                                         </div>
                                                     </div>
-                                                @endif
                                                 <button class="btn btn-primary text-center"> Restore</button>
                                                 </form>
                                             </div>

@@ -53,7 +53,13 @@
             </form>
         </li>
         @endif
-        <li>
+            <li>
+                <a href="{{ route('backup-restore.index') }}">
+                    <i class="fa fa-undo" aria-hidden="true"></i> {{ trans('sidebar.backup_restore') }}
+                </a>
+            </li>
+
+            <li>
 
             <a href="{{ route('logout') }}"
                 onclick="event.preventDefault();
