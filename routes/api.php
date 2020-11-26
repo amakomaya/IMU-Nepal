@@ -79,26 +79,25 @@ Route::resource('/v3/baby', 'Api\v3\BabyController');
 // QrCode Download
 Route::post('/aamakomaya-qrcode-download', 'Backend\AamakomayaGenerateQrcode@download')->name('aamakomaya.qrcode-download');
 
-Route::get('/v1/healthposts', function ()
-{
+Route::get('/v1/healthposts', function () {
     $healthpost = \App\Models\Healthpost::with(['province', 'municipality', 'district'])->get();
     return response()->json($healthpost);
 });
 
-Route::post('/v1/client', function(Request $request){
+Route::post('/v1/client', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
             $value['case_id'] = bin2hex(random_bytes(3));
             Woman::create($value);
         } catch (\Exception $e) {
-            
+
         }
     }
     return response()->json(['message' => 'Data Sussessfully Sync']);
 });
 
-Route::get('/v1/client', function(Request $request){
+Route::get('/v1/client', function (Request $request) {
     $hp_code = $request->hp_code;
     $record = \DB::table('women')
         ->leftJoin('ancs', 'ancs.woman_token', '=', 'women.token')
@@ -132,7 +131,7 @@ Route::get('/v1/client', function(Request $request){
         $response['travelled_where'] = $row->travelled_where ?? '';
         // $response['covid_infect'] = $row->covid_infect ?? '';
         // $response['covid_around_you'] = $row->covid_around_you ?? '';
-                
+
         $response['family_member'] = $row->family_member ?? '';
         $response['family_chronic_illness'] = $row->family_chronic_illness ?? '';
         $response['family_above_sixty'] = $row->family_above_sixty ?? '';
@@ -177,11 +176,11 @@ Route::get('/v1/client', function(Request $request){
         $response['payment'] = $row->payment ?? '';
         $response['result'] = $row->sample_result ?? '';
 
-         if ($response['result'] == '4') {
-             $response['case_id'] = $row->case_id ?? '';
-         }else{
+        if ($response['result'] == '4') {
+            $response['case_id'] = $row->case_id ?? '';
+        } else {
             $response['case_id'] = '';
-         }
+        }
 
         $response['parent_case_id'] = $row->parent_case_id ?? '';
 
@@ -192,40 +191,40 @@ Route::get('/v1/client', function(Request $request){
         $response['temperature'] = $row->temperature ?? '';
 
         return $response;
-})->values();
+    })->values();
 
-    $filtered = $data->filter(function ($value, $key){
+    $filtered = $data->filter(function ($value, $key) {
         return $value['result'] !== '4';
     })->values();
 
     return response()->json($filtered);
 });
 
-Route::post('/v1/client-update', function(Request $request){
+Route::post('/v1/client-update', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
             Woman::where('token', $value['token'])->update($value);
         } catch (\Exception $e) {
-            
+
         }
     }
     return response()->json(['message' => 'Data Sussessfully Sync and Update']);
 });
 
-Route::post('/v1/client-tests', function(Request $request){
+Route::post('/v1/client-tests', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
             Anc::create($value);
         } catch (\Exception $e) {
-            
+
         }
     }
     return response()->json(['message' => 'Data Sussessfully Sync']);
 });
 
-Route::get('/v1/client-tests', function(Request $request){
+Route::get('/v1/client-tests', function (Request $request) {
     $hp_code = $request->hp_code;
     $record = \DB::table('ancs')->where('hp_code', $hp_code)->get();
     $data = collect($record)->map(function ($row) {
@@ -262,12 +261,12 @@ Route::get('/v1/client-tests', function(Request $request){
         $response['result'] = $row->result ?? '';
         $response['infection_type'] = $row->infection_type ?? '';
 
-    return $response;
-})->values();
+        return $response;
+    })->values();
     return response()->json($data);
 });
 
-Route::post('/v1/lab-test', function(Request $request){
+Route::post('/v1/lab-test', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
@@ -276,38 +275,37 @@ Route::post('/v1/lab-test', function(Request $request){
                 $value['sample_test_result'] = 9;
                 LabTest::create($value);
                 Anc::where('token', $value['sample_token'])->update(['result' => '9']);
-            }else{
+            } else {
 
-            Anc::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
+                Anc::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
 
-            $find_test = LabTest::where('token', $value['token']);
+                $find_test = LabTest::where('token', $value['token']);
 
-            if ($find_test) {
-                $find_test->update([
-                    'sample_test_date' => $value['sample_test_date'],
-                    'sample_test_time' => $value['sample_test_time'], 
-                    'sample_test_result' => $value['sample_test_result'], 
-                    'checked_by' => $value['checked_by'],
-                    'hp_code' => $value['hp_code'],
-                    'status' => $value['status'],
-                    'created_at' => $value['created_at'],
-                    'checked_by_name' => $value['checked_by_name']                
-                ]);
-            }else{
-                LabTest::create($value);
-            }
+                if ($find_test) {
+                    $find_test->update([
+                        'sample_test_date' => $value['sample_test_date'],
+                        'sample_test_time' => $value['sample_test_time'],
+                        'sample_test_result' => $value['sample_test_result'],
+                        'checked_by' => $value['checked_by'],
+                        'hp_code' => $value['hp_code'],
+                        'status' => $value['status'],
+                        'created_at' => $value['created_at'],
+                        'checked_by_name' => $value['checked_by_name']
+                    ]);
+                } else {
+                    LabTest::create($value);
+                }
 
             }
         } catch (\Exception $e) {
-            
+
         }
     }
     return response()->json(['message' => 'Data Sussessfully Sync']);
 });
 
 
-
-Route::post('/v1/patient-transfer', function(Request $request){
+Route::post('/v1/patient-transfer', function (Request $request) {
 
     $data = json_decode($request->getContent(), true);
 
@@ -319,60 +317,60 @@ Route::post('/v1/patient-transfer', function(Request $request){
     Woman::where('token', $data['token'])
         ->update(['hp_code' => $data['hp_code']]);
     Anc::where('woman_token', $data['token'])->update(['hp_code' => $data['hp_code']]);
-    
+
     return response()->json($data['token']);
 });
 
 
-Route::post('/v1/patient-symptoms', function(Request $request){
+Route::post('/v1/patient-symptoms', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
             \App\Models\Symptoms::create($value);
         } catch (\Exception $e) {
-            
+
         }
     }
     return response()->json(['message' => 'Data Sussessfully Sync']);
 });
 
-Route::get('/v1/patient-symptoms', function(Request $request){
+Route::get('/v1/patient-symptoms', function (Request $request) {
     $hp_code = $request->hp_code;
     $data = \App\Models\Symptoms::where('hp_code', $hp_code)->get();
     return response()->json($data);
 });
 
-Route::post('/v1/patient-clinical-parameters', function(Request $request){
+Route::post('/v1/patient-clinical-parameters', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
             \App\Models\ClinicalParameter::create($value);
         } catch (\Exception $e) {
-            
+
         }
     }
     return response()->json(['message' => 'Data Sussessfully Sync']);
 });
 
-Route::get('/v1/patient-clinical-parameters', function(Request $request){
+Route::get('/v1/patient-clinical-parameters', function (Request $request) {
     $hp_code = $request->hp_code;
     $data = \App\Models\ClinicalParameter::where('hp_code', $hp_code)->get();
     return response()->json($data);
 });
 
-Route::post('/v1/patient-laboratory-parameter', function(Request $request){
+Route::post('/v1/patient-laboratory-parameter', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
             LaboratoryParameter::create($value);
         } catch (\Exception $e) {
-            
+
         }
     }
     return response()->json(['message' => 'Data Sussessfully Sync']);
 });
 
-Route::get('/v1/patient-laboratory-parameter', function(Request $request){
+Route::get('/v1/patient-laboratory-parameter', function (Request $request) {
     $hp_code = $request->hp_code;
     $data = LaboratoryParameter::where('hp_code', $hp_code)->get();
     return response()->json($data);
@@ -380,7 +378,7 @@ Route::get('/v1/patient-laboratory-parameter', function(Request $request){
 
 
 // For web apis
-Route::get('/v1/recieved-in-lab', function(Request $request){
+Route::get('/v1/recieved-in-lab', function (Request $request) {
     $user = auth()->user();
     $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
     $token = Anc::whereIn('token', $sample_token)->pluck('woman_token');
@@ -390,34 +388,34 @@ Route::get('/v1/recieved-in-lab', function(Request $request){
     ]);
 });
 
-Route::post('/v1/received-in-lab', function(Request $request){
+Route::post('/v1/received-in-lab', function (Request $request) {
     $data = $request->all();
     $healthworker = HealthWorker::where('token', auth()->user()->token)->first();
-    $data['token'] = auth()->user()->token.'-'.$data['token'];
+    $data['token'] = auth()->user()->token . '-' . $data['token'];
     $data['hp_code'] = $healthworker->hp_code;
     $data['checked_by_name'] = $healthworker->name;
     $data['checked_by'] = $healthworker->token;
     $data['status'] = 1;
-    $to_date_array = explode("-",  Carbon::now()->format('Y-m-d'));
+    $to_date_array = explode("-", Carbon::now()->format('Y-m-d'));
     $data['sample_recv_date'] = Calendar::eng_to_nep($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay();
     try {
         $sample = Anc::where('token', $data['sample_token']);
-        if($sample->count() < 1){
+        if ($sample->count() < 1) {
             return response()->json('error');
         }
         $sample->update(['result' => 9]);
         LabTest::create($data);
         return response()->json('success');
-    }catch (\Exception $e){
+    } catch (\Exception $e) {
         return response()->json('error');
     }
 });
 
-Route::post('/v1/result-in-lab-from-web', function(Request $request){
+Route::post('/v1/result-in-lab-from-web', function (Request $request) {
 
     $value = $request->all();
     try {
-        $value['token'] = auth()->user()->token.'-'.$value['token'];
+        $value['token'] = auth()->user()->token . '-' . $value['token'];
         $find_test = LabTest::where('token', $value['token'])->first();
         Anc::where('token', $find_test->sample_token)->update(['result' => $value['sample_test_result']]);
         if ($find_test) {
@@ -428,8 +426,10 @@ Route::post('/v1/result-in-lab-from-web', function(Request $request){
             ]);
         }
         return response()->json('success');
-    }catch (\Exception $e){
+    } catch (\Exception $e) {
         return response()->json('error');
     }
 
 });
+
+Route::get('/v1/check-sid', 'Data\Api\AncController@checkSID');

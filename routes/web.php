@@ -170,3 +170,7 @@ Route::post('/password-reset', function(\Illuminate\Http\Request $request){
 })->name('password-reset.store');
 
 Route::get('/admin/patient', 'Reports\CaseDetailController@getCaseDetail');
+Route::get('/admin/patient/{token}/edit', 'Reports\CaseDetailController@edit');
+Route::put('/admin/patient/{token}', 'Reports\CaseDetailController@update')->name('patient.update');
+Route::get('/admin/sample/{token}/edit', 'Reports\AncDetailController@edit');
+Route::put('/admin/sample/{token}', 'Reports\AncDetailController@update')->name('sample.update');

@@ -79,14 +79,14 @@
           <tbody>
             <tr>
               <td>Symptomatic patient with </td>
-              <td></b> Pneumonia [_<span v-if='data.symptoms.includes("1")'> &#10004; </span>_]</br>
+              <td>Pneumonia [_<span v-if='data.symptoms.includes("1")'> &#10004; </span>_]<br>
                     ARDS [_<span v-if='data.symptoms.includes("2")'> &#10004; </span>_] /Influenza-like illness[_<span v-if='data.symptoms.includes("3")'> &#10004; </span>_]</br>
                     If Other, specify: {{ data.symptoms_specific }}</td>
             </tr>
             <tr>
               <td>Symptomatic patient with comorbidity </td>
               <td>Diabetes[_<span v-if='data.symptoms_comorbidity.includes("1")'> &#10004; </span>_],HTN[_<span v-if='data.symptoms_comorbidity.includes("2")'> &#10004; </span>_],
-                    Hemodialysis[_<span v-if='data.symptoms_comorbidity.includes("3")'> &#10004; </span>_]</br> immunocompromised[_<span v-if='data.symptoms_comorbidity.includes("4")'> &#10004; </span>_] <br> If other, specify: {{ data.symptoms_comorbidity_specific }}</td>
+                    Hemodialysis[_<span v-if='data.symptoms_comorbidity.includes("3")'> &#10004; </span>_]<br> immunocompromised[_<span v-if='data.symptoms_comorbidity.includes("4")'> &#10004; </span>_] <br> If other, specify: {{ data.symptoms_comorbidity_specific }}</td>
             </tr>
           </tbody>
         </table>

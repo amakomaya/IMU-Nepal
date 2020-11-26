@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Reports;
 
+use App\Http\Requests\WomenRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Woman;
@@ -9,16 +10,77 @@ use App\Models\Woman;
 
 class CaseDetailController extends Controller
 {
-	public function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
     }
-    function getCaseDetail(Request $request){
+
+    function getCaseDetail(Request $request)
+    {
         $token = $request->token;
         $data = Woman::withAll()->where('token', $token)->first();
 
-		$phpArray = json_decode($data,true);
-
-        return view('backend.patient.detail', compact('phpArray'));
+        return view('backend.patient.detail', compact('data'));
     }
+
+    function edit($token)
+    {
+        $data = Woman::withAll()->where('token', $token)->first();
+        return view('backend.patient.edit', compact('data'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'token' => 'required',
+            'case_id' => 'required',
+            'name' => 'required',
+            'age' => 'required',
+            'age_unit' => 'required',
+            'caste' => 'required',
+            'sex' => 'required',
+            'province_id' => 'required',
+            'district_id' => 'required',
+            'municipality_id' => 'required',
+            'ward' => 'required',
+            'tole' => 'required',
+            'travelled' => 'required',
+            'occupation' => 'required',
+        ]);
+
+        $woman = Woman::find($id);
+        $woman->token = $request->get('token');
+        $woman->case_id = $request->get('case_id');
+        $woman->name = $request->get('name');
+        $woman->age = $request->get('age');
+        $woman->age_unit = $request->get('age_unit');
+        $woman->caste = $request->get('caste');
+        $woman->sex = $request->get('sex');
+        $woman->province_id = $request->get('province_id');
+        $woman->district_id = $request->get('district_id');
+        $woman->municipality_id = $request->get('municipality_id');
+        $woman->ward = $request->get('ward');
+        $woman->tole = $request->get('tole');
+        $woman->emergency_contact_one = $request->get('emergency_contact_one');
+        $woman->emergency_contact_two = $request->get('emergency_contact_two');
+        $woman->occupation = $request->get('occupation');
+        $woman->travelled = $request->get('travelled');
+
+        $woman->save();
+
+        return view('backend.woman.index');
+    }
+
+//    public function update(Request $request, Blogs $blog)
+//    {
+//        // $data = $request->validate([
+//        //     'title' => 'required',
+//        //     'description' => 'required',
+//        // ]);
+//
+//        $blog->update($this->validateBlog());
+//
+//        return redirect()->route('blogs.index')
+//            ->with('success','Blog updated successfully');
+//    }
 }
