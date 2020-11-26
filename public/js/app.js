@@ -4485,6 +4485,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -4524,8 +4528,8 @@ __webpack_require__.r(__webpack_exports__);
             type: 'numeric'
           }, {
             title: 'Phone Number',
-            name: 'emergency_contact_one',
-            type: 'text'
+            name: 'phone',
+            type: 'numeric'
           }, {
             title: 'Case Created At',
             name: 'created_at',
@@ -4534,10 +4538,6 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           name: 'Swab Collection',
           filters: [{
-            title: 'Swab ID ',
-            name: 'ancs.token',
-            type: 'string'
-          }, {
             title: 'Swab Created At',
             name: 'ancs.created_at',
             type: 'datetime'
@@ -4773,6 +4773,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     viewCaseDetails: function viewCaseDetails(token) {
       window.location.href = '/admin/patient?token=' + token;
+    },
+    editCaseDetails: function editCaseDetails(token) {
+      window.location.href = '/admin/patient/' + token + '/edit';
     }
   }
 });
@@ -7938,7 +7941,7 @@ exports.push([module.i, ".v-select{position:relative;font-family:inherit}.v-sele
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css":
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9":
 /*!***********************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vuetify/dist/vuetify.min.css ***!
   \***********************************************************************************************************************************/
@@ -39879,6 +39882,29 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
+                      _vm.role == "main"
+                        ? _c("div", [
+                            _c(
+                              "button",
+                              {
+                                attrs: { title: "Edit Case Detail" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.editCaseDetails(item.token)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "fa fa-edit",
+                                  attrs: { "aria-hidden": "true" }
+                                }),
+                                _vm._v(" |\n                ")
+                              ]
+                            )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
                       item.ancs.length == 0 && _vm.role == "healthworker"
                         ? _c(
                             "button",
@@ -42959,7 +42985,7 @@ var render = function() {
             _c("td", [_vm._v("Symptomatic patient with ")]),
             _vm._v(" "),
             _c("td", [
-              _vm._v(" Pneumonia [_"),
+              _vm._v("Pneumonia [_"),
               _vm.data.symptoms.includes("1")
                 ? _c("span", [_vm._v(" ✔ ")])
                 : _vm._e(),
@@ -86331,7 +86357,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_vue__;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css");
+var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
