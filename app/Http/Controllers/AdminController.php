@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Helpers\GetHealthpostCodes;
 use App\Helpers\ViewHelper;
-use App\Models\Anc;
+use App\Models\SampleCollection;
 use App\Models\BabyDetail;
 use App\Models\District;
-use App\Models\Healthpost;
-use App\Models\HealthWorker;
+use App\Models\Organization;
+use App\Models\OrganizationMember;
 use App\Models\Municipality;
 use App\Models\VaccinationRecord;
 use App\Models\Ward;
-use App\Models\Woman;
+use App\Models\SuspectedCase;
 use App\Models\LabTest;
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
@@ -81,9 +81,9 @@ class AdminController extends Controller
         $municipality_id = $request->get('municipality_id');
         echo '<select id="hp_code" class="form-control" name="hp_code" required>';
 
-        $healthposts = Healthpost::where([['municipality_id', $municipality_id], ['ward_no', $ward_no]])->orderBy('name', 'asc')->get();
+        $healthposts = Organization::where([['municipality_id', $municipality_id], ['ward_no', $ward_no]])->orderBy('name', 'asc')->get();
 
-        echo "<option value=\"\">Select Healthpost</option>";
+        echo "<option value=\"\">Select Organization</option>";
         foreach ($healthposts as $healthpost) {
             echo "<option value=\"$healthpost->hp_code\">$healthpost->name</option>";
         }
@@ -95,8 +95,8 @@ class AdminController extends Controller
     {
         $id = $request->get('id');
         echo '<select id="hp_code" class="form-control" name="hp_code" required>';
-        $healthposts = Healthpost::where('municipality_id', $id)->orderBy('name', 'asc')->get();
-        echo "<option value=\"\">Select Healthpost</option>";
+        $healthposts = Organization::where('municipality_id', $id)->orderBy('name', 'asc')->get();
+        echo "<option value=\"\">Select Organization</option>";
         foreach ($healthposts as $Healthpost) {
             echo "<option value=\"$Healthpost->hp_code\">$Healthpost->name</option>";
         }

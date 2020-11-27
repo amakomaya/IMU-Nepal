@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Data\Api;
 
 use App\Helpers\GetHealthpostCodes;
-use App\Models\Anc;
+use App\Models\SampleCollection;
 use App\Models\LabTest;
-use App\Models\Woman;
+use App\Models\SuspectedCase;
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -28,7 +28,7 @@ class DashboardController extends Controller
         $lab_received_collection = LabTest::where('checked_by', $user->token)->active()->get();
 
 
-        $cases = Woman::whereIn('hp_code', $hpCodes)->active()->with('ancs')->get();
+        $cases = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->with('ancs')->get();
 
         $dashboardCases = $cases->map(function ($value){
             $data = [];

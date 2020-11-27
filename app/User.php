@@ -10,8 +10,8 @@ use App\Models\ProvinceInfo;
 use App\Models\DistrictInfo;
 use App\Models\MunicipalityInfo;
 use App\Models\Ward;
-use App\Models\Healthpost;
-use App\Models\HealthWorker;
+use App\Models\Organization;
+use App\Models\OrganizationMember;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Cmgmyr\Messenger\Traits\Messagable;
 use Spatie\Permission\Traits\HasRoles;
@@ -188,7 +188,7 @@ class User extends Authenticatable
         $role = Auth::user()->role;  
         $token = Auth::user()->token;
         if($role=="healthworker"){
-            $healthworker = HealthWorker::where('token', $token)->get()->first();
+            $healthworker = OrganizationMember::where('token', $token)->get()->first();
             $name = "(".$healthworker->name.")";
             $role = $healthworker->role;
             if($role=="doctor"){
@@ -236,13 +236,13 @@ class User extends Authenticatable
         }
 
         if($role=="healthpost"){
-            $healthpost = Healthpost::where('token', $token)->get()->first();
+            $healthpost = Organization::where('token', $token)->get()->first();
             $name = "(".$healthpost->name.")";
-            $role = "Hospital / CICT";
+            $role = "Hospital / Organization";
         }
 
         if($role=="healthworker"){
-            $healthworker = HealthWorker::where('token', $token)->get()->first();
+            $healthworker = OrganizationMember::where('token', $token)->get()->first();
             $name = "(".$healthworker->name.")";
             $role = $healthworker->role;
             if($role=="fchv"){
@@ -296,12 +296,12 @@ class User extends Authenticatable
                 $address = $municipality->office_address;
                 break;
             case 'healthpost':
-                $healthpost = Healthpost::where('token', $token)->get()->first();
+                $healthpost = Organization::where('token', $token)->get()->first();
                 $name = $healthpost->name;
                 $address = $healthpost->address;
                 break;
             case 'healthworker':
-                $healthworker = HealthWorker::where('token', $token)->get()->first();
+                $healthworker = OrganizationMember::where('token', $token)->get()->first();
                 $name = $healthworker->name;
                 $address = $healthworker->tole;
                 break;

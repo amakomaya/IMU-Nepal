@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Backend;
 
 
 use App\Models\Aefi;
-use App\Models\Anc;
+use App\Models\SampleCollection;
 use App\Models\BabyDetail;
 use App\Models\BabyWeight;
 use App\Models\Delivery;
@@ -14,7 +14,7 @@ use App\Models\Pnc;
 use App\Models\VaccinationRecord;
 use App\Models\VaccineVialStock;
 use App\Models\VialDetail\VialDetail;
-use App\Models\Woman;
+use App\Models\SuspectedCase;
 use App\Models\Woman\Vaccination;
 use Exception;
 use Illuminate\Database\Query\Builder;
@@ -67,7 +67,7 @@ class BackupRestoreController
         try {
             $cases->map(function ($item, $key) {
                 $data = collect($item)->except(['_id', 'sync', 'update_status'])->all();
-                Woman::updateOrCreate([
+                SuspectedCase::updateOrCreate([
                     'token' => $data['token']
                 ], $data);
 
@@ -80,7 +80,7 @@ class BackupRestoreController
         try {
             $sample_collection->map(function ($item, $key) {
                 $data = collect($item)->except(['_id', 'regdev', 'sync', 'update_status'])->all();
-                Anc::updateOrCreate([
+                SampleCollection::updateOrCreate([
                     'token' => $data['token'],
                     'woman_token' => $data['woman_token'],
                 ], $data);

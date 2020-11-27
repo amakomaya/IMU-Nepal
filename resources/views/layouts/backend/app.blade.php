@@ -39,7 +39,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
     @php
         if (auth()->user()->role == 'healthworker'){
-            $role = \App\Models\HealthWorker::where('token', Auth::user()->token)->first()->role;
+            $role = \App\Models\OrganizationMember::where('token', Auth::user()->token)->first()->role;
         }
     else{
           $role = auth()->user()->role;

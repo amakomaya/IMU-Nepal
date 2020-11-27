@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Reports;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
-use App\Models\Healthpost;
+use App\Models\Organization;
 use App\Models\Municipality;
 use App\Models\District;
 use App\Models\Province;
@@ -47,7 +47,7 @@ class FilterController extends Controller
         echo '<select name="ward_or_healthpost" class="form-control" id="ward_or_healthpost_id" onchange="wardOrHealthpostOnchange($(this).val())">';
 //        $options = ['ward' => 'By ward', 'healthpost' => 'By healthpost'];
         $options = ['healthpost' => 'By healthpost'];
-            echo "<option value=\"\">Select all Healthpost</option>";
+            echo "<option value=\"\">Select all Organization</option>";
             foreach($options as $key => $option)
             {
                 $value = $key.$id;
@@ -71,8 +71,8 @@ class FilterController extends Controller
     public function healthpostSelectByMunicipality(Request $request){
         $id = preg_replace('/[^0-9]/', '', $request->get('id'));
         echo '<select id="hp_code" class="form-control" name="hp_code" required>';
-        $healthposts = Healthpost::where([['municipality_id', $id]])->orderBy('name', 'asc')->get();
-            echo "<option value=\"\">Select all Healthpost</option>";
+        $healthposts = Organization::where([['municipality_id', $id]])->orderBy('name', 'asc')->get();
+            echo "<option value=\"\">Select all Organization</option>";
             foreach($healthposts as $healthpost)
             {
                 echo"<option value=\"$healthpost->hp_code\">$healthpost->name</option>";

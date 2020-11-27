@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\provinceInfo;
 use App\User;
-use App\Models\Healthpost;
+use App\Models\Organization;
 
 class UserManagerController extends Controller
 {

@@ -2,18 +2,13 @@
 
 namespace App\Models;
 
-use App\Helpers\AncCalculation;
-use App\Helpers\AncVisitCalculation;
 use App\Support\Dataviewer;
-use Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
-use Yagiten\Nepalicalendar\Calendar;
 
-class Woman extends Model
+class SuspectedCase extends Model
 {
     use Notifiable;
     use Dataviewer;
@@ -61,7 +56,7 @@ class Woman extends Model
     public static function getWomanName($womanToken)
     {
 
-        $woman = Woman::where('token', $womanToken)->get()->first();
+        $woman = SuspectedCase::where('token', $womanToken)->get()->first();
 
         if (count($woman) > 0) {
             return $woman->name;
@@ -115,7 +110,7 @@ class Woman extends Model
 
     public function ancs()
     {
-        return $this->hasMany('App\Models\Anc', 'woman_token', 'token')->with('labreport');
+        return $this->hasMany('App\Models\SampleCollection', 'woman_token', 'token')->with('labreport');
     }
 
     public function deliveries()
@@ -162,22 +157,22 @@ class Woman extends Model
 
     public function healthpost()
     {
-        return $this->hasOne('App\Models\Healthpost', 'hp_code', 'hp_code');
+        return $this->hasOne('App\Models\Organization', 'hp_code', 'hp_code');
     }
 
     public function healthworker()
     {
-        return $this->hasOne('App\Models\HealthWorker', 'token', 'created_by');
+        return $this->hasOne('App\Models\OrganizationMember', 'token', 'created_by');
     }
 
     public function latestAnc()
     {
-        return $this->hasOne('App\Models\Anc', 'woman_token', 'token')->with('labreport')->latest();
+        return $this->hasOne('App\Models\SampleCollection', 'woman_token', 'token')->with('labreport')->latest();
     }
 
     public static function getHealthpost($hp_code)
     {
-        $healthpost = Healthpost::where('hp_code', $hp_code)->get()->first();
+        $healthpost = Organization::where('hp_code', $hp_code)->get()->first();
         if (count($healthpost) > 0) {
             return $healthpost->name;
         }

@@ -63,16 +63,16 @@
                                 <tr>
                                     <td>{{ $i }}</td>                                     
                                     <td>{{$healthpost->name}}</td>                                      
-                                    <td>@if(!empty(\App\Models\Healthpost::find($healthpost->id)->province->province_name))
-                                            {{\App\Models\Healthpost::find($healthpost->id)->province->province_name}}
+                                    <td>@if(!empty(\App\Models\Organization::find($healthpost->id)->province->province_name))
+                                            {{\App\Models\Organization::find($healthpost->id)->province->province_name}}
                                         @endif
                                     </td>                                     
-                                    <td>@if(!empty(\App\Models\Healthpost::find($healthpost->id)->district->district_name))
-                                            {{\App\Models\Healthpost::find($healthpost->id)->district->district_name}}
+                                    <td>@if(!empty(\App\Models\Organization::find($healthpost->id)->district->district_name))
+                                            {{\App\Models\Organization::find($healthpost->id)->district->district_name}}
                                         @endif
                                     </td>                                     
-                                    <td>@if(!empty(\App\Models\Healthpost::find($healthpost->id)->municipality->municipality_name))
-                                            {{\App\Models\Healthpost::find($healthpost->id)->municipality->municipality_name}}
+                                    <td>@if(!empty(\App\Models\Organization::find($healthpost->id)->municipality->municipality_name))
+                                            {{\App\Models\Organization::find($healthpost->id)->municipality->municipality_name}}
                                         @endif
                                     </td>    
                                     <td>{{$healthpost->hp_code}}</td>                                   

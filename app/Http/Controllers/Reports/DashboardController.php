@@ -32,7 +32,7 @@ class DashboardController extends Controller
 
         $chart = Charts::create('bar', 'highcharts')
             ->title('Information Chart')
-            ->labels(['Registered Woman', 'Registered Baby' ,'Completed At least One Anc Visit'])
+            ->labels(['Registered SuspectedCase', 'Registered Baby' ,'Completed At least One SampleCollection Visit'])
             ->values([$data['registered_woman'], $data['registered_baby'], $data['anc_completed_at_least_one_visit']])
             ->dimensions(1000,500)
             ->responsive(false);

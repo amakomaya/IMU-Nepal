@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Woman;
+use App\Models\SuspectedCase;
 use App\Models\Province;
 use App\Models\District;
 use App\Models\Municipality; 
-use App\Models\Healthpost;
+use App\Models\Organization;
 use App\Http\Requests\TransferWomanRequest;
 use App\Models\TransferWoman;
 use Auth;
@@ -16,11 +16,11 @@ use Auth;
 class TransferWomanController extends Controller
 {
     public function transfer($from_hp_code, $woman_token){
-    	$woman = Woman::where('token', $woman_token)->get()->first();
+    	$woman = SuspectedCase::where('token', $woman_token)->get()->first();
     	$provinces = Province::all();
         $districts = District::all();
         $municipalities = Municipality::all();
-        $healthposts = Healthpost::all();
+        $healthposts = Organization::all();
     	return view('backend.transfer-woman.transfer',compact('from_hp_code','woman','provinces','districts','municipalities','healthposts'));
     }
 
@@ -40,8 +40,8 @@ class TransferWomanController extends Controller
     }
 
     public function transferConfirm($from_hp_code, $woman_token){
-        $woman = Woman::where('token', $woman_token)->get()->first();
-        $healthpost = Healthpost::where('hp_code', $from_hp_code)->get()->first();
+        $woman = SuspectedCase::where('token', $woman_token)->get()->first();
+        $healthpost = Organization::where('hp_code', $from_hp_code)->get()->first();
         $transfer = TransferWoman::where([['from_hp_code', $healthpost->hp_code], ['woman_token', $woman->token]])->get()->first();
         return view('backend.transfer-woman.transfer-confrim',compact('healthpost','woman','transfer'));
     }
@@ -53,10 +53,10 @@ class TransferWomanController extends Controller
             $transferWoman->save();
             $woman = $this->findModelWoman($transferWoman->woman_token);
             $loggedInToken = Auth::user()->token;
-            $healthpost = Healthpost::where('token', $loggedInToken)->get()->first();
+            $healthpost = Organization::where('token', $loggedInToken)->get()->first();
             $woman->hp_code = $healthpost->hp_code;
             $woman->save();
-            $request->session()->flash('message', 'Woman admitted succesffully');
+            $request->session()->flash('message', 'SuspectedCase admitted succesffully');
         }else{
 
             $transferWoman = $this->findModel($id);
@@ -83,11 +83,11 @@ class TransferWomanController extends Controller
 
     protected function findModelWoman($token){
 
-        if(Woman::where('token', $token)->get()->first()===null)
+        if(SuspectedCase::where('token', $token)->get()->first()===null)
         {
             abort(404);
         }else{
-            return $model = Woman::where('token', $token)->get()->first();
+            return $model = SuspectedCase::where('token', $token)->get()->first();
         }
     }
 }

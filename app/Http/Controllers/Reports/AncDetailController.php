@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Reports;
 
-use App\Models\Anc;
+use App\Models\SampleCollection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -42,10 +42,10 @@ class AncDetailController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Anc  $anc
+     * @param  \App\Models\SampleCollection  $anc
      * @return \Illuminate\Http\Response
      */
-    public function show(Anc $anc)
+    public function show(SampleCollection $anc)
     {
         //
     }
@@ -53,12 +53,12 @@ class AncDetailController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Anc  $anc
+     * @param  \App\Models\SampleCollection  $anc
      * @return \Illuminate\Http\Response
      */
     public function edit($token)
     {
-        $data = Anc::where('status', '1')->where('token', $token)->first();
+        $data = SampleCollection::where('status', '1')->where('token', $token)->first();
         return view('backend.sample.edit', compact('data'));
     }
 
@@ -66,7 +66,7 @@ class AncDetailController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Anc  $anc
+     * @param  \App\Models\SampleCollection  $anc
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -80,7 +80,7 @@ class AncDetailController extends Controller
             'result' => 'required',
         ]);
 
-        $sample = Anc::find($id);
+        $sample = SampleCollection::find($id);
         $sample->token = $request->get('token');
         $sample->woman_token = $request->get('woman_token');
         $sample->sample_type = $request->get('sample_type');
@@ -97,10 +97,10 @@ class AncDetailController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Anc  $anc
+     * @param  \App\Models\SampleCollection  $anc
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Anc $anc)
+    public function destroy(SampleCollection $anc)
     {
         //
     }

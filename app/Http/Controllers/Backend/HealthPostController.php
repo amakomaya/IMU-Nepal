@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Healthpost;
+use App\Models\Organization;
 use App\Models\Province;
 use App\Models\District;
 use App\Models\Municipality;
@@ -28,20 +28,20 @@ class HealthpostController extends Controller
         }
        if(Auth::user()->role=="province"){
             $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
-            $healthposts = Healthpost::where('province_id', $province_id)->latest()->get();
+            $healthposts = Organization::where('province_id', $province_id)->latest()->get();
        }elseif(Auth::user()->role=="dho"){
             $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
-            $healthposts = Healthpost::where('district_id', $district_id)->latest()->get();
+            $healthposts = Organization::where('district_id', $district_id)->latest()->get();
        }elseif(Auth::user()->role=="municipality"){
             $municipality_id = Municipality::modelMunicipalityInfo(Auth::user()->token)->municipality_id;
-            $healthposts = Healthpost::where('municipality_id', $municipality_id)->latest()->get();
+            $healthposts = Organization::where('municipality_id', $municipality_id)->latest()->get();
        }elseif(Auth::user()->role=="ward"){
             $ward_id = Ward::modelWard(Auth::user()->token)->id;
             $ward_no = Ward::getWardNo($ward_id);
             $municipality_id = Ward::modelWard(Auth::user()->token)->municipality_id;
-            $healthposts = Healthpost::where([['municipality_id', $municipality_id],['ward_no',$ward_no]])->latest()->get();
+            $healthposts = Organization::where([['municipality_id', $municipality_id],['ward_no',$ward_no]])->latest()->get();
        }else{
-            $healthposts = Healthpost::latest()->get();
+            $healthposts = Organization::latest()->get();
        }
         
         return view('backend.healthpost.index',compact('healthposts'));
@@ -68,7 +68,7 @@ class HealthpostController extends Controller
 
         $this->validateForm($request, $scenario="create");
 
-        $healthpost = Healthpost::create([
+        $healthpost = Organization::create([
             'name'               => $request->get('name'),
             'token'               => uniqid().time(),
             'province_id'               => $request->get('province_id'),
@@ -177,11 +177,11 @@ class HealthpostController extends Controller
 
     protected function findModel($id){
 
-        if(Healthpost::find($id)===null)
+        if(Organization::find($id)===null)
         {
             abort(404,'Page not found');
         }else{
-            return $model = Healthpost::find($id);
+            return $model = Organization::find($id);
         }
     }
 

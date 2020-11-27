@@ -1,4 +1,4 @@
-@if(App\Models\HealthWorker::where('token', auth()->user()->token)->first()->role == 'fchv')
+@if(App\Models\OrganizationMember::where('token', auth()->user()->token)->first()->role == 'fchv')
       <li>
         <a href="#">
             <i class="fa fa-user" aria-hidden="true"></i>

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Reports;
 use App\Http\Requests\WomenRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Woman;
+use App\Models\SuspectedCase;
 
 
 class CaseDetailController extends Controller
@@ -18,14 +18,14 @@ class CaseDetailController extends Controller
     function getCaseDetail(Request $request)
     {
         $token = $request->token;
-        $data = Woman::withAll()->where('token', $token)->first();
+        $data = SuspectedCase::withAll()->where('token', $token)->first();
 
         return view('backend.patient.detail', compact('data'));
     }
 
     function edit($token)
     {
-        $data = Woman::withAll()->where('token', $token)->first();
+        $data = SuspectedCase::withAll()->where('token', $token)->first();
         return view('backend.patient.edit', compact('data'));
     }
 
@@ -48,7 +48,7 @@ class CaseDetailController extends Controller
             'occupation' => 'required',
         ]);
 
-        $woman = Woman::find($id);
+        $woman = SuspectedCase::find($id);
         $woman->token = $request->get('token');
         $woman->case_id = $request->get('case_id');
         $woman->name = $request->get('name');

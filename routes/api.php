@@ -1,14 +1,14 @@
 <?php
 
-use App\Models\Anc;
+use App\Models\SampleCollection;
 use App\Models\CaseManagement;
 use App\Models\ContactDetail;
 use App\Models\ContactFollowUp;
 use App\Models\ContactTracing;
-use App\Models\HealthWorker;
+use App\Models\OrganizationMember;
 use App\Models\LaboratoryParameter;
 use App\Models\LabTest;
-use App\Models\Woman;
+use App\Models\SuspectedCase;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yagiten\Nepalicalendar\Calendar;
@@ -20,39 +20,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/imeilogin', 'Api\LoginController@login');
 Route::post('/imeilogin-vtc', 'Api\LoginController@vtcLogin');
 
-Route::post('/baby-detail-new', 'Api\BabyDetailController@newStore');
-Route::post('/vial-to-child/create-baby-new', 'Api\VialToChildController@storeBabyNew');
-Route::put('/vial-to-child/update-baby-new/{token}', 'Api\VialToChildController@updateBabyNew');
-
-// Care App Apis
-Route::get('/v1/woman-vaccination', 'Api\WomanVaccinationController@index');
-Route::post('/v1/woman-vaccination', 'Api\WomanVaccinationController@store');
-Route::post('/v1/woman-vaccination/{id}', 'Api\WomanVaccinationController@update');
-Route::get('/lab-test', 'Api\LabTestController@index');
-Route::post('/lab-test', 'Api\LabTestController@store');
-Route::post('/lab-test/{id}', 'Api\LabTestController@update');
 
 Route::get('/v2/healthpost', 'Api\v2\HealthpostController@get');
 Route::get('/v2/municipality-by-district', 'Api\v2\MunicipalityByDistrictController@get');
-Route::get('/v2/woman', 'Api\v2\WomanController@get');
-Route::get('/v2/entry-log', 'Api\v2\GlobalDataEntryLogController@index');
-Route::Post('/v2/entry-log', 'Api\v2\GlobalDataEntryLogController@store');
 
 Route::get('analysis/v1/overview', 'Api\Analysis\v1\OverviewController@get');
-
-Route::get('/v2/content-app/newsfeed/{token?}', 'Api\v2\ContentAppNewsFeedController@getNewsFeed');
-Route::get('/v2/content-app/text', 'Api\v2\ContentAppMultimediaController@getText');
-Route::get('/v2/content-app/video', 'Api\v2\ContentAppMultimediaController@getVideo');
-Route::get('/v2/content-app/audio', 'Api\v2\ContentAppMultimediaController@getAudio');
-Route::get('/v2/content-app/advertisement', 'Api\v2\ContentAppAdvertisementController@get');
-Route::post('/v2/content-app/notification', 'Api\v2\ContentAppNotificationController@postNotification');
-Route::get('/v2/content-app/notification', 'Api\v2\ContentAppNotificationController@getNotification');
-
-Route::post('/v2/content-app/notification-read-at', 'Api\v2\ContentAppNotificationController@updateReadAt');
-
-Route::get('/v2/content-app/appointment', 'Api\v2\ContentAppAppointmentController@check');
-Route::post('/v2/content-app/appointment/confirm', 'Api\v2\ContentAppAppointmentController@confirm');
-Route::get('/v2/content-app/appointment/history', 'Api\v2\ContentAppAppointmentController@history');
 
 
 // Amakomaya Care
@@ -68,7 +40,7 @@ Route::post('/v3/amc/login', 'Api\LoginController@v3AmcLogin');
 Route::post('/aamakomaya-qrcode-download', 'Backend\AamakomayaGenerateQrcode@download')->name('aamakomaya.qrcode-download');
 
 Route::get('/v1/healthposts', function () {
-    $healthpost = \App\Models\Healthpost::with(['province', 'municipality', 'district'])->get();
+    $healthpost = \App\Models\Organization::with(['province', 'municipality', 'district'])->get();
     return response()->json($healthpost);
 });
 
@@ -79,7 +51,7 @@ Route::post('/v1/client', function (Request $request) {
         try {
             $value['case_id'] = bin2hex(random_bytes(3));
 
-            Woman::create($value);
+            SuspectedCase::create($value);
         } catch (\Exception $e) {
 
         }
@@ -197,7 +169,7 @@ Route::post('/v1/client-update', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
-            Woman::where('token', $value['token'])->update($value);
+            SuspectedCase::where('token', $value['token'])->update($value);
         } catch (\Exception $e) {
 
         }
@@ -209,7 +181,7 @@ Route::post('/v1/client-tests', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
-            Anc::create($value);
+            SampleCollection::create($value);
         } catch (\Exception $e) {
 
         }
@@ -274,10 +246,10 @@ Route::post('/v1/lab-test', function (Request $request) {
             if ($value['sample_test_date'] == '') {
                 $value['sample_test_result'] = 9;
                 LabTest::create($value);
-                Anc::where('token', $value['sample_token'])->update(['result' => '9']);
+                SampleCollection::where('token', $value['sample_token'])->update(['result' => '9']);
             } else {
 
-                Anc::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
+                SampleCollection::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
 
                 $find_test = LabTest::where('token', $value['token']);
 
@@ -309,14 +281,14 @@ Route::post('/v1/patient-transfer', function (Request $request) {
 
     $data = json_decode($request->getContent(), true);
 
-    $data['from'] = Woman::where('token', $data['token'])->first()->hp_code;
+    $data['from'] = SuspectedCase::where('token', $data['token'])->first()->hp_code;
     $data['to'] = $data['hp_code'];
     $data['name'] = 'patient';
     $transfer = \App\Models\TransferLog::create($data);
 
-    Woman::where('token', $data['token'])
+    SuspectedCase::where('token', $data['token'])
         ->update(['hp_code' => $data['hp_code']]);
-    Anc::where('woman_token', $data['token'])->update(['hp_code' => $data['hp_code']]);
+    SampleCollection::where('woman_token', $data['token'])->update(['hp_code' => $data['hp_code']]);
 
     return response()->json($data['token']);
 });
@@ -381,8 +353,8 @@ Route::get('/v1/patient-laboratory-parameter', function (Request $request) {
 Route::get('/v1/recieved-in-lab', function (Request $request) {
     $user = auth()->user();
     $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
-    $token = Anc::whereIn('token', $sample_token)->pluck('woman_token');
-    $data = Woman::whereIn('token', $token)->active()->withAll();
+    $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
+    $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
     return response()->json([
         'collection' => $data->advancedFilter()
     ]);
@@ -390,7 +362,7 @@ Route::get('/v1/recieved-in-lab', function (Request $request) {
 
 Route::post('/v1/received-in-lab', function (Request $request) {
     $data = $request->all();
-    $healthworker = HealthWorker::where('token', auth()->user()->token)->first();
+    $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
     $data['token'] = auth()->user()->token . '-' . $data['token'];
     $data['hp_code'] = $healthworker->hp_code;
     $data['checked_by_name'] = $healthworker->name;
@@ -399,7 +371,7 @@ Route::post('/v1/received-in-lab', function (Request $request) {
     $to_date_array = explode("-", Carbon::now()->format('Y-m-d'));
     $data['sample_recv_date'] = Calendar::eng_to_nep($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay();
     try {
-        $sample = Anc::where('token', $data['sample_token']);
+        $sample = SampleCollection::where('token', $data['sample_token']);
         if ($sample->count() < 1) {
             return response()->json('error');
         }
@@ -417,7 +389,7 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
     try {
         $value['token'] = auth()->user()->token . '-' . $value['token'];
         $find_test = LabTest::where('token', $value['token'])->first();
-        Anc::where('token', $find_test->sample_token)->update(['result' => $value['sample_test_result']]);
+        SampleCollection::where('token', $find_test->sample_token)->update(['result' => $value['sample_test_result']]);
         if ($find_test) {
             $find_test->update([
                 'sample_test_date' => $value['sample_test_date'],

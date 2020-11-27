@@ -30,9 +30,6 @@ Route::resource('admin/center', 'Backend\CenterController');
 Route::get('/admin/center-maps', 'Backend\MapController@map')->name('center.woman.map');
 
 //Backend Dho
-Route::resource('admin/child', 'Backend\BabyDetailController');
-
-//Backend Dho
 Route::resource('admin/dho', 'Backend\DHOController');
 
 //Bakend Province
@@ -47,13 +44,13 @@ Route::put('/admin/user-manager/change-paswword-update', 'Backend\UserManagerCon
 Route::post('/admin/user-manager/{id}/login-as', 'Backend\UserManagerController@loginAs')->name('user-manager.login-as');
 Route::post('/admin/user-manager/first-loggedin', 'Backend\UserManagerController@loginAsFirstLoggedIn')->name('user-manager.first-loggedin');
 
-//Bakend Healthpost
+//Bakend Organization
 Route::resource('admin/healthpost', 'Backend\HealthpostController');
 
 //Bakend Route
 Route::resource('admin/ward', 'Backend\WardController');
 
-//Bakend Fchv
+//Bakend Lab
 Route::resource('admin/lab-user', 'Backend\FchvController', ['names' => 'fchv']);
 Route::get('/admin/lab-patients', function (){
     return view('backend.lab.index');
@@ -92,26 +89,6 @@ Route::get('/api/anc/1', 'Api\AncController@show')->name('api.anc.show');
 Route::get('/api/anc-show-by-woman-token', 'Api\AncController@showAncByWomanToken')->name('api.anc.anc-show-by-woman-token');
 Route::post('/api/anc', 'Api\AncController@store')->name('api.anc.store');
 Route::post('/api/anc/{id}', 'Api\AncController@update')->name('api.anc.update');
-
-
-Route::get('/api/delivery', 'Api\DeliveryController@index')->name('api.delivery.index');
-Route::get('/api/delivery/1', 'Api\DeliveryController@show')->name('api.delivery.show');
-Route::get('/api/delivery-show-by-woman-token', 'Api\DeliveryController@showDeliveryByWomanToken')->name('api.delivery-show-by-woman-token');
-Route::post('/api/delivery', 'Api\DeliveryController@store')->name('api.delivery.store');
-Route::post('/api/delivery/{id}', 'Api\DeliveryController@update')->name('api.delivery.update');
-
-Route::get('/api/baby-detail', 'Api\BabyDetailController@index')->name('api.baby-detail.index');
-Route::get('/api/baby-detail/1', 'Api\BabyDetailController@show')->name('api.baby-detail.show');
-Route::get('/api/baby-detail-show-by-woman-token', 'Api\BabyDetailController@showBabyDetailByWomanToken')->name('api.baby-detail-show-by-woman-token');
-Route::post('/api/baby-detail', 'Api\BabyDetailController@store')->name('api.baby-detail.store');
-Route::post('/api/baby-detail-individual', 'Api\BabyDetailController@storeIndividual')->name('api.baby-detail.baby-detail-individual');
-Route::post('/api/baby-detail/{id}', 'Api\BabyDetailController@update')->name('api.baby-detail.update');
-
-Route::get('/api/pnc', 'Api\PncController@index')->name('api.pnc.index');
-Route::get('/api/pnc/1', 'Api\PncController@show')->name('api.pnc.show');
-Route::get('/api/pnc-show-by-woman-token', 'Api\PncController@showPncByWomanToken')->name('api.pnc-show-by-woman-token');
-Route::post('/api/pnc', 'Api\PncController@store')->name('api.pnc.store');
-Route::post('/api/pnc/{id}', 'Api\PncController@update')->name('api.pnc.update');
 
 Route::get('/api/user', 'Api\UserController@index')->name('api.user.index');
 Route::get('/api/user/1', 'Api\UserController@show')->name('api.user.show');

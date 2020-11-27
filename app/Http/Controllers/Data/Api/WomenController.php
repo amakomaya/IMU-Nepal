@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Data\Api;
 
 use App\Helpers\GetHealthpostCodes;
 use App\Http\Controllers\Controller;
-use App\Models\Anc;
+use App\Models\SampleCollection;
 use App\Models\Delivery;
 use App\Models\LabTest;
-use App\Models\Woman;
+use App\Models\SuspectedCase;
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -27,7 +27,7 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->withAll();
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -37,7 +37,7 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->activePatientList()->withAll();
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->activePatientList()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -47,7 +47,7 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->passivePatientList()->withAll();
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->passivePatientList()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -56,7 +56,7 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->positivePatientList()->withAll();
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->positivePatientList()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -66,7 +66,7 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->labReceivedList()->withAll();
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->labReceivedList()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -76,8 +76,8 @@ class WomenController extends Controller
     {
         $user = auth()->user();
         $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
-        $token = Anc::whereIn('token', $sample_token)->pluck('woman_token');
-        $data = Woman::whereIn('token', $token)->active()->withAll()->labAddReceived();
+        $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
+        $data = SuspectedCase::whereIn('token', $token)->active()->withAll()->labAddReceived();
         return response()->json([
             'collection' => $data->advancedFilter()
         ]);
@@ -87,8 +87,8 @@ class WomenController extends Controller
     {
         $user = auth()->user();
         $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
-        $token = Anc::whereIn('token', $sample_token)->pluck('woman_token');
-        $data = Woman::whereIn('token', $token)->active()->withAll()->labAddReceivedPositive();
+        $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
+        $data = SuspectedCase::whereIn('token', $token)->active()->withAll()->labAddReceivedPositive();
         return response()->json([
             'collection' => $data->advancedFilter()
         ]);
@@ -98,8 +98,8 @@ class WomenController extends Controller
     {
         $user = auth()->user();
         $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
-        $token = Anc::whereIn('token', $sample_token)->pluck('woman_token');
-        $data = Woman::whereIn('token', $token)->active()->withAll()->labAddReceivedNegative();
+        $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
+        $data = SuspectedCase::whereIn('token', $token)->active()->withAll()->labAddReceivedNegative();
         return response()->json([
             'collection' => $data->advancedFilter()
         ]);
@@ -109,7 +109,7 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->casesRecoveredList()->withAll();
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->casesRecoveredList()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -119,37 +119,37 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->casesDeathList()->withAll();
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->casesDeathList()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
     }
 
     public function show($token){
-        $data = Woman::withAll()->where('token', $token)->first();
+        $data = SuspectedCase::withAll()->where('token', $token)->first();
         return response()->json([
             'record' => $data
         ]);
     }
 
     public function update(Request $request, $token) {
-        $data = $request->only((new Woman)->getFillable());
+        $data = $request->only((new SuspectedCase)->getFillable());
         $date_array = explode("-", $data['lmp_date_en']);
         $data['lmp_date_en'] = Calendar::nep_to_eng($date_array[0], $date_array[1], $date_array[2])->getYearMonthDay();
-        Woman::where('token', $token)->update($data);
+        SuspectedCase::where('token', $token)->update($data);
         return response()->json();
     }
 
     public function updateAnc(Request $request, $token) {
-        $data = $request->only((new Anc())->getFillable());
+        $data = $request->only((new SampleCollection())->getFillable());
         $date_array = explode("-", $data['visit_date']);
         $data['visit_date'] = Calendar::nep_to_eng($date_array[0], $date_array[1], $date_array[2])->getYearMonthDay();
-        Anc::where('token', $token)->update($data);
+        SampleCollection::where('token', $token)->update($data);
         return response()->json();
     }
 
     public function deleteAnc($id) {
-        Anc::findOrFail($id)->delete();
+        SampleCollection::findOrFail($id)->delete();
         return response()->json();
     }
 
@@ -205,7 +205,7 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = Woman::whereIn('hp_code', $hpCodes)->active()->withAll()->with('municipality', 'district');
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->withAll()->with('municipality', 'district');
 
         $woman = $woman->get()->filter(function ($item, $key) {
             if ($item->latestAnc()->exists()) {
@@ -242,8 +242,8 @@ class WomenController extends Controller
     public function labExport(){
         $user = auth()->user();
         $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
-        $token = Anc::whereIn('token', $sample_token)->pluck('woman_token');
-        $data = Woman::whereIn('token', $token)->latest()->active()->withAll()->get();
+        $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
+        $data = SuspectedCase::whereIn('token', $token)->latest()->active()->withAll()->get();
 
         $final_data = $data->map(function ($item, $key) {
             $data = [];

@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Woman;
+use App\Models\SuspectedCase;
 use App\Notifications\SendMessageFromWebNotify;
 use Exception;
 use Illuminate\Http\Request;
@@ -24,7 +24,7 @@ class SendMessageController extends Controller
                 'notified_by' => $json['notified_by'],
                 'notified_at' =>$json['notified_at']
             ];
-            $user = Woman::getNotifiableByToken($value);
+            $user = SuspectedCase::getNotifiableByToken($value);
             try {
                 if (sizeof($user) > 0) {
                     $user->notify(new SendMessageFromWebNotify($payload));

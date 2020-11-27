@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Models\HealthWorker;
-use App\Models\Woman;
+use App\Models\OrganizationMember;
+use App\Models\SuspectedCase;
 use App\Reports\DateFromToRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Healthpost;
+use App\Models\Organization;
 
 class OverviewController extends Controller
 {
     public function index()
     {
-        $data = HealthPost::all();
+        $data = Organization::all();
 
         if(\Auth::user()->role == 'province'){
             $province = \App\Models\ProvinceInfo::where('token', \Auth::user()->token)->first();
@@ -26,10 +26,10 @@ class OverviewController extends Controller
     {
         $date = $this->dataFromAndTo($request);
 
-        $fchv = HealthWorker::where('role', 'fchv')->where('status', 1)->get();
+        $fchv = OrganizationMember::where('role', 'fchv')->where('status', 1)->get();
 
         foreach ($fchv as $item) {
-            $woman = Woman::where('created_by', $item->token)->active();
+            $woman = SuspectedCase::where('created_by', $item->token)->active();
             $item['woman_total'] = $woman->count();
             $item['woman_monthly'] = $woman->fromToDate($date['from_date'], $date['to_date'])->count();
         }

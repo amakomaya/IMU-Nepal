@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Anc;
+use App\Models\SampleCollection;
 use Illuminate\Queue\SerializesModels;
 
 class AncWasCreated
@@ -10,7 +10,7 @@ class AncWasCreated
     use SerializesModels;
     public $anc;
 
-    public function __construct(Anc $array)
+    public function __construct(SampleCollection $array)
     {
         $this->anc = $array;
     }

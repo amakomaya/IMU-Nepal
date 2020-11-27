@@ -6,8 +6,8 @@ use App\Helpers\GetHealthpostCodes;
 use App\Reports\FilterRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Healthpost;
-use App\Models\Woman;
+use App\Models\Organization;
+use App\Models\SuspectedCase;
 use GMaps;
 
 class MapController extends Controller
@@ -16,7 +16,7 @@ class MapController extends Controller
     {
 //        $response = FilterRequest::filter($request);
 //        $hpCodes = GetHealthpostCodes::filter($response);
-//        $cases = Woman::whereIn('hp_code', $hpCodes)->where('longitude', '!=', null)->with('latestAnc')->get();
+//        $cases = SuspectedCase::whereIn('hp_code', $hpCodes)->where('longitude', '!=', null)->with('latestAnc')->get();
 //         dd($hpCodes);
 
 //        $i = 0;

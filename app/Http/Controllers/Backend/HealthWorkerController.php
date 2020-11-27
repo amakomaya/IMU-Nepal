@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use App\Http\Requests\HealthWorkerRequest;
-use App\Models\HealthWorker;
+use App\Models\OrganizationMember;
 use App\Models\Province;
 use App\Models\District;
 use App\Models\Municipality;
-use App\Models\Healthpost;
+use App\Models\Organization;
 use App\Models\Ward;
 use App\User;
 use Auth;
@@ -43,15 +43,15 @@ class HealthWorkerController extends Controller
     {   
        if(Auth::user()->role=="province"){
             $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
-            $healthWorkers = HealthWorker::where([['province_id', $province_id],['role', 'healthworker']])->latest()->get();
+            $healthWorkers = OrganizationMember::where([['province_id', $province_id],['role', 'healthworker']])->latest()->get();
        }elseif(Auth::user()->role=="dho"){
             $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
-            $healthWorkers = HealthWorker::where([['district_id', $district_id],['role','healthworker']])->latest()->get();
+            $healthWorkers = OrganizationMember::where([['district_id', $district_id],['role','healthworker']])->latest()->get();
        }elseif(Auth::user()->role=="healthpost"){
-            $hp_code = Healthpost::where('token', Auth::user()->token)->get()->first()->hp_code;
-            $healthWorkers = HealthWorker::where([['hp_code', $hp_code],['role','healthworker']])->latest()->get();
+            $hp_code = Organization::where('token', Auth::user()->token)->get()->first()->hp_code;
+            $healthWorkers = OrganizationMember::where([['hp_code', $hp_code],['role','healthworker']])->latest()->get();
        }else{
-            $healthWorkers = HealthWorker::where('role', 'healthworker')->latest()->get();
+            $healthWorkers = OrganizationMember::where('role', 'healthworker')->latest()->get();
        }
         
         $role = "healthworker";
@@ -71,12 +71,12 @@ class HealthWorkerController extends Controller
         }
 
         $token = Auth::user()->token;
-        $healthpost = Healthpost::where('token', $token)->get()->first();
+        $healthpost = Organization::where('token', $token)->get()->first();
         $provinces = Province::where('id', $healthpost->province_id)->get();
         $districts = District::where('id', $healthpost->district_id)->get();
         $municipalities = Municipality::where('id', $healthpost->municipality_id)->get();
         // $wards = Ward::where([['ward_no', $healthpost->ward_no],['municipality_id', $healthpost->municipality_id]])->get();
-        $healthposts = Healthpost::where('id', $healthpost->id)->get();
+        $healthposts = Organization::where('id', $healthpost->id)->get();
         $role = "healthworker";
         $permissions = Permission::all();
         return view('backend.health-worker.create',compact('provinces','districts','municipalities','healthposts','role', 'permissions'));
@@ -104,7 +104,7 @@ class HealthWorkerController extends Controller
             $filename="";
         }
 
-        $healthWorker = HealthWorker::create([
+        $healthWorker = OrganizationMember::create([
             'token'               => uniqid().time(),
             'name'               => $request->get('name'),
             'province_id'               => $request->get('province_id'),
@@ -147,7 +147,7 @@ class HealthWorkerController extends Controller
      */
     public function show($id)
     {
-        if(HealthWorker::checkValidId($id)===false){
+        if(OrganizationMember::checkValidId($id)===false){
             return redirect('/admin');
         }
 
@@ -170,16 +170,16 @@ class HealthWorkerController extends Controller
         }
 
         $data = $this->findModel($id);
-        if(HealthWorker::checkValidId($id)===false){
+        if(OrganizationMember::checkValidId($id)===false){
             return redirect('/admin');
         }
         $token = Auth::user()->token;
-        $healthpost = Healthpost::where('token', $token)->get()->first();
+        $healthpost = Organization::where('token', $token)->get()->first();
         $provinces = Province::where('id', $healthpost->province_id)->get();
         $districts = District::where('id', $healthpost->district_id)->get();
         $municipalities = Municipality::where('id', $healthpost->municipality_id)->get();
         $wards = Ward::where([['ward_no', $healthpost->ward_no],['municipality_id', $healthpost->municipality_id]])->get();
-        $healthposts = Healthpost::where('id', $healthpost->id)->get();
+        $healthposts = Organization::where('id', $healthpost->id)->get();
         $user = $this->findModelUser($data->token);
         $role = "healthworker";
         $permissions = Permission::all();
@@ -201,7 +201,7 @@ class HealthWorkerController extends Controller
 
         $healthWorker = $this->findModel($id); 
 
-        if(HealthWorker::checkValidId($id)===false){
+        if(OrganizationMember::checkValidId($id)===false){
             return redirect('/admin');
         }  
 
@@ -264,7 +264,7 @@ class HealthWorkerController extends Controller
         $healthWorker = $this->findModel($id);
 
         
-        if(HealthWorker::checkValidId($id)===false){
+        if(OrganizationMember::checkValidId($id)===false){
             return redirect('/admin');
         }
 
@@ -288,11 +288,11 @@ class HealthWorkerController extends Controller
 
     protected function findModel($id)
     {
-        if(HealthWorker::find($id)===null)
+        if(OrganizationMember::find($id)===null)
         {
             abort(404,'Page not found');
         }else{
-            return $model = HealthWorker::find($id);
+            return $model = OrganizationMember::find($id);
         }
     }
 

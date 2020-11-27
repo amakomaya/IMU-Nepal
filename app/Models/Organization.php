@@ -7,15 +7,18 @@ use App\User;
 use Auth;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Healthpost extends Model
+class Organization extends Model
 {
 	use LogsActivity;
 
     protected static $logFillable = true;
 
+    protected $table='healthposts';
+
+
     public function getDescriptionForEvent(string $eventName): string
     {
-        return "Healthpost model has been {$eventName}";
+        return "Organization model has been {$eventName}";
     }
 
     protected static $logName = 'healthpost';
@@ -41,7 +44,7 @@ class Healthpost extends Model
 
     public static function getHealthpost($hp_code)
     {
-    	$healthpost = Healthpost::where('hp_code',$hp_code)->get()->first();
+    	$healthpost = Organization::where('hp_code',$hp_code)->get()->first();
     	if(count($healthpost)>0){
     		return $healthpost->name;
     	}
@@ -58,7 +61,7 @@ class Healthpost extends Model
 		$title = substr($hp, 0, 3);
 		$random = rand(0, 1000);
 		echo $hpCode = $title.$random;
-		$healthpost = Healthpost::where('hp_code',$hpCode)->get()->first();
+		$healthpost = Organization::where('hp_code',$hpCode)->get()->first();
     	if(count($healthpost)>0){
     		return self::generateHpCode($hp);
     	}else{
@@ -67,7 +70,7 @@ class Healthpost extends Model
 	}
 
 	public static function isHpCodeAlreadyExist($hpCode){
-		$healthpost = Healthpost::where('hp_code',$hpCode)->get()->first();
+		$healthpost = Organization::where('hp_code',$hpCode)->get()->first();
     	if(count($healthpost)>0){
     		return true;
     	}else{
@@ -79,10 +82,10 @@ class Healthpost extends Model
         $token = Auth::user()->token;
         $role = Auth::user()->role;
         if($role=="healthpost"){
-            $healthpost = Healthpost::where('token',$token)->get()->first();
+            $healthpost = Organization::where('token',$token)->get()->first();
             return $healthpost->hp_code;
         }elseif($role=="healthworker"){
-            $healthworker = HealthWorker::where('token', $token)->get()->first();
+            $healthworker = OrganizationMember::where('token', $token)->get()->first();
             return $healthworker->hp_code;
         }
     }
@@ -90,8 +93,8 @@ class Healthpost extends Model
     public static function checkValidId($id){
         $loggedInToken = Auth::user()->token;
         $loggedInWardId = Ward::modelWard($loggedInToken)->id;
-        $recoredWardNo = Healthpost::where('id',$id)->get()->first()->ward_no;
-        $recoredMunicipalityId = Healthpost::where('id',$id)->get()->first()->municipality_id;
+        $recoredWardNo = Organization::where('id',$id)->get()->first()->ward_no;
+        $recoredMunicipalityId = Organization::where('id',$id)->get()->first()->municipality_id;
         $recordedWardId = Ward::where([['municipality_id', $recoredMunicipalityId],['ward_no',$recoredWardNo]])->get()->first()->id;
 
         if($loggedInWardId==$recordedWardId){
@@ -101,7 +104,7 @@ class Healthpost extends Model
     }
 
     public static function modelHealthpost($token){
-        $model = Healthpost::where('token', $token)->get()->first();
+        $model = Organization::where('token', $token)->get()->first();
         return $model;
 	}
 	
@@ -112,12 +115,12 @@ class Healthpost extends Model
 
 	public function getRegisters($hp_code)
 	{
-		return Woman::where('hp_code', $hp_code)->active()->count();
+		return SuspectedCase::where('hp_code', $hp_code)->active()->count();
 	}
 
 	public function getSampleCollection($hp_code)
 	{
-		return \App\Models\Anc::where('hp_code', $hp_code)->active()->count();
+		return \App\Models\SampleCollection::where('hp_code', $hp_code)->active()->count();
 	}
     public function user(){
         return $this->belongsTo('App\User', 'token', 'token');

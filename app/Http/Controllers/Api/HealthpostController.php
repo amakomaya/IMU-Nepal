@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Healthpost;
+use App\Models\Organization;
 
 class HealthpostController extends Controller
 {
@@ -18,7 +18,7 @@ class HealthpostController extends Controller
     public function index(Request $request)
     {
         $hpCode = $request->hp_code;
-        $heathpost = Healthpost::where([['hp_code', $hpCode],['status', 1]])->get();
+        $heathpost = Organization::where([['hp_code', $hpCode],['status', 1]])->get();
         return response()->json($heathpost);
     }
 
@@ -33,7 +33,7 @@ class HealthpostController extends Controller
         $json = json_decode($request->getContent(), true);
         $hp_code=array();
         foreach ($json as $data) {
-            $healthpost = new Healthpost;
+            $healthpost = new Organization;
             foreach ($data as $key => $record) {
                 $healthpost->$key = $record;
                 if($key=="hp_code"){
@@ -103,7 +103,7 @@ class HealthpostController extends Controller
     }
 
     public function findModelHealthpost($hp_code){
-        if (($model = Healthpost::where('hp_code', $hp_code)->get()->first()) !== null) {
+        if (($model = Organization::where('hp_code', $hp_code)->get()->first()) !== null) {
             return $model;
         } else {
             $this->msg = ['name'=>'Not Found', 'message'=>'The requested page doesn\'t exist', 'status'=>'404'];

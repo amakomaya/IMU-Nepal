@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Reports;
 
 use App\Helpers\GetHealthpostCodes;
 use App\Http\Controllers\Controller;
-use App\Models\Anc;
+use App\Models\SampleCollection;
 use App\Models\BabyDetail;
 use App\Models\Delivery;
 use App\Models\LabTest;
 use App\Models\Pnc;
 use App\Models\VaccinationRecord;
-use App\Models\Woman;
+use App\Models\SuspectedCase;
 use App\Reports\DateFromToRequest;
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
@@ -28,12 +28,12 @@ class ServiceController extends Controller
             $$key = $value;
         }
 
-        $register = Woman::whereIn('hp_code', $hpCodes)
+        $register = SuspectedCase::whereIn('hp_code', $hpCodes)
                             ->fromToDate($date['from_date'], $date['to_date'])
                             ->active()
                             ->pluck('token')->toArray();
 
-        $ancs = Anc::whereIn('hp_code', $hpCodes)
+        $ancs = SampleCollection::whereIn('hp_code', $hpCodes)
             ->fromToDate($date['from_date'], $date['to_date'])
             ->active()
             ->pluck('woman_token')->toArray();
@@ -60,7 +60,7 @@ class ServiceController extends Controller
 
         $woman_tokens = array_unique(array_merge($register, $ancs, $pncs, $delivery, $medication, $labtest));
 
-        $woman = Woman::withAll()->whereIn('token', $woman_tokens)->active()->get();
+        $woman = SuspectedCase::withAll()->whereIn('token', $woman_tokens)->active()->get();
 
         return view('reports.woman-service', compact('woman', 'register','ancs','medication', 'delivery', 'pncs','provinces', 'ward_or_healthpost','districts','municipalities','wards','healthposts','options','province_id','district_id','municipality_id','ward_id','hp_code', 'select_year', 'select_month'));
     }

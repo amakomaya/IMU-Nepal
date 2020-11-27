@@ -72,7 +72,7 @@
                                                 {{\App\Models\MunicipalityInfo::find($municipalityInfo->id)->municipality->municipality_name}}
                                             @endif
                                         </td>  
-                                        <td>{{ \App\Models\Healthpost::where('municipality_id', $municipalityInfo->municipality_id)->count() }}</td>      
+                                        <td>{{ \App\Models\Organization::where('municipality_id', $municipalityInfo->municipality_id)->count() }}</td>
                                         <td>{{$municipalityInfo->phone}}</td>
                                         <td>{{$municipalityInfo->office_address}}</td> 
                                         <td>

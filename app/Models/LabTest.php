@@ -22,7 +22,7 @@ class LabTest extends Model
 
     public function woman()
     {
-        return $this->belongsTo('App\Models\Woman','woman_token','token');
+        return $this->belongsTo('App\Models\SuspectedCase','woman_token','token');
     }
 
     public function scopeActive($query)

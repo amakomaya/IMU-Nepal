@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Woman;
+use App\Models\SuspectedCase;
 use Illuminate\Queue\SerializesModels;
 
 class WomanWasCreated
@@ -10,7 +10,7 @@ class WomanWasCreated
     use SerializesModels;
     public $woman;
 
-    public function __construct(Woman $woman)
+    public function __construct(SuspectedCase $woman)
     {
         $this->woman = $woman;
     }

@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Backend;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HealthWorkerRequest;
-use App\Models\HealthWorker;
+use App\Models\OrganizationMember;
 use App\Models\Province;
 use App\Models\District;
 use App\Models\Municipality;
-use App\Models\Healthpost;
+use App\Models\Organization;
 use App\Models\Ward;
 use App\User;
 use Auth;
@@ -36,15 +36,15 @@ class FchvController extends Controller
     {
       if(Auth::user()->role=="province"){
             $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
-            $healthWorkers = HealthWorker::where([['province_id', $province_id],['role', 'fchv']])->with('municipality')->latest()->get();
+            $healthWorkers = OrganizationMember::where([['province_id', $province_id],['role', 'fchv']])->with('municipality')->latest()->get();
        }elseif(Auth::user()->role=="dho"){
             $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
-            $healthWorkers = HealthWorker::where([['district_id', $district_id],['role','fchv']])->with('municipality')->latest()->get();
+            $healthWorkers = OrganizationMember::where([['district_id', $district_id],['role','fchv']])->with('municipality')->latest()->get();
        }elseif(Auth::user()->role=="healthpost"){
-            $hp_code = Healthpost::where('token', Auth::user()->token)->get()->first()->hp_code;
-            $healthWorkers = HealthWorker::where([['hp_code', $hp_code],['role','fchv']])->with('municipality')->latest()->get();
+            $hp_code = Organization::where('token', Auth::user()->token)->get()->first()->hp_code;
+            $healthWorkers = OrganizationMember::where([['hp_code', $hp_code],['role','fchv']])->with('municipality')->latest()->get();
        }else{
-            $healthWorkers = HealthWorker::where('role', 'fchv')->with('municipality')->latest()->get();
+            $healthWorkers = OrganizationMember::where('role', 'fchv')->with('municipality')->latest()->get();
        }
         $role = 'fchv';
         return view('backend.fchv.index',compact('healthWorkers','role'));
@@ -65,12 +65,12 @@ class FchvController extends Controller
             $municipalities = Municipality::where('province_id', $provinceInfo->province_id ?? '')->get();
        }elseif(Auth::user()->role=="dho"){
             $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
-            $healthWorkers = HealthWorker::where([['district_id', $district_id],['role','fchv']])->latest()->get();
+            $healthWorkers = OrganizationMember::where([['district_id', $district_id],['role','fchv']])->latest()->get();
        }elseif(Auth::user()->role=="healthpost"){
-            $hp_code = Healthpost::where('token', Auth::user()->token)->get()->first()->hp_code;
-            $healthWorkers = HealthWorker::where([['hp_code', $hp_code],['role','fchv']])->latest()->get();
+            $hp_code = Organization::where('token', Auth::user()->token)->get()->first()->hp_code;
+            $healthWorkers = OrganizationMember::where([['hp_code', $hp_code],['role','fchv']])->latest()->get();
        }else{
-            $healthWorkers = HealthWorker::where('role', 'fchv')->latest()->get();
+            $healthWorkers = OrganizationMember::where('role', 'fchv')->latest()->get();
        }        
 
         $provinces = Province::get();
@@ -99,7 +99,7 @@ class FchvController extends Controller
             'password' => 'required|min:4'
         ]);
 
-        $healthWorker = HealthWorker::create([
+        $healthWorker = OrganizationMember::create([
             'token'               => uniqid().time(),
             'name'               => $request->get('name'),
             'province_id'               => $request->get('province_id'),
@@ -144,7 +144,7 @@ class FchvController extends Controller
     {
         $data = $this->findModel($id);
 
-        if(HealthWorker::checkValidId($id)===false){
+        if(OrganizationMember::checkValidId($id)===false){
             return redirect('/admin');
         }
         $user = $this->findModelUser($data->token);
@@ -166,7 +166,7 @@ class FchvController extends Controller
 
         $data = $this->findModel($id);
 
-        // if(HealthWorker::checkValidId($id)===false){
+        // if(OrganizationMember::checkValidId($id)===false){
         //     return redirect('/admin');
         // }
         
@@ -177,10 +177,10 @@ class FchvController extends Controller
             $municipalities = Municipality::where('province_id', $provinceInfo->province_id ?? '')->get();
        }elseif(Auth::user()->role=="dho"){
             $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
-            $healthWorkers = HealthWorker::where([['district_id', $district_id],['role','fchv']])->latest()->get();
+            $healthWorkers = OrganizationMember::where([['district_id', $district_id],['role','fchv']])->latest()->get();
        }elseif(Auth::user()->role=="healthpost"){
-            $hp_code = Healthpost::where('token', Auth::user()->token)->get()->first()->hp_code;
-            $healthWorkers = HealthWorker::where([['hp_code', $hp_code],['role','fchv']])->latest()->get();
+            $hp_code = Organization::where('token', Auth::user()->token)->get()->first()->hp_code;
+            $healthWorkers = OrganizationMember::where([['hp_code', $hp_code],['role','fchv']])->latest()->get();
        }else{
         $provinces = Province::get();
         $districts = District::get();
@@ -209,7 +209,7 @@ class FchvController extends Controller
             'name' => 'required',
         ]);
 
-        if(HealthWorker::checkValidId($id)===false){
+        if(OrganizationMember::checkValidId($id)===false){
             return redirect('/admin');
         }
 
@@ -255,7 +255,7 @@ class FchvController extends Controller
         // }
 
 
-        if(HealthWorker::checkValidId($id)===false){
+        if(OrganizationMember::checkValidId($id)===false){
             return redirect('/admin');
         }
         
@@ -274,11 +274,11 @@ class FchvController extends Controller
 
     protected function findModel($id)
     {
-        if(HealthWorker::find($id)===null)
+        if(OrganizationMember::find($id)===null)
         {
             abort(404,'Page not found');
         }else{
-            return $model = HealthWorker::find($id);
+            return $model = OrganizationMember::find($id);
         }
     }
 

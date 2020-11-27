@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Yagiten\Nepalicalendar\Calendar;
 
-class Anc extends Model
+class SampleCollection extends Model
 {
     use Notifiable;
     use SoftDeletes;
@@ -31,7 +31,7 @@ class Anc extends Model
 
     public function woman()
     {
-        return $this->belongsTo('App\Models\Woman', 'woman_token', 'token');
+        return $this->belongsTo('App\Models\SuspectedCase', 'woman_token', 'token');
     }
 
     public function scopeActive($query)

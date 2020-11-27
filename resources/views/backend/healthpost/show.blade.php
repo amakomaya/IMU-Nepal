@@ -49,19 +49,19 @@
                                 </tr>                                     
                                 <tr>
                                     <th>province</th>
-                                    <td>@if(!empty(\App\Models\Healthpost::find($data->id)->province->province_name)){{\App\Models\Healthpost::find($data->id)->province->province_name}}
+                                    <td>@if(!empty(\App\Models\Organization::find($data->id)->province->province_name)){{\App\Models\Organization::find($data->id)->province->province_name}}
                                         @endif
                                     </td>
                                 </tr>                                     
                                 <tr>
                                     <th>District</th>
-                                    <td>@if(!empty(\App\Models\Healthpost::find($data->id)->district->district_name)){{\App\Models\Healthpost::find($data->id)->district->district_name}}
+                                    <td>@if(!empty(\App\Models\Organization::find($data->id)->district->district_name)){{\App\Models\Organization::find($data->id)->district->district_name}}
                                         @endif
                                     </td>
                                 </tr>                                     
                                 <tr>
                                     <th>Municipality</th>
-                                    <td>@if(!empty(\App\Models\Healthpost::find($data->id)->municipality->municipality_name)){{\App\Models\Healthpost::find($data->id)->municipality->municipality_name}}
+                                    <td>@if(!empty(\App\Models\Organization::find($data->id)->municipality->municipality_name)){{\App\Models\Organization::find($data->id)->municipality->municipality_name}}
                                         @endif
                                     </td>
                                 </tr>                                        

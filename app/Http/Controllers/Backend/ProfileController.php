@@ -9,7 +9,7 @@ use App\Models\ProvinceInfo;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Healthpost;
+use App\Models\Organization;
 
 class ProfileController extends Controller
 {
@@ -37,7 +37,7 @@ class ProfileController extends Controller
             break;
 
             case 'healthpost':
-            $data = Healthpost::where('token', $user->token)->first();
+            $data = Organization::where('token', $user->token)->first();
             break;
 
             default:
@@ -93,7 +93,7 @@ class ProfileController extends Controller
                 ]);
                 break;
             case 'healthpost':
-                $data = Healthpost::where('token', $user->token)->first();
+                $data = Organization::where('token', $user->token)->first();
                 $data->update([
                     'name' => $request->name,
                     'phone' => $request->phone,
