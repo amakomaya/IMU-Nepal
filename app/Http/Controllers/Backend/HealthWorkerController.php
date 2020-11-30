@@ -11,7 +11,6 @@ use App\Models\Province;
 use App\Models\District;
 use App\Models\Municipality;
 use App\Models\Organization;
-use App\Models\Ward;
 use App\User;
 use Auth;
 use App\Helpers\BackendHelper;
@@ -79,7 +78,7 @@ class HealthWorkerController extends Controller
         $healthposts = Organization::where('id', $healthpost->id)->get();
         $role = "healthworker";
         $permissions = Permission::all();
-        return view('backend.health-worker.create',compact('provinces','districts','municipalities','healthposts','role', 'permissions'));
+        return view('backend.health-worker.create',compact('provinces','districts','municipalities','wards','healthposts','role', 'permissions'));
     }
 
     /**
@@ -178,12 +177,12 @@ class HealthWorkerController extends Controller
         $provinces = Province::where('id', $healthpost->province_id)->get();
         $districts = District::where('id', $healthpost->district_id)->get();
         $municipalities = Municipality::where('id', $healthpost->municipality_id)->get();
-        $wards = Ward::where([['ward_no', $healthpost->ward_no],['municipality_id', $healthpost->municipality_id]])->get();
+//        $wards = Ward::where([['ward_no', $healthpost->ward_no],['municipality_id', $healthpost->municipality_id]])->get();
         $healthposts = Organization::where('id', $healthpost->id)->get();
         $user = $this->findModelUser($data->token);
         $role = "healthworker";
         $permissions = Permission::all();
-        return view('backend.health-worker.edit', compact('data','provinces','districts','municipalities','wards','healthposts','user','role', 'permissions'));
+        return view('backend.health-worker.edit', compact('data','provinces','districts','municipalities','healthposts','user','role', 'permissions'));
     }
 
     /**
