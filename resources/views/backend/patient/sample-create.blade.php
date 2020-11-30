@@ -15,6 +15,21 @@
                         {!! rcForm::open('POST', route('patient.sample.store')) !!}
                         <div class="panel-body">
                             <div class="form-group">
+                                <label class="control-label">Test Type</label>
+                                <div class="control-group">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="test_type" value="1">Swab Collection
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="test_type" value="2" >Antigen Test
+                                    </label>
+                                </div>
+                                @if ($errors->has('test_type'))
+                                    <small id="help" class="form-text text-danger">{{ $errors->first('test_type') }}</small>
+                                @endif
+                            </div>
+
+                            <div class="form-group">
                                 <label class="control-label">Infection Type</label>
                                 <div class="control-group">
                                     <input type="checkbox" name="sample_type[]" value="1"> Nasopharyngeal<br>
