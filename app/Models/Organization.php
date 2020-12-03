@@ -122,6 +122,7 @@ class Organization extends Model
 	{
 		return \App\Models\SampleCollection::where('hp_code', $hp_code)->active()->count();
 	}
+
     public function user(){
         return $this->belongsTo('App\User', 'token', 'token');
     }
