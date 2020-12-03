@@ -13,31 +13,15 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yagiten\Nepalicalendar\Calendar;
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::post('/imeilogin', 'Api\LoginController@login');
-Route::post('/imeilogin-vtc', 'Api\LoginController@vtcLogin');
-
-
 Route::get('/v2/healthpost', 'Api\v2\HealthpostController@get');
 Route::get('/v2/municipality-by-district', 'Api\v2\MunicipalityByDistrictController@get');
 
 Route::get('analysis/v1/overview', 'Api\Analysis\v1\OverviewController@get');
 
-
-// Amakomaya Care
-Route::post('/v2/woman', 'Api\v2\WomanRegisterController@store');
-Route::post('/v2/anc', 'Api\v2\AncController@store');
-
 // New Login
 Route::post('/v2/amc/login', 'Api\LoginController@v2AmcLogin');
 Route::post('/v3/amc/login', 'Api\LoginController@v3AmcLogin');
 
-
-// QrCode Download
-Route::post('/aamakomaya-qrcode-download', 'Backend\AamakomayaGenerateQrcode@download')->name('aamakomaya.qrcode-download');
 
 Route::get('/v1/healthposts', function () {
     $healthpost = \App\Models\Organization::with(['province', 'municipality', 'district'])->get();
@@ -77,9 +61,6 @@ Route::get('/v1/client', function (Request $request) {
         $response['age'] = $row->age ?? '';
         $response['sex'] = $row->sex ?? '';
         $response['caste'] = $row->caste ?? '';
-        $response['phone'] = $row->phone ?? '';
-        $response['emergency_name'] = $row->emergency_name ?? '';
-        $response['emergency_name_person_relation'] = $row->emergency_name_person_relation ?? '';
         $response['province_id'] = $row->province_id ?? '';
         $response['district_id'] = $row->district_id ?? '';
         $response['municipality_id'] = $row->municipality_id ?? '';
@@ -92,13 +73,6 @@ Route::get('/v1/client', function (Request $request) {
         $response['travel_medium'] = $row->travel_medium ?? '';
         $response['travel_detail'] = $row->travel_detail ?? '';
         $response['travelled_where'] = $row->travelled_where ?? '';
-        // $response['covid_infect'] = $row->covid_infect ?? '';
-        // $response['covid_around_you'] = $row->covid_around_you ?? '';
-
-        $response['family_member'] = $row->family_member ?? '';
-        $response['family_chronic_illness'] = $row->family_chronic_illness ?? '';
-        $response['family_above_sixty'] = $row->family_above_sixty ?? '';
-        $response['family_below_ten'] = $row->family_below_ten ?? '';
 
         $response['hp_code'] = $row->hp_code ?? '';
         $response['registered_device'] = $row->registered_device ?? '';
@@ -111,21 +85,7 @@ Route::get('/v1/client', function (Request $request) {
 
         $response['age_unit'] = $row->age_unit ?? 0;
         $response['occupation'] = $row->occupation ?? '';
-        $response['emergency_name_person_phone'] = $row->emergency_name_person_phone ?? '';
-        $response['email'] = $row->email ?? '';
-        $response['nationality'] = $row->nationality ?? '';
-        $response['country_name'] = $row->country_name ?? '';
-        $response['passport_no'] = $row->passport_no ?? '';
-        $response['quarantine_type'] = $row->quarantine_type ?? '';
-        $response['quarantine_specific'] = $row->quarantine_specific ?? '';
-        $response['province_quarantine_id'] = $row->province_quarantine_id ?? 0;
-        $response['district_quarantine_id'] = $row->district_quarantine_id ?? 0;
-        $response['municipality_quarantine_id'] = $row->municipality_quarantine_id ?? 0;
-        $response['ward_quarantine'] = $row->ward_quarantine ?? '';
-        $response['tole_quarantine'] = $row->tole_quarantine ?? '';
-        $response['pcr_test'] = $row->pcr_test ?? '';
-        $response['pcr_test_date'] = $row->pcr_test_date ?? '';
-        $response['pcr_test_result'] = $row->pcr_test_result ?? '';
+
         $response['symptoms_specific'] = $row->symptoms_specific ?? '';
         $response['symptoms_comorbidity'] = $row->symptoms_comorbidity ?? '';
         $response['symptoms_comorbidity_specific'] = $row->symptoms_comorbidity_specific ?? '';

@@ -16,10 +16,3 @@ Route::get('select-from-to', 'Reports\FilterController@selectFromTo');
 
 
 Route::get('dashboard', 'Reports\DashboardController@index')->name('report.dashboard');
-
-Route::get('/vaccination-program-report','Reports\VaccineProgramController@vaccinationProgram')->name('report.vaccination-program');
-Route::get('/safe-maternity-program','Reports\SafeMaternityProgramController@get')->name('report.safe-maternity-program');
-Route::get('/women-health-service-register','Reports\WomanHealthServiceRegisterController@get')->name('report.women-health-service-register');
-
-Route::get('/woman/service','Reports\ServiceController@woman')->name('report.woman-service');
-Route::get('/baby/service','Reports\ServiceController@baby')->name('report.baby-service');
