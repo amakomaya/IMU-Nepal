@@ -144,11 +144,11 @@ class DashboardController extends Controller
 
         $data = [
             'registered' => array_sum(array_column($dashboardCases,'registered')),
-            'registered_in_24_hrs' => array_sum(array_column($dashboardCases,'case_created_at_in_24_hrs')),
+            'registered_in_24_hrs' => array_sum(array_column($dashboardCases,'registered_in_24_hrs')),
             'sample_collection' => array_sum(array_column($dashboardCases,'sample_collection')),
             'sample_collection_in_24_hrs' => array_sum(array_column($dashboardCases,'sample_collection_in_24_hrs')),
             'sample_received_in_lab' => array_sum(array_column($dashboardCases,'sample_received_in_lab')),
-            'sample_received_in_lab_in_24_hrs' => array_sum(array_column($dashboardCases,'sample_received_in_24_hrs')),
+            'sample_received_in_lab_in_24_hrs' => array_sum(array_column($dashboardCases,'sample_received_in_lab_in_24_hrs')),
             'lab_result_positive' => array_sum(array_column($dashboardCases,'lab_result_positive')),
             'lab_result_positive_in_24_hrs' => array_sum(array_column($dashboardCases,'lab_result_positive_in_24_hrs')),
             'lab_result_negative' => array_sum(array_column($dashboardCases,'lab_result_negative')),
@@ -163,6 +163,4 @@ class DashboardController extends Controller
         ];
         return response()->json($data);
     }
-
-
 }
