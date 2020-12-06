@@ -4190,6 +4190,13 @@ __webpack_require__.r(__webpack_exports__);
             name: 'ancs.created_at',
             type: 'datetime'
           }]
+        }, {
+          name: 'Lab Result',
+          filters: [{
+            title: 'Lab Result Created At',
+            name: 'ancs.updated_at',
+            type: 'datetime'
+          }]
         }]
       },
       token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
@@ -4576,6 +4583,13 @@ __webpack_require__.r(__webpack_exports__);
           filters: [{
             title: 'Swab Created At',
             name: 'ancs.created_at',
+            type: 'datetime'
+          }]
+        }, {
+          name: 'Lab Result',
+          filters: [{
+            title: 'Lab Result Created At',
+            name: 'ancs.updated_at',
             type: 'datetime'
           }]
         }]
@@ -88100,8 +88114,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\Himshikha\projects\yagiten_office_apps\survey\resources\assets\js\app.js */"./resources/assets/js/app.js");
-module.exports = __webpack_require__(/*! D:\Himshikha\projects\yagiten_office_apps\survey\resources\assets\sass\app.scss */"./resources/assets/sass/app.scss");
+__webpack_require__(/*! D:\xampp\htdocs\survey\resources\assets\js\app.js */"./resources/assets/js/app.js");
+module.exports = __webpack_require__(/*! D:\xampp\htdocs\survey\resources\assets\sass\app.scss */"./resources/assets/sass/app.scss");
 
 
 /***/ })

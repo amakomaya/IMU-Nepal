@@ -13,33 +13,20 @@ class LabTest extends Model
 
     protected $dates =['deleted_at'];
 
-    protected $fillable = ['token','test_date','woman_token','urine_protin','urine_sugar','blood_sugar','hbsag','vdrl','retro_virus','other', 'status','created_at','updated_at',
-
-        'sample_recv_date', 'sample_test_date', 'sample_test_time', 'sample_test_result', 'checked_by', 'td_reg_no', 'checked_by_name', 'sample_token', 'hp_code'
-];
+    protected $fillable = ['token', 'status','created_at','updated_at',
+        'sample_recv_date', 'sample_test_date', 'sample_test_time',
+        'sample_test_result', 'checked_by', 'checked_by_name', 'sample_token', 'hp_code'
+    ];
 
     protected $appends = ['formated_token'];
-
-    public function woman()
-    {
-        return $this->belongsTo('App\Models\SuspectedCase','woman_token','token');
-    }
 
     public function scopeActive($query)
     {
         return $query->where('status', 1);
     }
 
-    public function scopeFromToDate($query, $from, $to)
-    {
-        return $query->whereBetween('test_date', [$from, $to]);
-    }
-
     public function getFormatedTokenAttribute()
     {
-
         return explode('-', $this->token,2)[1] ?? $this->token;
-
     }
-
 }

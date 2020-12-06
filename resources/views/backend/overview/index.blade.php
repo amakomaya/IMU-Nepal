@@ -19,29 +19,23 @@
                                             <th>S.N</th>                                     
                                             <th>Hospitals</th>
                                             <th>Username</th>
-                                            <th>District</th>         
-                                            <th>Municipality</th>                                     
+                                            <th>Municipality</th>
                                             <th>Registers</th>
-                                            <th>Sample Collections</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @php $i = 0; @endphp
                                             @foreach($data as $d)
-                                            @php $i++ @endphp
                                             <tr>
-                                                <td>{{ $i }}</td>                                          
+                                                <td>{{ $loop->iteration }}</td>
                                                 <td>
-                                                <form method="post" action="{{url('admin/user-manager/'.\App\User::getUserId($d->token).'/login-as')}}" >
+                                                <form method="post" action="{{url('admin/user-manager/'.$d->user->token.'/login-as')}}" >
                                                     {{csrf_field()}}
                                                     <a href="#" onclick="this.parentNode.submit()">{{ $d->name }}</a>
                                                 </form>
                                                 </td>
                                                 <td>{{ $d->user->username ?? '' }}</td>
-                                                <td>{{ $d->getDistrictName($d->district_id) }}</td>
-                                                <td>{{ $d->municipality->municipality_name ?? '' }}</td>                                     
-                                                <td>{{ $d->getRegisters($d->hp_code) }}</td>
-                                                <td>{{ $d->getSampleCollection($d->hp_code) }}</td>
+                                                <td>{{ $d->municipality->municipality_name ?? '' }}</td>
+                                                <td></td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

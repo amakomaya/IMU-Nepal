@@ -77,37 +77,6 @@ Route::post('admin/sample-collection', 'Backend\WomanController@sampleCollection
 
 Route::resource('admin/profile', 'Backend\ProfileController');
 
-
-//Bakend Api
-Route::get('/api/healthpost', 'Api\HealthpostController@index')->name('api.healthpost.index');
-Route::get('/api/healthpost/1', 'Api\HealthpostController@show')->name('api.healthpost.show');
-Route::post('/api/healthpost', 'Api\HealthpostController@store')->name('api.healthpost.store');
-Route::post('/api/healthpost/{id}', 'Api\HealthpostController@update')->name('api.healthpost.update');
-
-Route::get('/api/anc', 'Api\AncController@index')->name('api.anc.index');
-Route::get('/api/anc/1', 'Api\AncController@show')->name('api.anc.show');
-Route::get('/api/anc-show-by-woman-token', 'Api\AncController@showAncByWomanToken')->name('api.anc.anc-show-by-woman-token');
-Route::post('/api/anc', 'Api\AncController@store')->name('api.anc.store');
-Route::post('/api/anc/{id}', 'Api\AncController@update')->name('api.anc.update');
-
-Route::get('/api/user', 'Api\UserController@index')->name('api.user.index');
-Route::get('/api/user/1', 'Api\UserController@show')->name('api.user.show');
-Route::post('/api/user', 'Api\UserController@store')->name('api.user.store');
-Route::post('/api/user/{id}', 'Api\UserController@update')->name('api.user.update');
-
-Route::get('/api/woman', 'Api\WomanController@index')->name('api.woman.index');
-Route::get('/api/woman/1', 'Api\WomanController@show')->name('api.woman.show');
-Route::post('/api/woman', 'Api\WomanController@store')->name('api.woman.store');
-Route::post('/api/woman/{id}', 'Api\WomanController@update')->name('api.woman.update');
-Route::post('/api/woman-login', 'Api\WomanController@login')->name('api.woman.login');
-Route::post('/api/woman-signup', 'Api\WomanController@signup')->name('api.woman.signup');
-
-Route::get('/api/health-worker', 'Api\HealthWorkerController@index')->name('api.health-worker.index');
-Route::get('/api/health-worker/1', 'Api\HealthWorkerController@show')->name('api.health-worker.show');
-Route::post('/api/health-worker', 'Api\HealthWorkerController@store')->name('api.health-worker.store');
-Route::post('/api/health-worker/{id}', 'Api\HealthWorkerController@update')->name('api.health-worker.update');
-
-Route::post('/api/login', 'Api\UserController@login')->name('api.user.login');
 Route::get('/api/district', 'Api\DistrictController@index')->name('api.district.index');
 Route::get('/api/municipality', 'Api\MunicipalityController@index')->name('api.municiplaity.index');
 Route::get('/api/province' , function(){
@@ -120,10 +89,6 @@ Route::get('/admin/fchv-overview', 'Backend\OverviewController@fchv')->name('adm
 Route::resource('/admin/download-dev-apks', 'Backend\DownloadApksController');
 
 Route::resource('/admin/backup-restore', 'Backend\BackupRestoreController');
-
-// Route::group(['prefix' => 'filemanager', 'middleware' => ['web', 'auth']], function () {
-//     \UniSharp\LaravelFilemanager\Lfm::routes();
-// });
 
 if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
     // Ignores notices and reports all other kinds... and warnings

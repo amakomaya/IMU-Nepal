@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Data\Api;
 use App\Helpers\GetHealthpostCodes;
 use App\Http\Controllers\Controller;
 use App\Models\SampleCollection;
-use App\Models\Delivery;
 use App\Models\LabTest;
 use App\Models\SuspectedCase;
 use App\Reports\FilterRequest;
@@ -27,7 +26,8 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->withAll();
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
+            ->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
