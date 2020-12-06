@@ -4154,6 +4154,13 @@ __webpack_require__.r(__webpack_exports__);
             name: 'ancs.created_at',
             type: 'datetime'
           }]
+        }, {
+          name: 'Lab Result',
+          filters: [{
+            title: 'Lab Result Created At',
+            name: 'ancs.updated_at',
+            type: 'datetime'
+          }]
         }]
       },
       token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
@@ -4540,6 +4547,13 @@ __webpack_require__.r(__webpack_exports__);
           filters: [{
             title: 'Swab Created At',
             name: 'ancs.created_at',
+            type: 'datetime'
+          }]
+        }, {
+          name: 'Lab Result',
+          filters: [{
+            title: 'Lab Result Created At',
+            name: 'ancs.updated_at',
             type: 'datetime'
           }]
         }]
@@ -7963,7 +7977,7 @@ exports.push([module.i, ".v-select{position:relative;font-family:inherit}.v-sele
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9":
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css":
 /*!***********************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vuetify/dist/vuetify.min.css ***!
   \***********************************************************************************************************************************/
@@ -86403,7 +86417,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_vue__;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9");
+var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Support\Dataviewer;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -41,7 +40,7 @@ class SuspectedCase extends Model
         'created_at',
         'emergency_contact_one',
         // nested
-        'ancs.created_at', 'ancs.token',
+        'ancs.created_at', 'ancs.token' , 'ancs.updated_at',
     ];
     protected $appends = ['formated_age_unit', 'formated_gender'];
     // protected $appends = ['anc_with_protocol', 'anc_visits'];

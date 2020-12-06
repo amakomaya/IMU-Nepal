@@ -26,7 +26,8 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->withAll();
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
+            ->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);

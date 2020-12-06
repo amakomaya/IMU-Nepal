@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Data\Api;
 
 use App\Helpers\GetHealthpostCodes;
-use App\Models\SampleCollection;
 use App\Models\LabTest;
 use App\Models\SuspectedCase;
 use App\Reports\FilterRequest;
@@ -23,13 +22,9 @@ class DashboardController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        $user = auth()->user();
-
-        $lab_received_collection = LabTest::where('checked_by', $user->token)->active()->get();
-
         $dashboardCases = [];
 
-            SuspectedCase::whereIn('hp_code', $hpCodes)->active()->with('ancs')->chunk(500, function($rows) use (&$dashboardCases) {
+        SuspectedCase::whereIn('hp_code', $hpCodes)->active()->with('ancs')->chunk(500, function($rows) use (&$dashboardCases) {
             $rows_calc = $rows->map(function ($value){
                 $data['token'] = $value['token'];
                 $data['case_created_at_in_24_hrs'] = $value['created_at'] >= Carbon::now()->subDay()->toDateTimeString() ? 1 : 0 ;
@@ -109,39 +104,46 @@ class DashboardController extends Controller
 
                 $dashboardCases[] = $sum_calc;
         });
+        $dashboardLabCases = collect();
+        $lab_received_collection = collect();
+        if (auth()->user()->role == 'healthworker'){
+            $lab_received_collection = LabTest::where('checked_by', auth()->user()->token)->active()->get();
 
-        $dashboardLabCases = $lab_received_collection->map(function ($value){
-            $data = [];
-            $data['token'] = $value['token'];
+            $dashboardLabCases = $lab_received_collection->map(function ($value){
+                $data = [];
+                $data['token'] = $value['token'];
 
-            $data['in_lab_received_in_24_hrs'] = $value['created_at'] >= Carbon::now()->subDay()->toDateTimeString() ? 1 : 0 ;
+                $data['in_lab_received_in_24_hrs'] = $value['created_at'] >= Carbon::now()->subDay()->toDateTimeString() ? 1 : 0 ;
 
-            $data['in_lab_received_in_24_hrs'] = $value['created_at'] >= Carbon::now()->subDay()->toDateTimeString() ? 1 : 0 ;
+                $data['in_lab_received_in_24_hrs'] = $value['created_at'] >= Carbon::now()->subDay()->toDateTimeString() ? 1 : 0 ;
 
-            $data['in_lab_received_positive'] = 0;
-            $data['in_lab_received_negative'] = 0;
-            $data['in_lab_received_positive_in_24_hrs'] = 0;
-            $data['in_lab_received_negative_in_24_hrs'] = 0;
-            switch ($value->sample_test_result){
-                case '3':
-                    $data['in_lab_received_positive']++;
-                    try {
-                        if($value->updated_at >= Carbon::now()->subDay()->toDateTimeString()) {
-                            $data['in_lab_received_positive_in_24_hrs']++;
-                        }
-                    }catch (\Exception $e){}
-                    break;
-                case '4':
-                    $data['in_lab_received_negative']++;
-                    try {
-                        if($value->updated_at >= Carbon::now()->subDay()->toDateTimeString()) {
-                            $data['in_lab_received_negative_in_24_hrs']++;
-                        }
-                    }catch (\Exception $e){}
-                    break;
-            }
-            return $data;
-        });
+                $data['in_lab_received_positive'] = 0;
+                $data['in_lab_received_negative'] = 0;
+                $data['in_lab_received_positive_in_24_hrs'] = 0;
+                $data['in_lab_received_negative_in_24_hrs'] = 0;
+                switch ($value->sample_test_result){
+                    case '3':
+                        $data['in_lab_received_positive']++;
+                        try {
+                            if($value->updated_at >= Carbon::now()->subDay()->toDateTimeString()) {
+                                $data['in_lab_received_positive_in_24_hrs']++;
+                            }
+                        }catch (\Exception $e){}
+                        break;
+                    case '4':
+                        $data['in_lab_received_negative']++;
+                        try {
+                            if($value->updated_at >= Carbon::now()->subDay()->toDateTimeString()) {
+                                $data['in_lab_received_negative_in_24_hrs']++;
+                            }
+                        }catch (\Exception $e){}
+                        break;
+                }
+                return $data;
+            });
+
+        }
+
 
         $data = [
             'registered' => array_sum(array_column($dashboardCases,'registered')),
