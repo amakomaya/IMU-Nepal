@@ -21,6 +21,7 @@
         </div>
         <button class="btn btn-primary pull-right col-md-2" @click="checkSID">Check</button>
       </div>
+      <br><br>
       <div class="help-block" v-if="!$v.data.unique_id.required">Field is required.</div>
       <div class="help-block" v-if="!$v.data.unique_id.minLength">Field must have valid numbers length.</div>
     </div>

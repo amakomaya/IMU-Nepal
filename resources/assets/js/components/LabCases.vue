@@ -106,6 +106,12 @@ export default {
               {title: 'Swab ID ', name: 'ancs.token', type: 'string'},
               {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
             ]
+          },
+          {
+            name: 'Lab Result',
+            filters: [
+              {title: 'Lab Result Created At', name: 'ancs.updated_at', type: 'datetime'}
+            ]
           }
         ],
       },

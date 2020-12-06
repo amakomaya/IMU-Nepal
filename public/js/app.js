@@ -2287,6 +2287,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3527,6 +3528,13 @@ __webpack_require__.r(__webpack_exports__);
             name: 'ancs.created_at',
             type: 'datetime'
           }]
+        }, {
+          name: 'Lab Result',
+          filters: [{
+            title: 'Lab Result Created At',
+            name: 'ancs.updated_at',
+            type: 'datetime'
+          }]
         }]
       },
       token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
@@ -3882,6 +3890,13 @@ __webpack_require__.r(__webpack_exports__);
           }, {
             title: 'Swab Created At',
             name: 'ancs.created_at',
+            type: 'datetime'
+          }]
+        }, {
+          name: 'Lab Result',
+          filters: [{
+            title: 'Lab Result Created At',
+            name: 'ancs.updated_at',
             type: 'datetime'
           }]
         }]
@@ -4583,13 +4598,6 @@ __webpack_require__.r(__webpack_exports__);
           filters: [{
             title: 'Swab Created At',
             name: 'ancs.created_at',
-            type: 'datetime'
-          }]
-        }, {
-          name: 'Lab Result',
-          filters: [{
-            title: 'Lab Result Created At',
-            name: 'ancs.updated_at',
             type: 'datetime'
           }]
         }]
@@ -5584,6 +5592,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             name: 'ancs.created_at',
             type: 'datetime'
           }]
+        }, {
+          name: 'Lab Result',
+          filters: [{
+            title: 'Lab Result Created At',
+            name: 'ancs.updated_at',
+            type: 'datetime'
+          }]
         }]
       },
       token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"].data().collection.data,
@@ -6040,6 +6055,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             name: 'ancs.created_at',
             type: 'datetime'
           }]
+        }, {
+          name: 'Lab Result',
+          filters: [{
+            title: 'Lab Result Created At',
+            name: 'ancs.updated_at',
+            type: 'datetime'
+          }]
         }]
       },
       token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_1__["default"].data().collection.data,
@@ -6494,6 +6516,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }, {
             title: 'Swab Created At',
             name: 'ancs.created_at',
+            type: 'datetime'
+          }]
+        }, {
+          name: 'Lab Result',
+          filters: [{
+            title: 'Lab Result Created At',
+            name: 'ancs.updated_at',
             type: 'datetime'
           }]
         }]
@@ -37709,6 +37738,9 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
+        _c("br"),
+        _c("br"),
+        _vm._v(" "),
         !_vm.$v.data.unique_id.required
           ? _c("div", { staticClass: "help-block" }, [
               _vm._v("Field is required.")
@@ -39898,11 +39930,11 @@ var render = function() {
                       ),
                       _c("br"),
                       _vm._v(
-                        "\n                " +
+                        "\n                    " +
                           _vm._s(
                             _vm.roleVisibility(item.emergency_contact_two)
                           ) +
-                          "\n            "
+                          "\n                "
                       )
                     ]),
                     _vm._v(" "),
@@ -39914,23 +39946,23 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [
                       _vm._v(
-                        "\n                Place : " +
+                        "\n                    Place : " +
                           _vm._s(item.healthpost.name) +
                           " "
                       ),
                       _c("br"),
                       _vm._v(
-                        "\n                Type : " +
+                        "\n                    Type : " +
                           _vm._s(_vm.checkCaseType(item.cases)) +
                           " "
                       ),
                       _c("br"),
                       _vm._v(
-                        "\n                Management : " +
+                        "\n                    Management : " +
                           _vm._s(
                             _vm.checkCaseManagement(item.cases, item.case_where)
                           ) +
-                          "\n            "
+                          "\n                "
                       )
                     ]),
                     _vm._v(" "),
@@ -39996,32 +40028,9 @@ var render = function() {
                             staticClass: "fa fa-file",
                             attrs: { "aria-hidden": "true" }
                           }),
-                          _vm._v(" |\n              ")
+                          _vm._v(" |\n                  ")
                         ]
                       ),
-                      _vm._v(" "),
-                      _vm.role == "main"
-                        ? _c("div", [
-                            _c(
-                              "button",
-                              {
-                                attrs: { title: "Edit Case Detail" },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.editCaseDetails(item.token)
-                                  }
-                                }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "fa fa-edit",
-                                  attrs: { "aria-hidden": "true" }
-                                }),
-                                _vm._v(" |\n                ")
-                              ]
-                            )
-                          ])
-                        : _vm._e(),
                       _vm._v(" "),
                       item.ancs.length == 0 && _vm.role == "healthworker"
                         ? _c(
@@ -40042,7 +40051,7 @@ var render = function() {
                                 staticClass: "fa fa-medkit",
                                 attrs: { "aria-hidden": "true" }
                               }),
-                              _vm._v(" |\n              ")
+                              _vm._v(" |\n                  ")
                             ]
                           )
                         : _vm._e(),

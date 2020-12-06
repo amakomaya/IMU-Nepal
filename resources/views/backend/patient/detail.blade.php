@@ -120,14 +120,14 @@
                         </div>
 
                         <br>
-                        @if(auth()->user()->role == 'main')
-                            <div class="pull-right">
-                                <button type="submit" class="btn btn-primary btn-lg"
-                                        onclick="window.location='{{ url("/admin/patient/$data->token/edit") }}'">
-                                    <i class="fa fa-edit"> Edit</i>
-                                </button>
-                            </div>
-                        @endif
+{{--                        @if(auth()->user()->role == 'main')--}}
+{{--                            <div class="pull-right">--}}
+{{--                                <button type="submit" class="btn btn-primary btn-lg"--}}
+{{--                                        onclick="window.location='{{ url("/admin/patient/$data->token/edit") }}'">--}}
+{{--                                    <i class="fa fa-edit"> Edit</i>--}}
+{{--                                </button>--}}
+{{--                            </div>--}}
+{{--                        @endif--}}
                         <table class="table table-striped">
                             <thead>
                             <tr>
@@ -183,14 +183,14 @@
                         <br>
                         <h4>2. Sample Collection Information </h4>
                         @foreach ($data->ancs as $anc)
-                            @if(auth()->user()->role == 'main')
-                            <div class="pull-right">
-                                <button type="submit" class="btn btn-primary btn-lg"
-                                onclick="window.location='{{ url("admin/sample/$anc->token/edit") }}'">
-                                    <i class="fa fa-edit"> Edit</i>
-                                </button>
-                            </div>
-                            @endif
+{{--                            @if(auth()->user()->role == 'main')--}}
+{{--                            <div class="pull-right">--}}
+{{--                                <button type="submit" class="btn btn-primary btn-lg"--}}
+{{--                                onclick="window.location='{{ url("admin/sample/$anc->token/edit") }}'">--}}
+{{--                                    <i class="fa fa-edit"> Edit</i>--}}
+{{--                                </button>--}}
+{{--                            </div>--}}
+{{--                            @endif--}}
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
