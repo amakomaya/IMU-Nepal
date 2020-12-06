@@ -2279,12 +2279,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       sample_lot_id: String,
+      isShow: false,
+      name: '',
+      age: '',
+      gender: '',
+      message: '',
       data: {}
     };
   },
@@ -2341,6 +2354,29 @@ __webpack_require__.r(__webpack_exports__);
             showConfirmButton: false,
             timer: 3000
           });
+        }
+      });
+    },
+    checkSID: function checkSID() {
+      var _this2 = this;
+
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
+        return false;
+      }
+
+      this.data.sample_token = this.sample_lot_id + '-' + this.data.unique_id;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/v1/check-sid?token=' + this.data.sample_token).then(function (response) {
+        if (response.data.message === 'Data Found Successfully') {
+          _this2.isShow = true;
+          _this2.message = response.data.message;
+          _this2.name = response.data.name;
+          _this2.age = response.data.age;
+          _this2.gender = response.data.gender;
+        } else if (response.data.message === 'Data Not Found') {
+          _this2.isShow = false;
+          _this2.message = response.data.message;
         }
       });
     }
@@ -37617,7 +37653,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "inputGroupContainer" }, [
-          _c("div", { staticClass: "input-group" }, [
+          _c("div", { staticClass: "input-group pull-left col-md-9" }, [
             _vm._m(1),
             _vm._v(" "),
             _c("input", {
@@ -37649,17 +37685,63 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          !_vm.$v.data.unique_id.required
-            ? _c("div", { staticClass: "help-block" }, [
-                _vm._v("Field is required.")
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          !_vm.$v.data.unique_id.minLength
-            ? _c("div", { staticClass: "help-block" }, [
-                _vm._v("Field must have valid numbers length.")
-              ])
-            : _vm._e()
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary pull-right col-md-2",
+              on: { click: _vm.checkSID }
+            },
+            [_vm._v("Check")]
+          )
+        ]),
+        _vm._v(" "),
+        !_vm.$v.data.unique_id.required
+          ? _c("div", { staticClass: "help-block" }, [
+              _vm._v("Field is required.")
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        !_vm.$v.data.unique_id.minLength
+          ? _c("div", { staticClass: "help-block" }, [
+              _vm._v("Field must have valid numbers length.")
+            ])
+          : _vm._e()
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "label",
+      { staticClass: "control-label  btn-primary", attrs: { id: "message" } },
+      [_vm._v(_vm._s(_vm.message))]
+    ),
+    _c("br"),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.isShow,
+            expression: "isShow"
+          }
+        ],
+        staticClass: "form-group"
+      },
+      [
+        _c("label", { staticClass: "control-label", attrs: { id: "name" } }, [
+          _vm._v("Name : " + _vm._s(_vm.name))
+        ]),
+        _c("br"),
+        _vm._v(" "),
+        _c("label", { staticClass: "control-label", attrs: { id: "age" } }, [
+          _vm._v("Age : " + _vm._s(_vm.age))
+        ]),
+        _c("br"),
+        _vm._v(" "),
+        _c("label", { staticClass: "control-label", attrs: { id: "gender" } }, [
+          _vm._v("Gender : " + _vm._s(_vm.gender))
         ])
       ]
     ),
@@ -37728,7 +37810,7 @@ var render = function() {
               }
             }
           },
-          [_vm._v("\n        Submit\n      ")]
+          [_vm._v("\n      Submit\n    ")]
         )
       ]
     )

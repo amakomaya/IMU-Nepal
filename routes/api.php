@@ -496,3 +496,15 @@ Route::post('/v1/contact-detail-update', function(Request $request){
 });
 
 Route::get('/v1/check-sid', 'Data\Api\AncController@checkSID');
+
+Route::post('/v1/sample-update', function (Request $request) {
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            SampleCollection::where('token', $value['token'])->update($value);
+        } catch (\Exception $e) {
+
+        }
+    }
+    return response()->json(['message' => 'Data Successfully Sync and Update']);
+});
