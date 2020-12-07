@@ -5435,6 +5435,269 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabCaseReport.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LabCaseReport.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      token: '',
+      data: [],
+      reportData: []
+    };
+  },
+  validations: {
+    token: {
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
+      minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["minLength"])(2)
+    }
+  },
+  methods: {
+    searchResult: function searchResult(token) {
+      var _this = this;
+
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
+        return false;
+      }
+
+      var url = window.location.protocol + '/api/v1/check-by-sid-or-lab-id?token=' + token;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(url).then(function (response) {
+        _this.data = response.data;
+
+        if (_this.data.length == 0) {
+          _this.$swal({
+            position: 'top-end',
+            type: 'error',
+            title: 'No record found ',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {});
+    },
+    generateReport: function generateReport(token) {
+      var _this2 = this;
+
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
+        return false;
+      }
+
+      if (this.data.length === 0) {
+        var url = window.location.protocol + '/api/v1/check-by-sid-or-lab-id?token=' + token;
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(url).then(function (response) {
+          _this2.data = response.data;
+          _this2.reportData = response.data;
+
+          if (response.data.len == 0) {
+            _this2.$swal({
+              position: 'top-end',
+              type: 'error',
+              title: 'No record found ',
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }
+        })["catch"](function (error) {
+          console.error(error);
+        })["finally"](function () {});
+      }
+
+      this.reportData = this.data;
+    },
+    print: function print() {
+      // Get HTML to print from element
+      var prtHtml = document.getElementById('report-printMe').innerHTML; // Get all stylesheets HTML
+
+      var stylesHtml = '';
+
+      for (var _i = 0, _arr = _toConsumableArray(document.querySelectorAll('link[rel="stylesheet"], style')); _i < _arr.length; _i++) {
+        var node = _arr[_i];
+        stylesHtml += node.outerHTML;
+      } // Open the print window
+
+
+      var WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+      WinPrint.document.write("<!DOCTYPE html>\n      <html>\n        <head>\n          ".concat(stylesHtml, "\n        </head>\n        <body>\n          ").concat(prtHtml, "\n        </body>\n      </html>"));
+      WinPrint.document.close();
+      WinPrint.focus();
+      WinPrint.print(); // WinPrint.close();
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabCases.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LabCases.vue?vue&type=script&lang=js& ***!
@@ -8093,6 +8356,25 @@ exports = module.exports = __webpack_require__(/*! ../../css-loader/lib/css-base
 
 // module
 exports.push([module.i, "\n.animated.quick[data-v-00c57f94] {\n    -webkit-animation-duration: .7s !important;\n    animation-duration: .7s !important;\n}\n.fab-wrapper[data-v-00c57f94] {\n    z-index: 999;\n}\n.fab-main[data-v-00c57f94] {\n    border-radius: 100px;\n    /*width: 65px;*/\n    /*height: 65px;*/\n    padding: 30px;\n    position: relative;\n    overflow: hidden;\n    display: flex;\n    align-items: center;\n    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.20), 0 4px 4px rgba(0, 0, 0, 0.15);\n    z-index: 2;\n    justify-content: center;\n}\n.fab-main .material-icons[data-v-00c57f94] {\n    color: white;\n    transition: .4s all;\n    margin: 0px auto;\n}\n.fab-main .material-icons.main[data-v-00c57f94] {\n    opacity: 1;\n    position: absolute;\n}\n.fab-main .material-icons.close[data-v-00c57f94] {\n    opacity: 0;\n    position: absolute;\n}\n.fab-main .material-icons.main.rotate[data-v-00c57f94] { /* IE 9 */ /* Chrome, Safari, Opera */\n    transform: rotate(315deg);\n    opacity: 0; /* Safari */\n    transition: opacity .3s ease-in, transform .4s;\n}\n.fab-main .material-icons.close.rotate[data-v-00c57f94] { /* IE 9 */ /* Chrome, Safari, Opera */\n    transform: rotate(315deg);\n    opacity: 1; /* Safari */\n    transition: opacity .3s ease-in, transform .4s;\n}\n.fab-list[data-v-00c57f94] {\n    position: relative;\n    z-index: 1;\n    margin: 2vh 0;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}\n.fab-list li[data-v-00c57f94] {\n    /*width: 50px;*/\n    /*height: 50px;*/\n    padding: 10px;\n    margin-top: 2vh;\n    display: flex;\n    align-items: center;\n    border-radius: 100px;\n    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.20), 0 4px 4px rgba(0, 0, 0, 0.15);\n}\n.fab-list li .material-icons[data-v-00c57f94] {\n    color: white;\n    margin: 0px auto;\n}\n.pointer[data-v-00c57f94] {\n    cursor: pointer;\n}\nul[data-v-00c57f94] {\n    list-style-type: none;\n    padding: 0 !important;\n}\n.fab-wrapper .actions-container[data-v-00c57f94] {\n    overflow: hidden;\n    z-index: 0;\n    position: relative;\n}\n\n/* Rules for sizing the icon. */\n.material-icons.md-18[data-v-00c57f94] {\n    font-size: 18px;\n}\n.material-icons.md-24[data-v-00c57f94] {\n    font-size: 24px;\n}\n.material-icons.md-36[data-v-00c57f94] {\n    font-size: 36px;\n}\n.material-icons.md-48[data-v-00c57f94] {\n    font-size: 48px;\n}\n\n/* Rules for using icons as black on a light background. */\n.material-icons.md-dark[data-v-00c57f94] {\n    color: rgba(0, 0, 0, 0.54);\n}\n.material-icons.md-dark.md-inactive[data-v-00c57f94] {\n    color: rgba(0, 0, 0, 0.26);\n}\n\n/* Rules for using icons as white on a dark background. */\n.material-icons.md-light[data-v-00c57f94] {\n    color: rgba(255, 255, 255, 1);\n}\n.material-icons.md-light.md-inactive[data-v-00c57f94] {\n    color: rgba(255, 255, 255, 0.3);\n}\n@media screen and (max-width: 768px) {\n.fab-list[data-v-00c57f94] {\n        margin: 2vh 0;\n}\n.fab-list li[data-v-00c57f94] {\n        /*width: 40px;*/\n        /*height: 40px;*/\n        /*padding: .6rem;*/\n}\n.fab-list li i[data-v-00c57f94] {\n        /*font-size: 24px !important;*/\n}\n.fab-main[data-v-00c57f94] {\n        /*width: 55px;*/\n        /*height: 55px;*/\n        /*padding: 1.5rem;*/\n}\n.fab-main i[data-v-00c57f94] {\n        /*font-size: 34px !important;*/\n}\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabCaseReport.vue?vue&type=style&index=0&id=39ee20ca&scoped=true&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LabCaseReport.vue?vue&type=style&index=0&id=39ee20ca&scoped=true&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.swal2-container[data-v-39ee20ca] {\r\n  z-index: 10000;\n}\n.main[data-v-39ee20ca] {\r\n   width: 90%;\r\n   margin: 0 auto;\n}\n.header[data-v-39ee20ca] {\r\n  font-family: sans-serif;\r\n  display: flex;\r\n  flex-direction: row;\r\n  align-items: center;\r\n  justify-content: space-between;\n}\n.date[data-v-39ee20ca] {\r\n  color: #000;\r\n  margin-top: 10px;\r\n  font-size: 17px;\n}\n.img[data-v-39ee20ca] {\r\n  text-align: right;\n}\n.titleMid[data-v-39ee20ca] {\r\n  text-align: center;\n}\n.titleSide[data-v-39ee20ca] {\r\n  color: #E61C23;\r\n  font-size: 15px;\n}\n.govF[data-v-39ee20ca] {\r\n  color: #E61C23;\r\n  font-size: 14px;\n}\n.govM[data-v-39ee20ca] {\r\n  color: #E61C23;\r\n  font-size: 17px;\n}\n.govB[data-v-39ee20ca] {\r\n  color: #E61C23;\r\n  font-weight: bolder;\r\n  font-size: large;\n}\n.govA[data-v-39ee20ca] {\r\n  color: #E61C23;\r\n  font-size: 14px;\n}\r\n\r\n/*  table css */\ntable[data-v-39ee20ca] {\r\n  width: 100%;\r\n  border-collapse: collapse;\r\n  border: 1px solid black;\n}\ntr[data-v-39ee20ca] {}\ntd[data-v-39ee20ca] {\r\n  font-size: 15px;\r\n  border: 1px solid black;\n}\r\n\r\n", ""]);
 
 // exports
 
@@ -28055,6 +28337,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabCaseReport.vue?vue&type=style&index=0&id=39ee20ca&scoped=true&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LabCaseReport.vue?vue&type=style&index=0&id=39ee20ca&scoped=true&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./LabCaseReport.vue?vue&type=style&index=0&id=39ee20ca&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabCaseReport.vue?vue&type=style&index=0&id=39ee20ca&scoped=true&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/SendPatientDataModel.vue?vue&type=style&index=0&lang=css&":
 /*!*************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/SendPatientDataModel.vue?vue&type=style&index=0&lang=css& ***!
@@ -40931,6 +41243,436 @@ var render = function() {
   ])
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabCaseReport.vue?vue&type=template&id=39ee20ca&scoped=true&":
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LabCaseReport.vue?vue&type=template&id=39ee20ca&scoped=true& ***!
+  \***********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "panel" }, [
+      _c("div", { staticClass: "panel-heading" }, [
+        _c("div", { staticClass: "panel-title" }, [
+          _c("div", { staticClass: "form-group" }, [
+            _c("h3", [_vm._v("Search case by SID or LAB ID :")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "container" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "input-group",
+                    class: { "has-error": _vm.$v.token.$error }
+                  },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.token,
+                          expression: "token"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        placeholder: "Enter SID or LAB ID"
+                      },
+                      domProps: { value: _vm.token },
+                      on: {
+                        keyup: function($event) {
+                          if (
+                            !$event.type.indexOf("key") &&
+                            _vm._k(
+                              $event.keyCode,
+                              "enter",
+                              13,
+                              $event.key,
+                              "Enter"
+                            )
+                          ) {
+                            return null
+                          }
+                          return _vm.searchResult(_vm.token)
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.token = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-group-btn" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          on: {
+                            click: function($event) {
+                              return _vm.searchResult(_vm.token)
+                            }
+                          }
+                        },
+                        [
+                          _c("span", {
+                            staticClass: "glyphicon glyphicon-search"
+                          })
+                        ]
+                      )
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                !_vm.$v.token.required
+                  ? _c("div", { staticClass: "help-block" }, [
+                      _vm._v("Field is required.")
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                !_vm.$v.token.minLength
+                  ? _c("div", { staticClass: "help-block" }, [
+                      _vm._v("Field must have at least 2 character.")
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.data.length == 0
+                  ? _c("span", { staticClass: "text-danger -align-right" }, [
+                      _vm._v("* Only lab user can view report using Lab ID")
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.data.length != 0
+                  ? _c("div", [
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("table", { staticClass: "table table-striped" }, [
+                        _vm._m(0),
+                        _vm._v(" "),
+                        _c("tbody", [
+                          _c("tr", [
+                            _c("td", [_vm._v(_vm._s(_vm.data.name))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(_vm.data.formatted_age))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(_vm.data.gender))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(_vm.data.phone_no))])
+                          ])
+                        ])
+                      ])
+                    ])
+                  : _vm._e()
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary btn-block generate-button",
+                attrs: { title: "Generate Report" },
+                on: {
+                  click: function($event) {
+                    return _vm.generateReport(_vm.token)
+                  }
+                }
+              },
+              [
+                _c("i", { staticClass: "fa fa-file-pdf-o" }, [
+                  _vm._v(" Generate Report")
+                ])
+              ]
+            )
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _c("div", { staticClass: "panel-body" }, [
+        _c("div", { staticClass: "pull-right" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              attrs: { type: "submit" },
+              on: { click: _vm.print }
+            },
+            [_c("i", { staticClass: "fa fa-print" }, [_vm._v(" Print ")])]
+          )
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("div", { staticClass: "main", attrs: { id: "report-printMe" } }, [
+          _c("div", { staticClass: "header" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c("div", { staticClass: "titleMid" }, [
+              _c("div", { staticClass: "govF" }, [
+                _vm._v("Government of Nepal")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "govF" }, [
+                _vm._v("Ministry of Health & Population")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "govM" }, [
+                _vm._v("Department of Health Service")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "govB" }, [
+                _vm._v(_vm._s(_vm.reportData.organization_name))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "govA" }, [
+                _vm._v(
+                  _vm._s(_vm.reportData.organization_address_province_district)
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "govA" }, [
+                _vm._v(
+                  _vm._s(_vm.reportData.organization_address_municipality_ward)
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "govA" }, [
+                _vm._v(_vm._s(_vm.reportData.organization_address))
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "titleSide" }, [
+              _c("div", [
+                _vm._v("Phone: " + _vm._s(_vm.reportData.organization_phone))
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _vm._v(" E-mail: " + _vm._s(_vm.reportData.organization_email))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "date" }, [
+                _vm._v("Date: " + _vm._s(_vm.reportData.current_date))
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "container" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-xs-12" }),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-xs-6" }, [
+                  _vm._v(
+                    "\n              Name : " +
+                      _vm._s(_vm.reportData.name || ".................") +
+                      " "
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "\n              Age : " +
+                      _vm._s(
+                        _vm.reportData.formatted_age || "................."
+                      ) +
+                      " "
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "\n              Gender : " +
+                      _vm._s(_vm.reportData.gender || ".................") +
+                      " "
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "\n              Phone No : " +
+                      _vm._s(_vm.reportData.phone_no || ".................")
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "\n              Address : " +
+                      _vm._s(_vm.reportData.address || ".................") +
+                      "\n            "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-6 text-right" }, [
+                  _vm._v(
+                    "\n              Patient No : " +
+                      _vm._s(_vm.reportData.patient_no || ".................")
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "\n              Sample No : " +
+                      _vm._s(_vm.reportData.sample_no || ".................")
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "\n              Lab No : " +
+                      _vm._s(_vm.reportData.lab_no || ".................")
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "\n              Sample Received Date : " +
+                      _vm._s(
+                        _vm.reportData.sample_received_date ||
+                          "................."
+                      )
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "\n              Date & Time of Analysis : " +
+                      _vm._s(
+                        _vm.reportData.date_and_time_of_analysis ||
+                          "................."
+                      )
+                  ),
+                  _c("br")
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-12" }, [
+              _c("h4", [_vm._v("IMU Nepal Lab Report")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "table-responsive" }, [
+                _c("table", { staticClass: "table table-condensed" }, [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c("tbody", [
+                    _c("tr", [
+                      _c("td", [
+                        _vm._v(
+                          _vm._s(
+                            _vm.reportData.test_type || "................."
+                          )
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(
+                          _vm._s(
+                            _vm.reportData.test_result || "................."
+                          )
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._m(3),
+          _vm._v(" "),
+          _c("br"),
+          _c("br"),
+          _c("br"),
+          _c("br"),
+          _vm._v(" "),
+          _c("div", { staticClass: "text-center" }, [
+            _vm._v(
+              "This is an electronically generated copy from https://imucovid19.mohp.gov.np"
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Age")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Gender")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Phone No")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "img" }, [
+      _c("img", {
+        attrs: {
+          src: "/images/report-logo.jpg",
+          width: "92",
+          height: "92",
+          alt: ""
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("td", [_c("strong", [_vm._v("Test")])]),
+        _vm._v(" "),
+        _c("td", [_c("strong", [_vm._v("Result")])])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("br"),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-xs-6" }, [
+        _c("br"),
+        _vm._v("\n          -------------------------------"),
+        _c("br"),
+        _vm._v("\n          Verified by "),
+        _c("br"),
+        _vm._v("\n          Name : "),
+        _c("br"),
+        _vm._v("\n          HP :  "),
+        _c("br"),
+        _vm._v("\n          Post :\n        ")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -86665,11 +87407,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_LabNegativeCases__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/LabNegativeCases */ "./resources/assets/js/components/LabNegativeCases.vue");
 /* harmony import */ var _components_LabPositiveCases__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/LabPositiveCases */ "./resources/assets/js/components/LabPositiveCases.vue");
 /* harmony import */ var _components_viewCaseDetailReport__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./components/viewCaseDetailReport */ "./resources/assets/js/components/viewCaseDetailReport.vue");
-/* harmony import */ var _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/AdminDashboard */ "./resources/assets/js/components/AdminDashboard.vue");
-/* harmony import */ var _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/SelectYearMonth */ "./resources/assets/js/components/SelectYearMonth.vue");
-/* harmony import */ var v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! v-nepalidatepicker */ "./node_modules/v-nepalidatepicker/dist/v-nepalidatepicker.esm.js");
-/* harmony import */ var vue_json_excel__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! vue-json-excel */ "./node_modules/vue-json-excel/JsonExcel.vue");
-/* harmony import */ var v_mask__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! v-mask */ "./node_modules/v-mask/dist/v-mask.esm.js");
+/* harmony import */ var _components_LabCaseReport_vue__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/LabCaseReport.vue */ "./resources/assets/js/components/LabCaseReport.vue");
+/* harmony import */ var _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/AdminDashboard */ "./resources/assets/js/components/AdminDashboard.vue");
+/* harmony import */ var _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./components/SelectYearMonth */ "./resources/assets/js/components/SelectYearMonth.vue");
+/* harmony import */ var v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! v-nepalidatepicker */ "./node_modules/v-nepalidatepicker/dist/v-nepalidatepicker.esm.js");
+/* harmony import */ var vue_json_excel__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! vue-json-excel */ "./node_modules/vue-json-excel/JsonExcel.vue");
+/* harmony import */ var v_mask__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! v-mask */ "./node_modules/v-mask/dist/v-mask.esm.js");
 
 
 
@@ -86699,9 +87442,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_mask__WEBPACK_IMPORTED_MODULE_28__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_26__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('downloadExcel', vue_json_excel__WEBPACK_IMPORTED_MODULE_27__["default"]);
+
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_mask__WEBPACK_IMPORTED_MODULE_29__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_27__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('downloadExcel', vue_json_excel__WEBPACK_IMPORTED_MODULE_28__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$userRole = document.querySelector("meta[name='user-role']").getAttribute('content');
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_13___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_status_indicator__WEBPACK_IMPORTED_MODULE_2__["default"]);
@@ -86723,8 +87468,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('cases-closed-death', _comp
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-negative-patient-list', _components_LabNegativeCases__WEBPACK_IMPORTED_MODULE_21__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-positive-patient-list', _components_LabPositiveCases__WEBPACK_IMPORTED_MODULE_22__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('vaccination-chart');
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('admin-dashboard', _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_24__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('select-year-month', _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_25__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('admin-dashboard', _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_25__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('select-year-month', _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_26__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-case-report', _components_LabCaseReport_vue__WEBPACK_IMPORTED_MODULE_24__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('case-detail', _components_viewCaseDetailReport__WEBPACK_IMPORTED_MODULE_23__["default"]);
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app'
@@ -87435,6 +88181,93 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filterable_vue_vue_type_template_id_25c67949_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filterable_vue_vue_type_template_id_25c67949_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/LabCaseReport.vue":
+/*!**********************************************************!*\
+  !*** ./resources/assets/js/components/LabCaseReport.vue ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LabCaseReport_vue_vue_type_template_id_39ee20ca_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LabCaseReport.vue?vue&type=template&id=39ee20ca&scoped=true& */ "./resources/assets/js/components/LabCaseReport.vue?vue&type=template&id=39ee20ca&scoped=true&");
+/* harmony import */ var _LabCaseReport_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LabCaseReport.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/LabCaseReport.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _LabCaseReport_vue_vue_type_style_index_0_id_39ee20ca_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./LabCaseReport.vue?vue&type=style&index=0&id=39ee20ca&scoped=true&lang=css& */ "./resources/assets/js/components/LabCaseReport.vue?vue&type=style&index=0&id=39ee20ca&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _LabCaseReport_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LabCaseReport_vue_vue_type_template_id_39ee20ca_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LabCaseReport_vue_vue_type_template_id_39ee20ca_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "39ee20ca",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/LabCaseReport.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/LabCaseReport.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/assets/js/components/LabCaseReport.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LabCaseReport_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LabCaseReport.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabCaseReport.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LabCaseReport_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/LabCaseReport.vue?vue&type=style&index=0&id=39ee20ca&scoped=true&lang=css&":
+/*!*******************************************************************************************************************!*\
+  !*** ./resources/assets/js/components/LabCaseReport.vue?vue&type=style&index=0&id=39ee20ca&scoped=true&lang=css& ***!
+  \*******************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LabCaseReport_vue_vue_type_style_index_0_id_39ee20ca_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./LabCaseReport.vue?vue&type=style&index=0&id=39ee20ca&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabCaseReport.vue?vue&type=style&index=0&id=39ee20ca&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LabCaseReport_vue_vue_type_style_index_0_id_39ee20ca_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LabCaseReport_vue_vue_type_style_index_0_id_39ee20ca_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LabCaseReport_vue_vue_type_style_index_0_id_39ee20ca_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LabCaseReport_vue_vue_type_style_index_0_id_39ee20ca_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LabCaseReport_vue_vue_type_style_index_0_id_39ee20ca_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/LabCaseReport.vue?vue&type=template&id=39ee20ca&scoped=true&":
+/*!*****************************************************************************************************!*\
+  !*** ./resources/assets/js/components/LabCaseReport.vue?vue&type=template&id=39ee20ca&scoped=true& ***!
+  \*****************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LabCaseReport_vue_vue_type_template_id_39ee20ca_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LabCaseReport.vue?vue&type=template&id=39ee20ca&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabCaseReport.vue?vue&type=template&id=39ee20ca&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LabCaseReport_vue_vue_type_template_id_39ee20ca_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LabCaseReport_vue_vue_type_template_id_39ee20ca_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

@@ -23,6 +23,7 @@ import LabPatientList from './components/LabCases'
 import LabNegativeCases from "./components/LabNegativeCases";
 import LabPositiveCases from "./components/LabPositiveCases";
 import CaseDetail from "./components/viewCaseDetailReport"
+import LabCaseReport from "./components/LabCaseReport.vue"
 
 import AdminDashboard from "./components/AdminDashboard";
 
@@ -31,6 +32,7 @@ import VNepaliDatePicker from 'v-nepalidatepicker';
 
 import JsonExcel from 'vue-json-excel'
 import VueMask from 'v-mask'
+import LabCases from "./components/LabCases";
 Vue.use(VueMask);
 Vue.use(VNepaliDatePicker);
 
@@ -61,6 +63,7 @@ Vue.component('lab-positive-patient-list', LabPositiveCases)
 Vue.component('vaccination-chart');
 Vue.component('admin-dashboard', AdminDashboard)
 Vue.component('select-year-month', SelectYearMonth)
+Vue.component('lab-case-report', LabCaseReport)
 
 Vue.component('case-detail', CaseDetail)
 

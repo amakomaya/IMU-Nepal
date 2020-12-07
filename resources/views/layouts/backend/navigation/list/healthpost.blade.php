@@ -15,24 +15,25 @@
         @endif
     </ul>
 </li>
-<li>
-    <a href="#">
-    <i class="fa fa-user" aria-hidden="true"></i>
+{{--<li>--}}
+{{--    <a href="#">--}}
+{{--    <i class="fa fa-user" aria-hidden="true"></i>--}}
 
-    Lab Users <span class="fa arrow"></span>
-    </a>
+{{--    Lab Users <span class="fa arrow"></span>--}}
+{{--    </a>--}}
 
-    <ul class="nav nav-second-level">
-        <li>
-            <a href="{{ route('fchv.index') }}">{{ trans('sidebar.list') }}</a>
-        </li>
-        @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
-        <li>
-            <a href="{{ route('fchv.create') }}">{{ trans('sidebar.create') }}</a>
-        </li>
-        @endif
-    </ul>
-</li>
+{{--    <ul class="nav nav-second-level">--}}
+{{--        <li>--}}
+{{--            <a href="{{ route('fchv.index') }}">{{ trans('sidebar.list') }}</a>--}}
+{{--        </li>--}}
+{{--        @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')--}}
+{{--        <li>--}}
+{{--            <a href="{{ route('fchv.create') }}">{{ trans('sidebar.create') }}</a>--}}
+{{--        </li>--}}
+{{--        @endif--}}
+{{--    </ul>--}}
+{{--</li>--}}
+
 <li>
     <a href="#">
         <i class="fa fa-user" aria-hidden="true"></i>
@@ -97,7 +98,12 @@
         </li>
     </ul>
 </li>
-
+<li>
+    <a href="{{ route('lab.patient.report.index') }}">
+        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+        Case Report
+    </a>
+</li>
 <li>
     <a href="{{ route('center.woman.map') }}">
     <i class="fa fa-globe" aria-hidden="true"></i>
