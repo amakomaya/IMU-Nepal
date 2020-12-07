@@ -43,14 +43,14 @@
                     <div v-if="item.ancs.length > 0 && item.latest_anc.result == 9">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
                 </td>
                 <td>
-                <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
+                <button v-on:click="viewCaseDetails(item.token)" target="_blank" title="Case Details Report">
                      <i class="fa fa-file" aria-hidden="true"></i> |
                   </button>
-<!--                  <div v-if="role == 'main'">-->
-<!--                    <button v-on:click="editCaseDetails(item.token)" title="Edit Case Detail">-->
-<!--                      <i class="fa fa-edit" aria-hidden="true"></i> |-->
-<!--                    </button>-->
-<!--                  </div>-->
+                  <div v-if="role == 'healthworker' || role == 'healthpost' || role == 'municipality'">
+                    <button v-on:click="editCaseDetails(item.token)" title="Edit Case Detail">
+                      <i class="fa fa-edit" aria-hidden="true"></i> |
+                    </button>
+                  </div>
                   <button v-if="item.ancs.length == 0 && role  == 'healthworker'" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
                      <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
@@ -363,10 +363,16 @@ export default {
       window.location.href = '/admin/patients/create'
     },
     viewCaseDetails(token) {
-      window.location.href = '/admin/patient?token=' + token;
+        window.open(
+            '/admin/patient?token=' + token,
+            '_blank'
+        );
     },
     editCaseDetails(token) {
-      window.location.href = '/admin/patient/' + token + '/edit';
+      window.open(
+          '/admin/patient/' + token + '/edit',
+          '_blank'
+      );
     }
   }
 }

@@ -4830,10 +4830,10 @@ __webpack_require__.r(__webpack_exports__);
       window.location.href = '/admin/patients/create';
     },
     viewCaseDetails: function viewCaseDetails(token) {
-      window.location.href = '/admin/patient?token=' + token;
+      window.open('/admin/patient?token=' + token, '_blank');
     },
     editCaseDetails: function editCaseDetails(token) {
-      window.location.href = '/admin/patient/' + token + '/edit';
+      window.open('/admin/patient/' + token + '/edit', '_blank');
     }
   }
 });
@@ -39930,11 +39930,11 @@ var render = function() {
                       ),
                       _c("br"),
                       _vm._v(
-                        "\n                    " +
+                        "\n                " +
                           _vm._s(
                             _vm.roleVisibility(item.emergency_contact_two)
                           ) +
-                          "\n                "
+                          "\n            "
                       )
                     ]),
                     _vm._v(" "),
@@ -39946,23 +39946,23 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [
                       _vm._v(
-                        "\n                    Place : " +
+                        "\n                Place : " +
                           _vm._s(item.healthpost.name) +
                           " "
                       ),
                       _c("br"),
                       _vm._v(
-                        "\n                    Type : " +
+                        "\n                Type : " +
                           _vm._s(_vm.checkCaseType(item.cases)) +
                           " "
                       ),
                       _c("br"),
                       _vm._v(
-                        "\n                    Management : " +
+                        "\n                Management : " +
                           _vm._s(
                             _vm.checkCaseManagement(item.cases, item.case_where)
                           ) +
-                          "\n                "
+                          "\n            "
                       )
                     ]),
                     _vm._v(" "),
@@ -40016,7 +40016,10 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          attrs: { title: "Case Details Report" },
+                          attrs: {
+                            target: "_blank",
+                            title: "Case Details Report"
+                          },
                           on: {
                             click: function($event) {
                               return _vm.viewCaseDetails(item.token)
@@ -40028,9 +40031,34 @@ var render = function() {
                             staticClass: "fa fa-file",
                             attrs: { "aria-hidden": "true" }
                           }),
-                          _vm._v(" |\n                  ")
+                          _vm._v(" |\n              ")
                         ]
                       ),
+                      _vm._v(" "),
+                      _vm.role == "healthworker" ||
+                      _vm.role == "healthpost" ||
+                      _vm.role == "municipality"
+                        ? _c("div", [
+                            _c(
+                              "button",
+                              {
+                                attrs: { title: "Edit Case Detail" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.editCaseDetails(item.token)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "fa fa-edit",
+                                  attrs: { "aria-hidden": "true" }
+                                }),
+                                _vm._v(" |\n                ")
+                              ]
+                            )
+                          ])
+                        : _vm._e(),
                       _vm._v(" "),
                       item.ancs.length == 0 && _vm.role == "healthworker"
                         ? _c(
@@ -40051,7 +40079,7 @@ var render = function() {
                                 staticClass: "fa fa-medkit",
                                 attrs: { "aria-hidden": "true" }
                               }),
-                              _vm._v(" |\n                  ")
+                              _vm._v(" |\n              ")
                             ]
                           )
                         : _vm._e(),
