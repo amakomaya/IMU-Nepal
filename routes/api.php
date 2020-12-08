@@ -464,12 +464,12 @@ Route::get('/v1/check-by-sid-or-lab-id', function (Request $request) {
         ->first();
 
     $case = [
-        'organization_name' => ($lab_details->count() > 0) ? $lab_details->name : $case->healthpost->name,
-        'organization_address_province_district' =>($lab_details->count() > 0) ? '' : $case->healthpost->province->province_name .', '.$case->healthpost->district->district_name,
-        'organization_address_municipality_ward' => ($lab_details->count() > 0) ? '' : $case->healthpost->municipality->municipality_name .' - '.$case->healthpost->ward_no,
-        'organization_address' => ($lab_details->count() > 0) ? $lab_details->tole : $case->healthpost->office_address ?? '',
-        'organization_phone' => ($lab_details->count() > 0) ? $lab_details->phone : $case->healthpost->phone ?? '',
-        'organization_email' => ($lab_details->count() > 0) ? '' : $case->healthpost->email ?? '',
+        'organization_name' => ($lab_details) ? $lab_details->name : $case->healthpost->name,
+        'organization_address_province_district' =>($lab_details) ? '' : $case->healthpost->province->province_name .', '.$case->healthpost->district->district_name,
+        'organization_address_municipality_ward' => ($lab_details) ? '' : $case->healthpost->municipality->municipality_name .' - '.$case->healthpost->ward_no,
+        'organization_address' => ($lab_details) ? $lab_details->tole : $case->healthpost->office_address ?? '',
+        'organization_phone' => ($lab_details) ? $lab_details->phone : $case->healthpost->phone ?? '',
+        'organization_email' => ($lab_details) ? '' : $case->healthpost->email ?? '',
         'current_date' => \Carbon\Carbon::now()->format('Y-m-d H:i'),
 
         'name' => $case->name,
