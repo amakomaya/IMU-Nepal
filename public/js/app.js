@@ -5448,6 +5448,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
 /* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_2__);
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -5601,6 +5603,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5674,6 +5678,16 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       }
 
       this.reportData = this.data;
+    },
+    ad2bs: function ad2bs(date) {
+      if (date === undefined) {
+        return '';
+      }
+
+      var dateObject = new Date(date);
+      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
+      var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_2___default.a.ad2bs(dateFormat);
+      return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
     },
     print: function print() {
       // Get HTML to print from element
@@ -41469,7 +41483,9 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "date" }, [
-                _vm._v("Date: " + _vm._s(_vm.reportData.current_date))
+                _vm._v(
+                  "Date: " + _vm._s(_vm.ad2bs(_vm.reportData.current_date))
+                )
               ])
             ])
           ]),
@@ -41528,6 +41544,14 @@ var render = function() {
                   ),
                   _c("br"),
                   _vm._v(
+                    "\n              Sample Collected Date : " +
+                      _vm._s(
+                        _vm.ad2bs(_vm.reportData.sample_collected_date) ||
+                          "................."
+                      )
+                  ),
+                  _c("br"),
+                  _vm._v(
                     "\n              Lab No : " +
                       _vm._s(_vm.reportData.lab_no || ".................")
                   ),
@@ -41560,6 +41584,17 @@ var render = function() {
           _c("div", { staticClass: "row" }, [
             _c("div", { staticClass: "col-md-12" }, [
               _c("h4", [_vm._v("IMU Nepal Lab Report")]),
+              _vm._v(" "),
+              _vm.reportData.sample_tested_by
+                ? _c("h5", [
+                    _c("strong", [
+                      _vm._v(
+                        "Sample Tested By : " +
+                          _vm._s(_vm.reportData.sample_tested_by)
+                      )
+                    ])
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("div", { staticClass: "table-responsive" }, [
                 _c("table", { staticClass: "table table-condensed" }, [
@@ -41665,8 +41700,6 @@ var staticRenderFns = [
         _vm._v("\n          Verified by "),
         _c("br"),
         _vm._v("\n          Name : "),
-        _c("br"),
-        _vm._v("\n          HP :  "),
         _c("br"),
         _vm._v("\n          Post :\n        ")
       ])

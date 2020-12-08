@@ -74,7 +74,7 @@
           <div class="titleSide">
             <div>Phone: {{ reportData.organization_phone }}</div>
             <div> E-mail: {{ reportData.organization_email }}</div>
-            <div class="date">Date: {{ reportData.current_date }}</div>
+            <div class="date">Date: {{ ad2bs(reportData.current_date) }}</div>
           </div>
         </div>
         <div class="container">
@@ -94,6 +94,7 @@
               <div class="col-xs-6 text-right">
                 Patient No : {{ reportData.patient_no || '.................' }}<br>
                 Sample No : {{ reportData.sample_no || '.................' }}<br>
+                Sample Collected Date : {{ ad2bs(reportData.sample_collected_date) || '.................' }}<br>
                 Lab No : {{ reportData.lab_no || '.................' }}<br>
                 Sample Received Date : {{ reportData.sample_received_date || '.................' }}<br>
                 Date & Time of Analysis : {{ reportData.date_and_time_of_analysis || '.................' }}<br>
@@ -106,6 +107,7 @@
         <div class="row">
           <div class="col-md-12">
               <h4>IMU Nepal Lab Report</h4>
+              <h5 v-if="reportData.sample_tested_by"><strong>Sample Tested By : {{ reportData.sample_tested_by }}</strong></h5>
                 <div class="table-responsive">
                   <table class="table table-condensed">
                     <thead>
@@ -131,7 +133,6 @@
             -------------------------------<br>
             Verified by <br>
             Name : <br>
-            HP :  <br>
             Post :
           </div>
         </div>
@@ -146,6 +147,7 @@
 <script type="text/javascript">
 import axios from 'axios'
 import {required, minLength} from 'vuelidate/lib/validators'
+import DataConverter from "ad-bs-converter";
 
 export default {
   data() {
@@ -216,6 +218,19 @@ export default {
             })
       }
       this.reportData = this.data;
+    },
+    ad2bs: function (date) {
+      if(date === undefined){
+        return '';
+      }
+      var dateObject = new Date(date);
+
+      var dateFormat = dateObject.getFullYear()  + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getDate();
+
+      let dateConverter = DataConverter.ad2bs(dateFormat);
+
+      return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
+
     },
     print() {
       // Get HTML to print from element

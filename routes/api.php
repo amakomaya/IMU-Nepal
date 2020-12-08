@@ -480,13 +480,14 @@ Route::get('/v1/check-by-sid-or-lab-id', function (Request $request) {
 
         'patient_no' => '',
         'sample_no' => $sample_detail->token,
+        'sample_collected_date' => $sample_detail->created_at->format('Y-m-d H:i'),
         'lab_no' => ($sample_detail->labreport !== null) ? $sample_detail->labreport->formated_token : '',
         'sample_received_date' => ($sample_detail->labreport !== null) ? $sample_detail->labreport->sample_recv_date : '',
         'date_and_time_of_analysis' => ($sample_detail->labreport !== null) ? $sample_detail->labreport->sample_test_date.' '.$sample_detail->labreport->sample_test_time : '',
+        'sample_tested_by' => ($sample_detail->labreport !== null) ? $sample_detail->labreport->checked_by_name : '',
 
         'test_type' => ($sample_detail->service_for == "2") ? 'Rapid Antigen Test' : 'SARS-CoV-2 RNA Test',
         'test_result' => $sample_detail->formatted_result
-
     ];
 
 
