@@ -30,7 +30,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label">Infection Type</label>
+                                <label class="control-label">Sample Collection Type</label>
                                 <div class="control-group">
                                     <input type="checkbox" name="sample_type[]" value="1"> Nasopharyngeal<br>
                                     <input type="checkbox" name="sample_type[]" value="2"> Oropharyngeal

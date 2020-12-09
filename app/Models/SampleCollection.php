@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Yagiten\Nepalicalendar\Calendar;
 
 class SampleCollection extends Model
@@ -49,6 +50,16 @@ class SampleCollection extends Model
         return $this->hasOne('App\Models\LabTest', 'sample_token', 'token');
     }
 
+    public function infectionType($data){
+        switch ($data){
+            case '1':
+                return 'Symptomatic';
+            case '2':
+                return 'Asymptomatic';
+        }
+
+    }
+
     public function getFormattedResultAttribute(){
         switch($this->result){
             case 2:
@@ -62,5 +73,23 @@ class SampleCollection extends Model
             default:
                 return 'Don\'t Know';
         }
+    }
+
+    public function sampleCollectionType($data){
+        $contains_nasopharyngeal = Str::contains($data, ['1']);
+        $contains_oropharyngeal = Str::contains($data, ['2']);
+
+        if ($contains_nasopharyngeal && $contains_oropharyngeal){
+            return 'Nasopharyngeal, Oropharyngeal';
+        }
+
+        if ($contains_nasopharyngeal){
+            return 'Nasopharyngeal';
+        }
+
+        if ($contains_oropharyngeal){
+            return 'Oropharyngeal';
+        }
+
     }
 }

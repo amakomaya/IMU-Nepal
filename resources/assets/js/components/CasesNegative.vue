@@ -32,9 +32,9 @@
               <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
                 <td><div v-html="latestLabResult(item.latest_anc)">
                 </div>
-                <!-- <button v-on:click="viewLabReport(item)" title="Lab Report">
+                <button v-on:click="viewLabReport(item)" title="Lab Report">
                     <i class="fa fa-file"></i>
-                </button> -->
+                </button>
                 </td>
                 <td>
                     <!-- <button v-on:click="viewReport(item)" title=" Card Laboratory Sample Collection Form Details">

@@ -3765,7 +3765,7 @@ __webpack_require__.r(__webpack_exports__);
       window.location.href = '/admin/patients/create';
     },
     viewCaseDetails: function viewCaseDetails(token) {
-      window.location.href = '/admin/patient?token=' + token;
+      window.open('/admin/patient?token=' + token, '_blank');
     }
   }
 });
@@ -4442,7 +4442,7 @@ __webpack_require__.r(__webpack_exports__);
       window.location.href = '/admin/patients/create';
     },
     viewCaseDetails: function viewCaseDetails(token) {
-      window.location.href = '/admin/patient?token=' + token;
+      window.open('/admin/patient?token=' + token, '_blank');
     }
   }
 });
@@ -39814,7 +39814,20 @@ var render = function() {
                             _vm.latestLabResult(item.latest_anc)
                           )
                         }
-                      })
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          attrs: { title: "Lab Report" },
+                          on: {
+                            click: function($event) {
+                              return _vm.viewLabReport(item)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-file" })]
+                      )
                     ]),
                     _vm._v(" "),
                     _c("td")

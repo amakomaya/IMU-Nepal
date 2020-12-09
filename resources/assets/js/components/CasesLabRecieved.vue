@@ -372,7 +372,10 @@ export default {
       window.location.href = '/admin/patients/create'
     },
     viewCaseDetails(token){
-      window.location.href = '/admin/patient?token='+token;
+      window.open(
+          '/admin/patient?token=' + token,
+          '_blank'
+      );
     }
   }
 }
