@@ -247,7 +247,7 @@
                                 <tr>
                                     <td>Test</td>
                                     <td>
-                                    @if($anc->service_for = 2)
+                                    @if($anc->service_for == "2")
                                             Rapid Antigen Test
                                     @else
                                             SARS-CoV-2 RNA Test
@@ -271,7 +271,7 @@
                                     <td>{{ $anc->infectionType($anc->infection_type) }}</td>
                                 <tr>
                                     <td>Service Type :</td>
-                                    @if($anc->service_type = 1)
+                                    @if($anc->service_type == "1")
                                         <td>Paid</td>
                                     @else
                                         <td>Free of cost service</td>
@@ -323,7 +323,7 @@
                                 <tr>
                                     <td>Fever</td>
                                     <td>
-                                        @if($symptom->fever = 1)
+                                        @if($symptom->fever == "1")
                                             Yes
                                         @else
                                             No
@@ -333,7 +333,7 @@
                                 <tr>
                                     <td>Caugh</td>
                                     <td>
-                                        @if($symptom->caugh = 1)
+                                        @if($symptom->caugh == "1")
                                             Yes
                                         @else
                                             No
@@ -343,7 +343,7 @@
                                 <tr>
                                     <td>Chills</td>
                                     <td>
-                                        @if($symptom->chills = 1)
+                                        @if($symptom->chills == "1")
                                             Yes
                                         @else
                                             No
@@ -353,7 +353,7 @@
                                 <tr>
                                     <td>Fatigue</td>
                                     <td>
-                                        @if($symptom->fatigue = 1)
+                                        @if($symptom->fatigue == "1")
                                             Yes
                                         @else
                                             No
@@ -363,7 +363,7 @@
                                 <tr>
                                     <td>Muscle Pain</td>
                                     <td>
-                                        @if($symptom->mauscle_pain = 1)
+                                        @if($symptom->mauscle_pain == "1")
                                             Yes
                                         @else
                                             No
@@ -373,7 +373,7 @@
                                 <tr>
                                     <td>Headache</td>
                                     <td>
-                                        @if($symptom->headche = 1)
+                                        @if($symptom->headche == "1")
                                             Yes
                                         @else
                                             No
@@ -383,7 +383,7 @@
                                 <tr>
                                     <td>Loss of smell</td>
                                     <td>
-                                        @if($symptom->loss_of_smell = 1)
+                                        @if($symptom->loss_of_smell == "1")
                                             Yes
                                         @else
                                             No
@@ -393,7 +393,7 @@
                                 <tr>
                                     <td>Loss of taste</td>
                                     <td>
-                                        @if($symptom->loss_of_taste = 1)
+                                        @if($symptom->loss_of_taste == "1")
                                             Yes
                                         @else
                                             No
@@ -403,7 +403,7 @@
                                 <tr>
                                     <td>Diarrhea</td>
                                     <td>
-                                        @if($symptom->diarrhea = 1)
+                                        @if($symptom->diarrhea == "1")
                                             Yes
                                         @else
                                             No
@@ -413,7 +413,7 @@
                                 <tr>
                                     <td>Sore Throat</td>
                                     <td>
-                                        @if($symptom->sore_throat = 1)
+                                        @if($symptom->sore_throat == "1")
                                             Yes
                                         @else
                                             No
@@ -423,7 +423,7 @@
                                 <tr>
                                     <td>SOB</td>
                                     <td>
-                                        @if($symptom->sob = 1)
+                                        @if($symptom->sob == "1")
                                             Yes
                                         @else
                                             No
