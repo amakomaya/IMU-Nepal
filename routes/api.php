@@ -44,7 +44,7 @@ Route::post('/v1/client', function (Request $request) {
 //                 $value['case_id'] = bin2hex(random_bytes(3));
                  SuspectedCase::create($value);
              } catch (\Exception $e) {
-                 return response()->json(['message' => 'Something went wrong, Please try again.']);
+//                 return response()->json(['message' => 'Something went wrong, Please try again.']);
              }
          }
         }
@@ -139,7 +139,7 @@ Route::post('/v1/client-update', function (Request $request) {
         try {
             SuspectedCase::where('token', $value['token'])->update($value);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Something went wrong, Please try again.']);
+//            return response()->json(['message' => 'Something went wrong, Please try again.']);
         }
     }
     return response()->json(['message' => 'Data Successfully Sync and Update']);
@@ -154,11 +154,11 @@ Route::post('/v1/client-tests', function (Request $request) {
                 try {
                     SampleCollection::create($value);
                 } catch (\Exception $e) {
-                    return response()->json(['message' => 'Something went wrong, Please try again.']);
+//                    return response()->json(['message' => 'Something went wrong, Please try again.']);
                 }
             }
         }
-    return response()->json(['message' => 'Data Sussessfully Sync']);
+    return response()->json(['message' => 'Data Successfully Sync']);
 });
 
 Route::get('/v1/client-tests', function (Request $request) {
