@@ -24,6 +24,8 @@ class OrganizationMember extends Model
 
     protected static $logOnlyDirty = true;
 
+    protected $appends = ['lab_report_count'];
+
     protected $fillable = ['token','name','province_id','district_id','municipality_id','ward','hp_code','image','post','phone','tole','registered_device','role','longitude','latitude','status','updated_at'];
 
     public function province()
@@ -101,5 +103,10 @@ class OrganizationMember extends Model
 
     public function user(){
         return $this->belongsTo('App\User', 'token', 'token');
+    }
+
+    public function getLabReportCountAttribute()
+    {
+        return \App\Models\LabTest::where('hp_code', $this->hp_code)->active()->count();
     }
 }

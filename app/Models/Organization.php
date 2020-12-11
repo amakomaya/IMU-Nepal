@@ -15,6 +15,7 @@ class Organization extends Model
 
     protected $table='healthposts';
 
+    protected $appends = ['sample_collection_count'];
 
     public function getDescriptionForEvent(string $eventName): string
     {
@@ -118,9 +119,9 @@ class Organization extends Model
 		return SuspectedCase::where('hp_code', $hp_code)->active()->count();
 	}
 
-	public function getSampleCollection($hp_code)
+	public function getSampleCollectionCountAttribute()
 	{
-		return \App\Models\SampleCollection::where('hp_code', $hp_code)->active()->count();
+		return \App\Models\SampleCollection::where('hp_code', $this->hp_code)->active()->count();
 	}
 
     public function user(){

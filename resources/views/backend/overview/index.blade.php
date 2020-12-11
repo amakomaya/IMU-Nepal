@@ -20,7 +20,7 @@
                                             <th>Hospitals</th>
                                             <th>Username</th>
                                             <th>Municipality</th>
-                                            <th>Registers</th>
+                                            <th>Sample Collection</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -35,7 +35,7 @@
                                                 </td>
                                                 <td>{{ $d->user->username ?? '' }}</td>
                                                 <td>{{ $d->municipality->municipality_name ?? '' }}</td>
-                                                <td></td>
+                                                <td>{{ $d->sample_collection_count }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
