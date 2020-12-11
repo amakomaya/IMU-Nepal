@@ -39,7 +39,14 @@ Route::post('/v1/client', function (Request $request) {
      try {
             SuspectedCase::insert($data);
         } catch (\Exception $e) {
-         return response()->json(['message' => 'Something went wrong, Please try again.']);
+         foreach ($data as $value) {
+             try {
+//                 $value['case_id'] = bin2hex(random_bytes(3));
+                 SuspectedCase::create($value);
+             } catch (\Exception $e) {
+                 return response()->json(['message' => 'Something went wrong, Please try again.']);
+             }
+         }
         }
     return response()->json(['message' => 'Data Successfully Sync']);
 });
@@ -143,7 +150,13 @@ Route::post('/v1/client-tests', function (Request $request) {
         try {
             SampleCollection::insert($data);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Something went wrong, Please try again.']);
+            foreach ($data as $value) {
+                try {
+                    SampleCollection::create($value);
+                } catch (\Exception $e) {
+                    return response()->json(['message' => 'Something went wrong, Please try again.']);
+                }
+            }
         }
     return response()->json(['message' => 'Data Sussessfully Sync']);
 });
