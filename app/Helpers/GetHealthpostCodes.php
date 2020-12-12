@@ -16,12 +16,12 @@ class GetHealthpostCodes
         if($hp_code!=""){
             return [$hp_code];
         }elseif($municipality_id!=""){
-            return Organization::where('municipality_id', $municipality_id)->get('hp_code')->toArray();
+            return Organization::where('municipality_id', $municipality_id)->pluck('hp_code');
         }elseif($district_id!=""){
-            return Organization::where('district_id', $district_id)->get('hp_code')->toArray();
+            return Organization::where('district_id', $district_id)->pluck('hp_code');
         }elseif($province_id!=""){
-            return Organization::where('province_id', $province_id)->get('hp_code')->toArray();
+            return Organization::where('province_id', $province_id)->pluck('hp_code');
         }
-            return Organization::get('hp_code')->toArray();
+            return Organization::pluck('hp_code');
 	}
 }
