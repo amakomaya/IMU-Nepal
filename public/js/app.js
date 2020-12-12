@@ -2925,6 +2925,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -3112,6 +3117,9 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
       }
+    },
+    viewCaseDetails: function viewCaseDetails(token) {
+      window.open('/admin/patient?token=' + token, '_blank');
     }
   }
 });
@@ -3134,6 +3142,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _ViewLabReportModel_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ViewLabReportModel.vue */ "./resources/assets/js/components/ViewLabReportModel.vue");
 /* harmony import */ var _ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ViewLabResultReportModel.vue */ "./resources/assets/js/components/ViewLabResultReportModel.vue");
+//
+//
+//
+//
 //
 //
 //
@@ -3368,6 +3380,9 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
       }
+    },
+    viewCaseDetails: function viewCaseDetails(token) {
+      window.open('/admin/patient?token=' + token, '_blank');
     }
   }
 });
@@ -3839,6 +3854,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -4045,6 +4062,9 @@ __webpack_require__.r(__webpack_exports__);
         default:
           return 'O';
       }
+    },
+    viewCaseDetails: function viewCaseDetails(token) {
+      window.open('/admin/patient?token=' + token, '_blank');
     }
   }
 });
@@ -8319,7 +8339,7 @@ exports.push([module.i, ".v-select{position:relative;font-family:inherit}.v-sele
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9":
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css":
 /*!***********************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vuetify/dist/vuetify.min.css ***!
   \***********************************************************************************************************************************/
@@ -39228,10 +39248,42 @@ var render = function() {
                             _vm.latestLabResult(item.latest_anc)
                           )
                         }
-                      })
+                      }),
+                      _vm._v(" "),
+                      item.ancs.length > 0
+                        ? _c("div", [
+                            _vm._v(
+                              _vm._s(
+                                item.latest_anc.labreport.token
+                                  .split("-")
+                                  .splice(1)
+                                  .join("-")
+                              )
+                            )
+                          ])
+                        : _vm._e()
                     ]),
                     _vm._v(" "),
-                    _c("td")
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          attrs: { title: "Case Details Report" },
+                          on: {
+                            click: function($event) {
+                              return _vm.viewCaseDetails(item.token)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "fa fa-file",
+                            attrs: { "aria-hidden": "true" }
+                          }),
+                          _vm._v(" |\n        ")
+                        ]
+                      )
+                    ])
                   ])
                 }
               }
@@ -39385,10 +39437,42 @@ var render = function() {
                             _vm.latestLabResult(item.latest_anc)
                           )
                         }
-                      })
+                      }),
+                      _vm._v(" "),
+                      item.ancs.length > 0
+                        ? _c("div", [
+                            _vm._v(
+                              _vm._s(
+                                item.latest_anc.labreport.token
+                                  .split("-")
+                                  .splice(1)
+                                  .join("-")
+                              )
+                            )
+                          ])
+                        : _vm._e()
                     ]),
                     _vm._v(" "),
-                    _c("td")
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          attrs: { title: "Case Details Report" },
+                          on: {
+                            click: function($event) {
+                              return _vm.viewCaseDetails(item.token)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "fa fa-file",
+                            attrs: { "aria-hidden": "true" }
+                          }),
+                          _vm._v(" |\n        ")
+                        ]
+                      )
+                    ])
                   ])
                 }
               }
@@ -39559,7 +39643,7 @@ var render = function() {
                             ])
                           ]),
                       _vm._v(" "),
-                      item.ancs.length > 0 && item.latest_anc.result == 9
+                      item.ancs.length > 0
                         ? _c("div", [
                             _vm._v(
                               _vm._s(
@@ -39816,21 +39900,40 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
+                      item.ancs.length > 0
+                        ? _c("div", [
+                            _vm._v(
+                              _vm._s(
+                                item.latest_anc.labreport.token
+                                  .split("-")
+                                  .splice(1)
+                                  .join("-")
+                              )
+                            )
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
                       _c(
                         "button",
                         {
-                          attrs: { title: "Lab Report" },
+                          attrs: { title: "Case Details Report" },
                           on: {
                             click: function($event) {
-                              return _vm.viewLabReport(item)
+                              return _vm.viewCaseDetails(item.token)
                             }
                           }
                         },
-                        [_c("i", { staticClass: "fa fa-file" })]
+                        [
+                          _c("i", {
+                            staticClass: "fa fa-file",
+                            attrs: { "aria-hidden": "true" }
+                          }),
+                          _vm._v(" |\n                  ")
+                        ]
                       )
-                    ]),
-                    _vm._v(" "),
-                    _c("td")
+                    ])
                   ])
                 }
               }
@@ -40030,7 +40133,7 @@ var render = function() {
                             ])
                           ]),
                       _vm._v(" "),
-                      item.ancs.length > 0 && item.latest_anc.result == 9
+                      item.ancs.length > 0
                         ? _c("div", [
                             _vm._v(
                               _vm._s(
@@ -41854,7 +41957,7 @@ var render = function() {
                             ])
                           ]),
                       _vm._v(" "),
-                      item.ancs.length > 0 && item.latest_anc.result == 9
+                      item.ancs.length > 0
                         ? _c("div", [
                             _vm._v(
                               _vm._s(
@@ -42117,7 +42220,7 @@ var render = function() {
                             ])
                           ]),
                       _vm._v(" "),
-                      item.ancs.length > 0 && item.latest_anc.result == 9
+                      item.ancs.length > 0
                         ? _c("div", [
                             _vm._v(
                               _vm._s(
@@ -42380,7 +42483,7 @@ var render = function() {
                             ])
                           ]),
                       _vm._v(" "),
-                      item.ancs.length > 0 && item.latest_anc.result == 9
+                      item.ancs.length > 0
                         ? _c("div", [
                             _vm._v(
                               _vm._s(
@@ -87324,7 +87427,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_vue__;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9");
+var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 

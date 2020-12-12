@@ -41,7 +41,7 @@
         <td>
           <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"></div>
           <div v-else><span class="label label-primary"> Registered </span></div>
-          <div v-if="item.ancs.length > 0 && item.latest_anc.result == 9">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
+          <div v-if="item.ancs.length > 0">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
         </td>
         <td>
           <button v-if="item.latest_anc.result == 9" v-on:click="addResultInLab(item)" title="Add Result">
