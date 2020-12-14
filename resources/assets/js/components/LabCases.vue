@@ -18,7 +18,7 @@
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
       </tr>
       </thead>
-      <tr slot-scope="{item}">
+      <tr v-if="checkLatestResult(item)" slot-scope="{item}">
         <td><div v-if="checkForPositiveOnly(item.latest_anc)">Case ID : {{ item.case_id }}</div>
           <div v-if="item.parent_case_id !== null">Parent Case ID : {{ item.parent_case_id }}</div>
         </td>
@@ -400,6 +400,11 @@ export default {
           return 'O';
       }
     },
+    checkLatestResult(item){
+      if(item.latest_anc.result == 9 ){
+        return true;
+      }
+    }
   }
 }
 
