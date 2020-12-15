@@ -230,7 +230,7 @@
                             </tbody>
                         </table>
                         <hr>
-                        @if($data->ancs->count() > 0)
+                        @if($data->ancs->count() > '0')
                         <h4>Sample Collection Information </h4>
                         @foreach ($data->ancs as $anc)
                             <table class="table table-striped">
@@ -302,12 +302,12 @@
                                 </tbody>
                             </table>
                         @endforeach
+                            <hr>
                         @endif
-                        <hr>
-                        @if($data->symptomsRelation()->count() > 0 || $data->laboratoryParameter()->count() > 0 || $data->clinicalParameter()->count())
+                        @if($data->symptomsRelation()->count() > '0' || $data->laboratoryParameter()->count() > '0' || $data->clinicalParameter()->count() > '0')
                             <h4>Daily Health Checkup </h4>
                         @endif
-                        @if($data->symptomsRelation)<h5>Symptom</h5>
+                        @if($data->symptomsRelation->count() > '0')<h5>Symptom</h5>
                         @foreach ($data->symptomsRelation as $symptom)
                             <table class="table table-striped">
                                 <thead>
@@ -445,9 +445,9 @@
                                 </tbody>
                             </table>
                         @endforeach
-                            @endif
                         <hr>
-                        @if($data->laboratoryParameter)<h5>Laboratory Parameter</h5>
+                        @endif
+                        @if($data->laboratoryParameter->count() > '0')<h5>Laboratory Parameter</h5>
                             @foreach ($data->laboratoryParameter as $lp)
                                 <table class="table table-striped">
                                     <thead>
@@ -541,9 +541,9 @@
                                     </tbody>
                                 </table>
                             @endforeach
-                            @endif
                         <hr>
-                        @if($data->clinicalParameter)<h5>Clinical Parameter</h5>
+                        @endif
+                        @if($data->clinicalParameter->count() > '0')<h5>Clinical Parameter</h5>
                         @foreach ($data->clinicalParameter as $row)
                             <table class="table table-striped">
                                 <thead>
@@ -601,8 +601,8 @@
                                 </tbody>
                             </table>
                         @endforeach
-                        @endif
                         <hr>
+                        @endif
 
                         @if($data->caseManagement)
                             <table class="table table-striped">
@@ -696,11 +696,10 @@
 
                                 </tbody>
                             </table>
+                            <hr>
 
                         @endif
-                        <hr>
-
-                        @if($data->contactTracing->count() > 0)
+                        @if($data->contactTracing->count() > '0')
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
@@ -740,12 +739,7 @@
                                 @endforeach
                                 </tbody>
                             </table>
-
                         @endif
-
-
-
-
                     </div>
 </div>
 
