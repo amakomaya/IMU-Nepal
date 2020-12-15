@@ -56,7 +56,7 @@ Route::get('/v1/client', function (Request $request) {
     $record = \DB::table('women')
         ->leftJoin('ancs', 'ancs.woman_token', '=', 'women.token')
         ->where('women.hp_code', $hp_code)
-        ->where('women.end_case', 0)
+        ->where('women.end_case', '0')
         ->select('women.*', 'ancs.result as sample_result')
         ->get();
 
