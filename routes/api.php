@@ -107,7 +107,7 @@ Route::get('/v1/client', function (Request $request) {
         $response['payment'] = $row->payment ?? '';
         $response['result'] = $row->sample_result ?? '';
 
-        if ($response['result'] == '4') {
+        if ($response['result'] == '3') {
             $response['case_id'] = $row->case_id ?? '';
         } else {
             $response['case_id'] = '';
