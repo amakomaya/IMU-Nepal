@@ -122,6 +122,7 @@ Route::get('/v1/client', function (Request $request) {
         $response['temperature'] = $row->temperature ?? '';
         $response['date_of_onset_of_first_symptom'] = $row->date_of_onset_of_first_symptom ?? '';
         $response['reson_for_testing'] = $row->reson_for_testing ?? '';
+        $response['case_type'] = $row->case_type ?? 1;
 
         return $response;
     })->values();
