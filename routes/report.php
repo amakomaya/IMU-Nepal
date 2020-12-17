@@ -27,7 +27,7 @@ Route::get('calc' , function (){
    $sample_token = \App\Models\SampleCollection::where('result', '!=', 2)->get(['token', 'result']);
 
     $sample_token->map(function ($sample){
-        $lab = \App\Models\LabTest::where('sample_token', 'token')->first();
+        $lab = \App\Models\LabTest::where('sample_token', $sample->token)->first();
         if (empty($lab)){
             $sample->update(['result' =>  2]);
         }
