@@ -1,5 +1,7 @@
 <?php
 
+use Maatwebsite\Excel\Facades\Excel;
+
 Route::get('district-select-province', 'Reports\FilterController@districtSelectByProvince')->name('district-select-province');
 Route::get('municipality-select-district', 'Reports\FilterController@municipalitySelectByDistrict')->name('municipality-select-district');
 Route::get('ward-or-healthpost-select-municipality', 'Reports\FilterController@WardOrHealthpostByMunicipality')->name('ward-or-healthpost-select-municipality');
@@ -21,5 +23,14 @@ Route::get('calc' , function (){
           $sample->update(['result' =>  $record->sample_test_result]);
       }
    });
+
+   $sample_token = \App\Models\SampleCollection::where('result', '!=', 2)->get(['token', 'result']);
+
+    $sample_token->map(function ($sample){
+        $lab = \App\Models\LabTest::where('sample_token', 'token')->first();
+        if (empty($lab)){
+            $sample->update(['result' =>  2]);
+        }
+    });
    return "Complete";
 });
