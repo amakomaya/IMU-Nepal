@@ -58,6 +58,11 @@ Route::get('/v1/client', function (Request $request) {
         ->where('women.hp_code', $hp_code)
         ->where('women.end_case', '0')
         ->select('women.*', 'ancs.result as sample_result')
+        ->where('women.created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
+        ->where(function ($query) {
+            $query->where('ancs.result', '!=', '4')
+                ->orWhere('women.created_at', '>=', Carbon::now()->subDays(2)->toDateTimeString());
+        })
         ->get();
 
     $data = collect($record)->map(function ($row) {
@@ -127,11 +132,8 @@ Route::get('/v1/client', function (Request $request) {
         return $response;
     })->values();
 
-    $filtered = $data->filter(function ($value, $key) {
-        return $value['result'] !== '4';
-    })->values();
 
-    return response()->json($filtered);
+    return response()->json($data);
 });
 
 Route::post('/v1/client-update', function (Request $request) {
