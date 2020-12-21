@@ -3630,6 +3630,11 @@ __webpack_require__.r(__webpack_exports__);
       var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default.a.ad2bs(dateFormat);
       return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
     },
+    labToken: function labToken(data) {
+      if (data !== null) {
+        return data.token.split('-').splice(1).join('-');
+      }
+    },
     checkDistrict: function checkDistrict(value) {
       if (value === 0 || value == null || value === '') {
         return '';
@@ -39463,14 +39468,7 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", [
-                        _vm._v(
-                          _vm._s(
-                            item.latest_anc.labreport.token
-                              .split("-")
-                              .splice(1)
-                              .join("-")
-                          )
-                        )
+                        _vm._v(_vm._s(_vm.labToken(item.latest_anc.labreport)))
                       ])
                     ]),
                     _vm._v(" "),

@@ -39,7 +39,7 @@
         </td>
         <td>
           <span class="label label-warning"> Received </span>
-          <div>{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
+          <div>{{ labToken(item.latest_anc.labreport) }}</div>
         </td>
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
@@ -221,6 +221,11 @@ export default {
 
       return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
 
+    },
+    labToken(data){
+      if (data !== null){
+        return data.token.split('-').splice(1).join('-');
+      }
     },
     checkDistrict : function(value){
       if (value === 0 || value == null || value === ''){
