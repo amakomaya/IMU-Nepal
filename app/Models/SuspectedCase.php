@@ -282,10 +282,10 @@ class SuspectedCase extends Model
     }
 
     public function scopeCasesRecoveredList($query){
-        return $query->where('end_case', 1);
+        return $query->where('end_case', '1');
     }
 
     public function scopeCasesDeathList($query){
-        return $query->where('end_case', 2);
+        return $query->where('end_case', '2');
     }
 }
