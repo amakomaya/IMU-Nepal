@@ -259,16 +259,16 @@ export default {
     },
     latestLabResult :function(value){
       switch(value.result){
-        case '4':
+        case 4:
           return '<span class=\"label label-success\"> Negative</span>';
 
-        case '2':
+        case 2:
           return '<span class=\"label label-info\"> Pending</span>';
 
-        case '3':
+        case 3:
           return '<span class=\"label label-danger\"> Positive</span>';
 
-        case '9':
+        case 9:
           return '<span class=\"label label-warning\"> Recieved</span>';
 
         default:
@@ -277,18 +277,18 @@ export default {
     },
     checkForPositiveOnly : function (value){
       if (value !== null) {
-        if (value.result == '3') {
+        if (value.result == 3) {
           return true;
         }
       }
     },
     latestLabResultNotNegative : function(value){
 
-      if (value == '0' || value == null || value == ''){
+      if (value == 0 || value == null || value == ''){
         return true;
       }
 
-      if (value.result == '4') {
+      if (value.result == 4) {
         return false;
       }else{
         return true;

@@ -148,17 +148,7 @@ export default {
     this.fetch()
   },
   methods: {
-    selectAll: function (item) {
-      this.womanTokens = [];
 
-      if (this.allSelected) {
-        console.log(item);
-
-      }
-    },
-    select: function () {
-      this.allSelected = false;
-    },
     sendPatientData: function (item) {
       this.$dlg.modal(SendPatientDataModel, {
         title: 'Do you want to send '+item.name+' \'s patients data ?',
@@ -260,25 +250,12 @@ export default {
     },
     checkForPositiveOnly : function (value){
       if (value !== null) {
-        if (value.result == '3') {
+        if (value.result == 3) {
           return true;
         }
       }
     },
-    latestLabResultNotNegative : function(value){
 
-      if (value == '0' || value == null || value == ''){
-        return true;
-      }
-
-      if (value.result == '4') {
-        return false;
-      }else{
-        return true;
-      }
-
-
-    },
     checkCaseType : function(type){
       switch(type){
         case '0':

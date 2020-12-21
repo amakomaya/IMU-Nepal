@@ -207,7 +207,7 @@ Route::post('/v1/lab-test', function (Request $request) {
                 SampleCollection::where('token', $value['sample_token'])->update(['result' => '9']);
             } else {
                 SampleCollection::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
-                $find_test = LabTest::where('token', $value['token']);
+                $find_test = LabTest::where('token', $value['token'])->first();
                 if ($find_test) {
                     $find_test->update([
                         'sample_test_date' => $value['sample_test_date'],

@@ -3670,16 +3670,16 @@ __webpack_require__.r(__webpack_exports__);
     },
     latestLabResult: function latestLabResult(value) {
       switch (value.result) {
-        case '4':
+        case 4:
           return '<span class=\"label label-success\"> Negative</span>';
 
-        case '2':
+        case 2:
           return '<span class=\"label label-info\"> Pending</span>';
 
-        case '3':
+        case 3:
           return '<span class=\"label label-danger\"> Positive</span>';
 
-        case '9':
+        case 9:
           return '<span class=\"label label-warning\"> Recieved</span>';
 
         default:
@@ -3688,17 +3688,17 @@ __webpack_require__.r(__webpack_exports__);
     },
     checkForPositiveOnly: function checkForPositiveOnly(value) {
       if (value !== null) {
-        if (value.result == '3') {
+        if (value.result == 3) {
           return true;
         }
       }
     },
     latestLabResultNotNegative: function latestLabResultNotNegative(value) {
-      if (value == '0' || value == null || value == '') {
+      if (value == 0 || value == null || value == '') {
         return true;
       }
 
-      if (value.result == '4') {
+      if (value.result == 4) {
         return false;
       } else {
         return true;
@@ -3803,7 +3803,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _ViewLabReportModel_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ViewLabReportModel.vue */ "./resources/assets/js/components/ViewLabReportModel.vue");
 /* harmony import */ var _ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ViewLabResultReportModel.vue */ "./resources/assets/js/components/ViewLabResultReportModel.vue");
-//
 //
 //
 //
@@ -4009,29 +4008,6 @@ __webpack_require__.r(__webpack_exports__);
         return this.municipalities.find(function (x) {
           return x.id === value;
         }).municipality_name;
-      }
-    },
-    latestLabResult: function latestLabResult(value) {
-      if (value == '0' || value == null || value == '') {
-        return '<span class=\"label label-default\"> Don\'t Know </span>';
-      } else {
-        if (value == '0' || value == null || value == '') {
-          return '<span class=\"label label-default\"> Don\'t Know </span>';
-        } else {
-          if (value.result == '4') {
-            return '<span class=\"label label-success\"> Negative</span>';
-          }
-
-          if (value.result == '2') {
-            return '<span class=\"label label-info\"> Pending</span>';
-          }
-
-          if (value.result == '3') {
-            return '<span class=\"label label-danger\"> Positive</span>';
-          } else {
-            return '<span class=\"label label-default\"> Don\'t Know</span>';
-          }
-        }
       }
     },
     latestLabResultNegative: function latestLabResultNegative(value) {
@@ -4258,16 +4234,6 @@ __webpack_require__.r(__webpack_exports__);
     this.fetch();
   },
   methods: {
-    selectAll: function selectAll(item) {
-      this.womanTokens = [];
-
-      if (this.allSelected) {
-        console.log(item);
-      }
-    },
-    select: function select() {
-      this.allSelected = false;
-    },
     sendPatientData: function sendPatientData(item) {
       this.$dlg.modal(_SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_4__["default"], {
         title: 'Do you want to send ' + item.name + ' \'s patients data ?',
@@ -4353,20 +4319,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     checkForPositiveOnly: function checkForPositiveOnly(value) {
       if (value !== null) {
-        if (value.result == '3') {
+        if (value.result == 3) {
           return true;
         }
-      }
-    },
-    latestLabResultNotNegative: function latestLabResultNotNegative(value) {
-      if (value == '0' || value == null || value == '') {
-        return true;
-      }
-
-      if (value.result == '4') {
-        return false;
-      } else {
-        return true;
       }
     },
     checkCaseType: function checkCaseType(type) {
@@ -39880,13 +39835,9 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      _c("div", {
-                        domProps: {
-                          innerHTML: _vm._s(
-                            _vm.latestLabResult(item.latest_anc)
-                          )
-                        }
-                      }),
+                      _c("span", { staticClass: "label label-success" }, [
+                        _vm._v(" Negative")
+                      ]),
                       _vm._v(" "),
                       item.ancs.length > 0
                         ? _c("div", [
@@ -40409,13 +40360,11 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [
                       item.ancs.length > 0
-                        ? _c("div", {
-                            domProps: {
-                              innerHTML: _vm._s(
-                                _vm.latestLabResult(item.latest_anc)
-                              )
-                            }
-                          })
+                        ? _c("div", [
+                            _c("span", { staticClass: "label label-primary" }, [
+                              _vm._v(" Pending ")
+                            ])
+                          ])
                         : _c("div", [
                             _c("span", { staticClass: "label label-primary" }, [
                               _vm._v(" Registered ")

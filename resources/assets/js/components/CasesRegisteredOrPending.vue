@@ -38,7 +38,7 @@
                     <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
                 </td>
                 <td>
-                    <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"></div>
+                    <div v-if="item.ancs.length > 0"><span class="label label-primary"> Pending </span></div>
                     <div v-else><span class="label label-primary"> Registered </span></div>
                     <div v-if="item.ancs.length > 0 && item.latest_anc.result == 9">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
                 </td>

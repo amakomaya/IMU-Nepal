@@ -30,8 +30,7 @@
                 <td>{{ ad2bs(item.created_at) }}</td>
 
               <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
-                <td><div v-html="latestLabResult(item.latest_anc)">
-                </div>
+                <td><span class="label label-success"> Negative</span>
                   <div v-if="item.ancs.length > 0">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
 
                   <!--                <button v-on:click="viewLabReport(item)" title="Lab Report">-->
@@ -203,27 +202,7 @@
                 return this.municipalities.find(x => x.id === value).municipality_name;
                 }
             },
-            latestLabResult :function(value){
-                if (value == '0' || value == null || value == ''){
-                    return '<span class=\"label label-default\"> Don\'t Know </span>';
-                }else{
-                    if (value == '0' || value == null || value == ''){
-                        return '<span class=\"label label-default\"> Don\'t Know </span>';
-                    }else{
-                        if (value.result == '4') {
-                            return '<span class=\"label label-success\"> Negative</span>'
-                        }
-                        if (value.result == '2') {
-                            return '<span class=\"label label-info\"> Pending</span>'
-                        }
-                        if (value.result == '3') {
-                            return '<span class=\"label label-danger\"> Positive</span>'
-                        }else{
-                            return '<span class=\"label label-default\"> Don\'t Know</span>'
-                        }
-                    }
-                }
-            },
+
             latestLabResultNegative : function(value){
                 if (value) {
                     if (value == '0' || value == null || value == ''){
