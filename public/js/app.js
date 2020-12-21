@@ -2923,13 +2923,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -3142,9 +3135,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _ViewLabReportModel_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ViewLabReportModel.vue */ "./resources/assets/js/components/ViewLabReportModel.vue");
 /* harmony import */ var _ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ViewLabResultReportModel.vue */ "./resources/assets/js/components/ViewLabResultReportModel.vue");
-//
-//
-//
 //
 //
 //
@@ -3939,6 +3929,11 @@ __webpack_require__.r(__webpack_exports__);
       var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default.a.ad2bs(dateFormat);
       return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
     },
+    labToken: function labToken(data) {
+      if (data !== null) {
+        return data.token.split('-').splice(1).join('-');
+      }
+    },
     checkDistrict: function checkDistrict(value) {
       if (value == 0 || value == null || value == '') {
         return '';
@@ -4206,6 +4201,11 @@ __webpack_require__.r(__webpack_exports__);
           municipalities: this.municipalities
         }
       });
+    },
+    labToken: function labToken(data) {
+      if (data !== null) {
+        return data.token.split('-').splice(1).join('-');
+      }
     },
     viewConfirmReportForm: function viewConfirmReportForm(item) {
       this.$dlg.modal(_viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -39088,20 +39088,7 @@ var render = function() {
                             _vm.latestLabResult(item.latest_anc)
                           )
                         }
-                      }),
-                      _vm._v(" "),
-                      item.ancs.length > 0
-                        ? _c("div", [
-                            _vm._v(
-                              _vm._s(
-                                item.latest_anc.labreport.token
-                                  .split("-")
-                                  .splice(1)
-                                  .join("-")
-                              )
-                            )
-                          ])
-                        : _vm._e()
+                      })
                     ]),
                     _vm._v(" "),
                     _c("td", [
@@ -39277,20 +39264,7 @@ var render = function() {
                             _vm.latestLabResult(item.latest_anc)
                           )
                         }
-                      }),
-                      _vm._v(" "),
-                      item.ancs.length > 0
-                        ? _c("div", [
-                            _vm._v(
-                              _vm._s(
-                                item.latest_anc.labreport.token
-                                  .split("-")
-                                  .splice(1)
-                                  .join("-")
-                              )
-                            )
-                          ])
-                        : _vm._e()
+                      })
                     ]),
                     _vm._v(" "),
                     _c("td", [
@@ -39691,14 +39665,7 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", [
-                        _vm._v(
-                          _vm._s(
-                            item.latest_anc.labreport.token
-                              .split("-")
-                              .splice(1)
-                              .join("-")
-                          )
-                        )
+                        _vm._v(_vm._s(_vm.labToken(item.latest_anc.labreport)))
                       ])
                     ]),
                     _vm._v(" "),
@@ -39916,14 +39883,7 @@ var render = function() {
                         : _vm._e(),
                       _vm._v(" "),
                       _c("div", [
-                        _vm._v(
-                          _vm._s(
-                            item.latest_anc.labreport.token
-                              .split("-")
-                              .splice(1)
-                              .join("-")
-                          )
-                        )
+                        _vm._v(_vm._s(_vm.labToken(item.latest_anc.labreport)))
                       ])
                     ]),
                     _vm._v(" "),

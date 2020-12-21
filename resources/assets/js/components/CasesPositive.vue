@@ -41,7 +41,7 @@
           <div v-if="item.ancs.length > 0">
             <span class="label label-danger"> Positive</span>
           </div>
-          <div>{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
+          <div>{{ labToken(item.latest_anc.labreport) }}</div>
         </td>
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
@@ -176,7 +176,11 @@ export default {
         },
       })
     },
-
+    labToken(data){
+      if (data !== null){
+        return data.token.split('-').splice(1).join('-');
+      }
+    },
     viewConfirmReportForm : function(item){
       this.$dlg.modal(viewConfirmReportFormModel, {
         title: 'Confirmed report form of \'s ' + item.name,

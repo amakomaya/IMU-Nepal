@@ -33,7 +33,7 @@
                 <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
               </td>
                 <td><span class="label label-success"> Negative</span>
-                  <div>{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
+                  <div>{{ labToken(item.latest_anc.labreport) }}</div>
                 </td>
                 <td>
                   <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
@@ -185,6 +185,11 @@
 
                 return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
 
+            },
+            labToken(data){
+              if (data !== null){
+                return data.token.split('-').splice(1).join('-');
+              }
             },
             checkDistrict : function(value){
                 if (value == 0 || value == null || value == ''){
