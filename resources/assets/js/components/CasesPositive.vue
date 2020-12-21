@@ -38,8 +38,9 @@
           <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
         </td>
         <td>
-          <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"></div>
-          <div v-else><span class="label label-primary"> Registered </span></div>
+          <div v-if="item.ancs.length > 0">
+            <span class="label label-danger"> Positive</span>
+          </div>
           <div v-if="item.ancs.length > 0">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
         </td>
         <td>
@@ -255,24 +256,6 @@ export default {
         return ''
       }else{
         return this.municipalities.find(x => x.id === value).municipality_name;
-      }
-    },
-    latestLabResult :function(value){
-      switch(value.result){
-        case '4':
-          return '<span class=\"label label-success\"> Negative</span>';
-
-        case '2':
-          return '<span class=\"label label-info\"> Pending</span>';
-
-        case '3':
-          return '<span class=\"label label-danger\"> Positive</span>';
-
-        case '9':
-          return '<span class=\"label label-warning\"> Recieved</span>';
-
-        default:
-          return '<span class=\"label label-default\"> Don\'t Know</span>';
       }
     },
     checkForPositiveOnly : function (value){

@@ -4168,6 +4168,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -4348,24 +4349,6 @@ __webpack_require__.r(__webpack_exports__);
         return this.municipalities.find(function (x) {
           return x.id === value;
         }).municipality_name;
-      }
-    },
-    latestLabResult: function latestLabResult(value) {
-      switch (value.result) {
-        case '4':
-          return '<span class=\"label label-success\"> Negative</span>';
-
-        case '2':
-          return '<span class=\"label label-info\"> Pending</span>';
-
-        case '3':
-          return '<span class=\"label label-danger\"> Positive</span>';
-
-        case '9':
-          return '<span class=\"label label-warning\"> Recieved</span>';
-
-        default:
-          return '<span class=\"label label-default\"> Don\'t Know</span>';
       }
     },
     checkForPositiveOnly: function checkForPositiveOnly(value) {
@@ -40125,18 +40108,12 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [
                       item.ancs.length > 0
-                        ? _c("div", {
-                            domProps: {
-                              innerHTML: _vm._s(
-                                _vm.latestLabResult(item.latest_anc)
-                              )
-                            }
-                          })
-                        : _c("div", [
-                            _c("span", { staticClass: "label label-primary" }, [
-                              _vm._v(" Registered ")
+                        ? _c("div", [
+                            _c("span", { staticClass: "label label-danger" }, [
+                              _vm._v(" Positive")
                             ])
-                          ]),
+                          ])
+                        : _vm._e(),
                       _vm._v(" "),
                       item.ancs.length > 0
                         ? _c("div", [
