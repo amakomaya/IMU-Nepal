@@ -18,7 +18,7 @@
             </tr>
             </thead>
             <tr slot-scope="{item}">
-                <td><div v-if="checkForPositiveOnly(item.latest_anc)" title="Case ID">C ID : {{ item.case_id }}</div>
+                <td>
                     <div v-if="item.parent_case_id !== null" title="Parent Case ID">PC ID : {{ item.parent_case_id }}</div>
                 </td>
                 <td>{{ roleVisibility(item.name)}}</td>
@@ -40,18 +40,17 @@
                 <td>
                     <div v-if="item.ancs.length > 0"><span class="label label-primary"> Pending </span></div>
                     <div v-else><span class="label label-primary"> Registered </span></div>
-                    <div v-if="item.ancs.length > 0 && item.latest_anc.result == 9">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
                 </td>
                 <td>
                 <button v-on:click="viewCaseDetails(item.token)" target="_blank" title="Case Details Report">
                      <i class="fa fa-file" aria-hidden="true"></i> |
                   </button>
-                  <div v-if="role == 'healthworker' || role == 'healthpost' || role == 'municipality'">
+                  <div v-if="role === 'healthworker' || role === 'healthpost' || role === 'municipality'">
                     <button v-on:click="editCaseDetails(item.token)" title="Edit Case Detail">
                       <i class="fa fa-edit" aria-hidden="true"></i> |
                     </button>
                   </div>
-                  <button v-if="item.ancs.length == 0 && role  == 'healthworker'" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
+                  <button v-if="item.ancs.length === 0 && role  === 'healthworker'" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
                      <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
                   <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
@@ -62,7 +61,7 @@
             </tr>
         </filterable>
 
-      <div v-if="this.$userRole == 'healthworker'">
+      <div v-if="this.$userRole === 'healthworker'">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 
@@ -117,9 +116,6 @@ export default {
         ],
       },
       token: Filterable.data().collection.data,
-      selected: [],
-      allSelected: false,
-      womanTokens: [],
       provinces: [],
       municipalities: [],
       districts: [],
@@ -141,17 +137,6 @@ export default {
     this.fetch()
   },
   methods: {
-    selectAll: function (item) {
-      this.womanTokens = [];
-
-      if (this.allSelected) {
-        console.log(item);
-
-      }
-    },
-    select: function () {
-      this.allSelected = false;
-    },
     sendPatientData: function (item) {
       this.$dlg.modal(SendPatientDataModel, {
         title: 'Do you want to send ' + item.name + ' \'s patients data ?',
@@ -238,58 +223,20 @@ export default {
 
     },
     checkDistrict: function (value) {
-      if (value == 0 || value == null || value == '') {
+      if (value === 0 || value == null || value === '') {
         return ''
       } else {
         return this.districts.find(x => x.id === value).district_name;
       }
     },
     checkMunicipality: function (value) {
-      if (value == 0 || value == null || value == '') {
+      if (value === 0 || value == null || value === '') {
         return ''
       } else {
         return this.municipalities.find(x => x.id === value).municipality_name;
       }
     },
-    latestLabResult: function (value) {
-      switch (value.result) {
-        case '4':
-          return '<span class=\"label label-success\"> Negative</span>';
 
-        case '2':
-          return '<span class=\"label label-info\"> Pending</span>';
-
-        case '3':
-          return '<span class=\"label label-danger\"> Positive</span>';
-
-        case '9':
-          return '<span class=\"label label-warning\"> Recieved</span>';
-
-        default:
-          return '<span class=\"label label-default\"> Don\'t Know</span>';
-      }
-    },
-    checkForPositiveOnly: function (value) {
-      if (value !== null) {
-        if (value.result == '3') {
-          return true;
-        }
-      }
-    },
-    latestLabResultNotNegative: function (value) {
-
-      if (value == '0' || value == null || value == '') {
-        return true;
-      }
-
-      if (value.result == '4') {
-        return false;
-      } else {
-        return true;
-      }
-
-
-    },
     checkCaseType: function (type) {
       switch (type) {
         case '0':
@@ -304,7 +251,7 @@ export default {
     },
 
     checkCaseManagement: function (type, management) {
-      if (type == '1') {
+      if (type === '1') {
         switch (management) {
           case '0':
             return 'Home';
@@ -320,15 +267,15 @@ export default {
         }
       }
 
-      if (type == '2') {
+      if (type === '2') {
         switch (management) {
           case '0':
             return 'General Ward';
 
-          case '0':
+          case '1':
             return 'ICU';
 
-          case '0':
+          case '2':
             return 'Ventilator';
 
           default:
@@ -350,7 +297,7 @@ export default {
     },
 
     roleVisibility(data) {
-      if (this.role == 'dho' || this.role == 'province' || this.role == 'center') {
+      if (this.role === 'dho' || this.role === 'province' || this.role === 'center') {
         return '** ***';
       }
       return data;

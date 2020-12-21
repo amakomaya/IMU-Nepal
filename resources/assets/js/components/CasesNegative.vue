@@ -29,13 +29,11 @@
                 <td>{{ checkMunicipality(item.municipality_id) }}</td>
                 <td>{{ ad2bs(item.created_at) }}</td>
 
-              <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
+              <td><span class="label label-info"> {{ item.ancs.length }}</span>
+                <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
+              </td>
                 <td><span class="label label-success"> Negative</span>
-                  <div v-if="item.ancs.length > 0">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
-
-                  <!--                <button v-on:click="viewLabReport(item)" title="Lab Report">-->
-<!--                    <i class="fa fa-file"></i>-->
-<!--                </button>-->
+                  <div>{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
                 </td>
                 <td>
                   <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">

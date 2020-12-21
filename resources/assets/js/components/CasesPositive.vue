@@ -41,14 +41,14 @@
           <div v-if="item.ancs.length > 0">
             <span class="label label-danger"> Positive</span>
           </div>
-          <div v-if="item.ancs.length > 0">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
+          <div>{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
         </td>
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
             <i class="fa fa-file" aria-hidden="true"></i> |
           </button>
-          <div v-if="role  == 'healthworker'">
-            <button v-if="item.ancs.length == 0" v-on:click="aadSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
+          <div v-if="role  === 'healthworker'">
+            <button v-if="item.ancs.length === 0" v-on:click="aadSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
               <i class="fa fa-medkit" aria-hidden="true"></i> |
             </button>
 
@@ -61,7 +61,7 @@
       </tr>
     </filterable>
 
-    <div v-if="this.$userRole == 'healthworker'">
+    <div v-if="this.$userRole === 'healthworker'">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 
@@ -235,14 +235,14 @@ export default {
 
     },
     checkDistrict : function(value){
-      if (value == 0 || value == null || value == ''){
+      if (value === 0 || value == null || value === ''){
         return ''
       }else{
         return this.districts.find(x => x.id === value).district_name;
       }
     },
     checkMunicipality : function(value){
-      if (value == 0 || value == null || value == ''){
+      if (value === 0 || value == null || value === ''){
         return ''
       }else{
         return this.municipalities.find(x => x.id === value).municipality_name;
@@ -250,7 +250,7 @@ export default {
     },
     checkForPositiveOnly : function (value){
       if (value !== null) {
-        if (value.result == 3) {
+        if (value.result === 3) {
           return true;
         }
       }
@@ -273,7 +273,7 @@ export default {
     },
 
     checkCaseManagement : function (type, management){
-      if (type == '1') {
+      if (type === '1') {
         switch(management){
           case '0':
             return 'Home';
@@ -289,15 +289,15 @@ export default {
         }
       }
 
-      if (type == '2') {
+      if (type === '2') {
         switch(management){
           case '0':
             return 'General Ward';
 
-          case '0':
+          case '1':
             return 'ICU';
 
-          case '0':
+          case '2':
             return 'Ventilator';
 
           default:
@@ -319,7 +319,7 @@ export default {
     },
 
     roleVisibility(data){
-      if(this.role == 'dho' || this.role == 'province' || this.role == 'center'){
+      if(this.role === 'dho' || this.role === 'province' || this.role === 'center'){
         return '** ***';
       }
       return data;

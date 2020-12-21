@@ -3479,13 +3479,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -3553,9 +3546,6 @@ __webpack_require__.r(__webpack_exports__);
         }]
       },
       token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
-      selected: [],
-      allSelected: false,
-      womanTokens: [],
       provinces: [],
       municipalities: [],
       districts: [],
@@ -3575,16 +3565,6 @@ __webpack_require__.r(__webpack_exports__);
     this.fetch();
   },
   methods: {
-    selectAll: function selectAll(item) {
-      this.womanTokens = [];
-
-      if (this.allSelected) {
-        console.log(item);
-      }
-    },
-    select: function select() {
-      this.allSelected = false;
-    },
     sendPatientData: function sendPatientData(item) {
       this.$dlg.modal(_SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_4__["default"], {
         title: 'Do you want to send ' + item.name + ' \'s patients data ?',
@@ -3651,7 +3631,7 @@ __webpack_require__.r(__webpack_exports__);
       return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
     },
     checkDistrict: function checkDistrict(value) {
-      if (value == 0 || value == null || value == '') {
+      if (value === 0 || value == null || value === '') {
         return '';
       } else {
         return this.districts.find(function (x) {
@@ -3660,48 +3640,12 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     checkMunicipality: function checkMunicipality(value) {
-      if (value == 0 || value == null || value == '') {
+      if (value === 0 || value == null || value === '') {
         return '';
       } else {
         return this.municipalities.find(function (x) {
           return x.id === value;
         }).municipality_name;
-      }
-    },
-    latestLabResult: function latestLabResult(value) {
-      switch (value.result) {
-        case 4:
-          return '<span class=\"label label-success\"> Negative</span>';
-
-        case 2:
-          return '<span class=\"label label-info\"> Pending</span>';
-
-        case 3:
-          return '<span class=\"label label-danger\"> Positive</span>';
-
-        case 9:
-          return '<span class=\"label label-warning\"> Recieved</span>';
-
-        default:
-          return '<span class=\"label label-default\"> Don\'t Know</span>';
-      }
-    },
-    checkForPositiveOnly: function checkForPositiveOnly(value) {
-      if (value !== null) {
-        if (value.result == 3) {
-          return true;
-        }
-      }
-    },
-    latestLabResultNotNegative: function latestLabResultNotNegative(value) {
-      if (value == 0 || value == null || value == '') {
-        return true;
-      }
-
-      if (value.result == 4) {
-        return false;
-      } else {
-        return true;
       }
     },
     checkCaseType: function checkCaseType(type) {
@@ -3720,7 +3664,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     checkCaseManagement: function checkCaseManagement(type, management) {
-      if (type == '1') {
+      if (type === '1') {
         switch (management) {
           case '0':
             return 'Home';
@@ -3736,15 +3680,15 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
-      if (type == '2') {
+      if (type === '2') {
         switch (management) {
           case '0':
             return 'General Ward';
 
-          case '0':
+          case '1':
             return 'ICU';
 
-          case '0':
+          case '2':
             return 'Ventilator';
 
           default:
@@ -3767,7 +3711,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     roleVisibility: function roleVisibility(data) {
-      if (this.role == 'dho' || this.role == 'province' || this.role == 'center') {
+      if (this.role === 'dho' || this.role === 'province' || this.role === 'center') {
         return '** ***';
       }
 
@@ -3803,8 +3747,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _ViewLabReportModel_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ViewLabReportModel.vue */ "./resources/assets/js/components/ViewLabReportModel.vue");
 /* harmony import */ var _ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ViewLabResultReportModel.vue */ "./resources/assets/js/components/ViewLabResultReportModel.vue");
-//
-//
 //
 //
 //
@@ -4300,7 +4242,7 @@ __webpack_require__.r(__webpack_exports__);
       return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
     },
     checkDistrict: function checkDistrict(value) {
-      if (value == 0 || value == null || value == '') {
+      if (value === 0 || value == null || value === '') {
         return '';
       } else {
         return this.districts.find(function (x) {
@@ -4309,7 +4251,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     checkMunicipality: function checkMunicipality(value) {
-      if (value == 0 || value == null || value == '') {
+      if (value === 0 || value == null || value === '') {
         return '';
       } else {
         return this.municipalities.find(function (x) {
@@ -4319,7 +4261,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     checkForPositiveOnly: function checkForPositiveOnly(value) {
       if (value !== null) {
-        if (value.result == 3) {
+        if (value.result === 3) {
           return true;
         }
       }
@@ -4340,7 +4282,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     checkCaseManagement: function checkCaseManagement(type, management) {
-      if (type == '1') {
+      if (type === '1') {
         switch (management) {
           case '0':
             return 'Home';
@@ -4356,15 +4298,15 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
-      if (type == '2') {
+      if (type === '2') {
         switch (management) {
           case '0':
             return 'General Ward';
 
-          case '0':
+          case '1':
             return 'ICU';
 
-          case '0':
+          case '2':
             return 'Ventilator';
 
           default:
@@ -4387,7 +4329,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     roleVisibility: function roleVisibility(data) {
-      if (this.role == 'dho' || this.role == 'province' || this.role == 'center') {
+      if (this.role === 'dho' || this.role === 'province' || this.role === 'center') {
         return '** ***';
       }
 
@@ -4426,7 +4368,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./viewConfirmReportFormModel.vue */ "./resources/assets/js/components/viewConfirmReportFormModel.vue");
 /* harmony import */ var vue_fab__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-fab */ "./node_modules/vue-fab/src/index.js");
 /* harmony import */ var vue_fab__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_fab__WEBPACK_IMPORTED_MODULE_6__);
-//
 //
 //
 //
@@ -4561,9 +4502,6 @@ __webpack_require__.r(__webpack_exports__);
         }]
       },
       token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
-      selected: [],
-      allSelected: false,
-      womanTokens: [],
       provinces: [],
       municipalities: [],
       districts: [],
@@ -4583,16 +4521,6 @@ __webpack_require__.r(__webpack_exports__);
     this.fetch();
   },
   methods: {
-    selectAll: function selectAll(item) {
-      this.womanTokens = [];
-
-      if (this.allSelected) {
-        console.log(item);
-      }
-    },
-    select: function select() {
-      this.allSelected = false;
-    },
     sendPatientData: function sendPatientData(item) {
       this.$dlg.modal(_SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_4__["default"], {
         title: 'Do you want to send ' + item.name + ' \'s patients data ?',
@@ -4659,7 +4587,7 @@ __webpack_require__.r(__webpack_exports__);
       return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
     },
     checkDistrict: function checkDistrict(value) {
-      if (value == 0 || value == null || value == '') {
+      if (value === 0 || value == null || value === '') {
         return '';
       } else {
         return this.districts.find(function (x) {
@@ -4668,48 +4596,12 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     checkMunicipality: function checkMunicipality(value) {
-      if (value == 0 || value == null || value == '') {
+      if (value === 0 || value == null || value === '') {
         return '';
       } else {
         return this.municipalities.find(function (x) {
           return x.id === value;
         }).municipality_name;
-      }
-    },
-    latestLabResult: function latestLabResult(value) {
-      switch (value.result) {
-        case '4':
-          return '<span class=\"label label-success\"> Negative</span>';
-
-        case '2':
-          return '<span class=\"label label-info\"> Pending</span>';
-
-        case '3':
-          return '<span class=\"label label-danger\"> Positive</span>';
-
-        case '9':
-          return '<span class=\"label label-warning\"> Recieved</span>';
-
-        default:
-          return '<span class=\"label label-default\"> Don\'t Know</span>';
-      }
-    },
-    checkForPositiveOnly: function checkForPositiveOnly(value) {
-      if (value !== null) {
-        if (value.result == '3') {
-          return true;
-        }
-      }
-    },
-    latestLabResultNotNegative: function latestLabResultNotNegative(value) {
-      if (value == '0' || value == null || value == '') {
-        return true;
-      }
-
-      if (value.result == '4') {
-        return false;
-      } else {
-        return true;
       }
     },
     checkCaseType: function checkCaseType(type) {
@@ -4728,7 +4620,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     checkCaseManagement: function checkCaseManagement(type, management) {
-      if (type == '1') {
+      if (type === '1') {
         switch (management) {
           case '0':
             return 'Home';
@@ -4744,15 +4636,15 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
-      if (type == '2') {
+      if (type === '2') {
         switch (management) {
           case '0':
             return 'General Ward';
 
-          case '0':
+          case '1':
             return 'ICU';
 
-          case '0':
+          case '2':
             return 'Ventilator';
 
           default:
@@ -4775,7 +4667,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     roleVisibility: function roleVisibility(data) {
-      if (this.role == 'dho' || this.role == 'province' || this.role == 'center') {
+      if (this.role === 'dho' || this.role === 'province' || this.role === 'center') {
         return '** ***';
       }
 
@@ -39489,12 +39381,6 @@ var render = function() {
                   var item = ref.item
                   return _c("tr", {}, [
                     _c("td", [
-                      _vm.checkForPositiveOnly(item.latest_anc)
-                        ? _c("div", { attrs: { title: "Case ID" } }, [
-                            _vm._v("C ID : " + _vm._s(item.case_id))
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
                       item.parent_case_id !== null
                         ? _c("div", { attrs: { title: "Parent Case ID" } }, [
                             _vm._v("PC ID : " + _vm._s(item.parent_case_id))
@@ -39572,32 +39458,20 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      item.ancs.length > 0
-                        ? _c("div", {
-                            domProps: {
-                              innerHTML: _vm._s(
-                                _vm.latestLabResult(item.latest_anc)
-                              )
-                            }
-                          })
-                        : _c("div", [
-                            _c("span", { staticClass: "label label-primary" }, [
-                              _vm._v(" Registered ")
-                            ])
-                          ]),
+                      _c("span", { staticClass: "label label-warning" }, [
+                        _vm._v(" Received ")
+                      ]),
                       _vm._v(" "),
-                      item.ancs.length > 0
-                        ? _c("div", [
-                            _vm._v(
-                              _vm._s(
-                                item.latest_anc.labreport.token
-                                  .split("-")
-                                  .splice(1)
-                                  .join("-")
-                              )
-                            )
-                          ])
-                        : _vm._e()
+                      _c("div", [
+                        _vm._v(
+                          _vm._s(
+                            item.latest_anc.labreport.token
+                              .split("-")
+                              .splice(1)
+                              .join("-")
+                          )
+                        )
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("td", [
@@ -39619,36 +39493,6 @@ var render = function() {
                           _vm._v(" |\n        ")
                         ]
                       ),
-                      _vm._v(" "),
-                      _vm.role == "healthworker"
-                        ? _c("div", [
-                            item.ancs.length == 0
-                              ? _c(
-                                  "button",
-                                  {
-                                    attrs: {
-                                      title:
-                                        "Add Sample Collection / Swab Collection Report"
-                                    },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.aadSampleCollection(
-                                          item.token
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("i", {
-                                      staticClass: "fa fa-medkit",
-                                      attrs: { "aria-hidden": "true" }
-                                    }),
-                                    _vm._v(" |\n          ")
-                                  ]
-                                )
-                              : _vm._e()
-                          ])
-                        : _vm._e(),
                       _vm._v(" "),
                       _c(
                         "button",
@@ -39726,7 +39570,7 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      this.$userRole == "healthworker"
+      this.$userRole === "healthworker"
         ? _c(
             "div",
             [
@@ -39831,7 +39675,16 @@ var render = function() {
                     _c("td", [
                       _c("span", { staticClass: "label label-info" }, [
                         _vm._v(" " + _vm._s(item.ancs.length))
-                      ])
+                      ]),
+                      _vm._v(" "),
+                      item.latest_anc
+                        ? _c("div", { attrs: { title: "Swab ID" } }, [
+                            _vm._v("SID : "),
+                            _c("strong", [
+                              _vm._v(_vm._s(item.latest_anc.token))
+                            ])
+                          ])
+                        : _vm._e()
                     ]),
                     _vm._v(" "),
                     _c("td", [
@@ -39839,18 +39692,16 @@ var render = function() {
                         _vm._v(" Negative")
                       ]),
                       _vm._v(" "),
-                      item.ancs.length > 0
-                        ? _c("div", [
-                            _vm._v(
-                              _vm._s(
-                                item.latest_anc.labreport.token
-                                  .split("-")
-                                  .splice(1)
-                                  .join("-")
-                              )
-                            )
-                          ])
-                        : _vm._e()
+                      _c("div", [
+                        _vm._v(
+                          _vm._s(
+                            item.latest_anc.labreport.token
+                              .split("-")
+                              .splice(1)
+                              .join("-")
+                          )
+                        )
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("td", [
@@ -40066,18 +39917,16 @@ var render = function() {
                           ])
                         : _vm._e(),
                       _vm._v(" "),
-                      item.ancs.length > 0
-                        ? _c("div", [
-                            _vm._v(
-                              _vm._s(
-                                item.latest_anc.labreport.token
-                                  .split("-")
-                                  .splice(1)
-                                  .join("-")
-                              )
-                            )
-                          ])
-                        : _vm._e()
+                      _c("div", [
+                        _vm._v(
+                          _vm._s(
+                            item.latest_anc.labreport.token
+                              .split("-")
+                              .splice(1)
+                              .join("-")
+                          )
+                        )
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("td", [
@@ -40100,9 +39949,9 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _vm.role == "healthworker"
+                      _vm.role === "healthworker"
                         ? _c("div", [
-                            item.ancs.length == 0
+                            item.ancs.length === 0
                               ? _c(
                                   "button",
                                   {
@@ -40206,7 +40055,7 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      this.$userRole == "healthworker"
+      this.$userRole === "healthworker"
         ? _c(
             "div",
             [
@@ -40279,12 +40128,6 @@ var render = function() {
                   var item = ref.item
                   return _c("tr", {}, [
                     _c("td", [
-                      _vm.checkForPositiveOnly(item.latest_anc)
-                        ? _c("div", { attrs: { title: "Case ID" } }, [
-                            _vm._v("C ID : " + _vm._s(item.case_id))
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
                       item.parent_case_id !== null
                         ? _c("div", { attrs: { title: "Parent Case ID" } }, [
                             _vm._v("PC ID : " + _vm._s(item.parent_case_id))
@@ -40369,20 +40212,7 @@ var render = function() {
                             _c("span", { staticClass: "label label-primary" }, [
                               _vm._v(" Registered ")
                             ])
-                          ]),
-                      _vm._v(" "),
-                      item.ancs.length > 0 && item.latest_anc.result == 9
-                        ? _c("div", [
-                            _vm._v(
-                              _vm._s(
-                                item.latest_anc.labreport.token
-                                  .split("-")
-                                  .splice(1)
-                                  .join("-")
-                              )
-                            )
                           ])
-                        : _vm._e()
                     ]),
                     _vm._v(" "),
                     _c("td", [
@@ -40408,9 +40238,9 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _vm.role == "healthworker" ||
-                      _vm.role == "healthpost" ||
-                      _vm.role == "municipality"
+                      _vm.role === "healthworker" ||
+                      _vm.role === "healthpost" ||
+                      _vm.role === "municipality"
                         ? _c("div", [
                             _c(
                               "button",
@@ -40433,7 +40263,7 @@ var render = function() {
                           ])
                         : _vm._e(),
                       _vm._v(" "),
-                      item.ancs.length == 0 && _vm.role == "healthworker"
+                      item.ancs.length === 0 && _vm.role === "healthworker"
                         ? _c(
                             "button",
                             {
@@ -40533,7 +40363,7 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      this.$userRole == "healthworker"
+      this.$userRole === "healthworker"
         ? _c(
             "div",
             [

@@ -27,7 +27,8 @@ class DashboardController extends Controller
         SuspectedCase::whereIn('hp_code', $hpCodes)->active()->with('ancs')->chunk(1000, function($rows) use (&$dashboardCases) {
             $rows_calc = $rows->map(function ($value){
                 $data['token'] = $value['token'];
-                $data['case_created_at_in_24_hrs'] = $value['created_at'] >= Carbon::now()->subDay()->toDateTimeString() ? 1 : 0 ;
+
+               $data['case_created_at_in_24_hrs'] = $value['created_at'] >= Carbon::now()->subDay()->toDateTimeString() ? 1 : 0 ;
 
                 $sample_collection = $value->ancs;
                 $data['sample_collection_count'] = $sample_collection->count();
@@ -50,7 +51,7 @@ class DashboardController extends Controller
                     if ($sample->result != 2){
                         $sample_data['sample_received']++;
                         switch ($sample->result){
-                            case '3':
+                            case 3:
                                 $sample_data['lab_result_positive']++;
                                 try {
                                     if($sample->labreport->updated_at >= Carbon::now()->subDay()->toDateTimeString()) {
@@ -58,7 +59,7 @@ class DashboardController extends Controller
                                     }
                                 }catch (\Exception $e){}
                                 break;
-                            case '4':
+                            case 4:
                                 $sample_data['lab_result_negative']++;
                                 try {
                                     if($sample->labreport->updated_at >= Carbon::now()->subDay()->toDateTimeString()) {
@@ -122,7 +123,7 @@ class DashboardController extends Controller
                 $data['in_lab_received_positive_in_24_hrs'] = 0;
                 $data['in_lab_received_negative_in_24_hrs'] = 0;
                 switch ($value->sample_test_result){
-                    case '3':
+                    case 3:
                         $data['in_lab_received_positive']++;
                         try {
                             if($value->updated_at >= Carbon::now()->subDay()->toDateTimeString()) {
@@ -130,7 +131,7 @@ class DashboardController extends Controller
                             }
                         }catch (\Exception $e){}
                         break;
-                    case '4':
+                    case 4:
                         $data['in_lab_received_negative']++;
                         try {
                             if($value->updated_at >= Carbon::now()->subDay()->toDateTimeString()) {
