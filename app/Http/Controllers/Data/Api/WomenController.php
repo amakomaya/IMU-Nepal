@@ -75,9 +75,9 @@ class WomenController extends Controller
     public function labAddReceivedIndex(Request $request)
     {
         $user = auth()->user();
-        $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
+        $sample_token = LabTest::where('checked_by', $user->token)->where('sample_test_result', '9')->pluck('sample_token');
         $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
-        $data = SuspectedCase::whereIn('token', $token)->active()->withAll()->labAddReceived();
+        $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
             'collection' => $data->advancedFilter()
         ]);
@@ -86,9 +86,9 @@ class WomenController extends Controller
     public function labAddResultPositiveIndex(Request $request)
     {
         $user = auth()->user();
-        $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
+        $sample_token = LabTest::where('checked_by', $user->token)->where('sample_test_result', '3')->pluck('sample_token');
         $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
-        $data = SuspectedCase::whereIn('token', $token)->active()->withAll()->labAddReceivedPositive();
+        $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
             'collection' => $data->advancedFilter()
         ]);
@@ -97,9 +97,9 @@ class WomenController extends Controller
     public function labAddResultNegativeIndex(Request $request)
     {
         $user = auth()->user();
-        $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
+        $sample_token = LabTest::where('checked_by', $user->token)->where('sample_test_result', '4')->pluck('sample_token');
         $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
-        $data = SuspectedCase::whereIn('token', $token)->active()->withAll()->labAddReceivedNegative();
+        $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
             'collection' => $data->advancedFilter()
         ]);
