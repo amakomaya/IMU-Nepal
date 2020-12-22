@@ -19,7 +19,7 @@
       </tr>
       </thead>
       <tr slot-scope="{item}">
-        <td><div v-if="checkForPositiveOnly(item.latest_anc)">Case ID : {{ item.case_id }}</div>
+        <td>
           <div v-if="item.parent_case_id !== null">Parent Case ID : {{ item.parent_case_id }}</div>
         </td>
         <td>{{item.name}}</td>
@@ -39,9 +39,8 @@
           <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
         </td>
         <td>
-          <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"></div>
-          <div v-else><span class="label label-primary"> Registered </span></div>
-          <div v-if="item.ancs.length > 0">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
+          <span class="label label-danger"> Positive </span>
+          <div>{{ labToken(item.latest_anc.labreport) }}</div>
         </td>
         <td>
           <button v-if="item.latest_anc.result == 9" v-on:click="addResultInLab(item)" title="Add Result">
@@ -280,32 +279,18 @@ export default {
         return this.municipalities.find(x => x.id === value).municipality_name;
       }
     },
-    latestLabResult :function(value){
-      switch(value.result){
-        case '4':
-          return '<span class=\"label label-success\"> Negative</span>';
-        case '2':
-          return '<span class=\"label label-info\"> Pending</span>';
-        case '3':
-          return '<span class=\"label label-danger\"> Positive</span>';
-        case '9':
-          return '<span class=\"label label-warning\"> Received</span>';
-        default:
-          return '<span class=\"label label-default\"> Don\'t Know</span>';
-      }
-    },
     checkForPositiveOnly : function (value){
       if (value !== null) {
-        if (value.result == '3') {
+        if (value.result === '3') {
           return true;
         }
       }
     },
     latestLabResultNotNegative : function(value){
-      if (value == '0' || value == null || value == ''){
+      if (value === '0' || value == null || value === ''){
         return true;
       }
-      if (value.result == '4') {
+      if (value.result === '4') {
         return false;
       }else{
         return true;
@@ -400,6 +385,11 @@ export default {
           return 'O';
       }
     },
+    labToken(data){
+      if (data !== null){
+        return data.token.split('-').splice(1).join('-');
+      }
+    }
   }
 }
 

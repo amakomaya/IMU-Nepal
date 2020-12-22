@@ -18,8 +18,8 @@
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
       </tr>
       </thead>
-      <tr v-if="checkLatestResult(item)" slot-scope="{item}">
-        <td><div v-if="checkForPositiveOnly(item.latest_anc)">Case ID : {{ item.case_id }}</div>
+      <tr slot-scope="{item}">
+        <td>
           <div v-if="item.parent_case_id !== null">Parent Case ID : {{ item.parent_case_id }}</div>
         </td>
         <td>{{item.name}}</td>
@@ -36,24 +36,21 @@
         </td>
         <td>{{ ad2bs(item.created_at) }}</td>
         <td><span class="label label-info"> {{ item.ancs.length }}</span>
-          <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
+          <div title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
         </td>
         <td>
-          <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"></div>
-          <div v-else><span class="label label-primary"> Registered </span></div>
-          <div v-if="item.ancs.length > 0">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
+          <span class="label label-warning"> Received </span>
+          <div>{{ labToken(item.latest_anc.labreport) }}</div>
         </td>
         <td>
-           <button v-if="item.latest_anc.result == 9" v-on:click="addResultInLab(item)" title="Add Result">
+           <button v-if="item.latest_anc.result === '9'" v-on:click="addResultInLab(item)" title="Add Result">
              <i class = "material-icons">biotech</i>
           </button>
         </td>
-        <!-- </div>             -->
       </tr>
-      <!--            <span>Selected Ids: {{ item }}</span>-->
 
     </filterable>
-    <div v-if="this.$userRole == 'fchv'">
+    <div v-if="this.$userRole === 'fchv'">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
       <fab
           :position="fabOptions.position"
@@ -84,7 +81,7 @@ export default {
   data() {
     return {
       filterable: {
-        url: '/data/api/lab/received-sample',
+          url: '/data/api/lab/received-sample',
         orderables: [
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},
@@ -267,14 +264,14 @@ export default {
 
     },
     checkDistrict : function(value){
-      if (value == 0 || value == null || value == ''){
+      if (value === 0 || value == null || value === ''){
         return ''
       }else{
         return this.districts.find(x => x.id === value).district_name;
       }
     },
     checkMunicipality : function(value){
-      if (value == 0 || value == null || value == ''){
+      if (value === 0 || value == null || value === ''){
         return ''
       }else{
         return this.municipalities.find(x => x.id === value).municipality_name;
@@ -296,20 +293,16 @@ export default {
     },
     checkForPositiveOnly : function (value){
       if (value !== null) {
-        if (value.result == '3') {
+        if (value.result === '3') {
           return true;
         }
       }
     },
     latestLabResultNotNegative : function(value){
-      if (value == '0' || value == null || value == ''){
+      if (value === '0' || value == null || value === ''){
         return true;
       }
-      if (value.result == '4') {
-        return false;
-      }else{
-        return true;
-      }
+      return value.result !== '4';
     },
     excelFileName : function(){
       var ext = '.xls';
@@ -339,9 +332,13 @@ export default {
           return 'N/A';
       }
     },
-
+    labToken(data){
+      if (data !== null){
+        return data.token.split('-').splice(1).join('-');
+      }
+    },
     checkCaseManagement : function (type, management){
-      if (type == '1') {
+      if (type === '1') {
         switch(management){
           case '0':
             return 'Home';
@@ -357,15 +354,15 @@ export default {
         }
       }
 
-      if (type == '2') {
+      if (type === '2') {
         switch(management){
           case '0':
             return 'General Ward';
 
-          case '0':
+          case '1':
             return 'ICU';
 
-          case '0':
+          case '2':
             return 'Ventilator';
 
           default:
@@ -401,7 +398,7 @@ export default {
       }
     },
     checkLatestResult(item){
-      if(item.latest_anc.result == 9 ){
+      if(item.latest_anc.result === 9 ){
         return true;
       }
     }

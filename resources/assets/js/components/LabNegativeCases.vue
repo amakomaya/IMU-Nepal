@@ -19,7 +19,7 @@
       </tr>
       </thead>
       <tr slot-scope="{item}">
-        <td><div v-if="checkForPositiveOnly(item.latest_anc)">Case ID : {{ item.case_id }}</div>
+        <td>
           <div v-if="item.parent_case_id !== null">Parent Case ID : {{ item.parent_case_id }}</div>
         </td>
         <td>{{item.name}}</td>
@@ -39,12 +39,11 @@
           <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
         </td>
         <td>
-          <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"></div>
-          <div v-else><span class="label label-primary"> Registered </span></div>
-          <div v-if="item.ancs.length > 0">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
+          <div><span class="label label-success"> Negative </span></div>
+          <div>{{ labToken(item.latest_anc.labreport) }}</div>
         </td>
         <td>
-          <button v-if="item.latest_anc.result == 9" v-on:click="addResultInLab(item)" title="Add Result">
+          <button v-if="item.latest_anc.result === '9'" v-on:click="addResultInLab(item)" title="Add Result">
             <i class = "material-icons">biotech</i>
           </button>
         </td>
@@ -53,7 +52,7 @@
       <!--            <span>Selected Ids: {{ item }}</span>-->
 
     </filterable>
-    <div v-if="this.$userRole == 'fchv'">
+    <div v-if="this.$userRole === 'fchv'">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
       <fab
           :position="fabOptions.position"

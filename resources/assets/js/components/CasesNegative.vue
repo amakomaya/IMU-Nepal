@@ -30,7 +30,7 @@
                 <td>{{ ad2bs(item.created_at) }}</td>
 
               <td><span class="label label-info"> {{ item.ancs.length }}</span>
-                <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
+                <div title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
               </td>
                 <td><span class="label label-success"> Negative</span>
                   <div>{{ labToken(item.latest_anc.labreport) }}</div>

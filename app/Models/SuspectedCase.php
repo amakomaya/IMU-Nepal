@@ -242,42 +242,42 @@ class SuspectedCase extends Model
 
     public function scopeActivePatientList($query){
         return $query->whereHas('latestAnc', function ($latest_anc_query) {
-            $latest_anc_query->whereNotIn('ancs.result' ,[ 3, 4, 9]);
+            $latest_anc_query->whereNotIn('ancs.result' ,[ '3', '4', '9']);
         })->doesntHave('latestAnc', 'or');
     }
 
     public function scopePassivePatientList($query){
         return $query->whereHas('latestAnc', function ($latest_anc_query) {
-            $latest_anc_query->where('result', 4);
+            $latest_anc_query->where('result', '4');
         });
     }
 
     public function scopePositivePatientList($query){
         return $query->whereHas('latestAnc', function ($latest_anc_query) {
-            $latest_anc_query->where('result', 3);
+            $latest_anc_query->where('result', '3');
         });
     }
 
     public function scopeLabReceivedList($query){
         return $query->whereHas('latestAnc', function ($latest_anc_query) {
-            $latest_anc_query->where('result', 9)->whereHas('labReport');
+            $latest_anc_query->where('result', '9')->whereHas('labReport');
         });
     }
     public function scopeLabAddReceived($query){
         return $query->whereHas('latestAnc', function ($latest_anc_query) {
-            $latest_anc_query->where('result', 9)->whereHas('labReport');
+            $latest_anc_query->where('result', '9')->whereHas('labReport');
         });
     }
 
     public function scopeLabAddReceivedNegative($query){
         return $query->whereHas('latestAnc', function ($latest_anc_query) {
-            $latest_anc_query->where('result', 4)->whereHas('labReport');
+            $latest_anc_query->where('result', '4')->whereHas('labReport');
         });
     }
 
     public function scopeLabAddReceivedPositive($query){
         return $query->whereHas('latestAnc', function ($latest_anc_query) {
-            $latest_anc_query->where('result', 3)->whereHas('labReport');
+            $latest_anc_query->where('result', '3')->whereHas('labReport');
         });
     }
 

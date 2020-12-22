@@ -5663,9 +5663,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
 
 
 
@@ -5856,7 +5853,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
     },
     checkDistrict: function checkDistrict(value) {
-      if (value == 0 || value == null || value == '') {
+      if (value === 0 || value == null || value === '') {
         return '';
       } else {
         return this.districts.find(function (x) {
@@ -5865,7 +5862,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     checkMunicipality: function checkMunicipality(value) {
-      if (value == 0 || value == null || value == '') {
+      if (value === 0 || value == null || value === '') {
         return '';
       } else {
         return this.municipalities.find(function (x) {
@@ -5893,21 +5890,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     checkForPositiveOnly: function checkForPositiveOnly(value) {
       if (value !== null) {
-        if (value.result == '3') {
+        if (value.result === '3') {
           return true;
         }
       }
     },
     latestLabResultNotNegative: function latestLabResultNotNegative(value) {
-      if (value == '0' || value == null || value == '') {
+      if (value === '0' || value == null || value === '') {
         return true;
       }
 
-      if (value.result == '4') {
-        return false;
-      } else {
-        return true;
-      }
+      return value.result !== '4';
     },
     excelFileName: function excelFileName() {
       var ext = '.xls';
@@ -5963,8 +5956,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           return 'N/A';
       }
     },
+    labToken: function labToken(data) {
+      if (data !== null) {
+        return data.token.split('-').splice(1).join('-');
+      }
+    },
     checkCaseManagement: function checkCaseManagement(type, management) {
-      if (type == '1') {
+      if (type === '1') {
         switch (management) {
           case '0':
             return 'Home';
@@ -5980,15 +5978,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       }
 
-      if (type == '2') {
+      if (type === '2') {
         switch (management) {
           case '0':
             return 'General Ward';
 
-          case '0':
+          case '1':
             return 'ICU';
 
-          case '0':
+          case '2':
             return 'Ventilator';
 
           default:
@@ -6026,7 +6024,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     checkLatestResult: function checkLatestResult(item) {
-      if (item.latest_anc.result == 9) {
+      if (item.latest_anc.result === 9) {
         return true;
       }
     }
@@ -6064,7 +6062,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-//
 //
 //
 //
@@ -6596,7 +6593,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 
 
@@ -6804,37 +6800,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }).municipality_name;
       }
     },
-    latestLabResult: function latestLabResult(value) {
-      switch (value.result) {
-        case '4':
-          return '<span class=\"label label-success\"> Negative</span>';
-
-        case '2':
-          return '<span class=\"label label-info\"> Pending</span>';
-
-        case '3':
-          return '<span class=\"label label-danger\"> Positive</span>';
-
-        case '9':
-          return '<span class=\"label label-warning\"> Received</span>';
-
-        default:
-          return '<span class=\"label label-default\"> Don\'t Know</span>';
-      }
-    },
     checkForPositiveOnly: function checkForPositiveOnly(value) {
       if (value !== null) {
-        if (value.result == '3') {
+        if (value.result === '3') {
           return true;
         }
       }
     },
     latestLabResultNotNegative: function latestLabResultNotNegative(value) {
-      if (value == '0' || value == null || value == '') {
+      if (value === '0' || value == null || value === '') {
         return true;
       }
 
-      if (value.result == '4') {
+      if (value.result === '4') {
         return false;
       } else {
         return true;
@@ -6954,6 +6932,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         default:
           return 'O';
+      }
+    },
+    labToken: function labToken(data) {
+      if (data !== null) {
+        return data.token.split('-').splice(1).join('-');
       }
     }
   }
@@ -39649,14 +39632,10 @@ var render = function() {
                         _vm._v(" " + _vm._s(item.ancs.length))
                       ]),
                       _vm._v(" "),
-                      item.latest_anc
-                        ? _c("div", { attrs: { title: "Swab ID" } }, [
-                            _vm._v("SID : "),
-                            _c("strong", [
-                              _vm._v(_vm._s(item.latest_anc.token))
-                            ])
-                          ])
-                        : _vm._e()
+                      _c("div", { attrs: { title: "Swab ID" } }, [
+                        _vm._v("SID : "),
+                        _c("strong", [_vm._v(_vm._s(item.latest_anc.token))])
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("td", [
@@ -41576,287 +41555,6 @@ var render = function() {
         "filterable",
         _vm._b(
           {
-            scopedSlots: _vm._u(
-              [
-                {
-                  key: "default",
-                  fn: function(ref) {
-                    var item = ref.item
-                    return _vm.checkLatestResult(item)
-                      ? _c("tr", {}, [
-                          _c("td", [
-                            _vm.checkForPositiveOnly(item.latest_anc)
-                              ? _c("div", [
-                                  _vm._v("Case ID : " + _vm._s(item.case_id))
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            item.parent_case_id !== null
-                              ? _c("div", [
-                                  _vm._v(
-                                    "Parent Case ID : " +
-                                      _vm._s(item.parent_case_id)
-                                  )
-                                ])
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(item.name))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(item.age))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(_vm.gender(item.sex)))]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "One : " +
-                                _vm._s(item.emergency_contact_one) +
-                                " "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n        Two : " +
-                                _vm._s(item.emergency_contact_two) +
-                                "\n      "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              _vm._s(
-                                _vm.checkMunicipality(item.municipality_id)
-                              )
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "\n        Place : " +
-                                _vm._s(item.healthpost.name) +
-                                " "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n        Type : " +
-                                _vm._s(_vm.checkCaseType(item.cases)) +
-                                " "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n        Management : " +
-                                _vm._s(
-                                  _vm.checkCaseManagement(
-                                    item.cases,
-                                    item.case_where
-                                  )
-                                ) +
-                                "\n      "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.ad2bs(item.created_at)))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("span", { staticClass: "label label-info" }, [
-                              _vm._v(" " + _vm._s(item.ancs.length))
-                            ]),
-                            _vm._v(" "),
-                            item.latest_anc
-                              ? _c("div", { attrs: { title: "Swab ID" } }, [
-                                  _vm._v("SID : "),
-                                  _c("strong", [
-                                    _vm._v(_vm._s(item.latest_anc.token))
-                                  ])
-                                ])
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            item.ancs.length > 0
-                              ? _c("div", {
-                                  domProps: {
-                                    innerHTML: _vm._s(
-                                      _vm.latestLabResult(item.latest_anc)
-                                    )
-                                  }
-                                })
-                              : _c("div", [
-                                  _c(
-                                    "span",
-                                    { staticClass: "label label-primary" },
-                                    [_vm._v(" Registered ")]
-                                  )
-                                ]),
-                            _vm._v(" "),
-                            item.ancs.length > 0
-                              ? _c("div", [
-                                  _vm._v(
-                                    _vm._s(
-                                      item.latest_anc.labreport.token
-                                        .split("-")
-                                        .splice(1)
-                                        .join("-")
-                                    )
-                                  )
-                                ])
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            item.latest_anc.result == 9
-                              ? _c(
-                                  "button",
-                                  {
-                                    attrs: { title: "Add Result" },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.addResultInLab(item)
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("i", { staticClass: "material-icons" }, [
-                                      _vm._v("biotech")
-                                    ])
-                                  ]
-                                )
-                              : _vm._e()
-                          ])
-                        ])
-                      : _vm._e()
-                  }
-                }
-              ],
-              null,
-              true
-            )
-          },
-          "filterable",
-          _vm.filterable,
-          false
-        ),
-        [
-          _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
-            _c("tr", [
-              _c("th", { attrs: { width: "6%" } }, [_vm._v("ID")]),
-              _vm._v(" "),
-              _c("th", { attrs: { width: "10%" } }, [_vm._v("Name")]),
-              _vm._v(" "),
-              _c("th", { attrs: { width: "7%" } }, [_vm._v("Age")]),
-              _vm._v(" "),
-              _c("th", { attrs: { width: "6%", title: "Gender" } }, [
-                _vm._v("G")
-              ]),
-              _vm._v(" "),
-              _c(
-                "th",
-                { attrs: { width: "10%", title: "Emergency Contact Number" } },
-                [_vm._v("Phone")]
-              ),
-              _vm._v(" "),
-              _c("th", { attrs: { width: "10%", title: "Municipality" } }, [
-                _vm._v("Municipality")
-              ]),
-              _vm._v(" "),
-              _c("th", { attrs: { width: "15%" } }, [_vm._v("Case")]),
-              _vm._v(" "),
-              _c(
-                "th",
-                { attrs: { width: "10%", title: "Case Created Date" } },
-                [_vm._v("Date")]
-              ),
-              _vm._v(" "),
-              _c(
-                "th",
-                { attrs: { width: "10%", title: "Sample Collection Details" } },
-                [_vm._v("Sample")]
-              ),
-              _vm._v(" "),
-              _c("th", { attrs: { width: "8%", title: "Latest Lab Result" } }, [
-                _vm._v("Result")
-              ]),
-              _vm._v(" "),
-              _c("th", { attrs: { width: "8%", title: "Actions" } }, [
-                _c("i", {
-                  staticClass: "fa fa-cogs",
-                  attrs: { "aria-hidden": "true" }
-                })
-              ])
-            ])
-          ])
-        ]
-      ),
-      _vm._v(" "),
-      this.$userRole == "fchv"
-        ? _c(
-            "div",
-            [
-              _c("link", {
-                attrs: {
-                  rel: "stylesheet",
-                  href:
-                    "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
-                }
-              }),
-              _vm._v(" "),
-              _c("fab", {
-                attrs: {
-                  position: _vm.fabOptions.position,
-                  "bg-color": _vm.fabOptions.bgColor,
-                  actions: _vm.fabActions,
-                  "start-opened": true
-                },
-                on: {
-                  addRecievedInLab: _vm.addRecievedInLab,
-                  addResultInLab: _vm.addResultInLab
-                }
-              })
-            ],
-            1
-          )
-        : _vm._e()
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabNegativeCases.vue?vue&type=template&id=c96b7590&":
-/*!**************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LabNegativeCases.vue?vue&type=template&id=c96b7590& ***!
-  \**************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("link", {
-        attrs: {
-          rel: "stylesheet",
-          href: "https://fonts.googleapis.com/icon?family=Material+Icons"
-        }
-      }),
-      _vm._v(" "),
-      _c(
-        "filterable",
-        _vm._b(
-          {
             scopedSlots: _vm._u([
               {
                 key: "default",
@@ -41864,12 +41562,6 @@ var render = function() {
                   var item = ref.item
                   return _c("tr", {}, [
                     _c("td", [
-                      _vm.checkForPositiveOnly(item.latest_anc)
-                        ? _c("div", [
-                            _vm._v("Case ID : " + _vm._s(item.case_id))
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
                       item.parent_case_id !== null
                         ? _c("div", [
                             _vm._v(
@@ -41932,47 +41624,24 @@ var render = function() {
                         _vm._v(" " + _vm._s(item.ancs.length))
                       ]),
                       _vm._v(" "),
-                      item.latest_anc
-                        ? _c("div", { attrs: { title: "Swab ID" } }, [
-                            _vm._v("SID : "),
-                            _c("strong", [
-                              _vm._v(_vm._s(item.latest_anc.token))
-                            ])
-                          ])
-                        : _vm._e()
+                      _c("div", { attrs: { title: "Swab ID" } }, [
+                        _vm._v("SID : "),
+                        _c("strong", [_vm._v(_vm._s(item.latest_anc.token))])
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      item.ancs.length > 0
-                        ? _c("div", {
-                            domProps: {
-                              innerHTML: _vm._s(
-                                _vm.latestLabResult(item.latest_anc)
-                              )
-                            }
-                          })
-                        : _c("div", [
-                            _c("span", { staticClass: "label label-primary" }, [
-                              _vm._v(" Registered ")
-                            ])
-                          ]),
+                      _c("span", { staticClass: "label label-warning" }, [
+                        _vm._v(" Received ")
+                      ]),
                       _vm._v(" "),
-                      item.ancs.length > 0
-                        ? _c("div", [
-                            _vm._v(
-                              _vm._s(
-                                item.latest_anc.labreport.token
-                                  .split("-")
-                                  .splice(1)
-                                  .join("-")
-                              )
-                            )
-                          ])
-                        : _vm._e()
+                      _c("div", [
+                        _vm._v(_vm._s(_vm.labToken(item.latest_anc.labreport)))
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      item.latest_anc.result == 9
+                      item.latest_anc.result === "9"
                         ? _c(
                             "button",
                             {
@@ -42052,7 +41721,247 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      this.$userRole == "fchv"
+      this.$userRole === "fchv"
+        ? _c(
+            "div",
+            [
+              _c("link", {
+                attrs: {
+                  rel: "stylesheet",
+                  href:
+                    "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
+                }
+              }),
+              _vm._v(" "),
+              _c("fab", {
+                attrs: {
+                  position: _vm.fabOptions.position,
+                  "bg-color": _vm.fabOptions.bgColor,
+                  actions: _vm.fabActions,
+                  "start-opened": true
+                },
+                on: {
+                  addRecievedInLab: _vm.addRecievedInLab,
+                  addResultInLab: _vm.addResultInLab
+                }
+              })
+            ],
+            1
+          )
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LabNegativeCases.vue?vue&type=template&id=c96b7590&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LabNegativeCases.vue?vue&type=template&id=c96b7590& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("link", {
+        attrs: {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/icon?family=Material+Icons"
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "filterable",
+        _vm._b(
+          {
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var item = ref.item
+                  return _c("tr", {}, [
+                    _c("td", [
+                      item.parent_case_id !== null
+                        ? _c("div", [
+                            _vm._v(
+                              "Parent Case ID : " + _vm._s(item.parent_case_id)
+                            )
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.age))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.gender(item.sex)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "One : " + _vm._s(item.emergency_contact_one) + " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Two : " +
+                          _vm._s(item.emergency_contact_two) +
+                          "\n      "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(_vm.checkMunicipality(item.municipality_id))
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n        Place : " +
+                          _vm._s(item.healthpost.name) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Type : " +
+                          _vm._s(_vm.checkCaseType(item.cases)) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Management : " +
+                          _vm._s(
+                            _vm.checkCaseManagement(item.cases, item.case_where)
+                          ) +
+                          "\n      "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.ad2bs(item.created_at)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("span", { staticClass: "label label-info" }, [
+                        _vm._v(" " + _vm._s(item.ancs.length))
+                      ]),
+                      _vm._v(" "),
+                      item.latest_anc
+                        ? _c("div", { attrs: { title: "Swab ID" } }, [
+                            _vm._v("SID : "),
+                            _c("strong", [
+                              _vm._v(_vm._s(item.latest_anc.token))
+                            ])
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("div", [
+                        _c("span", { staticClass: "label label-success" }, [
+                          _vm._v(" Negative ")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", [
+                        _vm._v(_vm._s(_vm.labToken(item.latest_anc.labreport)))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      item.latest_anc.result === "9"
+                        ? _c(
+                            "button",
+                            {
+                              attrs: { title: "Add Result" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.addResultInLab(item)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", { staticClass: "material-icons" }, [
+                                _vm._v("biotech")
+                              ])
+                            ]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
+                }
+              }
+            ])
+          },
+          "filterable",
+          _vm.filterable,
+          false
+        ),
+        [
+          _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
+            _c("tr", [
+              _c("th", { attrs: { width: "6%" } }, [_vm._v("ID")]),
+              _vm._v(" "),
+              _c("th", { attrs: { width: "10%" } }, [_vm._v("Name")]),
+              _vm._v(" "),
+              _c("th", { attrs: { width: "7%" } }, [_vm._v("Age")]),
+              _vm._v(" "),
+              _c("th", { attrs: { width: "6%", title: "Gender" } }, [
+                _vm._v("G")
+              ]),
+              _vm._v(" "),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Emergency Contact Number" } },
+                [_vm._v("Phone")]
+              ),
+              _vm._v(" "),
+              _c("th", { attrs: { width: "10%", title: "Municipality" } }, [
+                _vm._v("Municipality")
+              ]),
+              _vm._v(" "),
+              _c("th", { attrs: { width: "15%" } }, [_vm._v("Case")]),
+              _vm._v(" "),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Case Created Date" } },
+                [_vm._v("Date")]
+              ),
+              _vm._v(" "),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Sample Collection Details" } },
+                [_vm._v("Sample")]
+              ),
+              _vm._v(" "),
+              _c("th", { attrs: { width: "8%", title: "Latest Lab Result" } }, [
+                _vm._v("Result")
+              ]),
+              _vm._v(" "),
+              _c("th", { attrs: { width: "8%", title: "Actions" } }, [
+                _c("i", {
+                  staticClass: "fa fa-cogs",
+                  attrs: { "aria-hidden": "true" }
+                })
+              ])
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      this.$userRole === "fchv"
         ? _c(
             "div",
             [
@@ -42127,12 +42036,6 @@ var render = function() {
                   var item = ref.item
                   return _c("tr", {}, [
                     _c("td", [
-                      _vm.checkForPositiveOnly(item.latest_anc)
-                        ? _c("div", [
-                            _vm._v("Case ID : " + _vm._s(item.case_id))
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
                       item.parent_case_id !== null
                         ? _c("div", [
                             _vm._v(
@@ -42206,32 +42109,13 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      item.ancs.length > 0
-                        ? _c("div", {
-                            domProps: {
-                              innerHTML: _vm._s(
-                                _vm.latestLabResult(item.latest_anc)
-                              )
-                            }
-                          })
-                        : _c("div", [
-                            _c("span", { staticClass: "label label-primary" }, [
-                              _vm._v(" Registered ")
-                            ])
-                          ]),
+                      _c("span", { staticClass: "label label-danger" }, [
+                        _vm._v(" Positive ")
+                      ]),
                       _vm._v(" "),
-                      item.ancs.length > 0
-                        ? _c("div", [
-                            _vm._v(
-                              _vm._s(
-                                item.latest_anc.labreport.token
-                                  .split("-")
-                                  .splice(1)
-                                  .join("-")
-                              )
-                            )
-                          ])
-                        : _vm._e()
+                      _c("div", [
+                        _vm._v(_vm._s(_vm.labToken(item.latest_anc.labreport)))
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("td", [
