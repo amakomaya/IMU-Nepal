@@ -41624,24 +41624,22 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      item.latest_anc.result === "9"
-                        ? _c(
-                            "button",
-                            {
-                              attrs: { title: "Add Result" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.addResultInLab(item)
-                                }
-                              }
-                            },
-                            [
-                              _c("i", { staticClass: "material-icons" }, [
-                                _vm._v("biotech")
-                              ])
-                            ]
-                          )
-                        : _vm._e()
+                      _c(
+                        "button",
+                        {
+                          attrs: { title: "Add Result" },
+                          on: {
+                            click: function($event) {
+                              return _vm.addResultInLab(item)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "material-icons" }, [
+                            _vm._v("biotech")
+                          ])
+                        ]
+                      )
                     ])
                   ])
                 }
