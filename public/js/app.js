@@ -6321,7 +6321,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
     },
     checkDistrict: function checkDistrict(value) {
-      if (value == 0 || value == null || value == '') {
+      if (value === 0 || value == null || value === '') {
         return '';
       } else {
         return this.districts.find(function (x) {
@@ -6330,7 +6330,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     checkMunicipality: function checkMunicipality(value) {
-      if (value == 0 || value == null || value == '') {
+      if (value === 0 || value == null || value === '') {
         return '';
       } else {
         return this.municipalities.find(function (x) {
@@ -6338,41 +6338,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }).municipality_name;
       }
     },
-    latestLabResult: function latestLabResult(value) {
-      switch (value.result) {
-        case '4':
-          return '<span class=\"label label-success\"> Negative</span>';
-
-        case '2':
-          return '<span class=\"label label-info\"> Pending</span>';
-
-        case '3':
-          return '<span class=\"label label-danger\"> Positive</span>';
-
-        case '9':
-          return '<span class=\"label label-warning\"> Received</span>';
-
-        default:
-          return '<span class=\"label label-default\"> Don\'t Know</span>';
-      }
-    },
     checkForPositiveOnly: function checkForPositiveOnly(value) {
       if (value !== null) {
-        if (value.result == '3') {
+        if (value.result === '3') {
           return true;
         }
       }
     },
     latestLabResultNotNegative: function latestLabResultNotNegative(value) {
-      if (value == '0' || value == null || value == '') {
+      if (value === '0' || value == null || value === '') {
         return true;
       }
 
-      if (value.result == '4') {
-        return false;
-      } else {
-        return true;
-      }
+      return value.result !== '4';
     },
     excelFileName: function excelFileName() {
       var ext = '.xls';
@@ -6429,7 +6407,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     checkCaseManagement: function checkCaseManagement(type, management) {
-      if (type == '1') {
+      if (type === '1') {
         switch (management) {
           case '0':
             return 'Home';
@@ -6445,15 +6423,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       }
 
-      if (type == '2') {
+      if (type === '2') {
         switch (management) {
           case '0':
             return 'General Ward';
 
-          case '0':
+          case '1':
             return 'ICU';
 
-          case '0':
+          case '2':
             return 'Ventilator';
 
           default:
@@ -6477,6 +6455,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           item: item
         }
       });
+    },
+    labToken: function labToken(data) {
+      if (data !== null) {
+        return data.token.split('-').splice(1).join('-');
+      }
     },
     gender: function gender(type) {
       switch (type) {
