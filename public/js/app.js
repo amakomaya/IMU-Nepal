@@ -3470,6 +3470,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -3758,6 +3763,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     viewCaseDetails: function viewCaseDetails(token) {
       window.location.href = '/admin/patient?token=' + token;
+    },
+    editCaseDetails: function editCaseDetails(token) {
+      window.location.href = '/admin/patient/' + token + '/edit';
     }
   }
 });
@@ -4133,6 +4141,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -4428,6 +4441,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     viewCaseDetails: function viewCaseDetails(token) {
       window.location.href = '/admin/patient?token=' + token;
+    },
+    editCaseDetails: function editCaseDetails(token) {
+      window.location.href = '/admin/patient/' + token + '/edit';
     }
   }
 });
@@ -4453,6 +4469,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./viewConfirmReportFormModel.vue */ "./resources/assets/js/components/viewConfirmReportFormModel.vue");
 /* harmony import */ var vue_fab__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-fab */ "./node_modules/vue-fab/src/index.js");
 /* harmony import */ var vue_fab__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_fab__WEBPACK_IMPORTED_MODULE_6__);
+//
+//
+//
+//
 //
 //
 //
@@ -8013,7 +8033,7 @@ exports.push([module.i, ".v-select{position:relative;font-family:inherit}.v-sele
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css":
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9":
 /*!***********************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vuetify/dist/vuetify.min.css ***!
   \***********************************************************************************************************************************/
@@ -39235,6 +39255,29 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
+                      _vm.role == "main"
+                        ? _c("div", [
+                            _c(
+                              "button",
+                              {
+                                attrs: { title: "Edit Case Detail" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.editCaseDetails(item.token)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "fa fa-edit",
+                                  attrs: { "aria-hidden": "true" }
+                                }),
+                                _vm._v(" |\n          ")
+                              ]
+                            )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
                       _vm.role == "healthworker"
                         ? _c("div", [
                             item.ancs.length == 0
@@ -39693,6 +39736,29 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
+                      _vm.role == "main"
+                        ? _c("div", [
+                            _c(
+                              "button",
+                              {
+                                attrs: { title: "Edit Case Detail" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.editCaseDetails(item.token)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "fa fa-edit",
+                                  attrs: { "aria-hidden": "true" }
+                                }),
+                                _vm._v(" |\n          ")
+                              ]
+                            )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
                       _vm.role == "healthworker"
                         ? _c("div", [
                             item.ancs.length == 0
@@ -39898,11 +39964,11 @@ var render = function() {
                       ),
                       _c("br"),
                       _vm._v(
-                        "\n                " +
+                        "\n        " +
                           _vm._s(
                             _vm.roleVisibility(item.emergency_contact_two)
                           ) +
-                          "\n            "
+                          "\n      "
                       )
                     ]),
                     _vm._v(" "),
@@ -39914,23 +39980,23 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [
                       _vm._v(
-                        "\n                Place : " +
+                        "\n        Place : " +
                           _vm._s(item.healthpost.name) +
                           " "
                       ),
                       _c("br"),
                       _vm._v(
-                        "\n                Type : " +
+                        "\n        Type : " +
                           _vm._s(_vm.checkCaseType(item.cases)) +
                           " "
                       ),
                       _c("br"),
                       _vm._v(
-                        "\n                Management : " +
+                        "\n        Management : " +
                           _vm._s(
                             _vm.checkCaseManagement(item.cases, item.case_where)
                           ) +
-                          "\n            "
+                          "\n      "
                       )
                     ]),
                     _vm._v(" "),
@@ -39969,12 +40035,14 @@ var render = function() {
                       item.ancs.length > 0 && item.latest_anc.result == 9
                         ? _c("div", [
                             _vm._v(
-                              _vm._s(
-                                item.latest_anc.labreport.token
-                                  .split("-")
-                                  .splice(1)
-                                  .join("-")
-                              )
+                              "\n          " +
+                                _vm._s(
+                                  item.latest_anc.labreport.token
+                                    .split("-")
+                                    .splice(1)
+                                    .join("-")
+                                ) +
+                                "\n        "
                             )
                           ])
                         : _vm._e()
@@ -39996,7 +40064,7 @@ var render = function() {
                             staticClass: "fa fa-file",
                             attrs: { "aria-hidden": "true" }
                           }),
-                          _vm._v(" |\n              ")
+                          _vm._v(" |\n        ")
                         ]
                       ),
                       _vm._v(" "),
@@ -40017,7 +40085,7 @@ var render = function() {
                                   staticClass: "fa fa-edit",
                                   attrs: { "aria-hidden": "true" }
                                 }),
-                                _vm._v(" |\n                ")
+                                _vm._v(" |\n          ")
                               ]
                             )
                           ])
@@ -40042,7 +40110,7 @@ var render = function() {
                                 staticClass: "fa fa-medkit",
                                 attrs: { "aria-hidden": "true" }
                               }),
-                              _vm._v(" |\n              ")
+                              _vm._v(" |\n        ")
                             ]
                           )
                         : _vm._e(),
@@ -86499,7 +86567,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_vue__;
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css");
+var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vuetify.min.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vuetify/dist/vuetify.min.css?bdb9");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -88114,8 +88182,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\xampp\htdocs\survey\resources\assets\js\app.js */"./resources/assets/js/app.js");
-module.exports = __webpack_require__(/*! D:\xampp\htdocs\survey\resources\assets\sass\app.scss */"./resources/assets/sass/app.scss");
+__webpack_require__(/*! D:\Himshikha\projects\yagiten_office_apps\survey\resources\assets\js\app.js */"./resources/assets/js/app.js");
+module.exports = __webpack_require__(/*! D:\Himshikha\projects\yagiten_office_apps\survey\resources\assets\sass\app.scss */"./resources/assets/sass/app.scss");
 
 
 /***/ })

@@ -49,6 +49,8 @@
                         <form action="{{ route('patient.update',$data->id) }}" method="POST">
                             @csrf
                             @method('PUT')
+                            <h4>1. Personal Information </h4>
+
                             <div class="panel-body">
                                 <div class="form-group {{ $errors->has('token') ? 'has-error' : '' }}">
                                     <label for="token">Token</label>
@@ -137,12 +139,12 @@
                                                     <option value="">Select All Provinces</option>
                                                 @endif
                                                 @foreach(App\Models\province::all() as $province)
-                                                    @if($data->province_id ?? ''==$data->province->id)
+                                                    @if($data->province_id == $province->id)
                                                         @php($selectedProvince = "selected")
                                                     @else
                                                         @php($selectedProvince = "")
                                                     @endif
-                                                    <option value="{{$data->province->id}}" {{$selectedProvince}}>{{$province->province_name}}</option>
+                                                    <option value="{{$data->province_id}}" {{$selectedProvince}}>{{$province->province_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -153,12 +155,12 @@
                                                     <option value="">Select All Districts</option>
                                                 @endif
                                                 @foreach(App\Models\District::where('province_id', $data->province_id ?? '')->get() as $district)
-                                                    @if($data->district_id==$data->district->id)
+                                                    @if($data->district_id==$district->id)
                                                         @php($selectedDistrict = "selected")
                                                     @else
                                                         @php($selectedDistrict = "")
                                                     @endif
-                                                    <option value="{{$data->district->id}}" {{$selectedDistrict}}>{{$district->district_name}}</option>
+                                                    <option value="{{$data->district_id}}" {{$selectedDistrict}}>{{$district->district_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -170,12 +172,12 @@
                                                     <option value="">Select All Municipalities</option>
                                                 @endif
                                                 @foreach(\App\Models\Municipality::where('district_id', $data->district_id)->get() as $municipality)
-                                                    @if($data->municipality_id==$data->municipality->id)
+                                                    @if($data->municipality_id==$municipality->id)
                                                         @php($selectedMunicipality = "selected")
                                                     @else
                                                         @php($selectedMunicipality = "")
                                                     @endif
-                                                    <option value="{{$data->municipality->id}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>
+                                                    <option value="{{$data->municipality_id}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -263,17 +265,84 @@
                                     <label class="control-label">Have you traveled till 15 days ?</label>
                                     <div class="control-group">
                                         <label class="radio-inline">
-                                            <input type="radio" name="travelled" {{ $data->travelled == "0" ? 'checked' : '' }} value="0" checked>No
+                                            <input type="radio" name="travelled"
+                                                   {{ $data->travelled == "0" ? 'checked' : '' }} value="0" checked>No
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio" name="travelled" {{ $data->travelled == "1" ? 'checked' : '' }} value="1">Yes
+                                            <input type="radio" name="travelled"
+                                                   {{ $data->travelled == "1" ? 'checked' : '' }} value="1">Yes
                                         </label>
 
                                     </div>
                                 </div>
-
-                                {!! rcForm::close('post') !!}
                             </div>
+
+                            @if(!$samples->isEmpty())
+                                <h4>2. Sample Collection Information </h4>
+
+                                <div>
+                                    <table class="table" id="table">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th title="Sample Unique ID">SID</th>
+                                            <th title="Sample Type">Sample Type</th>
+                                            <th title="Service Type">Service Type</th>
+                                            <th title="Sample Collected Date">Date</th>
+                                            <th title="Sample Result">Result</th>
+                                            <th><i class="fa fa-cogs" aria-hidden="true"></i>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($samples as $sample)
+                                            <tr>
+                                                <td>{{$loop->iteration }}</td>
+                                                <td>{{$sample->token}}</td>
+                                                <td>
+                                                    @if($sample->sample_type = 1)
+                                                        Nasopharyngeal
+                                                    @elseif($sample->sample_type = 2)
+                                                        Oropharyngeal
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($sample->service_type = 1)
+                                                        Paid Service
+                                                    @elseif($sample->service_type = 2)
+                                                        Free of cost service
+                                                    @endif
+                                                </td>
+                                                <td>{{$sample->created_at}}</td>
+                                                <td>
+                                                    @if($sample->result = 2)
+                                                        Pending
+                                                    @elseif($sample->result = 3)
+                                                        Positive
+                                                    @elseif($sample->result = 4)
+                                                        Negative
+                                                    @elseif($sample->result = 5)
+                                                        Don't Know
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if(auth()->user()->role == 'main')
+{{--                                                        <button title="Edit Sample Detail" {{ url("admin/sample/$sample->token/edit") }}'">--}}
+{{--                                                            <i class="fa fa-edit"></i>--}}
+{{--                                                        </button>--}}
+                                                        <a title="Edit Sample Detail" class="btn btn-primary" href="{{ url('admin/sample/'.$sample->token.'/edit') }}">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @endif
+                            {!! rcForm::close('post') !!}
+
                         </form>
                         <!-- /.panel-body -->
                     </div>
@@ -311,6 +380,45 @@
                     $.get("{{route("municipality-select-district")}}?id=" + id, function (data) {
                         $("#municipality").html(data);
                     });
+                }
+
+                function sampleTypeValue(value) {
+                    if (value === 1)
+                        return "Nasopharyngeal";
+                    else if (value === 2)
+                        return "Oropharyngeal";
+                }
+
+                function serviceTypeValue(value) {
+                    if (value === 1)
+                        return "Paid Service";
+                    else if (value === 2)
+                        return "Free of cost service";
+                }
+
+                function resultValue(value) {
+                    switch (value) {
+                        case 1:
+                            return "Registered Only";
+                        case 2:
+                            return "Pending";
+                        case 3:
+                            return "Positive";
+                        case 4:
+                            return "Negative";
+                        case 5:
+                            return "Dont know";
+                    }
+                }
+
+                function createdDate(date) {
+                    var dateObject = new Date(date);
+
+                    var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
+
+                    let dateConverter = DataConverter.ad2bs(dateFormat);
+
+                    return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
                 }
 
                 $(function () {

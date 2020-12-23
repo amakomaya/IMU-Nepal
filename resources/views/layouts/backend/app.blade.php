@@ -23,7 +23,8 @@
     <link href="{{ asset('bower_components/metisMenu/dist/metisMenu.min.css') }}" rel="stylesheet">
 
     <!-- DataTables CSS -->
-    <link href="{{ asset('bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css') }}"
+          rel="stylesheet">
 
     <!-- DataTables Responsive CSS -->
     <link href="{{ asset('bower_components/datatables-responsive/css/dataTables.responsive.css') }}" rel="stylesheet">
@@ -49,124 +50,131 @@
     <script src="{{ asset('js/sortable.js') }}"></script>
 
 @yield('style')
-  
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
 
 <body>
 
-    <div id="wrapper">
+<div id="wrapper">
 
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name') }} </a>
-                    @guest
-                    <!-- // -->
-                    @else
-                    <a class="navbar-brand navbar-brand-small"><small class="text-primary"></small></a>
-                    @endif
-            </div>
-            <div class="navbar-nav" style="margin: 15px 0px 15px 100px">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- Branding Image -->
+            <a class="navbar-brand" href="{{ url('/') }}">
+                {{ config('app.name') }} </a>
+        @guest
+            <!-- // -->
+            @else
+                <a class="navbar-brand navbar-brand-small"><small class="text-primary"></small></a>
+            @endif
+        </div>
+        <div class="navbar-nav" style="margin: 15px 0px 15px 100px">
                 <span title="{{ \App\User::getAppRole() }}"><strong>Welcome, </strong> You are logged in as
                     @if(strlen(\App\User::getAppRole()) > 30)
-                    {{ substr(\App\User::getAppRole(), 0, 28) . "..." }}
-                @else
-                    {!! \App\User::getAppRole() !!}
+                        {{ substr(\App\User::getAppRole(), 0, 28) . "..." }}
+                    @else
+                        {!! \App\User::getAppRole() !!}
                     @endif
                 </span>
-            </div>
-            <div class="navbar-right" style="margin: 0px 10px">
-                <li class="nav navbar-nav" style="margin: 10px;">
-                    <button onClick="window.location.href=window.location.href"> <i class="fa fa-refresh" aria-hidden="true"></i>
-                        Refresh Page</button>
-                </li>
-                <li class="nav navbar-nav sl-nav messageInfo" style="margin: 10px;">
-                    <i class="fa fa-envelope-o"> : </i>
-                    <ul>
-                        <li><b>Messages @include('messenger.unread-count')</b> <i class="fa fa-angle-down" aria-hidden="true"></i>
-                            <div class="triangle"></div>
-                            <ul>
-                                <li><a href="/admin/messages">Messages</a></li>
-                                <li><a href="/admin/messages/create">Create New Message</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav navbar-nav sl-nav" style="margin: 10px;">
-                    @lang('app.language') :
-                    <ul>
-                    <li><b>{{ (app()->getLocale() == 'np') ? 'नेपाली' : 'English' }}</b> <i class="fa fa-angle-down" aria-hidden="true"></i>
+        </div>
+        <div class="navbar-right" style="margin: 0px 10px">
+            <li class="nav navbar-nav" style="margin: 10px;">
+                <button onClick="window.location.href=window.location.href"><i class="fa fa-refresh"
+                                                                               aria-hidden="true"></i>
+                    Refresh Page
+                </button>
+            </li>
+            <li class="nav navbar-nav sl-nav messageInfo" style="margin: 10px;">
+                <i class="fa fa-envelope-o"> : </i>
+                <ul>
+                    <li><b>Messages @include('messenger.unread-count')</b> <i class="fa fa-angle-down"
+                                                                              aria-hidden="true"></i>
                         <div class="triangle"></div>
                         <ul>
-                          <li><a href="{{ url('locale/en') }}"><i class="sl-flag flag-usa"></i> <span>English</span></a></li>
-                        <li><a href="{{ url('locale/np') }}"><i class="sl-flag flag-np"></i> <span>नेपाली</span></a></li>
+                            <li><a href="/admin/messages">Messages</a></li>
+                            <li><a href="/admin/messages/create">Create New Message</a></li>
                         </ul>
-                      </li>
-                    </ul>
-                </li>
-               <li class="nav navbar-nav sl-nav userinfo" style="margin: 10px;">
-                    <i class="fa fa-user"> : </i>
-                    <ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav navbar-nav sl-nav" style="margin: 10px;">
+                @lang('app.language') :
+                <ul>
+                    <li><b>{{ (app()->getLocale() == 'np') ? 'नेपाली' : 'English' }}</b> <i class="fa fa-angle-down"
+                                                                                            aria-hidden="true"></i>
+                        <div class="triangle"></div>
+                        <ul>
+                            <li><a href="{{ url('locale/en') }}"><i class="sl-flag flag-usa"></i>
+                                    <span>English</span></a></li>
+                            <li><a href="{{ url('locale/np') }}"><i class="sl-flag flag-np"></i> <span>नेपाली</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav navbar-nav sl-nav userinfo" style="margin: 10px;">
+                <i class="fa fa-user"> : </i>
+                <ul>
                     <li><b>{{ \Auth::user()->username }}</b> <i class="fa fa-angle-down" aria-hidden="true"></i>
                         <div class="triangle"></div>
                         <ul>
-                          <li>{{ \App\User::getAppRole() }}</li>
-                          <li><a href="/admin/profile">Edit Profile</a></li>
+                            <li>{{ \App\User::getAppRole() }}</li>
+                            <li><a href="/admin/profile">Edit Profile</a></li>
                         </ul>
-                      </li>
-                    </ul>
-                </li>
-            </div>
-
-            {{-- </ul> --}}
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    @include ('layouts.backend.navigation.list')
-            </div>
-            <!-- /.navbar-static-side -->
-        </nav>
-
-        <div style="margin: 40px 0px 0px 0px">
-            @yield('content')
-
+                    </li>
+                </ul>
+            </li>
         </div>
 
-    </div>
-    <!-- /#wrapper -->
+        {{-- </ul> --}}
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                @include ('layouts.backend.navigation.list')
+            </div>
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
 
-    <!-- Scripts -->
+    <div style="margin: 40px 0px 0px 0px">
+        @yield('content')
+
+    </div>
+
+</div>
+<!-- /#wrapper -->
+
+<!-- Scripts -->
 {{--    <script src="{{ asset('js/app.js') }}"></script>--}}
 
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="{{ asset('bower_components/metisMenu/dist/metisMenu.min.js') }}"></script>
+<!-- Metis Menu Plugin JavaScript -->
+<script src="{{ asset('bower_components/metisMenu/dist/metisMenu.min.js') }}"></script>
 
-    <!-- DataTables JavaScript -->
-    <script src="{{ asset('bower_components/datatables/media/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js') }}"></script>
+<!-- DataTables JavaScript -->
+<script src="{{ asset('bower_components/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js') }}"></script>
 
-    <!-- Custom Theme JavaScript -->
-    <script src="{{ asset('dist/js/sb-admin-2.js') }}"></script>
+<!-- Custom Theme JavaScript -->
+<script src="{{ asset('dist/js/sb-admin-2.js') }}"></script>
 
-    <script src="{{ asset('js/custom.js') }}"></script>
+<script src="{{ asset('js/custom.js') }}"></script>
 
 @yield('script')
 </body>

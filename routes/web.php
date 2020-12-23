@@ -24,6 +24,7 @@ Route::get('/admin/district-select-province', 'AdminController@districtSelectByP
 Route::get('/admin/ward-select-municipality', 'AdminController@wardSelectByMunicipality')->name('admin.ward-select-municipality');
 Route::get('/admin/healthpost-select-ward', 'AdminController@healthpostSelectByWard')->name('admin.healthpost-select-ward');
 Route::get('/admin/select-from-to', 'AdminController@selectFromTo')->name('admin.select-from-to');
+Route::get('/admin/district-value', 'AdminController@getDistrictValue')->name('admin.district-value');
 
 //Backend Center
 Route::resource('admin/center', 'Backend\CenterController');

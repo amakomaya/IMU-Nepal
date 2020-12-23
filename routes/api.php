@@ -30,11 +30,11 @@ Route::get('/v1/healthposts', function () {
 
 Route::post('/v1/client', function (Request $request) {
     $data = $request->json()->all();
-     try {
-            SuspectedCase::insert($data);
-        } catch (\Exception $e) {
-         return response()->json(['message' => 'Something went wrong, Please try again.']);
-        }
+    try {
+        SuspectedCase::insert($data);
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'Something went wrong, Please try again.']);
+    }
     return response()->json(['message' => 'Data Successfully Sync']);
 });
 
@@ -134,11 +134,11 @@ Route::post('/v1/client-update', function (Request $request) {
 
 Route::post('/v1/client-tests', function (Request $request) {
     $data = $request->json()->all();
-        try {
-            SampleCollection::insert($data);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Something went wrong, Please try again.']);
-        }
+    try {
+        SampleCollection::insert($data);
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'Something went wrong, Please try again.']);
+    }
     return response()->json(['message' => 'Data Sussessfully Sync']);
 });
 
@@ -169,7 +169,7 @@ Route::get('/v1/client-tests', function (Request $request) {
     return response()->json($data);
 });
 
-Route::get('/v1/lab-test', function(Request $request){
+Route::get('/v1/lab-test', function (Request $request) {
     $hp_code = $request->hp_code;
     $data = LabTest::where('hp_code', $hp_code)->get();
     return response()->json($data);
@@ -331,13 +331,13 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
 
 
 // New update
-Route::get('/v1/contact-tracing', function(Request $request){
+Route::get('/v1/contact-tracing', function (Request $request) {
     $hp_code = $request->hp_code;
     $data = ContactTracing::where('hp_code', $hp_code)->get();
     return response()->json($data);
 });
 
-Route::post('/v1/contact-tracing', function(Request $request){
+Route::post('/v1/contact-tracing', function (Request $request) {
     $data = $request->json()->all();
     try {
         ContactTracing::insert($data);
@@ -347,13 +347,13 @@ Route::post('/v1/contact-tracing', function(Request $request){
     return response()->json(['message' => 'Data Successfully Sync']);
 });
 
-Route::get('/v1/case-mgmt', function(Request $request){
+Route::get('/v1/case-mgmt', function (Request $request) {
     $hp_code = $request->hp_code;
     $data = CaseManagement::where('hp_code', $hp_code)->get();
     return response()->json($data);
 });
 
-Route::post('/v1/case-mgmt', function(Request $request){
+Route::post('/v1/case-mgmt', function (Request $request) {
     $data = $request->json()->all();
     try {
         CaseManagement::insert($data);
@@ -363,7 +363,7 @@ Route::post('/v1/case-mgmt', function(Request $request){
     return response()->json(['message' => 'Data Successfully Sync']);
 });
 
-Route::post('/v1/case-mgmt-update', function(Request $request){
+Route::post('/v1/case-mgmt-update', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
@@ -375,13 +375,13 @@ Route::post('/v1/case-mgmt-update', function(Request $request){
     return response()->json(['message' => 'Data Successfully Sync and Update']);
 });
 
-Route::get('/v1/contact-follow-up', function(Request $request){
+Route::get('/v1/contact-follow-up', function (Request $request) {
     $hp_code = $request->hp_code;
     $data = ContactFollowUp::where('hp_code', $hp_code)->get();
     return response()->json($data);
 });
 
-Route::post('/v1/contact-follow-up', function(Request $request){
+Route::post('/v1/contact-follow-up', function (Request $request) {
     $data = $request->json()->all();
     try {
         ContactFollowUp::insert($data);
@@ -391,13 +391,13 @@ Route::post('/v1/contact-follow-up', function(Request $request){
     return response()->json(['message' => 'Data Successfully Sync']);
 });
 
-Route::get('/v1/contact-detail', function(Request $request){
+Route::get('/v1/contact-detail', function (Request $request) {
     $hp_code = $request->hp_code;
     $data = ContactDetail::where('hp_code', $hp_code)->get();
     return response()->json($data);
 });
 
-Route::post('/v1/contact-detail', function(Request $request){
+Route::post('/v1/contact-detail', function (Request $request) {
     $data = $request->json()->all();
     try {
         ContactDetail::insert($data);
@@ -407,7 +407,7 @@ Route::post('/v1/contact-detail', function(Request $request){
     return response()->json(['message' => 'Data Successfully Sync']);
 });
 
-Route::post('/v1/contact-detail-update', function(Request $request){
+Route::post('/v1/contact-detail-update', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
@@ -427,8 +427,33 @@ Route::post('/v1/sample-update', function (Request $request) {
         try {
             SampleCollection::where('token', $value['token'])->update($value);
         } catch (\Exception $e) {
-
+            return response()->json(['message' => 'Something went wrong, Please try again.']);
         }
     }
     return response()->json(['message' => 'Data Successfully Sync and Update']);
 });
+
+// external apis
+Route::get('/v1/ext/district', 'External\ExtDistrictController@index');
+Route::get('/v1/ext/municipality', 'External\ExtMunicipalityController@index');
+Route::get('/v1/ext/province', 'External\ExtProvinceController@index');
+Route::get('/v1/ext/cases', 'External\ExtCaseController@index');
+Route::post('/v1/ext/cases', 'External\ExtCaseController@store');
+Route::get('/v1/ext/samples', 'External\ExtSampleController@index');
+Route::post('/v1/ext/samples', 'External\ExtSampleController@store');
+Route::get('/v1/ext/lab-test', 'External\ExtLabTestController@index');
+Route::post('/v1/ext/lab-test', 'External\ExtLabTestController@store');
+Route::get('/v1/ext/patient-symptoms', 'External\ExtSymptomsController@index');
+Route::post('/v1/ext/patient-symptoms', 'External\ExtSymptomsController@store');
+Route::get('/v1/ext/patient-clinical-parameters', 'External\ExtClinicalController@index');
+Route::post('/v1/ext/patient-clinical-parameters', 'External\ExtClinicalController@store');
+Route::get('/v1/ext/patient-laboratory-parameter', 'External\ExtLaboratoryController@index');
+Route::post('/v1/ext/patient-laboratory-parameter', 'External\ExtLaboratoryController@store');
+Route::get('/v1/ext/contact-tracing', 'External\ExtContactTracingController@index');
+Route::post('/v1/ext/contact-tracing', 'External\ExtContactTracingController@store');
+Route::get('/v1/ext/case-mgmt', 'External\ExtCaseMgmtController@index');
+Route::post('/v1/ext/case-mgmt', 'External\ExtCaseMgmtController@store');
+Route::get('/v1/ext/contact-detail', 'External\ExtContactDetailController@index');
+Route::post('/v1/ext/contact-detail', 'External\ExtContactDetailController@store');
+Route::get('/v1/ext/contact-follow-up', 'External\ExtContactFollowUpController@index');
+Route::post('/v1/ext/contact-follow-up', 'External\ExtContactFollowUpController@store');

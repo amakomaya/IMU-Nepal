@@ -1,80 +1,84 @@
 <template>
-    <div>
-        <filterable v-bind="filterable">
-            <thead slot="thead">
-            <tr>
-              <th width="6%">ID</th>
-              <th width="10%">Name</th>
-              <th width="7%">Age</th>
-              <th width="6%" title="Gender">G</th>
-              <th width="10%" title="Emergency Contact Number">Phone</th>
-              <!-- <th>District</th> -->
-              <th width="10%" title="Municipality">Municipality</th>
-              <th width="15%">Case</th>
-              <th width="10%" title="Case Created Date">Date</th>
-              <th width="10%" title="Sample Collection Details">Sample</th>
-              <th width="8%" title="Latest Lab Result">Result</th>
-              <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
-            </tr>
-            </thead>
-            <tr slot-scope="{item}">
-                <td><div v-if="checkForPositiveOnly(item.latest_anc)" title="Case ID">C ID : {{ item.case_id }}</div>
-                    <div v-if="item.parent_case_id !== null" title="Parent Case ID">PC ID : {{ item.parent_case_id }}</div>
-                </td>
-                <td>{{ roleVisibility(item.name)}}</td>
-                <td>{{item.age}}</td>
-                <td>{{ gender(item.sex)}}</td>
-                <td>{{ roleVisibility(item.emergency_contact_one) }} <br>
-                    {{ roleVisibility(item.emergency_contact_two) }}
-                </td>
-                <td>{{ checkMunicipality(item.municipality_id) }}</td>
-                <td>
-                    Place : {{ item.healthpost.name }} <br>
-                    Type : {{ checkCaseType(item.cases) }} <br>
-                    Management : {{ checkCaseManagement(item.cases, item.case_where) }}
-                </td>
-              <td>{{ ad2bs(item.created_at) }}</td>
-                <td><span class="label label-info"> {{ item.ancs.length }}</span>
-                    <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
-                </td>
-                <td>
-                    <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"></div>
-                    <div v-else><span class="label label-primary"> Registered </span></div>
-                    <div v-if="item.ancs.length > 0 && item.latest_anc.result == 9">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
-                </td>
-                <td>
-                <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
-                     <i class="fa fa-file" aria-hidden="true"></i> |
-                  </button>
-                  <div v-if="role == 'main'">
-                    <button v-on:click="editCaseDetails(item.token)" title="Edit Case Detail">
-                      <i class="fa fa-edit" aria-hidden="true"></i> |
-                    </button>
-                  </div>
-                  <button v-if="item.ancs.length == 0 && role  == 'healthworker'" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
-                     <i class="fa fa-medkit" aria-hidden="true"></i> |
-                  </button>
-                  <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
-                        <i class="fa fa-hospital-o"></i>
-                </button>
-                </td>  
-                <!-- </div>             -->
-            </tr>
-        </filterable>
+  <div>
+    <filterable v-bind="filterable">
+      <thead slot="thead">
+      <tr>
+        <th width="6%">ID</th>
+        <th width="10%">Name</th>
+        <th width="7%">Age</th>
+        <th width="6%" title="Gender">G</th>
+        <th width="10%" title="Emergency Contact Number">Phone</th>
+        <!-- <th>District</th> -->
+        <th width="10%" title="Municipality">Municipality</th>
+        <th width="15%">Case</th>
+        <th width="10%" title="Case Created Date">Date</th>
+        <th width="10%" title="Sample Collection Details">Sample</th>
+        <th width="8%" title="Latest Lab Result">Result</th>
+        <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
+      </tr>
+      </thead>
+      <tr slot-scope="{item}">
+        <td>
+          <div v-if="checkForPositiveOnly(item.latest_anc)" title="Case ID">C ID : {{ item.case_id }}</div>
+          <div v-if="item.parent_case_id !== null" title="Parent Case ID">PC ID : {{ item.parent_case_id }}</div>
+        </td>
+        <td>{{ roleVisibility(item.name) }}</td>
+        <td>{{ item.age }}</td>
+        <td>{{ gender(item.sex) }}</td>
+        <td>{{ roleVisibility(item.emergency_contact_one) }} <br>
+          {{ roleVisibility(item.emergency_contact_two) }}
+        </td>
+        <td>{{ checkMunicipality(item.municipality_id) }}</td>
+        <td>
+          Place : {{ item.healthpost.name }} <br>
+          Type : {{ checkCaseType(item.cases) }} <br>
+          Management : {{ checkCaseManagement(item.cases, item.case_where) }}
+        </td>
+        <td>{{ ad2bs(item.created_at) }}</td>
+        <td><span class="label label-info"> {{ item.ancs.length }}</span>
+          <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
+        </td>
+        <td>
+          <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"></div>
+          <div v-else><span class="label label-primary"> Registered </span></div>
+          <div v-if="item.ancs.length > 0 && item.latest_anc.result == 9">
+            {{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}
+          </div>
+        </td>
+        <td>
+          <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
+            <i class="fa fa-file" aria-hidden="true"></i> |
+          </button>
+          <div v-if="role == 'main'">
+            <button v-on:click="editCaseDetails(item.token)" title="Edit Case Detail">
+              <i class="fa fa-edit" aria-hidden="true"></i> |
+            </button>
+          </div>
+          <button v-if="item.ancs.length == 0 && role  == 'healthworker'" v-on:click="addSampleCollection(item.token)"
+                  title="Add Sample Collection / Swab Collection Report">
+            <i class="fa fa-medkit" aria-hidden="true"></i> |
+          </button>
+          <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
+            <i class="fa fa-hospital-o"></i>
+          </button>
+        </td>
+        <!-- </div>             -->
+      </tr>
+    </filterable>
 
-      <div v-if="this.$userRole == 'healthworker'">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <div v-if="this.$userRole == 'healthworker'">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 
-        <fab
-            :position="fabOptions.position"
-            :bg-color="fabOptions.bgColor"
-            :actions="fabActions"
-            :start-opened = true
-            @addPatient="addPatient"
-        ></fab>
-      </div>
+      <fab
+          :position="fabOptions.position"
+          :bg-color="fabOptions.bgColor"
+          :actions="fabActions"
+          :start-opened=true
+          @addPatient="addPatient"
+      ></fab>
     </div>
+  </div>
 </template>
 
 <script type="text/javascript">

@@ -128,6 +128,7 @@ class WomanController extends Controller
         ];
 
         $request->validate([
+            'test_type' => 'required',
             'sample_type' => 'required',
             'infection_type' => 'required',
             'service_type' => 'required',

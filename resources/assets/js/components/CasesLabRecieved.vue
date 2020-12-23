@@ -46,6 +46,11 @@
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
             <i class="fa fa-file" aria-hidden="true"></i> |
           </button>
+          <div v-if="role == 'main'">
+            <button v-on:click="editCaseDetails(item.token)" title="Edit Case Detail">
+              <i class="fa fa-edit" aria-hidden="true"></i> |
+            </button>
+          </div>
           <div v-if="role  == 'healthworker'">
             <button v-if="item.ancs.length == 0" v-on:click="aadSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
               <i class="fa fa-medkit" aria-hidden="true"></i> |
@@ -367,6 +372,9 @@ export default {
     },
     viewCaseDetails(token){
       window.location.href = '/admin/patient?token='+token;
+    },
+    editCaseDetails(token) {
+      window.location.href = '/admin/patient/' + token + '/edit';
     }
   }
 }
