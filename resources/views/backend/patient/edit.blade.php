@@ -46,27 +46,17 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <form action="{{ route('patient.update',$data->id) }}" method="POST">
+                        <form action="{{ route('patient.update',$data->id) }}" method="POST" name="updateCase">
                             @csrf
                             @method('PUT')
                             <h4>1. Personal Information </h4>
 
                             <div class="panel-body">
-                                <div class="form-group {{ $errors->has('token') ? 'has-error' : '' }}">
-                                    <label for="token">Token</label>
-                                    <input type="text" id="token" class="form-control" name="token"
-                                           aria-describedby="help" placeholder="Enter Token" value="{{ $data->token }}"
-                                    >
-                                    @if ($errors->has('token'))
-                                        <small id="help"
-                                               class="form-text text-danger">{{ $errors->first('token') }}</small>
-                                    @endif
-                                </div>
                                 <div class="form-group {{ $errors->has('case_id') ? 'has-error' : '' }}">
                                     <label for="case_id">Case Id</label>
                                     <input type="text" id="case_id" class="form-control" name="case_id"
                                            aria-describedby="help" placeholder="Enter Case Id"
-                                           value="{{ $data->case_id }}"
+                                           value="{{ $data->case_id }}" readonly
                                     >
                                     @if ($errors->has('case_id'))
                                         <small id="help"
@@ -433,7 +423,7 @@
                     $.validator.addMethod("phoneCustom", function (value, element) {
                         return this.optional(element) || /^((984|985|986|974|975|980|981|982|961|988|972|963)\d{7})|((097|095|081|053|084|083|029|056|096|089|093|010|026|041|068|049|094|064|079|027|046|087|091|076|061|036|025|066|077|099|044|057|023|021|069|055|037|075|024|067|051|086|082|071|033|031|092|047|038|063|035)(4|5|6)\d{5})|(01)(4|5|6)\d{6}$/i.test(value);
                     }, "Contact number is invalid: Please enter a valid phone number.");
-                    $("form[name='createCase']").validate({
+                    $("form[name='updateCase']").validate({
                         // Define validation rules
                         rules: {
                             name: {
@@ -443,6 +433,12 @@
                             age: {
                                 required: true,
                                 ageCustom: true,
+                            },
+                            district_id : {
+                                required : true
+                            },
+                            municipality_id : {
+                                required : true
                             },
                             sex: {
                                 required: true,

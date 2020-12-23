@@ -67,9 +67,6 @@
         <!-- /.row -->
         <div class="row">
             <div class="col-lg-12">
-            <!-- <div class="form-group">
-                    <a class="btn btn-success" href="{{route('child.create') }}">Create</a>
-                </div> -->
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Backup And Restore

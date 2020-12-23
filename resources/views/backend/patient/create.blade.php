@@ -117,7 +117,7 @@
                                             <option value="">Select All Provinces</option>
                                         @endif
                                         @foreach(App\Models\province::all() as $province)
-                                            @if($province_id==$province->id)
+                                            @if($province_id==$province->id || old('province_id')==$province->id)
                                                 @php($selectedProvince = "selected")
                                             @else
                                                 @php($selectedProvince = "")
@@ -125,6 +125,9 @@
                                             <option value="{{$province->id}}" {{$selectedProvince}}>{{$province->province_name}}</option>
                                         @endforeach
                                     </select>
+                                    @if ($errors->has('province_id'))
+                                        <small id="help" class="form-text text-danger">{{ $errors->first('province_id') }}</small>
+                                    @endif
                                 </div>
                                 <div class="form-group  col-sm-3" id="district">
                                     <select name="district_id" class="form-control" onchange="districtOnchange($(this).val())">
@@ -132,7 +135,7 @@
                                             <option value="">Select All Districts</option>
                                         @endif
                                         @foreach(App\Models\District::where('province_id', $province_id)->get() as $district)
-                                            @if($district_id==$district->id)
+                                            @if($district_id==$district->id || old('district_id')==$district->id)
                                                 @php($selectedDistrict = "selected")
                                             @else
                                                 @php($selectedDistrict = "")
@@ -140,6 +143,9 @@
                                             <option value="{{$district->id}}" {{$selectedDistrict}}>{{$district->district_name}}</option>
                                         @endforeach
                                     </select>
+                                    @if ($errors->has('district_id'))
+                                        <small id="help" class="form-text text-danger">{{ $errors->first('district_id') }}</small>
+                                    @endif
                                 </div>
                                 <div class="form-group  col-sm-3" id="municipality">
                                     <select name="municipality_id" class="form-control" onchange="municipalityOnchange($(this).val())"
@@ -148,7 +154,7 @@
                                             <option value="">Select All Municipalities</option>
                                         @endif
                                         @foreach(\App\Models\Municipality::where('district_id', $district_id)->get() as $municipality)
-                                            @if($municipality_id==$municipality->id)
+                                            @if($municipality_id==$municipality->id  || old('municipality_id')==$municipality->id)
                                                 @php($selectedMunicipality = "selected")
                                             @else
                                                 @php($selectedMunicipality = "")
@@ -156,12 +162,15 @@
                                             <option value="{{$municipality->id}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>
                                         @endforeach
                                     </select>
+                                    @if ($errors->has('municipality_id'))
+                                        <small id="help" class="form-text text-danger">{{ $errors->first('municipality_id') }}</small>
+                                    @endif
                                 </div>
                                 </div>
                             </div>
                             <div class="form-group {{ $errors->has('ward') ? 'has-error' : '' }}">
                                 <label for="ward">Ward No</label>
-                                <input type="text" class="form-control" name="ward" aria-describedby="help" placeholder="Enter Ward No"
+                                <input type="text" class="form-control" value="{{ old('ward') }}" name="ward" aria-describedby="help" placeholder="Enter Ward No"
                                 >
                                 @if ($errors->has('ward'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('ward') }}</small>
@@ -169,7 +178,7 @@
                             </div>
                             <div class="form-group {{ $errors->has('tole') ? 'has-error' : '' }}">
                                 <label for="tole">Tole</label>
-                                <input type="text" class="form-control" name="tole" aria-describedby="help" placeholder="Enter Tole"
+                                <input type="text" class="form-control"  value="{{ old('tole') }}" name="tole" aria-describedby="help" placeholder="Enter Tole"
                                 >
                                 @if ($errors->has('tole'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('tole') }}</small>
@@ -177,7 +186,7 @@
                             </div>
                             <div class="form-group {{ $errors->has('emergency_contact_one') ? 'has-error' : '' }}">
                                 <label for="name">Emergency Contact One</label>
-                                <input type="text" class="form-control" name="emergency_contact_one" aria-describedby="help" placeholder="Enter Emergency Contact One"
+                                <input type="text" class="form-control"  value="{{ old('emergency_contact_one') }}" name="emergency_contact_one" aria-describedby="help" placeholder="Enter Emergency Contact One"
                                 >
                                 @if ($errors->has('emergency_contact_one'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('emergency_contact_one') }}</small>
@@ -185,7 +194,7 @@
                             </div>
                             <div class="form-group {{ $errors->has('emergency_contact_two') ? 'has-error' : '' }}">
                                 <label for="name">Emergency Contact Two</label>
-                                <input type="text" class="form-control" name="emergency_contact_two" aria-describedby="help" placeholder="Enter Emergency Contact Two"
+                                <input type="text" class="form-control" value="{{ old('emergency_contact_two') }}" name="emergency_contact_two" aria-describedby="help" placeholder="Enter Emergency Contact Two"
                                 >
                                 @if ($errors->has('emergency_contact_one'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('emergency_contact_one') }}</small>
@@ -194,17 +203,17 @@
                             <div class="form-group">
                                 <label class="control-label" for="caste">Occupation</label>
                                 <select name="occupation" class="form-control">
-                                    <option value="">Select Occupation</option>
-                                    <option value="1">Front Line Health Worker</option>
-                                    <option value="2">Doctor</option>
-                                    <option value="3">Nurse</option>
-                                    <option value="4">Police/Army</option>
-                                    <option value="5">Business/Industry</option>
-                                    <option value="6">Teacher/Student/Education</option>
-                                    <option value="7">Journalist</option>
-                                    <option value="8">Agriculture</option>
-                                    <option value="9">Transport/Delivery</option>
-                                    <option value="10">Other</option>
+                                    <option {{ old('occupation') == '' ? "selected" : "" }} value="">Select Occupation</option>
+                                    <option {{ old('occupation') == '1' ? "selected" : "" }} value="1">Front Line Health Worker</option>
+                                    <option {{ old('occupation') == '2' ? "selected" : "" }} value="2">Doctor</option>
+                                    <option {{ old('occupation') == '3' ? "selected" : "" }} value="3">Nurse</option>
+                                    <option {{ old('occupation') == '4' ? "selected" : "" }} value="4">Police/Army</option>
+                                    <option {{ old('occupation') == '5' ? "selected" : "" }} value="5">Business/Industry</option>
+                                    <option {{ old('occupation') == '6' ? "selected" : "" }} value="6">Teacher/Student/Education</option>
+                                    <option {{ old('occupation') == '7' ? "selected" : "" }} value="7">Journalist</option>
+                                    <option {{ old('occupation') == '8' ? "selected" : "" }} value="8">Agriculture</option>
+                                    <option {{ old('occupation') == '9' ? "selected" : "" }} value="9">Transport/Delivery</option>
+                                    <option {{ old('occupation') == '10' ? "selected" : "" }} value="10">Other</option>
                                 </select>
                                 @if ($errors->has('occupation'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('occupation') }}</small>
@@ -214,10 +223,10 @@
                                 <label class="control-label">Have you traveled till 15 days ?</label>
                                 <div class="control-group">
                                     <label class="radio-inline">
-                                        <input type="radio" name="travelled" value="0"  checked>No
+                                        <input type="radio" {{ old('travelled') == "0" ? 'checked' : '' }} name="travelled" value="0"  checked>No
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="travelled" value="1">Yes
+                                        <input type="radio" {{ old('travelled') == "1" ? 'checked' : '' }} name="travelled" value="1">Yes
                                     </label>
 
                                 </div>
@@ -226,10 +235,10 @@
                                 <label class="control-label">Are you collecting COVID -19 swab now ?</label>
                                 <div class="control-group">
                                     <label class="radio-inline">
-                                        <input type="radio" name="swab_collection_conformation" value="0"  >No
+                                        <input type="radio" {{ old('swab_collection_conformation') == "0" ? 'checked' : '' }} name="swab_collection_conformation" value="0"  >No
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="swab_collection_conformation" value="1" checked>Yes
+                                        <input type="radio" {{ old('swab_collection_conformation') == "1" ? 'checked' : '' }} name="swab_collection_conformation" value="1" checked>Yes
                                     </label>
 
                                 </div>
@@ -295,6 +304,12 @@
                     age : {
                         required : true,
                         ageCustom: true,
+                    },
+                    district_id : {
+                        required : true
+                    },
+                    municipality_id : {
+                      required : true
                     },
                     sex : {
                         required : true,

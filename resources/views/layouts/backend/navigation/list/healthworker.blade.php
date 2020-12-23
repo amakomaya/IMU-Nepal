@@ -1,5 +1,5 @@
 @if(App\Models\OrganizationMember::where('token', auth()->user()->token)->first()->role == 'fchv')
-      <li>
+    <li>
         <a href="#">
             <i class="fa fa-user" aria-hidden="true"></i>
 
@@ -33,7 +33,12 @@
         </ul>
     </li>
     <li>
-
+    <li>
+        <a href="{{ route('lab.patient.report.index') }}">
+            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+            Case Report
+        </a>
+    </li>
 @else
     <li>
         <a href="#">
@@ -99,5 +104,10 @@
             </li>
         </ul>
     </li>
-
+    <li>
+        <a href="{{ route('lab.patient.report.index') }}">
+            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+            Case Report
+        </a>
+    </li>
 @endif

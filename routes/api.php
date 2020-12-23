@@ -28,13 +28,26 @@ Route::get('/v1/healthposts', function () {
     return response()->json($healthpost);
 });
 
+Route::get('/api/v1/check-by-sid-or-lab-id', function () {
+    $healthpost = \App\Models\Organization::with(['province', 'municipality', 'district'])->get();
+    return response()->json($healthpost);
+});
+
+
 Route::post('/v1/client', function (Request $request) {
     $data = $request->json()->all();
-    try {
-        SuspectedCase::insert($data);
-    } catch (\Exception $e) {
-        return response()->json(['message' => 'Something went wrong, Please try again.']);
-    }
+     try {
+            SuspectedCase::insert($data);
+        } catch (\Exception $e) {
+         foreach ($data as $value) {
+             try {
+//                 $value['case_id'] = bin2hex(random_bytes(3));
+                 SuspectedCase::create($value);
+             } catch (\Exception $e) {
+//                 return response()->json(['message' => 'Something went wrong, Please try again.']);
+             }
+         }
+        }
     return response()->json(['message' => 'Data Successfully Sync']);
 });
 
@@ -43,7 +56,7 @@ Route::get('/v1/client', function (Request $request) {
     $record = \DB::table('women')
         ->leftJoin('ancs', 'ancs.woman_token', '=', 'women.token')
         ->where('women.hp_code', $hp_code)
-        ->where('women.end_case', 0)
+        ->where('women.end_case', '0')
         ->select('women.*', 'ancs.result as sample_result')
         ->get();
 
@@ -94,7 +107,7 @@ Route::get('/v1/client', function (Request $request) {
         $response['payment'] = $row->payment ?? '';
         $response['result'] = $row->sample_result ?? '';
 
-        if ($response['result'] == '4') {
+        if ($response['result'] == '3') {
             $response['case_id'] = $row->case_id ?? '';
         } else {
             $response['case_id'] = '';
@@ -109,6 +122,7 @@ Route::get('/v1/client', function (Request $request) {
         $response['temperature'] = $row->temperature ?? '';
         $response['date_of_onset_of_first_symptom'] = $row->date_of_onset_of_first_symptom ?? '';
         $response['reson_for_testing'] = $row->reson_for_testing ?? '';
+        $response['case_type'] = $row->case_type ?? 1;
 
         return $response;
     })->values();
@@ -134,12 +148,18 @@ Route::post('/v1/client-update', function (Request $request) {
 
 Route::post('/v1/client-tests', function (Request $request) {
     $data = $request->json()->all();
-    try {
-        SampleCollection::insert($data);
-    } catch (\Exception $e) {
-        return response()->json(['message' => 'Something went wrong, Please try again.']);
-    }
-    return response()->json(['message' => 'Data Sussessfully Sync']);
+        try {
+            SampleCollection::insert($data);
+        } catch (\Exception $e) {
+            foreach ($data as $value) {
+                try {
+                    SampleCollection::create($value);
+                } catch (\Exception $e) {
+//                    return response()->json(['message' => 'Something went wrong, Please try again.']);
+                }
+            }
+        }
+    return response()->json(['message' => 'Data Successfully Sync']);
 });
 
 Route::get('/v1/client-tests', function (Request $request) {
@@ -432,6 +452,62 @@ Route::post('/v1/sample-update', function (Request $request) {
     }
     return response()->json(['message' => 'Data Successfully Sync and Update']);
 });
+
+Route::get('/v1/check-by-sid-or-lab-id', function (Request $request) {
+    $token = $request->token;
+    $lab_details = [];
+    if (strlen($token) !== 17){
+        $lab_result = LabTest::where('token', auth()->user()->token.'-'.$token)->first();
+        if ($lab_result){
+            $lab_details = OrganizationMember::where('hp_code', $lab_result->hp_code)->first();
+        }
+        if (!$lab_result){
+            return response()->json();
+        }
+        $token = $lab_result->sample_token;
+    }
+
+    $sample_detail = SampleCollection::where('token', $token)->first();
+
+    if (!$sample_detail){
+        return response()->json();
+    }
+
+    $case = SuspectedCase::where('token', $sample_detail->woman_token)
+        ->with(['healthworker' ,'healthpost', 'district', 'municipality'])
+        ->first();
+
+    $case = [
+        'organization_name' => ($lab_details) ? $lab_details->name : $case->healthpost->name,
+        'organization_address_province_district' =>($lab_details) ? '' : $case->healthpost->province->province_name .', '.$case->healthpost->district->district_name,
+        'organization_address_municipality_ward' => ($lab_details) ? '' : $case->healthpost->municipality->municipality_name .' - '.$case->healthpost->ward_no,
+        'organization_address' => ($lab_details) ? $lab_details->tole : $case->healthpost->office_address ?? '',
+        'organization_phone' => ($lab_details) ? $lab_details->phone : $case->healthpost->phone ?? '',
+        'organization_email' => ($lab_details) ? '' : $case->healthpost->email ?? '',
+        'current_date' => \Carbon\Carbon::now()->format('Y-m-d H:i'),
+
+        'name' => $case->name,
+        'formatted_age' => $case->age.' / '.$case->formated_age_unit,
+        'gender' => $case->formated_gender,
+        'address' => $case->district->district_name.', '.$case->municipality->municipality_name.' - '.$case->ward.', '.$case->tole,
+        'phone_no' => $case->emergency_contact_one.' / '.$case->emergency_contact_two,
+
+        'patient_no' => '',
+        'sample_no' => $sample_detail->token,
+        'sample_collected_date' => $sample_detail->created_at->format('Y-m-d H:i'),
+        'lab_no' => ($sample_detail->labreport !== null) ? $sample_detail->labreport->formated_token : '',
+        'sample_received_date' => ($sample_detail->labreport !== null) ? $sample_detail->labreport->sample_recv_date : '',
+        'date_and_time_of_analysis' => ($sample_detail->labreport !== null) ? $sample_detail->labreport->sample_test_date.' '.$sample_detail->labreport->sample_test_time : '',
+        'sample_tested_by' => ($sample_detail->labreport !== null) ? $sample_detail->labreport->checked_by_name : '',
+
+        'test_type' => ($sample_detail->service_for == "2") ? 'Rapid Antigen Test' : 'SARS-CoV-2 RNA Test',
+        'test_result' => $sample_detail->formatted_result
+    ];
+
+
+    return response()->json($case);
+});
+
 
 // external apis
 Route::get('/v1/ext/district', 'External\ExtDistrictController@index');

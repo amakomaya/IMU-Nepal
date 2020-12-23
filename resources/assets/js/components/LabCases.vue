@@ -18,7 +18,7 @@
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
       </tr>
       </thead>
-      <tr slot-scope="{item}">
+      <tr v-if="checkLatestResult(item)" slot-scope="{item}">
         <td><div v-if="checkForPositiveOnly(item.latest_anc)">Case ID : {{ item.case_id }}</div>
           <div v-if="item.parent_case_id !== null">Parent Case ID : {{ item.parent_case_id }}</div>
         </td>
@@ -41,7 +41,7 @@
         <td>
           <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"></div>
           <div v-else><span class="label label-primary"> Registered </span></div>
-          <div v-if="item.ancs.length > 0 && item.latest_anc.result == 9">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
+          <div v-if="item.ancs.length > 0">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
         </td>
         <td>
            <button v-if="item.latest_anc.result == 9" v-on:click="addResultInLab(item)" title="Add Result">
@@ -105,6 +105,12 @@ export default {
             filters: [
               {title: 'Swab ID ', name: 'ancs.token', type: 'string'},
               {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
+            ]
+          },
+          {
+            name: 'Lab Result',
+            filters: [
+              {title: 'Lab Result Created At', name: 'ancs.updated_at', type: 'datetime'}
             ]
           }
         ],
@@ -394,6 +400,11 @@ export default {
           return 'O';
       }
     },
+    checkLatestResult(item){
+      if(item.latest_anc.result == 9 ){
+        return true;
+      }
+    }
   }
 }
 

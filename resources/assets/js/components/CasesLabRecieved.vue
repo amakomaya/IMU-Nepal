@@ -40,7 +40,7 @@
         <td>
           <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"></div>
           <div v-else><span class="label label-primary"> Registered </span></div>
-          <div v-if="item.ancs.length > 0 && item.latest_anc.result == 9">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
+          <div v-if="item.ancs.length > 0">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
         </td>
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
@@ -117,6 +117,12 @@ export default {
             filters: [
               {title: 'Swab ID ', name: 'ancs.token', type: 'string'},
               {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
+            ]
+          },
+          {
+            name: 'Lab Result',
+            filters: [
+              {title: 'Lab Result Created At', name: 'ancs.updated_at', type: 'datetime'}
             ]
           }
         ],
@@ -375,6 +381,10 @@ export default {
     },
     editCaseDetails(token) {
       window.location.href = '/admin/patient/' + token + '/edit';
+      window.open(
+          '/admin/patient?token=' + token,
+          '_blank'
+      );
     }
   }
 }

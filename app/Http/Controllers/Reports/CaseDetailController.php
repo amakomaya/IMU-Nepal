@@ -20,8 +20,11 @@ class CaseDetailController extends Controller
     function getCaseDetail(Request $request)
     {
         $token = $request->token;
-        $data = SuspectedCase::withAll()->where('token', $token)->first();
-
+        $data = SuspectedCase::with(['ancs', 'healthworker', 'healthpost', 'district',
+            'municipality', 'caseManagement', 'clinicalParameter', 'contactDetail',
+            'contactFollowUp', 'contactTracing' , 'laboratoryParameter', 'registerBy', 'symptomsRelation'
+        ])
+            ->where('token', $token)->first();
         return view('backend.patient.detail', compact('data'));
     }
 

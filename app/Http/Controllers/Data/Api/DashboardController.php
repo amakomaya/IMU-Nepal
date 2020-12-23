@@ -24,7 +24,7 @@ class DashboardController extends Controller
 
         $dashboardCases = [];
 
-        SuspectedCase::whereIn('hp_code', $hpCodes)->active()->with('ancs')->chunk(500, function($rows) use (&$dashboardCases) {
+        SuspectedCase::whereIn('hp_code', $hpCodes)->active()->with('ancs')->chunk(1000, function($rows) use (&$dashboardCases) {
             $rows_calc = $rows->map(function ($value){
                 $data['token'] = $value['token'];
                 $data['case_created_at_in_24_hrs'] = $value['created_at'] >= Carbon::now()->subDay()->toDateTimeString() ? 1 : 0 ;

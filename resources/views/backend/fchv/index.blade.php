@@ -56,11 +56,7 @@
                                     Address : {{ $healthWorker->municipality->municipality_name ?? '' }}
                                 </td>
                                 <td>
-                                    {{ \App\Models\LabTest::where('lab_tests.hp_code', $healthWorker->hp_code)->leftJoin('ancs', function($join) {
-                                        $join->on('lab_tests.sample_token', '=', 'ancs.token');
-                                        })
-                                        ->whereNotNull('ancs.token')
-                                        ->get()->count() }}
+                                    {{ $healthWorker->lab_report_count }}
                                 </td>
                                 <td> 
                                     @if($healthWorker->status=='0')

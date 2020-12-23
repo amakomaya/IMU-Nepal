@@ -60,7 +60,7 @@ class BackupRestoreController
     {
         $errors = [];
         $success = [];
-        $cases = $builder->newQuery()->from('woman')->get();
+        $cases = $builder->newQuery()->from('patient')->get();
         $sample_collection = $builder->newQuery()->from('sample_collection')->get();
         $lab_test = $builder->newQuery()->from('lab_test')->get();
 

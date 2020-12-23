@@ -20,7 +20,7 @@
                                     <th>Hospitals</th>
                                     <th>Username</th>
                                     <th>Municipality</th>
-                                    <th>Registers</th>
+                                    <th>Sample Collection</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -28,17 +28,16 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
-                                            {{--<form method="post" action="{{ route('user-manager.login-as', $d->id)}}">--}}
                                             @php($id =  $d->user->id ?? '' )
-
-                                            <form method="post" action="{{url('admin/user-manager/'.$id.'/login-as')}}">
+                                            <form method="post"
+                                                  action="{{url('admin/user-manager/'.$d->user->id.'/login-as')}}">
                                                 {{csrf_field()}}
                                                 <a href="#" onclick="this.parentNode.submit()">{{ $d->name }}</a>
                                             </form>
                                         </td>
                                         <td>{{ $d->user->username ?? '' }}</td>
                                         <td>{{ $d->municipality->municipality_name ?? '' }}</td>
-                                        <td></td>
+                                        <td>{{ $d->sample_collection_count }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>

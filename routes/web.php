@@ -56,6 +56,7 @@ Route::resource('admin/lab-user', 'Backend\FchvController', ['names' => 'fchv'])
 Route::get('/admin/lab-patients', function (){
     return view('backend.lab.index');
 })->name('lab.patient.index');
+Route::get('/admin/lab-case-report', 'Backend\LabReportController@index')->name('lab.patient.report.index');
 Route::get('/admin/lab-negative-patients', function (){
     return view('backend.lab.negative-index');
 })->name('lab.negative.patients.index');

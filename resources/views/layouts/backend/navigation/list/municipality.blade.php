@@ -88,7 +88,12 @@
         </li>
     </ul>
 </li>
-
+<li>
+    <a href="{{ route('lab.patient.report.index') }}">
+        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+        Case Report
+    </a>
+</li>
 <li>
     <a href="{{ route('center.woman.map') }}">
     <i class="fa fa-map-marker"></i>

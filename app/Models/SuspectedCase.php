@@ -83,6 +83,11 @@ class SuspectedCase extends Model
         return $this->belongsTo(Municipality::class);
     }
 
+    public function registerBy()
+    {
+        return $this->hasOne('App\Models\OrganizationMember', 'token', 'created_by');
+    }
+
 
     public function ancs()
     {
@@ -108,6 +113,42 @@ class SuspectedCase extends Model
     {
         return $this->hasOne('App\Models\SampleCollection', 'woman_token', 'token')->with('labreport')->latest();
     }
+
+    public function caseManagement()
+    {
+        return $this->hasOne('App\Models\CaseManagement', 'woman_token', 'token');
+    }
+
+    public function clinicalParameter()
+    {
+        return $this->hasMany('App\Models\ClinicalParameter', 'woman_token', 'token');
+    }
+
+    public function contactDetail()
+    {
+        return $this->hasOne('App\Models\ContactDetail', 'contact_tracing_token', 'token');
+    }
+
+    public function contactFollowUp()
+    {
+        return $this->hasOne('App\Models\ContactFollowUp', 'contact_token', 'token');
+    }
+
+    public function contactTracing()
+    {
+        return $this->hasMany('App\Models\ContactTracing', 'woman_token', 'token');
+    }
+
+    public function laboratoryParameter()
+    {
+        return $this->hasMany('App\Models\LaboratoryParameter', 'woman_token', 'token');
+    }
+
+    public function symptomsRelation()
+    {
+        return $this->hasMany('App\Models\Symptoms', 'woman_token', 'token');
+    }
+
 
     public function getFormatedAgeUnitAttribute(){
         return $this->ageUnitCheck($this->age_unit);
@@ -135,6 +176,69 @@ class SuspectedCase extends Model
                 return 'Don\'t Know';
         }
     }
+
+    public function occupation($data){
+        switch($data){
+            case '1':
+                return 'Front Line Healthworker';
+
+            case '2':
+                return 'Doctor';
+
+            case '3':
+                return 'Nurse';
+
+            case '4':
+                return 'Police / Army';
+
+            case '5':
+                return 'Business / Industry';
+
+            case '6':
+                return 'Teacher / Student ( Education )';
+
+            case '7':
+                return 'Civil Servant';
+
+            case '8':
+                return 'Journalist';
+
+            case '9':
+                return 'Agriculture';
+
+            case '10':
+                return 'Transport / Delivery';
+
+            default:
+                return 'Other';
+        }
+    }
+
+    public function caste($data){
+        switch($data){
+            case '0':
+                return 'Dalit';
+
+            case '1':
+                return 'Janajati';
+
+            case '2':
+                return 'Madhesi';
+
+            case '3':
+                return 'Muslim';
+
+            case '4':
+                return 'Brahmin / Chhetri';
+
+            case '5':
+                return 'Other';
+            default:
+                return 'Dnt\'t Know';
+        }
+    }
+
+
 
     public function scopeActivePatientList($query){
         return $query->whereHas('latestAnc', function ($latest_anc_query) {
