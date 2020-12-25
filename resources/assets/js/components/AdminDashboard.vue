@@ -256,7 +256,8 @@
                   <loading-progress
                       :progress="progress"
                       :indeterminate="indeterminate"
-                      size="40"
+                      shape="line"
+                      size="30"
                   />
                 </div>
                 <div class="huge">{{ report.lab_result_negative_in_24_hrs }}</div>

@@ -2952,6 +2952,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -38853,7 +38854,8 @@ var render = function() {
                               attrs: {
                                 progress: _vm.progress,
                                 indeterminate: _vm.indeterminate,
-                                size: "40"
+                                shape: "line",
+                                size: "30"
                               }
                             })
                           ],
