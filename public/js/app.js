@@ -2841,6 +2841,117 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -8120,6 +8231,25 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, "html[data-v-25c67949] {\n  width: 100%;\n  height: 100%;\n}\nbody[data-v-25c67949] {\n  width: 100%;\n  height: 100%;\n  margin: 0;\n  color: #484746;\n  background: #fafafa;\n  font-family: Helvetica, sans-serif;\n  font-size: 13px;\n  line-height: 16px;\n  -webkit-font-smoothing: antialiased;\n}\n*[data-v-25c67949] {\n  box-sizing: border-box;\n}\n.container[data-v-25c67949] {\n  width: 100%;\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n}\n.navbar[data-v-25c67949] {\n  background: #fff;\n  height: 45px;\n  border-bottom: 2px solid rgba(63, 63, 68, 0.1);\n}\n.content[data-v-25c67949] {\n  width: 1000px;\n  margin: 0 auto;\n  overflow-y: scroll;\n  padding: 15px;\n}\n.panel[data-v-25c67949] {\n  background: #fff;\n  margin-bottom: 16px;\n  border-radius: 2px;\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);\n}\n.panel-heading[data-v-25c67949] {\n  padding: 8px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  border-bottom: 1px solid rgba(63, 63, 68, 0.1);\n}\n.panel-title[data-v-25c67949] {\n  font-size: 18px;\n  line-height: 24px;\n}\n.panel-body[data-v-25c67949] {\n  padding: 8px;\n}\n.panel-footer[data-v-25c67949] {\n  padding: 8px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  border-top: 1px solid rgba(63, 63, 68, 0.1);\n}\n.table[data-v-25c67949] {\n  width: 100%;\n  border-collapse: collapse;\n}\n.table thead tr th[data-v-25c67949] {\n  text-align: left;\n  border-bottom: 2px solid rgba(63, 63, 68, 0.1);\n  padding: 5px;\n  font-weight: bold;\n}\n.table tbody tr[data-v-25c67949] {\n  border-top: 1px solid rgba(63, 63, 68, 0.1);\n}\n.table tbody tr td[data-v-25c67949] {\n  vertical-align: top;\n  padding: 5px;\n}\n.table tbody tr[data-v-25c67949]:nth-of-type(odd) {\n  background: #fcfcfc;\n}\nselect[data-v-25c67949] {\n  background: #fafafa;\n  border: none;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.01);\n  border-radius: 1px;\n  box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.1);\n}\n.form-control[data-v-25c67949] {\n  color: #484746;\n  line-height: 13px;\n  font-size: 13px;\n  height: 32px;\n  background: #fafafa;\n  border: none;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.01);\n  border-radius: 1px;\n  box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.1);\n  padding: 8px;\n  width: 100%;\n  display: block;\n}\n.filter-item[data-v-25c67949] {\n  margin-bottom: 15px;\n  display: flex;\n}\n.filter-column[data-v-25c67949] {\n  padding-right: 15px;\n  width: 25%;\n}\n.filter-operator[data-v-25c67949] {\n  padding-right: 15px;\n  width: 25%;\n}\n.filter-query_1[data-v-25c67949] {\n  width: 24%;\n  padding-right: 15px;\n}\n.filter-full[data-v-25c67949] {\n  width: 48%;\n}\n.filter-query_2[data-v-25c67949] {\n  width: 24%;\n}\n.filter-remove[data-v-25c67949] {\n  width: 2%;\n  text-align: right;\n}\n.filter-remove button[data-v-25c67949] {\n  color: #e75650;\n  background: transparent;\n  border: none;\n  font-weight: bold;\n}\n.btn[data-v-25c67949] {\n  border: none;\n  border-radius: 2px;\n  padding: 5px 10px;\n  display: inline-block;\n  position: relative;\n  text-shadow: none;\n  cursor: pointer;\n  transition: background 0.2s;\n  color: #484746;\n  background: #ececec;\n  border-bottom: 1px solid lightgray;\n}\n.btn-primary[data-v-25c67949] {\n  background: #3aa3e3;\n  color: #fff;\n  border-bottom: 1px solid #1d8acd;\n}\n.btn-secondary[data-v-25c67949] {\n  background: #2c405a;\n  color: #fff;\n  border-bottom: 1px solid #1b2838;\n}\n.filterable-export[data-v-25c67949] {\n  margin-bottom: 15px;\n  display: flex;\n  justify-content: space-between;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-progress-path/dist/vue-progress-path.css":
+/*!***************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-progress-path/dist/vue-progress-path.css ***!
+  \***************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".vue-progress-path{display:inline-block}.vue-progress-path path{fill:none;stroke-width:6;transition:stroke-dashoffset .3s ease-in-out}.vue-progress-path .background{stroke:#ddd}.vue-progress-path .progress{stroke:#40b883}.vue-progress-path.indeterminate path{transition:none}", ""]);
 
 // exports
 
@@ -38374,10 +38504,25 @@ var render = function() {
                   _vm._m(1),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    Object.keys(_vm.report).length === 0
+                      ? _c(
+                          "div",
+                          [
+                            _c("loading-progress", {
+                              attrs: {
+                                progress: _vm.progress,
+                                indeterminate: _vm.indeterminate,
+                                shape: "line",
+                                size: "30"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c("div", { staticClass: "huge" }, [
-                      _vm._v(
-                        _vm._s(_vm.report.in_lab_received_in_24_hrs || "xxxx")
-                      )
+                      _vm._v(_vm._s(_vm.report.in_lab_received_in_24_hrs))
                     ]),
                     _vm._v(" "),
                     _c("div", [_vm._v("Lab Received")])
@@ -38394,12 +38539,26 @@ var render = function() {
                   _vm._m(2),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    Object.keys(_vm.report).length === 0
+                      ? _c(
+                          "div",
+                          [
+                            _c("loading-progress", {
+                              attrs: {
+                                progress: _vm.progress,
+                                indeterminate: _vm.indeterminate,
+                                shape: "line",
+                                size: "30"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c("div", { staticClass: "huge" }, [
                       _vm._v(
-                        _vm._s(
-                          _vm.report.in_lab_received_positive_in_24_hrs ||
-                            "xxxx"
-                        )
+                        _vm._s(_vm.report.in_lab_received_positive_in_24_hrs)
                       )
                     ]),
                     _vm._v(" "),
@@ -38417,12 +38576,26 @@ var render = function() {
                   _vm._m(3),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    Object.keys(_vm.report).length === 0
+                      ? _c(
+                          "div",
+                          [
+                            _c("loading-progress", {
+                              attrs: {
+                                progress: _vm.progress,
+                                indeterminate: _vm.indeterminate,
+                                shape: "line",
+                                size: "30"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c("div", { staticClass: "huge" }, [
                       _vm._v(
-                        _vm._s(
-                          _vm.report.in_lab_received_negative_in_24_hrs ||
-                            "xxxx"
-                        )
+                        _vm._s(_vm.report.in_lab_received_negative_in_24_hrs)
                       )
                     ]),
                     _vm._v(" "),
@@ -38442,8 +38615,25 @@ var render = function() {
                   _vm._m(5),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    Object.keys(_vm.report).length === 0
+                      ? _c(
+                          "div",
+                          [
+                            _c("loading-progress", {
+                              attrs: {
+                                progress: _vm.progress,
+                                indeterminate: _vm.indeterminate,
+                                shape: "line",
+                                size: "30"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.in_lab_received || "xxxx"))
+                      _vm._v(_vm._s(_vm.report.in_lab_received))
                     ]),
                     _vm._v(" "),
                     _c("div", [_vm._v("Lab Received")])
@@ -38462,10 +38652,25 @@ var render = function() {
                   _vm._m(7),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    Object.keys(_vm.report).length === 0
+                      ? _c(
+                          "div",
+                          [
+                            _c("loading-progress", {
+                              attrs: {
+                                progress: _vm.progress,
+                                indeterminate: _vm.indeterminate,
+                                shape: "line",
+                                size: "30"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c("div", { staticClass: "huge" }, [
-                      _vm._v(
-                        _vm._s(_vm.report.in_lab_received_positive || "xxxx")
-                      )
+                      _vm._v(_vm._s(_vm.report.in_lab_received_positive))
                     ]),
                     _vm._v(" "),
                     _c("div", [_vm._v("Positive")])
@@ -38484,10 +38689,25 @@ var render = function() {
                   _vm._m(9),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    Object.keys(_vm.report).length === 0
+                      ? _c(
+                          "div",
+                          [
+                            _c("loading-progress", {
+                              attrs: {
+                                progress: _vm.progress,
+                                indeterminate: _vm.indeterminate,
+                                shape: "line",
+                                size: "30"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c("div", { staticClass: "huge" }, [
-                      _vm._v(
-                        _vm._s(_vm.report.in_lab_received_negative || "xxxx")
-                      )
+                      _vm._v(_vm._s(_vm.report.in_lab_received_negative))
                     ]),
                     _vm._v(" "),
                     _c("div", [_vm._v("Negative")])
@@ -38505,8 +38725,7 @@ var render = function() {
               _vm._v("Last 24 hours update | "),
               _c("sub", [
                 _vm._v(
-                  " Registered : " +
-                    _vm._s(_vm.report.registered_in_24_hrs || "xxxx")
+                  " Registered : " + _vm._s(_vm.report.registered_in_24_hrs)
                 )
               ])
             ])
@@ -38519,10 +38738,25 @@ var render = function() {
                   _vm._m(11),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    Object.keys(_vm.report).length === 0
+                      ? _c(
+                          "div",
+                          [
+                            _c("loading-progress", {
+                              attrs: {
+                                progress: _vm.progress,
+                                indeterminate: _vm.indeterminate,
+                                shape: "line",
+                                size: "30"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c("div", { staticClass: "huge" }, [
-                      _vm._v(
-                        _vm._s(_vm.report.sample_collection_in_24_hrs || "xxxx")
-                      )
+                      _vm._v(_vm._s(_vm.report.sample_collection_in_24_hrs))
                     ]),
                     _vm._v(" "),
                     _c("div", [_vm._v("Swab Collection")])
@@ -38539,11 +38773,26 @@ var render = function() {
                   _vm._m(12),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    Object.keys(_vm.report).length === 0
+                      ? _c(
+                          "div",
+                          [
+                            _c("loading-progress", {
+                              attrs: {
+                                progress: _vm.progress,
+                                indeterminate: _vm.indeterminate,
+                                shape: "line",
+                                size: "30"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c("div", { staticClass: "huge" }, [
                       _vm._v(
-                        _vm._s(
-                          _vm.report.sample_received_in_lab_in_24_hrs || "xxxx"
-                        )
+                        _vm._s(_vm.report.sample_received_in_lab_in_24_hrs)
                       )
                     ]),
                     _vm._v(" "),
@@ -38561,12 +38810,25 @@ var render = function() {
                   _vm._m(13),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
-                    _c("div", { staticClass: "huge" }, [
-                      _vm._v(
-                        _vm._s(
-                          _vm.report.lab_result_positive_in_24_hrs || "xxxx"
+                    Object.keys(_vm.report).length === 0
+                      ? _c(
+                          "div",
+                          [
+                            _c("loading-progress", {
+                              attrs: {
+                                progress: _vm.progress,
+                                indeterminate: _vm.indeterminate,
+                                shape: "line",
+                                size: "30"
+                              }
+                            })
+                          ],
+                          1
                         )
-                      )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "huge" }, [
+                      _vm._v(_vm._s(_vm.report.lab_result_positive_in_24_hrs))
                     ]),
                     _vm._v(" "),
                     _c("div", [_vm._v("Positive")])
@@ -38583,12 +38845,24 @@ var render = function() {
                   _vm._m(14),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
-                    _c("div", { staticClass: "huge" }, [
-                      _vm._v(
-                        _vm._s(
-                          _vm.report.lab_result_negative_in_24_hrs || "xxxx"
+                    Object.keys(_vm.report).length === 0
+                      ? _c(
+                          "div",
+                          [
+                            _c("loading-progress", {
+                              attrs: {
+                                progress: _vm.progress,
+                                indeterminate: _vm.indeterminate,
+                                size: "40"
+                              }
+                            })
+                          ],
+                          1
                         )
-                      )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "huge" }, [
+                      _vm._v(_vm._s(_vm.report.lab_result_negative_in_24_hrs))
                     ]),
                     _vm._v(" "),
                     _c("div", [_vm._v("Negative")])
@@ -38604,9 +38878,7 @@ var render = function() {
             _c("h3", [
               _vm._v("Total Records | "),
               _c("sub", [
-                _vm._v(
-                  " Registered : " + _vm._s(_vm.report.registered || "xxxx")
-                )
+                _vm._v(" Registered : " + _vm._s(_vm.report.registered))
               ])
             ])
           ]),
@@ -38618,8 +38890,25 @@ var render = function() {
                   _vm._m(15),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    Object.keys(_vm.report).length === 0
+                      ? _c(
+                          "div",
+                          [
+                            _c("loading-progress", {
+                              attrs: {
+                                progress: _vm.progress,
+                                indeterminate: _vm.indeterminate,
+                                shape: "line",
+                                size: "30"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.sample_collection || "xxxx"))
+                      _vm._v(_vm._s(_vm.report.sample_collection))
                     ]),
                     _vm._v(" "),
                     _c("div", [_vm._v("Swab Collection")])
@@ -38638,10 +38927,25 @@ var render = function() {
                   _vm._m(17),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    Object.keys(_vm.report).length === 0
+                      ? _c(
+                          "div",
+                          [
+                            _c("loading-progress", {
+                              attrs: {
+                                progress: _vm.progress,
+                                indeterminate: _vm.indeterminate,
+                                shape: "line",
+                                size: "30"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c("div", { staticClass: "huge" }, [
-                      _vm._v(
-                        _vm._s(_vm.report.sample_received_in_lab || "xxxx")
-                      )
+                      _vm._v(_vm._s(_vm.report.sample_received_in_lab))
                     ]),
                     _vm._v(" "),
                     _c("div", [_vm._v("Lab Received")])
@@ -38660,8 +38964,25 @@ var render = function() {
                   _vm._m(19),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    Object.keys(_vm.report).length === 0
+                      ? _c(
+                          "div",
+                          [
+                            _c("loading-progress", {
+                              attrs: {
+                                progress: _vm.progress,
+                                indeterminate: _vm.indeterminate,
+                                shape: "line",
+                                size: "30"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.lab_result_positive || "xxxx"))
+                      _vm._v(_vm._s(_vm.report.lab_result_positive))
                     ]),
                     _vm._v(" "),
                     _c("div", [_vm._v("Positive")])
@@ -38680,8 +39001,25 @@ var render = function() {
                   _vm._m(21),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-xs-9 text-right" }, [
+                    Object.keys(_vm.report).length === 0
+                      ? _c(
+                          "div",
+                          [
+                            _c("loading-progress", {
+                              attrs: {
+                                progress: _vm.progress,
+                                indeterminate: _vm.indeterminate,
+                                shape: "line",
+                                size: "30"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.lab_result_negative || "xxxx"))
+                      _vm._v(_vm._s(_vm.report.lab_result_negative))
                     ]),
                     _vm._v(" "),
                     _c("div", [_vm._v("Negative")])
@@ -43896,6 +44234,319 @@ function normalizeComponent (
   }
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/vue-progress-path/dist/vue-progress-path.css":
+/*!*******************************************************************!*\
+  !*** ./node_modules/vue-progress-path/dist/vue-progress-path.css ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./vue-progress-path.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-progress-path/dist/vue-progress-path.css");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/vue-progress-path/dist/vue-progress-path.esm.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/vue-progress-path/dist/vue-progress-path.esm.js ***!
+  \**********************************************************************/
+/*! exports provided: globalOptions, Progress, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "globalOptions", function() { return globalOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Progress", function() { return Progress$$1; });
+var shapes = {
+  circle: function circle(size) {
+    return "\n  \tM " + size / 2 + ", " + size / 2 + "\n    m 0, -" + size / 2 + "\n    a " + size / 2 + "," + size / 2 + " 0 1 1 0," + size + "\n    a " + size / 2 + "," + size / 2 + " 0 1 1 0,-" + size + "\n  ";
+  },
+  semicircle: function semicircle(size) {
+    return "\n  \tM " + size / 2 + ", " + size / 2 + "\n    m -" + size / 2 + ", 0\n    a " + size / 2 + "," + size / 2 + " 0 1 1 " + size + ",0\n  ";
+  },
+  line: function line(size) {
+    return "\n  \tM 0," + size / 2 + "\n    L " + size + "," + size / 2 + "\n  ";
+  },
+  square: function square(size) {
+    return "\n  \tM 0,0\n    L " + size + ",0\n    L " + size + "," + size + "\n    L 0," + size + "\n    Z\n\t";
+  }
+};
+
+var Progress$$1 = { render: function render() {
+		var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "vue-progress-path", class: _vm.cssClass, style: _vm.style }, [_c('svg', { attrs: { "width": _vm.finalWidth, "height": _vm.finalHeight, "viewBox": '0 0 ' + _vm.finalWidth + ' ' + _vm.finalHeight } }, [_c('g', { attrs: { "transform": 'translate(' + (_vm.finalWidth - _vm.size) / 2 + ', ' + (_vm.finalHeight - _vm.size) / 2 + ') rotate(' + _vm.finalRotation + ', ' + _vm.size / 2 + ', ' + _vm.size / 2 + ')' } }, [_c('g', { staticClass: "container" }, [!_vm.hideBackground ? _c('path', { staticClass: "background", attrs: { "d": _vm.path } }) : _vm._e(), _c('path', { ref: "path", staticClass: "progress", attrs: { "d": _vm.path, "stroke-dasharray": _vm.finalDasharray + ' ' + _vm.finalDasharray, "stroke-dashoffset": _vm.finalDashoffset } })])])])]);
+	}, staticRenderFns: [],
+	name: 'Progress',
+
+	props: {
+		counterClockwise: {
+			type: Boolean,
+			default: false
+		},
+		fillDuration: {
+			type: [String, Number],
+			default: 1
+		},
+		height: {
+			type: [String, Number],
+			default: 0
+		},
+		hideBackground: {
+			type: Boolean,
+			default: false
+		},
+		indeterminate: {
+			type: Boolean,
+			default: false
+		},
+		progress: {
+			type: Number,
+			default: 0,
+			validate: function validate(value) {
+				return value >= -1 && value <= 1;
+			}
+		},
+		rotate: {
+			type: Boolean,
+			default: false
+		},
+		rotationDuration: {
+			type: [String, Number],
+			default: 1
+		},
+		shape: {
+			type: String,
+			default: null
+		},
+		size: {
+			type: [String, Number],
+			default: 100
+		},
+		staticPath: {
+			type: Boolean,
+			default: false
+		},
+		width: {
+			type: [String, Number],
+			default: 0
+		}
+	},
+
+	data: function data() {
+		return {
+			dasharray: 0,
+			dashoffset: 0,
+			rotation: 0,
+			animating: false
+		};
+	},
+
+
+	computed: {
+		cssClass: function cssClass() {
+			return {
+				'indeterminate': this.indeterminate
+			};
+		},
+		finalDasharray: function finalDasharray() {
+			return this.finalDashoffset === 0 || this.finalDashoffset === this.dasharray * 2 ? 0 : this.dasharray;
+		},
+		finalDashoffset: function finalDashoffset() {
+			if (this.animating) {
+				return this.dashoffset;
+			} else {
+				if (this.finalProgress < 0) {
+					return -this.dasharray * this.finalProgress + this.dasharray;
+				} else {
+					return (1 - this.finalProgress) * this.dasharray;
+				}
+			}
+		},
+		finalHeight: function finalHeight() {
+			return this.height || parseFloat(this.size) + 50;
+		},
+		finalProgress: function finalProgress() {
+			if (this.counterClockwise) {
+				return -this.progress;
+			} else {
+				return this.progress;
+			}
+		},
+		finalRotation: function finalRotation() {
+			return this.animating ? this.rotation : 0;
+		},
+		finalShape: function finalShape() {
+			if (this.shape) {
+				return this.shape;
+			} else {
+				return globalOptions.defaultShape;
+			}
+		},
+		finalWidth: function finalWidth() {
+			return this.width || parseFloat(this.size) + 50;
+		},
+		style: function style() {
+			return {
+				width: this.finalWidth + 'px',
+				height: this.finalHeight + 'px'
+			};
+		},
+		svgStyle: function svgStyle() {
+			return {};
+		},
+		path: function path() {
+			var path = shapes[this.finalShape] || this.finalShape;
+			if (path) {
+				if (typeof path === 'function') {
+					path = path(this.size);
+				}
+				return path;
+			}
+		}
+	},
+
+	watch: {
+		indeterminate: {
+			handler: function handler(value) {
+				if (value) {
+					this.startAnimation();
+				} else {
+					this.stopAnimation();
+				}
+			},
+
+			immediate: true
+		},
+
+		path: {
+			handler: function handler() {
+				var _this = this;
+
+				this.$nextTick(function () {
+					_this.dasharray = _this.$refs.path.getTotalLength();
+				});
+			},
+
+			immediate: true
+		}
+	},
+
+	methods: {
+		frame: function frame(timestamp) {
+			var time = timestamp - this._animationLastFrame;
+			this._animationLastFrame = timestamp;
+
+			if (this.rotate) {
+				var direction = this.counterClockwise ? -1 : 1;
+				var d = time * 360 / (parseFloat(this.rotationDuration) * 1000);
+				this.rotation += d * direction;
+				if (this.counterClockwise) {
+					if (this.rotation < 0) {
+						this.rotation += 360;
+					}
+				} else {
+					if (this.rotation > 360) {
+						this.rotation -= 360;
+					}
+				}
+			}
+
+			if (!this.staticPath) {
+				var range = this.dasharray * 2;
+				var _direction = this.counterClockwise ? 1 : -1;
+				var _d = time * range / (parseFloat(this.fillDuration) * 1000);
+				this.dashoffset += _d * _direction;
+				if (this.counterClockwise) {
+					if (this.dashoffset < 0) {
+						this.dashoffset += range;
+					}
+				} else {
+					if (this.dashoffset > range) {
+						this.dashoffset -= range;
+					}
+				}
+			}
+
+			if (this.animating) {
+				requestAnimationFrame(this.frame);
+			}
+		},
+		startAnimation: function startAnimation() {
+			this.dashoffset = this.dasharray;
+			this.rotation = 0;
+			this.animating = true;
+			this._animationLastFrame = performance.now();
+			requestAnimationFrame(this.frame);
+		},
+		stopAnimation: function stopAnimation() {
+			this.animating = false;
+		}
+	},
+
+	beforeDestroy: function beforeDestroy() {
+		this.stopAnimation();
+	}
+};
+
+// import { setOptions } from './options'
+
+var globalOptions = {};
+
+function registerComponents(Vue, prefix) {
+	Vue.component(prefix + 'progress', Progress$$1);
+}
+
+var plugin = {
+	// eslint-disable-next-line no-undef
+	version: "0.0.2",
+	install: function install(Vue, options) {
+		globalOptions = Object.assign({}, {
+			installComponents: true,
+			componentsPrefix: 'loading-',
+			defaultShape: 'circle'
+		}, options);
+
+		if (globalOptions.installComponents) {
+			registerComponents(Vue, globalOptions.componentsPrefix);
+		}
+	}
+};
+
+// Auto-install
+var GlobalVue = null;
+if (typeof window !== 'undefined') {
+	GlobalVue = window.Vue;
+} else if (typeof global !== 'undefined') {
+	GlobalVue = global.Vue;
+}
+if (GlobalVue) {
+	GlobalVue.use(plugin);
+}
+
+
+/* harmony default export */ __webpack_exports__["default"] = (plugin);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -87148,22 +87799,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_12__);
 /* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vuelidate */ "./node_modules/vuelidate/lib/index.js");
 /* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(vuelidate__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var _components_CasesRegisteredOrPending_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/CasesRegisteredOrPending.vue */ "./resources/assets/js/components/CasesRegisteredOrPending.vue");
-/* harmony import */ var _components_CasesNegative__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/CasesNegative */ "./resources/assets/js/components/CasesNegative.vue");
-/* harmony import */ var _components_CasesPositive__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/CasesPositive */ "./resources/assets/js/components/CasesPositive.vue");
-/* harmony import */ var _components_CasesLabRecieved__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/CasesLabRecieved */ "./resources/assets/js/components/CasesLabRecieved.vue");
-/* harmony import */ var _components_CasesClosedRecovered__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/CasesClosedRecovered */ "./resources/assets/js/components/CasesClosedRecovered.vue");
-/* harmony import */ var _components_CasesClosedDeath__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/CasesClosedDeath */ "./resources/assets/js/components/CasesClosedDeath.vue");
-/* harmony import */ var _components_LabCases__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/LabCases */ "./resources/assets/js/components/LabCases.vue");
-/* harmony import */ var _components_LabNegativeCases__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/LabNegativeCases */ "./resources/assets/js/components/LabNegativeCases.vue");
-/* harmony import */ var _components_LabPositiveCases__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/LabPositiveCases */ "./resources/assets/js/components/LabPositiveCases.vue");
-/* harmony import */ var _components_viewCaseDetailReport__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./components/viewCaseDetailReport */ "./resources/assets/js/components/viewCaseDetailReport.vue");
-/* harmony import */ var _components_LabCaseReport_vue__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/LabCaseReport.vue */ "./resources/assets/js/components/LabCaseReport.vue");
-/* harmony import */ var _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/AdminDashboard */ "./resources/assets/js/components/AdminDashboard.vue");
-/* harmony import */ var _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./components/SelectYearMonth */ "./resources/assets/js/components/SelectYearMonth.vue");
-/* harmony import */ var v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! v-nepalidatepicker */ "./node_modules/v-nepalidatepicker/dist/v-nepalidatepicker.esm.js");
-/* harmony import */ var vue_json_excel__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! vue-json-excel */ "./node_modules/vue-json-excel/JsonExcel.vue");
-/* harmony import */ var v_mask__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! v-mask */ "./node_modules/v-mask/dist/v-mask.esm.js");
+/* harmony import */ var vue_progress_path_dist_vue_progress_path_css__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vue-progress-path/dist/vue-progress-path.css */ "./node_modules/vue-progress-path/dist/vue-progress-path.css");
+/* harmony import */ var vue_progress_path_dist_vue_progress_path_css__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(vue_progress_path_dist_vue_progress_path_css__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var vue_progress_path__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! vue-progress-path */ "./node_modules/vue-progress-path/dist/vue-progress-path.esm.js");
+/* harmony import */ var _components_CasesRegisteredOrPending_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/CasesRegisteredOrPending.vue */ "./resources/assets/js/components/CasesRegisteredOrPending.vue");
+/* harmony import */ var _components_CasesNegative__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/CasesNegative */ "./resources/assets/js/components/CasesNegative.vue");
+/* harmony import */ var _components_CasesPositive__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/CasesPositive */ "./resources/assets/js/components/CasesPositive.vue");
+/* harmony import */ var _components_CasesLabRecieved__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/CasesLabRecieved */ "./resources/assets/js/components/CasesLabRecieved.vue");
+/* harmony import */ var _components_CasesClosedRecovered__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/CasesClosedRecovered */ "./resources/assets/js/components/CasesClosedRecovered.vue");
+/* harmony import */ var _components_CasesClosedDeath__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/CasesClosedDeath */ "./resources/assets/js/components/CasesClosedDeath.vue");
+/* harmony import */ var _components_LabCases__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/LabCases */ "./resources/assets/js/components/LabCases.vue");
+/* harmony import */ var _components_LabNegativeCases__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./components/LabNegativeCases */ "./resources/assets/js/components/LabNegativeCases.vue");
+/* harmony import */ var _components_LabPositiveCases__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/LabPositiveCases */ "./resources/assets/js/components/LabPositiveCases.vue");
+/* harmony import */ var _components_viewCaseDetailReport__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/viewCaseDetailReport */ "./resources/assets/js/components/viewCaseDetailReport.vue");
+/* harmony import */ var _components_LabCaseReport_vue__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./components/LabCaseReport.vue */ "./resources/assets/js/components/LabCaseReport.vue");
+/* harmony import */ var _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./components/AdminDashboard */ "./resources/assets/js/components/AdminDashboard.vue");
+/* harmony import */ var _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./components/SelectYearMonth */ "./resources/assets/js/components/SelectYearMonth.vue");
+/* harmony import */ var v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! v-nepalidatepicker */ "./node_modules/v-nepalidatepicker/dist/v-nepalidatepicker.esm.js");
+/* harmony import */ var vue_json_excel__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! vue-json-excel */ "./node_modules/vue-json-excel/JsonExcel.vue");
+/* harmony import */ var v_mask__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! v-mask */ "./node_modules/v-mask/dist/v-mask.esm.js");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_progress_path__WEBPACK_IMPORTED_MODULE_15__["default"], {// defaultShape: 'circle',
+});
 
 
 
@@ -87181,23 +87853,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_mask__WEBPACK_IMPORTED_MODULE_29__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_27__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('downloadExcel', vue_json_excel__WEBPACK_IMPORTED_MODULE_28__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_mask__WEBPACK_IMPORTED_MODULE_31__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_29__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('downloadExcel', vue_json_excel__WEBPACK_IMPORTED_MODULE_30__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$userRole = document.querySelector("meta[name='user-role']").getAttribute('content');
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_13___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_status_indicator__WEBPACK_IMPORTED_MODULE_2__["default"]);
@@ -87209,20 +87867,20 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_dialogs__WEBPACK_IMPORTED_MODUL
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('qr-code', vue_qrcode_component__WEBPACK_IMPORTED_MODULE_8__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_html_to_paper__WEBPACK_IMPORTED_MODULE_9___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_10___default.a);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('women-list', _components_CasesRegisteredOrPending_vue__WEBPACK_IMPORTED_MODULE_14__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('women-list-negative', _components_CasesNegative__WEBPACK_IMPORTED_MODULE_15__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('women-list-positive', _components_CasesPositive__WEBPACK_IMPORTED_MODULE_16__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-patient-list', _components_LabCases__WEBPACK_IMPORTED_MODULE_20__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('women-list-lab-received', _components_CasesLabRecieved__WEBPACK_IMPORTED_MODULE_17__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('cases-closed-recovered', _components_CasesClosedRecovered__WEBPACK_IMPORTED_MODULE_18__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('cases-closed-death', _components_CasesClosedDeath__WEBPACK_IMPORTED_MODULE_19__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-negative-patient-list', _components_LabNegativeCases__WEBPACK_IMPORTED_MODULE_21__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-positive-patient-list', _components_LabPositiveCases__WEBPACK_IMPORTED_MODULE_22__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('women-list', _components_CasesRegisteredOrPending_vue__WEBPACK_IMPORTED_MODULE_16__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('women-list-negative', _components_CasesNegative__WEBPACK_IMPORTED_MODULE_17__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('women-list-positive', _components_CasesPositive__WEBPACK_IMPORTED_MODULE_18__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-patient-list', _components_LabCases__WEBPACK_IMPORTED_MODULE_22__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('women-list-lab-received', _components_CasesLabRecieved__WEBPACK_IMPORTED_MODULE_19__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('cases-closed-recovered', _components_CasesClosedRecovered__WEBPACK_IMPORTED_MODULE_20__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('cases-closed-death', _components_CasesClosedDeath__WEBPACK_IMPORTED_MODULE_21__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-negative-patient-list', _components_LabNegativeCases__WEBPACK_IMPORTED_MODULE_23__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-positive-patient-list', _components_LabPositiveCases__WEBPACK_IMPORTED_MODULE_24__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('vaccination-chart');
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('admin-dashboard', _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_25__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('select-year-month', _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_26__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-case-report', _components_LabCaseReport_vue__WEBPACK_IMPORTED_MODULE_24__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('case-detail', _components_viewCaseDetailReport__WEBPACK_IMPORTED_MODULE_23__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('admin-dashboard', _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_27__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('select-year-month', _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_28__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-case-report', _components_LabCaseReport_vue__WEBPACK_IMPORTED_MODULE_26__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('case-detail', _components_viewCaseDetailReport__WEBPACK_IMPORTED_MODULE_25__["default"]);
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app'
 });
