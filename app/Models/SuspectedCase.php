@@ -111,7 +111,7 @@ class SuspectedCase extends Model
 
     public function latestAnc()
     {
-        return $this->hasOne('App\Models\SampleCollection', 'woman_token', 'token')->with('labreport')->latest();
+        return $this->hasOne('App\Models\SampleCollection', 'woman_token', 'token')->latest()->with('labreport');
     }
 
     public function caseManagement()
