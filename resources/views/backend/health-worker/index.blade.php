@@ -40,7 +40,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     @if($role=="healthworker")
-                        Healthworker
+                        Users
                     @else
                         Lab Users
                     @endif
@@ -57,7 +57,7 @@
                                 <th>User ID</th>
                                 @if(Auth::user()->role!="main")
                                 <th>Districts</th>                                     
-                                <th>Health Post</th> 
+                                <th>Organization Name</th>
                                 @endif
                                 <th>Post</th>                                     
                                 <th>Phone No:</th>  

@@ -1,7 +1,7 @@
 <li>
     <a href="#">
     <i class="fa fa-user" aria-hidden="true"></i>
-    {{ trans('sidebar.health_worker') }} <span class="fa arrow"></span>
+    Users <span class="fa arrow"></span>
     </a>
 
     <ul class="nav nav-second-level">
@@ -15,25 +15,6 @@
         @endif
     </ul>
 </li>
-{{--<li>--}}
-{{--    <a href="#">--}}
-{{--    <i class="fa fa-user" aria-hidden="true"></i>--}}
-
-{{--    Lab Users <span class="fa arrow"></span>--}}
-{{--    </a>--}}
-
-{{--    <ul class="nav nav-second-level">--}}
-{{--        <li>--}}
-{{--            <a href="{{ route('fchv.index') }}">{{ trans('sidebar.list') }}</a>--}}
-{{--        </li>--}}
-{{--        @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')--}}
-{{--        <li>--}}
-{{--            <a href="{{ route('fchv.create') }}">{{ trans('sidebar.create') }}</a>--}}
-{{--        </li>--}}
-{{--        @endif--}}
-{{--    </ul>--}}
-{{--</li>--}}
-
 <li>
     <a href="#">
         <i class="fa fa-user" aria-hidden="true"></i>

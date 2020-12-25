@@ -10,9 +10,9 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             @if (isset($data))
-                                Edit Health Worker
+                                Edit User
                             @else
-                                Create Health Worker
+                                Create User
                             @endif
                         </div>
                         <!-- /.panel-heading -->

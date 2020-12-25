@@ -75,6 +75,7 @@ class HealthWorkerController extends Controller
         $districts = District::where('id', $healthpost->district_id)->get();
         $municipalities = Municipality::where('id', $healthpost->municipality_id)->get();
         // $wards = Ward::where([['ward_no', $healthpost->ward_no],['municipality_id', $healthpost->municipality_id]])->get();
+        $wards = [];
         $healthposts = Organization::where('id', $healthpost->id)->get();
         $role = "healthworker";
         $permissions = Permission::all();

@@ -1,7 +1,5 @@
 <?php
 
-use Maatwebsite\Excel\Facades\Excel;
-
 Route::get('district-select-province', 'Reports\FilterController@districtSelectByProvince')->name('district-select-province');
 Route::get('municipality-select-district', 'Reports\FilterController@municipalitySelectByDistrict')->name('municipality-select-district');
 Route::get('ward-or-healthpost-select-municipality', 'Reports\FilterController@WardOrHealthpostByMunicipality')->name('ward-or-healthpost-select-municipality');
