@@ -5089,6 +5089,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -5106,6 +5111,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       loading: true,
+      apiresponce: false,
       appliedFilters: [],
       filterCandidates: [],
       query: {
@@ -5390,6 +5396,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (res) {
         vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(_this2.$data, 'collection', res.data.collection);
         _this2.query.page = res.data.collection.current_page;
+        _this2.apiresponce = true;
       })["catch"](function (error) {})["finally"](function () {
         _this2.loading = false;
       });
@@ -41896,7 +41903,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         _vm._l(5, function(index) {
-          return !_vm.collection.data || !_vm.collection.data.length
+          return !_vm.apiresponce
             ? _c(
                 "div",
                 { key: index, staticClass: "panel-body" },
@@ -41973,6 +41980,14 @@ var render = function() {
               )
             : _vm._e()
         }),
+        _vm._v(" "),
+        _vm.apiresponce === true && _vm.collection.data.length === 0
+          ? _c("div", { staticClass: "panel-body" }, [
+              _vm._v(
+                "\n        There are no records to display ..........\n    "
+              )
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _c("div", { staticClass: "panel-footer" }, [
           _c("div", [

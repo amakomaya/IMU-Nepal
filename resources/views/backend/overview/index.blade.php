@@ -35,7 +35,7 @@
                                                 </td>
                                                 <td>{{ $d->user->username ?? '' }}</td>
                                                 <td>{{ $d->municipality->municipality_name ?? '' }}</td>
-                                                <td>{{ $d->sample_collection_count }}</td>
+                                                <td>{{ $d->sample_total }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
