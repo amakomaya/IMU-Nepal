@@ -40019,7 +40019,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("a", { attrs: { href: "/admin/lab-received-patients" } }, [
+    return _c("a", { attrs: { href: "/admin/lab-patients" } }, [
       _c("div", { staticClass: "panel-footer" }, [
         _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
         _vm._v(" "),
@@ -40043,7 +40043,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("a", { attrs: { href: "/admin/positive-patients" } }, [
+    return _c("a", { attrs: { href: "/admin/lab-positive-patients" } }, [
       _c("div", { staticClass: "panel-footer" }, [
         _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
         _vm._v(" "),
@@ -40067,7 +40067,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("a", { attrs: { href: "/admin/negative-patients" } }, [
+    return _c("a", { attrs: { href: "/admin/lab-negative-patients" } }, [
       _c("div", { staticClass: "panel-footer" }, [
         _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
         _vm._v(" "),
