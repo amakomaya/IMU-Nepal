@@ -58,6 +58,10 @@ class WomanController extends Controller
         return view('backend.woman.index-cases-death');
     }
 
+    public function casesInOtherOrganization(){
+        return view('backend.woman.index-cases-in-other-organization');
+    }
+
     public function create(Request $request)
     {
         $response = FilterRequest::filter($request);

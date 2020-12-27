@@ -8,6 +8,7 @@ Route::get('api/positive-patient', 'Data\Api\WomenController@positiveIndex');
 Route::get('api/lab-received', 'Data\Api\WomenController@labReceivedIndex');
 Route::get('api/cases-recovered', 'Data\Api\WomenController@casesRecoveredIndex');
 Route::get('api/cases-death', 'Data\Api\WomenController@casesDeathIndex');
+Route::get('api/cases-in-other-organization', 'Data\Api\WomenController@casesInOtherOrganization');
 
 Route::get('api/lab/received-sample', 'Data\Api\WomenController@labAddReceivedIndex');
 Route::get('api/lab/add-result-negative', 'Data\Api\WomenController@labAddResultNegativeIndex');

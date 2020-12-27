@@ -30,6 +30,7 @@ import LabNegativeCases from "./components/LabNegativeCases";
 import LabPositiveCases from "./components/LabPositiveCases";
 import CaseDetail from "./components/viewCaseDetailReport"
 import LabCaseReport from "./components/LabCaseReport.vue"
+import CasesInOtherOrganization from "./components/CasesInOtherOrganization";
 
 import AdminDashboard from "./components/AdminDashboard";
 
@@ -71,6 +72,7 @@ Vue.component('admin-dashboard', AdminDashboard)
 Vue.component('select-year-month', SelectYearMonth)
 Vue.component('lab-case-report', LabCaseReport)
 
+Vue.component('cases-in-other-organization', CasesInOtherOrganization)
 Vue.component('case-detail', CaseDetail)
 
 const app = new Vue({

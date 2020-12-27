@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Data\Api;
 
 use App\Helpers\GetHealthpostCodes;
 use App\Http\Controllers\Controller;
+use App\Models\Organization;
 use App\Models\SampleCollection;
 use App\Models\LabTest;
 use App\Models\SuspectedCase;
@@ -128,6 +129,18 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->casesDeathList()->withAll();
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
+
+    public function casesInOtherOrganization(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $request = FilterRequest::filter($request);
+        $hp_codes = Organization::where('municipality_id', $request['municipality_id'])->pluck('hp_code');
+        $woman = SuspectedCase::where('municipality_id', $request['municipality_id'])
+            ->whereNotIn('hp_code', $hp_codes)
+            ->active()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);

@@ -3552,6 +3552,356 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/CasesInOtherOrganization.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/CasesInOtherOrganization.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filterable.vue */ "./resources/assets/js/components/Filterable.vue");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ViewLabResultReportModel.vue */ "./resources/assets/js/components/ViewLabResultReportModel.vue");
+/* harmony import */ var _SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./SendPatientDataModel.vue */ "./resources/assets/js/components/SendPatientDataModel.vue");
+/* harmony import */ var _viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./viewConfirmReportFormModel.vue */ "./resources/assets/js/components/viewConfirmReportFormModel.vue");
+/* harmony import */ var vue_fab__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-fab */ "./node_modules/vue-fab/src/index.js");
+/* harmony import */ var vue_fab__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_fab__WEBPACK_IMPORTED_MODULE_6__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Filterable: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    fab: vue_fab__WEBPACK_IMPORTED_MODULE_6___default.a
+  },
+  data: function data() {
+    return {
+      role: this.$userRole,
+      filterable: {
+        url: '/data/api/cases-in-other-organization',
+        orderables: [{
+          title: 'Name',
+          name: 'name'
+        }, {
+          title: 'Age',
+          name: 'age'
+        }, {
+          title: 'Case Created At',
+          name: 'created_at'
+        }],
+        filterGroups: [{
+          name: 'Case',
+          filters: [{
+            title: 'Name',
+            name: 'name',
+            type: 'string'
+          }, {
+            title: 'Age',
+            name: 'age',
+            type: 'numeric'
+          }, {
+            title: 'Phone Number',
+            name: 'phone',
+            type: 'numeric'
+          }, {
+            title: 'Case Created At',
+            name: 'created_at',
+            type: 'datetime'
+          }]
+        }, {
+          name: 'Swab Collection',
+          filters: [{
+            title: 'Swab Created At',
+            name: 'ancs.created_at',
+            type: 'datetime'
+          }]
+        }]
+      },
+      token: _Filterable_vue__WEBPACK_IMPORTED_MODULE_0__["default"].data().collection.data,
+      provinces: [],
+      municipalities: [],
+      districts: [],
+      exportHtml: '',
+      fabOptions: {
+        bgColor: '#778899',
+        position: 'bottom-right'
+      },
+      fabActions: [{
+        name: 'addPatient',
+        icon: 'group_add',
+        tooltip: "Add Covid 19 Cases"
+      }]
+    };
+  },
+  created: function created() {
+    this.fetch();
+  },
+  methods: {
+    sendPatientData: function sendPatientData(item) {
+      this.$dlg.modal(_SendPatientDataModel_vue__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        title: 'Do you want to send ' + item.name + ' \'s patients data ?',
+        height: 600,
+        width: 700,
+        params: {
+          data: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
+        }
+      });
+    },
+    viewLabReport: function viewLabReport(item) {
+      this.$dlg.modal(_ViewLabResultReportModel_vue__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        height: 700,
+        width: 800,
+        title: 'Laboratory Result Form for Suspected COVID-19 Case',
+        params: {
+          item: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
+        }
+      });
+    },
+    viewConfirmReportForm: function viewConfirmReportForm(item) {
+      this.$dlg.modal(_viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        title: 'Confirmed report form of \'s ' + item.name,
+        height: 700,
+        width: 800,
+        params: {
+          data: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
+        }
+      });
+    },
+    fetch: function fetch() {
+      var _this = this;
+
+      var province_url = window.location.protocol + '/api/province';
+      var municipality_url = window.location.protocol + '/api/municipality';
+      var district_url = window.location.protocol + '/api/district';
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(municipality_url).then(function (response) {
+        _this.municipalities = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(district_url).then(function (response) {
+        _this.districts = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {}), axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(province_url).then(function (response) {
+        _this.provinces = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      })["finally"](function () {});
+    },
+    ad2bs: function ad2bs(date) {
+      var dateObject = new Date(date);
+      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
+      var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default.a.ad2bs(dateFormat);
+      return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
+    },
+    checkDistrict: function checkDistrict(value) {
+      if (value === 0 || value == null || value === '') {
+        return '';
+      } else {
+        return this.districts.find(function (x) {
+          return x.id === value;
+        }).district_name;
+      }
+    },
+    checkMunicipality: function checkMunicipality(value) {
+      if (value === 0 || value == null || value === '') {
+        return '';
+      } else {
+        return this.municipalities.find(function (x) {
+          return x.id === value;
+        }).municipality_name;
+      }
+    },
+    checkCaseType: function checkCaseType(type) {
+      switch (type) {
+        case '0':
+          return 'N/A';
+
+        case '1':
+          return 'Asymptomatic / Mild Case';
+
+        case '2':
+          return 'Moderate / Severe Case';
+
+        default:
+          return 'N/A';
+      }
+    },
+    checkSampleType: function checkSampleType(type) {
+      return type === '2' ? 'Rapid Antigen Test' : 'SARS-CoV-2 RNA Test';
+    },
+    checkCaseManagement: function checkCaseManagement(type, management) {
+      if (type === '1') {
+        switch (management) {
+          case '0':
+            return 'Home';
+
+          case '1':
+            return 'Hotel';
+
+          case '2':
+            return 'Institution';
+
+          default:
+            return 'N/A';
+        }
+      }
+
+      if (type === '2') {
+        switch (management) {
+          case '0':
+            return 'General Ward';
+
+          case '1':
+            return 'ICU';
+
+          case '2':
+            return 'Ventilator';
+
+          default:
+            return 'N/A';
+        }
+      }
+
+      return 'N/A';
+    },
+    gender: function gender(type) {
+      switch (type) {
+        case '1':
+          return 'M';
+
+        case '2':
+          return 'F';
+
+        default:
+          return 'O';
+      }
+    },
+    roleVisibility: function roleVisibility(data) {
+      if (this.role === 'dho' || this.role === 'province' || this.role === 'center') {
+        return '** ***';
+      }
+
+      return data;
+    },
+    addSampleCollection: function addSampleCollection(token) {
+      window.location.href = '/admin/sample-collection/create/' + token;
+    },
+    addPatient: function addPatient() {
+      window.location.href = '/admin/patients/create';
+    },
+    viewCaseDetails: function viewCaseDetails(token) {
+      window.open('/admin/patient?token=' + token, '_blank');
+    },
+    latestLabResult: function latestLabResult(value) {
+      if (value == '0' || value == null || value == '') {
+        return '<span class=\"label label-default\"> Don\'t Know </span>';
+      } else {
+        if (value == '0' || value == null || value == '') {
+          return '<span class=\"label label-default\"> Don\'t Know </span>';
+        } else {
+          if (value.result == '4') {
+            return '<span class=\"label label-success\"> Negative</span>';
+          }
+
+          if (value.result == '2') {
+            return '<span class=\"label label-info\"> Pending</span>';
+          }
+
+          if (value.result == '3') {
+            return '<span class=\"label label-danger\"> Positive</span>';
+          }
+
+          if (value.result == '9') {
+            return '<span class=\"label label-warning\"> Received</span>';
+          } else {
+            return '<span class=\"label label-default\"> Don\'t Know</span>';
+          }
+        }
+      }
+    },
+    editCaseDetails: function editCaseDetails(token) {
+      window.open('/admin/patient/' + token + '/edit', '_blank');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/CasesLabRecieved.vue?vue&type=script&lang=js&":
 /*!**********************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/CasesLabRecieved.vue?vue&type=script&lang=js& ***!
@@ -40201,6 +40551,223 @@ var render = function() {
               _c("th", [_vm._v("Latest Lab Result")]),
               _vm._v(" "),
               _c("th", [_vm._v("Action")])
+            ])
+          ])
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/CasesInOtherOrganization.vue?vue&type=template&id=4e0f319c&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/CasesInOtherOrganization.vue?vue&type=template&id=4e0f319c& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "filterable",
+        _vm._b(
+          {
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var item = ref.item
+                  return _c("tr", {}, [
+                    _c("td", [
+                      item.parent_case_id !== null
+                        ? _c("div", { attrs: { title: "Parent Case ID" } }, [
+                            _vm._v("PC ID : " + _vm._s(item.parent_case_id))
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.roleVisibility(item.name)))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.age))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.gender(item.sex)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(_vm.roleVisibility(item.emergency_contact_one)) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        " +
+                          _vm._s(
+                            _vm.roleVisibility(item.emergency_contact_two)
+                          ) +
+                          "\n      "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(_vm.checkMunicipality(item.municipality_id))
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n        Place : " +
+                          _vm._s(item.healthpost.name) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Type : " +
+                          _vm._s(_vm.checkCaseType(item.cases)) +
+                          " "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n        Management : " +
+                          _vm._s(
+                            _vm.checkCaseManagement(item.cases, item.case_where)
+                          ) +
+                          "\n      "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.ad2bs(item.created_at)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("span", { staticClass: "label label-info" }, [
+                        _vm._v(" " + _vm._s(item.ancs.length))
+                      ]),
+                      _vm._v(" "),
+                      item.latest_anc
+                        ? _c("div", { attrs: { title: "Swab ID" } }, [
+                            _vm._v(
+                              "\n          Type : " +
+                                _vm._s(
+                                  _vm.checkSampleType(
+                                    item.latest_anc.service_for
+                                  )
+                                ) +
+                                "\n        "
+                            )
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      item.ancs.length > 0
+                        ? _c("div", {
+                            domProps: {
+                              innerHTML: _vm._s(
+                                _vm.latestLabResult(item.latest_anc)
+                              )
+                            }
+                          })
+                        : _c("div", [
+                            _c("span", { staticClass: "label label-primary" }, [
+                              _vm._v(" Registered ")
+                            ])
+                          ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          attrs: {
+                            target: "_blank",
+                            title: "Case Details Report"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.viewCaseDetails(item.token)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "fa fa-file",
+                            attrs: { "aria-hidden": "true" }
+                          }),
+                          _vm._v(" |\n        ")
+                        ]
+                      )
+                    ])
+                  ])
+                }
+              }
+            ])
+          },
+          "filterable",
+          _vm.filterable,
+          false
+        ),
+        [
+          _c("thead", { attrs: { slot: "thead" }, slot: "thead" }, [
+            _c("tr", [
+              _c("th", { attrs: { width: "6%" } }, [_vm._v("ID")]),
+              _vm._v(" "),
+              _c("th", { attrs: { width: "10%" } }, [_vm._v("Name")]),
+              _vm._v(" "),
+              _c("th", { attrs: { width: "7%" } }, [_vm._v("Age")]),
+              _vm._v(" "),
+              _c("th", { attrs: { width: "6%", title: "Gender" } }, [
+                _vm._v("G")
+              ]),
+              _vm._v(" "),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Emergency Contact Number" } },
+                [_vm._v("Phone")]
+              ),
+              _vm._v(" "),
+              _c("th", { attrs: { width: "10%", title: "Municipality" } }, [
+                _vm._v("Municipality")
+              ]),
+              _vm._v(" "),
+              _c("th", { attrs: { width: "15%" } }, [_vm._v("Case")]),
+              _vm._v(" "),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Case Created Date" } },
+                [_vm._v("Date")]
+              ),
+              _vm._v(" "),
+              _c(
+                "th",
+                { attrs: { width: "10%", title: "Sample Collection Details" } },
+                [_vm._v("Sample")]
+              ),
+              _vm._v(" "),
+              _c("th", { attrs: { width: "8%", title: "Latest Lab Result" } }, [
+                _vm._v("Result")
+              ]),
+              _vm._v(" "),
+              _c("th", { attrs: { width: "8%", title: "Actions" } }, [
+                _c("i", {
+                  staticClass: "fa fa-cogs",
+                  attrs: { "aria-hidden": "true" }
+                })
+              ])
             ])
           ])
         ]
@@ -88503,11 +89070,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_LabPositiveCases__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/LabPositiveCases */ "./resources/assets/js/components/LabPositiveCases.vue");
 /* harmony import */ var _components_viewCaseDetailReport__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/viewCaseDetailReport */ "./resources/assets/js/components/viewCaseDetailReport.vue");
 /* harmony import */ var _components_LabCaseReport_vue__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./components/LabCaseReport.vue */ "./resources/assets/js/components/LabCaseReport.vue");
-/* harmony import */ var _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./components/AdminDashboard */ "./resources/assets/js/components/AdminDashboard.vue");
-/* harmony import */ var _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./components/SelectYearMonth */ "./resources/assets/js/components/SelectYearMonth.vue");
-/* harmony import */ var v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! v-nepalidatepicker */ "./node_modules/v-nepalidatepicker/dist/v-nepalidatepicker.esm.js");
-/* harmony import */ var vue_json_excel__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! vue-json-excel */ "./node_modules/vue-json-excel/JsonExcel.vue");
-/* harmony import */ var v_mask__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! v-mask */ "./node_modules/v-mask/dist/v-mask.esm.js");
+/* harmony import */ var _components_CasesInOtherOrganization__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./components/CasesInOtherOrganization */ "./resources/assets/js/components/CasesInOtherOrganization.vue");
+/* harmony import */ var _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./components/AdminDashboard */ "./resources/assets/js/components/AdminDashboard.vue");
+/* harmony import */ var _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./components/SelectYearMonth */ "./resources/assets/js/components/SelectYearMonth.vue");
+/* harmony import */ var v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! v-nepalidatepicker */ "./node_modules/v-nepalidatepicker/dist/v-nepalidatepicker.esm.js");
+/* harmony import */ var vue_json_excel__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! vue-json-excel */ "./node_modules/vue-json-excel/JsonExcel.vue");
+/* harmony import */ var v_mask__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! v-mask */ "./node_modules/v-mask/dist/v-mask.esm.js");
 
 
 
@@ -88543,9 +89111,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_progress_path__WEBPACK_IMPORT
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_mask__WEBPACK_IMPORTED_MODULE_31__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_29__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('downloadExcel', vue_json_excel__WEBPACK_IMPORTED_MODULE_30__["default"]);
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_mask__WEBPACK_IMPORTED_MODULE_32__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_30__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('downloadExcel', vue_json_excel__WEBPACK_IMPORTED_MODULE_31__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$userRole = document.querySelector("meta[name='user-role']").getAttribute('content');
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_13___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_status_indicator__WEBPACK_IMPORTED_MODULE_2__["default"]);
@@ -88567,9 +89136,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('cases-closed-death', _comp
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-negative-patient-list', _components_LabNegativeCases__WEBPACK_IMPORTED_MODULE_23__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-positive-patient-list', _components_LabPositiveCases__WEBPACK_IMPORTED_MODULE_24__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('vaccination-chart');
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('admin-dashboard', _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_27__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('select-year-month', _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_28__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('admin-dashboard', _components_AdminDashboard__WEBPACK_IMPORTED_MODULE_28__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('select-year-month', _components_SelectYearMonth__WEBPACK_IMPORTED_MODULE_29__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('lab-case-report', _components_LabCaseReport_vue__WEBPACK_IMPORTED_MODULE_26__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('cases-in-other-organization', _components_CasesInOtherOrganization__WEBPACK_IMPORTED_MODULE_27__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('case-detail', _components_viewCaseDetailReport__WEBPACK_IMPORTED_MODULE_25__["default"]);
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app'
@@ -88917,6 +89487,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CasesClosedRecovered_vue_vue_type_template_id_1a90602a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CasesClosedRecovered_vue_vue_type_template_id_1a90602a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/CasesInOtherOrganization.vue":
+/*!*********************************************************************!*\
+  !*** ./resources/assets/js/components/CasesInOtherOrganization.vue ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CasesInOtherOrganization_vue_vue_type_template_id_4e0f319c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CasesInOtherOrganization.vue?vue&type=template&id=4e0f319c& */ "./resources/assets/js/components/CasesInOtherOrganization.vue?vue&type=template&id=4e0f319c&");
+/* harmony import */ var _CasesInOtherOrganization_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CasesInOtherOrganization.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/CasesInOtherOrganization.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CasesInOtherOrganization_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CasesInOtherOrganization_vue_vue_type_template_id_4e0f319c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CasesInOtherOrganization_vue_vue_type_template_id_4e0f319c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/CasesInOtherOrganization.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/CasesInOtherOrganization.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/assets/js/components/CasesInOtherOrganization.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CasesInOtherOrganization_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./CasesInOtherOrganization.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/CasesInOtherOrganization.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CasesInOtherOrganization_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/CasesInOtherOrganization.vue?vue&type=template&id=4e0f319c&":
+/*!****************************************************************************************************!*\
+  !*** ./resources/assets/js/components/CasesInOtherOrganization.vue?vue&type=template&id=4e0f319c& ***!
+  \****************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CasesInOtherOrganization_vue_vue_type_template_id_4e0f319c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./CasesInOtherOrganization.vue?vue&type=template&id=4e0f319c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/CasesInOtherOrganization.vue?vue&type=template&id=4e0f319c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CasesInOtherOrganization_vue_vue_type_template_id_4e0f319c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CasesInOtherOrganization_vue_vue_type_template_id_4e0f319c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
