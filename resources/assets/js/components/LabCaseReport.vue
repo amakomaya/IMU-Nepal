@@ -173,7 +173,7 @@ export default {
       axios.get(url)
           .then((response) => {
             this.data = response.data;
-            if (this.data.length == 0){
+            if (this.data.length === 0){
               this.$swal({
                 position: 'top-end',
                 type: 'error',

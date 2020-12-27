@@ -1,6 +1,6 @@
 <template>
     <div>
-        <filterable v-bind="filterable">
+      <filterable v-bind="filterable">
             <thead slot="thead">
             <tr>
               <th width="6%">ID</th>
@@ -35,7 +35,10 @@
                 </td>
               <td>{{ ad2bs(item.created_at) }}</td>
                 <td><span class="label label-info"> {{ item.ancs.length }}</span>
-                    <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
+                    <div v-if="item.latest_anc" title="Swab ID">
+                      SID : <strong>{{ item.latest_anc.token }}</strong> <br>
+                      Type : {{ checkSampleType(item.latest_anc.service_for) }}
+                    </div>
                 </td>
                 <td>
                     <div v-if="item.ancs.length > 0"><span class="label label-primary"> Pending </span></div>
@@ -59,6 +62,7 @@
                 </td>  
                 <!-- </div>             -->
             </tr>
+
         </filterable>
 
       <div v-if="this.$userRole === 'healthworker'">
@@ -248,6 +252,10 @@ export default {
         default:
           return 'N/A';
       }
+    },
+
+    checkSampleType: function (type){
+      return (type === '2') ? 'Rapid Antigen Test' : 'SARS-CoV-2 RNA Test';
     },
 
     checkCaseManagement: function (type, management) {

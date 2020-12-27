@@ -40,6 +40,7 @@ class SuspectedCase extends Model
         'created_at',
         'emergency_contact_one',
         // nested
+        'ancs.service_for',
         'ancs.created_at', 'ancs.token' , 'ancs.updated_at',
     ];
     protected $appends = ['formated_age_unit', 'formated_gender'];

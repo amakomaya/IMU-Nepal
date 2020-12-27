@@ -14,6 +14,7 @@ import _ from 'lodash'
 import Vuelidate from 'vuelidate'
 import 'vue-progress-path/dist/vue-progress-path.css'
 import VueProgress from 'vue-progress-path'
+
 Vue.use(VueProgress, {
     // defaultShape: 'circle',
 })
