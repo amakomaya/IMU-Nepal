@@ -33,6 +33,8 @@ class WomenController extends Controller
         ]);
     }
 
+    // Registered or Pending
+
     public function activeIndex(Request $request)
     {
         $response = FilterRequest::filter($request);
@@ -43,20 +45,25 @@ class WomenController extends Controller
         ]);
     }
 
+    // Negative
+
     public function passiveIndex(Request $request)
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->passivePatientList()->withAll();
+        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->pluck('woman_token');
+        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
     }
+
     public function positiveIndex(Request $request)
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->positivePatientList()->withAll();
+        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->pluck('woman_token');
+        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -66,7 +73,8 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->labReceivedList()->withAll();
+        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 9)->pluck('woman_token');
+        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
