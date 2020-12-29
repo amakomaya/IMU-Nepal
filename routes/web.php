@@ -114,6 +114,12 @@ Route::get('/artisan-clear', function() {
     return "Cleared!";
 });
 
+Route::get('refresh-page', function (){
+    \DB::table('cache')
+        ->where('key', 'like', '%'.'-'.auth()->user()->token)->delete();
+    return redirect()->back();
+})->name('refresh-page');
+
 Route::group(['prefix' => 'admin/messages'], function () {
     Route::get('/', ['as' => 'messages', 'uses' => 'MessagesController@index']);
     Route::get('create', ['as' => 'messages.create', 'uses' => 'MessagesController@create']);

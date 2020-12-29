@@ -173,7 +173,10 @@
     </div>
     <div v-else>
       <div class="col-lg-12">
-        <h3>Last 24 hours update | <sub> Registered : {{ report.registered_in_24_hrs }}</sub></h3>
+        <h3>Last 24 hours update | <sub> Registered : {{ report.registered_in_24_hrs }}</sub>
+        <small v-if="!report.cache_created_at" class="pull-right">loading...</small>
+        <small v-else class="pull-right">Updated at : {{ recordUpdatedAt() }}</small>
+        </h3>
       </div>
       <div class="col-lg-3 col-md-6">
         <div class="panel panel-info">
@@ -401,10 +404,13 @@
 
 <script>
 import axios from "axios";
+import DataConverter from 'ad-bs-converter'
 
 export default {
   data(){
     return {
+      indeterminate: true,
+      progress: 100,
       report : []
     }
   },
@@ -419,6 +425,19 @@ export default {
         })
         .finally(() => {
         })
+  },
+  methods : {
+    recordUpdatedAt : function (){
+      var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+      var dateObject = new Date(this.report.cache_created_at);
+
+      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
+
+      let dateConverter = DataConverter.ad2bs(dateFormat);
+
+      return days[dateObject.getDay()] + ', '+ dateConverter.en.day + ' ' + dateConverter.en.strMonth + ' ' + dateConverter.en.year + '  ' + dateObject.toLocaleTimeString();
+    }
   }
 }
 </script>

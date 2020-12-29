@@ -92,7 +92,7 @@
             </div>
             <div class="navbar-right" style="margin: 0px 10px">
                 <li class="nav navbar-nav" style="margin: 10px;">
-                    <button onClick="window.location.href=window.location.href"> <i class="fa fa-refresh" aria-hidden="true"></i>
+                    <button onclick="window.location='{{ route("refresh-page") }}'"> <i class="fa fa-refresh" aria-hidden="true"></i>
                         Refresh Page</button>
                 </li>
                 <li class="nav navbar-nav sl-nav messageInfo" style="margin: 10px;">

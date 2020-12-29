@@ -2613,6 +2613,11 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ad-bs-converter */ "./node_modules/ad-bs-converter/src/converter.js");
+/* harmony import */ var ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(ad_bs_converter__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
 //
 //
 //
@@ -3015,9 +3020,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      indeterminate: true,
+      progress: 100,
       report: []
     };
   },
@@ -3030,6 +3038,15 @@ __webpack_require__.r(__webpack_exports__);
     })["catch"](function (error) {
       console.error(error);
     })["finally"](function () {});
+  },
+  methods: {
+    recordUpdatedAt: function recordUpdatedAt() {
+      var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      var dateObject = new Date(this.report.cache_created_at);
+      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
+      var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default.a.ad2bs(dateFormat);
+      return days[dateObject.getDay()] + ', ' + dateConverter.en.day + ' ' + dateConverter.en.strMonth + ' ' + dateConverter.en.year + '  ' + dateObject.toLocaleTimeString();
+    }
   }
 });
 
@@ -39657,7 +39674,15 @@ var render = function() {
                 _vm._v(
                   " Registered : " + _vm._s(_vm.report.registered_in_24_hrs)
                 )
-              ])
+              ]),
+              _vm._v(" "),
+              !_vm.report.cache_created_at
+                ? _c("small", { staticClass: "pull-right" }, [
+                    _vm._v("loading...")
+                  ])
+                : _c("small", { staticClass: "pull-right" }, [
+                    _vm._v("Updated at : " + _vm._s(_vm.recordUpdatedAt()))
+                  ])
             ])
           ]),
           _vm._v(" "),
