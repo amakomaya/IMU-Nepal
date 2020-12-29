@@ -30,5 +30,12 @@ Route::get('calc' , function (){
             $sample->update(['result' =>  2]);
         }
     });
+
+    \App\Models\LabTest::where('sample_test_result', '')->update([
+        'sample_test_result' => '9'
+        ]);
+    \App\Models\SampleCollection::where('result', '0')->update([
+        'result' => '9'
+    ]);
    return "Complete";
 });
