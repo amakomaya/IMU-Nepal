@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Data\Api;
 
 use App\Helpers\GetHealthpostCodes;
 use App\Models\LabTest;
+use App\Models\Organization;
 use App\Models\SampleCollection;
 use App\Models\SuspectedCase;
 use App\Reports\FilterRequest;
