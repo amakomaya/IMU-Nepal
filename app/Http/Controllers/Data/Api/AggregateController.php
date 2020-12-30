@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Data\Api;
 
 use App\Models\Organization;
+use App\Models\province;
 use App\Models\SampleCollection;
 use App\Models\SuspectedCase;
 use Carbon\Carbon;
@@ -108,5 +109,37 @@ class AggregateController extends Controller
                 $provincialData
         ];
         return response()->json($responseData);
+    }
+
+    public function forMonitor(){
+        $hpCodesbyProvince = Organization::get()->groupBy('province_id');
+        $provincialData = [];
+        foreach($hpCodesbyProvince as $key => $provinceData) {
+            $hpCodes = $provinceData->pluck('hp_code');
+            $provinceDataCalc = [
+                'province' => province::where('id', $key)->first()->province_name,
+                'sample_collection' => SampleCollection::whereIn('hp_code', $hpCodes)->active()->count(),
+                'sample_collection_in_24_hrs' => SampleCollection::whereIn('hp_code', $hpCodes)->active()->where('created_at', '>', Carbon::now()->subDay()->toDateString())->count(),
+                'lab_result_positive' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->active()->count(),
+                'lab_result_positive_in_24_hrs' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
+                'lab_result_negative' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->active()->count(),
+                'lab_result_negative_in_24_hrs' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
+            ];
+            $provincialData[] = $provinceDataCalc;
+        }
+        $data =
+            [
+                'sample_collection' =>SampleCollection::active()->count(),
+                'sample_collection_in_24_hrs' => SampleCollection::active()->where('created_at', '>', Carbon::now()->subDay()->toDateString())->count(),
+                'lab_result_positive' => SampleCollection::where('result', 3)->active()->count(),
+                'lab_result_positive_in_24_hrs' => SampleCollection::where('result', 3)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
+                'lab_result_negative' => SampleCollection::where('result', 4)->active()->count(),
+                'lab_result_negative_in_24_hrs' => SampleCollection::where('result', 4)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
+                'provincial_data' => $provincialData
+                ];
+
+        return response()->json(
+           $data
+        );
     }
 }
