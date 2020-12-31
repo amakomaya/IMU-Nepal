@@ -38,14 +38,17 @@
     <script src="{{ asset('js/pace.min.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
     @php
+        $metaPermission = implode(",", auth()->user()->getPermissionNames()->toArray());
         if (auth()->user()->role == 'healthworker'){
-            $role = \App\Models\OrganizationMember::where('token', Auth::user()->token)->first()->role;
+            $metaRole = \App\Models\OrganizationMember::where('token', Auth::user()->token)->first()->role;
         }
-    else{
-          $role = auth()->user()->role;
-          }
+        if (auth()->user()->role == 'healthpost'){
+            $h_type = \App\Models\Organization::where('token', Auth::user()->token)->first()->hospital_type;
+        }
     @endphp
-    <meta name="user-role" content="{{  $role }}">
+    <meta name="user-role" content="{{ $metaRole ?? '' }}">
+    <meta name="hospital-type" content="{{ $h_type ?? '' }}">
+    <meta name="user-permission" content="{{  $metaPermission }}">
     <script src="{{ asset('js/sortable.js') }}"></script>
 
 @yield('style')

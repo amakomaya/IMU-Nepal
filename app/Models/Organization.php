@@ -24,7 +24,11 @@ class Organization extends Model
 
     protected static $logOnlyDirty = true;
 
-    protected $fillable = ['name','token','hmis_uid','province_id','district_id','municipality_id','hp_code','ward_no','phone','address','longitude','lattitude','status','created_at','updated_at'];
+    protected $fillable = ['name','token','hmis_uid','province_id',
+        'district_id','municipality_id','hp_code','ward_no','phone',
+        'no_of_beds', 'no_of_ventilators', 'no_of_icu', 'hospital_type',
+        'address','longitude','lattitude','status','created_at','updated_at'
+    ];
 
     public function province()
     {
@@ -67,6 +71,11 @@ class Organization extends Model
     		return $hpCode;
     	}
 	}
+
+	public function hospitalType($type){
+        $list = [1=>'Sample Collection Only',2=>'Lab Test Only', 3=>'Both ( Sample Collection & Lab Test )'];
+        return $list[$type];
+    }
 
 	public static function isHpCodeAlreadyExist($hpCode){
 		$healthpost = Organization::where('hp_code',$hpCode)->get()->first();

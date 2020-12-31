@@ -6,15 +6,15 @@
               <th width="6%">ID</th>
               <th width="10%">Name</th>
               <th width="7%">Age</th>
-              <th width="6%" title="Gender">G</th>
-              <th width="10%" title="Emergency Contact Number">Phone</th>
+              <th width="5%" title="Gender">G</th>
+              <th width="8%" title="Emergency Contact Number">Phone</th>
               <!-- <th>District</th> -->
               <th width="10%" title="Municipality">Municipality</th>
               <th width="15%">Case</th>
-              <th width="10%" title="Case Created Date">Date</th>
+              <th width="8%" title="Case Created Date">Date</th>
               <th width="10%" title="Sample Collection Details">Sample</th>
               <th width="8%" title="Latest Lab Result">Result</th>
-              <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
+              <th width="10%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
             </tr>
             </thead>
             <tr slot-scope="{item}">
@@ -48,27 +48,27 @@
                 <button v-on:click="viewCaseDetails(item.token)" target="_blank" title="Case Details Report">
                      <i class="fa fa-file" aria-hidden="true"></i> |
                   </button>
-                  <div v-if="role === 'healthworker' || role === 'healthpost' || role === 'municipality'">
-                    <button v-on:click="editCaseDetails(item.token)" title="Edit Case Detail">
+                    <button v-if="role === 'healthworker' || role === 'healthpost' || role === 'municipality'" v-on:click="editCaseDetails(item.token)" title="Edit Case Detail">
                       <i class="fa fa-edit" aria-hidden="true"></i> |
                     </button>
-                  </div>
-                  <button v-if="item.ancs.length === 0 && role  === 'healthworker'" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
+                  <button v-if="item.ancs.length === 0 && checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
                      <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
+                  <button v-if="checkPermission('lab-received') && checkAddReceivedView(item.latest_anc)" v-on:click="addReceivedInLab(item.latest_anc.token)" title="Lab Received ( PCR / Antigen )">
+                    <i class="fa fa-flask" aria-hidden="true"></i> |
+                  </button>
                   <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
-                        <i class="fa fa-hospital-o"></i>
-                </button>
+                        <i class="fa fa-hospital-o"></i> |
+                  </button>
                 </td>  
                 <!-- </div>             -->
             </tr>
 
         </filterable>
 
-      <div v-if="this.$userRole === 'healthworker'">
+      <div v-if="checkPermission('cases-registration')">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-
         <fab
             :position="fabOptions.position"
             :bg-color="fabOptions.bgColor"
@@ -88,6 +88,7 @@ import ViewLabResultReportModel from './ViewLabResultReportModel.vue'
 import SendPatientDataModel from './SendPatientDataModel.vue'
 import viewConfirmReportFormModel from './viewConfirmReportFormModel.vue'
 import fab from 'vue-fab'
+import AddRecievedInLabModal from "./AddRecievedInLabModal";
 
 export default {
   components: {Filterable, fab},
@@ -310,12 +311,17 @@ export default {
       }
       return data;
     },
-
     addSampleCollection(token) {
-      window.location.href = '/admin/sample-collection/create/' + token;
+      window.open(
+          '/admin/sample-collection/create/' + token,
+          '_blank'
+      );
     },
     addPatient() {
-      window.location.href = '/admin/patients/create'
+      window.open(
+          '/admin/patients/create',
+          '_blank'
+      );
     },
     viewCaseDetails(token) {
         window.open(
@@ -328,7 +334,23 @@ export default {
           '/admin/patient/' + token + '/edit',
           '_blank'
       );
-    }
+    },
+    checkPermission(value){
+      var arr = this.$userPermissions.split(',');
+      return arr.includes(value);
+    },
+    checkAddReceivedView(data){
+      return data;
+    },
+    addReceivedInLab(item){
+      this.$dlg.modal(AddRecievedInLabModal, {
+        title: 'Received  Cases in Lab',
+        width : 700,
+        params: {
+          item : item,
+        },
+      })
+    },
   }
 }
 

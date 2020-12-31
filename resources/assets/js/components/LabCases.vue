@@ -50,7 +50,7 @@
       </tr>
 
     </filterable>
-    <div v-if="this.$userRole === 'fchv'">
+    <div v-if="checkPermission('lab-received')">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
       <fab
           :position="fabOptions.position"
@@ -401,6 +401,10 @@ export default {
       if(item.latest_anc.result === 9 ){
         return true;
       }
+    },
+    checkPermission(value){
+      var arr = this.$userPermissions.split(',');
+      return arr.includes(value);
     }
   }
 }

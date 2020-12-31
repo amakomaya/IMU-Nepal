@@ -295,6 +295,66 @@ input:focus ~ div{
                                             @endif
                                         </div>
                                     </div>
+                                <div class="form-group{{ $errors->has('no_of_beds') ? ' has-error' : '' }}">
+                                    <label for="no_of_beds" class="col-md-3 control-label"><i data-toggle="tooltip" class="fa fa-info-circle" aria-hidden="true"></i>
+                                        No of Beds</label>
+
+                                    <div class="col-md-7">
+                                        <input type="number" class="form-control" name="no_of_beds" value="@yield('no_of_beds')" min="0">
+                                        @if ($errors->has('no_of_beds'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('no_of_beds') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="form-group{{ $errors->has('no_of_ventilators') ? ' has-error' : '' }}">
+                                    <label for="no_of_ventilators" class="col-md-3 control-label"><i data-toggle="tooltip" class="fa fa-info-circle" aria-hidden="true"></i>
+                                        No of Ventilators</label>
+
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" name="no_of_ventilators" value="@yield('no_of_ventilators')"  min="0">
+                                        @if ($errors->has('no_of_ventilators'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('no_of_ventilators') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="form-group{{ $errors->has('no_of_icu') ? ' has-error' : '' }}">
+                                    <label for="no_of_icu" class="col-md-3 control-label"><i data-toggle="tooltip" class="fa fa-info-circle" aria-hidden="true"></i>
+                                        No of ICU</label>
+
+                                    <div class="col-md-7">
+                                        <input type="number" class="form-control" name="no_of_icu" value="@yield('no_of_icu')" min="0">
+                                        @if ($errors->has('no_of_icu'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('no_of_icu') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="form-group{{ $errors->has('hospital_type') ? ' has-error' : '' }}">
+                                    <label for="status" class="col-md-3 control-label"><i data-toggle="tooltip" class="fa fa-info-circle" aria-hidden="true"></i>
+                                        Hospital Type</label>
+                                    @php($list = [1=>'Sample Collection Only',2=>'Lab Test Only', 3=>'Both ( Sample Collection & Lab Test )'])
+                                    <div class="col-md-7">
+                                        <select id="status" class="form-control" name="hospital_type" >
+                                            <option value=""> Hospital Type</option>
+                                            @foreach ($list as $key => $value )
+                                                <option value="{{ $key }}" @if($hospital_type=="$key") {{ 'selected' }} @endif >
+                                                    {{ $value }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+
+                                        @if ($errors->has('hospital_type'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('hospital_type') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
                 				<div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
                                     <label for="status" class="col-md-3 control-label"><i data-toggle="tooltip" title="स्थिति छान्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i>
                                     {{trans('create.status')}}</label>

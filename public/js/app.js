@@ -2347,11 +2347,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    item: String
+  },
   data: function data() {
     return {
       sample_lot_id: String,
@@ -2441,6 +2442,12 @@ __webpack_require__.r(__webpack_exports__);
           _this2.message = response.data.message;
         }
       });
+    }
+  },
+  created: function created() {
+    if (this.item) {
+      this.sample_lot_id = this.item;
+      this.data.unique_id = this.item.split(/[-]+/).pop();
     }
   }
 });
@@ -3017,8 +3024,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3046,6 +3051,20 @@ __webpack_require__.r(__webpack_exports__);
       var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
       var dateConverter = ad_bs_converter__WEBPACK_IMPORTED_MODULE_1___default.a.ad2bs(dateFormat);
       return days[dateObject.getDay()] + ', ' + dateConverter.en.day + ' ' + dateConverter.en.strMonth + ' ' + dateConverter.en.year + '  ' + dateObject.toLocaleTimeString();
+    },
+    checkPermission: function checkPermission(value) {
+      var arr = this.$userPermissions.split(',');
+      return arr.includes(value);
+    },
+    checkDataEntryRole: function checkDataEntryRole() {
+      var arr = ['fchv', 'healthworker'];
+      return arr.includes(this.$userRole);
+    },
+    checkHospitalTypeForSampleFeature: function checkHospitalTypeForSampleFeature() {
+      return this.$hospitalType === '1' || this.$hospitalType === '3';
+    },
+    checkHospitalTypeForLabFeature: function checkHospitalTypeForLabFeature() {
+      return this.$hospitalType === '2' || this.$hospitalType === '3';
     }
   }
 });
@@ -4332,6 +4351,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -4521,6 +4543,13 @@ __webpack_require__.r(__webpack_exports__);
           return 'O';
       }
     },
+    addSampleCollection: function addSampleCollection(token) {
+      window.open('/admin/sample-collection/create/' + token, '_blank');
+    },
+    checkPermission: function checkPermission(value) {
+      var arr = this.$userPermissions.split(',');
+      return arr.includes(value);
+    },
     viewCaseDetails: function viewCaseDetails(token) {
       window.open('/admin/patient?token=' + token, '_blank');
     }
@@ -4548,24 +4577,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./viewConfirmReportFormModel.vue */ "./resources/assets/js/components/viewConfirmReportFormModel.vue");
 /* harmony import */ var vue_fab__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-fab */ "./node_modules/vue-fab/src/index.js");
 /* harmony import */ var vue_fab__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_fab__WEBPACK_IMPORTED_MODULE_6__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -4873,6 +4884,10 @@ __webpack_require__.r(__webpack_exports__);
           return 'O';
       }
     },
+    checkPermission: function checkPermission(value) {
+      var arr = this.$userPermissions.split(',');
+      return arr.includes(value);
+    },
     roleVisibility: function roleVisibility(data) {
       if (this.role === 'dho' || this.role === 'province' || this.role === 'center') {
         return '** ***';
@@ -4880,11 +4895,11 @@ __webpack_require__.r(__webpack_exports__);
 
       return data;
     },
-    aadSampleCollection: function aadSampleCollection(token) {
-      window.location.href = '/admin/sample-collection/create/' + token;
+    addSampleCollection: function addSampleCollection(token) {
+      window.open('/admin/sample-collection/create/' + token, '_blank');
     },
     addPatient: function addPatient() {
-      window.location.href = '/admin/patients/create';
+      window.open('/admin/patients/create', '_blank');
     },
     viewCaseDetails: function viewCaseDetails(token) {
       window.open('/admin/patient?token=' + token, '_blank');
@@ -4913,6 +4928,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _viewConfirmReportFormModel_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./viewConfirmReportFormModel.vue */ "./resources/assets/js/components/viewConfirmReportFormModel.vue");
 /* harmony import */ var vue_fab__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-fab */ "./node_modules/vue-fab/src/index.js");
 /* harmony import */ var vue_fab__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_fab__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _AddRecievedInLabModal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./AddRecievedInLabModal */ "./resources/assets/js/components/AddRecievedInLabModal.vue");
 //
 //
 //
@@ -4995,6 +5011,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -5226,16 +5243,32 @@ __webpack_require__.r(__webpack_exports__);
       return data;
     },
     addSampleCollection: function addSampleCollection(token) {
-      window.location.href = '/admin/sample-collection/create/' + token;
+      window.open('/admin/sample-collection/create/' + token, '_blank');
     },
     addPatient: function addPatient() {
-      window.location.href = '/admin/patients/create';
+      window.open('/admin/patients/create', '_blank');
     },
     viewCaseDetails: function viewCaseDetails(token) {
       window.open('/admin/patient?token=' + token, '_blank');
     },
     editCaseDetails: function editCaseDetails(token) {
       window.open('/admin/patient/' + token + '/edit', '_blank');
+    },
+    checkPermission: function checkPermission(value) {
+      var arr = this.$userPermissions.split(',');
+      return arr.includes(value);
+    },
+    checkAddReceivedView: function checkAddReceivedView(data) {
+      return data;
+    },
+    addReceivedInLab: function addReceivedInLab(item) {
+      this.$dlg.modal(_AddRecievedInLabModal__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        title: 'Received  Cases in Lab',
+        width: 700,
+        params: {
+          item: item
+        }
+      });
     }
   }
 });
@@ -6598,6 +6631,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (item.latest_anc.result === 9) {
         return true;
       }
+    },
+    checkPermission: function checkPermission(value) {
+      var arr = this.$userPermissions.split(',');
+      return arr.includes(value);
     }
   }
 });
@@ -38967,9 +39004,6 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _c("br"),
-        _c("br"),
-        _vm._v(" "),
         !_vm.$v.data.unique_id.required
           ? _c("div", { staticClass: "help-block" }, [
               _vm._v("Field is required.")
@@ -38986,13 +39020,16 @@ var render = function() {
     _vm._v(" "),
     _c(
       "label",
-      { staticClass: "control-label  btn-primary", attrs: { id: "message" } },
+      {
+        staticClass: "control-label btn-primary",
+        staticStyle: { "margin-top": "5px" },
+        attrs: { id: "message" }
+      },
       [_vm._v(_vm._s(_vm.message))]
     ),
-    _c("br"),
     _vm._v(" "),
     _c(
-      "div",
+      "p",
       {
         directives: [
           {
@@ -39002,22 +39039,19 @@ var render = function() {
             expression: "isShow"
           }
         ],
-        staticClass: "form-group"
+        staticClass: "panel-body",
+        staticStyle: { "margin-bottom": "-10px", "margin-top": "-10px" }
       },
       [
-        _c("label", { staticClass: "control-label", attrs: { id: "name" } }, [
-          _vm._v("Name : " + _vm._s(_vm.name))
-        ]),
+        _vm._v("\n      Name : " + _vm._s(_vm.name)),
         _c("br"),
-        _vm._v(" "),
-        _c("label", { staticClass: "control-label", attrs: { id: "age" } }, [
-          _vm._v("Age : " + _vm._s(_vm.age))
-        ]),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", { staticClass: "control-label", attrs: { id: "gender" } }, [
-          _vm._v("Gender : " + _vm._s(_vm.gender))
-        ])
+        _vm._v(
+          "\n      Age : " +
+            _vm._s(_vm.age) +
+            ", Gender : " +
+            _vm._s(_vm.gender) +
+            "\n  "
+        )
       ]
     ),
     _vm._v(" "),
@@ -39440,670 +39474,617 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    this.$userRole == "fchv"
-      ? _c("div", [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-4 col-md-6" }, [
-            _c("div", { staticClass: "panel panel-warning" }, [
-              _c("div", { staticClass: "panel-heading" }, [
-                _c("div", { staticClass: "row" }, [
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-9 text-right" }, [
-                    Object.keys(_vm.report).length === 0
-                      ? _c(
-                          "div",
-                          [
-                            _c("loading-progress", {
-                              attrs: {
-                                progress: _vm.progress,
-                                indeterminate: _vm.indeterminate,
-                                shape: "line",
-                                size: "30"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.in_lab_received_in_24_hrs))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [_vm._v("Lab Received")])
-                  ])
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-4 col-md-6" }, [
-            _c("div", { staticClass: "panel panel-danger" }, [
-              _c("div", { staticClass: "panel-heading" }, [
-                _c("div", { staticClass: "row" }, [
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-9 text-right" }, [
-                    Object.keys(_vm.report).length === 0
-                      ? _c(
-                          "div",
-                          [
-                            _c("loading-progress", {
-                              attrs: {
-                                progress: _vm.progress,
-                                indeterminate: _vm.indeterminate,
-                                shape: "line",
-                                size: "30"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "huge" }, [
-                      _vm._v(
-                        _vm._s(_vm.report.in_lab_received_positive_in_24_hrs)
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [_vm._v("Positive")])
-                  ])
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-4 col-md-6" }, [
-            _c("div", { staticClass: "panel panel-success" }, [
-              _c("div", { staticClass: "panel-heading" }, [
-                _c("div", { staticClass: "row" }, [
-                  _vm._m(3),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-9 text-right" }, [
-                    Object.keys(_vm.report).length === 0
-                      ? _c(
-                          "div",
-                          [
-                            _c("loading-progress", {
-                              attrs: {
-                                progress: _vm.progress,
-                                indeterminate: _vm.indeterminate,
-                                shape: "line",
-                                size: "30"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "huge" }, [
-                      _vm._v(
-                        _vm._s(_vm.report.in_lab_received_negative_in_24_hrs)
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [_vm._v("Negative")])
-                  ])
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _vm._m(4),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-4 col-md-6" }, [
-            _c("div", { staticClass: "panel panel-warning" }, [
-              _c("div", { staticClass: "panel-heading" }, [
-                _c("div", { staticClass: "row" }, [
-                  _vm._m(5),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-9 text-right" }, [
-                    Object.keys(_vm.report).length === 0
-                      ? _c(
-                          "div",
-                          [
-                            _c("loading-progress", {
-                              attrs: {
-                                progress: _vm.progress,
-                                indeterminate: _vm.indeterminate,
-                                shape: "line",
-                                size: "30"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.in_lab_received))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [_vm._v("Lab Received")])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _vm._m(6)
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-4 col-md-6" }, [
-            _c("div", { staticClass: "panel panel-danger" }, [
-              _c("div", { staticClass: "panel-heading" }, [
-                _c("div", { staticClass: "row" }, [
-                  _vm._m(7),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-9 text-right" }, [
-                    Object.keys(_vm.report).length === 0
-                      ? _c(
-                          "div",
-                          [
-                            _c("loading-progress", {
-                              attrs: {
-                                progress: _vm.progress,
-                                indeterminate: _vm.indeterminate,
-                                shape: "line",
-                                size: "30"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.in_lab_received_positive))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [_vm._v("Positive")])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _vm._m(8)
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-4 col-md-6" }, [
-            _c("div", { staticClass: "panel panel-success" }, [
-              _c("div", { staticClass: "panel-heading" }, [
-                _c("div", { staticClass: "row" }, [
-                  _vm._m(9),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-9 text-right" }, [
-                    Object.keys(_vm.report).length === 0
-                      ? _c(
-                          "div",
-                          [
-                            _c("loading-progress", {
-                              attrs: {
-                                progress: _vm.progress,
-                                indeterminate: _vm.indeterminate,
-                                shape: "line",
-                                size: "30"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.in_lab_received_negative))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [_vm._v("Negative")])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _vm._m(10)
-            ])
-          ])
-        ])
-      : _c("div", [
-          _c("div", { staticClass: "col-lg-12" }, [
-            _c("h3", [
-              _vm._v("Last 24 hours update | "),
-              _c("sub", [
-                _vm._v(
-                  " Registered : " + _vm._s(_vm.report.registered_in_24_hrs)
-                )
-              ]),
-              _vm._v(" "),
-              !_vm.report.cache_created_at
-                ? _c("small", { staticClass: "pull-right" }, [
-                    _vm._v("loading...")
-                  ])
-                : _c("small", { staticClass: "pull-right" }, [
-                    _vm._v("Updated at : " + _vm._s(_vm.recordUpdatedAt()))
-                  ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-3 col-md-6" }, [
-            _c("div", { staticClass: "panel panel-info" }, [
-              _c("div", { staticClass: "panel-heading" }, [
-                _c("div", { staticClass: "row" }, [
-                  _vm._m(11),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-9 text-right" }, [
-                    Object.keys(_vm.report).length === 0
-                      ? _c(
-                          "div",
-                          [
-                            _c("loading-progress", {
-                              attrs: {
-                                progress: _vm.progress,
-                                indeterminate: _vm.indeterminate,
-                                shape: "line",
-                                size: "30"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.sample_collection_in_24_hrs))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [_vm._v("Swab Collection")])
-                  ])
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-3 col-md-6" }, [
-            _c("div", { staticClass: "panel panel-warning" }, [
-              _c("div", { staticClass: "panel-heading" }, [
-                _c("div", { staticClass: "row" }, [
-                  _vm._m(12),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-9 text-right" }, [
-                    Object.keys(_vm.report).length === 0
-                      ? _c(
-                          "div",
-                          [
-                            _c("loading-progress", {
-                              attrs: {
-                                progress: _vm.progress,
-                                indeterminate: _vm.indeterminate,
-                                shape: "line",
-                                size: "30"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "huge" }, [
-                      _vm._v(
-                        _vm._s(_vm.report.sample_received_in_lab_in_24_hrs)
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [_vm._v("Lab Received")])
-                  ])
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-3 col-md-6" }, [
-            _c("div", { staticClass: "panel panel-danger" }, [
-              _c("div", { staticClass: "panel-heading" }, [
-                _c("div", { staticClass: "row" }, [
-                  _vm._m(13),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-9 text-right" }, [
-                    Object.keys(_vm.report).length === 0
-                      ? _c(
-                          "div",
-                          [
-                            _c("loading-progress", {
-                              attrs: {
-                                progress: _vm.progress,
-                                indeterminate: _vm.indeterminate,
-                                shape: "line",
-                                size: "30"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.lab_result_positive_in_24_hrs))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [_vm._v("Positive")])
-                  ])
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-3 col-md-6" }, [
-            _c("div", { staticClass: "panel panel-success" }, [
-              _c("div", { staticClass: "panel-heading" }, [
-                _c("div", { staticClass: "row" }, [
-                  _vm._m(14),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-9 text-right" }, [
-                    Object.keys(_vm.report).length === 0
-                      ? _c(
-                          "div",
-                          [
-                            _c("loading-progress", {
-                              attrs: {
-                                progress: _vm.progress,
-                                indeterminate: _vm.indeterminate,
-                                shape: "line",
-                                size: "30"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.lab_result_negative_in_24_hrs))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [_vm._v("Negative")])
-                  ])
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-12" }, [
-            _c("hr"),
+    _vm.checkHospitalTypeForSampleFeature() ||
+    _vm.checkPermission("cases-registration") ||
+    !_vm.checkDataEntryRole()
+      ? _c("div", { staticClass: "col-lg-12" }, [
+          _c("h3", [
+            _vm._v("Last 24 hours update "),
+            _c("sub", [
+              _vm._v(
+                "| Registered : " + _vm._s(_vm.report.registered_in_24_hrs)
+              )
+            ]),
             _vm._v(" "),
-            _c("h3", [
-              _vm._v("Total Records | "),
-              _c("sub", [
-                _vm._v(" Registered : " + _vm._s(_vm.report.registered))
+            !_vm.report.cache_created_at
+              ? _c("small", { staticClass: "pull-right" }, [
+                  _vm._v("loading...")
+                ])
+              : _c("small", { staticClass: "pull-right" }, [
+                  _vm._v("Updated at : " + _vm._s(_vm.recordUpdatedAt()))
+                ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForSampleFeature() ||
+    _vm.checkPermission("sample-collection") ||
+    !_vm.checkDataEntryRole()
+      ? _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+          _c("div", { staticClass: "panel panel-info" }, [
+            _c("div", { staticClass: "panel-heading" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-9 text-right" }, [
+                  Object.keys(_vm.report).length === 0
+                    ? _c(
+                        "div",
+                        [
+                          _c("loading-progress", {
+                            attrs: {
+                              progress: _vm.progress,
+                              indeterminate: _vm.indeterminate,
+                              shape: "line",
+                              size: "30"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "huge" }, [
+                    _vm._v(_vm._s(_vm.report.sample_collection_in_24_hrs))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [_vm._v("Swab Collection")])
+                ])
               ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-3 col-md-6" }, [
-            _c("div", { staticClass: "panel panel-info" }, [
-              _c("div", { staticClass: "panel-heading" }, [
-                _c("div", { staticClass: "row" }, [
-                  _vm._m(15),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-9 text-right" }, [
-                    Object.keys(_vm.report).length === 0
-                      ? _c(
-                          "div",
-                          [
-                            _c("loading-progress", {
-                              attrs: {
-                                progress: _vm.progress,
-                                indeterminate: _vm.indeterminate,
-                                shape: "line",
-                                size: "30"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.sample_collection))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [_vm._v("Swab Collection")])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _vm._m(16)
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-3 col-md-6" }, [
-            _c("div", { staticClass: "panel panel-warning" }, [
-              _c("div", { staticClass: "panel-heading" }, [
-                _c("div", { staticClass: "row" }, [
-                  _vm._m(17),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-9 text-right" }, [
-                    Object.keys(_vm.report).length === 0
-                      ? _c(
-                          "div",
-                          [
-                            _c("loading-progress", {
-                              attrs: {
-                                progress: _vm.progress,
-                                indeterminate: _vm.indeterminate,
-                                shape: "line",
-                                size: "30"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.sample_received_in_lab))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [_vm._v("Lab Received")])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _vm._m(18)
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-3 col-md-6" }, [
-            _c("div", { staticClass: "panel panel-danger" }, [
-              _c("div", { staticClass: "panel-heading" }, [
-                _c("div", { staticClass: "row" }, [
-                  _vm._m(19),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-9 text-right" }, [
-                    Object.keys(_vm.report).length === 0
-                      ? _c(
-                          "div",
-                          [
-                            _c("loading-progress", {
-                              attrs: {
-                                progress: _vm.progress,
-                                indeterminate: _vm.indeterminate,
-                                shape: "line",
-                                size: "30"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.lab_result_positive))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [_vm._v("Positive")])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _vm._m(20)
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-3 col-md-6" }, [
-            _c("div", { staticClass: "panel panel-success" }, [
-              _c("div", { staticClass: "panel-heading" }, [
-                _c("div", { staticClass: "row" }, [
-                  _vm._m(21),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-9 text-right" }, [
-                    Object.keys(_vm.report).length === 0
-                      ? _c(
-                          "div",
-                          [
-                            _c("loading-progress", {
-                              attrs: {
-                                progress: _vm.progress,
-                                indeterminate: _vm.indeterminate,
-                                shape: "line",
-                                size: "30"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "huge" }, [
-                      _vm._v(_vm._s(_vm.report.lab_result_negative))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [_vm._v("Negative")])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _vm._m(22)
             ])
           ])
         ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForSampleFeature() ||
+    _vm.checkPermission("sample-collection") ||
+    !_vm.checkDataEntryRole()
+      ? _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+          _c("div", { staticClass: "panel panel-warning" }, [
+            _c("div", { staticClass: "panel-heading" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(1),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-9 text-right" }, [
+                  Object.keys(_vm.report).length === 0
+                    ? _c(
+                        "div",
+                        [
+                          _c("loading-progress", {
+                            attrs: {
+                              progress: _vm.progress,
+                              indeterminate: _vm.indeterminate,
+                              shape: "line",
+                              size: "30"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "huge" }, [
+                    _vm._v(_vm._s(_vm.report.sample_received_in_lab_in_24_hrs))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [_vm._v("Lab Received")])
+                ])
+              ])
+            ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForSampleFeature() ||
+    _vm.checkPermission("sample-collection") ||
+    !_vm.checkDataEntryRole()
+      ? _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+          _c("div", { staticClass: "panel panel-danger" }, [
+            _c("div", { staticClass: "panel-heading" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(2),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-9 text-right" }, [
+                  Object.keys(_vm.report).length === 0
+                    ? _c(
+                        "div",
+                        [
+                          _c("loading-progress", {
+                            attrs: {
+                              progress: _vm.progress,
+                              indeterminate: _vm.indeterminate,
+                              shape: "line",
+                              size: "30"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "huge" }, [
+                    _vm._v(_vm._s(_vm.report.lab_result_positive_in_24_hrs))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [_vm._v("Positive")])
+                ])
+              ])
+            ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForSampleFeature() ||
+    _vm.checkPermission("sample-collection") ||
+    !_vm.checkDataEntryRole()
+      ? _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+          _c("div", { staticClass: "panel panel-success" }, [
+            _c("div", { staticClass: "panel-heading" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(3),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-9 text-right" }, [
+                  Object.keys(_vm.report).length === 0
+                    ? _c(
+                        "div",
+                        [
+                          _c("loading-progress", {
+                            attrs: {
+                              progress: _vm.progress,
+                              indeterminate: _vm.indeterminate,
+                              shape: "line",
+                              size: "30"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "huge" }, [
+                    _vm._v(_vm._s(_vm.report.lab_result_negative_in_24_hrs))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [_vm._v("Negative")])
+                ])
+              ])
+            ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForSampleFeature() ||
+    _vm.checkPermission("cases-registration") ||
+    !_vm.checkDataEntryRole()
+      ? _c("div", { staticClass: "col-lg-12" }, [
+          _c("h3", [
+            _vm._v("\n        Total Records "),
+            _c("sub", [
+              _vm._v(" | Registered : " + _vm._s(_vm.report.registered))
+            ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForSampleFeature() ||
+    _vm.checkPermission("sample-collection") ||
+    !_vm.checkDataEntryRole()
+      ? _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+          _c("div", { staticClass: "panel panel-info" }, [
+            _c("div", { staticClass: "panel-heading" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(4),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-9 text-right" }, [
+                  Object.keys(_vm.report).length === 0
+                    ? _c(
+                        "div",
+                        [
+                          _c("loading-progress", {
+                            attrs: {
+                              progress: _vm.progress,
+                              indeterminate: _vm.indeterminate,
+                              shape: "line",
+                              size: "30"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "huge" }, [
+                    _vm._v(_vm._s(_vm.report.sample_collection))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [_vm._v("Swab Collection")])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(5)
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForSampleFeature() ||
+    _vm.checkPermission("sample-collection") ||
+    !_vm.checkDataEntryRole()
+      ? _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+          _c("div", { staticClass: "panel panel-warning" }, [
+            _c("div", { staticClass: "panel-heading" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(6),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-9 text-right" }, [
+                  Object.keys(_vm.report).length === 0
+                    ? _c(
+                        "div",
+                        [
+                          _c("loading-progress", {
+                            attrs: {
+                              progress: _vm.progress,
+                              indeterminate: _vm.indeterminate,
+                              shape: "line",
+                              size: "30"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "huge" }, [
+                    _vm._v(_vm._s(_vm.report.sample_received_in_lab))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [_vm._v("Lab Received")])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(7)
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForSampleFeature() ||
+    _vm.checkPermission("sample-collection") ||
+    !_vm.checkDataEntryRole()
+      ? _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+          _c("div", { staticClass: "panel panel-danger" }, [
+            _c("div", { staticClass: "panel-heading" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(8),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-9 text-right" }, [
+                  Object.keys(_vm.report).length === 0
+                    ? _c(
+                        "div",
+                        [
+                          _c("loading-progress", {
+                            attrs: {
+                              progress: _vm.progress,
+                              indeterminate: _vm.indeterminate,
+                              shape: "line",
+                              size: "30"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "huge" }, [
+                    _vm._v(_vm._s(_vm.report.lab_result_positive))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [_vm._v("Positive")])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(9)
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForSampleFeature() ||
+    _vm.checkPermission("sample-collection") ||
+    !_vm.checkDataEntryRole()
+      ? _c("div", { staticClass: "col-lg-3 col-md-6" }, [
+          _c("div", { staticClass: "panel panel-success" }, [
+            _c("div", { staticClass: "panel-heading" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(10),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-9 text-right" }, [
+                  Object.keys(_vm.report).length === 0
+                    ? _c(
+                        "div",
+                        [
+                          _c("loading-progress", {
+                            attrs: {
+                              progress: _vm.progress,
+                              indeterminate: _vm.indeterminate,
+                              shape: "line",
+                              size: "30"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "huge" }, [
+                    _vm._v(_vm._s(_vm.report.lab_result_negative))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [_vm._v("Negative")])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(11)
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForLabFeature() || _vm.checkPermission("lab-received")
+      ? _c("div", { staticClass: "col-lg-12" }, [
+          _c("h3", [
+            _vm._v("Last 24 hours update in Lab\n    "),
+            !_vm.report.cache_created_at
+              ? _c("small", { staticClass: "pull-right" }, [
+                  _vm._v("loading...")
+                ])
+              : _c("small", { staticClass: "pull-right" }, [
+                  _vm._v("Updated at : " + _vm._s(_vm.recordUpdatedAt()))
+                ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForLabFeature() || _vm.checkPermission("lab-received")
+      ? _c("div", { staticClass: "col-lg-4 col-md-6" }, [
+          _c("div", { staticClass: "panel panel-warning" }, [
+            _c("div", { staticClass: "panel-heading" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(12),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-9 text-right" }, [
+                  Object.keys(_vm.report).length === 0
+                    ? _c(
+                        "div",
+                        [
+                          _c("loading-progress", {
+                            attrs: {
+                              progress: _vm.progress,
+                              indeterminate: _vm.indeterminate,
+                              shape: "line",
+                              size: "30"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "huge" }, [
+                    _vm._v(_vm._s(_vm.report.in_lab_received_in_24_hrs))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [_vm._v("Lab Received")])
+                ])
+              ])
+            ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForLabFeature() || _vm.checkPermission("lab-received")
+      ? _c("div", { staticClass: "col-lg-4 col-md-6" }, [
+          _c("div", { staticClass: "panel panel-danger" }, [
+            _c("div", { staticClass: "panel-heading" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(13),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-9 text-right" }, [
+                  Object.keys(_vm.report).length === 0
+                    ? _c(
+                        "div",
+                        [
+                          _c("loading-progress", {
+                            attrs: {
+                              progress: _vm.progress,
+                              indeterminate: _vm.indeterminate,
+                              shape: "line",
+                              size: "30"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "huge" }, [
+                    _vm._v(
+                      _vm._s(_vm.report.in_lab_received_positive_in_24_hrs)
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [_vm._v("Positive")])
+                ])
+              ])
+            ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForLabFeature() || _vm.checkPermission("lab-received")
+      ? _c("div", { staticClass: "col-lg-4 col-md-6" }, [
+          _c("div", { staticClass: "panel panel-success" }, [
+            _c("div", { staticClass: "panel-heading" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(14),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-9 text-right" }, [
+                  Object.keys(_vm.report).length === 0
+                    ? _c(
+                        "div",
+                        [
+                          _c("loading-progress", {
+                            attrs: {
+                              progress: _vm.progress,
+                              indeterminate: _vm.indeterminate,
+                              shape: "line",
+                              size: "30"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "huge" }, [
+                    _vm._v(
+                      _vm._s(_vm.report.in_lab_received_negative_in_24_hrs)
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [_vm._v("Negative")])
+                ])
+              ])
+            ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForLabFeature() || _vm.checkPermission("lab-received")
+      ? _c("div", { staticClass: "col-lg-12" }, [
+          _c("h3", [_vm._v("Total Records in lab")])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForLabFeature() || _vm.checkPermission("lab-received")
+      ? _c("div", { staticClass: "col-lg-4 col-md-6" }, [
+          _c("div", { staticClass: "panel panel-warning" }, [
+            _c("div", { staticClass: "panel-heading" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(15),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-9 text-right" }, [
+                  Object.keys(_vm.report).length === 0
+                    ? _c(
+                        "div",
+                        [
+                          _c("loading-progress", {
+                            attrs: {
+                              progress: _vm.progress,
+                              indeterminate: _vm.indeterminate,
+                              shape: "line",
+                              size: "30"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "huge" }, [
+                    _vm._v(_vm._s(_vm.report.in_lab_received))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [_vm._v("Lab Received")])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(16)
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForLabFeature() || _vm.checkPermission("lab-received")
+      ? _c("div", { staticClass: "col-lg-4 col-md-6" }, [
+          _c("div", { staticClass: "panel panel-danger" }, [
+            _c("div", { staticClass: "panel-heading" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(17),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-9 text-right" }, [
+                  Object.keys(_vm.report).length === 0
+                    ? _c(
+                        "div",
+                        [
+                          _c("loading-progress", {
+                            attrs: {
+                              progress: _vm.progress,
+                              indeterminate: _vm.indeterminate,
+                              shape: "line",
+                              size: "30"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "huge" }, [
+                    _vm._v(_vm._s(_vm.report.in_lab_received_positive))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [_vm._v("Positive")])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(18)
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.checkHospitalTypeForLabFeature() || _vm.checkPermission("lab-received")
+      ? _c("div", { staticClass: "col-lg-4 col-md-6" }, [
+          _c("div", { staticClass: "panel panel-success" }, [
+            _c("div", { staticClass: "panel-heading" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(19),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-9 text-right" }, [
+                  Object.keys(_vm.report).length === 0
+                    ? _c(
+                        "div",
+                        [
+                          _c("loading-progress", {
+                            attrs: {
+                              progress: _vm.progress,
+                              indeterminate: _vm.indeterminate,
+                              shape: "line",
+                              size: "30"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "huge" }, [
+                    _vm._v(_vm._s(_vm.report.in_lab_received_negative))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [_vm._v("Negative")])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(20)
+          ])
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-12" }, [
-      _c("h3", [_vm._v("Last 24 hours update ")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-3" }, [
-      _c("i", { staticClass: "fa fa-check-square-o fa-3x" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-3" }, [
-      _c("i", { staticClass: "fa fa-frown-o fa-3x" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-3" }, [
-      _c("i", { staticClass: "fa fa-smile-o fa-3x" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-12" }, [
-      _c("hr"),
-      _vm._v(" "),
-      _c("h3", [_vm._v("Total Records ")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-3" }, [
-      _c("i", { staticClass: "fa fa-check-square-o fa-3x" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("a", { attrs: { href: "/admin/lab-patients" } }, [
-      _c("div", { staticClass: "panel-footer" }, [
-        _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "pull-right" }, [
-          _c("i", { staticClass: "fa fa-arrow-circle-right" })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "clearfix" })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-3" }, [
-      _c("i", { staticClass: "fa fa-frown-o fa-3x" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("a", { attrs: { href: "/admin/lab-positive-patients" } }, [
-      _c("div", { staticClass: "panel-footer" }, [
-        _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "pull-right" }, [
-          _c("i", { staticClass: "fa fa-arrow-circle-right" })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "clearfix" })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-3" }, [
-      _c("i", { staticClass: "fa fa-smile-o fa-3x" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("a", { attrs: { href: "/admin/lab-negative-patients" } }, [
-      _c("div", { staticClass: "panel-footer" }, [
-        _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "pull-right" }, [
-          _c("i", { staticClass: "fa fa-arrow-circle-right" })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "clearfix" })
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -40221,6 +40202,102 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("a", { attrs: { href: "/admin/negative-patients" } }, [
+      _c("div", { staticClass: "panel-footer" }, [
+        _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "pull-right" }, [
+          _c("i", { staticClass: "fa fa-arrow-circle-right" })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-check-square-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-frown-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-smile-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-check-square-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "/admin/lab-patients" } }, [
+      _c("div", { staticClass: "panel-footer" }, [
+        _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "pull-right" }, [
+          _c("i", { staticClass: "fa fa-arrow-circle-right" })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-frown-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "/admin/lab-positive-patients" } }, [
+      _c("div", { staticClass: "panel-footer" }, [
+        _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "pull-right" }, [
+          _c("i", { staticClass: "fa fa-arrow-circle-right" })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-3" }, [
+      _c("i", { staticClass: "fa fa-smile-o fa-3x" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "/admin/lab-negative-patients" } }, [
       _c("div", { staticClass: "panel-footer" }, [
         _c("span", { staticClass: "pull-left" }, [_vm._v("View Details")]),
         _vm._v(" "),
@@ -41160,7 +41237,31 @@ var render = function() {
                           }),
                           _vm._v(" |\n                  ")
                         ]
-                      )
+                      ),
+                      _vm._v(" "),
+                      _vm.checkPermission("sample-collection")
+                        ? _c(
+                            "button",
+                            {
+                              attrs: {
+                                title:
+                                  "Add Sample Collection / Swab Collection Report"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.addSampleCollection(item.token)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-medkit",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _vm._v(" |\n                  ")
+                            ]
+                          )
+                        : _vm._e()
                     ])
                   ])
                 }
@@ -41380,34 +41481,28 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _vm.role === "healthworker"
-                        ? _c("div", [
-                            item.ancs.length === 0
-                              ? _c(
-                                  "button",
-                                  {
-                                    attrs: {
-                                      title:
-                                        "Add Sample Collection / Swab Collection Report"
-                                    },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.aadSampleCollection(
-                                          item.token
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("i", {
-                                      staticClass: "fa fa-medkit",
-                                      attrs: { "aria-hidden": "true" }
-                                    }),
-                                    _vm._v(" |\n          ")
-                                  ]
-                                )
-                              : _vm._e()
-                          ])
+                      _vm.checkPermission("sample-collection")
+                        ? _c(
+                            "button",
+                            {
+                              attrs: {
+                                title:
+                                  "Add Sample Collection / Swab Collection Report"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.addSampleCollection(item.token)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-medkit",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _vm._v(" |\n          ")
+                            ]
+                          )
                         : _vm._e(),
                       _vm._v(" "),
                       _c(
@@ -41484,41 +41579,7 @@ var render = function() {
             ])
           ])
         ]
-      ),
-      _vm._v(" "),
-      this.$userRole === "healthworker"
-        ? _c(
-            "div",
-            [
-              _c("link", {
-                attrs: {
-                  rel: "stylesheet",
-                  href:
-                    "https://fonts.googleapis.com/icon?family=Material+Icons"
-                }
-              }),
-              _vm._v(" "),
-              _c("link", {
-                attrs: {
-                  rel: "stylesheet",
-                  href:
-                    "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
-                }
-              }),
-              _vm._v(" "),
-              _c("fab", {
-                attrs: {
-                  position: _vm.fabOptions.position,
-                  "bg-color": _vm.fabOptions.bgColor,
-                  actions: _vm.fabActions,
-                  "start-opened": true
-                },
-                on: { addPatient: _vm.addPatient }
-              })
-            ],
-            1
-          )
-        : _vm._e()
+      )
     ],
     1
   )
@@ -41683,29 +41744,28 @@ var render = function() {
                       _vm.role === "healthworker" ||
                       _vm.role === "healthpost" ||
                       _vm.role === "municipality"
-                        ? _c("div", [
-                            _c(
-                              "button",
-                              {
-                                attrs: { title: "Edit Case Detail" },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.editCaseDetails(item.token)
-                                  }
+                        ? _c(
+                            "button",
+                            {
+                              attrs: { title: "Edit Case Detail" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.editCaseDetails(item.token)
                                 }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "fa fa-edit",
-                                  attrs: { "aria-hidden": "true" }
-                                }),
-                                _vm._v(" |\n                ")
-                              ]
-                            )
-                          ])
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-edit",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _vm._v(" |\n                ")
+                            ]
+                          )
                         : _vm._e(),
                       _vm._v(" "),
-                      item.ancs.length === 0 && _vm.role === "healthworker"
+                      item.ancs.length === 0 &&
+                      _vm.checkPermission("sample-collection")
                         ? _c(
                             "button",
                             {
@@ -41729,6 +41789,32 @@ var render = function() {
                           )
                         : _vm._e(),
                       _vm._v(" "),
+                      _vm.checkPermission("lab-received") &&
+                      _vm.checkAddReceivedView(item.latest_anc)
+                        ? _c(
+                            "button",
+                            {
+                              attrs: {
+                                title: "Lab Received ( PCR / Antigen )"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.addReceivedInLab(
+                                    item.latest_anc.token
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-flask",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _vm._v(" |\n              ")
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
                       _c(
                         "button",
                         {
@@ -41741,7 +41827,10 @@ var render = function() {
                             }
                           }
                         },
-                        [_c("i", { staticClass: "fa fa-hospital-o" })]
+                        [
+                          _c("i", { staticClass: "fa fa-hospital-o" }),
+                          _vm._v(" |\n              ")
+                        ]
                       )
                     ])
                   ])
@@ -41762,13 +41851,13 @@ var render = function() {
               _vm._v(" "),
               _c("th", { attrs: { width: "7%" } }, [_vm._v("Age")]),
               _vm._v(" "),
-              _c("th", { attrs: { width: "6%", title: "Gender" } }, [
+              _c("th", { attrs: { width: "5%", title: "Gender" } }, [
                 _vm._v("G")
               ]),
               _vm._v(" "),
               _c(
                 "th",
-                { attrs: { width: "10%", title: "Emergency Contact Number" } },
+                { attrs: { width: "8%", title: "Emergency Contact Number" } },
                 [_vm._v("Phone")]
               ),
               _vm._v(" "),
@@ -41778,11 +41867,9 @@ var render = function() {
               _vm._v(" "),
               _c("th", { attrs: { width: "15%" } }, [_vm._v("Case")]),
               _vm._v(" "),
-              _c(
-                "th",
-                { attrs: { width: "10%", title: "Case Created Date" } },
-                [_vm._v("Date")]
-              ),
+              _c("th", { attrs: { width: "8%", title: "Case Created Date" } }, [
+                _vm._v("Date")
+              ]),
               _vm._v(" "),
               _c(
                 "th",
@@ -41794,7 +41881,7 @@ var render = function() {
                 _vm._v("Result")
               ]),
               _vm._v(" "),
-              _c("th", { attrs: { width: "8%", title: "Actions" } }, [
+              _c("th", { attrs: { width: "10%", title: "Actions" } }, [
                 _c("i", {
                   staticClass: "fa fa-cogs",
                   attrs: { "aria-hidden": "true" }
@@ -41805,7 +41892,7 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      this.$userRole === "healthworker"
+      _vm.checkPermission("cases-registration")
         ? _c(
             "div",
             [
@@ -43322,7 +43409,7 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      this.$userRole === "fchv"
+      _vm.checkPermission("lab-received")
         ? _c(
             "div",
             [
@@ -89141,6 +89228,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_mask__WEBPACK_IMPORTED_MODULE_3
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_nepalidatepicker__WEBPACK_IMPORTED_MODULE_30__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('downloadExcel', vue_json_excel__WEBPACK_IMPORTED_MODULE_31__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$userRole = document.querySelector("meta[name='user-role']").getAttribute('content');
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$userPermissions = document.querySelector("meta[name='user-permission']").getAttribute('content');
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$hospitalType = document.querySelector("meta[name='hospital-type']").getAttribute('content');
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_13___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_status_indicator__WEBPACK_IMPORTED_MODULE_2__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);

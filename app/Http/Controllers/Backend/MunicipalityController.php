@@ -31,9 +31,6 @@ class MunicipalityController extends Controller
      */
     public function index()
     {
-       // if(User::checkAuthForIndexShowDho()===false && User::checkAuthForIndexShowMunicipality()===false){
-       //      return redirect('/admin');
-       // }
        if(Auth::user()->role=="province"){
             $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
             $municipalityInfos = MunicipalityInfo::where('province_id', $province_id)->latest()->get();
@@ -43,8 +40,23 @@ class MunicipalityController extends Controller
        }else{
             $municipalityInfos = MunicipalityInfo::latest()->get();
        }
-        
-        return view('backend.municipality.index',compact('municipalityInfos'));
+
+        $count_hospital = \App\Models\Organization::groupBy('municipality_id')
+            ->select('municipality_id', \DB::raw('count(*) as municipality_total'))
+            ->get();
+
+        $merged = $municipalityInfos->map(function ($item) use ($count_hospital) {
+
+            $single = $count_hospital->where('municipality_id',$item->municipality_id)->first();
+
+            $item['hospital_total'] = ($single) ? $single->municipality_total : 0;
+
+            return $item;
+        });
+
+        return view('backend.municipality.index', [
+            'municipalityInfos' => $merged
+        ]);
     }
 
     /**

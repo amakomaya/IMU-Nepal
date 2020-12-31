@@ -39,6 +39,9 @@
                   <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
                     <i class="fa fa-file" aria-hidden="true"></i> |
                   </button>
+                  <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
+                    <i class="fa fa-medkit" aria-hidden="true"></i> |
+                  </button>
                 </td>  
                 <!-- </div>             -->
             </tr>
@@ -232,6 +235,16 @@
               default:
                 return 'O';
             }
+          },
+          addSampleCollection(token) {
+            window.open(
+                '/admin/sample-collection/create/' + token,
+                '_blank'
+            );
+          },
+          checkPermission(value){
+            var arr = this.$userPermissions.split(',');
+            return arr.includes(value);
           },
           viewCaseDetails(token){
             window.open(

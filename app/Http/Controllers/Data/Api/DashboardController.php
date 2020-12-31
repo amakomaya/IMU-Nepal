@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Data\Api;
 
 use App\Helpers\GetHealthpostCodes;
 use App\Models\LabTest;
-use App\Models\Organization;
 use App\Models\SampleCollection;
 use App\Models\SuspectedCase;
 use App\Reports\FilterRequest;
@@ -24,46 +23,28 @@ class DashboardController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $dashboardLabCases = collect();
-        $lab_received_collection = collect();
-        if (auth()->user()->role == 'healthworker'){
-            $lab_received_collection = Cache::remember('lab_received_collection-'.auth()->user()->token, 60, function () {
-                return LabTest::where('checked_by', auth()->user()->token)->active()->get();
+
+        if (auth()->user()->role == 'healthworker' || auth()->user()->role == 'healthpost' ){
+            $in_lab_received = Cache::remember('in_lab_received-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
+                return LabTest::whereIn('hp_code', $hpCodes)->get()->count();
             });
 
-            $dashboardLabCases = $lab_received_collection->map(function ($value){
-                $data = [];
-                $data['token'] = $value['token'];
-
-                $data['in_lab_received_in_24_hrs'] = $value['created_at'] >= Carbon::now()->subDay()->toDateTimeString() ? 1 : 0 ;
-
-                $data['in_lab_received_in_24_hrs'] = $value['created_at'] >= Carbon::now()->subDay()->toDateTimeString() ? 1 : 0 ;
-
-                $data['in_lab_received_positive'] = 0;
-                $data['in_lab_received_negative'] = 0;
-                $data['in_lab_received_positive_in_24_hrs'] = 0;
-                $data['in_lab_received_negative_in_24_hrs'] = 0;
-                switch ($value->sample_test_result){
-                    case 3:
-                        $data['in_lab_received_positive']++;
-                        try {
-                            if($value->updated_at >= Carbon::now()->subDay()->toDateTimeString()) {
-                                $data['in_lab_received_positive_in_24_hrs']++;
-                            }
-                        }catch (\Exception $e){}
-                        break;
-                    case 4:
-                        $data['in_lab_received_negative']++;
-                        try {
-                            if($value->updated_at >= Carbon::now()->subDay()->toDateTimeString()) {
-                                $data['in_lab_received_negative_in_24_hrs']++;
-                            }
-                        }catch (\Exception $e){}
-                        break;
-                }
-                return $data;
+            $in_lab_received_in_24_hrs = Cache::remember('in_lab_received_in_24_hrs-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
+                return LabTest::whereIn('hp_code', $hpCodes)->where('created_at', '>', Carbon::now()->subDay()->toDateString())->get()->count();
             });
 
+            $in_lab_received_positive = Cache::remember('in_lab_received_positive-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
+                return LabTest::whereIn('hp_code', $hpCodes)->where('sample_test_result', '3')->get()->count();
+            });
+            $in_lab_received_positive_in_24_hrs = Cache::remember('in_lab_received_positive_in_24_hrs-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
+                return LabTest::whereIn('hp_code', $hpCodes)->where('sample_test_result', '3')->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->get()->count();
+            });
+            $in_lab_received_negative = Cache::remember('in_lab_received_negative-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
+                return LabTest::whereIn('hp_code', $hpCodes)->where('sample_test_result', '4')->get()->count();
+            });
+            $in_lab_received_negative_in_24_hrs = Cache::remember('in_lab_received_negative_in_24_hrs-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
+                return LabTest::whereIn('hp_code', $hpCodes)->where('sample_test_result', '4')->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->get()->count();
+            });
         }
 
         $data = [
@@ -98,12 +79,12 @@ class DashboardController extends Controller
                 return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count();
             }),
 
-            'in_lab_received' => $lab_received_collection->count(),
-            'in_lab_received_in_24_hrs' => $dashboardLabCases->sum('in_lab_received_in_24_hrs'),
-            'in_lab_received_positive' => $dashboardLabCases->sum('in_lab_received_positive'),
-            'in_lab_received_positive_in_24_hrs' => $dashboardLabCases->sum('in_lab_received_positive_in_24_hrs'),
-            'in_lab_received_negative' => $dashboardLabCases->sum('in_lab_received_negative'),
-            'in_lab_received_negative_in_24_hrs' => $dashboardLabCases->sum('in_lab_received_negative_in_24_hrs'),
+            'in_lab_received' => $in_lab_received ?? 0,
+            'in_lab_received_in_24_hrs' => $in_lab_received_in_24_hrs ?? 0,
+            'in_lab_received_positive' => $in_lab_received_positive ?? 0,
+            'in_lab_received_positive_in_24_hrs' => $in_lab_received_positive_in_24_hrs ?? 0,
+            'in_lab_received_negative' => $in_lab_received_negative ?? 0,
+            'in_lab_received_negative_in_24_hrs' => $in_lab_received_negative_in_24_hrs ?? 0,
             // time expiration in UMT add 5:45 to nepali time, sub 1 hrs to get updated at => 285
             'cache_created_at' => Carbon::parse(\DB::table('cache')->where('key', 'laravelregistered-'.auth()->user()->token)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s'),
             'user_token' => auth()->user()->token

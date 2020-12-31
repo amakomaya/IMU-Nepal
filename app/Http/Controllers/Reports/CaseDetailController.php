@@ -34,56 +34,9 @@ class CaseDetailController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'token' => 'required',
-            'case_id' => 'required',
-            'name' => 'required',
-            'age' => 'required',
-            'age_unit' => 'required',
-            'caste' => 'required',
-            'sex' => 'required',
-            'province_id' => 'required',
-            'district_id' => 'required',
-            'municipality_id' => 'required',
-            'ward' => 'required',
-            'tole' => 'required',
-            'travelled' => 'required',
-            'occupation' => 'required',
-        ]);
-
         $woman = SuspectedCase::find($id);
-        $woman->token = $request->get('token');
-        $woman->case_id = $request->get('case_id');
-        $woman->name = $request->get('name');
-        $woman->age = $request->get('age');
-        $woman->age_unit = $request->get('age_unit');
-        $woman->caste = $request->get('caste');
-        $woman->sex = $request->get('sex');
-        $woman->province_id = $request->get('province_id');
-        $woman->district_id = $request->get('district_id');
-        $woman->municipality_id = $request->get('municipality_id');
-        $woman->ward = $request->get('ward');
-        $woman->tole = $request->get('tole');
-        $woman->emergency_contact_one = $request->get('emergency_contact_one');
-        $woman->emergency_contact_two = $request->get('emergency_contact_two');
-        $woman->occupation = $request->get('occupation');
-        $woman->travelled = $request->get('travelled');
-
-        $woman->save();
-
-        return view('backend.woman.index');
+        $woman->update($request->all());
+        $request->session()->flash('message', 'Data Updated successfully');
+        return redirect()->back();
     }
-
-//    public function update(Request $request, Blogs $blog)
-//    {
-//        // $data = $request->validate([
-//        //     'title' => 'required',
-//        //     'description' => 'required',
-//        // ]);
-//
-//        $blog->update($this->validateBlog());
-//
-//        return redirect()->route('blogs.index')
-//            ->with('success','Blog updated successfully');
-//    }
 }

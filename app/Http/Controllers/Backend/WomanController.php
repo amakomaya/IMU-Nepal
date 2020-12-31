@@ -193,7 +193,6 @@ class WomanController extends Controller
 
     public function edit($token)
     {
-        //return $token;
         $data['woman'] = SuspectedCase::with('ancs', 'pncs', 'deliveries', 'lab_tests')->where('token', $token)->first();
         //return $data['woman'];
         return view('backend.woman.edit-view')->with($data);

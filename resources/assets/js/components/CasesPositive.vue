@@ -47,33 +47,15 @@
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
             <i class="fa fa-file" aria-hidden="true"></i> |
           </button>
-          <div v-if="role  === 'healthworker'">
-            <button v-if="item.ancs.length === 0" v-on:click="aadSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
+            <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
               <i class="fa fa-medkit" aria-hidden="true"></i> |
             </button>
-
-          </div>
           <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
             <i class="fa fa-hospital-o"></i>
           </button>
         </td>
-        <!-- </div>             -->
       </tr>
     </filterable>
-
-    <div v-if="this.$userRole === 'healthworker'">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-
-      <fab
-          :position="fabOptions.position"
-          :bg-color="fabOptions.bgColor"
-          :actions="fabActions"
-          :start-opened = true
-          @addPatient="addPatient"
-      ></fab>
-    </div>
-
   </div>
 </template>
 
@@ -321,19 +303,27 @@ export default {
           return 'O';
       }
     },
-
+    checkPermission(value){
+      var arr = this.$userPermissions.split(',');
+      return arr.includes(value);
+    },
     roleVisibility(data){
       if(this.role === 'dho' || this.role === 'province' || this.role === 'center'){
         return '** ***';
       }
       return data;
     },
-
-    aadSampleCollection(token){
-      window.location.href = '/admin/sample-collection/create/'+token;
+    addSampleCollection(token) {
+      window.open(
+          '/admin/sample-collection/create/' + token,
+          '_blank'
+      );
     },
-    addPatient(){
-      window.location.href = '/admin/patients/create'
+    addPatient() {
+      window.open(
+          '/admin/patients/create',
+          '_blank'
+      );
     },
     viewCaseDetails(token){
       window.open(
