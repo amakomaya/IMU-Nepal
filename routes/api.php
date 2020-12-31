@@ -13,6 +13,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yagiten\Nepalicalendar\Calendar;
 
+Route::get('/data/aggregate', 'Data\Api\AggregateController@forMonitor');
+
 Route::get('/v2/healthpost', 'Api\v2\HealthpostController@get');
 Route::get('/v2/municipality-by-district', 'Api\v2\MunicipalityByDistrictController@get');
 
