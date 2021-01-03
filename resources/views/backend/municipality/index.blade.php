@@ -48,33 +48,26 @@
                                         <th>{{trans('index.district')}}</th>                                    
                                         <th>{{trans('index.local_level')}}</th>
                                         <th>{{trans('index.no_of_hp')}}</th>   
-                                        <th>{{trans('index.phone')}}</th>   
-                                        <th>{{trans('index.office_address')}}</th>  
+                                        <th>{{trans('index.office_address')}}</th>
                                         <th>{{trans('index.status')}}</th>
                                         <th>{{trans('index.options')}}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @php $i = 0; @endphp
                                     @foreach($municipalityInfos as $municipalityInfo)
-                                    @php $i++ @endphp
                                     <tr>
-                                        <td>{{ $i }}</td>                                                   
-                                        <td>@if(!empty(\App\Models\MunicipalityInfo::find($municipalityInfo->id)->province->province_name))
-                                                {{\App\Models\MunicipalityInfo::find($municipalityInfo->id)->province->province_name}}
-                                            @endif
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ $municipalityInfo->province->province_name }}
                                         </td>                                     
-                                        <td>@if(!empty(\App\Models\MunicipalityInfo::find($municipalityInfo->id)->district->district_name))
-                                                {{\App\Models\MunicipalityInfo::find($municipalityInfo->id)->district->district_name}}
-                                            @endif
+                                        <td>
+                                            {{ $municipalityInfo->province->province_name }}
                                         </td>                                           
-                                        <td>@if(!empty(\App\Models\MunicipalityInfo::find($municipalityInfo->id)->municipality->municipality_name))
-                                                {{\App\Models\MunicipalityInfo::find($municipalityInfo->id)->municipality->municipality_name}}
-                                            @endif
+                                        <td>
+                                            {{ $municipalityInfo->province->province_name }}
                                         </td>  
-                                        <td>{{ \App\Models\Organization::where('municipality_id', $municipalityInfo->municipality_id)->count() }}</td>
-                                        <td>{{$municipalityInfo->phone}}</td>
-                                        <td>{{$municipalityInfo->office_address}}</td> 
+                                        <td>{{ $municipalityInfo->hospital_total }}</td>
+                                        <td>{{$municipalityInfo->office_address}}</td>
                                         <td>
                                             @if($municipalityInfo->status=='0')
                                             <span class="label label-danger">Inactive</span>

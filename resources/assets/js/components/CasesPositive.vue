@@ -18,7 +18,8 @@
       </tr>
       </thead>
       <tr slot-scope="{item}">
-        <td><div v-if="checkForPositiveOnly(item.latest_anc)" title="Case ID">C ID : {{ item.case_id }}</div>
+        <td>
+          <div v-if="checkForPositiveOnly(item.latest_anc)" title="Case ID">C ID : {{ item.case_id }}</div>
           <div v-if="item.parent_case_id !== null" title="Parent Case ID">PC ID : {{ item.parent_case_id }}</div>
         </td>
         <td>{{ roleVisibility(item.name)}}</td>
@@ -38,46 +39,25 @@
           <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
         </td>
         <td>
-          <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"></div>
-          <div v-else><span class="label label-primary"> Registered </span></div>
-          <div v-if="item.ancs.length > 0">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
+          <div v-if="item.ancs.length > 0">
+            <span class="label label-danger"> Positive</span>
+          </div>
+          <div>{{ labToken(item.latest_anc.labreport) }}</div>
         </td>
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
             <i class="fa fa-file" aria-hidden="true"></i> |
           </button>
-          <div v-if="role == 'main'">
-            <button v-on:click="editCaseDetails(item.token)" title="Edit Case Detail">
-              <i class="fa fa-edit" aria-hidden="true"></i> |
-            </button>
-          </div>
-          <div v-if="role  == 'healthworker'">
-            <button v-if="item.ancs.length == 0" v-on:click="aadSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
-              <i class="fa fa-medkit" aria-hidden="true"></i> |
-            </button>
-
-          </div>
+          <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)"
+                  title="Add Sample Collection / Swab Collection Report">
+            <i class="fa fa-medkit" aria-hidden="true"></i> |
+          </button>
           <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
             <i class="fa fa-hospital-o"></i>
           </button>
         </td>
-        <!-- </div>             -->
       </tr>
     </filterable>
-
-    <div v-if="this.$userRole == 'healthworker'">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-
-      <fab
-          :position="fabOptions.position"
-          :bg-color="fabOptions.bgColor"
-          :actions="fabActions"
-          :start-opened = true
-          @addPatient="addPatient"
-      ></fab>
-    </div>
-
   </div>
 </template>
 
@@ -94,7 +74,7 @@ export default {
   components: {Filterable, fab},
   data() {
     return {
-      role : this.$userRole,
+      role: this.$userRole,
       filterable: {
         url: '/data/api/positive-patient',
         orderables: [
@@ -127,15 +107,15 @@ export default {
           }
         ],
       },
-      token : Filterable.data().collection.data,
+      token: Filterable.data().collection.data,
       selected: [],
       allSelected: false,
       womanTokens: [],
-      provinces : [],
-      municipalities : [],
-      districts : [],
-      exportHtml : '',
-      fabOptions : {
+      provinces: [],
+      municipalities: [],
+      districts: [],
+      exportHtml: '',
+      fabOptions: {
         bgColor: '#778899',
         position: 'bottom-right',
       },
@@ -152,55 +132,49 @@ export default {
     this.fetch()
   },
   methods: {
-    selectAll: function (item) {
-      this.womanTokens = [];
 
-      if (this.allSelected) {
-        console.log(item);
-
-      }
-    },
-    select: function () {
-      this.allSelected = false;
-    },
     sendPatientData: function (item) {
       this.$dlg.modal(SendPatientDataModel, {
-        title: 'Do you want to send '+item.name+' \'s patients data ?',
-        height : 600,
-        width : 700,
+        title: 'Do you want to send ' + item.name + ' \'s patients data ?',
+        height: 600,
+        width: 700,
         params: {
-          data : item,
-          provinces : this.provinces,
-          districts : this.districts,
-          municipalities : this.municipalities
+          data: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
         },
       })
     },
 
     viewLabReport: function (item) {
       this.$dlg.modal(ViewLabResultReportModel, {
-        height : 700,
-        width : 800,
+        height: 700,
+        width: 800,
         title: 'Laboratory Result Form for Suspected COVID-19 Case',
         params: {
-          item : item,
-          provinces : this.provinces,
-          districts : this.districts,
-          municipalities : this.municipalities
+          item: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
         },
       })
     },
-
-    viewConfirmReportForm : function(item){
+    labToken(data) {
+      if (data !== null) {
+        return data.token.split('-').splice(1).join('-');
+      }
+    },
+    viewConfirmReportForm: function (item) {
       this.$dlg.modal(viewConfirmReportFormModel, {
         title: 'Confirmed report form of \'s ' + item.name,
-        height : 700,
-        width : 800,
+        height: 700,
+        width: 800,
         params: {
-          data : item,
-          provinces : this.provinces,
-          districts : this.districts,
-          municipalities : this.municipalities
+          data: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
         },
       })
     },
@@ -241,68 +215,37 @@ export default {
     ad2bs: function (date) {
       var dateObject = new Date(date);
 
-      var dateFormat = dateObject.getFullYear()  + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getDate();
+      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
 
       let dateConverter = DataConverter.ad2bs(dateFormat);
 
       return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
 
     },
-    checkDistrict : function(value){
-      if (value == 0 || value == null || value == ''){
+    checkDistrict: function (value) {
+      if (value === 0 || value == null || value === '') {
         return ''
-      }else{
+      } else {
         return this.districts.find(x => x.id === value).district_name;
       }
     },
-    checkMunicipality : function(value){
-      if (value == 0 || value == null || value == ''){
+    checkMunicipality: function (value) {
+      if (value === 0 || value == null || value === '') {
         return ''
-      }else{
+      } else {
         return this.municipalities.find(x => x.id === value).municipality_name;
       }
     },
-    latestLabResult :function(value){
-      switch(value.result){
-        case '4':
-          return '<span class=\"label label-success\"> Negative</span>';
-
-        case '2':
-          return '<span class=\"label label-info\"> Pending</span>';
-
-        case '3':
-          return '<span class=\"label label-danger\"> Positive</span>';
-
-        case '9':
-          return '<span class=\"label label-warning\"> Recieved</span>';
-
-        default:
-          return '<span class=\"label label-default\"> Don\'t Know</span>';
-      }
-    },
-    checkForPositiveOnly : function (value){
+    checkForPositiveOnly: function (value) {
       if (value !== null) {
-        if (value.result == '3') {
+        if (value.result === 3) {
           return true;
         }
       }
     },
-    latestLabResultNotNegative : function(value){
 
-      if (value == '0' || value == null || value == ''){
-        return true;
-      }
-
-      if (value.result == '4') {
-        return false;
-      }else{
-        return true;
-      }
-
-
-    },
-    checkCaseType : function(type){
-      switch(type){
+    checkCaseType: function (type) {
+      switch (type) {
         case '0':
           return 'N/A';
 
@@ -317,9 +260,9 @@ export default {
       }
     },
 
-    checkCaseManagement : function (type, management){
-      if (type == '1') {
-        switch(management){
+    checkCaseManagement: function (type, management) {
+      if (type === '1') {
+        switch (management) {
           case '0':
             return 'Home';
 
@@ -334,15 +277,15 @@ export default {
         }
       }
 
-      if (type == '2') {
-        switch(management){
+      if (type === '2') {
+        switch (management) {
           case '0':
             return 'General Ward';
 
-          case '0':
+          case '1':
             return 'ICU';
 
-          case '0':
+          case '2':
             return 'Ventilator';
 
           default:
@@ -352,32 +295,41 @@ export default {
       return 'N/A';
     },
 
-    gender(type){
-      switch (type){
+    gender(type) {
+      switch (type) {
         case '1':
           return 'M';
         case '2':
-          return  'F';
+          return 'F';
         default:
           return 'O';
       }
     },
-
-    roleVisibility(data){
-      if(this.role == 'dho' || this.role == 'province' || this.role == 'center'){
+    checkPermission(value) {
+      var arr = this.$userPermissions.split(',');
+      return arr.includes(value);
+    },
+    roleVisibility(data) {
+      if (this.role === 'dho' || this.role === 'province' || this.role === 'center') {
         return '** ***';
       }
       return data;
     },
-
-    aadSampleCollection(token){
-      window.location.href = '/admin/sample-collection/create/'+token;
+    addSampleCollection(token) {
+      window.open(
+          '/admin/sample-collection/create/' + token,
+          '_blank'
+      );
     },
-    addPatient(){
-      window.location.href = '/admin/patients/create'
+    addPatient() {
+      window.open(
+          '/admin/patients/create',
+          '_blank'
+      );
     },
-    viewCaseDetails(token){
-      window.location.href = '/admin/patient?token='+token;
+    viewCaseDetails(token) {
+      '/admin/patient?token=' + token,
+          '_blank'
     },
     editCaseDetails(token) {
       window.location.href = '/admin/patient/' + token + '/edit';

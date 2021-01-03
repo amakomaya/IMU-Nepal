@@ -26,6 +26,13 @@
 
     @section ('lattitude',!!old('lattitude')? old('lattitude') : $data->lattitude)
 
+    @section ('no_of_beds',!!old('no_of_beds')? old('no_of_beds') : $data->no_of_beds)
+    @section ('no_of_ventilators',!!old('no_of_ventilators')? old('no_of_ventilators') : $data->no_of_ventilators)
+    @section ('no_of_icu',!!old('no_of_icu')? old('no_of_icu') : $data->no_of_icu)
+    @section ('lattitude',!!old('lattitude')? old('lattitude') : $data->lattitude)
+
+    @php($hospital_type = !!old('hospital_type')? old('hospital_type') : $data->hospital_type)
+
     @php($status = !!old('status')? old('status') : $data->status)
 
     @section ('email',!!old('email')? old('email') : $user->email)

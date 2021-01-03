@@ -13,6 +13,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yagiten\Nepalicalendar\Calendar;
 
+Route::get('/data/aggregate', 'Data\Api\AggregateController@forMonitor');
+
 Route::get('/v2/healthpost', 'Api\v2\HealthpostController@get');
 Route::get('/v2/municipality-by-district', 'Api\v2\MunicipalityByDistrictController@get');
 
@@ -58,6 +60,11 @@ Route::get('/v1/client', function (Request $request) {
         ->where('women.hp_code', $hp_code)
         ->where('women.end_case', '0')
         ->select('women.*', 'ancs.result as sample_result')
+        ->where('women.created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
+        ->where(function ($query) {
+            $query->where('ancs.result', '!=', '4')
+                ->orWhere('women.created_at', '>=', Carbon::now()->subDays(2)->toDateTimeString());
+        })
         ->get();
 
     $data = collect($record)->map(function ($row) {
@@ -127,11 +134,8 @@ Route::get('/v1/client', function (Request $request) {
         return $response;
     })->values();
 
-    $filtered = $data->filter(function ($value, $key) {
-        return $value['result'] !== '4';
-    })->values();
 
-    return response()->json($filtered);
+    return response()->json($data);
 });
 
 Route::post('/v1/client-update', function (Request $request) {
@@ -205,7 +209,7 @@ Route::post('/v1/lab-test', function (Request $request) {
                 SampleCollection::where('token', $value['sample_token'])->update(['result' => '9']);
             } else {
                 SampleCollection::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
-                $find_test = LabTest::where('token', $value['token']);
+                $find_test = LabTest::where('token', $value['token'])->first();
                 if ($find_test) {
                     $find_test->update([
                         'sample_test_date' => $value['sample_test_date'],

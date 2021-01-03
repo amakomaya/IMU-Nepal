@@ -12,33 +12,28 @@ use GMaps;
 
 class MapController extends Controller
 {
-    public function map(Request $request)
+    public function map()
     {
-//        $response = FilterRequest::filter($request);
-//        $hpCodes = GetHealthpostCodes::filter($response);
-//        $cases = SuspectedCase::whereIn('hp_code', $hpCodes)->where('longitude', '!=', null)->with('latestAnc')->get();
-//         dd($hpCodes);
+        return view('map.index');
+    }
 
-//        $i = 0;
-//        dd($cases);
-//        foreach ($cases as $case) {
-//            $circle['center'] = $case->latitude.','.$case->longitude;
-//            $circle['radius'] = '50';
-//            $marker['position'] = $case->latitude.','.$case->longitude;
-//            $marker['infowindow_content'] = $case->getHealthpost($case->hp_code).'<br> Total COVID-19 Cases '. $i;
-//            GMaps::add_circle($circle);
-//            GMaps::add_marker($marker);
-//        $i++;
-//        }
-        $config['center'] = 'Kathmandu, Nepal';
-        $config['zoom'] = '7';
-        $config['map_height'] = '500px';
-        $config['scrollwheel'] = false;
+    public function data(){
+        $data = SuspectedCase::whereNotNull('longitude')
+            ->whereBetween('longitude', [79, 90])
+            ->whereBetween('latitude', [26, 31])
+            ->join('ancs', 'women.token', '=', 'ancs.woman_token')
+            ->whereIn('ancs.result', [3])
+            ->select(\DB::raw('round(women.latitude, 2) as latitude'), \DB::raw('round(women.longitude, 2) as longitude'), \DB::raw('count(*) as total'))
+            ->groupBy(\DB::raw('round(women.longitude, 1)'))
+            ->get()->makeHidden(['formated_age_unit', 'formated_gender']);
 
-        $config['geocodeCaching'] = true;
-        GMaps::initialize($config);
+        $max_total = collect($data)->max('total');
 
-        $map = GMaps::create_map();
-        return view('backend.woman.maps', compact('map'));
+        $data = collect($data)->map(function ($item) use ($max_total) {
+            $item->total = $item->total / $max_total;
+            return collect($item)->flatten();
+        });
+
+        return response()->json($data);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Data\Api;
 
 use App\Helpers\GetHealthpostCodes;
 use App\Http\Controllers\Controller;
+use App\Models\Organization;
 use App\Models\SampleCollection;
 use App\Models\LabTest;
 use App\Models\SuspectedCase;
@@ -33,6 +34,8 @@ class WomenController extends Controller
         ]);
     }
 
+    // Registered or Pending
+
     public function activeIndex(Request $request)
     {
         $response = FilterRequest::filter($request);
@@ -43,20 +46,25 @@ class WomenController extends Controller
         ]);
     }
 
+    // Negative
+
     public function passiveIndex(Request $request)
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->passivePatientList()->withAll();
+        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->pluck('woman_token');
+        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
     }
+
     public function positiveIndex(Request $request)
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->positivePatientList()->withAll();
+        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->pluck('woman_token');
+        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -66,7 +74,8 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->labReceivedList()->withAll();
+        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 9)->pluck('woman_token');
+        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -74,10 +83,16 @@ class WomenController extends Controller
 
     public function labAddReceivedIndex(Request $request)
     {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
-        $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
+        $sample_token = LabTest::where(function($q) use ($hpCodes, $user) {
+                $q->where('checked_by', $user->token)
+                    ->orWhereIn('hp_code', $hpCodes);
+            })->
+            where('sample_test_result', '9')->pluck('sample_token');
         $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
-        $data = SuspectedCase::whereIn('token', $token)->active()->withAll()->labAddReceived();
+        $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
             'collection' => $data->advancedFilter()
         ]);
@@ -85,10 +100,15 @@ class WomenController extends Controller
 
     public function labAddResultPositiveIndex(Request $request)
     {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
-        $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
+        $sample_token = LabTest::where(function($q) use ($hpCodes, $user) {
+        $q->where('checked_by', $user->token)
+            ->orWhereIn('hp_code', $hpCodes);
+        })->where('sample_test_result', '3')->pluck('sample_token');
         $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
-        $data = SuspectedCase::whereIn('token', $token)->active()->withAll()->labAddReceivedPositive();
+        $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
             'collection' => $data->advancedFilter()
         ]);
@@ -96,10 +116,15 @@ class WomenController extends Controller
 
     public function labAddResultNegativeIndex(Request $request)
     {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
-        $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
+        $sample_token = LabTest::where(function($q) use ($hpCodes, $user) {
+            $q->where('checked_by', $user->token)
+                ->orWhereIn('hp_code', $hpCodes);
+        })->where('sample_test_result', '4')->pluck('sample_token');
         $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
-        $data = SuspectedCase::whereIn('token', $token)->active()->withAll()->labAddReceivedNegative();
+        $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
             'collection' => $data->advancedFilter()
         ]);
@@ -120,6 +145,18 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->casesDeathList()->withAll();
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
+
+    public function casesInOtherOrganization(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $request = FilterRequest::filter($request);
+        $hp_codes = Organization::where('municipality_id', $request['municipality_id'])->pluck('hp_code');
+        $woman = SuspectedCase::where('municipality_id', $request['municipality_id'])
+            ->whereNotIn('hp_code', $hp_codes)
+            ->active()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);

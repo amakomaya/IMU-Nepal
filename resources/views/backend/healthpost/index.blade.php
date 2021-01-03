@@ -45,38 +45,22 @@
                             <thead>
                                 <tr>
                                     <th>{{trans('index.sn')}}</th>                                     
-                                    <th>{{trans('index.name')}}</th>                                  
-                                    <th>{{trans('index.province')}}</th>                                     
-                                    <th>{{trans('index.district')}}</th>                                     
+                                    <th>{{trans('index.name')}}</th>
                                     <th>{{trans('index.municipality')}}</th>    
-                                    <th>{{trans('index.hp_code')}}</th>                                   
-                                    <th>{{trans('index.address')}}</th>                                      
                                     <th>{{trans('index.status')}}</th>
+                                    <th>Info</th>
                                     <th>{{trans('index.updated_at')}}</th>
                                     <th>{{trans('index.options')}}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $i = 0; @endphp
                                 @foreach($healthposts as $healthpost)
-                                @php $i++ @endphp
                                 <tr>
-                                    <td>{{ $i }}</td>                                     
-                                    <td>{{$healthpost->name}}</td>                                      
-                                    <td>@if(!empty(\App\Models\Organization::find($healthpost->id)->province->province_name))
-                                            {{\App\Models\Organization::find($healthpost->id)->province->province_name}}
-                                        @endif
-                                    </td>                                     
-                                    <td>@if(!empty(\App\Models\Organization::find($healthpost->id)->district->district_name))
-                                            {{\App\Models\Organization::find($healthpost->id)->district->district_name}}
-                                        @endif
-                                    </td>                                     
-                                    <td>@if(!empty(\App\Models\Organization::find($healthpost->id)->municipality->municipality_name))
-                                            {{\App\Models\Organization::find($healthpost->id)->municipality->municipality_name}}
-                                        @endif
-                                    </td>    
-                                    <td>{{$healthpost->hp_code}}</td>                                   
-                                    <td>{{$healthpost->address}}</td>                                       
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{$healthpost->name}}</td>
+                                    <td>
+                                        {{ $healthpost->municipality->municipality_name }}
+                                    </td>
                                     <td>
                                         @if($healthpost->status=='0')
                                         <span class="label label-danger">Inactive</span>
@@ -85,6 +69,13 @@
                                         <span class="label label-success">Active</span>
 
                                         @endif
+                                    </td>
+                                    <td>
+                                        Hospital Type : {{ $healthpost->hospitalType($healthpost->hospital_type) }} <br>
+                                        <span><u>Total number of</u></span><br>
+                                        Beds : {{ $healthpost->no_of_beds }}<br>
+                                        Ventilators : {{ $healthpost->no_of_ventilators }}<br>
+                                        ICU : {{ $healthpost->no_of_icu }}
                                     </td>
                                     <td>{{ $healthpost->updated_at->diffForHumans() }}</td>
                                     <td>
@@ -113,7 +104,7 @@
                                                     <a class="btn btn-xs btn-primary"  href="{{route('user-manager.change-paswword', \App\User::getUserId($healthpost->token) ) }}">
                                                         Change Password
                                                     </a>
-                                                    <button class="btn btn-xs btn-primary" name="submit" >Login As</i></button>
+                                                    <button class="btn btn-xs btn-primary" name="submit" >Login As</button>
                                                 </div>
                                             </form>
                                         @endif

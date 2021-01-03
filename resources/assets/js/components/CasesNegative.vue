@@ -29,18 +29,18 @@
                 <td>{{ checkMunicipality(item.municipality_id) }}</td>
                 <td>{{ ad2bs(item.created_at) }}</td>
 
-              <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
-                <td><div v-html="latestLabResult(item.latest_anc)">
-                </div>
-                  <div v-if="item.ancs.length > 0">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
-
-                  <!--                <button v-on:click="viewLabReport(item)" title="Lab Report">-->
-<!--                    <i class="fa fa-file"></i>-->
-<!--                </button>-->
+              <td><span class="label label-info"> {{ item.ancs.length }}</span>
+                <div title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
+              </td>
+                <td><span class="label label-success"> Negative</span>
+                  <div>{{ labToken(item.latest_anc.labreport) }}</div>
                 </td>
                 <td>
                   <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
                     <i class="fa fa-file" aria-hidden="true"></i> |
+                  </button>
+                  <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
+                    <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
                 </td>  
                 <!-- </div>             -->
@@ -189,6 +189,11 @@
                 return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
 
             },
+            labToken(data){
+              if (data !== null){
+                return data.token.split('-').splice(1).join('-');
+              }
+            },
             checkDistrict : function(value){
                 if (value == 0 || value == null || value == ''){
                     return ''
@@ -203,27 +208,7 @@
                 return this.municipalities.find(x => x.id === value).municipality_name;
                 }
             },
-            latestLabResult :function(value){
-                if (value == '0' || value == null || value == ''){
-                    return '<span class=\"label label-default\"> Don\'t Know </span>';
-                }else{
-                    if (value == '0' || value == null || value == ''){
-                        return '<span class=\"label label-default\"> Don\'t Know </span>';
-                    }else{
-                        if (value.result == '4') {
-                            return '<span class=\"label label-success\"> Negative</span>'
-                        }
-                        if (value.result == '2') {
-                            return '<span class=\"label label-info\"> Pending</span>'
-                        }
-                        if (value.result == '3') {
-                            return '<span class=\"label label-danger\"> Positive</span>'
-                        }else{
-                            return '<span class=\"label label-default\"> Don\'t Know</span>'
-                        }
-                    }
-                }
-            },
+
             latestLabResultNegative : function(value){
                 if (value) {
                     if (value == '0' || value == null || value == ''){
@@ -250,6 +235,16 @@
               default:
                 return 'O';
             }
+          },
+          addSampleCollection(token) {
+            window.open(
+                '/admin/sample-collection/create/' + token,
+                '_blank'
+            );
+          },
+          checkPermission(value){
+            var arr = this.$userPermissions.split(',');
+            return arr.includes(value);
           },
           viewCaseDetails(token){
             window.open(

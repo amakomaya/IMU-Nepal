@@ -28,6 +28,11 @@
 
     @section ('lattitude',old('lattitude'))
 
+    @section ('no_of_beds',old('no_of_beds'))
+    @section ('no_of_ventilators',old('no_of_ventilators'))
+    @section ('no_of_icu',old('no_of_icu'))
+    @php($hospital_type= old('hospital_type'))
+
     @php($status= old('status')) 
 
     @section ('username',old('username'))

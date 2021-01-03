@@ -24,8 +24,8 @@
         <td>{{ roleVisibility(item.name)}}</td>
         <td>{{item.age}}</td>
         <td>{{ gender(item.sex)}}</td>
-        <td>One : {{ roleVisibility(item.emergency_contact_one) }} <br>
-          Two : {{ roleVisibility(item.emergency_contact_two) }}
+        <td>{{ roleVisibility(item.emergency_contact_one) }} <br>
+          {{ roleVisibility(item.emergency_contact_two) }}
         </td>
         <td>{{ checkMunicipality(item.municipality_id) }}</td>
         <td>
@@ -35,37 +35,23 @@
         </td>
         <td>{{ ad2bs(item.created_at) }}</td>
         <td><span class="label label-info"> {{ item.ancs.length }}</span>
-          <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
+          <div v-if="item.latest_anc" title="Swab ID">
+            Type : {{ checkSampleType(item.latest_anc.service_for) }}
+          </div>
         </td>
         <td>
-          <span class="label label-warning"> Received </span>
-          <div>{{ labToken(item.latest_anc.labreport) }}</div>
+          <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"> </div>
+          <div v-else><span class="label label-primary"> Registered </span></div>
         </td>
         <td>
-          <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
+          <button v-on:click="viewCaseDetails(item.token)" target="_blank" title="Case Details Report">
             <i class="fa fa-file" aria-hidden="true"></i> |
-          </button>
-          <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
-            <i class="fa fa-hospital-o"></i>
           </button>
         </td>
         <!-- </div>             -->
       </tr>
+
     </filterable>
-
-    <div v-if="this.$userRole === 'healthworker'">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-
-      <fab
-          :position="fabOptions.position"
-          :bg-color="fabOptions.bgColor"
-          :actions="fabActions"
-          :start-opened = true
-          @addPatient="addPatient"
-      ></fab>
-    </div>
-
   </div>
 </template>
 
@@ -82,9 +68,9 @@ export default {
   components: {Filterable, fab},
   data() {
     return {
-      role : this.$userRole,
+      role: this.$userRole,
       filterable: {
-        url: '/data/api/lab-received',
+        url: '/data/api/cases-in-other-organization',
         orderables: [
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},
@@ -96,31 +82,24 @@ export default {
             filters: [
               {title: 'Name', name: 'name', type: 'string'},
               {title: 'Age', name: 'age', type: 'numeric'},
-              {title: 'Phone Number', name: 'emergency_contact_one', type: 'text'},
+              {title: 'Phone Number', name: 'phone', type: 'numeric'},
               {title: 'Case Created At', name: 'created_at', type: 'datetime'},
             ]
           },
           {
             name: 'Swab Collection',
             filters: [
-              {title: 'Swab ID ', name: 'ancs.token', type: 'string'},
               {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
-            ]
-          },
-          {
-            name: 'Lab Result',
-            filters: [
-              {title: 'Lab Result Created At', name: 'ancs.updated_at', type: 'datetime'}
             ]
           }
         ],
       },
-      token : Filterable.data().collection.data,
-      provinces : [],
-      municipalities : [],
-      districts : [],
-      exportHtml : '',
-      fabOptions : {
+      token: Filterable.data().collection.data,
+      provinces: [],
+      municipalities: [],
+      districts: [],
+      exportHtml: '',
+      fabOptions: {
         bgColor: '#778899',
         position: 'bottom-right',
       },
@@ -139,42 +118,42 @@ export default {
   methods: {
     sendPatientData: function (item) {
       this.$dlg.modal(SendPatientDataModel, {
-        title: 'Do you want to send '+item.name+' \'s patients data ?',
-        height : 600,
-        width : 700,
+        title: 'Do you want to send ' + item.name + ' \'s patients data ?',
+        height: 600,
+        width: 700,
         params: {
-          data : item,
-          provinces : this.provinces,
-          districts : this.districts,
-          municipalities : this.municipalities
+          data: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
         },
       })
     },
 
     viewLabReport: function (item) {
       this.$dlg.modal(ViewLabResultReportModel, {
-        height : 700,
-        width : 800,
+        height: 700,
+        width: 800,
         title: 'Laboratory Result Form for Suspected COVID-19 Case',
         params: {
-          item : item,
-          provinces : this.provinces,
-          districts : this.districts,
-          municipalities : this.municipalities
+          item: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
         },
       })
     },
 
-    viewConfirmReportForm : function(item){
+    viewConfirmReportForm: function (item) {
       this.$dlg.modal(viewConfirmReportFormModel, {
         title: 'Confirmed report form of \'s ' + item.name,
-        height : 700,
-        width : 800,
+        height: 700,
+        width: 800,
         params: {
-          data : item,
-          provinces : this.provinces,
-          districts : this.districts,
-          municipalities : this.municipalities
+          data: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
         },
       })
     },
@@ -215,52 +194,48 @@ export default {
     ad2bs: function (date) {
       var dateObject = new Date(date);
 
-      var dateFormat = dateObject.getFullYear()  + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getDate();
+      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
 
       let dateConverter = DataConverter.ad2bs(dateFormat);
 
       return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
 
     },
-    labToken(data){
-      if (data !== null){
-        return data.token.split('-').splice(1).join('-');
-      }
-    },
-    checkDistrict : function(value){
-      if (value === 0 || value == null || value === ''){
+    checkDistrict: function (value) {
+      if (value === 0 || value == null || value === '') {
         return ''
-      }else{
+      } else {
         return this.districts.find(x => x.id === value).district_name;
       }
     },
-    checkMunicipality : function(value){
-      if (value === 0 || value == null || value === ''){
+    checkMunicipality: function (value) {
+      if (value === 0 || value == null || value === '') {
         return ''
-      }else{
+      } else {
         return this.municipalities.find(x => x.id === value).municipality_name;
       }
     },
 
-    checkCaseType : function(type){
-      switch(type){
+    checkCaseType: function (type) {
+      switch (type) {
         case '0':
           return 'N/A';
-
         case '1':
           return 'Asymptomatic / Mild Case';
-
         case '2':
           return 'Moderate / Severe Case';
-
         default:
           return 'N/A';
       }
     },
 
-    checkCaseManagement : function (type, management){
+    checkSampleType: function (type){
+      return (type === '2') ? 'Rapid Antigen Test' : 'SARS-CoV-2 RNA Test';
+    },
+
+    checkCaseManagement: function (type, management) {
       if (type === '1') {
-        switch(management){
+        switch (management) {
           case '0':
             return 'Home';
 
@@ -276,7 +251,7 @@ export default {
       }
 
       if (type === '2') {
-        switch(management){
+        switch (management) {
           case '0':
             return 'General Ward';
 
@@ -293,33 +268,63 @@ export default {
       return 'N/A';
     },
 
-    gender(type){
-      switch (type){
+    gender(type) {
+      switch (type) {
         case '1':
           return 'M';
         case '2':
-          return  'F';
+          return 'F';
         default:
           return 'O';
       }
     },
 
-    roleVisibility(data){
-      if(this.role === 'dho' || this.role === 'province' || this.role === 'center'){
+    roleVisibility(data) {
+      if (this.role === 'dho' || this.role === 'province' || this.role === 'center') {
         return '** ***';
       }
       return data;
     },
 
-    aadSampleCollection(token){
-      window.location.href = '/admin/sample-collection/create/'+token;
+    addSampleCollection(token) {
+      window.location.href = '/admin/sample-collection/create/' + token;
     },
-    addPatient(){
+    addPatient() {
       window.location.href = '/admin/patients/create'
     },
-    viewCaseDetails(token){
+    viewCaseDetails(token) {
       window.open(
           '/admin/patient?token=' + token,
+          '_blank'
+      );
+    },
+    latestLabResult :function(value){
+      if (value == '0' || value == null || value == ''){
+        return '<span class=\"label label-default\"> Don\'t Know </span>';
+      }else{
+        if (value == '0' || value == null || value == ''){
+          return '<span class=\"label label-default\"> Don\'t Know </span>';
+        }else{
+          if (value.result == '4') {
+            return '<span class=\"label label-success\"> Negative</span>'
+          }
+          if (value.result == '2') {
+            return '<span class=\"label label-info\"> Pending</span>'
+          }
+          if (value.result == '3') {
+            return '<span class=\"label label-danger\"> Positive</span>'
+          }
+          if (value.result == '9') {
+            return '<span class=\"label label-warning\"> Received</span>'
+          }else{
+            return '<span class=\"label label-default\"> Don\'t Know</span>'
+          }
+        }
+      }
+    },
+    editCaseDetails(token) {
+      window.open(
+          '/admin/patient/' + token + '/edit',
           '_blank'
       );
     }

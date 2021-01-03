@@ -28,10 +28,7 @@
         <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
         <td><div v-html="latestLabResult(item.latest_anc)">
         </div>
-          <div v-if="item.ancs.length > 0">{{ item.latest_anc.labreport.token.split('-').splice(1).join('-') }}</div>
-          <!-- <button v-on:click="viewLabReport(item)" title="Lab Report">
-              <i class="fa fa-file"></i>
-          </button> -->
+
         </td>
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">

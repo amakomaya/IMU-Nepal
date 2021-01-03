@@ -12,3 +12,30 @@ Route::get('healthpost-select', 'Reports\FilterController@healthpostSelect');
 Route::get('select-from-to', 'Reports\FilterController@selectFromTo');
 
 Route::get('dashboard', 'Reports\DashboardController@index')->name('report.dashboard');
+
+Route::get('calc' , function (){
+   $lab_record = \App\Models\LabTest::get(['sample_token', 'sample_test_result']);
+   $lab_record->map(function ($record){
+      $sample = \App\Models\SampleCollection::where('token', $record->sample_token)->first();
+      if (!empty($sample)){
+          $sample->update(['result' =>  $record->sample_test_result]);
+      }
+   });
+
+   $sample_token = \App\Models\SampleCollection::where('result', '!=', 2)->get(['token', 'result']);
+
+    $sample_token->map(function ($sample){
+        $lab = \App\Models\LabTest::where('sample_token', $sample->token)->first();
+        if (empty($lab)){
+            $sample->update(['result' =>  2]);
+        }
+    });
+
+    \App\Models\LabTest::where('sample_test_result', '')->update([
+        'sample_test_result' => '9'
+        ]);
+    \App\Models\SampleCollection::where('result', '0')->update([
+        'result' => '9'
+    ]);
+   return "Complete";
+});

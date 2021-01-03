@@ -58,6 +58,10 @@ class WomanController extends Controller
         return view('backend.woman.index-cases-death');
     }
 
+    public function casesInOtherOrganization(){
+        return view('backend.woman.index-cases-in-other-organization');
+    }
+
     public function create(Request $request)
     {
         $response = FilterRequest::filter($request);
@@ -190,7 +194,6 @@ class WomanController extends Controller
 
     public function edit($token)
     {
-        //return $token;
         $data['woman'] = SuspectedCase::with('ancs', 'pncs', 'deliveries', 'lab_tests')->where('token', $token)->first();
         //return $data['woman'];
         return view('backend.woman.edit-view')->with($data);

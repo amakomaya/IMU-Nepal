@@ -28,7 +28,8 @@ Route::get('/admin/district-value', 'AdminController@getDistrictValue')->name('a
 
 //Backend Center
 Route::resource('admin/center', 'Backend\CenterController');
-Route::get('/admin/center-maps', 'Backend\MapController@map')->name('center.woman.map');
+Route::get('/admin/maps', 'Backend\MapController@map')->name('center.woman.map');
+Route::get('/admin/maps/data', 'Backend\MapController@data');
 
 //Backend Dho
 Route::resource('admin/dho', 'Backend\DHOController');
@@ -77,6 +78,8 @@ Route::get('admin/cases-death', 'Backend\WomanController@casesDeathIndex')->name
 Route::get('admin/sample-collection/create/{token}', 'Backend\WomanController@sampleCollectionCreate')->name('patients.sample-collection.store');
 Route::post('admin/sample-collection', 'Backend\WomanController@sampleCollectionStore')->name('patient.sample.store');
 
+Route::get('admin/cases-in-other-organization', 'Backend\WomanController@casesInOtherOrganization')->name('patients.other-organization.index');
+
 Route::resource('admin/profile', 'Backend\ProfileController');
 
 Route::get('/api/district', 'Api\DistrictController@index')->name('api.district.index');
@@ -112,6 +115,12 @@ Route::get('/artisan-clear', function() {
     Artisan::call('view:clear');
     return "Cleared!";
 });
+
+Route::get('refresh-page', function (){
+    \DB::table('cache')
+        ->where('key', 'like', '%'.'-'.auth()->user()->token)->delete();
+    return redirect()->back();
+})->name('refresh-page');
 
 Route::group(['prefix' => 'admin/messages'], function () {
     Route::get('/', ['as' => 'messages', 'uses' => 'MessagesController@index']);

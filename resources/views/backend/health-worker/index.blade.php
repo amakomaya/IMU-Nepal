@@ -5,20 +5,19 @@
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-12">
-            @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
-                <script type="text/javascript">
-                     function confirmDelete(){
-                        if(confirm("Are you sure to delete?")){
-                            return true;
-                        }
-                        
-                        else
-                        {
-                            return false;
-                        }
+            <script type="text/javascript">
+                function confirmDelete(){
+                    if(confirm("Are you sure to delete?")){
+                        return true;
                     }
-                </script>
 
+                    else
+                    {
+                        return false;
+                    }
+                }
+            </script>
+            @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
                 @if (Request::session()->has('message'))
                     <div class="alert alert-block alert-success">
                         <button type="button" class="close" data-dismiss="alert">
@@ -40,7 +39,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     @if($role=="healthworker")
-                        Healthworker
+                        Users
                     @else
                         Lab Users
                     @endif
@@ -55,11 +54,9 @@
                                 <th>S.N</th>                                      
                                 <th>Name</th>
                                 <th>User ID</th>
-                                @if(Auth::user()->role!="main")
-                                <th>Districts</th>                                     
-                                <th>Health Post</th> 
-                                @endif
-                                <th>Post</th>                                     
+                                <th>Username</th>
+                                <th>Permissions</th>
+                                <th>Post</th>
                                 <th>Phone No:</th>  
                                 <th>Status</th>
                                 <th>Options</th>
@@ -73,11 +70,9 @@
                                 <td> {{ $i }}</td>                                          
                                 <td> {{ $healthWorker->name }} </td>
                                 <td>{{ str_pad($healthWorker->id, 4, '0', STR_PAD_LEFT) }}</td>
-                                @if(Auth::user()->role!="main")
-                                    <td>{{ $healthWorker->district->district_name }}</td>                                     
-                                    <td>{{ $healthWorker->getHealthpost($healthWorker->hp_code) }}</td> 
-                                @endif                                     
-                                <td> {{ $healthWorker->post }} </td>                                     
+                                    <td>{{ $healthWorker->user->username }}</td>
+                                    <td>{{ implode(', ', $healthWorker->user->getPermissionNames()->toArray()) }}</td>
+                                <td> {{ $healthWorker->post }} </td>
                                 <td> {{ $healthWorker->phone }}</td>                                     
                                   
                                 <td> 

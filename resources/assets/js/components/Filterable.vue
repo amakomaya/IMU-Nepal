@@ -152,12 +152,28 @@
         <table class="table table-striped sortable">
           <slot name="thead"></slot>
           <tbody>
-          <slot v-if="collection.data && collection.data.length"
+            <slot v-if="collection.data && collection.data.length"
                 v-for="item in collection.data"
                 :item="item"
-          ></slot>
+            >
+            </slot>
           </tbody>
         </table>
+      </div>
+
+      <div class="panel-body" v-if="!apiresponce" v-for="index in 5" :key="index">
+          <ListLoader :width="100">
+            <rect x="0" y="0" rx="3" ry="3" width="250" height="10" />
+            <rect x="20" y="20" rx="3" ry="3" width="220" height="10" />
+            <rect x="20" y="40" rx="3" ry="3" width="170" height="10" />
+            <rect x="0" y="60" rx="3" ry="3" width="250" height="10" />
+            <rect x="20" y="80" rx="3" ry="3" width="200" height="10" />
+            <rect x="20" y="100" rx="3" ry="3" width="80" height="10" />
+          </ListLoader>
+      </div>
+
+      <div class="panel-body" v-if="apiresponce === true && collection.data.length === 0">
+          There are no records to display ..........
       </div>
       <div class="panel-footer">
         <div>
@@ -183,8 +199,12 @@
 import Vue from 'vue'
 import axios from 'axios'
 import DataConverter from "ad-bs-converter";
+import { ContentLoader, ListLoader } from 'vue-content-loader'
 
 export default {
+  components: {
+    ContentLoader, ListLoader
+  },
   props: {
     url: String,
     filterGroups: Array,
@@ -193,6 +213,7 @@ export default {
   data() {
     return {
       loading: true,
+      apiresponce : false,
       appliedFilters: [],
       filterCandidates: [],
       query: {
@@ -471,6 +492,7 @@ export default {
           .then((res) => {
             Vue.set(this.$data, 'collection', res.data.collection)
             this.query.page = res.data.collection.current_page
+            this.apiresponce = true
           })
           .catch((error) => {
 

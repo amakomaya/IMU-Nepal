@@ -21,16 +21,14 @@
         </div>
         <button class="btn btn-primary pull-right col-md-2" @click="checkSID">Check</button>
       </div>
-      <br><br>
       <div class="help-block" v-if="!$v.data.unique_id.required">Field is required.</div>
       <div class="help-block" v-if="!$v.data.unique_id.minLength">Field must have valid numbers length.</div>
     </div>
-    <label class="control-label  btn-primary" id="message">{{ message }}</label><br>
-    <div v-show="isShow" class="form-group">
-      <label class="control-label" id="name">Name : {{ name }}</label><br>
-      <label class="control-label" id="age">Age : {{ age }}</label><br>
-      <label class="control-label" id="gender">Gender : {{ gender }}</label>
-    </div>
+    <label style="margin-top:5px;" class="control-label btn-primary" id="message">{{ message }}</label>
+    <p style="margin-bottom:-10px; margin-top: -10px" v-show="isShow" class="panel-body">
+        Name : {{ name }}<br>
+        Age : {{ age }}, Gender : {{ gender }}
+    </p>
     <div class="form-group" :class="{ 'has-error': $v.data.token.$error }">
       <label class="control-label">Enter Registered Lab ID ( Unique )</label>
       <div class="inputGroupContainer">
@@ -58,6 +56,9 @@ import axios from "axios";
 import {required, minLength} from 'vuelidate/lib/validators'
 
 export default {
+  props:{
+    item : String
+  },
   data() {
     return {
       sample_lot_id: String,
@@ -140,6 +141,12 @@ export default {
             }
           });
     },
+  },
+  created(){
+    if(this.item){
+      this.sample_lot_id = this.item;
+      this.data.unique_id = this.item.split(/[-]+/).pop();
+    }
   }
 
 }

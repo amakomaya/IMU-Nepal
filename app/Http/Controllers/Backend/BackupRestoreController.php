@@ -93,10 +93,11 @@ class BackupRestoreController
         try {
             $lab_test->map(function ($item, $key) {
                 $data = collect($item)->except(['_id', 'regdev', 'sync', 'update_status'])->all();
-                LabTest::updateOrCreate([
-                    'token' => $data['token'],
-                    'sample_token' => $data['sample_token'],
-                ], $data);
+                try {
+                    LabTest::updateOrCreate([
+                        'token' => $data['token'],
+                    ], $data);
+                }catch (\Exception $e){}
             });
             array_push($success, "Lab Test");
         } catch (Exception $e) {

@@ -15,8 +15,6 @@ class Organization extends Model
 
     protected $table='healthposts';
 
-    protected $appends = ['sample_collection_count'];
-
     public function getDescriptionForEvent(string $eventName): string
     {
         return "Organization model has been {$eventName}";
@@ -26,7 +24,11 @@ class Organization extends Model
 
     protected static $logOnlyDirty = true;
 
-    protected $fillable = ['name','token','hmis_uid','province_id','district_id','municipality_id','hp_code','ward_no','phone','address','longitude','lattitude','status','created_at','updated_at'];
+    protected $fillable = ['name','token','hmis_uid','province_id',
+        'district_id','municipality_id','hp_code','ward_no','phone',
+        'no_of_beds', 'no_of_ventilators', 'no_of_icu', 'hospital_type',
+        'address','longitude','lattitude','status','created_at','updated_at'
+    ];
 
     public function province()
     {
@@ -70,6 +72,11 @@ class Organization extends Model
     	}
 	}
 
+	public function hospitalType($type){
+        $list = [1=>'Sample Collection Only',2=>'Lab Test Only', 3=>'Both ( Sample Collection & Lab Test )'];
+        return $list[$type];
+    }
+
 	public static function isHpCodeAlreadyExist($hpCode){
 		$healthpost = Organization::where('hp_code',$hpCode)->get()->first();
     	if(count($healthpost)>0){
@@ -79,49 +86,9 @@ class Organization extends Model
     	}
 	}
 
-    public static function getHpCodeWoman(){
-        $token = Auth::user()->token;
-        $role = Auth::user()->role;
-        if($role=="healthpost"){
-            $healthpost = Organization::where('token',$token)->get()->first();
-            return $healthpost->hp_code;
-        }elseif($role=="healthworker"){
-            $healthworker = OrganizationMember::where('token', $token)->get()->first();
-            return $healthworker->hp_code;
-        }
-    }
-
-    public static function checkValidId($id){
-        $loggedInToken = Auth::user()->token;
-        $loggedInWardId = Ward::modelWard($loggedInToken)->id;
-        $recoredWardNo = Organization::where('id',$id)->get()->first()->ward_no;
-        $recoredMunicipalityId = Organization::where('id',$id)->get()->first()->municipality_id;
-        $recordedWardId = Ward::where([['municipality_id', $recoredMunicipalityId],['ward_no',$recoredWardNo]])->get()->first()->id;
-
-        if($loggedInWardId==$recordedWardId){
-            return true;
-        }
-        return false;
-    }
-
-    public static function modelHealthpost($token){
+	public static function modelHealthpost($token){
         $model = Organization::where('token', $token)->get()->first();
         return $model;
-	}
-	
-	public function getDistrictName($token)
-    {
-		return  District::where('id',$token)->first()->district_name;
-	}
-
-	public function getRegisters($hp_code)
-	{
-		return SuspectedCase::where('hp_code', $hp_code)->active()->count();
-	}
-
-	public function getSampleCollectionCountAttribute()
-	{
-		return \App\Models\SampleCollection::where('hp_code', $this->hp_code)->active()->count();
 	}
 
     public function user(){

@@ -12,6 +12,15 @@ import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
 import _ from 'lodash'
 import Vuelidate from 'vuelidate'
+import 'vue-progress-path/dist/vue-progress-path.css'
+import VueProgress from 'vue-progress-path'
+
+import 'leaflet/dist/leaflet.css';
+
+
+Vue.use(VueProgress, {
+    // defaultShape: 'circle',
+})
 
 import WomenList from './components/CasesRegisteredOrPending.vue'
 import WomanListNegative from './components/CasesNegative'
@@ -24,6 +33,8 @@ import LabNegativeCases from "./components/LabNegativeCases";
 import LabPositiveCases from "./components/LabPositiveCases";
 import CaseDetail from "./components/viewCaseDetailReport"
 import LabCaseReport from "./components/LabCaseReport.vue"
+import CasesInOtherOrganization from "./components/CasesInOtherOrganization";
+import MapIndex from "./components/MapIndex";
 
 import AdminDashboard from "./components/AdminDashboard";
 
@@ -33,12 +44,15 @@ import VNepaliDatePicker from 'v-nepalidatepicker';
 import JsonExcel from 'vue-json-excel'
 import VueMask from 'v-mask'
 import LabCases from "./components/LabCases";
+
 Vue.use(VueMask);
 Vue.use(VNepaliDatePicker);
 
 Vue.component('downloadExcel', JsonExcel)
 
 Vue.prototype.$userRole = document.querySelector("meta[name='user-role']").getAttribute('content');
+Vue.prototype.$userPermissions = document.querySelector("meta[name='user-permission']").getAttribute('content');
+Vue.prototype.$hospitalType = document.querySelector("meta[name='hospital-type']").getAttribute('content');
 
 Vue.use(Vuelidate)
 Vue.use(StatusIndicator);
@@ -64,7 +78,9 @@ Vue.component('vaccination-chart');
 Vue.component('admin-dashboard', AdminDashboard)
 Vue.component('select-year-month', SelectYearMonth)
 Vue.component('lab-case-report', LabCaseReport)
+Vue.component('map-index', MapIndex)
 
+Vue.component('cases-in-other-organization', CasesInOtherOrganization)
 Vue.component('case-detail', CaseDetail)
 
 const app = new Vue({

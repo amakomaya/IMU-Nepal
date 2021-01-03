@@ -82,6 +82,10 @@ class HealthpostController extends Controller
             'lattitude'               => $request->get('lattitude'),
             'hmis_uid'                 => $request->get('hmis_uid'),
             'status'               => $request->get('status'),
+            'no_of_beds'               => $request->get('no_of_beds'),
+            'no_of_ventilators'               => $request->get('no_of_ventilators'),
+            'no_of_icu'               => $request->get('no_of_icu'),
+            'hospital_type'               => $request->get('hospital_type')
         ]);
 
         User::create([
@@ -142,6 +146,10 @@ class HealthpostController extends Controller
             'lattitude'               => $request->get('lattitude'),
             'hmis_uid'                 => $request->get('hmis_uid'),
             'status'               => $request->get('status'),
+            'no_of_beds'               => $request->get('no_of_beds'),
+            'no_of_ventilators'               => $request->get('no_of_ventilators'),
+            'no_of_icu'               => $request->get('no_of_icu'),
+            'hospital_type'               => $request->get('hospital_type')
         ]);
 
         $user = $this->findModelUser($healthpost->token);
@@ -207,7 +215,7 @@ class HealthpostController extends Controller
                 'phone' => 'phone',
                 'username' => 'Username',
                 'password' => 'Password',
-                're_password' => 'Confrim Password',
+                're_password' => 'Confirm Password',
                 'email' => 'Email'
             );
             
@@ -232,7 +240,6 @@ class HealthpostController extends Controller
                 'phone' => 'phone',
                 'address' => 'address',
                 'status' => 'status',
-                'phone' => 'phone',
                 'email' => 'Email'
             );
             

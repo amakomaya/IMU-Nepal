@@ -26,7 +26,7 @@
 @endif
 <li>
     <a href="#">
-        <i class="fa fa-user" aria-hidden="true"></i>
+        <i class="fa fa-users" aria-hidden="true"></i>
 
         ACTIVE CASES <span class="fa arrow"></span>
     </a>
@@ -87,6 +87,13 @@
             </a>
         </li>
     </ul>
+</li>
+<li>
+    <a href="{{ route('patients.other-organization.index') }}" title="Cases in Other Organization">
+        <i class="fa fa-users"></i>
+        Cases in Other Orgs.
+        <span class="label label-default pull-right"> OC </span>
+    </a>
 </li>
 <li>
     <a href="{{ route('lab.patient.report.index') }}">

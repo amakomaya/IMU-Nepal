@@ -159,7 +159,6 @@
             <div class="panel-body">
                 <form role="form" method="POST" action="{{ route('login') }}">
                     {{ csrf_field() }}
-{{--                    <fieldset>--}}
                         <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
                             <div class="input-group">
                                 <span class="input-group-addon" title="@lang('login.username')"><i class="fa fa-user"></i></span>
@@ -185,16 +184,10 @@
                             <b>@lang('login.show_password')</b>
                         </div>
                         <input type="submit" class="btn btn-md btn-primary btn-block" value="@lang('login.login')">
-{{--                    </fieldset>--}}
                     <br>
                     <div class="clearfix">
                         <a href="#" class="pull-right" data-toggle="modal" data-target="#forgetPasswordModel">Forgot Password ?</a>
                     </div>
-                <!-- <div class="checkbox" align="right">
-                        <label>
-                            <input name="remember" type="checkbox" value="{{ old('remember') ? 'checked' : '' }}">@lang('login.remember_me')
-                        </label>
-                    </div> -->
                 </form>
             </div>
 
@@ -206,16 +199,6 @@
     </div>
 
     <div class="col-md-4" style="margin-top: 30px";>
-{{--        <div class="panel panel-danger">--}}
-{{--            <div class="panel-heading"><h4>Username and Password पठाएको बारे |</h4></div>--}}
-{{--            <div class="panel-body">--}}
-{{--                <div class="thumbnail">--}}
-{{--                    <a href="{{ asset('images/notice.jpg') }}" target="_blank">--}}
-{{--                <img src="{{ asset('images/notice.jpg') }}" class="img-rounded" alt="Important notice from MOHP"></a>--}}
-{{--                </div>--}}
-
-{{--        </div>--}}
-{{--        </div>--}}
     @foreach(App\Models\NoticeBoard::latest()->get() as $row)
             @if($row->type == 'Warning')
                 <div class="panel panel-warning">
@@ -244,40 +227,31 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">IMU Nepal मोबाएल एपमा नयाँ अपडेट आएको छ !</h4> <strong>८ मंसिर २०७७, सोमवार</strong>
+                                <h4 class="modal-title">सूचना ! सूचना!! सूचना!!!</h4> <strong class="pull-right">१७ पुष २०७७, शुक्रवार</strong>
                             </div>
                             <div class="modal-body">
-                                <h3 class="align-center">कृपया अनिबार्य रुपमा अपडेट गर्नुहोला</h3> <br>
-                                <ul>IMU Nepal एप मा अपडेट गरिएको छ। कृपया तल दिइको बिधि अनुसार एप अपडेट गर्नुहोस।
-                                    <li>अपडेट गर्नु अगाडि IMU Nepal एपमा भएको सबै डाटालाई सर्भरमा पठाउनुहोस।
-                                        जस्को लागि IMU Nepal एप को अघिल्लो होम स्क्रिनमा आएर रिफ्रेस गर्नुहोस।
-                                        वा औलाले थिचेर तल तान्नुहोस।
-                                    </li>
-                                    <li>
-                                        IMU Nepal एपमा भएका सबै डाटा सर्भरमा पुग्यो वा पुगेन एकिन वा निश्चित गर्नुहोस।
-                                        त्यसको लागि कम्पयुटरमा गएर पालिका वा CICT वा Hospital वा
-                                        Lab को नाममा दिइएको युजरनेमबाट लगइन गरि हेर्नुहोस।
-                                    </li>
-                                    <li>
-                                        मोबाएलको Setting  मा गएर निम्न अनुसारको बिधि पुरा गर्नुहोस
-                                        Setting -->  Apps --> IMU Nepal--> Storage --> मा पुगे पछि
-                                        Clear Cache र Data clear दुबै गर्नुहोस।  अब IMU Nepal एप खोल्दा लगआउट भएको हुनु पर्दछ।
-                                        यदि IMU Nepal एपमा खोल्दा लगइन भएको देखियो भने पुनः यो प्रक्रिया दोहोर्याउनु पर्दछ।
-                                    </li>
-                                    <li>
-                                        अब गुगल प्ले स्टोरमा गएर IMU Nepal एप टाइप गरि खोज्दा Update देखिनु पर्दछ।
-                                        यदि देखिएको छैन भने त्यहि बाट IMU Nepal एप लाई Uninstall (अनइन्स्टल)
-                                        गरि पुनः IMU Nepal एपको install (इन्स्टल) गर्नुहोस र लगइन गर्नुहोस।
-                                    </li>
-                                </ul>
-                                <strong>यो अपडेटमा थपिएका बिशेषताहरु</strong>
-                                    <ol>
-                                        <li>Contract Tracing Feature- Contract Tracing Feature बाट अब तपाईहरुले  positive आएको cases हरु को  व्यवस्थापन गर्न सक्नु हुनेछ। तपाईहरुले अब B1, B2 फारम एप बाटै भर्न सक्नु हुनेछ।</li>
-                                        <li>Permission Feature - User लाई कस्तो अनुमति दिने कुरा IMU Nepal को website  https://imucovid19.mohp.gov.np/ मा गएर दिन सक्नुहुन्छ। यो Feature मा तपाईहरुले User लाई कुन कुन permission दिने भन्ने कुरा छुटाउन सक्नुहुनेछ।  जस्तै: कुन User लाई Case Registration र sample collect गर्न दिने।</li>
-                                        <li>Antigen Feature-  तपाईहरुले अब Antigen फारम एप बाटै भर्न सक्नु हुनेछ।
-                                            - case को कहिले लक्षण देखिएको हो त्यो मिति भर्ने field थपिएको छ।
-                                            - यदि कुनै पनि लक्षण देखिएको छैन वा contact tracing बाट पनि हैन छैन भने तपाईहरुले Reason for testing मा कारण खुलाउनु पर्ने छ।
-                                            - तपाईहरुले Testing मा swap collection गर्ने होकी antigen टेस्ट हो छान्न सक्नु हुनेछ।</li>
+                                <ol>IMU को mobile एपमा अपडेट भएको छ।
+                                    कृपय तलको बिधि अनुसार आफ्नो IMU App अपडेट गर्नु होस!
+                                    <li>IMU App मा भएको सबै डाटा Data सर्भरमा पठाउनुहोस र सर्भरमा पुगेको निश्चय गर्नुहोस।</li>
+                                    <li>Data Backup गर्नुहोस र Backup File कपि गरि अर्को स्थानमा सुरक्षित गर्नुहोस।</li>
+                                    <li>Clear Cache, Clear Data गर्नुहोस।</li>
+                                    <li>अब एप अपडेट गर्नुहोस।</li>
+                                    <li>पुनः लगईन गर्नुहोस र सर्भरबाट डाटा डाउनलोड गर्नुहोस।</li>
+                                </ol>
+                                <hr>
+                                <ol>अहिले गरिएको अपडेट निम्न अनुसार गरिएको छ।
+                                    <li>एन्टिजेन टेस्टको लागि नेगेटिभ र पोजेटिभ रिजल्ट एप मै देखिने सर्भरमा पठाउनु नपर्ने।</li>
+                                    <li>एन्टिने टेस्टमा लगत्तै सिरियल नम्बर अनुसार ल्याब आइडिको रुपमा एन्टिजेन किट आइडि राख्ने।</li>
+                                    <li>पिसिआर स्वाब कलेक्सन भनेर तोकिएको</li>
+                                    <li>डाटा डाउनलोड गर्दा अझ बुझिने गरि भाषा मिलाइएको</li>
+                                    <li>मोबाएलमा हुने स्टोरेको अवस्था  अनुसार डेटा ब्याकअपको  फाइल दुइ स्थानमा रहने बनाइएको । मोबाएल भित्रको Internal Storage भएको अवस्थामा  nternal storage> Android>data>com.amakomaya.hamrosurvey>files>backup स्थानमा ब्याकअप फाइल बस्ने च।</li>
+                                    <li>External storage को अवस्थामा   External storage> HamorSurveyBackup folder</li>
+                                    <li>अन्य केहि बग्जहरु समेत फिक्स गरिएको छ।</li>
+                                </ol>
+
+                                <ol>IMU web System मा समेत निम्न अनुसारको अपडेट गरिएको छ।
+                                    <li>अस्पतालको प्रोफाइलमा कति जनरल बेड, कति, आइसियु, कति भेन्टिलेटर छन भन्ने कुरा भर्न मिल्ने।</li>
+                                    <li>अस्पताल तथा प्रयोगशालाहरुको आवश्यकता अनुसार आफ्नो एकाण्टमा सेवा थपघट गर्न सक्ने</li>
                                 </ol>
                             </div>
                             <div class="modal-footer">
@@ -330,7 +304,7 @@
     </div>
         <script type="text/javascript">
             $(window).on('load',function(){
-                $('#myModal-off').modal('show');
+                $('#myModal').modal('show');
             });
         </script>
 </body>
