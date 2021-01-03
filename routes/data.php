@@ -15,7 +15,6 @@ Route::get('api/lab/add-result-negative', 'Data\Api\WomenController@labAddResult
 Route::get('api/lab/add-result-positive', 'Data\Api\WomenController@labAddResultPositiveIndex');
 
 Route::get('api/admin/dashboard', 'Data\Api\DashboardController@index');
-//Route::get('api/aggregate', 'Data\Api\AggregateController@forMonitor');
 
 Route::get('/api/patient/export', 'Data\Api\WomenController@export');
 Route::get('/api/lab-patient/export', 'Data\Api\WomenController@labExport');
@@ -27,3 +26,5 @@ Route::put('api/women/delivery/{token}', 'Data\Api\WomenController@updateDeliver
 Route::delete('api/women/delivery/{token}', 'Data\Api\WomenController@deleteDelivery');
 
 Route::put('api/women/user/{token}', 'Data\Api\WomenController@updateUser');
+
+Route::get('api/gender', 'Data\Api\AggregateController@gender');

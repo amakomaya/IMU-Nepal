@@ -38,6 +38,8 @@ import MapIndex from "./components/MapIndex";
 
 import AdminDashboard from "./components/AdminDashboard";
 
+import AnalysisGender from "./components/analysis/Gender"
+
 import SelectYearMonth from './components/SelectYearMonth'
 import VNepaliDatePicker from 'v-nepalidatepicker';
 
@@ -82,6 +84,8 @@ Vue.component('map-index', MapIndex)
 
 Vue.component('cases-in-other-organization', CasesInOtherOrganization)
 Vue.component('case-detail', CaseDetail)
+
+Vue.component('analysis-gender', AnalysisGender)
 
 const app = new Vue({
     el: '#app'

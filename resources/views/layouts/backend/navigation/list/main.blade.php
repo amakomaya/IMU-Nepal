@@ -10,6 +10,12 @@
                 Positive Cases In HeatMap
             </a>
         </li>
+        <li>
+            <a href="{{ route('analysis.gender') }}">
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                Gender
+            </a>
+        </li>
     </ul>
 </li>
 <li>

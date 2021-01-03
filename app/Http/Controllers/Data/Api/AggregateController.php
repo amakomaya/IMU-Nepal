@@ -142,4 +142,51 @@ class AggregateController extends Controller
            $data
         );
     }
+
+    public function gender(){
+        $data = SuspectedCase::where('women.status', 1)
+            ->join('ancs', 'women.token', '=', 'ancs.woman_token')
+            ->where('ancs.result', '!=', 5)
+            ->select('women.sex', 'ancs.result' , \DB::raw('count(*) as total'))
+            ->groupBy('women.sex', 'ancs.result')
+            ->get()->makeHidden(['formated_age_unit', 'formated_gender']);
+
+        $table = collect($data)->map(function ($item) {
+            $item->sex = $this->formatGender($item->sex);
+            $item->result = $this->formatResult($item->result);
+            return collect($item)->flatten();
+        })->toArray();
+
+        $header = ['Gender', 'Result', 'Total'];
+        array_unshift($table, $header);
+
+        return $table;
+    }
+
+    private function formatResult($value){
+        switch($value){
+            case '2':
+                return 'Registered / Pending';
+            case '3':
+                return 'Positive';
+            case '4':
+                return 'Negative';
+            case '9':
+                return 'Received';
+            default:
+                return '';
+        }
+    }
+
+    private function formatGender($value){
+
+        switch($value){
+            case '1':
+                return 'Male';
+            case '2':
+                return 'Female';
+            default:
+                return 'Other';
+        }
+    }
 }
