@@ -15,7 +15,15 @@ class ExtMunicipalityController extends Controller
 
         if ($user) {
             $municipalities = Municipality::all();
-            return response()->json($municipalities);
+            $data = collect($municipalities)->map(function ($row) {
+                $response = [];
+                $response['province_id'] = $row->province_id;
+                $response['district_id'] = $row->district_id ?? '';
+                $response['district_name'] = $row->district_name ?? '';
+                $response['municipality_name'] = $row->municipality_name ?? '';
+                return $response;
+            })->values();
+            return response()->json($data);
         }
         return ['message' => 'Authentication Failed'];
     }
