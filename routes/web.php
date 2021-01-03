@@ -27,7 +27,8 @@ Route::get('/admin/select-from-to', 'AdminController@selectFromTo')->name('admin
 
 //Backend Center
 Route::resource('admin/center', 'Backend\CenterController');
-Route::get('/admin/center-maps', 'Backend\MapController@map')->name('center.woman.map');
+Route::get('/admin/maps', 'Backend\MapController@map')->name('center.woman.map');
+Route::get('/admin/maps/data', 'Backend\MapController@data');
 
 //Backend Dho
 Route::resource('admin/dho', 'Backend\DHOController');

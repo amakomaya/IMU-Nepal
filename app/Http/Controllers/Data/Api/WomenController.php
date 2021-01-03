@@ -83,8 +83,14 @@ class WomenController extends Controller
 
     public function labAddReceivedIndex(Request $request)
     {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
-        $sample_token = LabTest::where('checked_by', $user->token)->where('sample_test_result', '9')->pluck('sample_token');
+        $sample_token = LabTest::where(function($q) use ($hpCodes, $user) {
+                $q->where('checked_by', $user->token)
+                    ->orWhereIn('hp_code', $hpCodes);
+            })->
+            where('sample_test_result', '9')->pluck('sample_token');
         $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
         $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
@@ -94,8 +100,13 @@ class WomenController extends Controller
 
     public function labAddResultPositiveIndex(Request $request)
     {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
-        $sample_token = LabTest::where('checked_by', $user->token)->where('sample_test_result', '3')->pluck('sample_token');
+        $sample_token = LabTest::where(function($q) use ($hpCodes, $user) {
+        $q->where('checked_by', $user->token)
+            ->orWhereIn('hp_code', $hpCodes);
+        })->where('sample_test_result', '3')->pluck('sample_token');
         $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
         $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
@@ -105,8 +116,13 @@ class WomenController extends Controller
 
     public function labAddResultNegativeIndex(Request $request)
     {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
-        $sample_token = LabTest::where('checked_by', $user->token)->where('sample_test_result', '4')->pluck('sample_token');
+        $sample_token = LabTest::where(function($q) use ($hpCodes, $user) {
+            $q->where('checked_by', $user->token)
+                ->orWhereIn('hp_code', $hpCodes);
+        })->where('sample_test_result', '4')->pluck('sample_token');
         $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
         $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([

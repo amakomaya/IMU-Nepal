@@ -15,6 +15,9 @@ import Vuelidate from 'vuelidate'
 import 'vue-progress-path/dist/vue-progress-path.css'
 import VueProgress from 'vue-progress-path'
 
+import 'leaflet/dist/leaflet.css';
+
+
 Vue.use(VueProgress, {
     // defaultShape: 'circle',
 })
@@ -31,6 +34,7 @@ import LabPositiveCases from "./components/LabPositiveCases";
 import CaseDetail from "./components/viewCaseDetailReport"
 import LabCaseReport from "./components/LabCaseReport.vue"
 import CasesInOtherOrganization from "./components/CasesInOtherOrganization";
+import MapIndex from "./components/MapIndex";
 
 import AdminDashboard from "./components/AdminDashboard";
 
@@ -74,6 +78,7 @@ Vue.component('vaccination-chart');
 Vue.component('admin-dashboard', AdminDashboard)
 Vue.component('select-year-month', SelectYearMonth)
 Vue.component('lab-case-report', LabCaseReport)
+Vue.component('map-index', MapIndex)
 
 Vue.component('cases-in-other-organization', CasesInOtherOrganization)
 Vue.component('case-detail', CaseDetail)

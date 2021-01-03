@@ -137,9 +137,10 @@
             </div>
 
             {{-- </ul> --}}
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
+            <div class="navbar-default sidebar " role="navigation">
+                <nav class="sidebar-nav navbar-collapse">
                     @include ('layouts.backend.navigation.list')
+                </nav>
             </div>
             <!-- /.navbar-static-side -->
         </nav>

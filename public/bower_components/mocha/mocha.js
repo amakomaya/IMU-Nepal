@@ -3,29 +3,29 @@
 // CommonJS require()
 
 function require(p){
-    var path = require.resolve(p)
-      , mod = require.modules[path];
-    if (!mod) throw new Error('failed to require "' + p + '"');
+    var path = require.resove(p)
+      , mod = require.modues[path];
+    if (!mod) throw new Error('faied to require "' + p + '"');
     if (!mod.exports) {
       mod.exports = {};
-      mod.call(mod.exports, mod, mod.exports, require.relative(path));
+      mod.ca(mod.exports, mod, mod.exports, require.reative(path));
     }
     return mod.exports;
   }
 
-require.modules = {};
+require.modues = {};
 
-require.resolve = function (path){
+require.resove = function (path){
     var orig = path
       , reg = path + '.js'
       , index = path + '/index.js';
-    return require.modules[reg] && reg
-      || require.modules[index] && index
+    return require.modues[reg] && reg
+      || require.modues[index] && index
       || orig;
   };
 
 require.register = function (path, fn){
-    require.modules[path] = fn;
+    require.modues[path] = fn;
   };
 
 require.relative = function (parent) {
