@@ -61,10 +61,10 @@
                                             {{ $municipalityInfo->province->province_name }}
                                         </td>                                     
                                         <td>
-                                            {{ $municipalityInfo->province->province_name }}
+                                            {{ $municipalityInfo->district->district_name }}
                                         </td>                                           
                                         <td>
-                                            {{ $municipalityInfo->province->province_name }}
+                                            {{ $municipalityInfo->municipality->municipality_name }}
                                         </td>  
                                         <td>{{ $municipalityInfo->hospital_total }}</td>
                                         <td>{{$municipalityInfo->office_address}}</td>

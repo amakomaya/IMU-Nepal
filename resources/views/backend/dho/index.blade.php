@@ -44,7 +44,7 @@
                                     <thead>
                                         <tr>
                                             <th>{{trans('index.sn')}}</th>                                     
-                                            <th>{{trans('index.province')}}</th>    
+                                            <th>{{trans('index.district')}}</th>
                                             <th>{{trans('index.phone')}}</th>                                     
                                             <th>{{trans('index.office_address')}}</th>                                     
                                             <th>{{trans('index.status')}}</th>
