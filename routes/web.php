@@ -26,8 +26,12 @@ Route::get('/admin/healthpost-select-ward', 'AdminController@healthpostSelectByW
 Route::get('/admin/select-from-to', 'AdminController@selectFromTo')->name('admin.select-from-to');
 
 Route::get('/health-professional/add', function (){
-   return view('health-profession.add');
+    $province_id = 0;
+    $district_id = 0;
+    $municipality_id = 0;
+   return view('health-profession.add', compact('province_id','district_id','municipality_id'));
 })->name('health.professional.add');
+Route::post('/health-professional', 'Backend\HealthProfessionalController@store')->name('health-professional.store');
 
 //Backend Center
 Route::resource('admin/center', 'Backend\CenterController');
