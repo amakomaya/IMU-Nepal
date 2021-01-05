@@ -25,6 +25,10 @@ Route::get('/admin/ward-select-municipality', 'AdminController@wardSelectByMunic
 Route::get('/admin/healthpost-select-ward', 'AdminController@healthpostSelectByWard')->name('admin.healthpost-select-ward');
 Route::get('/admin/select-from-to', 'AdminController@selectFromTo')->name('admin.select-from-to');
 
+Route::get('/health-professional/add', function (){
+   return view('health-profession.add');
+})->name('health.professional.add');
+
 //Backend Center
 Route::resource('admin/center', 'Backend\CenterController');
 Route::get('/admin/maps', 'Backend\MapController@map')->name('center.woman.map');

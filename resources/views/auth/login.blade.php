@@ -194,6 +194,9 @@
         </div>
         <div style="display:inline-block; width:100%; height:auto;">
 
+            <a href="{{ route('health.professional.add') }}" class="btn btn-info center-block" role="button"><i class="fa fa-plus" aria-hidden="true"></i>
+                Add Health Professional Data</a>
+
             <a target="_blank" href="https://play.google.com/store/apps/details?id=com.aamakomaya.hamrosurvey"><img class="img-responsive center-block" src="{{ asset('images/google-play-badge.png') }}"></a>
         </div>
     </div>
@@ -304,7 +307,7 @@
     </div>
         <script type="text/javascript">
             $(window).on('load',function(){
-                $('#myModal').modal('show');
+                $('#myModal-hide').modal('show');
             });
         </script>
 </body>
