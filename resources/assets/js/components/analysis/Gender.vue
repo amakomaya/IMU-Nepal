@@ -17,6 +17,7 @@
           :options="chartPiePositiveOptions"
           ref="gChart"
       />
+      <p class="center-block">Fig : Positive Case by Gender</p>
     </div>
     <div class="col-md-4">
       <GChart
@@ -26,6 +27,7 @@
           :options="chartPieNegativeOptions"
           ref="gChart"
       />
+      <p class="center-block">Fig : Negative Case by Gender</p>
     </div>
 
   </div>
@@ -47,12 +49,13 @@ export default {
       PieNegativeData: [],
       chartTableOptions: {},
       chartPiePositiveOptions: {
-      title: 'Positive Case by Gender',
-          is3D: true,
+        is3D: true,
+        chartArea: {width: 600, height: 400}
       },
       chartPieNegativeOptions: {
-      title: 'Negative Case by Gender',
           is3D: true,
+        chartArea: {width: 600, height: 400}
+
       }
     }
   },

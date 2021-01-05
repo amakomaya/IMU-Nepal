@@ -28,3 +28,5 @@ Route::delete('api/women/delivery/{token}', 'Data\Api\WomenController@deleteDeli
 Route::put('api/women/user/{token}', 'Data\Api\WomenController@updateUser');
 
 Route::get('api/gender', 'Data\Api\AggregateController@gender');
+Route::get('api/time-series', 'Data\Api\AggregateController@timeSeries');
+Route::get('api/occupation', 'Data\Api\AggregateController@occupation');

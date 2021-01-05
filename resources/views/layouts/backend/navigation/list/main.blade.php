@@ -10,10 +10,22 @@
                 Positive Cases In HeatMap
             </a>
         </li>
+{{--        <li>--}}
+{{--            <a href="{{ route('analysis.time-series') }}">--}}
+{{--                <i class="fa fa-line-chart" aria-hidden="true"></i>--}}
+{{--                Time Series--}}
+{{--            </a>--}}
+{{--        </li>--}}
         <li>
             <a href="{{ route('analysis.gender') }}">
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
                 Gender
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('analysis.occupation') }}">
+                <i class="fa fa-briefcase" aria-hidden="true"></i>
+                Occupation
             </a>
         </li>
     </ul>

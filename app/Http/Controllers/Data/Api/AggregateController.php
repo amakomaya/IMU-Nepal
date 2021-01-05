@@ -12,9 +12,8 @@ use Illuminate\Support\Facades\DB;
 
 class AggregateController extends Controller
 {
-    public function index(): \Illuminate\Http\JsonResponse
+    public function timeSeries(): \Illuminate\Http\JsonResponse
     {
-        $hpCodesbyProvince = Organization::get()->groupBy('province_id');
 
         $data = [
             'registered' => SuspectedCase::active()->count(),
@@ -27,86 +26,79 @@ class AggregateController extends Controller
             'lab_result_negative_in_24_hrs' => SampleCollection::where('result', 4)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
         ];
 
-        $forecast = [
-            'registered' => DB::table('women')
-                ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
-                ->groupBy('date')
-                ->get(),
+        $rawForecast = DB::table('women')
+            ->latest('women.created_at')
+            ->join('ancs','women.token', '=', 'ancs.woman_token')
+            ->select(DB::raw('DATE(women.created_at) as register_date'), DB::raw('DATE(ancs.created_at) as sample_created_at'), DB::raw('DATE(women.updated_at) as result_date') , 'ancs.result as result')
+            ->get();
 
-            'sample_collection' => DB::table('ancs')
-                ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
-                ->groupBy('date')
-                ->get(),
+        $forecast = $rawForecast->map(function ($item){
+            dd($item);
+        });
 
-            'lab_result_positive' => DB::table('ancs')
-                ->where('result', 3)
-                ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
-                ->groupBy('date')
-                ->get(),
+//        $provincialData = [];
+//        foreach($hpCodesbyProvince as $key => $provinceData){
+//            $hpCodes = $provinceData->pluck('hp_code');
+//            $data = [
+//                'registered' => SuspectedCase::whereIn('hp_code', $hpCodes)->active()->count(),
+//                'registered_in_24_hrs' => SuspectedCase::whereIn('hp_code', $hpCodes)->active()->where('created_at', '>', Carbon::now()->subDay()->toDateString())->count(),
+//                'sample_collection' =>SampleCollection::whereIn('hp_code', $hpCodes)->active()->count(),
+//                'sample_collection_in_24_hrs' => SampleCollection::whereIn('hp_code', $hpCodes)->active()->where('created_at', '>', Carbon::now()->subDay()->toDateString())->count(),
+//                'lab_result_positive' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->active()->count(),
+//                'lab_result_positive_in_24_hrs' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
+//                'lab_result_negative' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->active()->count(),
+//                'lab_result_negative_in_24_hrs' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
+//            ];
+//
+//            $provincialForecast = [
+//                'registered' => DB::table('women')
+//                    ->whereIn('hp_code', $hpCodes)
+//                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
+//                    ->groupBy('date')
+//                    ->get(),
+//
+//                'sample_collection' => DB::table('ancs')
+//                    ->whereIn('hp_code', $hpCodes)
+//                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
+//                    ->groupBy('date')
+//                    ->get(),
+//
+//                'lab_result_positive' => DB::table('ancs')
+//                    ->whereIn('hp_code', $hpCodes)
+//                    ->where('result', 3)
+//                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
+//                    ->groupBy('date')
+//                    ->get(),
+//
+//                'lab_result_negative' => DB::table('ancs')
+//                    ->whereIn('hp_code', $hpCodes)
+//                    ->where('result', 4)
+//                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
+//                    ->groupBy('date')
+//                    ->get()
+//            ];
+//
+//            $provincialData[] = [
+//                'province' => $key,
+//                'data' => $data,
+//                'forecast' => $provincialForecast
+//            ];
+//        }
 
-            'lab_result_negative' => DB::table('ancs')
-                ->where('result', 4)
-                ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
-                ->groupBy('date')
-                ->get(),
+        $table = collect($data)->values()->toArray();
+
+        $table = array($table);
+        $header = ['Registered', 'Registered in 24 hrs', 'Sample Collection',
+            'Sample Collection in 24 hrs', 'Lab Result Positive',
+            'Lab Result Positive in 24 hrs', 'Lab Result Negative',
+            'Lab Result Negative in 24 hrs'
         ];
 
-        $provincialData = [];
-        foreach($hpCodesbyProvince as $key => $provinceData){
-            $hpCodes = $provinceData->pluck('hp_code');
-            $data = [
-                'registered' => SuspectedCase::whereIn('hp_code', $hpCodes)->active()->count(),
-                'registered_in_24_hrs' => SuspectedCase::whereIn('hp_code', $hpCodes)->active()->where('created_at', '>', Carbon::now()->subDay()->toDateString())->count(),
-                'sample_collection' =>SampleCollection::whereIn('hp_code', $hpCodes)->active()->count(),
-                'sample_collection_in_24_hrs' => SampleCollection::whereIn('hp_code', $hpCodes)->active()->where('created_at', '>', Carbon::now()->subDay()->toDateString())->count(),
-                'lab_result_positive' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->active()->count(),
-                'lab_result_positive_in_24_hrs' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
-                'lab_result_negative' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->active()->count(),
-                'lab_result_negative_in_24_hrs' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
-            ];
-
-            $provincialForecast = [
-                'registered' => DB::table('women')
-                    ->whereIn('hp_code', $hpCodes)
-                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
-                    ->groupBy('date')
-                    ->get(),
-
-                'sample_collection' => DB::table('ancs')
-                    ->whereIn('hp_code', $hpCodes)
-                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
-                    ->groupBy('date')
-                    ->get(),
-
-                'lab_result_positive' => DB::table('ancs')
-                    ->whereIn('hp_code', $hpCodes)
-                    ->where('result', 3)
-                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
-                    ->groupBy('date')
-                    ->get(),
-
-                'lab_result_negative' => DB::table('ancs')
-                    ->whereIn('hp_code', $hpCodes)
-                    ->where('result', 4)
-                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
-                    ->groupBy('date')
-                    ->get()
-            ];
-
-            $provincialData[] = [
-                'province' => $key,
-                'data' => $data,
-                'forecast' => $provincialForecast
-            ];
-        }
+        array_unshift($table, $header);
 
         $responseData = [
-            'total' => [
-                'data' => $data,
-                'forecast' => $forecast
-            ],
-            'provincialData' =>
-                $provincialData
+                'data' => $table,
+                'forecast' => $rawForecast
         ];
         return response()->json($responseData);
     }
@@ -162,6 +154,64 @@ class AggregateController extends Controller
 
         return $table;
     }
+
+    public function occupation(){
+        $data = SuspectedCase::where('women.status', 1)
+            ->join('ancs', 'women.token', '=', 'ancs.woman_token')
+            ->where('ancs.result', '!=', 5)
+            ->select('women.occupation', 'ancs.result' , \DB::raw('count(*) as total'))
+            ->groupBy('women.occupation', 'ancs.result')
+            ->get()->makeHidden(['formated_age_unit', 'formated_gender']);
+
+        $table = collect($data)->map(function ($item) {
+            $item->occupation = $this->formatOccupation($item->occupation);
+            $item->result = $this->formatResult($item->result);
+            return collect($item)->flatten();
+        })->toArray();
+
+        $header = ['Occupation', 'Result', 'Total'];
+        array_unshift($table, $header);
+
+        return $table;
+    }
+
+    private function formatOccupation($data){
+        switch($data){
+            case '1':
+                return 'Front Line Healthworker';
+
+            case '2':
+                return 'Doctor';
+
+            case '3':
+                return 'Nurse';
+
+            case '4':
+                return 'Police / Army';
+
+            case '5':
+                return 'Business / Industry';
+
+            case '6':
+                return 'Teacher / Student ( Education )';
+
+            case '7':
+                return 'Civil Servant';
+
+            case '8':
+                return 'Journalist';
+
+            case '9':
+                return 'Agriculture';
+
+            case '10':
+                return 'Transport / Delivery';
+
+            default:
+                return 'Other';
+        }
+    }
+
 
     private function formatResult($value){
         switch($value){

@@ -38,14 +38,15 @@ import MapIndex from "./components/MapIndex";
 
 import AdminDashboard from "./components/AdminDashboard";
 
+import AnalysisTimeSeries from "./components/analysis/TimeSeries";
 import AnalysisGender from "./components/analysis/Gender"
+import AnalysisOccupation from "./components/analysis/Occupation"
 
 import SelectYearMonth from './components/SelectYearMonth'
 import VNepaliDatePicker from 'v-nepalidatepicker';
 
 import JsonExcel from 'vue-json-excel'
 import VueMask from 'v-mask'
-import LabCases from "./components/LabCases";
 
 Vue.use(VueMask);
 Vue.use(VNepaliDatePicker);
@@ -85,7 +86,9 @@ Vue.component('map-index', MapIndex)
 Vue.component('cases-in-other-organization', CasesInOtherOrganization)
 Vue.component('case-detail', CaseDetail)
 
+Vue.component('analysis-time-series', AnalysisTimeSeries)
 Vue.component('analysis-gender', AnalysisGender)
+Vue.component('analysis-occupation', AnalysisOccupation)
 
 const app = new Vue({
     el: '#app'

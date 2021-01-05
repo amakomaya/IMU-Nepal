@@ -143,3 +143,11 @@ Route::put('/admin/sample/{token}', 'Reports\AncDetailController@update')->name(
 Route::get('/admin/analysis/gender', function (){
    return view('analysis.gender');
 })->name('analysis.gender');
+
+Route::get('/admin/analysis/occupation', function (){
+    return view('analysis.occupation');
+})->name('analysis.occupation');
+
+Route::get('/admin/analysis/time-series', function (){
+    return view('analysis.time-series');
+})->name('analysis.time-series');
