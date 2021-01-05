@@ -70,6 +70,21 @@
                                                class="form-text text-danger">{{ $errors->first('case_id') }}</small>
                                     @endif
                                 </div>
+                                <div class="form-group">
+                                    <label class="control-label">Is this a new case or an old case ?</label>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio"
+                                                   {{ old('case_type') == "1" ? 'checked' : '' }} name="case_type"
+                                                   value="1">New Case
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio"
+                                                   {{ old('case_type') == "2" ? 'checked' : '' }} name="case_type"
+                                                   value="2">Old Case
+                                        </label>
+                                    </div>
+                                </div>
                                 <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
                                     <label for="name">Full Name</label>
                                     <input type="text" id="name" class="form-control" name="name"
@@ -222,6 +237,16 @@
                                                class="form-text text-danger">{{ $errors->first('emergency_contact_two') }}</small>
                                     @endif
                                 </div>
+                                <div class="form-group {{ $errors->has('date_of_onset_of_first_symptom') ? 'has-error' : '' }}">
+                                    <label for="date_of_onset_of_first_symptom">Date of onset of first symptom:</label>
+                                    <input type="text" class="form-control"
+                                           value="{{ $data->date_of_onset_of_first_symptom }}"
+                                           name="date_of_onset_of_first_symptom" aria-describedby="help">
+                                    @if ($errors->has('date_of_onset_of_first_symptom'))
+                                        <small id="help"
+                                               class="form-text text-danger">{{ $errors->first('date_of_onset_of_first_symptom') }}</small>
+                                    @endif
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label" for="caste">Occupation</label>
                                     <select name="occupation" class="form-control">
@@ -272,6 +297,37 @@
 
                                     </div>
                                 </div>
+                                <div class="form-group" id="reson_for_testing">
+                                    <label class="control-label" for="reson_for_testing">Reason for testing:</label><br>
+                                    <input type="checkbox" name="reson_for_testing[]"
+                                           {{ Illuminate\Support\Str::contains($data->reson_for_testing, '1') ? 'checked' : '' }} value="1">Planned
+                                    travel<br>
+                                    <input type="checkbox" name="reson_for_testing[]"
+                                           {{ Illuminate\Support\Str::contains($data->reson_for_testing, '2') ? 'checked' : '' }}  value="2">Mandatory
+                                    requirement<br>
+                                    <input type="checkbox" name="reson_for_testing[]"
+                                           {{ Illuminate\Support\Str::contains($data->reson_for_testing, '3') ? 'checked' : '' }}  value="3">Returnee/Migrant
+                                    worker<br>
+                                    <input type="checkbox" name="reson_for_testing[]"
+                                           {{ Illuminate\Support\Str::contains($data->reson_for_testing, '4') ? 'checked' : '' }}  value="4">Pre-medical/surgical
+                                    procedure<br>
+                                    <input type="checkbox" name="reson_for_testing[]"
+                                           {{Illuminate\Support\Str::contains($data->reson_for_testing, '5') ? 'checked' : '' }}  value="5">Pregnancy
+                                    complications/Pre-delivery<br>
+                                    <input type="checkbox" name="reson_for_testing[]"
+                                           {{ Illuminate\Support\Str::contains($data->reson_for_testing, '6') ? 'checked' : '' }}  value="6">Testing
+                                    by
+                                    Government
+                                    authority for other purpose<br>
+                                    <input type="checkbox" name="reson_for_testing[]"
+                                           {{ Illuminate\Support\Str::contains($data->reson_for_testing, '7') ? 'checked' : '' }}  value="7">Test
+                                    on demand by
+                                    person<br>
+                                    @if ($errors->has('reson_for_testing'))
+                                        <small id="help"
+                                               class="form-text text-danger">{{ $errors->first('reson_for_testing') }}</small>
+                                    @endif
+                                </div>
                             </div>
 
                             @if(!$samples->isEmpty())
@@ -283,7 +339,7 @@
                                         <tr>
                                             <th>ID</th>
                                             <th title="Sample Unique ID">SID</th>
-                                            <th title="Sample Type">Sample Type</th>
+                                            <th title="Test Type">Test Type</th>
                                             <th title="Service Type">Service Type</th>
                                             <th title="Sample Collected Date">Date</th>
                                             <th title="Sample Result">Result</th>
@@ -297,37 +353,39 @@
                                                 <td>{{$loop->iteration }}</td>
                                                 <td>{{$sample->token}}</td>
                                                 <td>
-                                                    @if($sample->sample_type = 1)
-                                                        Nasopharyngeal
-                                                    @elseif($sample->sample_type = 2)
-                                                        Oropharyngeal
+                                                    @if($sample->service_for === '1')
+                                                        PCR Swab Collection
+                                                    @endif
+                                                    @if($sample->service_for === '2')
+                                                        Antigen Test
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($sample->service_type = 1)
+                                                    @if($sample->service_type === '1')
                                                         Paid Service
-                                                    @elseif($sample->service_type = 2)
+                                                    @elseif($sample->service_type === '2')
                                                         Free of cost service
                                                     @endif
                                                 </td>
                                                 <td>{{$sample->created_at}}</td>
                                                 <td>
-                                                    @if($sample->result = 2)
+                                                    @if($sample->result === '2')
                                                         Pending
-                                                    @elseif($sample->result = 3)
+                                                    @elseif($sample->result === '3')
                                                         Positive
-                                                    @elseif($sample->result = 4)
+                                                    @elseif($sample->result === '4')
                                                         Negative
-                                                    @elseif($sample->result = 5)
+                                                    @elseif($sample->result === '5')
                                                         Don't Know
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if(auth()->user()->role == 'main')
-{{--                                                        <button title="Edit Sample Detail" {{ url("admin/sample/$sample->token/edit") }}'">--}}
-{{--                                                            <i class="fa fa-edit"></i>--}}
-{{--                                                        </button>--}}
-                                                        <a title="Edit Sample Detail" class="btn btn-primary" href="{{ url('admin/sample/'.$sample->token.'/edit') }}">
+                                                    @if(auth()->user()->role === 'main')
+                                                        {{--                                                        <button title="Edit Sample Detail" {{ url("admin/sample/$sample->token/edit") }}'">--}}
+                                                        {{--                                                            <i class="fa fa-edit"></i>--}}
+                                                        {{--                                                        </button>--}}
+                                                        <a title="Edit Sample Detail" class="btn btn-primary"
+                                                           href="{{ url('admin/sample/'.$sample->token.'/edit') }}">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
                                                     @endif
@@ -441,11 +499,11 @@
                                 required: true,
                                 ageCustom: true,
                             },
-                            district_id : {
-                                required : true
+                            district_id: {
+                                required: true
                             },
-                            municipality_id : {
-                                required : true
+                            municipality_id: {
+                                required: true
                             },
                             sex: {
                                 required: true,

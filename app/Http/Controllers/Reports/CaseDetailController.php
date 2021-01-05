@@ -44,7 +44,9 @@ class CaseDetailController extends Controller
     public function update(Request $request, $id)
     {
         $woman = SuspectedCase::find($id);
-        $woman->update($request->all());
+        $row = $request->all();
+        $row['reson_for_testing'] = "[".implode(', ', $row['reson_for_testing'])."]";
+        $woman->update($row);
         $request->session()->flash('message', 'Data Updated successfully');
         return redirect()->back();
     }

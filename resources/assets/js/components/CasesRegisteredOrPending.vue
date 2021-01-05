@@ -89,7 +89,7 @@ import ViewLabResultReportModel from './ViewLabResultReportModel.vue'
 import SendPatientDataModel from './SendPatientDataModel.vue'
 import viewConfirmReportFormModel from './viewConfirmReportFormModel.vue'
 import fab from 'vue-fab'
-import AddRecievedInLabModal from "./AddRecievedInLabModal";
+import  AddRecievedInLabModal from "./AddRecievedInLabModal";
 
 export default {
   components: {Filterable, fab},

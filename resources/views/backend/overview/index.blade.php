@@ -28,7 +28,8 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>
-                                                <form method="post" action="{{url('admin/user-manager/'.$d->user->id.'/login-as')}}" >
+                                                    @php($id = $d->user->id ?? '')
+                                                <form method="post" action="{{url('admin/user-manager/'.$id.'/login-as')}}" >
                                                     {{csrf_field()}}
                                                     <a href="#" onclick="this.parentNode.submit()">{{ $d->name }}</a>
                                                 </form>
