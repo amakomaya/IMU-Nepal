@@ -12,11 +12,6 @@ use App\Models\Ward;
 
 class FilterController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function districtSelectByProvince(Request $request){
         $id = $request->get('id');
         echo '<select class="form-control" name="district_id" id="district_id" onchange="districtOnchange($(this).val())">';

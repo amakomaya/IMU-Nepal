@@ -50,33 +50,37 @@
         }
     </style>
 </head>
-<body>
-<div id="page-wrapper">
+<body class="container">
+<div id="page-wrapper container-fluid">
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-12">
-
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3>Health Professional</h3>
+                    <h3>Health Professional Information for Covid 19</h3>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    {!! rcForm::open('POST', route('health-professional.store')) !!}
+                    @if(session()->has('message'))
+                        <div class="alert alert-success">
+                            {{ session()->get('message') }}
+                        </div>
+                    @endif
+                    {!! rcForm::open('POST', route('health-professional.store'),['name' => 'create']) !!}
                     <div class="panel-body">
                         <h3>Organization Information</h3>
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 <label class="control-label" for="organization_type">Organization Type</label>
-                                <select name="organization_type" class="form-control">
-                                    <option selected>Select any one</option>
-                                    <option {{ old('organization_type') == '1' ? "selected" : "" }} value="1">Government
-                                    </option>
-                                    <option {{ old('organization_type') == '2' ? "selected" : "" }} value="2">Non-profit
-                                    </option>
-                                    <option {{ old('organization_type') == '3' ? "selected" : "" }} value="3">Private
-                                    </option>
-                                </select>
+                                    <select name="organization_type" class="form-control">
+                                        <option value="" selected>Select any one</option>
+                                        <option {{ old('organization_type') == '1' ? "selected" : "" }} value="1">Government
+                                        </option>
+                                        <option {{ old('organization_type') == '2' ? "selected" : "" }} value="2">Non-profit
+                                        </option>
+                                        <option {{ old('organization_type') == '3' ? "selected" : "" }} value="3">Private
+                                        </option>
+                                    </select>
                             </div>
                             <div class="form-group {{ $errors->has('organization_name') ? 'has-error' : '' }}  col-sm-6">
                                 <label for="organization_name">Organization Name</label>
@@ -133,22 +137,20 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group" id="app">
-                            <select-year-month></select-year-month>
-                        </div>
                         <div class="row">
                             <div class="form-group {{ $errors->has('service_date') ? 'has-error' : '' }} col-sm-6">
-                                <label for="service_date">Service Date[YYYY-MM-DD]</label>
+                                <label for="service_date">Service Date[Y/MM]</label>
                                 <input type="text" id="service_date" class="form-control"
-                                       value="{{ old('service_date') ?? Carbon\Carbon::now()->format('Y-m-d') }}"
+                                       value="{{ old('service_date') }}"
                                        name="service_date"
-                                       aria-describedby="help" placeholder="YYYY-MM-DD">
+                                       aria-describedby="help" placeholder="eg. For 2 years 10 months, Enter : 2/10">
                                 @if ($errors->has('service_date'))
                                     <small id="help"
                                            class="form-text text-danger">{{ $errors->first('service_date') }}</small>
                                 @endif
                             </div>
                         </div>
+                        <hr>
                         <h3>Personal Information</h3>
                         <div class="row">
                             <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }} col-sm-6">
@@ -164,7 +166,7 @@
                             <div class="form-group col-sm-6">
                                 <label class="control-label" for="gender">Gender</label>
                                 <select name="gender" class="form-control">
-                                    <option selected>Select any one</option>
+                                    <option value="" selected>Select any one</option>
                                     <option {{ old('gender') == '1' ? "selected" : "" }} value="1">Male
                                     </option>
                                     <option {{ old('gender') == '2' ? "selected" : "" }} value="2">Female
@@ -201,7 +203,7 @@
                             <div class="row">
                                 <div class="form-group col-sm-3" id="province">
                                     <select name="province_id" class="form-control"
-                                            onchange="provinceOnchange($(this).val())">
+                                            onchange="cProvinceOnchange($(this).val())">
                                         @foreach(App\Models\province::all() as $province)
                                             @if($province_id==$province->id || old('province_id')==$province->id)
                                                 @php($selectedProvince = "selected")
@@ -218,7 +220,7 @@
                                 </div>
                                 <div class="form-group  col-sm-3" id="district">
                                     <select name="district_id" class="form-control"
-                                            onchange="districtOnchange($(this).val())">
+                                            onchange="cDistrictOnchange($(this).val())">
                                         @foreach(App\Models\District::where('province_id', $province_id ?? '')->get() as $district)
                                             @if($district_id==$district->id || old('district_id')==$district->id)
                                                 @php($selectedDistrict = "selected")
@@ -233,19 +235,22 @@
                                                class="form-text text-danger">{{ $errors->first('district_id') }}</small>
                                     @endif
                                 </div>
-                                <div class="form-group  col-sm-3" id="municipality">
-                                    <select name="municipality_id" class="form-control"
-                                            onchange="municipalityOnchange($(this).val())"
-                                            id="municipality_id">
-                                        @foreach(\App\Models\Municipality::where('district_id', $district_id ?? '')->get() as $municipality)
-                                            @if($municipality_id==$municipality->id  || old('municipality_id')==$municipality->id)
-                                                @php($selectedMunicipality = "selected")
-                                            @else
-                                                @php($selectedMunicipality = "")
-                                            @endif
-                                            <option value="{{$municipality->id ?? ''}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="form-group  col-sm-3" id="municipality_id">
+                                    <input type="text" class="form-control" value="{{ old('municipality_id') }}" name="municipality"
+                                           aria-describedby="help" placeholder="Enter Municipality Name"
+                                    >
+
+                                    {{--                                    <select name="municipality_id" class="form-control"--}}
+{{--                                            id="municipality_id">--}}
+{{--                                        @foreach(\App\Models\Municipality::where('district_id', $district_id ?? '')->get() as $municipality)--}}
+{{--                                            @if($municipality_id==$municipality->id  || old('municipality_id')==$municipality->id)--}}
+{{--                                                @php($selectedMunicipality = "selected")--}}
+{{--                                            @else--}}
+{{--                                                @php($selectedMunicipality = "")--}}
+{{--                                            @endif--}}
+{{--                                            <option value="{{$municipality->id ?? ''}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    </select>--}}
                                     @if ($errors->has('municipality_id'))
                                         <small id="help"
                                                class="form-text text-danger">{{ $errors->first('municipality_id') }}</small>
@@ -278,7 +283,7 @@
                             <div class="row">
                                 <div class="form-group col-sm-3" id="perm_province">
                                     <select name="perm_province_id" class="form-control"
-                                            onchange="provinceOnchange($(this).val())">
+                                            onchange="pProvinceOnchange($(this).val())">
                                         @foreach(App\Models\province::all() as $province)
                                             @if($province_id==$province->id || old('perm_province_id')==$province->id)
                                                 @php($selectedProvince = "selected")
@@ -295,7 +300,7 @@
                                 </div>
                                 <div class="form-group  col-sm-3" id="perm_district">
                                     <select name="perm_district_id" class="form-control"
-                                            onchange="districtOnchange($(this).val())">
+                                            onchange="pDistrictOnchange($(this).val())">
                                         @foreach(App\Models\District::where('province_id', $province_id ?? '')->get() as $district)
                                             @if($district_id==$district->id || old('perm_district_id')==$district->id)
                                                 @php($selectedDistrict = "selected")
@@ -311,18 +316,21 @@
                                     @endif
                                 </div>
                                 <div class="form-group  col-sm-3" id="perm_municipality">
-                                    <select name="perm_municipality_id" class="form-control"
-                                            onchange="municipalityOnchange($(this).val())"
-                                            id="perm_municipality_id">
-                                        @foreach(\App\Models\Municipality::where('district_id', $district_id ?? '')->get() as $municipality)
-                                            @if($municipality_id==$municipality->id  || old('perm_municipality_id')==$municipality->id)
-                                                @php($selectedMunicipality = "selected")
-                                            @else
-                                                @php($selectedMunicipality = "")
-                                            @endif
-                                            <option value="{{$municipality->id ?? ''}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" value="{{ old('perm_municipality_id') }}" name="perm_municipality_id"
+                                           aria-describedby="help" placeholder="Enter Municipality Name"
+                                    >
+
+                                    {{--                                    <select name="perm_municipality_id" class="form-control"--}}
+{{--                                            id="perm_municipality_id">--}}
+{{--                                        @foreach(\App\Models\Municipality::where('district_id', $district_id ?? '')->get() as $municipality)--}}
+{{--                                            @if($municipality_id==$municipality->id  || old('perm_municipality_id')==$municipality->id)--}}
+{{--                                                @php($selectedMunicipality = "selected")--}}
+{{--                                            @else--}}
+{{--                                                @php($selectedMunicipality = "")--}}
+{{--                                            @endif--}}
+{{--                                            <option value="{{$municipality->id ?? ''}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    </select>--}}
                                     @if ($errors->has('perm_municipality_id'))
                                         <small id="help"
                                                class="form-text text-danger">{{ $errors->first('perm_municipality_id') }}</small>
@@ -374,6 +382,7 @@
                                 @endif
                             </div>
                         </div>
+                        <hr>
                         <h3>Health Related Information</h3>
                         <div class="row">
                             <div class="form-group {{ $errors->has('allergies') ? 'has-error' : '' }} col-sm-6">
@@ -433,37 +442,28 @@
     </div>
     <!-- /#page-wrapper -->
 </div>
-<div id="verifydiv" hidden>
-    <div class="form-group">
-        <h4><u><strong>Please verify your information</strong></u></h4>
-        <table class="table table-striped">
-            <tbody>
-            <tr>
-                <td>Organization Type:</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Organization Name:</td>
-                <td></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
 <script>
-    function provinceOnchange(id) {
+    function cProvinceOnchange(id) {
         $("#district").text("Loading...").fadeIn("slow");
         $.get("{{route("district-select-province")}}?id=" + id, function (data) {
             $("#district").html(data);
         });
     }
 
-    function districtOnchange(id) {
-        $("#municipality").text("Loading...").fadeIn("slow");
-        $.get("{{route("municipality-select-district")}}?id=" + id, function (data) {
-            $("#municipality").html(data);
+    function pProvinceOnchange(id) {
+        $("#perm_district").text("Loading...").fadeIn("slow");
+        $.get("{{route("district-select-province")}}?id=" + id, function (data) {
+            $("#perm_district").html(data);
         });
     }
+
+    {{--function pDistrictOnchange(id) {--}}
+    {{--    $("#perm_municipality").text("Loading...").fadeIn("slow");--}}
+    {{--    $.get("{{route("municipality-select-district")}}?id=" + id, function (data) {--}}
+    {{--        $("#perm_municipality").html(data);--}}
+    {{--    });--}}
+    {{--}--}}
 
     function verifyInfo() {
         $( "#verifydiv" ).dialog({
@@ -471,6 +471,117 @@
         });
         $("#verifydiv").dialog('open');
     }
+    function sameAsCheckbox(){
+        ("#sameAsCheckbox").click(function(){
+            if($(this).is(':checked')){
+                var input1=$("#province_id").val();
+                $("#prem_province_id").val(input1);
+            }
+        });
+    }
+    function setSameAsCheckbox(){
+        if ($("#sameAsCheckbox").is(":checked")) {
+            var inputProvince = $("#province_id").val();
+            console.log(inputProvince);
+            $("#prem_province_id").val($("#province_id").val());
+            // $('#perm_municipality').val($('#municipality').val());
+            $('#prem_province_id').attr('disabled', 'disabled');
+            // $('#perm_municipality').attr('disabled', 'disabled');
+        } else {
+            $('#prem_province_id').removeAttr('disabled');
+            // $('#perm_municipality').removeAttr('disabled');
+        }
+    }
+    $('#sameAsCheckbox').click(function(){
+        setSameAsCheckbox();
+    })
+    $(':radio[data-rel]').change(function() {
+        var rel = $("." + $(this).data('rel'));
+        if ($(this).val() === 'yes') {
+            rel.slideDown();
+        } else {
+            rel.slideUp();
+            rel.find(":text,select").val("");
+            rel.find(":radio,:checkbox").prop("checked", false);
+        }
+    });
+    $(function () {
+        $.validator.addMethod("emailCustom", function(value, element) {
+            return this.optional(element) || /^[a-zA-Z\.\'\-]{2,50}(?: [a-zA-Z\.\'\-]{2,50})+$/i.test(value);
+        }, "Email Address is invalid: Please enter a valid email address.");
+
+        $.validator.addMethod("ageCustom", function(value, element) {
+            return this.optional(element) || /^(12[0-7]|1[01][0-9]|[1-9]?[0-9])$/i.test(value);
+        }, "Age is invalid: Please enter a valid age.");
+
+        $.validator.addMethod("phoneCustom", function(value, element) {
+            return this.optional(element) || /^((984|985|986|974|975|980|981|982|961|988|972|963)\d{7})|((097|095|081|053|084|083|029|056|096|089|093|010|026|041|068|049|094|064|079|027|046|087|091|076|061|036|025|066|077|099|044|057|023|021|069|055|037|075|024|067|051|086|082|071|033|031|092|047|038|063|035)(4|5|6)\d{5})|(01)(4|5|6)\d{6}$/i.test(value);
+        }, "Contact number is invalid: Please enter a valid phone number.");
+        $("form[name='create']").validate({
+            // Define validation rules
+            rules: {
+                organization_type: {
+                    required: true,
+                },
+                organization_name:{
+                  required : true,
+                },
+                organization_phn: {
+                    required : true,
+                },
+                organization_address:{
+                    required : true,
+                },
+                designation:{
+                    required : true,
+                },
+                level:{
+                    required : true,
+                },
+                service_date :{
+                    required : true,
+                },
+                name : {
+                    required : true,
+                },
+                gender : {
+                    required : true,
+                },
+                age : {
+                    required : true,
+                    ageCustom: true,
+                },
+                phone : {
+                    required : true,
+                    phoneCustom : true
+                },
+                district_id : {
+                    required : true
+                },
+                municipality_id : {
+                    required : true
+                },
+                ward : {
+                    required : true,
+                },
+                tole : {
+                    required : true,
+                },
+                occupation : {
+                    required : true,
+                }
+            },
+            // Specify validation error messages
+            messages: {
+                name: "Please provide a valid name.",
+                age: "Please provide a valid age.",
+
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
 </script>
 </body>
 </html>
