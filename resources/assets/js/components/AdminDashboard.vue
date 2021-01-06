@@ -1,7 +1,7 @@
 <template>
   <div class="row">
       <div class="col-lg-12" v-if="checkHospitalTypeForSampleFeature() || checkPermission('cases-registration') || !checkDataEntryRole()">
-        <h3>Last 24 hours update <sub>| Registered : {{ report.registered_in_24_hrs }}</sub>
+        <h3>Today's update <sub>| Registered : {{ report.registered_in_24_hrs }}</sub>
         <small v-if="!report.cache_created_at" class="pull-right">loading...</small>
         <small v-else class="pull-right">Updated at : {{ recordUpdatedAt() }}</small>
         </h3>
@@ -227,7 +227,7 @@
         </div>
       </div>
     <div class="col-lg-12" v-if="checkHospitalTypeForLabFeature() || checkPermission('lab-received')">
-      <h3>Last 24 hours update in Lab
+      <h3>Today's update in Lab
       <small v-if="!report.cache_created_at" class="pull-right">loading...</small>
       <small v-else class="pull-right">Updated at : {{ recordUpdatedAt() }}</small>
       </h3>

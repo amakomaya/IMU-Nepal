@@ -30,20 +30,20 @@ class DashboardController extends Controller
             });
 
             $in_lab_received_in_24_hrs = Cache::remember('in_lab_received_in_24_hrs-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
-                return LabTest::whereIn('hp_code', $hpCodes)->where('created_at', '>', Carbon::now()->subDay()->toDateString())->get()->count();
+                return LabTest::whereIn('hp_code', $hpCodes)->whereDate('created_at', Carbon::today())->get()->count();
             });
 
             $in_lab_received_positive = Cache::remember('in_lab_received_positive-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
                 return LabTest::whereIn('hp_code', $hpCodes)->where('sample_test_result', '3')->get()->count();
             });
             $in_lab_received_positive_in_24_hrs = Cache::remember('in_lab_received_positive_in_24_hrs-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
-                return LabTest::whereIn('hp_code', $hpCodes)->where('sample_test_result', '3')->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->get()->count();
+                return LabTest::whereIn('hp_code', $hpCodes)->whereDate('sample_test_result', '3')->where('updated_at', Carbon::today())->get()->count();
             });
             $in_lab_received_negative = Cache::remember('in_lab_received_negative-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
                 return LabTest::whereIn('hp_code', $hpCodes)->where('sample_test_result', '4')->get()->count();
             });
             $in_lab_received_negative_in_24_hrs = Cache::remember('in_lab_received_negative_in_24_hrs-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
-                return LabTest::whereIn('hp_code', $hpCodes)->where('sample_test_result', '4')->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->get()->count();
+                return LabTest::whereIn('hp_code', $hpCodes)->whereDate('sample_test_result', '4')->where('updated_at', Carbon::today())->get()->count();
             });
         }
 
@@ -52,31 +52,31 @@ class DashboardController extends Controller
                 return SuspectedCase::whereIn('hp_code', $hpCodes)->active()->count();
                     }),
             'registered_in_24_hrs' => Cache::remember('registered_in_24_hrs-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
-                return SuspectedCase::whereIn('hp_code', $hpCodes)->active()->where('created_at', '>', Carbon::now()->subDay()->toDateString())->count();
+                return SuspectedCase::whereIn('hp_code', $hpCodes)->active()->whereDate('created_at', Carbon::today())->count();
             }),
             'sample_collection' => Cache::remember('sample_collection-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
                 return SampleCollection::whereIn('hp_code', $hpCodes)->active()->count();
             }),
             'sample_collection_in_24_hrs' => Cache::remember('sample_collection_in_24_hrs-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
-                return SampleCollection::whereIn('hp_code', $hpCodes)->active()->where('created_at', '>', Carbon::now()->subDay()->toDateString())->count();
+                return SampleCollection::whereIn('hp_code', $hpCodes)->active()->whereDate('created_at', Carbon::today())->count();
             }),
             'sample_received_in_lab' => Cache::remember('sample_received_in_lab-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
                 return SampleCollection::whereIn('hp_code', $hpCodes)->whereIn('result', [9, 3,4,5])->active()->count();
             }),
             'sample_received_in_lab_in_24_hrs' => Cache::remember('sample_received_in_lab_in_24_hrs-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
-                return SampleCollection::whereIn('hp_code', $hpCodes)->whereIn('result', [9, 3,4,5])->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count();
+                return SampleCollection::whereIn('hp_code', $hpCodes)->whereIn('result', [9, 3,4,5])->whereDate('updated_at', Carbon::today())->active()->count();
             }),
             'lab_result_positive' => Cache::remember('lab_result_positive-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
                 return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->active()->count();
             }),
             'lab_result_positive_in_24_hrs' => Cache::remember('lab_result_positive_in_24_hrs-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
-                return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count();
+                return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->whereDate('updated_at', Carbon::today())->active()->count();
             }),
             'lab_result_negative' => Cache::remember('lab_result_negative-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
                 return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->active()->count();
             }),
             'lab_result_negative_in_24_hrs' => Cache::remember('lab_result_negative_in_24_hrs-'.auth()->user()->token, 60*60, function () use ($hpCodes) {
-                return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count();
+                return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->whereDate('updated_at', Carbon::today())->active()->count();
             }),
 
             'in_lab_received' => $in_lab_received ?? 0,
