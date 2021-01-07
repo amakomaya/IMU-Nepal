@@ -79,7 +79,7 @@ class HealthWorkerController extends Controller
         $healthposts = Organization::where('id', $healthpost->id)->get();
         $role = "healthworker";
         $permissions = Permission::all();
-        return view('backend.health-worker.create',compact('provinces','districts','municipalities','wards','healthposts','role', 'permissions'));
+        return view('backend.health-worker.create',compact('provinces','districts','municipalities','healthposts','role', 'permissions'));
     }
 
     /**

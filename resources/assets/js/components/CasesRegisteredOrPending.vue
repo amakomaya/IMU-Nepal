@@ -60,15 +60,16 @@
                   <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
                         <i class="fa fa-hospital-o"></i> |
                   </button>
-                </td>  
+                </td>
                 <!-- </div>             -->
             </tr>
 
         </filterable>
 
-      <div v-if="checkPermission('cases-registration')">
+      <div v-if="this.$userRole == 'healthworker'">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+
         <fab
             :position="fabOptions.position"
             :bg-color="fabOptions.bgColor"
@@ -88,7 +89,7 @@ import ViewLabResultReportModel from './ViewLabResultReportModel.vue'
 import SendPatientDataModel from './SendPatientDataModel.vue'
 import viewConfirmReportFormModel from './viewConfirmReportFormModel.vue'
 import fab from 'vue-fab'
-import AddRecievedInLabModal from "./AddRecievedInLabModal";
+import  AddRecievedInLabModal from "./AddRecievedInLabModal";
 
 export default {
   components: {Filterable, fab},
@@ -324,10 +325,10 @@ export default {
       );
     },
     viewCaseDetails(token) {
-        window.open(
-            '/admin/patient?token=' + token,
-            '_blank'
-        );
+      window.open(
+          '/admin/patient?token=' + token,
+          '_blank'
+      );
     },
     editCaseDetails(token) {
       window.open(

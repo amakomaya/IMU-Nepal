@@ -18,7 +18,8 @@
       </tr>
       </thead>
       <tr slot-scope="{item}">
-        <td><div v-if="checkForPositiveOnly(item.latest_anc)" title="Case ID">C ID : {{ item.case_id }}</div>
+        <td>
+          <div v-if="checkForPositiveOnly(item.latest_anc)" title="Case ID">C ID : {{ item.case_id }}</div>
           <div v-if="item.parent_case_id !== null" title="Parent Case ID">PC ID : {{ item.parent_case_id }}</div>
         </td>
         <td>{{ roleVisibility(item.name)}}</td>
@@ -47,9 +48,10 @@
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
             <i class="fa fa-file" aria-hidden="true"></i> |
           </button>
-            <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
-              <i class="fa fa-medkit" aria-hidden="true"></i> |
-            </button>
+          <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)"
+                  title="Add Sample Collection / Swab Collection Report">
+            <i class="fa fa-medkit" aria-hidden="true"></i> |
+          </button>
           <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
             <i class="fa fa-hospital-o"></i>
           </button>
@@ -72,7 +74,7 @@ export default {
   components: {Filterable, fab},
   data() {
     return {
-      role : this.$userRole,
+      role: this.$userRole,
       filterable: {
         url: '/data/api/positive-patient',
         orderables: [
@@ -105,15 +107,15 @@ export default {
           }
         ],
       },
-      token : Filterable.data().collection.data,
+      token: Filterable.data().collection.data,
       selected: [],
       allSelected: false,
       womanTokens: [],
-      provinces : [],
-      municipalities : [],
-      districts : [],
-      exportHtml : '',
-      fabOptions : {
+      provinces: [],
+      municipalities: [],
+      districts: [],
+      exportHtml: '',
+      fabOptions: {
         bgColor: '#778899',
         position: 'bottom-right',
       },
@@ -133,46 +135,46 @@ export default {
 
     sendPatientData: function (item) {
       this.$dlg.modal(SendPatientDataModel, {
-        title: 'Do you want to send '+item.name+' \'s patients data ?',
-        height : 600,
-        width : 700,
+        title: 'Do you want to send ' + item.name + ' \'s patients data ?',
+        height: 600,
+        width: 700,
         params: {
-          data : item,
-          provinces : this.provinces,
-          districts : this.districts,
-          municipalities : this.municipalities
+          data: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
         },
       })
     },
 
     viewLabReport: function (item) {
       this.$dlg.modal(ViewLabResultReportModel, {
-        height : 700,
-        width : 800,
+        height: 700,
+        width: 800,
         title: 'Laboratory Result Form for Suspected COVID-19 Case',
         params: {
-          item : item,
-          provinces : this.provinces,
-          districts : this.districts,
-          municipalities : this.municipalities
+          item: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
         },
       })
     },
-    labToken(data){
-      if (data !== null){
+    labToken(data) {
+      if (data !== null) {
         return data.token.split('-').splice(1).join('-');
       }
     },
-    viewConfirmReportForm : function(item){
+    viewConfirmReportForm: function (item) {
       this.$dlg.modal(viewConfirmReportFormModel, {
         title: 'Confirmed report form of \'s ' + item.name,
-        height : 700,
-        width : 800,
+        height: 700,
+        width: 800,
         params: {
-          data : item,
-          provinces : this.provinces,
-          districts : this.districts,
-          municipalities : this.municipalities
+          data: item,
+          provinces: this.provinces,
+          districts: this.districts,
+          municipalities: this.municipalities
         },
       })
     },
@@ -213,28 +215,28 @@ export default {
     ad2bs: function (date) {
       var dateObject = new Date(date);
 
-      var dateFormat = dateObject.getFullYear()  + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getDate();
+      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
 
       let dateConverter = DataConverter.ad2bs(dateFormat);
 
       return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
 
     },
-    checkDistrict : function(value){
-      if (value === 0 || value == null || value === ''){
+    checkDistrict: function (value) {
+      if (value === 0 || value == null || value === '') {
         return ''
-      }else{
+      } else {
         return this.districts.find(x => x.id === value).district_name;
       }
     },
-    checkMunicipality : function(value){
-      if (value === 0 || value == null || value === ''){
+    checkMunicipality: function (value) {
+      if (value === 0 || value == null || value === '') {
         return ''
-      }else{
+      } else {
         return this.municipalities.find(x => x.id === value).municipality_name;
       }
     },
-    checkForPositiveOnly : function (value){
+    checkForPositiveOnly: function (value) {
       if (value !== null) {
         if (value.result === 3) {
           return true;
@@ -242,8 +244,8 @@ export default {
       }
     },
 
-    checkCaseType : function(type){
-      switch(type){
+    checkCaseType: function (type) {
+      switch (type) {
         case '0':
           return 'N/A';
 
@@ -258,9 +260,9 @@ export default {
       }
     },
 
-    checkCaseManagement : function (type, management){
+    checkCaseManagement: function (type, management) {
       if (type === '1') {
-        switch(management){
+        switch (management) {
           case '0':
             return 'Home';
 
@@ -276,7 +278,7 @@ export default {
       }
 
       if (type === '2') {
-        switch(management){
+        switch (management) {
           case '0':
             return 'General Ward';
 
@@ -293,22 +295,22 @@ export default {
       return 'N/A';
     },
 
-    gender(type){
-      switch (type){
+    gender(type) {
+      switch (type) {
         case '1':
           return 'M';
         case '2':
-          return  'F';
+          return 'F';
         default:
           return 'O';
       }
     },
-    checkPermission(value){
+    checkPermission(value) {
       var arr = this.$userPermissions.split(',');
       return arr.includes(value);
     },
-    roleVisibility(data){
-      if(this.role === 'dho' || this.role === 'province' || this.role === 'center'){
+    roleVisibility(data) {
+      if (this.role === 'dho' || this.role === 'province' || this.role === 'center') {
         return '** ***';
       }
       return data;
@@ -325,7 +327,12 @@ export default {
           '_blank'
       );
     },
-    viewCaseDetails(token){
+    viewCaseDetails(token) {
+      '/admin/patient?token=' + token,
+          '_blank'
+    },
+    editCaseDetails(token) {
+      window.location.href = '/admin/patient/' + token + '/edit';
       window.open(
           '/admin/patient?token=' + token,
           '_blank'

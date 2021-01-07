@@ -46,19 +46,23 @@ class WomanController extends Controller
         return view('backend.woman.index-positive');
     }
 
-    public function labReceivedIndex(){
+    public function labReceivedIndex()
+    {
         return view('backend.woman.index-lab-received');
     }
 
-    public function casesRecoveredIndex(){
+    public function casesRecoveredIndex()
+    {
         return view('backend.woman.index-cases-recovered');
     }
 
-    public function casesDeathIndex(){
+    public function casesDeathIndex()
+    {
         return view('backend.woman.index-cases-death');
     }
 
-    public function casesInOtherOrganization(){
+    public function casesInOtherOrganization()
+    {
         return view('backend.woman.index-cases-in-other-organization');
     }
 
@@ -68,7 +72,8 @@ class WomanController extends Controller
         foreach ($response as $key => $value) {
             $$key = $value;
         }
-        return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id','district_id','municipality_id'));
+        $dateToday = Carbon::now()->format('Y-d-m');
+        return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id', 'dateToday'));
     }
 
     public function store(Request $request)
@@ -86,14 +91,14 @@ class WomanController extends Controller
             'municipality_id' => 'required',
             'tole' => 'required',
             'emergency_contact_one' => 'required',
-            'occupation' => 'required',
+            'occupation' => 'required'
         ], $customMessages);
         $response = FilterRequest::filter($request);
         foreach ($response as $key => $value) {
             $$key = $value;
         }
         $row = $request->all();
-        $row['token'] = md5(microtime(true).mt_Rand());
+        $row['token'] = md5(microtime(true) . mt_Rand());
         $row['status'] = 1;
         $row['created_by'] = auth()->user()->token;
         $row['symptoms'] = "[]";
@@ -104,22 +109,22 @@ class WomanController extends Controller
         $row['case_where'] = 0;
         $row['end_case'] = 0;
         $row['payment'] = 0;
-        $row['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id.'-'.bin2hex(random_bytes(3));
+        $row['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id . '-' . bin2hex(random_bytes(3));
         $row['registered_device'] = 'web';
-
+        $row['reson_for_testing'] = "[" . implode(', ', $row['reson_for_testing']) . "]";
         SuspectedCase::create($row);
 
         $request->session()->flash('message', 'Data Inserted successfully');
-        if ($request->swab_collection_conformation == '1'){
+        if ($request->swab_collection_conformation == '1') {
             return $this->sampleCollectionCreate($row['token']);
         }
         return redirect()->route('woman.index');
     }
 
-    public function sampleCollectionCreate($token){
+    public function sampleCollectionCreate($token)
+    {
         $id = OrganizationMember::where('token', auth()->user()->token)->first()->id;
-        $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT).'-'.Carbon::now()->format('ymd').'-'.$this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
-        ;
+        $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->format('H:i:s'));;
         return view('backend.patient.sample-create', compact('token', 'swab_id'));
     }
 
@@ -129,22 +134,23 @@ class WomanController extends Controller
         return ($d[0] * 3600) + ($d[1] * 60) + $d[2];
     }
 
-    public function sampleCollectionStore(Request $request){
+    public function sampleCollectionStore(Request $request)
+    {
         $customMessages = [
             'required' => 'The :attribute field is required.',
         ];
 
         $request->validate([
-            'sample_type' => 'required',
+            'service_for' => 'required',
             'infection_type' => 'required',
-            'service_type' => 'required',
+            'service_type' => 'required'
         ], $customMessages);
         $row = $request->all();
         $row['created_by'] = auth()->user()->token;
         $row['status'] = 1;
         $row['result'] = 2;
         $row['sample_identification_type'] = 'unique_id';
-        switch (auth()->user()->role){
+        switch (auth()->user()->role) {
             case 'healthpost':
                 $healthpost = Organization::where('token', auth()->user()->token)->first();
                 $row['hp_code'] = $healthpost->hp_code;
@@ -156,7 +162,8 @@ class WomanController extends Controller
                 $row['created_by_name'] = $healthworker->name;
 
         }
-        $row['sample_type'] = "[".implode(', ', $row['sample_type'])."]";
+        if ($row['service_for'] === '1')
+            $row['sample_type'] = "[" . implode(', ', $row['sample_type']) . "]";
         SampleCollection::create($row);
         $request->session()->flash('message', 'Data Inserted successfully');
         return redirect()->route('woman.index');

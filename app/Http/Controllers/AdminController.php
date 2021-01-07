@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\GetHealthpostCodes;
 use App\Helpers\ViewHelper;
+use App\Models\province;
 use App\Models\SampleCollection;
 use App\Models\BabyDetail;
 use App\Models\District;
@@ -35,6 +36,12 @@ class AdminController extends Controller
     public function index()
     {
         return view('admin');
+    }
+
+    public function getDistrictValue(Request $request){
+        $id = $request->get('id');
+        $district_name = District::where('district_id', $id)->find();
+        return $district_name->office_address;
     }
 
     public function districtSelectByProvince(Request $request)
