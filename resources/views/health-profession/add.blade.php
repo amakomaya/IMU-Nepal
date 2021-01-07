@@ -423,6 +423,12 @@
                         {{--                        <button class="btn btn-primary btn-lg btn-block" title="Submit" onclick="verifyInfo()">--}}
                         {{--                            Submit--}}
                         {{--                        </button>--}}
+{{--                        <div class="pull-right">--}}
+{{--                            <a class="btn btn-success text-light" data-toggle="modal" id="mediumButton" data-target="#mediumModal"--}}
+{{--                               data-attr="" title="Create a project"> <i class="fas fa-plus-circle"></i>--}}
+{{--                            </a>--}}
+{{--                        </div>--}}
+
                     </div>
                 </div>
                 <!-- /.panel-body -->
@@ -433,23 +439,23 @@
     </div>
     <!-- /#page-wrapper -->
 </div>
-<div id="verifydiv" hidden>
-    <div class="form-group">
-        <h4><u><strong>Please verify your information</strong></u></h4>
-        <table class="table table-striped">
-            <tbody>
-            <tr>
-                <td>Organization Type:</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Organization Name:</td>
-                <td></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+{{--<div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel"--}}
+{{--     aria-hidden="true">--}}
+{{--    <div class="modal-dialog" role="document">--}}
+{{--        <div class="modal-content">--}}
+{{--            <div class="modal-header">--}}
+{{--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
+{{--                    <span aria-hidden="true">&times;</span>--}}
+{{--                </button>--}}
+{{--            </div>--}}
+{{--            <div class="modal-body" id="mediumBody">--}}
+{{--                <div>--}}
+{{--                    <!-- the result to be displayed apply here -->--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}
 <script>
     function provinceOnchange(id) {
         $("#district").text("Loading...").fadeIn("slow");
@@ -465,12 +471,30 @@
         });
     }
 
-    function verifyInfo() {
-        $( "#verifydiv" ).dialog({
-            autoOpen: false
-        });
-        $("#verifydiv").dialog('open');
-    }
+    $(document).on('click', '#mediumButton', function(event) {
+        event.preventDefault();
+        let href = $(this).attr('data-attr');
+        $.ajax({
+            url: href,
+            beforeSend: function() {
+                $('#loader').show();
+            },
+            // return the result
+            success: function(result) {
+                $('#mediumModal').modal("show");
+                $('#mediumBody').html(result).show();
+            },
+            complete: function() {
+                $('#loader').hide();
+            },
+            error: function(jqXHR, testStatus, error) {
+                console.log(error);
+                alert("Page " + href + " cannot open. Error:" + error);
+                $('#loader').hide();
+            },
+            timeout: 8000
+        })
+    });
 </script>
 </body>
 </html>
