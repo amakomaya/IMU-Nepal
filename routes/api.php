@@ -518,12 +518,16 @@ Route::get('/v1/ext/district', 'External\ExtDistrictController@index');
 Route::get('/v1/ext/municipality', 'External\ExtMunicipalityController@index');
 Route::get('/v1/ext/province', 'External\ExtProvinceController@index');
 
-Route::get('/v2/ext/cases', 'External\ExtCaseController@indexV2');
-Route::post('/v2/ext/cases', 'External\ExtCaseController@storeV2');
+Route::get('/v1/ext/cases', 'External\ExtCaseController@index');
+Route::post('/v1/ext/cases', 'External\ExtCaseController@store');
+Route::get('/v1/ext/get-case-detail', 'External\ExtCaseController@getCaseDetailBySample');
 
 
 //Route::get('/v1/ext/cases', 'External\ExtCaseController@index');
 //Route::post('/v1/ext/cases', 'External\ExtCaseController@store');
+//Route::get('/v1/ext/district', 'External\ExtDistrictController@index');
+//Route::get('/v1/ext/municipality', 'External\ExtMunicipalityController@index');
+//Route::get('/v1/ext/province', 'External\ExtProvinceController@index');
 //Route::get('/v1/ext/samples', 'External\ExtSampleController@index');
 //Route::post('/v1/ext/samples', 'External\ExtSampleController@store');
 //Route::get('/v1/ext/lab-test', 'External\ExtLabTestController@index');
@@ -541,4 +545,5 @@ Route::post('/v2/ext/cases', 'External\ExtCaseController@storeV2');
 //Route::get('/v1/ext/contact-detail', 'External\ExtContactDetailController@index');
 //Route::post('/v1/ext/contact-detail', 'External\ExtContactDetailController@store');
 //Route::get('/v1/ext/contact-follow-up', 'External\ExtContactFollowUpController@index');
+//Route::post('/v1/ext/contact-follow-up', 'External\ExtContactFollowUpController@store');
 //Route::post('/v1/ext/contact-follow-up', 'External\ExtContactFollowUpController@store');
