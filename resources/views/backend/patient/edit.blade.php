@@ -56,6 +56,8 @@
                         <form action="{{ route('patient.update',$data->id) }}" method="POST" name="updateCase">
                             @csrf
                             @method('PUT')
+                            <h4>1. Personal Information </h4>
+
                             <div class="panel-body">
                                 <div class="form-group {{ $errors->has('case_id') ? 'has-error' : '' }}">
                                     <label for="case_id">Case Id</label>
@@ -67,6 +69,21 @@
                                         <small id="help"
                                                class="form-text text-danger">{{ $errors->first('case_id') }}</small>
                                     @endif
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Is this a new case or an old case ?</label>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio"
+                                                   {{ old('case_type') == "1" ? 'checked' : '' }} name="case_type"
+                                                   value="1">New Case
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio"
+                                                   {{ old('case_type') == "2" ? 'checked' : '' }} name="case_type"
+                                                   value="2">Old Case
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
                                     <label for="name">Full Name</label>
@@ -134,12 +151,12 @@
                                                     <option value="">Select All Provinces</option>
                                                 @endif
                                                 @foreach(App\Models\province::all() as $province)
-                                                    @if($data->province_id ?? ''==$data->province->id)
+                                                    @if($data->province_id == $province->id)
                                                         @php($selectedProvince = "selected")
                                                     @else
                                                         @php($selectedProvince = "")
                                                     @endif
-                                                    <option value="{{$data->province->id}}" {{$selectedProvince}}>{{$province->province_name}}</option>
+                                                    <option value="{{$data->province_id}}" {{$selectedProvince}}>{{$province->province_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -150,12 +167,12 @@
                                                     <option value="">Select All Districts</option>
                                                 @endif
                                                 @foreach(App\Models\District::where('province_id', $data->province_id ?? '')->get() as $district)
-                                                    @if($data->district_id==$data->district->id)
+                                                    @if($data->district_id==$district->id)
                                                         @php($selectedDistrict = "selected")
                                                     @else
                                                         @php($selectedDistrict = "")
                                                     @endif
-                                                    <option value="{{$data->district->id}}" {{$selectedDistrict}}>{{$district->district_name}}</option>
+                                                    <option value="{{$data->district_id}}" {{$selectedDistrict}}>{{$district->district_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -167,12 +184,12 @@
                                                     <option value="">Select All Municipalities</option>
                                                 @endif
                                                 @foreach(\App\Models\Municipality::where('district_id', $data->district_id)->get() as $municipality)
-                                                    @if($data->municipality_id==$data->municipality->id)
+                                                    @if($data->municipality_id==$municipality->id)
                                                         @php($selectedMunicipality = "selected")
                                                     @else
                                                         @php($selectedMunicipality = "")
                                                     @endif
-                                                    <option value="{{$data->municipality->id}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>
+                                                    <option value="{{$data->municipality_id}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -220,6 +237,16 @@
                                                class="form-text text-danger">{{ $errors->first('emergency_contact_two') }}</small>
                                     @endif
                                 </div>
+                                <div class="form-group {{ $errors->has('date_of_onset_of_first_symptom') ? 'has-error' : '' }}">
+                                    <label for="date_of_onset_of_first_symptom">Date of onset of first symptom:</label>
+                                    <input type="text" class="form-control"
+                                           value="{{ $data->date_of_onset_of_first_symptom }}"
+                                           name="date_of_onset_of_first_symptom" aria-describedby="help">
+                                    @if ($errors->has('date_of_onset_of_first_symptom'))
+                                        <small id="help"
+                                               class="form-text text-danger">{{ $errors->first('date_of_onset_of_first_symptom') }}</small>
+                                    @endif
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label" for="caste">Occupation</label>
                                     <select name="occupation" class="form-control">
@@ -260,17 +287,117 @@
                                     <label class="control-label">Have you traveled till 15 days ?</label>
                                     <div class="control-group">
                                         <label class="radio-inline">
-                                            <input type="radio" name="travelled" {{ $data->travelled == "0" ? 'checked' : '' }} value="0" checked>No
+                                            <input type="radio" name="travelled"
+                                                   {{ $data->travelled == "0" ? 'checked' : '' }} value="0" checked>No
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio" name="travelled" {{ $data->travelled == "1" ? 'checked' : '' }} value="1">Yes
+                                            <input type="radio" name="travelled"
+                                                   {{ $data->travelled == "1" ? 'checked' : '' }} value="1">Yes
                                         </label>
 
                                     </div>
                                 </div>
-
-                                {!! rcForm::close('post') !!}
+                                <div class="form-group" id="reson_for_testing">
+                                    <label class="control-label" for="reson_for_testing">Reason for testing:</label><br>
+                                    <input type="checkbox" name="reson_for_testing[]"
+                                           {{ Illuminate\Support\Str::contains($data->reson_for_testing, '1') ? 'checked' : '' }} value="1">Planned
+                                    travel<br>
+                                    <input type="checkbox" name="reson_for_testing[]"
+                                           {{ Illuminate\Support\Str::contains($data->reson_for_testing, '2') ? 'checked' : '' }}  value="2">Mandatory
+                                    requirement<br>
+                                    <input type="checkbox" name="reson_for_testing[]"
+                                           {{ Illuminate\Support\Str::contains($data->reson_for_testing, '3') ? 'checked' : '' }}  value="3">Returnee/Migrant
+                                    worker<br>
+                                    <input type="checkbox" name="reson_for_testing[]"
+                                           {{ Illuminate\Support\Str::contains($data->reson_for_testing, '4') ? 'checked' : '' }}  value="4">Pre-medical/surgical
+                                    procedure<br>
+                                    <input type="checkbox" name="reson_for_testing[]"
+                                           {{Illuminate\Support\Str::contains($data->reson_for_testing, '5') ? 'checked' : '' }}  value="5">Pregnancy
+                                    complications/Pre-delivery<br>
+                                    <input type="checkbox" name="reson_for_testing[]"
+                                           {{ Illuminate\Support\Str::contains($data->reson_for_testing, '6') ? 'checked' : '' }}  value="6">Testing
+                                    by
+                                    Government
+                                    authority for other purpose<br>
+                                    <input type="checkbox" name="reson_for_testing[]"
+                                           {{ Illuminate\Support\Str::contains($data->reson_for_testing, '7') ? 'checked' : '' }}  value="7">Test
+                                    on demand by
+                                    person<br>
+                                    @if ($errors->has('reson_for_testing'))
+                                        <small id="help"
+                                               class="form-text text-danger">{{ $errors->first('reson_for_testing') }}</small>
+                                    @endif
+                                </div>
                             </div>
+
+                            @if(!$samples->isEmpty())
+                                <h4>2. Sample Collection Information </h4>
+
+                                <div>
+                                    <table class="table" id="table">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th title="Sample Unique ID">SID</th>
+                                            <th title="Test Type">Test Type</th>
+                                            <th title="Service Type">Service Type</th>
+                                            <th title="Sample Collected Date">Date</th>
+                                            <th title="Sample Result">Result</th>
+                                            <th><i class="fa fa-cogs" aria-hidden="true"></i>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($samples as $sample)
+                                            <tr>
+                                                <td>{{$loop->iteration }}</td>
+                                                <td>{{$sample->token}}</td>
+                                                <td>
+                                                    @if($sample->service_for === '1')
+                                                        PCR Swab Collection
+                                                    @endif
+                                                    @if($sample->service_for === '2')
+                                                        Antigen Test
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($sample->service_type === '1')
+                                                        Paid Service
+                                                    @elseif($sample->service_type === '2')
+                                                        Free of cost service
+                                                    @endif
+                                                </td>
+                                                <td>{{$sample->created_at}}</td>
+                                                <td>
+                                                    @if($sample->result === '2')
+                                                        Pending
+                                                    @elseif($sample->result === '3')
+                                                        Positive
+                                                    @elseif($sample->result === '4')
+                                                        Negative
+                                                    @elseif($sample->result === '5')
+                                                        Don't Know
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if(auth()->user()->role === 'main')
+                                                        {{--                                                        <button title="Edit Sample Detail" {{ url("admin/sample/$sample->token/edit") }}'">--}}
+                                                        {{--                                                            <i class="fa fa-edit"></i>--}}
+                                                        {{--                                                        </button>--}}
+                                                        <a title="Edit Sample Detail" class="btn btn-primary"
+                                                           href="{{ url('admin/sample/'.$sample->token.'/edit') }}">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @endif
+                            {!! rcForm::close('post') !!}
+
                         </form>
                         <!-- /.panel-body -->
                     </div>
@@ -310,6 +437,45 @@
                     });
                 }
 
+                function sampleTypeValue(value) {
+                    if (value === 1)
+                        return "Nasopharyngeal";
+                    else if (value === 2)
+                        return "Oropharyngeal";
+                }
+
+                function serviceTypeValue(value) {
+                    if (value === 1)
+                        return "Paid Service";
+                    else if (value === 2)
+                        return "Free of cost service";
+                }
+
+                function resultValue(value) {
+                    switch (value) {
+                        case 1:
+                            return "Registered Only";
+                        case 2:
+                            return "Pending";
+                        case 3:
+                            return "Positive";
+                        case 4:
+                            return "Negative";
+                        case 5:
+                            return "Dont know";
+                    }
+                }
+
+                function createdDate(date) {
+                    var dateObject = new Date(date);
+
+                    var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
+
+                    let dateConverter = DataConverter.ad2bs(dateFormat);
+
+                    return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
+                }
+
                 $(function () {
                     $.validator.addMethod("nameCustom", function (value, element) {
                         return this.optional(element) || /^[a-zA-Z\.\'\-]{2,50}(?: [a-zA-Z\.\'\-]{2,50})+$/i.test(value);
@@ -333,11 +499,11 @@
                                 required: true,
                                 ageCustom: true,
                             },
-                            district_id : {
-                                required : true
+                            district_id: {
+                                required: true
                             },
-                            municipality_id : {
-                                required : true
+                            municipality_id: {
+                                required: true
                             },
                             sex: {
                                 required: true,

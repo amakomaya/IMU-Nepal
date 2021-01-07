@@ -70,38 +70,67 @@
                                                class="form-text text-danger">{{ $errors->first('woman_token') }}</small>
                                     @endif
                                 </div>
-                                <div class="form-group {{ $errors->has('sample_type') ? 'has-error' : '' }}">
-                                    <label for="sample_type">Sample Type</label><br>
-                                    <input type="radio" name="sample_type"
-                                           {{ $data->sample_type == "1" ? 'checked' : '' }} value="1" data-rel="earning"
-                                           checked>Nasopharyngeal
-                                    <input type="radio" name="age_unit"
-                                           {{ $data->sample_type == "2" ? 'checked' : '' }} value="2" data-rel="earning">Oropharyngeal
-                                    <br>
-                                    @if ($errors->has('sample_type'))
+                                <div class="form-group">
+                                    <label class="control-label">Test Type</label>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="service_for"
+                                                   {{ $data->service_for == "1" ? 'checked' : '' }} value="1" onclick="toggleLayout(true)">PCR Swab
+                                            Collection
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="service_for"
+                                                   {{ $data->service_for == "2" ? 'checked' : '' }} value="2" onclick="toggleLayout(false)">Antigen
+                                            Test
+                                        </label>
+                                    </div>
+                                    @if ($errors->has('service_for'))
                                         <small id="help"
-                                               class="form-text text-danger">{{ $errors->first('sample_type') }}</small>
+                                               class="form-text text-danger">{{ $errors->first('service_for') }}</small>
                                     @endif
                                 </div>
-                                <div class="form-group {{ $errors->has('sample_type_specific') ? 'has-error' : '' }}">
-                                    <label for="sample_type_specific">Sample Type Specific</label>
-                                    <input type="text" id="sample_type_specific" class="form-control" name="sample_type_specific"
-                                           aria-describedby="help" placeholder="Enter Sample Type Specific"
-                                           value="{{ $data->sample_type_specific }}"
-                                    >
-                                    @if ($errors->has('sample_type_specific'))
-                                        <small id="help"
-                                               class="form-text text-danger">{{ $errors->first('sample_type_specific') }}</small>
-                                    @endif
+                                <div id="sample">
+                                    <div class="form-group {{ $errors->has('sample_type') ? 'has-error' : '' }}">
+                                        <label for="sample_type">Sample Type</label><br>
+                                        <div class="control-group">
+                                            <input type="checkbox" name="sample_type[]"
+                                                   {{ Illuminate\Support\Str::contains($data->sample_type, '1') ? 'checked' : '' }}  value="1">
+                                            Nasopharyngeal<br>
+                                            <input type="checkbox" name="sample_type[]"
+                                                   {{ Illuminate\Support\Str::contains($data->sample_type, '2') ? 'checked' : '' }} value="2">
+                                            Oropharyngeal
+                                        </div>
+                                        @if ($errors->has('sample_type'))
+                                            <small id="help"
+                                                   class="form-text text-danger">{{ $errors->first('sample_type') }}</small>
+                                        @endif
+                                    </div>
+                                    <div class="form-group {{ $errors->has('sample_type_specific') ? 'has-error' : '' }}">
+                                        <label for="sample_type_specific">Sample Type Specific</label>
+                                        <input type="text" id="sample_type_specific" class="form-control"
+                                               name="sample_type_specific"
+                                               aria-describedby="help" placeholder="Enter Sample Type Specific"
+                                               value="{{ $data->sample_type_specific }}"
+                                        >
+                                        @if ($errors->has('sample_type_specific'))
+                                            <small id="help"
+                                                   class="form-text text-danger">{{ $errors->first('sample_type_specific') }}</small>
+                                        @endif
+                                    </div>
                                 </div>
+
                                 <div class="form-group {{ $errors->has('infection_type') ? 'has-error' : '' }}">
                                     <label for="infection_type">Infection Type</label><br>
-                                    <input type="radio" name="infection_type"
-                                           {{ $data->infection_type == "1" ? 'checked' : '' }} value="1" data-rel="earning"
-                                           checked>Symptomatic
-                                    <input type="radio" name="infection_type"
-                                           {{ $data->infection_type == "2" ? 'checked' : '' }} value="2" data-rel="earning">Asymptomatic
-                                    <br>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="infection_type"
+                                                   {{ $data->infection_type == "1" ? 'checked' : '' }} value="1">Symptomatic
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="infection_type"
+                                                   {{ $data->infection_type == "2" ? 'checked' : '' }} value="2">Asymptomatic
+                                        </label>
+                                    </div>
                                     @if ($errors->has('infection_type'))
                                         <small id="help"
                                                class="form-text text-danger">{{ $errors->first('infection_type') }}</small>
@@ -109,12 +138,18 @@
                                 </div>
                                 <div class="form-group {{ $errors->has('service_type') ? 'has-error' : '' }}">
                                     <label for="service_type">Service Type</label><br>
-                                    <input type="radio" name="service_type"
-                                           {{ $data->service_type == "1" ? 'checked' : '' }} value="1" data-rel="earning"
-                                           checked>Paid service
-                                    <input type="radio" name="infection_type"
-                                           {{ $data->service_type == "2" ? 'checked' : '' }} value="2" data-rel="earning">Free of cost
-                                    <br>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="service_type"
+                                                   {{ $data->service_type == "1" ? 'checked' : '' }} value="1">Paid
+                                            service
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="service_type"
+                                                   {{ $data->service_type == "2" ? 'checked' : '' }} value="2">Free of
+                                            cost
+                                        </label>
+                                    </div>
                                     @if ($errors->has('service_type'))
                                         <small id="help"
                                                class="form-text text-danger">{{ $errors->first('service_type') }}</small>
@@ -126,7 +161,8 @@
                                         <option {{ $data->result == '2' ? "selected" : "" }} value="2">Pending</option>
                                         <option {{ $data->result == '3' ? "selected" : "" }} value="3">Positive</option>
                                         <option {{ $data->result == '4' ? "selected" : "" }} value="4">Negative</option>
-                                        <option {{ $data->result == '5' ? "selected" : "" }} value="5">Don't Know</option>
+                                        <option {{ $data->result == '5' ? "selected" : "" }} value="5">Don't Know
+                                        </option>
                                         <option {{ $data->result == '6' ? "selected" : "" }} value="6">Rejected</option>
                                     </select>
                                 </div>
@@ -142,4 +178,17 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript">
+        function toggleLayout(sample) {
+            x = document.getElementById("sample");
+            if (sample) {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
 @endsection
