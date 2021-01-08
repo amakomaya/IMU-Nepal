@@ -535,9 +535,6 @@
                 designation:{
                     required : true,
                 },
-                level:{
-                    required : true,
-                },
                 service_date :{
                     required : true,
                 },
