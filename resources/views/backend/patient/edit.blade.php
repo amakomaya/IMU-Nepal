@@ -407,131 +407,132 @@
             </div>
             <!-- /.row -->
         </div>
-        <!-- /#page-wrapper -->
-        @endsection
-        @section('script')
-            <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
-            <script type="text/javascript">
-                $(':radio[data-rel]').change(function () {
-                    var rel = $("." + $(this).data('rel'));
-                    if ($(this).val() == 'yes') {
-                        rel.slideDown();
-                    } else {
-                        rel.slideUp();
-                        rel.find(":text,select").val("");
-                        rel.find(":radio,:checkbox").prop("checked", false);
+    </div>
+    <!-- /#page-wrapper -->
+@endsection
+@section('script')
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript">
+        $(':radio[data-rel]').change(function () {
+            var rel = $("." + $(this).data('rel'));
+            if ($(this).val() == 'yes') {
+                rel.slideDown();
+            } else {
+                rel.slideUp();
+                rel.find(":text,select").val("");
+                rel.find(":radio,:checkbox").prop("checked", false);
+            }
+        });
+
+        function provinceOnchange(id) {
+            $("#district").text("Loading...").fadeIn("slow");
+            $.get("{{route("district-select-province")}}?id=" + id, function (data) {
+                $("#district").html(data);
+            });
+        }
+
+        function districtOnchange(id) {
+            $("#municipality").text("Loading...").fadeIn("slow");
+            $.get("{{route("municipality-select-district")}}?id=" + id, function (data) {
+                $("#municipality").html(data);
+            });
+        }
+
+        function sampleTypeValue(value) {
+            if (value === 1)
+                return "Nasopharyngeal";
+            else if (value === 2)
+                return "Oropharyngeal";
+        }
+
+        function serviceTypeValue(value) {
+            if (value === 1)
+                return "Paid Service";
+            else if (value === 2)
+                return "Free of cost service";
+        }
+
+        function resultValue(value) {
+            switch (value) {
+                case 1:
+                    return "Registered Only";
+                case 2:
+                    return "Pending";
+                case 3:
+                    return "Positive";
+                case 4:
+                    return "Negative";
+                case 5:
+                    return "Dont know";
+            }
+        }
+
+        function createdDate(date) {
+            var dateObject = new Date(date);
+
+            var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
+
+            let dateConverter = DataConverter.ad2bs(dateFormat);
+
+            return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
+        }
+
+        $(function () {
+            $.validator.addMethod("nameCustom", function (value, element) {
+                return this.optional(element) || /^[a-zA-Z\.\'\-]{2,50}(?: [a-zA-Z\.\'\-]{2,50})+$/i.test(value);
+            }, "Email Address is invalid: Please enter a valid email address.");
+
+            $.validator.addMethod("ageCustom", function (value, element) {
+                return this.optional(element) || /^(12[0-7]|1[01][0-9]|[1-9]?[0-9])$/i.test(value);
+            }, "Age is invalid: Please enter a valid age.");
+
+            $.validator.addMethod("phoneCustom", function (value, element) {
+                return this.optional(element) || /^((984|985|986|974|975|980|981|982|961|988|972|963)\d{7})|((097|095|081|053|084|083|029|056|096|089|093|010|026|041|068|049|094|064|079|027|046|087|091|076|061|036|025|066|077|099|044|057|023|021|069|055|037|075|024|067|051|086|082|071|033|031|092|047|038|063|035)(4|5|6)\d{5})|(01)(4|5|6)\d{6}$/i.test(value);
+            }, "Contact number is invalid: Please enter a valid phone number.");
+            $("form[name='updateCase']").validate({
+                // Define validation rules
+                rules: {
+                    name: {
+                        required: true,
+                        nameCustom: true
+                    },
+                    age: {
+                        required: true,
+                        ageCustom: true,
+                    },
+                    district_id: {
+                        required: true
+                    },
+                    municipality_id: {
+                        required: true
+                    },
+                    sex: {
+                        required: true,
+                    },
+                    ward: {
+                        required: true,
+                    },
+                    tole: {
+                        required: true,
+                    },
+                    emergency_contact_one: {
+                        required: true,
+                        phoneCustom: true
+                    },
+                    occupation: {
+                        required: true,
                     }
-                });
+                },
+                // Specify validation error messages
+                messages: {
+                    name: "Please provide a valid name.",
+                    age: "Please provide a valid age.",
 
-                function provinceOnchange(id) {
-                    $("#district").text("Loading...").fadeIn("slow");
-                    $.get("{{route("district-select-province")}}?id=" + id, function (data) {
-                        $("#district").html(data);
-                    });
+                },
+                submitHandler: function (form) {
+                    form.submit();
                 }
-
-                function districtOnchange(id) {
-                    $("#municipality").text("Loading...").fadeIn("slow");
-                    $.get("{{route("municipality-select-district")}}?id=" + id, function (data) {
-                        $("#municipality").html(data);
-                    });
-                }
-
-                function sampleTypeValue(value) {
-                    if (value === 1)
-                        return "Nasopharyngeal";
-                    else if (value === 2)
-                        return "Oropharyngeal";
-                }
-
-                function serviceTypeValue(value) {
-                    if (value === 1)
-                        return "Paid Service";
-                    else if (value === 2)
-                        return "Free of cost service";
-                }
-
-                function resultValue(value) {
-                    switch (value) {
-                        case 1:
-                            return "Registered Only";
-                        case 2:
-                            return "Pending";
-                        case 3:
-                            return "Positive";
-                        case 4:
-                            return "Negative";
-                        case 5:
-                            return "Dont know";
-                    }
-                }
-
-                function createdDate(date) {
-                    var dateObject = new Date(date);
-
-                    var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
-
-                    let dateConverter = DataConverter.ad2bs(dateFormat);
-
-                    return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
-                }
-
-                $(function () {
-                    $.validator.addMethod("nameCustom", function (value, element) {
-                        return this.optional(element) || /^[a-zA-Z\.\'\-]{2,50}(?: [a-zA-Z\.\'\-]{2,50})+$/i.test(value);
-                    }, "Email Address is invalid: Please enter a valid email address.");
-
-                    $.validator.addMethod("ageCustom", function (value, element) {
-                        return this.optional(element) || /^(12[0-7]|1[01][0-9]|[1-9]?[0-9])$/i.test(value);
-                    }, "Age is invalid: Please enter a valid age.");
-
-                    $.validator.addMethod("phoneCustom", function (value, element) {
-                        return this.optional(element) || /^((984|985|986|974|975|980|981|982|961|988|972|963)\d{7})|((097|095|081|053|084|083|029|056|096|089|093|010|026|041|068|049|094|064|079|027|046|087|091|076|061|036|025|066|077|099|044|057|023|021|069|055|037|075|024|067|051|086|082|071|033|031|092|047|038|063|035)(4|5|6)\d{5})|(01)(4|5|6)\d{6}$/i.test(value);
-                    }, "Contact number is invalid: Please enter a valid phone number.");
-                    $("form[name='updateCase']").validate({
-                        // Define validation rules
-                        rules: {
-                            name: {
-                                required: true,
-                                nameCustom: true
-                            },
-                            age: {
-                                required: true,
-                                ageCustom: true,
-                            },
-                            district_id: {
-                                required: true
-                            },
-                            municipality_id: {
-                                required: true
-                            },
-                            sex: {
-                                required: true,
-                            },
-                            ward: {
-                                required: true,
-                            },
-                            tole: {
-                                required: true,
-                            },
-                            emergency_contact_one: {
-                                required: true,
-                                phoneCustom: true
-                            },
-                            occupation: {
-                                required: true,
-                            }
-                        },
-                        // Specify validation error messages
-                        messages: {
-                            name: "Please provide a valid name.",
-                            age: "Please provide a valid age.",
-
-                        },
-                        submitHandler: function (form) {
-                            form.submit();
-                        }
-                    });
-                });
-            </script>
+            });
+        });
+    </script>
 @endsection

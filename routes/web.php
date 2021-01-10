@@ -30,9 +30,13 @@ Route::get('/health-professional/add', function (){
     $province_id = 0;
     $district_id = 0;
     $municipality_id = 0;
-   return view('health-profession.add', compact('province_id','district_id','municipality_id'));
+   return view('health-professional.add', compact('province_id','district_id','municipality_id'));
 })->name('health.professional.add');
 Route::post('/health-professional', 'Backend\HealthProfessionalController@store')->name('health-professional.store');
+Route::get('/health-professional/index', 'Backend\HealthProfessionalController@index')->name('health-professional.index');
+Route::get('/health-professional/show/{id}', 'Backend\HealthProfessionalController@show')->name('health-professional.show');
+Route::get('/health-professional/edit/{id}', 'Backend\HealthProfessionalController@edit')->name('health-professional.edit');
+Route::post('/health-professional/update/{id}', 'Backend\HealthProfessionalController@update')->name('health-professional.update');
 
 //Backend Center
 Route::resource('admin/center', 'Backend\CenterController');
