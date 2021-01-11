@@ -17,6 +17,7 @@ class ExtMunicipalityController extends Controller
             $municipalities = Municipality::all();
             $data = collect($municipalities)->map(function ($row) {
                 $response = [];
+                $response['id'] = $row->id;
                 $response['province_id'] = $row->province_id;
                 $response['district_id'] = $row->district_id ?? '';
                 $response['district_name'] = $row->district_name ?? '';

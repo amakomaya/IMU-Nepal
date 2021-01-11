@@ -328,8 +328,10 @@ export default {
       );
     },
     viewCaseDetails(token) {
+      window.open(
       '/admin/patient?token=' + token,
           '_blank'
+      );
     },
     editCaseDetails(token) {
       window.location.href = '/admin/patient/' + token + '/edit';
