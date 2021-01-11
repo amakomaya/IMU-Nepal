@@ -14,6 +14,6 @@ class HealthProfessional extends Model
         'province_id', 'district_id', 'municipality_id', 'tole', 'ward', 'perm_province_id',
         'perm_district_id', 'perm_municipality_id', 'perm_tole', 'perm_ward', 'citizenship_no', 'issue_district',
         'allergies', 'disease', 'covid_status', 'status','created_at',
-        'updated_at'
+        'updated_at', 'checked_by'
     ];
 }

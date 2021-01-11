@@ -137,15 +137,15 @@
         </li>
     </ul>
 </li>
-
+<li>
+    <a href="{{ route('health-professional.index') }}">
+        <i class="fa fa-stethoscope"></i>
+        Health Professionals
+    </a>
+</li>
 <li>
     <a href="{{ route('center.woman.map') }}">
     <i class="fa fa-map-marker"></i>
             Map 
     </a>
 </li>
-<!-- <li>
-    <a href="{{ route('backup-restore.index') }}">
-        <i class="fa fa-undo" aria-hidden="true"></i> {{ trans('sidebar.backup_restore') }}
-    </a>
-</li> -->

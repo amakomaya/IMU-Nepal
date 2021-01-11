@@ -6,6 +6,12 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
+                <a class="btn btn-info btn-sm pull-right"
+                   href="{{ url('/health-professional/add') }}">
+                    <i class="glyphicon glyphicon-plus"></i>Add Health Professional
+                </a>
+            </div>
+            <div class="col-lg-12">
                 <div class="panel panel-default">
                     @if (Request::session()->has('message'))
                         <div class="alert alert-block alert-success">
@@ -74,9 +80,5 @@
                 </div>
             </div>
         </div>
-        <a class="btn btn-info btn-circle btn-lg" style="float:right;"
-           href="{{ url('/health-professional/add') }}">
-            <i class="glyphicon glyphicon-plus"></i>
-        </a>
     </div>
 @endsection

@@ -164,6 +164,12 @@
     </ul>
 </li>
 <li>
+    <a href="{{ route('health-professional.index') }}">
+        <i class="fa fa-stethoscope"></i>
+        Health Professionals
+    </a>
+</li>
+<li>
     <a href="#">
         <i class="fa fa-user" aria-hidden="true"></i>
         Notice Board <span class="fa arrow"></span>

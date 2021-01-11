@@ -54,32 +54,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <div class="pull-right">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fa fa-print"> Print </i>
-                            </button>
-                        </div>
                         <div class="main" id="report-printMe">
-                            <div class="header">
-                                <div class="img">
-                                    <img src="/images/report-logo.jpg" width="92" height="92" alt="">
-                                </div>
-
-                                <div class="titleMid">
-                                    <p class="govF">Government of Nepal</p>
-                                    <p class="govF">Ministry of Health & Population</p>
-                                    <p class="govM">Department of Health Service</p>
-                                    {{--                            <p class="govB">{{ $data->healthpost->name }}</p>--}}
-                                    {{--                            <p class="govA">{{ $data->healthpost->address }}--}}
-                                    {{--                                , {{ $data->healthpost->district_id }}</p>--}}
-                                </div>
-
-                                <div class="titleSide">
-                                    {{--                            <p>Phone: {{  $data->healthpost->phone }}</p>--}}
-                                    {{--                            <p class="date">Date: {{  $data->healthpost->created_at }}</p>--}}
-                                </div>
-                            </div>
-                            <br>
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
