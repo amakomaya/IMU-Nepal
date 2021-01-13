@@ -194,8 +194,8 @@
         </div>
         <div style="display:inline-block; width:100%; height:auto;">
 
-            <a href="{{ route('health.professional.add') }}" class="btn btn-info center-block" role="button"><i class="fa fa-plus" aria-hidden="true"></i>
-                Add Health Professional Data</a>
+{{--            <a href="{{ route('health.professional.add') }}" class="btn btn-info center-block" role="button"><i class="fa fa-plus" aria-hidden="true"></i>--}}
+{{--                Add Health Professional Data</a>--}}
 
             <a target="_blank" href="https://play.google.com/store/apps/details?id=com.aamakomaya.hamrosurvey"><img class="img-responsive center-block" src="{{ asset('images/google-play-badge.png') }}"></a>
         </div>
@@ -233,29 +233,8 @@
                                 <h4 class="modal-title">सूचना ! सूचना!! सूचना!!!</h4> <strong class="pull-right">१७ पुष २०७७, शुक्रवार</strong>
                             </div>
                             <div class="modal-body">
-                                <ol>IMU को mobile एपमा अपडेट भएको छ।
-                                    कृपय तलको बिधि अनुसार आफ्नो IMU App अपडेट गर्नु होस!
-                                    <li>IMU App मा भएको सबै डाटा Data सर्भरमा पठाउनुहोस र सर्भरमा पुगेको निश्चय गर्नुहोस।</li>
-                                    <li>Data Backup गर्नुहोस र Backup File कपि गरि अर्को स्थानमा सुरक्षित गर्नुहोस।</li>
-                                    <li>Clear Cache, Clear Data गर्नुहोस।</li>
-                                    <li>अब एप अपडेट गर्नुहोस।</li>
-                                    <li>पुनः लगईन गर्नुहोस र सर्भरबाट डाटा डाउनलोड गर्नुहोस।</li>
-                                </ol>
-                                <hr>
-                                <ol>अहिले गरिएको अपडेट निम्न अनुसार गरिएको छ।
-                                    <li>एन्टिजेन टेस्टको लागि नेगेटिभ र पोजेटिभ रिजल्ट एप मै देखिने सर्भरमा पठाउनु नपर्ने।</li>
-                                    <li>एन्टिने टेस्टमा लगत्तै सिरियल नम्बर अनुसार ल्याब आइडिको रुपमा एन्टिजेन किट आइडि राख्ने।</li>
-                                    <li>पिसिआर स्वाब कलेक्सन भनेर तोकिएको</li>
-                                    <li>डाटा डाउनलोड गर्दा अझ बुझिने गरि भाषा मिलाइएको</li>
-                                    <li>मोबाएलमा हुने स्टोरेको अवस्था  अनुसार डेटा ब्याकअपको  फाइल दुइ स्थानमा रहने बनाइएको । मोबाएल भित्रको Internal Storage भएको अवस्थामा  nternal storage> Android>data>com.amakomaya.hamrosurvey>files>backup स्थानमा ब्याकअप फाइल बस्ने च।</li>
-                                    <li>External storage को अवस्थामा   External storage> HamorSurveyBackup folder</li>
-                                    <li>अन्य केहि बग्जहरु समेत फिक्स गरिएको छ।</li>
-                                </ol>
+                                <img src="{{ asset('images/COVID-health_professional-letter.jpg') }}" alt="" class="img-responsive">
 
-                                <ol>IMU web System मा समेत निम्न अनुसारको अपडेट गरिएको छ।
-                                    <li>अस्पतालको प्रोफाइलमा कति जनरल बेड, कति, आइसियु, कति भेन्टिलेटर छन भन्ने कुरा भर्न मिल्ने।</li>
-                                    <li>अस्पताल तथा प्रयोगशालाहरुको आवश्यकता अनुसार आफ्नो एकाण्टमा सेवा थपघट गर्न सक्ने</li>
-                                </ol>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -307,7 +286,7 @@
     </div>
         <script type="text/javascript">
             $(window).on('load',function(){
-                $('#myModal-hide').modal('show');
+                $('#myModal').modal('show');
             });
         </script>
 </body>
