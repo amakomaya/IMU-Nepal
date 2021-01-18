@@ -377,7 +377,7 @@
                                     @endif
                                 </div>
                                 <div class="form-group col-sm-6">
-                                    <label class="control-label">COVID status</label>
+                                    <label class="control-label">Are you covid infected?</label>
                                     <div class="control-group">
                                         <label class="radio-inline">
                                             <input type="radio" name="covid_status"
