@@ -13,7 +13,7 @@ class Municipality extends Model
 
 	public static function getMunicipality($id)
     {
-    	$municipality = \App\Models\Municipality::where('id',$id)->get()->first();
-    		return $municipality->municipality_name ?? '';
+    	$municipality = Municipality::where('id',$id)->get()->first();
+    	return $municipality;
     }
 }

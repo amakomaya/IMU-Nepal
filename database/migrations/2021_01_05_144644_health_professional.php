@@ -45,6 +45,8 @@ class HealthProfessional extends Migration
             $table->string('serial_no');
             $table->boolean('status');
             $table->timestamps();
+            $table->string('health_worker');
+            $table->string('council_no');
         });
     }
 

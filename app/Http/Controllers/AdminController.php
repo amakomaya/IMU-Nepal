@@ -40,7 +40,7 @@ class AdminController extends Controller
 
     public function getDistrictValue(Request $request){
         $id = $request->get('id');
-        $district_name = District::where('district_id', $id)->find();
+        $district_name = District::where('district_id', $id)->get();
         return $district_name->office_address;
     }
 
