@@ -156,7 +156,7 @@
                                     <label class="control-label">Current Address</label>
                                     <div class="row">
                                         <div class="form-group col-sm-3" id="province">
-                                            <select name="province_id" class="form-control"
+                                            <select name="province_id" id="province_id" class="form-control"
                                                     onchange="cProvinceOnchange($(this).val())">
                                                 @foreach(App\Models\province::all() as $province)
                                                     @if($data->province_id == $province->id)
@@ -164,7 +164,7 @@
                                                     @else
                                                         @php($selectedProvince = "")
                                                     @endif
-                                                    <option value="{{$data->province_id}}" {{$selectedProvince}}>{{$province->province_name}}</option>
+                                                    <option value="{{$province->id}}" {{$selectedProvince}}>{{$province->province_name}}</option>
                                                 @endforeach
                                             </select>
                                             @if ($errors->has('province_id'))
@@ -175,13 +175,13 @@
                                         <div class="form-group  col-sm-3" id="district">
                                             <select name="district_id" class="form-control"
                                                     onchange="cDistrictOnchange($(this).val())">
-                                                @foreach(App\Models\District::where('province_id', $data->province_id ?? '')->get() as $district)
+                                                @foreach(App\Models\District::where('province_id', $data->province_id)->get() as $district)
                                                     @if($data->district_id==$district->id)
                                                         @php($selectedDistrict = "selected")
                                                     @else
                                                         @php($selectedDistrict = "")
                                                     @endif
-                                                    <option value="{{$data->district_id}}" {{$selectedDistrict}}>{{$district->district_name}}</option>
+                                                    <option value="{{$district->id?? ''}}" {{$selectedDistrict}}>{{$district->district_name}}</option>
                                                 @endforeach
                                             </select>
                                             @if ($errors->has('district_id'))
@@ -190,22 +190,17 @@
                                             @endif
                                         </div>
                                         <div class="form-group  col-sm-3" id="municipality_id">
-                                            <input type="text" class="form-control" value="{{ $data->municipality_id }}"
-                                                   name="municipality"
-                                                   aria-describedby="help" placeholder="Enter Municipality Name"
-                                            >
-
-                                            {{--                                    <select name="municipality_id" class="form-control"--}}
-                                            {{--                                            id="municipality_id">--}}
-                                            {{--                                        @foreach(\App\Models\Municipality::where('district_id', $district_id ?? '')->get() as $municipality)--}}
-                                            {{--                                            @if($municipality_id==$municipality->id  || old('municipality_id')==$municipality->id)--}}
-                                            {{--                                                @php($selectedMunicipality = "selected")--}}
-                                            {{--                                            @else--}}
-                                            {{--                                                @php($selectedMunicipality = "")--}}
-                                            {{--                                            @endif--}}
-                                            {{--                                            <option value="{{$municipality->id ?? ''}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>--}}
-                                            {{--                                        @endforeach--}}
-                                            {{--                                    </select>--}}
+                                            <select name="municipality_id" class="form-control"
+                                                    id="municipality_id">
+                                                @foreach(\App\Models\Municipality::where('district_id', $data->district_id )->get() as $municipality)
+                                                    @if($data->municipality_id==$municipality->id  || old('municipality_id')==$municipality->id)
+                                                        @php($selectedMunicipality = "selected")
+                                                    @else
+                                                        @php($selectedMunicipality = "")
+                                                    @endif
+                                                    <option value="{{$municipality->id ?? ''}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>
+                                                @endforeach
+                                            </select>
                                             @if ($errors->has('municipality_id'))
                                                 <small id="help"
                                                        class="form-text text-danger">{{ $errors->first('municipality_id') }}</small>
@@ -216,7 +211,7 @@
                                 <div class="row">
                                     <div class="form-group {{ $errors->has('ward') ? 'has-error' : '' }} col-sm-6">
                                         <label for="ward">Ward No</label>
-                                        <input type="text" class="form-control" value="{{ old('ward') }}" name="ward"
+                                        <input type="text" class="form-control" value="{{ $data->ward }}" name="ward"
                                                aria-describedby="help" placeholder="Enter Ward No"
                                         >
                                         @if ($errors->has('ward'))
@@ -226,7 +221,7 @@
                                     </div>
                                     <div class="form-group {{ $errors->has('tole') ? 'has-error' : '' }} col-sm-6">
                                         <label for="tole">Tole</label>
-                                        <input type="text" class="form-control" value="{{ old('tole') }}" name="tole"
+                                        <input type="text" class="form-control" value="{{ $data->tole }}" name="tole"
                                                aria-describedby="help" placeholder="Enter Tole"
                                         >
                                         @if ($errors->has('tole'))
@@ -235,6 +230,10 @@
                                         @endif
                                     </div>
                                 </div>
+{{--                                <div class="form-group">--}}
+{{--                                    <input type="checkbox" name="sameAsCheckbox" id="sameAsCheckbox"--}}
+{{--                                           onclick="setSameAsCheckbox()">Same as Current Address<br>--}}
+{{--                                </div>--}}
                                 <div class="form-group">
                                     <label class="control-label">Permanent Address</label>
                                     <div class="row">
@@ -243,11 +242,11 @@
                                                     onchange="pProvinceOnchange($(this).val())">
                                                 @foreach(App\Models\province::all() as $province)
                                                     @if($data->perm_province_id==$province->id)
-                                                        @php($selectedProvince = "selected")
+                                                        @php($selectedPermProvince = "selected")
                                                     @else
-                                                        @php($selectedProvince = "")
+                                                        @php($selectedPermProvince = "")
                                                     @endif
-                                                    <option value="{{$data->perm_province_id}}" {{$selectedProvince}}>{{$province->province_name}}</option>
+                                                    <option value="{{$province->id}}" {{$selectedPermProvince}}>{{$province->province_name}}</option>
                                                 @endforeach
                                             </select>
                                             @if ($errors->has('perm_province_id'))
@@ -256,15 +255,15 @@
                                             @endif
                                         </div>
                                         <div class="form-group  col-sm-3" id="perm_district">
-                                            <select name="perm_district_id" class="form-control"
+                                            <select name="perm_district_id" id="perm_district_id"  class="form-control"
                                                     onchange="pDistrictOnchange($(this).val())">
-                                                @foreach(App\Models\District::where('province_id', $province_id ?? '')->get() as $district)
+                                                @foreach(App\Models\District::where('province_id', $data->perm_province_id)->get() as $district)
                                                     @if($data->perm_district_id==$district->id)
-                                                        @php($selectedDistrict = "selected")
+                                                        @php($selectedPermDistrict = "selected")
                                                     @else
-                                                        @php($selectedDistrict = "")
+                                                        @php($selectedPermDistrict = "")
                                                     @endif
-                                                    <option value="{{$data->district_id}}" {{$selectedDistrict}}>{{$district->district_name}}</option>
+                                                    <option value="{{$district->id}}" {{$selectedPermDistrict}}>{{$district->district_name}}</option>
                                                 @endforeach
                                             </select>
                                             @if ($errors->has('perm_district_id'))
@@ -273,23 +272,17 @@
                                             @endif
                                         </div>
                                         <div class="form-group  col-sm-3" id="perm_municipality">
-                                            <input type="text" class="form-control"
-                                                   value="{{ old('perm_municipality_id') }}"
-                                                   name="perm_municipality_id"
-                                                   aria-describedby="help" placeholder="Enter Municipality Name"
-                                            >
-
-                                            {{--                                    <select name="perm_municipality_id" class="form-control"--}}
-                                            {{--                                            id="perm_municipality_id">--}}
-                                            {{--                                        @foreach(\App\Models\Municipality::where('district_id', $district_id ?? '')->get() as $municipality)--}}
-                                            {{--                                            @if($municipality_id==$municipality->id  || old('perm_municipality_id')==$municipality->id)--}}
-                                            {{--                                                @php($selectedMunicipality = "selected")--}}
-                                            {{--                                            @else--}}
-                                            {{--                                                @php($selectedMunicipality = "")--}}
-                                            {{--                                            @endif--}}
-                                            {{--                                            <option value="{{$municipality->id ?? ''}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>--}}
-                                            {{--                                        @endforeach--}}
-                                            {{--                                    </select>--}}
+                                            <select name="perm_municipality_id" class="form-control"
+                                                    id="perm_municipality_id">
+                                                @foreach(\App\Models\Municipality::where('district_id', $data->perm_district_id ?? '')->get() as $municipality)
+                                                    @if($data->perm_municipality_id==$municipality->id)
+                                                        @php($selectedPermMunicipality = "selected")
+                                                    @else
+                                                        @php($selectedPermMunicipality = "")
+                                                    @endif
+                                                    <option value="{{$municipality->id ?? ''}}" {{$selectedPermMunicipality}}>{{$municipality->municipality_name}}</option>
+                                                @endforeach
+                                            </select>
                                             @if ($errors->has('perm_municipality_id'))
                                                 <small id="help"
                                                        class="form-text text-danger">{{ $errors->first('perm_municipality_id') }}</small>
@@ -340,6 +333,36 @@
                                         @if ($errors->has('issue_district'))
                                             <small id="help"
                                                    class="form-text text-danger">{{ $errors->first('issue_district') }}</small>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label">Are you health worker?</label>
+                                        <div class="control-group">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="health_worker"
+                                                       {{ $data->health_worker == "no" ? 'checked' : '' }} value="no"
+                                                       onclick="toggleLayout(false)">No
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio"
+                                                       {{ $data->health_worker == "yes" ? 'checked' : '' }} name="health_worker"
+                                                       value="yes" onclick="toggleLayout(true)">Yes
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group {{ $errors->has('council_no') ? 'has-error' : '' }} col-sm-6"
+                                         id="council">
+                                        <label for="council_no">Council No.</label>
+                                        <input type="text" id="council_no" class="form-control"
+                                               value="{{ $data->council_no }}"
+                                               name="council_no"
+                                               aria-describedby="help"
+                                               placeholder="Enter your council no.">
+                                        @if ($errors->has('council_no'))
+                                            <small id="help"
+                                                   class="form-text text-danger">{{ $errors->first('council_no') }}</small>
                                         @endif
                                     </div>
                                 </div>
@@ -434,24 +457,31 @@
     <script>
         function cProvinceOnchange(id) {
             $("#district").text("Loading...").fadeIn("slow");
-            $.get("{{route("district-select-province")}}?id=" + id, function (data) {
+            $.get("{{route("temp-district-select-province")}}?id=" + id, function (data) {
                 $("#district").html(data);
             });
         }
 
         function pProvinceOnchange(id) {
             $("#perm_district").text("Loading...").fadeIn("slow");
-            $.get("{{route("district-select-province")}}?id=" + id, function (data) {
+            $.get("{{route("perm-district-select-province")}}?id=" + id, function (data) {
                 $("#perm_district").html(data);
             });
         }
 
-        {{--function pDistrictOnchange(id) {--}}
-        {{--    $("#perm_municipality").text("Loading...").fadeIn("slow");--}}
-        {{--    $.get("{{route("municipality-select-district")}}?id=" + id, function (data) {--}}
-        {{--        $("#perm_municipality").html(data);--}}
-        {{--    });--}}
-        {{--}--}}
+        function cDistrictOnchange(id) {
+            $("#municipality_id").text("Loading...").fadeIn("slow");
+            $.get("{{route("temp-municipality-select-district")}}?id=" + id, function (data) {
+                $("#municipality_id").html(data);
+            });
+        }
+
+        function pDistrictOnchange(id) {
+            $("#perm_municipality_id").text("Loading...").fadeIn("slow");
+            $.get("{{route("perm-municipality-select-district")}}?id=" + id, function (data) {
+                $("#perm_municipality_id").html(data);
+            });
+        }
 
         function verifyInfo() {
             $("#verifydiv").dialog({
@@ -460,32 +490,38 @@
             $("#verifydiv").dialog('open');
         }
 
-        function sameAsCheckbox() {
-            ("#sameAsCheckbox").click(function () {
-                if ($(this).is(':checked')) {
-                    var input1 = $("#province_id").val();
-                    $("#prem_province_id").val(input1);
-                }
-            });
-        }
-
         function setSameAsCheckbox() {
             if ($("#sameAsCheckbox").is(":checked")) {
                 var inputProvince = $("#province_id").val();
-                console.log(inputProvince);
-                $("#prem_province_id").val($("#province_id").val());
-                // $('#perm_municipality').val($('#municipality').val());
-                $('#prem_province_id').attr('disabled', 'disabled');
-                // $('#perm_municipality').attr('disabled', 'disabled');
+                var inputDistrict = $("#district_id").val();
+                var inputMuni = $("#municipality_id").val();
+                var ward = document.getElementById("ward").value;
+                var tole = document.getElementById("tole").value;
+                document.getElementById("perm_ward").value = ward;
+                document.getElementById("perm_tole").value = tole;
+                pProvinceOnchange(inputProvince);
+                pDistrictOnchange(inputDistrict);
+                document.getElementById("perm_district_id").selectedIndex = inputDistrict;
+
+                // console.log(tole);
+                // $("#prem_province_id").val($("#province_id").val());
+                // // $('#perm_municipality').val($('#municipality').val());
+                // $('#prem_province_id').attr('disabled', 'disabled');
+                // // $('#perm_municipality').attr('disabled', 'disabled');
             } else {
-                $('#prem_province_id').removeAttr('disabled');
-                // $('#perm_municipality').removeAttr('disabled');
+                // console.log('not checked');
             }
         }
 
-        $('#sameAsCheckbox').click(function () {
-            setSameAsCheckbox();
-        })
+        function toggleLayout(healthWorker) {
+            x = document.getElementById("council");
+            if (healthWorker) {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+
         $(':radio[data-rel]').change(function () {
             var rel = $("." + $(this).data('rel'));
             if ($(this).val() === 'yes') {
@@ -537,7 +573,9 @@
                     },
                     age: {
                         required: true,
-                        ageCustom: true,
+                        // ageCustom: true,
+                        min: 15,
+                        max: 125
                     },
                     phone: {
                         required: true,
@@ -553,6 +591,12 @@
                         required: true,
                     },
                     tole: {
+                        required: true,
+                    },
+                    perm_ward: {
+                        required: true,
+                    },
+                    perm_tole: {
                         required: true,
                     },
                     occupation: {

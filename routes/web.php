@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\District;
+use App\Models\Municipality;
+
 Route::get('locale/{locale}', function ($locale) {
     \Session::put('locale', $locale);
     return redirect()->back();
@@ -7,13 +10,13 @@ Route::get('locale/{locale}', function ($locale) {
 
 //Frontend
 
-Route::get('/', function(){
+Route::get('/', function () {
     return redirect('/login');
 });
 
 //Auth
 Auth::routes();
-Route::resource('admin/permissions','PermissionController', ['name' => 'permissions']);
+Route::resource('admin/permissions', 'PermissionController', ['name' => 'permissions']);
 
 //Backend Home
 Route::get('/admin', 'AdminController@index')->name('admin');
@@ -26,18 +29,23 @@ Route::get('/admin/healthpost-select-ward', 'AdminController@healthpostSelectByW
 Route::get('/admin/select-from-to', 'AdminController@selectFromTo')->name('admin.select-from-to');
 Route::get('/admin/district-value', 'AdminController@getDistrictValue')->name('admin.district-value');
 
-Route::get('/health-professional/add', function (){
-    $province_id = 0;
-    $district_id = 0;
+Route::get('/health-professional/add', function () {
+    $province_id = 1;
+    $district_id = 1;
     $municipality_id = 0;
-   return view('health-professional.add', compact('province_id','district_id','municipality_id'));
+    $districts = District::where('province_id', $province_id)->orderBy('district_name', 'asc')->get();
+    $municipalities = Municipality::where('district_id', $district_id)->orderBy('municipality_name', 'asc')->get();
+    return view('health-professional.add', compact('province_id', 'district_id', 'municipality_id', 'districts','municipalities'));
 })->name('health.professional.add');
 Route::post('/health-professional', 'Backend\HealthProfessionalController@store')->name('health-professional.store');
 Route::get('/health-professional/index', 'Backend\HealthProfessionalController@index')->name('health-professional.index');
 Route::get('/health-professional/show/{id}', 'Backend\HealthProfessionalController@show')->name('health-professional.show');
 Route::get('/health-professional/edit/{id}', 'Backend\HealthProfessionalController@edit')->name('health-professional.edit');
 Route::put('/health-professional/update/{id}', 'Backend\HealthProfessionalController@update')->name('health-professional.update');
-
+Route::get('/health-professional/temp-municipality-select-district', 'Backend\AddressController@municipalitySelectByDistrict')->name('temp-municipality-select-district');
+Route::get('/health-professional/temp-district-select-province', 'Backend\AddressController@districtSelectByProvince')->name('temp-district-select-province');
+Route::get('/health-professional/perm-municipality-select-district', 'Backend\AddressController@permMunicipalitySelectByDistrict')->name('perm-municipality-select-district');
+Route::get('/health-professional/perm-district-select-province', 'Backend\AddressController@permDistrictSelectByProvince')->name('perm-district-select-province');
 //Backend Center
 Route::resource('admin/center', 'Backend\CenterController');
 Route::get('/admin/maps', 'Backend\MapController@map')->name('center.woman.map');
@@ -66,14 +74,14 @@ Route::resource('admin/ward', 'Backend\WardController');
 
 //Bakend Lab
 Route::resource('admin/lab-user', 'Backend\FchvController', ['names' => 'fchv']);
-Route::get('/admin/lab-patients', function (){
+Route::get('/admin/lab-patients', function () {
     return view('backend.lab.index');
 })->name('lab.patient.index');
 Route::get('/admin/lab-case-report', 'Backend\LabReportController@index')->name('lab.patient.report.index');
-Route::get('/admin/lab-negative-patients', function (){
+Route::get('/admin/lab-negative-patients', function () {
     return view('backend.lab.negative-index');
 })->name('lab.negative.patients.index');
-Route::get('/admin/lab-positive-patients', function (){
+Route::get('/admin/lab-positive-patients', function () {
     return view('backend.lab.positive-index');
 })->name('lab.positive.patients.index');
 
@@ -96,8 +104,8 @@ Route::resource('admin/profile', 'Backend\ProfileController');
 
 Route::get('/api/district', 'Api\DistrictController@index')->name('api.district.index');
 Route::get('/api/municipality', 'Api\MunicipalityController@index')->name('api.municiplaity.index');
-Route::get('/api/province' , function(){
-	return \App\Models\Province::all();
+Route::get('/api/province', function () {
+    return \App\Models\Province::all();
 });
 
 Route::get('/admin/overview-data', 'Backend\OverviewController@index')->name('admin.overview');
@@ -120,7 +128,7 @@ Route::get('/admin/activity-log', 'Backend\ActivityLogController@index')->name('
 
 Route::resource('admin/notice-board', 'NoticeBoardController');
 
-Route::get('/artisan-clear', function() {
+Route::get('/artisan-clear', function () {
     Artisan::call('cache:clear');
     Artisan::call('config:clear');
     Artisan::call('config:cache');
@@ -128,9 +136,9 @@ Route::get('/artisan-clear', function() {
     return "Cleared!";
 });
 
-Route::get('refresh-page', function (){
+Route::get('refresh-page', function () {
     \DB::table('cache')
-        ->where('key', 'like', '%'.'-'.auth()->user()->token)->delete();
+        ->where('key', 'like', '%' . '-' . auth()->user()->token)->delete();
     return redirect()->back();
 })->name('refresh-page');
 
@@ -153,14 +161,14 @@ Route::get('/admin/sample/{token}/edit', 'Reports\AncDetailController@edit');
 Route::put('/admin/sample/{token}', 'Reports\AncDetailController@update')->name('sample.update');
 
 
-Route::get('/admin/analysis/gender', function (){
-   return view('analysis.gender');
+Route::get('/admin/analysis/gender', function () {
+    return view('analysis.gender');
 })->name('analysis.gender');
 
-Route::get('/admin/analysis/occupation', function (){
+Route::get('/admin/analysis/occupation', function () {
     return view('analysis.occupation');
 })->name('analysis.occupation');
 
-Route::get('/admin/analysis/time-series', function (){
+Route::get('/admin/analysis/time-series', function () {
     return view('analysis.time-series');
 })->name('analysis.time-series');
