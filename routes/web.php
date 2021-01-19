@@ -1,7 +1,9 @@
 <?php
 
 use App\Models\District;
+use App\Models\HealthProfessional;
 use App\Models\Municipality;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('locale/{locale}', function ($locale) {
     \Session::put('locale', $locale);
@@ -35,7 +37,12 @@ Route::get('/health-professional/add', function () {
     $municipality_id = 0;
     $districts = District::where('province_id', $province_id)->orderBy('district_name', 'asc')->get();
     $municipalities = Municipality::where('district_id', $district_id)->orderBy('municipality_name', 'asc')->get();
-    return view('health-professional.add', compact('province_id', 'district_id', 'municipality_id', 'districts','municipalities'));
+    $data = HealthProfessional::where('checked_by', Auth::user()->token)->latest()->first();
+    $data['organization_type'] = $data->organization_type ?? '';
+    $data['organization_name'] = $data->organization_name ?? '';
+    $data['organization_phn'] = $data->organization_phn ?? '';
+    $data['organization_address'] = $data->organization_address ?? '';
+    return view('health-professional.add', compact('province_id', 'district_id', 'municipality_id', 'districts','municipalities', 'data'));
 })->name('health.professional.add');
 Route::post('/health-professional', 'Backend\HealthProfessionalController@store')->name('health-professional.store');
 Route::get('/health-professional/index', 'Backend\HealthProfessionalController@index')->name('health-professional.index');

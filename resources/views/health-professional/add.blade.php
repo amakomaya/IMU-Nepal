@@ -55,13 +55,13 @@
                                     <label class="control-label" for="organization_type">Organization Type</label>
                                     <select name="organization_type" class="form-control">
                                         <option value="" selected>Select any one</option>
-                                        <option {{ old('organization_type') == '1' ? "selected" : "" }} value="1">
+                                        <option {{ $data['organization_type'] == '1' ? "selected" : "" }} {{ old('organization_type') == '1' ? "selected" : "" }} value="1">
                                             Government
                                         </option>
-                                        <option {{ old('organization_type') == '2' ? "selected" : "" }} value="2">
+                                        <option  {{ $data['organization_type'] == '2' ? "selected" : "" }} {{ old('organization_type') == '2' ? "selected" : "" }} value="2">
                                             Non-profit
                                         </option>
-                                        <option {{ old('organization_type') == '3' ? "selected" : "" }} value="3">
+                                        <option  {{ $data['organization_type'] == '3' ? "selected" : "" }} {{ old('organization_type') == '3' ? "selected" : "" }} value="3">
                                             Private
                                         </option>
                                     </select>
@@ -69,7 +69,7 @@
                                 <div class="form-group {{ $errors->has('organization_name') ? 'has-error' : '' }}  col-sm-6">
                                     <label for="organization_name">Organization Name</label>
                                     <input type="text" id="organization_name" class="form-control"
-                                           value="{{ old('organization_name') }}" name="organization_name"
+                                           value="{{ old('organization_name') ? old('organization_name') : $data['organization_name'] }}" name="organization_name"
                                            aria-describedby="help" placeholder="Organization Name">
                                     @if ($errors->has('organization_name'))
                                         <small id="help"
@@ -81,7 +81,7 @@
                                 <div class="form-group {{ $errors->has('organization_phn') ? 'has-error' : '' }} col-sm-6">
                                     <label for="organization_phn">Organization Phone No.</label>
                                     <input type="text" id="organization_phn" class="form-control"
-                                           value="{{ old('organization_phn') }}" name="organization_phn"
+                                           value="{{ old('organization_phn') ? old('organization_phn') : $data['organization_phn'] }}" name="organization_phn"
                                            aria-describedby="help" placeholder="Organization Phone No.">
                                     @if ($errors->has('organization_phn'))
                                         <small id="help"
@@ -91,7 +91,7 @@
                                 <div class="form-group {{ $errors->has('organization_address') ? 'has-error' : '' }} col-sm-6">
                                     <label for="organization_address">Organization Address</label>
                                     <input type="text" id="organization_address" class="form-control"
-                                           value="{{ old('organization_address') }}" name="organization_address"
+                                           value="{{ old('organization_address') ? old('organization_address') : $data['organization_address'] }}" name="organization_address"
                                            aria-describedby="help" placeholder="Organization Address">
                                     @if ($errors->has('organization_address'))
                                         <small id="help"
@@ -99,6 +99,7 @@
                                     @endif
                                 </div>
                             </div>
+                            <hr>
                             <div class="row">
                                 <div class="form-group {{ $errors->has('designation') ? 'has-error' : '' }} col-sm-6">
                                     <label for="designation">Designation(Post)</label>
@@ -349,10 +350,10 @@
                             </div>
                             <div class="row">
                                 <div class="form-group {{ $errors->has('citizenship_no') ? 'has-error' : '' }} col-sm-6">
-                                    <label for="citizenship_no">Citizenship/Password No.</label>
+                                    <label for="citizenship_no">Citizenship/Passport No/Organization No/License No</label>
                                     <input type="text" id="citizenship_no" class="form-control"
                                            value="{{ old('citizenship_no') }}" name="citizenship_no"
-                                           aria-describedby="help" placeholder="Citizenship/Password No.">
+                                           aria-describedby="help" placeholder="Citizenship/Passport No./Organization No/License No">
                                     @if ($errors->has('citizenship_no'))
                                         <small id="help"
                                                class="form-text text-danger">{{ $errors->first('citizenship_no') }}</small>
