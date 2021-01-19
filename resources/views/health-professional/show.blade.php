@@ -28,6 +28,13 @@
                                         left: 96px;
                                     }
 
+                                    /* Name text */
+                                    .municipality-org-rep {
+                                        position: absolute;
+                                        top: 270px;
+                                        left: 96px;
+                                    }
+
                                     /* Age text */
                                     .age-org-rep {
                                         position: absolute;
@@ -85,6 +92,13 @@
                                         left: 790px;
                                     }
 
+                                    /* Ward text */
+                                    .municipality-per-rep {
+                                        position: absolute;
+                                        top: 274px;
+                                        left: 530px;
+                                    }
+
                                     .container-rep {
                                         position: relative;
                                     }
@@ -94,12 +108,14 @@
                                 <img src="{{ asset('images/immunization-card.jpg') }}" alt="Immunization Card" class="img-thumbnail">
                                 <div class="reg-number-org-rep">{{ str_pad($data->id, 6, "0", STR_PAD_LEFT) }}</div>
                                 <div class="name-org-rep">{{ $data->name }}</div>
+                                <div class="municipality-org-rep">{{ $data->municipality->municipality_name ?? '' }}</div>
                                 <div class="age-org-rep">{{ $data->age }}</div>
                                 <div class="ward-org-rep">{{ $data->ward }}</div>
                                 <div class="phone-org-rep">{{ $data->phone }}</div>
 
                                 <div class="reg-number-per-rep">{{ str_pad($data->id, 6, "0", STR_PAD_LEFT) }}</div>
                                 <div class="name-per-rep">{{ $data->name }}</div>
+                                <div class="municipality-per-rep">{{ $data->municipality->municipality_name ?? '' }}</div>
                                 <div class="age-per-rep">{{ $data->age }}</div>
                                 <div class="ward-per-rep">{{ $data->ward }}</div>
                                 <div class="phone-per-rep">{{ $data->phone }}</div>
@@ -186,23 +202,25 @@
                             </tr>
                             <tr>
                                 <td>Current Address :</td>
-                                <td>{{ $data->province_id}}<br>
-                                    {{ $data->district_id}}<br>
-                                    {{ $data->municipality_id}}<br>
+                                <td>
+                                    {{ $data->province->province_name ?? ''}}<br>
+                                    {{ $data->district->district_name ?? ''}}<br>
+                                    {{ $data->municipality->municipality_name ?? ''}}<br>
                                     {{ $data->ward}}<br>
                                     {{ $data->tole}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>Permanent Address :</td>
-                                <td>{{ $data->perm_province_id}}<br>
-                                    {{ $data->perm_district_id}}<br>
-                                    {{ $data->perm_municipality_id}}<br>
+                                <td>
+                                    {{ $data->province->province_name ?? ''}}<br>
+                                    {{ $data->district->district_name ?? ''}}<br>
+                                    {{ $data->municipality->municipality_name ?? ''}}<br>
                                     {{ $data->perm_ward}}<br>
                                     {{ $data->perm_tole}}</td>
                             </tr>
                             <tr>
-                                <td>Citizenship/Password No. :</td>
+                                <td>Citizenship/Passport No/Organization No/License No :</td>
                                 <td>{{ $data->citizenship_no}}</td>
                             </tr>
                             <tr>
