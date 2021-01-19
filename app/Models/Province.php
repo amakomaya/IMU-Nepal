@@ -22,4 +22,9 @@ class province extends Model
 		}
 		return $list;
 	}
+    public static function getProvince($id)
+    {
+        $province = province::where('id',$id)->get()->first();
+        return $province->province_name ?? '';
+    }
 }

@@ -91,7 +91,8 @@
 
                                 </style>
 
-                                <img src="{{ asset('images/immunization-card.jpg') }}" alt="Immunization Card" class="img-thumbnail">
+                                <img src="{{ asset('images/immunization-card.jpg') }}" alt="Immunization Card"
+                                     class="img-thumbnail">
                                 <div class="reg-number-org-rep">{{ str_pad($data->id, 6, "0", STR_PAD_LEFT) }}</div>
                                 <div class="name-org-rep">{{ $data->name }}</div>
                                 <div class="age-org-rep">{{ $data->age }}</div>
@@ -186,18 +187,18 @@
                             </tr>
                             <tr>
                                 <td>Current Address :</td>
-                                <td>{{ $data->province_id}}<br>
-                                    {{ $data->district_id}}<br>
-                                    {{ $data->municipality_id}}<br>
+                                <td>{{ $province}}<br>
+                                    {{ $muni->district_name }}<br>
+                                    {{ $muni->municipality_name}}<br>
                                     {{ $data->ward}}<br>
                                     {{ $data->tole}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>Permanent Address :</td>
-                                <td>{{ $data->perm_province_id}}<br>
-                                    {{ $data->perm_district_id}}<br>
-                                    {{ $data->perm_municipality_id}}<br>
+                                <td>{{ $province_perm}}<br>
+                                    {{ $muni_perm->district_name}}<br>
+                                    {{ $muni_perm->municipality_name}}<br>
                                     {{ $data->perm_ward}}<br>
                                     {{ $data->perm_tole}}</td>
                             </tr>
@@ -225,40 +226,52 @@
                             </tr>
                             <tr>
                                 <td>Health/disease :</td>
-                                <td>
-                                    {{--                                @if(Illuminate\Support\Str::contains($data->disease, '1'))--}}
-                                    {{--                                    DIABETES--}}
-                                    {{--                                @endif--}}
-                                    {{--                                @if(Illuminate\Support\Str::contains($data->disease, '2'))--}}
-                                    {{--                                    HTN--}}
-                                    {{--                                @endif--}}
-                                    {{--                                @if(Illuminate\Support\Str::contains($data->disease, '3))--}}
-                                    {{--                                    HERMODIALYSIS@endif--}}
-                                    {{--                                @if(Illuminate\Support\Str::contains($data->disease, '4'))--}}
-                                    {{--                                    IMMUNOCOMPROMISED@endif--}}
-                                    {{--                                @if(Illuminate\Support\Str::contains($data->disease, '5'))--}}
-                                    {{--                                    PREGNANCY@endif--}}
-                                    {{--                                @if(Illuminate\Support\Str::contains($data->disease, '6'))--}}
-                                    {{--                                    MATERNITY@endif--}}
-                                    {{--                                @if(Illuminate\Support\Str::contains($data->disease, '7'))--}}
-                                    {{--                                    HEART_DISEASE@endif--}}
-                                    {{--                                @if(Illuminate\Support\Str::contains($data->disease, '8'))--}}
-                                    {{--                                    LIVER_DISEASE@endif--}}
-                                    {{--                                @if(Illuminate\Support\Str::contains($data->disease, '9'))--}}
-                                    {{--                                    NERVE_DISEASE@endif--}}
-                                    {{--                                @if(Illuminate\Support\Str::contains($data->disease, '10'))--}}
-                                    {{--                                    KIDNEY_DISEASE@endif--}}
-                                    {{--                                @if(Illuminate\Support\Str::contains($data->disease, '11'))--}}
-                                    {{--                                    MALNUTRITION@endif--}}
-                                    {{--                                @if(Illuminate\Support\Str::contains($data->disease, '12'))--}}
-                                    {{--                                    AUTO_IMMUNE_DISEASE@endif--}}
-                                    {{--                                @if(Illuminate\Support\Str::contains($data->disease, '13'))--}}
-                                    {{--                                    IMMUNODEFICIENCY@endif--}}
-                                    {{--                                @if(Illuminate\Support\Str::contains($data->disease, '14'))--}}
-                                    {{--                                    MALIGNNACY@endif--}}
-                                    {{--                                @if(Illuminate\Support\Str::contains($data->disease, '15'))--}}
-                                    {{--                                    CHORNIC_LUNG_ILLNESS--}}
-                                    {{--                                @endif--}}
+                                <td id="diseases">
+                                    @if(Illuminate\Support\Str::contains($data->disease, 1))
+                                        DIABETES<br>
+                                    @endif
+                                    @if(Illuminate\Support\Str::contains($data->disease, 2))
+                                        HTN<br>
+                                    @endif
+                                    @if(Illuminate\Support\Str::contains($data->disease, 3))
+                                        HERMODIALYSIS<br>
+                                    @endif
+                                    @if(Illuminate\Support\Str::contains($data->disease, 4))
+                                        IMMUNOCOMPROMISED<br>
+                                    @endif
+                                    @if(Illuminate\Support\Str::contains($data->disease, 5))
+                                        PREGNANCY<br>
+                                    @endif
+                                    @if(Illuminate\Support\Str::contains($data->disease, 6))
+                                        MATERNITY<br>
+                                    @endif
+                                    @if(Illuminate\Support\Str::contains($data->disease, 7))
+                                        HEART_DISEASE<br>
+                                    @endif
+                                    @if(Illuminate\Support\Str::contains($data->disease, 8))
+                                        LIVER_DISEASE<br>
+                                    @endif
+                                    @if(Illuminate\Support\Str::contains($data->disease, 9))
+                                        NERVE_DISEASE<br>
+                                    @endif
+                                    @if(Illuminate\Support\Str::contains($data->disease, 10))
+                                        KIDNEY_DISEASE<br>
+                                    @endif
+                                    @if(Illuminate\Support\Str::contains($data->disease, 11))
+                                        MALNUTRITION<br>
+                                    @endif
+                                    @if(Illuminate\Support\Str::contains($data->disease, 12))
+                                        AUTO_IMMUNE_DISEASE<br>
+                                    @endif
+                                    @if(Illuminate\Support\Str::contains($data->disease, 13))
+                                        IMMUNODEFICIENCY<br>
+                                    @endif
+                                    @if(Illuminate\Support\Str::contains($data->disease, 14))
+                                        MALIGNNACY<br>
+                                    @endif
+                                    @if(Illuminate\Support\Str::contains($data->disease, 15))
+                                        CHORNIC_LUNG_ILLNESS<br>
+                                    @endif
                                 </td>
                             </tr>
                             </tbody>

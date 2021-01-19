@@ -173,9 +173,10 @@
                                             @endif
                                         </div>
                                         <div class="form-group  col-sm-3" id="district">
-                                            <select name="district_id" class="form-control"
+                                            <select name="district_id" id="district_id" class="form-control"
                                                     onchange="cDistrictOnchange($(this).val())">
-                                                @foreach(App\Models\District::where('province_id', $data->province_id)->get() as $district)
+                                                <option value=\"\">Select District</option>
+                                            @foreach(App\Models\District::where('province_id', $data->province_id)->orderBy('district_name', 'asc')->get() as $district)
                                                     @if($data->district_id==$district->id)
                                                         @php($selectedDistrict = "selected")
                                                     @else
@@ -189,10 +190,11 @@
                                                        class="form-text text-danger">{{ $errors->first('district_id') }}</small>
                                             @endif
                                         </div>
-                                        <div class="form-group  col-sm-3" id="municipality_id">
+                                        <div class="form-group  col-sm-3" id="municipality">
                                             <select name="municipality_id" class="form-control"
                                                     id="municipality_id">
-                                                @foreach(\App\Models\Municipality::where('district_id', $data->district_id )->get() as $municipality)
+                                                <option value=\"\">Select Municipality</option>
+                                                @foreach(\App\Models\Municipality::where('district_id', $data->district_id )->orderBy('municipality_name', 'asc')->get() as $municipality)
                                                     @if($data->municipality_id==$municipality->id  || old('municipality_id')==$municipality->id)
                                                         @php($selectedMunicipality = "selected")
                                                     @else
@@ -211,7 +213,7 @@
                                 <div class="row">
                                     <div class="form-group {{ $errors->has('ward') ? 'has-error' : '' }} col-sm-6">
                                         <label for="ward">Ward No</label>
-                                        <input type="text" class="form-control" value="{{ $data->ward }}" name="ward"
+                                        <input type="text" class="form-control" value="{{ $data->ward }}" name="ward" id="ward"
                                                aria-describedby="help" placeholder="Enter Ward No"
                                         >
                                         @if ($errors->has('ward'))
@@ -221,7 +223,7 @@
                                     </div>
                                     <div class="form-group {{ $errors->has('tole') ? 'has-error' : '' }} col-sm-6">
                                         <label for="tole">Tole</label>
-                                        <input type="text" class="form-control" value="{{ $data->tole }}" name="tole"
+                                        <input type="text" class="form-control" value="{{ $data->tole }}" name="tole" id="tole"
                                                aria-describedby="help" placeholder="Enter Tole"
                                         >
                                         @if ($errors->has('tole'))
@@ -230,16 +232,16 @@
                                         @endif
                                     </div>
                                 </div>
-{{--                                <div class="form-group">--}}
-{{--                                    <input type="checkbox" name="sameAsCheckbox" id="sameAsCheckbox"--}}
-{{--                                           onclick="setSameAsCheckbox()">Same as Current Address<br>--}}
-{{--                                </div>--}}
+                                <div class="form-group">
+                                    <input type="checkbox" name="sameAsCheckbox" id="sameAsCheckbox"
+                                           onclick="setSameAsCheckbox()">Same as Current Address<br>
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label">Permanent Address</label>
                                     <div class="row">
                                         <div class="form-group col-sm-3" id="perm_province">
-                                            <select name="perm_province_id" class="form-control"
-                                                    onchange="pProvinceOnchange($(this).val())">
+                                            <select name="perm_province_id" id="perm_province_id" class="form-control"
+                                                    onchange="pProvinceOnchange($(this).val(),false)">
                                                 @foreach(App\Models\province::all() as $province)
                                                     @if($data->perm_province_id==$province->id)
                                                         @php($selectedPermProvince = "selected")
@@ -255,9 +257,10 @@
                                             @endif
                                         </div>
                                         <div class="form-group  col-sm-3" id="perm_district">
-                                            <select name="perm_district_id" id="perm_district_id"  class="form-control"
-                                                    onchange="pDistrictOnchange($(this).val())">
-                                                @foreach(App\Models\District::where('province_id', $data->perm_province_id)->get() as $district)
+                                            <select name="perm_district_id" id="perm_district_id" class="form-control"
+                                                    onchange="pDistrictOnchange($(this).val(),false)">
+                                                <option value=\"\">Select District</option>
+                                                @foreach(App\Models\District::where('province_id', $data->perm_province_id)->orderBy('district_name', 'asc')->get() as $district)
                                                     @if($data->perm_district_id==$district->id)
                                                         @php($selectedPermDistrict = "selected")
                                                     @else
@@ -274,7 +277,8 @@
                                         <div class="form-group  col-sm-3" id="perm_municipality">
                                             <select name="perm_municipality_id" class="form-control"
                                                     id="perm_municipality_id">
-                                                @foreach(\App\Models\Municipality::where('district_id', $data->perm_district_id ?? '')->get() as $municipality)
+                                                <option value=\"\">Select Municipality</option>
+                                                @foreach(\App\Models\Municipality::where('district_id', $data->perm_district_id ?? '')->orderBy('municipality_name', 'asc')->get() as $municipality)
                                                     @if($data->perm_municipality_id==$municipality->id)
                                                         @php($selectedPermMunicipality = "selected")
                                                     @else
@@ -293,7 +297,7 @@
                                 <div class="row">
                                     <div class="form-group {{ $errors->has('perm_ward') ? 'has-error' : '' }} col-sm-6">
                                         <label for="perm_ward">Ward No</label>
-                                        <input type="text" class="form-control" value="{{ $data->perm_ward }}"
+                                        <input type="text" class="form-control" value="{{ $data->perm_ward }}" id="perm_ward"
                                                name="perm_ward"
                                                aria-describedby="help" placeholder="Enter Ward No"
                                         >
@@ -304,7 +308,7 @@
                                     </div>
                                     <div class="form-group {{ $errors->has('perm_tole') ? 'has-error' : '' }} col-sm-6">
                                         <label for="perm_tole">Tole</label>
-                                        <input type="text" class="form-control" value="{{ $data->perm_tole }}"
+                                        <input type="text" class="form-control" value="{{ $data->perm_tole }}" id="perm_tole"
                                                name="perm_tole"
                                                aria-describedby="help" placeholder="Enter Tole"
                                         >
@@ -462,10 +466,15 @@
             });
         }
 
-        function pProvinceOnchange(id) {
+        function pProvinceOnchange(id, select) {
             $("#perm_district").text("Loading...").fadeIn("slow");
             $.get("{{route("perm-district-select-province")}}?id=" + id, function (data) {
                 $("#perm_district").html(data);
+                if (select) {
+                    var e = document.getElementById("district_id");
+                    var selected = e.selectedIndex;
+                    document.getElementById("perm_district_id").selectedIndex = selected;
+                }
             });
         }
 
@@ -476,14 +485,20 @@
             });
         }
 
-        function pDistrictOnchange(id) {
+        function pDistrictOnchange(id, select) {
             $("#perm_municipality_id").text("Loading...").fadeIn("slow");
             $.get("{{route("perm-municipality-select-district")}}?id=" + id, function (data) {
                 $("#perm_municipality_id").html(data);
+                if (select) {
+                    var e = document.getElementById("municipality_id");
+                    var selected = e.selectedIndex;
+                    document.getElementById("perm_municipality_id").selectedIndex = selected;
+                }
             });
         }
 
         function verifyInfo() {
+
             $("#verifydiv").dialog({
                 autoOpen: false
             });
@@ -494,20 +509,15 @@
             if ($("#sameAsCheckbox").is(":checked")) {
                 var inputProvince = $("#province_id").val();
                 var inputDistrict = $("#district_id").val();
-                var inputMuni = $("#municipality_id").val();
                 var ward = document.getElementById("ward").value;
                 var tole = document.getElementById("tole").value;
                 document.getElementById("perm_ward").value = ward;
                 document.getElementById("perm_tole").value = tole;
-                pProvinceOnchange(inputProvince);
-                pDistrictOnchange(inputDistrict);
-                document.getElementById("perm_district_id").selectedIndex = inputDistrict;
-
-                // console.log(tole);
-                // $("#prem_province_id").val($("#province_id").val());
-                // // $('#perm_municipality').val($('#municipality').val());
-                // $('#prem_province_id').attr('disabled', 'disabled');
-                // // $('#perm_municipality').attr('disabled', 'disabled');
+                var e = document.getElementById("province_id");
+                var selected = e.selectedIndex;
+                document.getElementById("perm_province_id").selectedIndex = selected;
+                pProvinceOnchange(inputProvince, true);
+                pDistrictOnchange(inputDistrict, true);
             } else {
                 // console.log('not checked');
             }

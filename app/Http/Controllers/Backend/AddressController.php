@@ -22,7 +22,7 @@ class AddressController extends Controller
     public function districtSelectByProvince(Request $request)
     {
         $id = $request->get('id');
-        echo '<select class="form-control" name="district_id" id="district_id" onchange="cDistrictOnchange($(this).val())" required>';
+        echo '<select class="form-control" name="district_id" id="district_id" onchange="cDistrictOnchange($(this).val(),false)" required>';
         $districts = District::where('province_id', $id)->orderBy('district_name', 'asc')->get();;
         echo "<option value=\"\">Select District</option>";
         foreach ($districts as $district) {
@@ -46,7 +46,7 @@ class AddressController extends Controller
     public function permDistrictSelectByProvince(Request $request)
     {
         $id = $request->get('id');
-        echo '<select class="form-control" name="perm_district_id" id="perm_district_id" onchange="pDistrictOnchange($(this).val())" required>';
+        echo '<select class="form-control" name="perm_district_id" id="perm_district_id" onchange="pDistrictOnchange($(this).val(),false)" required>';
         $districts = District::where('province_id', $id)->orderBy('district_name', 'asc')->get();;
         echo "<option value=\"\">Select District</option>";
         foreach ($districts as $district) {

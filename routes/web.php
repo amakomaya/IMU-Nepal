@@ -32,7 +32,7 @@ Route::get('/admin/district-value', 'AdminController@getDistrictValue')->name('a
 Route::get('/health-professional/add', function () {
     $province_id = 1;
     $district_id = 1;
-    $municipality_id = 0;
+    $municipality_id = 1;
     $districts = District::where('province_id', $province_id)->orderBy('district_name', 'asc')->get();
     $municipalities = Municipality::where('district_id', $district_id)->orderBy('municipality_name', 'asc')->get();
     return view('health-professional.add', compact('province_id', 'district_id', 'municipality_id', 'districts','municipalities'));

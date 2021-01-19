@@ -204,8 +204,9 @@
                                         @endif
                                     </div>
                                     <div class="form-group  col-sm-3" id="district">
-                                        <select name="district_id" class="form-control"
+                                        <select name="district_id" id="district_id" class="form-control"
                                                 onchange="cDistrictOnchange($(this).val())">
+                                            <option value=\"\">Select District</option>
                                             @foreach($districts as $district)
                                                 @if($district_id==$district->id || old('district_id')==$district->id)
                                                     @php($selectedDistrict = "selected")
@@ -223,6 +224,7 @@
                                     <div class="form-group  col-sm-3" id="municipality">
                                         <select name="municipality_id" class="form-control"
                                                 id="municipality_id">
+                                            <option value=\"\">Select Municipality</option>
                                             @foreach($municipalities as $municipality)
                                                 @if($municipality_id==$municipality->id  || old('municipality_id')==$municipality->id)
                                                     @php($selectedMunicipality = "selected")
@@ -263,16 +265,16 @@
                                     @endif
                                 </div>
                             </div>
-{{--                            <div class="form-group">--}}
-{{--                                <input type="checkbox" name="sameAsCheckbox" id="sameAsCheckbox"--}}
-{{--                                       onclick="setSameAsCheckbox()">Same as Current Address<br>--}}
-{{--                            </div>--}}
+                            <div class="form-group">
+                                <input type="checkbox" name="sameAsCheckbox" id="sameAsCheckbox"
+                                       onclick="setSameAsCheckbox()">Same as Current Address<br>
+                            </div>
                             <div class="form-group">
                                 <label class="control-label">Permanent Address</label>
                                 <div class="row">
                                     <div class="form-group col-sm-3" id="perm_province">
-                                        <select name="perm_province_id" class="form-control"
-                                                onchange="pProvinceOnchange($(this).val())">
+                                        <select name="perm_province_id" id="perm_province_id" class="form-control"
+                                                onchange="pProvinceOnchange($(this).val(), false)">
                                             @foreach(App\Models\province::all() as $province)
                                                 @if($province_id==$province->id || old('perm_province_id')==$province->id)
                                                     @php($selectedPermProvince = "selected")
@@ -289,7 +291,8 @@
                                     </div>
                                     <div class="form-group  col-sm-3" id="perm_district">
                                         <select name="perm_district_id" id="perm_district_id" class="form-control"
-                                                onchange="pDistrictOnchange($(this).val())">
+                                                onchange="pDistrictOnchange($(this).val(),false)">
+                                            <option value=\"\">Select District</option>
                                             @foreach($districts as $district)
                                                 @if($district_id==$district->id || old('perm_district_id')==$district->id)
                                                     @php($selectedPermDistrict = "selected")
@@ -307,6 +310,7 @@
                                     <div class="form-group  col-sm-3" id="perm_municipality">
                                         <select name="perm_municipality_id" class="form-control"
                                                 id="perm_municipality_id">
+                                            <option value=\"\">Select Municipality</option>
                                             @foreach($municipalities as $municipality)
                                                 @if($municipality_id==$municipality->id  || old('perm_municipality_id')==$municipality->id)
                                                     @php($selectedPermMunicipality = "selected")
@@ -469,10 +473,15 @@
             });
         }
 
-        function pProvinceOnchange(id) {
+        function pProvinceOnchange(id, select) {
             $("#perm_district").text("Loading...").fadeIn("slow");
             $.get("{{route("perm-district-select-province")}}?id=" + id, function (data) {
                 $("#perm_district").html(data);
+                if (select) {
+                    var e = document.getElementById("district_id");
+                    var selected = e.selectedIndex;
+                    document.getElementById("perm_district_id").selectedIndex = selected;
+                }
             });
         }
 
@@ -483,10 +492,15 @@
             });
         }
 
-        function pDistrictOnchange(id) {
+        function pDistrictOnchange(id, select) {
             $("#perm_municipality_id").text("Loading...").fadeIn("slow");
             $.get("{{route("perm-municipality-select-district")}}?id=" + id, function (data) {
                 $("#perm_municipality_id").html(data);
+                if (select) {
+                    var e = document.getElementById("municipality_id");
+                    var selected = e.selectedIndex;
+                    document.getElementById("perm_municipality_id").selectedIndex = selected;
+                }
             });
         }
 
@@ -510,14 +524,15 @@
             if ($("#sameAsCheckbox").is(":checked")) {
                 var inputProvince = $("#province_id").val();
                 var inputDistrict = $("#district_id").val();
-                var inputMuni = $("#municipality_id").val();
                 var ward = document.getElementById("ward").value;
                 var tole = document.getElementById("tole").value;
                 document.getElementById("perm_ward").value = ward;
                 document.getElementById("perm_tole").value = tole;
-                pProvinceOnchange(inputProvince);
-                pDistrictOnchange(inputDistrict);
-                console.log(inputDistrict);
+                var e = document.getElementById("province_id");
+                var selected = e.selectedIndex;
+                document.getElementById("perm_province_id").selectedIndex = selected;
+                pProvinceOnchange(inputProvince, true);
+                pDistrictOnchange(inputDistrict, true);
                 // $("#prem_province_id").val($("#province_id").val());
                 // // $('#perm_municipality').val($('#municipality').val());
                 // $('#prem_province_id').attr('disabled', 'disabled');

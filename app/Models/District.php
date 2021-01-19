@@ -14,5 +14,10 @@ class District extends Model
 	public static function provinceIdByDistrictId($districtId){
 		$district = District::where('id', $districtId)->get()->first();
 		return $district->province_id;
-	} 
+	}
+    public static function getDistrict($id)
+    {
+        $district = District::where('id',$id)->get()->first();
+        return $district->district_name ?? '';
+    }
 }
