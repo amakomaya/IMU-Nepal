@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Models\HealthProfessional;
+use App\Models\MunicipalityInfo;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -40,8 +41,10 @@ class DHOController extends Controller
         $merged = $data->map(function ($item) use ($health_professional) {
 
             $organization = Organization::where('district_id', $item->district_id)->pluck('token');
+            $municipality = MunicipalityInfo::where('district_id', $item->district_id)->pluck('token');
+            $token = $organization->merge($municipality);
 
-            $item['total'] = $health_professional->whereIn('checked_by', $organization)->sum('total');
+            $item['total'] = $health_professional->whereIn('checked_by', $token)->sum('total');
 
 //            $single = $count_hospital->where('municipality_id',$item->municipality_id)->first();
 

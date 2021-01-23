@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Models\HealthProfessional;
+use App\Models\MunicipalityInfo;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -45,8 +46,11 @@ class ProvinceController extends Controller
         $merged = $provinces->map(function ($item) use ($health_professional) {
 
             $organization = Organization::where('province_id', $item->province_id)->pluck('token');
+            $municipality = MunicipalityInfo::where('province_id', $item->province_id)->pluck('token');
 
-            $item['total'] = $health_professional->whereIn('checked_by', $organization)->sum('total');
+            $token = $organization->merge($municipality);
+
+            $item['total'] = $health_professional->whereIn('checked_by', $token)->sum('total');
 
             return $item;
         });
