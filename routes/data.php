@@ -30,3 +30,4 @@ Route::put('api/women/user/{token}', 'Data\Api\WomenController@updateUser');
 Route::get('api/gender', 'Data\Api\AggregateController@gender');
 Route::get('api/time-series', 'Data\Api\AggregateController@timeSeries');
 Route::get('api/occupation', 'Data\Api\AggregateController@occupation');
+Route::get('api/antigen', 'Data\Api\AggregateController@antigen');

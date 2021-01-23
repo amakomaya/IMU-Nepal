@@ -28,6 +28,12 @@
                 Occupation
             </a>
         </li>
+        <li>
+            <a href="{{ route('analysis.antigen') }}">
+                <i class="fa fa-flask" aria-hidden="true"></i>
+                Antigen
+            </a>
+        </li>
     </ul>
 </li>
 <li>

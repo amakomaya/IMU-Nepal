@@ -35,6 +35,7 @@ import CaseDetail from "./components/viewCaseDetailReport"
 import LabCaseReport from "./components/LabCaseReport.vue"
 import CasesInOtherOrganization from "./components/CasesInOtherOrganization";
 import MapIndex from "./components/MapIndex";
+import AnalysisAntigen from "./components/analysis/Antigen";
 
 import AdminDashboard from "./components/AdminDashboard";
 
@@ -89,6 +90,7 @@ Vue.component('case-detail', CaseDetail)
 Vue.component('analysis-time-series', AnalysisTimeSeries)
 Vue.component('analysis-gender', AnalysisGender)
 Vue.component('analysis-occupation', AnalysisOccupation)
+Vue.component('analysis-antigen', AnalysisAntigen)
 
 const app = new Vue({
     el: '#app'

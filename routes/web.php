@@ -179,3 +179,7 @@ Route::get('/admin/analysis/occupation', function () {
 Route::get('/admin/analysis/time-series', function () {
     return view('analysis.time-series');
 })->name('analysis.time-series');
+
+Route::get('/admin/analysis/antigen', function () {
+    return view('analysis.antigen');
+})->name('analysis.antigen');

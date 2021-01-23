@@ -175,6 +175,26 @@ class AggregateController extends Controller
         return $table;
     }
 
+    public function antigen(){
+        $data = SuspectedCase::where('women.status', 1)
+            ->join('ancs', 'women.token', '=', 'ancs.woman_token')
+            ->join('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
+            ->where('service_for', 2)
+            ->whereIn('ancs.result', [3,4])
+            ->select('ancs.result as antigen_result', 'healthposts.province_id as province', DB::raw('count(*) as total'))
+            ->groupBy(['antigen_result','province'])
+            ->get()->makeHidden(['formated_age_unit', 'formated_gender']);
+
+        $table = collect($data)->map(function ($item) {
+            $item->antigen_result = $this->formatResult($item->antigen_result);
+            return collect($item)->flatten();
+        })->toArray();
+
+        $header = ['Result', 'Province', 'Total'];
+        array_unshift($table, $header);
+        return $table;
+    }
+
     private function formatOccupation($data){
         switch($data){
             case '1':
