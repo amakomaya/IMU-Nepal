@@ -55,8 +55,10 @@ class MunicipalityController extends Controller
         $merged = $municipalityInfos->map(function ($item) use ($health_professional) {
 
             $organization = Organization::where('municipality_id', $item->municipality_id)->pluck('token');
+            $municipality_info = MunicipalityInfo::where('municipality_id', $item->municipality_id)->pluck('token');
+            $token = $organization->merge($municipality_info);
 
-            $item['hospital_total'] = $health_professional->whereIn('checked_by', $organization)->sum('total');
+            $item['hospital_total'] = $health_professional->whereIn('checked_by', $token)->sum('total');
 
 //            $single = $count_hospital->where('municipality_id',$item->municipality_id)->first();
 
