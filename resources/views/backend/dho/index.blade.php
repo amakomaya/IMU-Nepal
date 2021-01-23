@@ -49,7 +49,7 @@
                                             <th>{{trans('index.office_address')}}</th>                                     
                                             <th>{{trans('index.status')}}</th>
                                             <th>{{trans('index.created_at')}}</th>
-                                            <th>{{trans('index.updated_at')}} </th>
+                                            <th title="Total Health Professional Data">Total HP Data </th>
                                             <th>{{trans('index.options')}}</th>
                                         </tr>
                                     </thead>
@@ -75,7 +75,7 @@
                                                     @endif
                                                 </td>
                                                 <td>{{$datum->created_at->diffForHumans()}}</td>
-                                                <td>{{$datum->updated_at->diffForHumans()}}</td>
+                                                <td>{{$datum->total}}</td>
                                                 <td>
                                                     
                                                     <form method="post" action="{{route('dho.destroy', $datum->id)}}" onsubmit="return confirmDelete()"> 

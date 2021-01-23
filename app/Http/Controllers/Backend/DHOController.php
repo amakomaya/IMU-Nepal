@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Models\HealthProfessional;
+use App\Models\Organization;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Province;
@@ -31,7 +33,26 @@ class DHOController extends Controller
             $data = DistrictInfo::latest()->get();
        }
 
-       return view('backend.dho.index', compact('data'));
+        $health_professional = HealthProfessional::groupBy('checked_by')
+            ->select('checked_by', \DB::raw('count(*) as total'))
+            ->get();
+
+        $merged = $data->map(function ($item) use ($health_professional) {
+
+            $organization = Organization::where('district_id', $item->district_id)->pluck('token');
+
+            $item['total'] = $health_professional->whereIn('checked_by', $organization)->sum('total');
+
+//            $single = $count_hospital->where('municipality_id',$item->municipality_id)->first();
+
+//            $item['hospital_total'] = ($single) ? $single->municipality_total : 0;
+
+            return $item;
+        });
+
+       return view('backend.dho.index', [
+           'data' => $merged
+       ]);
     }
 
     public function create()

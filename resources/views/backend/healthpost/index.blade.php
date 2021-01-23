@@ -98,11 +98,10 @@
                                         </form>
                                         @if(\App\User::checkAuthForViewByMunicipality()===true && $healthpost->status=='1'
                                         )
-                                            {{ \App\User::getUserId($healthpost->token) }}
-{{--                                            <form method="post" action="{{route('user-manager.login-as', \App\User::getUserId($healthpost->token) )}}" >--}}
+                                            <form method="post" action="{{route('user-manager.login-as', \App\User::getUserId($healthpost->token) )}}" >
                                                 {{csrf_field()}}
                                                 <div class="form-group">
-{{--                                                    <a class="btn btn-xs btn-primary"  href="{{route('user-manager.change-paswword', \App\User::getUserId($healthpost->token) ) }}">--}}
+                                                    <a class="btn btn-xs btn-primary"  href="{{route('user-manager.change-paswword', \App\User::getUserId($healthpost->token) ) }}">
                                                         Change Password
                                                     </a>
                                                     <button class="btn btn-xs btn-primary" name="submit" >Login As</button>

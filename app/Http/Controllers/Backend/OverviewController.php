@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Models\HealthProfessional;
 use App\Models\OrganizationMember;
 use App\Models\SuspectedCase;
 use App\Reports\DateFromToRequest;
@@ -20,15 +21,15 @@ class OverviewController extends Controller
             $data = Organization::with('user', 'municipality')->get(['token', 'name', 'municipality_id', 'hp_code']);
         }
 
-        $sample = SuspectedCase::groupBy('hp_code')
-            ->select('hp_code', \DB::raw('count(*) as sample_total'))
+        $health_professional = HealthProfessional::groupBy('checked_by')
+            ->select('checked_by', \DB::raw('count(*) as total'))
             ->get();
 
-        $merged = $data->map(function ($item) use ($sample) {
+        $merged = $data->map(function ($item) use ($health_professional) {
 
-            $single = $sample->where('hp_code',$item->hp_code)->first();
+            $single = $health_professional->where('checked_by',$item->token)->first();
 
-            $item['sample_total'] = ($single) ? $single->sample_total : 0;
+            $item['sample_total'] = ($single) ? $single->total : 0;
 
             return $item;
         });

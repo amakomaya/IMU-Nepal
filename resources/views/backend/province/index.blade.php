@@ -50,7 +50,7 @@
                                             <th>{{trans('index.office_address')}}</th>                                     
                                             <th>{{trans('index.status')}}</th>
                                             <th>{{trans('index.created_at')}}</th>
-                                            <th>{{trans('index.updated_at')}}</th>
+                                            <th title="Total Health Professional Data">Total HP Data</th>
                                             <th>{{trans('index.options')}}</th>
                                         </tr>
                                     </thead>
@@ -74,7 +74,7 @@
                                                     @endif
                                                 </td>
                                                 <td>{{$province->created_at->diffForHumans()}}</td>
-                                                <td>{{$province->updated_at->diffForHumans()}}</td>
+                                                <td>{{$province->total}}</td>
                                                 <td>
                                                     
                                                     <form method="post" action="{{route('province.destroy', $province->id)}}" onsubmit="return confirmDelete()"> 

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Models\HealthProfessional;
+use App\Models\Organization;
+use App\Models\OrganizationMember;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MunicipalityRequest;
@@ -41,15 +44,23 @@ class MunicipalityController extends Controller
             $municipalityInfos = MunicipalityInfo::latest()->get();
        }
 
-        $count_hospital = \App\Models\Organization::groupBy('municipality_id')
-            ->select('municipality_id', \DB::raw('count(*) as municipality_total'))
+//        $count_hospital = \App\Models\Organization::groupBy('municipality_id')
+//            ->select('municipality_id', \DB::raw('count(*) as municipality_total'))
+//            ->get();
+
+        $health_professional = HealthProfessional::groupBy('checked_by')
+            ->select('checked_by', \DB::raw('count(*) as total'))
             ->get();
 
-        $merged = $municipalityInfos->map(function ($item) use ($count_hospital) {
+        $merged = $municipalityInfos->map(function ($item) use ($health_professional) {
 
-            $single = $count_hospital->where('municipality_id',$item->municipality_id)->first();
+            $organization = Organization::where('municipality_id', $item->municipality_id)->pluck('token');
 
-            $item['hospital_total'] = ($single) ? $single->municipality_total : 0;
+            $item['hospital_total'] = $health_professional->whereIn('checked_by', $organization)->sum('total');
+
+//            $single = $count_hospital->where('municipality_id',$item->municipality_id)->first();
+
+//            $item['hospital_total'] = ($single) ? $single->municipality_total : 0;
 
             return $item;
         });

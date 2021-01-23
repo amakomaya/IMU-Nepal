@@ -20,7 +20,7 @@
                                             <th>Hospitals</th>
                                             <th>Username</th>
                                             <th>Municipality</th>
-                                            <th>Sample Collection</th>
+                                            <th title="Total Health Professional Data">Total HP Data</th>
                                         </tr>
                                     </thead>
                                     <tbody>

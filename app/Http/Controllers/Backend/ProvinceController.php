@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Models\HealthProfessional;
+use App\Models\Organization;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ProvinceInfo;
@@ -36,7 +38,22 @@ class ProvinceController extends Controller
         }
 
         $provinces = provinceInfo::latest()->get();
-        return view('backend.province.index',compact('provinces'));
+        $health_professional = HealthProfessional::groupBy('checked_by')
+            ->select('checked_by', \DB::raw('count(*) as total'))
+            ->get();
+
+        $merged = $provinces->map(function ($item) use ($health_professional) {
+
+            $organization = Organization::where('province_id', $item->province_id)->pluck('token');
+
+            $item['total'] = $health_professional->whereIn('checked_by', $organization)->sum('total');
+
+            return $item;
+        });
+
+        return view('backend.province.index',[
+            'provinces' => $merged
+        ]);
     }
 
     /**

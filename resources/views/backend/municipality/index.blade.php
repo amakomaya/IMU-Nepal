@@ -47,7 +47,7 @@
                                         <th>{{trans('index.province')}}</th>                                     
                                         <th>{{trans('index.district')}}</th>                                    
                                         <th>{{trans('index.local_level')}}</th>
-                                        <th>{{trans('index.no_of_hp')}}</th>   
+                                        <th title="Total Health Professional Data">Total HP Data</th>
                                         <th>{{trans('index.office_address')}}</th>
                                         <th>{{trans('index.status')}}</th>
                                         <th>{{trans('index.options')}}</th>
