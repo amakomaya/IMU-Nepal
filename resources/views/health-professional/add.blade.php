@@ -52,7 +52,7 @@
                             <h3>Organization Information</h3>
                             <div class="row">
                                 <div class="form-group col-lg-6">
-                                    <label class="control-label" for="organization_type">Organization Type</label>
+                                    <label class="control-label" for="organization_type">Organization Type*</label>
                                     <select name="organization_type" class="form-control">
                                         <option value="" selected>Select any one</option>
                                         <option {{ $data['organization_type'] == '1' ? "selected" : "" }} {{ old('organization_type') == '1' ? "selected" : "" }} value="1">
@@ -67,7 +67,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group {{ $errors->has('organization_name') ? 'has-error' : '' }}  col-sm-6">
-                                    <label for="organization_name">Organization Name</label>
+                                    <label for="organization_name">Organization Name*</label>
                                     <input type="text" id="organization_name" class="form-control"
                                            value="{{ old('organization_name') ? old('organization_name') : $data['organization_name'] }}" name="organization_name"
                                            aria-describedby="help" placeholder="Organization Name">
@@ -79,7 +79,7 @@
                             </div>
                             <div class="row">
                                 <div class="form-group {{ $errors->has('organization_phn') ? 'has-error' : '' }} col-sm-6">
-                                    <label for="organization_phn">Organization Phone No.</label>
+                                    <label for="organization_phn">Organization Phone No.*</label>
                                     <input type="text" id="organization_phn" class="form-control"
                                            value="{{ old('organization_phn') ? old('organization_phn') : $data['organization_phn'] }}" name="organization_phn"
                                            aria-describedby="help" placeholder="Organization Phone No.">
@@ -89,7 +89,7 @@
                                     @endif
                                 </div>
                                 <div class="form-group {{ $errors->has('organization_address') ? 'has-error' : '' }} col-sm-6">
-                                    <label for="organization_address">Organization Address</label>
+                                    <label for="organization_address">Organization Address*</label>
                                     <input type="text" id="organization_address" class="form-control"
                                            value="{{ old('organization_address') ? old('organization_address') : $data['organization_address'] }}" name="organization_address"
                                            aria-describedby="help" placeholder="Organization Address">
@@ -102,10 +102,10 @@
                             <hr>
                             <div class="row">
                                 <div class="form-group {{ $errors->has('designation') ? 'has-error' : '' }} col-sm-6">
-                                    <label for="designation">Designation(Post)</label>
+                                    <label for="designation">Designation(Post)*</label>
                                     <input type="text" id="designation" class="form-control"
                                            value="{{ old('designation') }}" name="designation"
-                                           aria-describedby="help" placeholder="Organization Name">
+                                           aria-describedby="help" placeholder="what is your post in organization ?">
                                     @if ($errors->has('designation'))
                                         <small id="help"
                                                class="form-text text-danger">{{ $errors->first('designation') }}</small>
@@ -140,7 +140,7 @@
                             <h3>Personal Information</h3>
                             <div class="row">
                                 <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }} col-sm-6">
-                                    <label for="name">Full Name</label>
+                                    <label for="name">Full Name*</label>
                                     <input type="text" id="name" class="form-control"
                                            value="{{ old('name') }}" name="name"
                                            aria-describedby="help" placeholder="Full Name">
@@ -150,7 +150,7 @@
                                     @endif
                                 </div>
                                 <div class="form-group col-sm-6">
-                                    <label class="control-label" for="gender">Gender</label>
+                                    <label class="control-label" for="gender">Gender*</label>
                                     <select name="gender" class="form-control">
                                         <option value="" selected>Select any one</option>
                                         <option {{ old('gender') == '1' ? "selected" : "" }} value="1">Male
@@ -164,7 +164,7 @@
                             </div>
                             <div class="row">
                                 <div class="form-group {{ $errors->has('age') ? 'has-error' : '' }} col-sm-6">
-                                    <label for="age">Age in year</label>
+                                    <label for="age">Age in year*</label>
                                     <input type="text" id="age" class="form-control"
                                            value="{{ old('age') }}" name="age"
                                            aria-describedby="help" placeholder="Age">
@@ -185,7 +185,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Current Address</label>
+                                <label class="control-label">Current Address*</label>
                                 <div class="row">
                                     <div class="form-group col-sm-3" id="province">
                                         <select name="province_id" id="province_id" class="form-control"
@@ -271,7 +271,7 @@
                                        onclick="setSameAsCheckbox()">Same as Current Address<br>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Permanent Address</label>
+                                <label class="control-label">Permanent Address*</label>
                                 <div class="row">
                                     <div class="form-group col-sm-3" id="perm_province">
                                         <select name="perm_province_id" id="perm_province_id" class="form-control"
@@ -594,7 +594,7 @@
                         required: true,
                     },
                     service_date: {
-                        required: true,
+                        // required: true,
                     },
                     name: {
                         required: true,
@@ -609,8 +609,8 @@
                         max: 125
                     },
                     phone: {
-                        required: true,
-                        phoneCustom: true
+                        // required: true,
+                        // phoneCustom: true
                     },
                     district_id: {
                         required: true

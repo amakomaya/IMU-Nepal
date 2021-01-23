@@ -47,9 +47,9 @@ class HealthProfessionalController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'phone' => 'required|unique:health_professional,phone'
-        ]);
+//        $request->validate([
+//            'phone' => 'required|unique:health_professional,phone'
+//        ]);
         $row = $request->all();
         $row['token'] = md5(microtime(true) . mt_Rand());
         $row['status'] = 1;
@@ -83,9 +83,9 @@ class HealthProfessionalController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'phone' => "required|unique:health_professional,phone,$id"
-        ]);
+//        $request->validate([
+//            'phone' => "required|unique:health_professional,phone,$id"
+//        ]);
         $data = HealthProfessional::find($id);
         $row = $request->all();
         if (array_key_exists("disease", $row)) {
