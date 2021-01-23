@@ -6,6 +6,7 @@ use App\Models\District;
 use App\Models\HealthProfessional;
 use App\Models\Municipality;
 use App\Models\MunicipalityInfo;
+use App\Models\Organization;
 use App\Models\province;
 use App\User;
 use Illuminate\Http\Request;
@@ -29,7 +30,10 @@ class HealthProfessionalController extends Controller
         } elseif (Auth::user()->role === "municipality") {
             $token = Auth::user()->token;
             $municipality_id = MunicipalityInfo::where('token', $token)->first()->municipality_id;
-            $data = HealthProfessional::where('checked_by', Auth::user()->token)->orWhere('municipality_id', $municipality_id)->latest()->get();
+            $organization = Organization::where('municipality_id', $municipality_id)->pluck('token');
+            $data = HealthProfessional::where('checked_by', Auth::user()->token)
+                ->OrwhereIn('checked_by', $organization)
+                ->latest()->get();
         } else {
             $data = HealthProfessional::where('checked_by', Auth::user()->token)->latest()->get();
         }
