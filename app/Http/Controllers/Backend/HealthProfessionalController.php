@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Exports\HealthProfessionalsExport;
 use App\Models\District;
 use App\Models\HealthProfessional;
 use App\Models\Municipality;
@@ -12,6 +13,8 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class HealthProfessionalController extends Controller
 {
@@ -101,5 +104,11 @@ class HealthProfessionalController extends Controller
     public function destroy(HealthProfessional $healthProfessional)
     {
         //
+    }
+
+    public function export(Request $request)
+    {
+        $request = $request->all();
+        return Excel::download(new HealthProfessionalsExport($request), auth()->user()->username.'-health-professionals-data-'.date('Y-m-d H:i:s').'.xlsx');
     }
 }

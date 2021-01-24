@@ -53,6 +53,8 @@ Route::get('/health-professional/temp-municipality-select-district', 'Backend\Ad
 Route::get('/health-professional/temp-district-select-province', 'Backend\AddressController@districtSelectByProvince')->name('temp-district-select-province');
 Route::get('/health-professional/perm-municipality-select-district', 'Backend\AddressController@permMunicipalitySelectByDistrict')->name('perm-municipality-select-district');
 Route::get('/health-professional/perm-district-select-province', 'Backend\AddressController@permDistrictSelectByProvince')->name('perm-district-select-province');
+Route::get('/health-professional/export', 'Backend\HealthProfessionalController@export')->name('health-professional.export');
+
 //Backend Center
 Route::resource('admin/center', 'Backend\CenterController');
 Route::get('/admin/maps', 'Backend\MapController@map')->name('center.woman.map');
