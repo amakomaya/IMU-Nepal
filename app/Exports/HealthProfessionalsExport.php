@@ -22,7 +22,7 @@ class HealthProfessionalsExport implements FromCollection, WithHeadings
     {
         if (Auth::user()->role === "main" || Auth::user()->role === "center") {
             $data = HealthProfessional::whereBetween('created_at', [$this->request['from'], $this->request['to']])
-                ->with(['district','municipality'])
+                ->with('district','municipality')
                 ->get();
         } elseif (Auth::user()->role === "municipality") {
             $token = Auth::user()->token;
@@ -31,29 +31,33 @@ class HealthProfessionalsExport implements FromCollection, WithHeadings
             $data = HealthProfessional::where('checked_by', Auth::user()->token)
                 ->OrwhereIn('checked_by', $organization)
                 ->whereBetween('created_at', [$this->request['from'], $this->request['to']])
-                ->with(['district','municipality'])
+                ->with('district','municipality')
                 ->get();
         } else {
             $data = HealthProfessional::where('checked_by', Auth::user()->token)
                 ->whereBetween('created_at', [$this->request['from'], $this->request['to']])
-                ->with(['district','municipality'])
+                ->with('district','municipality')
                 ->get();
         }
 
         return $data->map(function ($item, $key){
-            $record = [];
-            $record['sn'] = $key+1;
-            $record['register_no'] = $item->id;
-            $record['name'] = $item->name;
-            $record['gender'] = $this->gender($item->gender);
-            $record['age'] = $item->age;
-            $record['district'] = $item->district->district_name;
-            $record['municipality'] = $item->municipality->municipality_id ?? '';
-            $record['ward'] = $item->ward;
-            $record['phone'] = $item->phone;
-            $record['post'] = $item->designation;
-            $record['id_number'] = $item->citizenship_no .' / '. $item->issue_district;
-            return $record;
+            try {
+                $record = [];
+                $record['sn'] = $key+1;
+                $record['register_no'] = $item->id;
+                $record['name'] = $item->name;
+                $record['gender'] = $this->gender($item->gender);
+                $record['age'] = $item->age;
+                $record['district'] = $item->district->district_name ?? '';
+                $record['municipality'] = $item->municipality->municipality_name ?? '';
+                $record['ward'] = $item->ward;
+                $record['phone'] = $item->phone;
+                $record['post'] = $item->designation;
+                $record['id_number'] = $item->citizenship_no .' / '. $item->issue_district;
+                return $record;
+            }catch (\Exception $e){
+
+            }
         });
     }
     public function headings() : array

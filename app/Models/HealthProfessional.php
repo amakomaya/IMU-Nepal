@@ -31,6 +31,6 @@ class HealthProfessional extends Model
 
     public function municipality()
     {
-        return $this->belongsTo(Municipality::class);
+        return $this->hasOne('App\Models\Municipality', 'id', 'municipality_id');
     }
 }

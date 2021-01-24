@@ -27,12 +27,16 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>Register No</th>
                                     <th title="Name">Name</th>
-                                    <th title="Age">Age</th>
                                     <th title="Gender">Gender</th>
+                                    <th title="Age">Age</th>
+                                    <th>District</th>
+                                    <th>Municipality</th>
+                                    <th>Ward</th>
                                     <th title="Phone">Phone</th>
-                                    <th title="Organization Type">Organization Type</th>
-                                    <th title="Organization Name">Organization Name</th>
+                                    <th title="Designation">Post</th>
+                                    <th title="ID Number">ID Number</th>
                                     <th><i class="fa fa-cogs" aria-hidden="true"></i>
                                     </th>
                                 </tr>
@@ -41,8 +45,8 @@
                                 @foreach ($data as $d)
                                     <tr>
                                         <td>{{$loop->iteration }}</td>
+                                        <td>{{ $d->id }}</td>
                                         <td>{{$d->name}}</td>
-                                        <td>{{$d->age}}</td>
                                         <td>
                                             @if($d->gender === '1')
                                                 Male
@@ -52,16 +56,13 @@
                                                 Other
                                             @endif
                                         </td>
+                                        <td>{{$d->age}}</td>
+                                        <td>{{ $d->district->district_name ?? '' }}</td>
+                                        <td>{{ $d->municipality->municipality_name ?? '' }}</td>
+                                        <td>{{ $d->ward ?? '' }}</td>
                                         <td>{{$d->phone}}</td>
-                                        <td>
-                                            @if($d->organization_type === '1')
-                                                Government
-                                            @elseif($d->organization_type === '2')
-                                                Non-profit
-                                            @elseif($d->organization_type === '3')
-                                                Private
-                                            @endif</td>
-                                        <td>{{$d->organization_name}}</td>
+                                        <td>{{$d->designation}}</td>
+                                        <td>{{$d->citizenship_no .' / '. $d->issue_district}}</td>
                                         <td>
                                             <a title="View Health Professional"
                                                href="{{ url('health-professional/show/'.$d->id) }}">
