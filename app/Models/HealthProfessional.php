@@ -33,4 +33,9 @@ class HealthProfessional extends Model
     {
         return $this->hasOne('App\Models\Municipality', 'id', 'municipality_id');
     }
+
+    public function vaccinationRecord()
+    {
+        return $this->hasMany('App\Models\VaccinationRecord', 'vaccinated_id', 'id');
+    }
 }

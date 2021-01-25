@@ -20,7 +20,9 @@ class VaccinationController extends Controller
         $token = $request->token;
         $responses = HealthProfessional::where('id', $token)->first();
         if (!empty($responses)){
-            return response()->json($responses);
+            $data['info'] = $responses->getOriginal();
+            $data['vaccination'] = $responses->vaccinationRecord;
+            return response()->json($data);
         }else{
             return response()->json(['message' => 'Data Not Found']);
         }
