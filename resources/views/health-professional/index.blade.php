@@ -22,8 +22,7 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <div class="dataTable_wrapper">
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <table class="table table-responsive table-striped table-bordered table-hover">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
@@ -31,7 +30,7 @@
                                     <th title="Name">Name</th>
                                     <th title="Gender">Gender</th>
                                     <th title="Age">Age</th>
-                                    <th>District</th>
+{{--                                    <th>District</th>--}}
                                     <th>Municipality</th>
                                     <th>Ward</th>
                                     <th title="Phone">Phone</th>
@@ -57,7 +56,7 @@
                                             @endif
                                         </td>
                                         <td>{{$d->age}}</td>
-                                        <td>{{ $d->district->district_name ?? '' }}</td>
+{{--                                        <td>{{ $d->district->district_name ?? '' }}</td>--}}
                                         <td>{{ $d->municipality->municipality_name ?? '' }}</td>
                                         <td>{{ $d->ward ?? '' }}</td>
                                         <td>{{$d->phone}}</td>
@@ -77,6 +76,8 @@
                                 @endforeach
                                 </tbody>
                             </table>
+                        <div class="pull-right">
+                            {{ $data->links() }}
                         </div>
                         <!-- /.table-responsive -->
                     </div>

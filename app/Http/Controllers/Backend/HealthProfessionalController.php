@@ -29,16 +29,16 @@ class HealthProfessionalController extends Controller
             return redirect('/admin');
         }
         if (Auth::user()->role === "main" || Auth::user()->role === "center") {
-            $data = HealthProfessional::latest()->get();
+            $data = HealthProfessional::latest()->paginate(1000);
         } elseif (Auth::user()->role === "municipality") {
             $token = Auth::user()->token;
             $municipality_id = MunicipalityInfo::where('token', $token)->first()->municipality_id;
             $organization = Organization::where('municipality_id', $municipality_id)->pluck('token');
             $data = HealthProfessional::where('checked_by', Auth::user()->token)
                 ->OrwhereIn('checked_by', $organization)
-                ->latest()->get();
+                ->latest()->paginate(1000);
         } else {
-            $data = HealthProfessional::where('checked_by', Auth::user()->token)->latest()->get();
+            $data = HealthProfessional::where('checked_by', Auth::user()->token)->latest()->paginate(1000);
         }
         return view('health-professional.index', compact('data'));
     }
