@@ -143,9 +143,9 @@
             <b style="text-align: center;">खोप कार्ड - स्वास्थ्य संस्था प्रति</b>
             <p>दर्ता न.: {{ str_pad($data->id, 6, "0", STR_PAD_LEFT) }}</p>
             <p>खोप लिने व्यक्ति को लक्षित समूह <b>.............................</b></p>
-            <p>नाम : <b>{{ $data->name }}</b> उमेर: <b>{{ $data->age }}</b><p>
-            <p>पालिका<b>{{ $data->municipality->municipality_name ?? '' }}</b> वार्ड न <b>.....</b><p>
-            <p>सम्पर्क न <b>.............................</b></p>
+            <p>नाम : <b>{{ str_pad($data->name,  24, "___") }}</b> उमेर : <b>{{ $data->age }}</b><p>
+            <p>पालिका : <b>{{ str_pad($data->municipality->municipality_name,  21, "___") ?? '' }}</b> वार्ड न : <b>{{ $data->ward }}</b><p>
+            <p>सम्पर्क न  : <b>{{ str_pad($data->phone,  10, "___") }}</b></p>
             <p>ब्यक्ति पहिचानको संकेत...................</p>
             <br>
             <p>नेपाल सरकार कोभिड १९ विरूद्धमा उपलब्ध भएको खोप मैले मेरो राजा खुशी साथ लिएको  छु र पछि कुनै भवीतब्य परी केहि भएमा कोही कसैलाई दोष नदिई म स्वयमं जिम्मेवारी हुनेछु। </p>
@@ -197,12 +197,12 @@
             {!! QrCode::size(150)->generate(str_pad($data->id, 6, "0", STR_PAD_LEFT)); !!}
         </div>
         <div class="container1">
-            <b style="text-align: center;">खोप कार्ड– सेवाग्राही प्रति</b>
             <p>दर्ता न.: {{ str_pad($data->id, 6, "0", STR_PAD_LEFT) }}</p>
             <p>खोप लिने व्यक्ति को लक्षित समूह <b>.............................</b></p>
-            <p>नाम<b>.............................</b> उमेर: <b>.......</b><p>
-            <p>पालिका<b>.............................</b> वार्ड न <b>.......</b><p>
-            <p>सम्पर्क न <b>.............................</b></p>
+            <p>नाम : <b>{{ str_pad($data->name,  24, "___") }}</b> उमेर : <b>{{ $data->age }}</b><p>
+            <p>पालिका : <b>{{ str_pad($data->municipality->municipality_name,  21, "___") ?? '' }}</b> वार्ड न : <b>{{ $data->ward }}</b><p>
+            <p>सम्पर्क न  : <b>{{ str_pad($data->phone,  10, "___") }}</b></p>
+            <b style="text-align: center;">खोप कार्ड– सेवाग्राही प्रति</b>
             <p>ब्यक्ति पहिचानको संकेत...................</p>
             <br>
             <table style="margin-top: 20px" class="table-card">
@@ -228,18 +228,4 @@
             <p style="text-align: center; padding-bottom: 3em; padding-top: 1.5em;">दोश्रो पटक खोप लिन आँउदा यो कार्ड अनिवार्य रुपमा लिएर आउनुपर्दछ ।</p>
         </div>
     </div>
-{{--    <div class="reg-number-org-rep">{{ str_pad($data->id, 6, "0", STR_PAD_LEFT) }}</div>--}}
-{{--    <div class="name-org-rep">{{ str_pad($data->name, 10) }}</div>--}}
-{{--    <div class="municipality-org-rep">{{ $data->municipality->municipality_name ?? '' }}</div>--}}
-{{--    <div class="age-org-rep">{{ $data->age }}</div>--}}
-{{--    <div class="ward-org-rep">{{ $data->ward }}</div>--}}
-{{--    <div class="phone-org-rep">{{ $data->phone }}</div>--}}
-
-{{--    <div class="reg-number-per-rep">{{ str_pad($data->id, 6, "0", STR_PAD_LEFT) }}</div>--}}
-{{--    <div class="name-per-rep">{{ $data->name }}</div>--}}
-{{--    <div class="municipality-per-rep">{{ $data->municipality->municipality_name ?? '' }}</div>--}}
-{{--    <div class="age-per-rep">{{ $data->age }}</div>--}}
-{{--    <div class="ward-per-rep">{{ $data->ward }}</div>--}}
-{{--    <div class="phone-per-rep">{{ $data->phone }}</div>--}}
-
 </div>
