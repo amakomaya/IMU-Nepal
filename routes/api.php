@@ -547,3 +547,7 @@ Route::get('/v1/ext/get-case-detail', 'External\ExtCaseController@getCaseDetailB
 //Route::get('/v1/ext/contact-follow-up', 'External\ExtContactFollowUpController@index');
 //Route::post('/v1/ext/contact-follow-up', 'External\ExtContactFollowUpController@store');
 //Route::post('/v1/ext/contact-follow-up', 'External\ExtContactFollowUpController@store');
+
+
+Route::get('vaccinated/list', 'Api\VaccinationController@index');
+Route::get('vaccinated/qr-search', 'Api\VaccinationController@qrSearch');
