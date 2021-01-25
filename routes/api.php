@@ -551,3 +551,4 @@ Route::get('/v1/ext/get-case-detail', 'External\ExtCaseController@getCaseDetailB
 
 Route::get('vaccinated/list', 'Api\VaccinationController@index');
 Route::get('vaccinated/qr-search', 'Api\VaccinationController@qrSearch');
+Route::post('vaccinated/record', 'Api\VaccinationController@record');
