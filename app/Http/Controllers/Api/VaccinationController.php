@@ -31,7 +31,12 @@ class VaccinationController extends Controller
     public function record(Request $request){
         $data = $request->json()->all();
         try {
-            VaccinationRecord::insert($data);
+            foreach ($data as $input){
+                try {
+                    VaccinationRecord::create($input);
+                }catch (\Exception $e){
+                }
+            }
         } catch (\Exception $e) {
             return response()->json(['message' => 'Something went wrong, Please try again.']);
         }
