@@ -18,11 +18,9 @@ class VaccinationController extends Controller
     public function qrSearch(Request $request)
     {
         $token = $request->token;
-        $responses = HealthProfessional::where('id', $token)->first();
+        $responses = HealthProfessional::where('id', $token)->with('vaccinationRecord')->first();
         if (!empty($responses)){
-            $data['info'] = $responses->getOriginal();
-            $data['vaccination'] = $responses->vaccinationRecord;
-            return response()->json($data);
+            return response()->json($responses);
         }else{
             return response()->json(['message' => 'Data Not Found']);
         }
