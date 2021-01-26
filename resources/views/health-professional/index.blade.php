@@ -22,7 +22,7 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                            <table class="table table-responsive table-striped table-bordered table-hover">
+                            <table id="vaccinatedTable" class="table table-responsive table-striped table-bordered table-hover">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
@@ -44,7 +44,7 @@
                                 @foreach ($data as $d)
                                     <tr>
                                         <td>{{$loop->iteration }}</td>
-                                        <td>{{ $d->id }}</td>
+                                        <td>{{ str_pad($d->id, 6, "0", STR_PAD_LEFT) }}</td>
                                         <td>{{$d->name}}</td>
                                         <td>
                                             @if($d->gender === '1')
@@ -126,3 +126,17 @@
     </div>
 
 @endsection
+@section('script')
+    <script>
+        $(document).ready( function () {
+            $('#vaccinatedTable').DataTable({
+                paging: false,
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": true,
+                "bInfo": false,
+                "bAutoWidth": false
+            });
+        });
+    </script>
+    @endsection
