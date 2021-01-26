@@ -116,6 +116,13 @@
 
     </style>
 <div class="card-main-container">
+    @php
+        $vaccination = App\Models\VaccinationRecord::where('vaccinated_id', $data->id)->get();
+
+        $first = collect($vaccination)->where('vaccine_period', '1M')->first();
+        $second = collect($vaccination)->where('vaccine_period', '3M')->first();
+
+    @endphp
     <div class="main1">
         <div class="letterhead">
             <div class="govLogo">
@@ -160,14 +167,14 @@
                 </tr>
                 <tr>
                     <td class="card-td">पहिलो</td>
-                    <td class="card-td"></td>
-                    <td class="card-td"></td>
+                    <td class="card-td"> {{ ($first) ? 'Covishield' : ''  }} </td>
+                    <td class="card-td">{{ $first->vaccinated_date_np ?? '' }}</td>
                     <td class="card-td"></td>
                 </tr>
                 <tr>
                     <td class="card-td">दोस्रो</td>
-                    <td class="card-td"></td>
-                    <td class="card-td"></td>
+                    <td class="card-td">{{ ($second) ? 'Covishield' : ''  }}</td>
+                    <td class="card-td">{{ $second->vaccinated_date_np ?? '' }}</td>
                     <td class="card-td"></td>
                 </tr>
             </table>
@@ -214,14 +221,14 @@
                 </tr>
                 <tr>
                     <td class="card-td">पहिलो</td>
-                    <td class="card-td"></td>
-                    <td class="card-td"></td>
+                    <td class="card-td"> {{ ($first) ? 'Covishield' : ''  }} </td>
+                    <td class="card-td">{{ $first->vaccinated_date_np ?? '' }}</td>
                     <td class="card-td"></td>
                 </tr>
                 <tr>
                     <td class="card-td">दोस्रो</td>
-                    <td class="card-td"></td>
-                    <td class="card-td"></td>
+                    <td class="card-td">{{ ($second) ? 'Covishield' : ''  }}</td>
+                    <td class="card-td">{{ $second->vaccinated_date_np ?? '' }}</td>
                     <td class="card-td"></td>
                 </tr>
             </table>
