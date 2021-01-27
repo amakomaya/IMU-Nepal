@@ -55,6 +55,7 @@ Route::get('/health-professional/temp-district-select-province', 'Backend\Addres
 Route::get('/health-professional/perm-municipality-select-district', 'Backend\AddressController@permMunicipalitySelectByDistrict')->name('perm-municipality-select-district');
 Route::get('/health-professional/perm-district-select-province', 'Backend\AddressController@permDistrictSelectByProvince')->name('perm-district-select-province');
 Route::get('/health-professional/export', 'Backend\HealthProfessionalController@export')->name('health-professional.export');
+Route::get('/vaccination/reports', 'Backend\VaccinationReportsController@index')->name('vaccination.report');
 
 //Backend Center
 Route::resource('admin/center', 'Backend\CenterController');
