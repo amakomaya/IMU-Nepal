@@ -96,11 +96,28 @@
     </a>
 </li>
 <li>
-    <a href="{{ route('health-professional.index') }}">
-        <i class="fa fa-stethoscope"></i>
-        Health Professionals
+    <a href="#">
+        <i class="fa fa-users" aria-hidden="true"></i>
+        Health Professional <span class="fa arrow"></span>
     </a>
+    <ul class="nav nav-second-level">
+        <li>
+            <a href="{{ route('health-professional.index') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Registered
+                <span class="label label-info pull-right">R</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('health-professional.immunized') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Immunized
+                <span class="label label-success pull-right">&#x2714;</span>
+            </a>
+        </li>
+    </ul>
 </li>
+
 <li>
     <a href="{{ route('lab.patient.report.index') }}">
         <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
