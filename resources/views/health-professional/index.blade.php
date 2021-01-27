@@ -10,7 +10,8 @@
                     <i class="fa fa-file-excel-o"></i>
                     Download Data</a>
                 @if(Illuminate\Support\Facades\Auth::user()->role === "municipality")
-                    <a href="#" class="btn btn-success" title="Send data to Immunization session" data-toggle="modal"
+                    <a href="#" class="btn btn-success" id="btnSend" title="Send data to Immunization session"
+                       data-toggle="modal"
                        data-target="#sendDataToImmunizationModel">
                         <i class="fa fa-paper-plane"></i>
                         Send</a>
@@ -61,7 +62,8 @@
                                     @if(Illuminate\Support\Facades\Auth::user()->role === "municipality")
                                         <td>
                                             <div class="checkbox">
-                                                <input type="checkbox" value="{{ $d->id }}" name="dataList[]">
+                                                <input type="checkbox" id="dataList" value="{{ $d->id }}"
+                                                       name="dataList[]">
                                             </div>
                                         </td>
                                     @endif
@@ -169,12 +171,15 @@
                               name="create"
                               action="{{ route('covid-immunization-store') }}" enctype="multipart/form-data">
                             {{ csrf_field() }}
+                            <div class="form-group" hidden>
+                                <input type="text" id="data_list" name="data_list">
+                            </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4" for="immunization_center">Select Immunization
                                     Center
                                     :</label>
                                 <div class="col-sm-8">
-                                    <select name="immunization_center" class="form-control"
+                                    <select name="municipality_id" class="form-control"
                                             id="municipality_id">
                                         @foreach($organizations ?? '' as $immunizationCenter)
                                             <option value="{{ $immunizationCenter->municipality_id }}">{{$immunizationCenter->name ?? ''}}</option>
@@ -187,7 +192,7 @@
                                 <div class="col-sm-8">
                                     <input type="date" class="form-control" id="expire_date" placeholder="Enter to date"
                                            name="expire_date"
-                                           min="2019-01-01" max="<?php echo date('Y-m-d'); ?>"
+                                           min="<?php echo date('Y-m-d'); ?>"
                                            value="<?php echo date('Y-m-d'); ?>" required>
                                 </div>
                             </div>
@@ -220,19 +225,26 @@
                 "bInfo": false,
                 "bAutoWidth": false
             });
+            $('#btnSend').click(function () {
+                var val = [];
+                $(':checkbox:checked').each(function (i) {
+                    val.push($(this).val());
+                })
+                $("#data_list").val(val.toString());
+            });
         });
 
         $(function () {
             $("form[id='create']").validate({
                 // Define validation rules
                 rules: {
-                    'data_list[]': {
+                    data_list: {
                         required: true,
-                    }
+                    },
                 },
 
                 // Specify validation error messages
-                'data_list[]': {
+                data_list: {
                     required: "You must select at least 1 data"
                 },
                 submitHandler: function (form) {

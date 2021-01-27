@@ -21,7 +21,7 @@ class CovidImmunizationController extends Controller
         //
     }
 
-    public function store(Request $request,CovidImmunization $covidImmunization)
+    public function store(Request $request, CovidImmunization $covidImmunization)
     {
 //        $customMessages = [
 //            'required' => 'The :attribute field is required.',
@@ -32,9 +32,8 @@ class CovidImmunizationController extends Controller
 //        ], $customMessages);
 
         $data = $request->all();
-        $data['hp_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
-        $dataList = request('dataList');
-        $data['data_list'] = "[" . implode(', ', $dataList) . "]";
+        $data['hp_code'] = OrganizationMember::where('municipality_id', $data['municipality_id'])->first()->hp_code;
+        $data['data_list'] = '[' . $data['data_list'] . ']';
         CovidImmunization::create($data);
         $request->session()->flash('message', 'Data Send for Immunization successfully');
         return redirect()->route('health-professional.index');
