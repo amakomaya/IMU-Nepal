@@ -21,7 +21,7 @@
                 </div>
             </div>
 
-            @if(auth()->user()->role == 'main')
+            @if(auth()->user()->role == 'main' || auth()->user()->role == 'center')
             <div class="col-lg-12">
                 <div class="panel panel-info">
                     <div class="panel-heading">
