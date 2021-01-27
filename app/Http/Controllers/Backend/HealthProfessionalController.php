@@ -64,7 +64,6 @@ class HealthProfessionalController extends Controller
                                 ->paginate(1000);
         } else {
             $data = HealthProfessional::where('checked_by', Auth::user()->token)
-                ->innerjoin('vaccination_records', 'health_professional.id', '=', 'vaccination_records.id')
                 ->has('vaccinated')
                 ->latest()
                 ->paginate(1000);
