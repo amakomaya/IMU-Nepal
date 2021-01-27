@@ -46,6 +46,7 @@ Route::get('/health-professional/add', function () {
 })->name('health.professional.add');
 Route::post('/health-professional', 'Backend\HealthProfessionalController@store')->name('health-professional.store');
 Route::get('/health-professional/index', 'Backend\HealthProfessionalController@index')->name('health-professional.index');
+Route::get('/health-professional/immunized', 'Backend\HealthProfessionalController@immunized')->name('health-professional.immunized');
 Route::get('/health-professional/show/{id}', 'Backend\HealthProfessionalController@show')->name('health-professional.show');
 Route::get('/health-professional/edit/{id}', 'Backend\HealthProfessionalController@edit')->name('health-professional.edit');
 Route::put('/health-professional/update/{id}', 'Backend\HealthProfessionalController@update')->name('health-professional.update');
