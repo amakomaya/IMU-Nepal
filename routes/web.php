@@ -187,3 +187,6 @@ Route::get('/admin/analysis/time-series', function () {
 Route::get('/admin/analysis/antigen', function () {
     return view('analysis.antigen');
 })->name('analysis.antigen');
+
+///VACCINATIONS ///////////////
+Route::post('/v1/covid-immunization-store', 'Api\CovidImmunizationController@store')->name('covid-immunization-store');
