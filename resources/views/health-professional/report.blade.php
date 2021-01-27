@@ -46,9 +46,44 @@
                         </tr>
                         @foreach($data['provincial_data'] as $key => $province)
                         <tr>
-                            <td>{{ $key }}</td>
+                            <td>{{ \App\Models\province::where('id', $key)->first()->province_name }}</td>
                             <td>{{ $province }}</td>
                         </tr>
+                        @endforeach
+                    </table>
+                </div>
+                <hr>
+                <div class="col-lg-12">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>District</th>
+                            <th>Data</th>
+                        </tr>
+                        @foreach($data['district_data'] as $key => $province)
+                        <tr>
+                            <td>{{ \App\Models\District::where('id', $key)->first()->district_name ?? '' }}</td>
+                            <td>{{ $province }}</td>
+                        </tr>
+                        @endforeach
+                    </table>
+                </div>
+
+                <hr>
+                <br>
+                <div class="col-lg-12">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Organization</th>
+                            <th>Data</th>
+                        </tr>
+                        @foreach($data['organization_data'] as $organization)
+                            @php
+                                $org = \App\Models\Organization::where('hp_code', $organization->hp_code)->first();
+                            @endphp
+                            <tr>
+                                <td>{{ $org->name ?? '' }}</td>
+                                <td>{{ $organization->total }}</td>
+                            </tr>
                         @endforeach
                     </table>
                 </div>

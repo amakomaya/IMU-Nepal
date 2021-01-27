@@ -40,6 +40,11 @@ class VaccinationReportsController extends Controller
                     $key => VaccinationRecord::whereIn('hp_code', $hpCodes)->count()
                 ];
             }
+
+            $data['organization_data'] = VaccinationRecord::
+                select('hp_code', \DB::raw('count(*) as total'))
+                ->groupBy('hp_code')
+                ->get();
         }
 
 //        $data['used'] = VaccinationRecord::whereIn('hp_code', $hpCodes)->count();
