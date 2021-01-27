@@ -37,6 +37,21 @@
                     </div>
                 </div>
             </div>
+
+                <div class="col-lg-12">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Province</th>
+                            <th>Data</th>
+                        </tr>
+                        @foreach($data['provincial_data'] as $key => $province)
+                        <tr>
+                            <td>{{ $key }}</td>
+                            <td>{{ $province }}</td>
+                        </tr>
+                        @endforeach
+                    </table>
+                </div>
             @endif
         </div>
 @endsection
