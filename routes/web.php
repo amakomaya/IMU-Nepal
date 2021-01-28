@@ -32,10 +32,14 @@ Route::get('/admin/select-from-to', 'AdminController@selectFromTo')->name('admin
 Route::get('/admin/district-value', 'AdminController@getDistrictValue')->name('admin.district-value');
 
 Route::get('/health-professional/add', function (\Illuminate\Http\Request $request) {
-    if (date('H') < 14) {
+    $start = 8; //Eg. start hour
+    $end = 16;  //Eg. end hour
+    $now = \Carbon\Carbon::now();
+    if( $start < $now->hour && $now->hour < $end){
         $request->session()->flash('message', 'The registration process is suspended. After 4:00 pm you can register');
         return redirect()->back();
     }
+
     $province_id = 1;
     $district_id = 1;
     $municipality_id = 1;
