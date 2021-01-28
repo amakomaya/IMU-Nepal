@@ -6,6 +6,29 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
+                <form class="form-horizontal" name="excelExport" role="form" method="GET"
+                      action="{{ route('vaccination.report') }}" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="created_at">Select Date:</label>
+                        <div class="col-sm-3">
+                            <input type="date" class="form-control" id="from" title="Enter from date"
+                                   name="from" min="2021-01-27" max="<?php echo date('Y-m-d'); ?>"
+                                   value="{{ request()->from ?? '2021-01-27' }}" required>
+
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="date" class="form-control" id="to" title="Enter to date" name="to"
+                                   min="2021-01-27" max="<?php echo date('Y-m-d'); ?>"
+                                   value="{{ request()->to ?? date('Y-m-d') }}" required>
+                        </div>
+                        <div class="col-sm-2 col-sm-9">
+                            <button type="submit" class="btn btn-primary pull-right">Submit Request</button>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <div class="row">
