@@ -556,3 +556,4 @@ Route::post('/v1/vial-detail', 'Api\VialDetailController@store');
 Route::post('/v1/vial-detail-update', 'Api\VialDetailController@update');
 Route::post('/v1/vial-stock-detail', 'Api\VialStockDetailController@store');
 Route::post('/v1/vial-stock-detail-update', 'Api\VialStockDetailController@update');
+Route::get('/v1/covid-immunization-list', 'Api\CovidImmunizationController@show');
