@@ -71,7 +71,7 @@ class HealthProfessionalController extends Controller
                 ->latest()
                 ->paginate(1000);
         }
-        return view('health-professional.index', compact('data'));
+        return view('health-professional.immunized', compact('data'));
     }
 
     public function create()

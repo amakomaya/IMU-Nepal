@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\CovidImmunization;
+use App\Models\MunicipalityInfo;
 use App\Models\OrganizationMember;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -32,8 +33,9 @@ class CovidImmunizationController extends Controller
 //        ], $customMessages);
 
         $data = $request->all();
-        $data['hp_code'] = OrganizationMember::where('municipality_id', $data['municipality_id'])->first()->hp_code;
-        $data['data_list'] = '[' . $data['data_list'] . ']';
+        $data['hp_code'] = $request->hp_code;
+        $data['municipality_id'] = MunicipalityInfo::where('token', auth()->user()->token)->first()->municipality_id;
+        $data['data_list'] = $data['data_list'];
         CovidImmunization::create($data);
         $request->session()->flash('message', 'Data Send for Immunization successfully');
         return redirect()->route('health-professional.index');
