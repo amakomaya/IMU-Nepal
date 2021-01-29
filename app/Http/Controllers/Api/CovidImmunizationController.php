@@ -49,7 +49,7 @@ class CovidImmunizationController extends Controller
             $hp_code = $request->hp_code;
             $currentDate = Carbon::now()->format('Y-m-d');
             $data = CovidImmunization::where('hp_code', $hp_code)
-//                ->where('expire_date', '>=', $currentDate)
+                ->where('expire_date', '>=', $currentDate)
                 ->pluck('data_list');
 
             $id_list = array();
