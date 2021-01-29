@@ -49,8 +49,16 @@ class CovidImmunizationController extends Controller
             $hp_code = $request->hp_code;
             $currentDate = Carbon::now()->format('Y-m-d');
             $data = CovidImmunization::where('hp_code', $hp_code)
-                ->where('expire_date', '>=', $currentDate)->latest()->first();
-            $id_list = explode(",",$data->data_list);
+//                ->where('expire_date', '>=', $currentDate)
+                ->pluck('data_list');
+
+            $id_list = array();
+
+            foreach($data as $item){
+                $id_list[] = explode(",", $item);
+            }
+
+            $id_list = collect($id_list)->flatten()->unique();
 
             $response = [];
             $response['health_professional'] = HealthProfessional::whereIn('id', $id_list)->get();
