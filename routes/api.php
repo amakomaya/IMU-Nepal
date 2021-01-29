@@ -552,8 +552,10 @@ Route::get('/v1/ext/get-case-detail', 'External\ExtCaseController@getCaseDetailB
 Route::get('vaccinated/list', 'Api\VaccinationController@index');
 Route::get('vaccinated/qr-search', 'Api\VaccinationController@qrSearch');
 Route::post('vaccinated/record', 'Api\VaccinationController@record');
+Route::get('/v1/vial-detail', 'Api\VialDetailController@index');
 Route::post('/v1/vial-detail', 'Api\VialDetailController@store');
 Route::post('/v1/vial-detail-update', 'Api\VialDetailController@update');
+Route::get('/v1/vial-stock-detail', 'Api\VialStockDetailController@index');
 Route::post('/v1/vial-stock-detail', 'Api\VialStockDetailController@store');
 Route::post('/v1/vial-stock-detail-update', 'Api\VialStockDetailController@update');
 Route::get('/v1/covid-immunization-list', 'Api\CovidImmunizationController@show');

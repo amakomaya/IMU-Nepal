@@ -9,9 +9,11 @@ use App\Http\Controllers\Controller;
 class VialDetailController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $hpCode = $request->hp_code;
+        $data = VialDetail::where('hp_code',$hpCode)->get();
+        return response()->json($data);
     }
     public function create()
     {
