@@ -12,8 +12,8 @@ use Illuminate\Http\Request;
 class SearchGlobalController extends Controller
 {
     public function index(Request $request){
-        $data = [];
-        if ($request->all()) {
+        $data = collect();
+        if (collect($request->all())->values()->unique()->count() > 1) {
             $data = HealthProfessional::where('status', 1);
         }
         try {
@@ -43,8 +43,7 @@ class SearchGlobalController extends Controller
             }
         }catch (\Exception $e){}
 
-
-        $filter = !empty($data) ? $data->get() : [];
+        $filter = (count($data) > 0) ? $data->get() : [];
 
         return view('global-search', compact('filter'));
     }
