@@ -160,8 +160,39 @@
 
             </form>
             <div class="clearfix"></div>
-        </div>
 
+        <br>
+            @if(!empty($filter))
+                <strong>Search Results : </strong>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Register No</th>
+                        <th>First Name</th>
+                        <th>Age</th>
+                        <th>Phone</th>
+                        <th>Organization Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if(count($filter) == 0)
+                        No Records Found !!!
+                    @endif
+                    @foreach($filter as $data)
+                    <tr>
+                        <td>{{ $data->id }}</td>
+                        <td>{{ $data->name }}</td>
+                        <td>{{ $data->age }}</td>
+                        <td>{{ $data->phone }}</td>
+                        <td>{{ $data->organization_name }}</td>
+                    </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+
+            @endif
+
+    </div>
     </div>
 
 </div>
