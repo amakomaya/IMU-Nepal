@@ -31,14 +31,17 @@ Route::get('/admin/healthpost-select-ward', 'AdminController@healthpostSelectByW
 Route::get('/admin/select-from-to', 'AdminController@selectFromTo')->name('admin.select-from-to');
 Route::get('/admin/district-value', 'AdminController@getDistrictValue')->name('admin.district-value');
 
+Route::get('/admin/organization-select', 'AdminController@organizationSelect')->name('admin.organization-select');
+
+
 Route::get('/health-professional/add', function (\Illuminate\Http\Request $request) {
-    $start = 11; //Eg. start hour
-    $end = 15;  //Eg. end hour
-    $now = \Carbon\Carbon::now();
-    if( $start < $now->hour && $now->hour < $end){
-        $request->session()->flash('message', 'The registration process is suspended from 11 am to 3 pm. After 3:00 pm you can register');
-        return redirect()->back();
-    }
+//    $start = 11; //Eg. start hour
+//    $end = 15;  //Eg. end hour
+//    $now = \Carbon\Carbon::now();
+//    if( $start < $now->hour && $now->hour < $end){
+//        $request->session()->flash('message', 'The registration process is suspended from 11 am to 3 pm. After 3:00 pm you can register');
+//        return redirect()->back();
+//    }
 
     $province_id = 1;
     $district_id = 1;
@@ -198,3 +201,4 @@ Route::get('/admin/analysis/antigen', function () {
 
 ///VACCINATIONS ///////////////
 Route::post('/v1/covid-immunization-store', 'Api\CovidImmunizationController@store')->name('covid-immunization-store');
+Route::get('/search/global', 'SearchGlobalController@index')->name('search.global');

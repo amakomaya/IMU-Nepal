@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Helpers\GetHealthpostCodes;
 use App\Helpers\ViewHelper;
+use App\Models\HealthProfessional;
+use App\Models\MunicipalityInfo;
 use App\Models\province;
 use App\Models\SampleCollection;
 use App\Models\BabyDetail;
@@ -28,10 +30,10 @@ class AdminController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+//    public function __construct()
+//    {
+//        $this->middleware('auth');
+//    }
 
     public function index()
     {
@@ -101,11 +103,28 @@ class AdminController extends Controller
     public function healthpostSelect(Request $request)
     {
         $id = $request->get('id');
-        echo '<select id="hp_code" class="form-control" name="hp_code" required>';
+        echo '<select id="hp_code" class="form-control" name="hp_code">';
         $healthposts = Organization::where('municipality_id', $id)->orderBy('name', 'asc')->get();
         echo "<option value=\"\">Select Organization</option>";
         foreach ($healthposts as $Healthpost) {
             echo "<option value=\"$Healthpost->hp_code\">$Healthpost->name</option>";
+        }
+        echo '<select>';
+    }
+
+    public function organizationSelect(Request $request)
+    {
+        $id = $request->get('id');
+        echo '<label for="organization">Select working Organization</label>';
+        echo '<select id="organization" class="form-control" name="organization">';
+//        $healthposts = Organization::where('municipality_id', $id)->orderBy('name', 'asc')->get();
+        $municipality_token = MunicipalityInfo::where('municipality_id', $id)->first()->token;
+        $organization_token = Organization::where('municipality_id', $id)->pluck('token');
+        $list = collect($organization_token)->merge($municipality_token);
+        $organizations = HealthProfessional::whereIn('checked_by', $list)->orderBy('organization_name', 'asc')->pluck('organization_name')->unique();
+        echo "<option value=\"\">Select All Organization Name</option>";
+        foreach ($organizations as $Healthpost) {
+            echo "<option value=\"$Healthpost\">$Healthpost</option>";
         }
         echo '<select>';
     }
