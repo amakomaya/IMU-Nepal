@@ -44,7 +44,7 @@ class HealthProfessionalController extends Controller
 
             return view('health-professional.index', compact('data','organizations'));
         } else {
-            $data = HealthProfessional::where('checked_by', Auth::user()->token)->doesnthave('vaccinated')->latest()->paginate(1000);
+            $data = HealthProfessional::where('checked_by', Auth::user()->token)->latest()->paginate(1000);
         }
         return view('health-professional.index', compact('data'));
     }
