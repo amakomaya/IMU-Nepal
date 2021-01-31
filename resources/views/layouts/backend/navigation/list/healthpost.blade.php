@@ -130,16 +130,16 @@
 
     <ul class="nav nav-second-level">
         <li>
-            <a href="{{ route('health-professional.index') }}">
+            <a href="{{ route('health.professional.add') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Registered
-                <span class="label label-info pull-right">R</span>
+                Create
+                <span class="label label-info pull-right"><i class="fa fa-plus"></i></span>
             </a>
         </li>
         <li>
-            <a href="{{ route('health-professional.immunized') }}">
+            <a href="{{ route('health-professional.index') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Immunized
+                Registered / Immunized
                 <span class="label label-success pull-right">&#x2714;</span>
             </a>
         </li>
