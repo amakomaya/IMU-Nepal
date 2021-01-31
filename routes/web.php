@@ -36,7 +36,7 @@ Route::get('/admin/organization-select', 'AdminController@organizationSelect')->
 
 Route::get('/health-professional/add', function (\Illuminate\Http\Request $request) {
     $start = 11; //Eg. start hour
-    $end = 12;  //Eg. end hour
+    $end = 15;  //Eg. end hour
     $now = \Carbon\Carbon::now();
     if( $start < $now->hour && $now->hour < $end){
         $request->session()->flash('message', 'The registration process is suspended from 11 am to 3 pm. After 3:00 pm you can register');
