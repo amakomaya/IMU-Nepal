@@ -226,6 +226,11 @@
             </a>
         </li>
         <li>
+            <a href="{{ route('user-by-permissions.index') }}">
+                <i class="fa fa-users" aria-hidden="true"></i> User By Permission
+            </a>
+        </li>
+        <li>
             <a href="{{ route('password-reset.index') }}">
                 <i class="fa fa-key" aria-hidden="true"></i> User Forget Password
                 <span class="badge">{{ \App\Models\ForgetPassword::whereNull('read_at')->count() }}</span>

@@ -19,6 +19,7 @@ Route::get('/', function () {
 //Auth
 Auth::routes();
 Route::resource('admin/permissions', 'PermissionController', ['name' => 'permissions']);
+Route::get('admin/user-by-permissions', 'PermissionController@userByPermission')->name('user-by-permissions.index');
 
 //Backend Home
 Route::get('/admin', 'AdminController@index')->name('admin');
@@ -202,3 +203,4 @@ Route::get('/admin/analysis/antigen', function () {
 ///VACCINATIONS ///////////////
 Route::post('/v1/covid-immunization-store', 'Api\CovidImmunizationController@store')->name('covid-immunization-store');
 Route::get('/search/global', 'SearchGlobalController@index')->name('search.global');
+Route::get('/search/global-card/{id}', 'SearchGlobalController@card')->name('search.global-card');

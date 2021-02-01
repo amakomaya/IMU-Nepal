@@ -8,6 +8,7 @@ use App\Models\HealthProfessional;
 use App\Models\MunicipalityInfo;
 use App\Models\Organization;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class SearchGlobalController extends Controller
 {
@@ -43,8 +44,16 @@ class SearchGlobalController extends Controller
             }
         }catch (\Exception $e){}
 
-        $filter = (count($data) > 0) ? $data->get() : [];
+        $filter = (count($data) > 0) ? $data->take(10)->get() : [];
 
         return view('global-search', compact('filter'));
     }
+
+    public function card(Request $request, $id){
+        $cryptId = Crypt::decryptString($id);
+
+        $data = HealthProfessional::where('id', $cryptId)->first();
+        return view('health-professional.global-card', compact('data'));
+    }
+
 }

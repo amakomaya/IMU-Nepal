@@ -1,3 +1,10 @@
+<div class="form-group">
+    <button type="submit" class="btn btn-primary" onclick="printDiv('report-printable')">
+        <i class="fa fa-print"></i> Print
+    </button>
+</div>
+<div class="container-rep">
+    <div class="main" id="report-printable">
     <style>
         .main2 {
             position: relative;
@@ -236,3 +243,5 @@
         </div>
     </div>
 </div>
+        </div>
+    </div>

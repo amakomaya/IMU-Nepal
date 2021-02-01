@@ -172,6 +172,7 @@
                         <th>Age</th>
                         <th>Phone</th>
                         <th>Organization Name</th>
+                        <th>Report</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -185,6 +186,12 @@
                         <td>{{ $data->age }}</td>
                         <td>{{ $data->phone }}</td>
                         <td>{{ $data->organization_name }}</td>
+                        <td>
+                            <a title="Report"
+                               href="{{ url('/search/global-card/'. \Illuminate\Support\Facades\Crypt::encryptString($data->id)) }}" target="_blank">
+                                <i class="fa fa-file" aria-hidden="true"></i>
+                            </a>
+                        </td>
                     </tr>
                     @endforeach
                     </tbody>

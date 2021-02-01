@@ -6,16 +6,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h2>Immunization Card</h2>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary" onclick="printDiv('report-printable')">
-                                <i class="fa fa-print"></i> Print
-                            </button>
-                        </div>
-                        <div class="container-rep">
-                            <div class="main" id="report-printable">
                                 @include('health-professional.card')
-                            </div>
-                        </div>
                         <hr>
                         <h2>Details:</h2>
                         <table class="table table-striped">

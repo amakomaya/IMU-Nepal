@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use App\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -11,11 +12,18 @@ class PermissionController extends Controller
     {
         $this->middleware('auth');
     }
+
     public function index()
     {
         $permissions = Permission::all();
         return view('permissions.index',compact('permissions'));
     }
+
+    public function userByPermission(){
+        $users = User::whereIn('role', ['healthpost', 'healthworker'])->get();
+        return view('permissions.user-by-permission', compact('users'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
