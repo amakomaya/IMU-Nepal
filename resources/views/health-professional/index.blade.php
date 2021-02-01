@@ -4,9 +4,35 @@
 @endsection
 @section('content')
     <div id="page-wrapper">
+
+        <div class="panel">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Filter through
+                </div>
+            </div>
+            <div class="panel-body">
+                <form action="{{ route('health-professional.index') }}" method="GET" name="filter" id="filter">
+                    <div class="row">
+                        <div class="form-group col-lg-9">
+                            <select name="organization" class="form-control" id="organization">
+                                <option value="">Select an organization</option>
+                                @foreach($organizations ?? '' as $immunizationCenter)
+                                    <option value="{{ $immunizationCenter->token }}">{{$immunizationCenter->name ?? ''}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-filter"></i> Filter
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="row">
             <div class="col-lg-12">
-                <a href="#" class="btn btn-success" data-toggle="modal" data-target="#healthProfessionalsDownloadModel">
+                <a href="#" class="btn btn-success"  id="btnDownload" data-toggle="modal" data-target="#healthProfessionalsDownloadModel">
                     <i class="fa fa-file-excel-o"></i>
                     Download Data</a>
                 @if(Illuminate\Support\Facades\Auth::user()->role === "municipality")
@@ -125,6 +151,9 @@
                     <form class="form-horizontal" name="excelExport" role="form" method="GET"
                           action="{{ route('health-professional.export') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
+                        <div class="form-group" hidden>
+                            <input type="text" id="organization_token" name="organization_token" value="{{ $orgToken ?? '' }}">
+                        </div>
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="created_at">Created At *:</label>
                             <div class="col-sm-4">
@@ -215,6 +244,8 @@
     @endif
 @endsection
 @section('script')
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+
     <script>
         $(document).ready(function () {
             $('#vaccinatedTable').DataTable({
@@ -246,6 +277,22 @@
                 // Specify validation error messages
                 data_list: {
                     required: "You must select at least 1 data"
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            });
+
+            $("form[id='filter']").validate({
+                // Define validation rules
+                rules: {
+                    organization: {
+                        required: true,
+                    }
+                },
+                // Specify validation error messages
+                messages: {
+                    organization: "Please select organization to filter",
                 },
                 submitHandler: function (form) {
                     form.submit();
