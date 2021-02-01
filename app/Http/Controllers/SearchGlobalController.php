@@ -17,8 +17,15 @@ class SearchGlobalController extends Controller
         if (collect($request->all())->values()->unique()->count() > 1) {
             $data = HealthProfessional::where('status', 1);
         }
+
         try {
-            if ($request->has('municipality_id')) {
+            if ($request->has('id') && !empty($request->id)) {
+                $data->where('id', $request->id);
+            }
+        }catch (\Exception $e){}
+
+        try {
+            if ($request->has('municipality_id') && !empty($request->municipality_id)) {
                 $municipality_token = MunicipalityInfo::where('municipality_id', $request->municipality_id)->first()->token;
                 $healthpost_token = Organization::where('municipality_id', $request->municipality_id)->pluck('token');
                 $token = collect($healthpost_token)->merge($municipality_token);
@@ -27,19 +34,19 @@ class SearchGlobalController extends Controller
         }catch (\Exception $e){}
 
         try {
-            if ($request->has('name')) {
+            if ($request->has('name') && !empty($request->name)) {
                 $data->where("name", "like", "%" . $request->name . "%");
             }
         }catch (\Exception $e){}
 
         try {
-            if ($request->has('age')) {
+            if ($request->has('age') && !empty($request->age)) {
                 $data->where("age", "like", "%" . $request->age . "%");
             }
         }catch (\Exception $e){}
 
         try{
-            if ($request->has('phone')) {
+            if ($request->has('phone') && !empty($request->phone)) {
                 $data->where("phone", "like", "%" . $request->phone . "%");
             }
         }catch (\Exception $e){}

@@ -61,7 +61,6 @@
         <div class="container panel-body">
 
             <form method="get" name="info">
-                <br>
                 <strong class="form-group">Select where you register from ?</strong>
                 <hr>
                 <div class="form-group col-sm-3" id="province">
@@ -121,7 +120,6 @@
 {{--                        @endforeach--}}
                     </select>
                 </div>
-                <br>
                 <strong class="form-group">Advanced Search <br> By your personal Information</strong>
                 <hr>
                 <div class="form-group  col-sm-3" id="Name">
@@ -152,6 +150,12 @@
                         {{--                            <option value="{{$healthpost->hp_code}}" {{$selectedHealthpost}}>{{$healthpost->name}}</option>--}}
                         {{--                        @endforeach--}}
                     </select>
+                </div>
+                <div class="form-group col-sm-12" id="id">
+                    <h3>-- OR --</h3>
+                    <hr>
+                    <label for="name">Search by Register ID</label>
+                    <input class="form-control" placeholder="Enter Register ID" type="text" name="id" value="{{ request()->id }}">
                 </div>
 
                 <div class="form-group col-lg-12">
