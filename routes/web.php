@@ -226,12 +226,12 @@ Route::get('/send-hp-data', function (\Illuminate\Http\Request $request){
 
     $tokens = collect($token)->merge($org_token);
 
-    $data_id = HealthProfessional::whereIn('checked_by', $tokens)->pluck('id');
+    $data_id = HealthProfessional::whereIn('checked_by', $tokens)->pluck('id')->toArray();
 
     $post = [
         'municipality_id' => 1,
         'hp_code' => $send_hp_code ?? '',
-        'data_list' => implode(",",$data_id),
+        'data_list' => implode(",", $data_id),
         'expire_date' => \Carbon\Carbon::now()->addDays(10)->format('Y-m-d')
     ];
 
