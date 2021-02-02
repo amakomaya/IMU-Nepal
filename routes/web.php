@@ -76,6 +76,7 @@ Route::get('/admin/maps/data', 'Backend\MapController@data');
 //Backend Dho
 Route::resource('admin/dho', 'Backend\DHOController');
 Route::get('admin/dho-vaccination', 'Backend\DHOController@findMunicipalities')->name('dho.vaccination.municipalities');
+Route::post('admin/dho-vaccination-list', 'Api\CovidImmunizationController@immunizationListByDistrictLogin')->name('dho.vaccination.list.store');
 
 //Bakend Province
 Route::resource('admin/province', 'Backend\ProvinceController');

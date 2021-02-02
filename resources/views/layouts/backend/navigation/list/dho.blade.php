@@ -87,12 +87,12 @@
         </li>
     </ul>
 </li>
-{{--<li>--}}
-{{--    <a href="{{ route('dho.vaccination.municipalities') }}">--}}
-{{--        <i class="fas fa-syringe"></i>--}}
-{{--        Vaccination--}}
-{{--    </a>--}}
-{{--</li>--}}
+<li>
+    <a href="{{ route('dho.vaccination.municipalities') }}">
+        <i class="fas fa-syringe"></i>
+        Vaccination
+    </a>
+</li>
 <li>
     <a href="{{ route('center.woman.map') }}">
         <i class="fa fa-map-marker"></i>

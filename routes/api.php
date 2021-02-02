@@ -559,3 +559,4 @@ Route::get('/v1/vial-stock-detail', 'Api\VialStockDetailController@index');
 Route::post('/v1/vial-stock-detail', 'Api\VialStockDetailController@store');
 Route::post('/v1/vial-stock-detail-update', 'Api\VialStockDetailController@update');
 Route::get('/v1/covid-immunization-list', 'Api\CovidImmunizationController@show');
+Route::get('/v1/health-professionals-list', 'Backend\DHOController@findAllHealthProfessionalDatas')->name('health-professionals-list');

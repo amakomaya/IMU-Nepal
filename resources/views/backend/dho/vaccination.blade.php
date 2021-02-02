@@ -31,38 +31,28 @@
                             <tr>
                                 <th></th>
                                 <th>ID</th>
-                                <th title="Name">Name</th>
-                                {{--                                <th><i class="fa fa-cogs" aria-hidden="true"></i>--}}
-                                {{--                                </th>--}}
+                                <th title="Municipality Name">Municipality Name</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($data as $d)
+                            @foreach ($datas as $d)
+                                @php($token = $d['token'] ?? '' )
+                                @php($office_address = $d['office_address'] ?? '' )
                                 <tr>
                                     <td>
                                         <div class="checkbox">
-                                            <input type="checkbox" id="dataList" value="{{ $d->id }}"
+                                            <input type="checkbox" id="dataList" value="{{ $token }}"
                                                    name="dataList[]">
                                         </div>
                                     </td>
                                     <td>{{$loop->iteration }}</td>
-                                    <td>{{ $data  }}</td>
-                                    {{--                                    <td>--}}
-                                    {{--                                        <a title="View Health Professional"--}}
-                                    {{--                                           href="{{ url('health-professional/show/'.$d->id) }}" target="_blank">--}}
-                                    {{--                                            <i class="fa fa-file" aria-hidden="true"></i> |--}}
-                                    {{--                                        </a>--}}
-                                    {{--                                        <a title="Edit Health Professional Detail"--}}
-                                    {{--                                           href="{{ url('health-professional/edit/'.$d->id) }}" target="_blank">--}}
-                                    {{--                                            <i class="fa fa-edit" aria-hidden="true"></i>--}}
-                                    {{--                                        </a>--}}
-                                    {{--                                    </td>--}}
+                                    <td>{{ $office_address }}</td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
                         <div class="pull-right">
-                            {{ $data->links() }}
+                            {{--                            {{ $data->links() }}--}}
                         </div>
                         <!-- /.table-responsive -->
                     </div>
@@ -86,7 +76,7 @@
                 <div class="modal-body">
                     <form class="form-horizontal" name="excelExport" role="form" method="POST" id="create"
                           name="create"
-                          action="{{ route('covid-immunization-store') }}" enctype="multipart/form-data">
+                          action="{{ route('dho.vaccination.list.store') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="form-group" hidden>
                             <input type="text" id="data_list" name="data_list">
@@ -148,7 +138,9 @@
                 $(':checkbox:checked').each(function (i) {
                     val.push($(this).val());
                 })
-                $("#data_list").val(val.toString());
+                $.get("{{route("health-professionals-list")}}?token=" + val, function (data) {
+                    $("#data_list").val(data);
+                });
             });
         });
 

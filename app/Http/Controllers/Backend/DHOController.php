@@ -201,11 +201,29 @@ class DHOController extends Controller
     public function findMunicipalities()
     {
         $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
-        $data = MunicipalityInfo::where('district_id', $district_id)->latest()->get();
+        $data = MunicipalityInfo::where('district_id', $district_id)->get();
+        $datas = $data->map(
+            function ($items) {
+                $data['office_address'] = $items->office_address;
+                $data['token'] = $items->token;
+                return $data;
+            }
+        );
+        $organizations = Organization::where('district_id', $district_id)->get();
 
-//        $data = Municipality::modelMunicipalityInfo(Auth::user()->token);
-        dd($data->office_address);
+        return view('backend.dho.vaccination', compact('datas', 'organizations'));
+    }
 
-        return view('backend.dho.vaccination', compact('data'));
+    public function findAllHealthProfessionalDatas(Request $request)
+    {
+        $token = $request->token;
+        $array = explode(',', $token);
+        $datas = [];
+        foreach ($array as $item) {
+            $data = HealthProfessional::where('checked_by', $item)->pluck('id');
+            foreach ($data as $d)
+                array_push($datas, $d);
+        }
+        echo implode(',', $datas);
     }
 }
