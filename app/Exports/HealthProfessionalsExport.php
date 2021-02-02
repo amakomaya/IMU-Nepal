@@ -31,11 +31,13 @@ class HealthProfessionalsExport implements FromCollection, WithHeadings
             $data = HealthProfessional::where('checked_by', Auth::user()->token)
                 ->OrwhereIn('checked_by', $organization)
                 ->whereBetween('created_at', [$this->request['from'], $this->request['to']])
+                ->whereNull('vaccinated_status')
                 ->with('district','municipality')
                 ->get();
         } else {
             $data = HealthProfessional::where('checked_by', Auth::user()->token)
                 ->whereBetween('created_at', [$this->request['from'], $this->request['to']])
+                ->whereNull('vaccinated_status')
                 ->with('district','municipality')
                 ->get();
         }
@@ -48,6 +50,7 @@ class HealthProfessionalsExport implements FromCollection, WithHeadings
                 $record['name'] = $item->name;
                 $record['gender'] = $this->gender($item->gender);
                 $record['age'] = $item->age;
+                $record['organization_name'] = $item->organization_name;
                 $record['district'] = $item->district->district_name ?? '';
                 $record['municipality'] = $item->municipality->municipality_name ?? '';
                 $record['ward'] = $item->ward;
@@ -68,6 +71,7 @@ class HealthProfessionalsExport implements FromCollection, WithHeadings
             'Full Name',
             'Gender',
             'Age',
+            'Organization Name',
             'District',
             'Municipality',
             'Ward',

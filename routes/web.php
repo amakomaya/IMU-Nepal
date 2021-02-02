@@ -3,6 +3,7 @@
 use App\Models\District;
 use App\Models\HealthProfessional;
 use App\Models\Municipality;
+use App\Models\VaccinationRecord;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('locale/{locale}', function ($locale) {
@@ -237,4 +238,14 @@ Route::get('/send-hp-data', function (\Illuminate\Http\Request $request){
 
     \App\CovidImmunization::create($post);
    return 'Pass';
+});
+
+Route::get('vaccination-calc', function(){
+    $data_having_null = HealthProfessional::whereNull('vaccinated_status')->pluck('id');
+    if (!empty($data_having_null)) {
+        $vaccinated_id_check = VaccinationRecord::whereIn('vaccinated_id', $data_having_null)->pluck('vaccinated_id');
+        if (!empty($data_having_null)) {
+            HealthProfessional::whereIn('id', $vaccinated_id_check)->update(['vaccinated_status' => '1']);
+        }
+    }
 });
