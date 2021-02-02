@@ -75,6 +75,7 @@ Route::get('/admin/maps/data', 'Backend\MapController@data');
 
 //Backend Dho
 Route::resource('admin/dho', 'Backend\DHOController');
+Route::get('admin/dho-vaccination', 'Backend\DHOController@findMunicipalities')->name('dho.vaccination.municipalities');
 
 //Bakend Province
 Route::resource('admin/province', 'Backend\ProvinceController');
@@ -202,3 +203,5 @@ Route::get('/admin/analysis/antigen', function () {
 ///VACCINATIONS ///////////////
 Route::post('/v1/covid-immunization-store', 'Api\CovidImmunizationController@store')->name('covid-immunization-store');
 Route::get('/search/global', 'SearchGlobalController@index')->name('search.global');
+Route::get('/public-client/add', 'Backend\PublicClientController@create')->name('public-client.add');
+Route::post('/public-client/store', 'Backend\PublicClientController@store')->name('public-client.store');
