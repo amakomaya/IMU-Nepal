@@ -212,8 +212,12 @@ Route::get('/send-hp-data', function (\Illuminate\Http\Request $request){
     $send = $request->send;
 
     $token = \App\User::whereIn('username', $username)->pluck('token');
-    $send_token =  \App\User::where('username', $send)->first()->token;
-    $send_hp_code = \App\Models\Organization::where('token', $send_token)->first()->hp_code;
+    try {
+        $send_token =  \App\User::where('username', $send)->first()->token;
+        $send_hp_code = \App\Models\Organization::where('token', $send_token)->first()->hp_code;
+    }catch (\Exception $e){
+        $send_hp_code = '';
+    }
 
 
     $municipality_ids = \App\Models\MunicipalityInfo::whereIn('token', $token)->pluck('municipality_id');
@@ -226,7 +230,7 @@ Route::get('/send-hp-data', function (\Illuminate\Http\Request $request){
 
     $post = [
         'municipality_id' => 1,
-        'hp_code' => $send_hp_code,
+        'hp_code' => $send_hp_code ?? '',
         'data_list' => implode(",",$data_id),
         'expire_date' => \Carbon\Carbon::now()->addDays(10)->format('Y-m-d')
     ];
