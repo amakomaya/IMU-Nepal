@@ -5,6 +5,21 @@
 @section('content')
     <div id="page-wrapper">
         <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div  class="row">
+                            <div  class="col-xs-3">
+                                <i class="fa fa-check-square-o fa-3x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">{{ $data->total() }}</div>
+                                <div>Total Vaccinated</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -54,11 +69,11 @@
                                     <td>{{$d->citizenship_no .' / '. $d->issue_district}}</td>
                                     <td>
                                         <a title="View Health Professional"
-                                           href="{{ url('health-professional/show/'.$d->id) }}">
+                                           href="{{ url('health-professional/show/'.$d->id) }}" target="_blank">
                                             <i class="fa fa-file" aria-hidden="true"></i> |
                                         </a>
                                         <a title="Edit Health Professional Detail"
-                                           href="{{ url('health-professional/edit/'.$d->id) }}">
+                                           href="{{ url('health-professional/edit/'.$d->id) }}" target="_blank">
                                             <i class="fa fa-edit" aria-hidden="true"></i>
                                         </a>
                                     </td>

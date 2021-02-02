@@ -16,7 +16,7 @@ class HealthProfessional extends Model
         'allergies', 'disease', 'covid_status', 'status','created_at',
 
         'health_worker','council_no',
-        'updated_at', 'checked_by'
+        'updated_at', 'checked_by', 'vaccinated_status'
     ];
 
     public function province()

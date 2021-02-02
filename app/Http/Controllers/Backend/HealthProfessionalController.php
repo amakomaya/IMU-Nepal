@@ -9,6 +9,7 @@ use App\Models\Municipality;
 use App\Models\MunicipalityInfo;
 use App\Models\Organization;
 use App\Models\province;
+use App\Models\VaccinationRecord;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -28,23 +29,21 @@ class HealthProfessionalController extends Controller
         if (User::checkAuthForIndexShowHealthpost() === false) {
             return redirect('/admin');
         }
-        if (Auth::user()->role === "main" || Auth::user()->role === "center") {
-            $data = HealthProfessional::latest()
-//                ->doesnthave('vaccinated')
-                ->paginate(1000);
-        } elseif (Auth::user()->role === "municipality") {
+        if (Auth::user()->role === "municipality") {
             $token = Auth::user()->token;
             $municipality_id = MunicipalityInfo::where('token', $token)->first()->municipality_id;
             $organization = Organization::where('municipality_id', $municipality_id)->pluck('token');
             $organizations = Organization::where('municipality_id', $municipality_id)->get();
             $data = HealthProfessional::where('checked_by', Auth::user()->token)
                 ->OrwhereIn('checked_by', $organization)
-//                ->doesnthave('vaccinated')
+                ->whereNull('vaccinated_status')
                 ->latest()->paginate(1000);
 
             return view('health-professional.index', compact('data','organizations'));
         } else {
-            $data = HealthProfessional::where('checked_by', Auth::user()->token)->latest()->paginate(1000);
+            $data = HealthProfessional::where('checked_by', Auth::user()->token)
+                ->whereNull('vaccinated_status')
+                ->latest()->paginate(1000);
         }
         return view('health-professional.index', compact('data'));
     }
@@ -54,23 +53,40 @@ class HealthProfessionalController extends Controller
         if (User::checkAuthForIndexShowHealthpost() === false) {
             return redirect('/admin');
         }
-        if (Auth::user()->role === "main" || Auth::user()->role === "center") {
-            $data = HealthProfessional::
-//            has('vaccinated')
-                latest()
-                ->paginate(1000);
-        } elseif (Auth::user()->role === "municipality") {
+
+        if (Auth::user()->role === "municipality") {
             $token = Auth::user()->token;
             $municipality_id = MunicipalityInfo::where('token', $token)->first()->municipality_id;
             $organization = Organization::where('municipality_id', $municipality_id)->pluck('token');
+            $data_having_null = HealthProfessional::where('checked_by', Auth::user()->token)
+                ->OrwhereIn('checked_by', $organization)
+                ->whereNull('vaccinated_status')
+                ->pluck('id');
+            if (!empty($data_having_null)) {
+                $vaccinated_id_check = VaccinationRecord::whereIn('vaccinated_id', $data_having_null)->pluck('vaccinated_id');
+                if (!empty($data_having_null)) {
+                    HealthProfessional::whereIn('id', $vaccinated_id_check)->update(['vaccinated_status' => '1']);
+                }
+            }
+
             $data = HealthProfessional::where('checked_by', Auth::user()->token)
                 ->OrwhereIn('checked_by', $organization)
-//                ->has('vaccinated')
+                ->where('vaccinated_status', '1')
                 ->latest()
                 ->paginate(1000);
         } else {
+
+            $data_having_null = HealthProfessional::where('checked_by', Auth::user()->token)
+                ->whereNull('vaccinated_status')
+                ->pluck('id');
+            if (!empty($data_having_null)) {
+                $vaccinated_id_check = VaccinationRecord::whereIn('vaccinated_id', $data_having_null)->pluck('vaccinated_id');
+                if (!empty($data_having_null)) {
+                    HealthProfessional::whereIn('id', $vaccinated_id_check)->update(['vaccinated_status' => '1']);
+                }
+            }
             $data = HealthProfessional::where('checked_by', Auth::user()->token)
-//                ->has('vaccinated')
+                ->where('vaccinated_status', '1')
                 ->latest()
                 ->paginate(1000);
         }

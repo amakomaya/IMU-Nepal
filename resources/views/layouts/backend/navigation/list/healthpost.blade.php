@@ -139,7 +139,14 @@
         <li>
             <a href="{{ route('health-professional.index') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Registered / Immunized
+                Registered
+                <span class="label label-primary pull-right">&#x2714;</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('health-professional.immunized') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Immunized
                 <span class="label label-success pull-right">&#x2714;</span>
             </a>
         </li>
