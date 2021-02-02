@@ -34,8 +34,9 @@ class HealthProfessionalController extends Controller
             $municipality_id = MunicipalityInfo::where('token', $token)->first()->municipality_id;
             $organization = Organization::where('municipality_id', $municipality_id)->pluck('token');
             $organizations = Organization::where('municipality_id', $municipality_id)->get();
-            $data = HealthProfessional::where('checked_by', Auth::user()->token)
-                ->OrwhereIn('checked_by', $organization)
+            $checked_by_tokens = collect($organization)->merge($token)->toArray();
+
+            $data = HealthProfessional::whereIn('checked_by', $checked_by_tokens)
                 ->whereNull('vaccinated_status')
                 ->latest()->paginate(1000);
 
@@ -58,8 +59,9 @@ class HealthProfessionalController extends Controller
             $token = Auth::user()->token;
             $municipality_id = MunicipalityInfo::where('token', $token)->first()->municipality_id;
             $organization = Organization::where('municipality_id', $municipality_id)->pluck('token');
-            $data_having_null = HealthProfessional::where('checked_by', Auth::user()->token)
-                ->OrwhereIn('checked_by', $organization)
+            $checked_by_tokens = collect($organization)->merge($token)->toArray();
+
+            $data_having_null = HealthProfessional::whereIn('checked_by', $checked_by_tokens)
                 ->whereNull('vaccinated_status')
                 ->pluck('id');
             if (count($data_having_null) > 0) {
@@ -68,8 +70,6 @@ class HealthProfessionalController extends Controller
                     HealthProfessional::whereIn('id', $vaccinated_id_check)->update(['vaccinated_status' => '1']);
                 }
             }
-
-            $checked_by_tokens = collect($organization)->merge($token)->toArray();
 
             $data = HealthProfessional::
                 where('vaccinated_status', '1')
