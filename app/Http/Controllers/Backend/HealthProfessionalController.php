@@ -62,16 +62,18 @@ class HealthProfessionalController extends Controller
                 ->OrwhereIn('checked_by', $organization)
                 ->whereNull('vaccinated_status')
                 ->pluck('id');
-            if (!empty($data_having_null)) {
+            if (count($data_having_null) > 0) {
                 $vaccinated_id_check = VaccinationRecord::whereIn('vaccinated_id', $data_having_null)->pluck('vaccinated_id');
-                if (!empty($data_having_null)) {
+                if (count($vaccinated_id_check) > 0) {
                     HealthProfessional::whereIn('id', $vaccinated_id_check)->update(['vaccinated_status' => '1']);
                 }
             }
 
-            $data = HealthProfessional::where('checked_by', Auth::user()->token)
+
+            $data = HealthProfessional::
+                where('vaccinated_status', '1')
+                ->where('checked_by', Auth::user()->token)
                 ->OrwhereIn('checked_by', $organization)
-                ->where('vaccinated_status', '1')
                 ->latest()
                 ->paginate(1000);
         } else {
@@ -79,9 +81,9 @@ class HealthProfessionalController extends Controller
             $data_having_null = HealthProfessional::where('checked_by', Auth::user()->token)
                 ->whereNull('vaccinated_status')
                 ->pluck('id');
-            if (!empty($data_having_null)) {
+            if (count($data_having_null) > 0) {
                 $vaccinated_id_check = VaccinationRecord::whereIn('vaccinated_id', $data_having_null)->pluck('vaccinated_id');
-                if (!empty($data_having_null)) {
+                if (count($data_having_null) > 0) {
                     HealthProfessional::whereIn('id', $vaccinated_id_check)->update(['vaccinated_status' => '1']);
                 }
             }
