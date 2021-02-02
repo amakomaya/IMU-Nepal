@@ -69,11 +69,11 @@ class HealthProfessionalController extends Controller
                 }
             }
 
+            $checked_by_tokens = collect($organization)->merge($token)->toArray();
 
             $data = HealthProfessional::
                 where('vaccinated_status', '1')
-                ->where('checked_by', Auth::user()->token)
-                ->OrwhereIn('checked_by', $organization)
+                ->whereIn('checked_by', $checked_by_tokens)
                 ->latest()
                 ->paginate(1000);
         } else {
