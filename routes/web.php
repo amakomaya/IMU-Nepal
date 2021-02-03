@@ -5,6 +5,7 @@ use App\Models\HealthProfessional;
 use App\Models\Municipality;
 use App\Models\VaccinationRecord;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 Route::get('locale/{locale}', function ($locale) {
     \Session::put('locale', $locale);
@@ -253,3 +254,13 @@ Route::get('vaccination-calc', function(){
 });
 Route::get('/public-client/add', 'Backend\PublicClientController@create')->name('public-client.add');
 Route::post('/public-client/store', 'Backend\PublicClientController@store')->name('public-client.store');
+
+Route::post('/excel-download/unvaccinated/{id}/{key}', function (\Illuminate\Http\Request $request, $id, $key){
+    $arg = [
+        'id' => $id,
+        'key' => $key
+    ];
+
+    return Excel::download(new \App\Exports\UnVaccinatedExport($arg), $key.'-'.$id.'-unvaccinated-data-' . date('Y-m-d H:i:s') . '.xlsx');
+
+})->name('excel-download.unvaccinated');

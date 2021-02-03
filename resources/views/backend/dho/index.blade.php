@@ -66,7 +66,12 @@
                                                 <td>{{$datum->phone}}</td>                                     
                                                 <td>{{$datum->office_address}}</td>                                     
 
-                                                <td>{{$datum->total}} / {{ $datum->vaccinated_total }}</td>
+                                                <td>{{$datum->total}} / {{ $datum->vaccinated_total }}
+                                                    <form method="post" action="{{ route('excel-download.unvaccinated', [$datum->district_id, 'district']) }}" onsubmit="return confirm('Are you sure you want to download all the unvaccinated records?');">
+                                                        {{csrf_field()}}
+                                                        <button name="submit" class="btn btn-warning btn-xs" title="Download unvaccinated records"><i class="fa fa-download"> Download</i></button>
+                                                    </form>
+                                                </td>
                                                 <td>
                                                     
                                                     <form method="post" action="{{route('dho.destroy', $datum->id)}}" onsubmit="return confirmDelete()"> 

@@ -48,7 +48,6 @@
                                         <th>{{trans('index.district')}}</th>                                    
                                         <th>{{trans('index.local_level')}}</th>
                                         <th title="Total Vaccination Information Data">Total / Immunized</th>
-                                        <th>{{trans('index.office_address')}}</th>
                                         <th>{{trans('index.options')}}</th>
                                     </tr>
                                     </thead>
@@ -65,8 +64,12 @@
                                         <td>
                                             {{ $municipalityInfo->municipality->municipality_name }}
                                         </td>  
-                                        <td>{{ $municipalityInfo->hospital_total }} / {{ $municipalityInfo->vaccinated_total }}</td>
-                                        <td>{{$municipalityInfo->office_address}}</td>
+                                        <td>{{ $municipalityInfo->hospital_total }} / {{ $municipalityInfo->vaccinated_total }}
+                                            <form method="post" action="{{ route('excel-download.unvaccinated', [$municipalityInfo->municipality_id, 'municipality']) }}" onsubmit="return confirm('Are you sure you want to download all the unvaccinated records?');">
+                                                {{csrf_field()}}
+                                                <button name="submit" class="btn btn-warning btn-xs" title="Download unvaccinated records"><i class="fa fa-download"> Download</i></button>
+                                            </form>
+                                        </td>
                                         <td>
                                         <form method="post" action="{{route('municipality.destroy', $municipalityInfo->id)}}" onsubmit="return confirmDelete()">
                                             <div class="icon">
