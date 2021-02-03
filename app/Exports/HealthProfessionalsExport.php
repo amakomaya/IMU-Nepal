@@ -15,21 +15,24 @@ class HealthProfessionalsExport implements FromCollection, WithHeadings
     {
         $this->request = $request;
     }
+
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         if (Auth::user()->role === "main" || Auth::user()->role === "center") {
             $data = HealthProfessional::whereBetween('created_at', [$this->request['from'], $this->request['to']])
-                ->with('district','municipality')
+                ->with('district', 'municipality')
                 ->get();
         } elseif (Auth::user()->role === "municipality") {
             $token = Auth::user()->token;
             $municipality_id = MunicipalityInfo::where('token', $token)->first()->municipality_id;
             $organization = Organization::where('municipality_id', $municipality_id)->pluck('token');
-            $data = HealthProfessional::where('checked_by', Auth::user()->token)
-                ->OrwhereIn('checked_by', $organization)
+
+            $checked_by_tokens = collect($organization)->merge($token)->toArray();
+
+            $data = HealthProfessional::whereIn('checked_by', $checked_by_tokens)
                 ->whereBetween('created_at', [$this->request['from'], $this->request['to']])
                 ->whereNull('vaccinated_status')
                 ->with('district','municipality')
@@ -40,12 +43,13 @@ class HealthProfessionalsExport implements FromCollection, WithHeadings
                 ->whereNull('vaccinated_status')
                 ->with('district','municipality')
                 ->get();
+
         }
 
-        return $data->map(function ($item, $key){
+        return $data->map(function ($item, $key) {
             try {
                 $record = [];
-                $record['sn'] = $key+1;
+                $record['sn'] = $key + 1;
                 $record['register_no'] = $item->id;
                 $record['name'] = $item->name;
                 $record['gender'] = $this->gender($item->gender);
@@ -56,14 +60,15 @@ class HealthProfessionalsExport implements FromCollection, WithHeadings
                 $record['ward'] = $item->ward;
                 $record['phone'] = $item->phone;
                 $record['post'] = $item->designation;
-                $record['id_number'] = $item->citizenship_no .' / '. $item->issue_district;
+                $record['id_number'] = $item->citizenship_no . ' / ' . $item->issue_district;
                 return $record;
-            }catch (\Exception $e){
+            } catch (\Exception $e) {
 
             }
         });
     }
-    public function headings() : array
+
+    public function headings(): array
     {
         return [
             'S.N.',
@@ -81,8 +86,9 @@ class HealthProfessionalsExport implements FromCollection, WithHeadings
         ];
     }
 
-    private function gender($value){
-        switch ($value){
+    private function gender($value)
+    {
+        switch ($value) {
             case '1':
                 return 'Male';
             case '2':

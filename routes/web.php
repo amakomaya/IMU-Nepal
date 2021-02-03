@@ -77,6 +77,8 @@ Route::get('/admin/maps/data', 'Backend\MapController@data');
 
 //Backend Dho
 Route::resource('admin/dho', 'Backend\DHOController');
+Route::get('admin/dho-vaccination', 'Backend\DHOController@findMunicipalities')->name('dho.vaccination.municipalities');
+Route::post('admin/dho-vaccination-list', 'Api\CovidImmunizationController@immunizationListByDistrictLogin')->name('dho.vaccination.list.store');
 
 //Bakend Province
 Route::resource('admin/province', 'Backend\ProvinceController');
@@ -244,8 +246,10 @@ Route::get('vaccination-calc', function(){
     $data_having_null = HealthProfessional::whereNull('vaccinated_status')->pluck('id');
     if (!empty($data_having_null)) {
         $vaccinated_id_check = VaccinationRecord::whereIn('vaccinated_id', $data_having_null)->pluck('vaccinated_id');
-        if (!empty($data_having_null)) {
+        if (!empty($vaccinated_id_check)) {
             HealthProfessional::whereIn('id', $vaccinated_id_check)->update(['vaccinated_status' => '1']);
         }
     }
 });
+Route::get('/public-client/add', 'Backend\PublicClientController@create')->name('public-client.add');
+Route::post('/public-client/store', 'Backend\PublicClientController@store')->name('public-client.store');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\CovidImmunization;
+use App\Models\DistrictInfo;
 use App\Models\HealthProfessional;
 use App\Models\MunicipalityInfo;
 use App\Models\OrganizationMember;
@@ -24,23 +25,24 @@ class CovidImmunizationController extends Controller
         //
     }
 
-    public function store(Request $request, CovidImmunization $covidImmunization)
+    public function store(Request $request)
     {
-//        $customMessages = [
-//            'required' => 'The :attribute field is required.',
-//        ];
-//
-//        $request->validate([
-//            'data_list' => 'required',
-//        ], $customMessages);
-
         $data = $request->all();
         $data['hp_code'] = $request->hp_code;
         $data['municipality_id'] = MunicipalityInfo::where('token', auth()->user()->token)->first()->municipality_id;
-        $data['data_list'] = $data['data_list'];
         CovidImmunization::create($data);
         $request->session()->flash('message', 'Data Send for Immunization successfully');
         return redirect()->route('health-professional.index');
+    }
+
+    public function immunizationListByDistrictLogin(Request $request)
+    {
+        $data = $request->all();
+        $data['hp_code'] = $request->hp_code;
+        $data['municipality_id'] = DistrictInfo::where('token', auth()->user()->token)->first()->district_id;
+        CovidImmunization::create($data);
+        $request->session()->flash('message', 'Data Send for Immunization successfully');
+        return redirect()->route('dho.vaccination.municipalities');
     }
 
     public function show(Request $request)

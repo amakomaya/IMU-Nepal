@@ -24,7 +24,7 @@ class HealthProfessionalController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         if (User::checkAuthForIndexShowHealthpost() === false) {
             return redirect('/admin');
@@ -32,15 +32,13 @@ class HealthProfessionalController extends Controller
         if (Auth::user()->role === "municipality") {
             $token = Auth::user()->token;
             $municipality_id = MunicipalityInfo::where('token', $token)->first()->municipality_id;
-            $organization = Organization::where('municipality_id', $municipality_id)->pluck('token');
-            $organizations = Organization::where('municipality_id', $municipality_id)->get();
-            $checked_by_tokens = collect($organization)->merge($token)->toArray();
+            $organization_token = Organization::where('municipality_id', $municipality_id)->pluck('token');
+            $checked_by_tokens = collect($organization_token)->merge($token)->toArray();
 
             $data = HealthProfessional::whereIn('checked_by', $checked_by_tokens)
-                ->whereNull('vaccinated_status')
-                ->latest()->paginate(1000);
+                ->whereNull('vaccinated_status')->paginate(1000);
 
-            return view('health-professional.index', compact('data','organizations'));
+            return view('health-professional.index', compact('data', 'organizations'));
         } else {
             $data = HealthProfessional::where('checked_by', Auth::user()->token)
                 ->whereNull('vaccinated_status')

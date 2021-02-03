@@ -5,21 +5,21 @@
     </a>
 
     <ul class="nav nav-second-level">
-         <li>
+        <li>
             <a href="{{ route('municipality.index') }}">
-                    Municipality 
+                Municipality
             </a>
         </li>
-         <li>
+        <li>
             <a href="{{ route('healthpost.index') }}">
                 Hospitals / CICT Teams
             </a>
         </li>
     </ul>
-</li> 
+</li>
 <li>
     <a href="{{ route('health-worker.index') }}">
-    <i class="fa fa-user"></i>
+        <i class="fa fa-user"></i>
         Health Worker
     </a>
 </li>
@@ -87,10 +87,15 @@
         </li>
     </ul>
 </li>
-
+<li>
+    <a href="{{ route('dho.vaccination.municipalities') }}">
+        <i class="fas fa-syringe"></i>
+        Vaccination
+    </a>
+</li>
 <li>
     <a href="{{ route('center.woman.map') }}">
-    <i class="fa fa-map-marker"></i>
-            Map 
+        <i class="fa fa-map-marker"></i>
+        Map
     </a>
 </li>

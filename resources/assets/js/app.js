@@ -36,6 +36,7 @@ import LabCaseReport from "./components/LabCaseReport.vue"
 import CasesInOtherOrganization from "./components/CasesInOtherOrganization";
 import MapIndex from "./components/MapIndex";
 import AnalysisAntigen from "./components/analysis/Antigen";
+import PublicClientCreate from "./components/public_client/Create";
 
 import AdminDashboard from "./components/AdminDashboard";
 
@@ -91,6 +92,7 @@ Vue.component('analysis-time-series', AnalysisTimeSeries)
 Vue.component('analysis-gender', AnalysisGender)
 Vue.component('analysis-occupation', AnalysisOccupation)
 Vue.component('analysis-antigen', AnalysisAntigen)
+Vue.component('public-client-create', require('./components/public_client/Create'));
 
 const app = new Vue({
     el: '#app'
