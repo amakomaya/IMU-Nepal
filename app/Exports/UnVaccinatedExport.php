@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Models\HealthProfessional;
 use App\Models\MunicipalityInfo;
 use App\Models\Organization;
+use App\Models\VaccinationRecord;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -43,6 +44,16 @@ class UnVaccinatedExport implements FromCollection, WithHeadings
                 ->with('district','municipality')
                 ->get();
 
+        if (count($data->count()) > 0) {
+            $ids = collect($data)->pluck('id');
+            $vaccinated_id_check = VaccinationRecord::whereIn('vaccinated_id', $ids)->pluck('vaccinated_id');
+            if (count($vaccinated_id_check) > 0) {
+                HealthProfessional::whereIn('id', $vaccinated_id_check)->update(['vaccinated_status' => '1']);
+                $data->whereIn('id',$vaccinated_id_check)->forget();
+            }
+        }
+
+
         return $data->map(function ($item, $key) {
             try {
                 $record = [];
@@ -59,9 +70,8 @@ class UnVaccinatedExport implements FromCollection, WithHeadings
                 $record['post'] = $item->designation;
                 $record['id_number'] = $item->citizenship_no . ' / ' . $item->issue_district;
                 return $record;
-            } catch (\Exception $e) {
+            } catch (\Exception $e) { }
 
-            }
         });
     }
 
