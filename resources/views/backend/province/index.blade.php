@@ -48,9 +48,7 @@
                                             <th>{{trans('index.province')}}</th>
                                             <th>{{trans('index.phone')}}</th>                                     
                                             <th>{{trans('index.office_address')}}</th>                                     
-                                            <th>{{trans('index.status')}}</th>
-                                            <th>{{trans('index.created_at')}}</th>
-                                            <th title="Total Health Professional Data">Total HP Data</th>
+                                            <th title="Total Vaccinated Data Information">Total / Vaccinated</th>
                                             <th>{{trans('index.options')}}</th>
                                         </tr>
                                     </thead>
@@ -66,15 +64,8 @@
                                                 </td>            
                                                 <td>{{$province->phone}}</td>                                     
                                                 <td>{{$province->office_address}}</td>                                     
-                                                <td>
-                                                    @if($province->status=='0')
-                                                    <span class="label label-danger">Inactive</span>
-                                                    @else
-                                                    <span class="label label-success">Active</span>
-                                                    @endif
-                                                </td>
-                                                <td>{{$province->created_at->diffForHumans()}}</td>
-                                                <td>{{$province->total}}</td>
+
+                                                <td>{{$province->total}} / {{ $province->vaccinated_total }}</td>
                                                 <td>
                                                     
                                                     <form method="post" action="{{route('province.destroy', $province->id)}}" onsubmit="return confirmDelete()"> 

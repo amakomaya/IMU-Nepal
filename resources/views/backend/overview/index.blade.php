@@ -19,8 +19,10 @@
                                             <th>S.N</th>                                     
                                             <th>Hospitals</th>
                                             <th>Username</th>
+                                            <th>Province</th>
+                                            <th>District</th>
                                             <th>Municipality</th>
-                                            <th title="Total Health Professional Data">Total HP Data</th>
+                                            <th title="Total Professional Data Information">Total / Vaccinated</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -35,8 +37,10 @@
                                                 </form>
                                                 </td>
                                                 <td>{{ $d->user->username ?? '' }}</td>
+                                                <td>{{ $d->province->province_name ?? '' }}</td>
+                                                <td>{{ $d->district->district_name ?? '' }}</td>
                                                 <td>{{ $d->municipality->municipality_name ?? '' }}</td>
-                                                <td>{{ $d->sample_total }}</td>
+                                                <td>{{ $d->sample_total }} / {{ $d->vaccinated_total }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
