@@ -34,6 +34,7 @@ class HealthProfessionalController extends Controller
             $municipality_id = MunicipalityInfo::where('token', $token)->first()->municipality_id;
             $organization_token = Organization::where('municipality_id', $municipality_id)->pluck('token');
             $checked_by_tokens = collect($organization_token)->merge($token)->toArray();
+            $organizations = Organization::where('municipality_id', $municipality_id)->get();
 
             $data = HealthProfessional::whereIn('checked_by', $checked_by_tokens)
                 ->whereNull('vaccinated_status')->paginate(1000);

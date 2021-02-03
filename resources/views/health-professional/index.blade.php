@@ -5,31 +5,31 @@
 @section('content')
     <div id="page-wrapper">
 
-        <div class="panel">
-            <div class="panel-heading">
-                <div class="panel-title">
-                    Filter through
-                </div>
-            </div>
-            <div class="panel-body">
-                <form action="{{ route('health-professional.index') }}" method="GET" name="filter" id="filter">
-                    <div class="row">
-                        <div class="form-group col-lg-9">
-                            <select name="organization" class="form-control" id="organization">
-                                <option value="">Select an organization</option>
-                                @foreach($organizations ?? '' as $immunizationCenter)
-                                    <option value="{{ $immunizationCenter->token }}">{{$immunizationCenter->name ?? ''}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-filter"></i> Filter
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+{{--        <div class="panel">--}}
+{{--            <div class="panel-heading">--}}
+{{--                <div class="panel-title">--}}
+{{--                    Filter through--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="panel-body">--}}
+{{--                <form action="{{ route('health-professional.index') }}" method="GET" name="filter" id="filter">--}}
+{{--                    <div class="row">--}}
+{{--                        <div class="form-group col-lg-9">--}}
+{{--                            <select name="organization" class="form-control" id="organization">--}}
+{{--                                <option value="">Select an organization</option>--}}
+{{--                                @foreach($organizations ?? '' as $immunizationCenter)--}}
+{{--                                    <option value="{{ $immunizationCenter->token }}">{{$immunizationCenter->name ?? ''}}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
+{{--                        <div class="form-group col-lg-3">--}}
+{{--                            <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-filter"></i> Filter--}}
+{{--                            </button>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </form>--}}
+{{--            </div>--}}
+{{--        </div>--}}
         <div class="row">
             <div class="col-lg-12">
                 <a href="#" class="btn btn-success"  id="btnDownload" data-toggle="modal" data-target="#healthProfessionalsDownloadModel">
