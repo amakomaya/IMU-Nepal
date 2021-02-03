@@ -94,17 +94,21 @@
                 <hr>
                 <br>
                 <div class="col-lg-12">
-                    <table class="table table-striped">
+                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                         <tr>
                             <th>Organization</th>
+                            <th>District</th>
+                            <th>Municipality</th>
                             <th>Data</th>
                         </tr>
                         @foreach($data['organization_data'] as $organization)
                             @php
-                                $org = \App\Models\Organization::where('hp_code', $organization->hp_code)->first();
+                                $org = \App\Models\Organization::where('hp_code', $organization->hp_code)->with('municipality', 'district')->first();
                             @endphp
                             <tr>
                                 <td>{{ $org->name ?? '' }}</td>
+                                <td>{{ $org->district->district_name ?? '' }}</td>
+                                <td>{{ $org->municipality->municipality_name ?? '' }}</td>
                                 <td>{{ $organization->total }}</td>
                             </tr>
                         @endforeach
