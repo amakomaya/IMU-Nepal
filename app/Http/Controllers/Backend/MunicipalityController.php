@@ -27,11 +27,7 @@ class MunicipalityController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
        if(Auth::user()->role=="province"){
@@ -52,17 +48,22 @@ class MunicipalityController extends Controller
             ->select('checked_by', \DB::raw('count(*) as total'))
             ->get();
 
-        $merged = $municipalityInfos->map(function ($item) use ($health_professional) {
+        $health_professional_vaccinated = HealthProfessional::
+            select('vaccinated_id', 'checked_by')
+            ->join('vaccination_records', 'health_professional.id', 'vaccinated_id')
+            ->groupBy('checked_by')
+            ->select('checked_by as vaccinated_checked_by', \DB::raw('count(*) as total'))
+            ->get();
+
+
+        $merged = $municipalityInfos->map(function ($item) use ($health_professional_vaccinated, $health_professional) {
 
             $organization = Organization::where('municipality_id', $item->municipality_id)->pluck('token');
             $municipality_info = MunicipalityInfo::where('municipality_id', $item->municipality_id)->pluck('token');
             $token = $organization->merge($municipality_info);
 
             $item['hospital_total'] = $health_professional->whereIn('checked_by', $token)->sum('total');
-
-//            $single = $count_hospital->where('municipality_id',$item->municipality_id)->first();
-
-//            $item['hospital_total'] = ($single) ? $single->municipality_total : 0;
+            $item['vaccinated_total'] = $health_professional_vaccinated->whereIn('vaccinated_checked_by', $token)->sum('total');
 
             return $item;
         });

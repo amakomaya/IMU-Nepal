@@ -47,9 +47,8 @@
                                         <th>{{trans('index.province')}}</th>                                     
                                         <th>{{trans('index.district')}}</th>                                    
                                         <th>{{trans('index.local_level')}}</th>
-                                        <th title="Total Health Professional Data">Total HP Data</th>
+                                        <th title="Total Vaccination Information Data">Total / Immunized</th>
                                         <th>{{trans('index.office_address')}}</th>
-                                        <th>{{trans('index.status')}}</th>
                                         <th>{{trans('index.options')}}</th>
                                     </tr>
                                     </thead>
@@ -66,17 +65,8 @@
                                         <td>
                                             {{ $municipalityInfo->municipality->municipality_name }}
                                         </td>  
-                                        <td>{{ $municipalityInfo->hospital_total }}</td>
+                                        <td>{{ $municipalityInfo->hospital_total }} / {{ $municipalityInfo->vaccinated_total }}</td>
                                         <td>{{$municipalityInfo->office_address}}</td>
-                                        <td>
-                                            @if($municipalityInfo->status=='0')
-                                            <span class="label label-danger">Inactive</span>
-
-                                            @else
-                                            <span class="label label-success">Active</span>
-
-                                            @endif
-                                        </td>
                                         <td>
                                         <form method="post" action="{{route('municipality.destroy', $municipalityInfo->id)}}" onsubmit="return confirmDelete()">
                                             <div class="icon">

@@ -47,9 +47,9 @@
                                             <th>{{trans('index.district')}}</th>
                                             <th>{{trans('index.phone')}}</th>                                     
                                             <th>{{trans('index.office_address')}}</th>                                     
-                                            <th>{{trans('index.status')}}</th>
-                                            <th>{{trans('index.created_at')}}</th>
-                                            <th title="Total Health Professional Data">Total HP Data </th>
+{{--                                            <th>{{trans('index.status')}}</th>--}}
+{{--                                            <th>{{trans('index.created_at')}}</th>--}}
+                                            <th title="Total Vaccination Information Data">Total / Vaccinated </th>
                                             <th>{{trans('index.options')}}</th>
                                         </tr>
                                     </thead>
@@ -65,17 +65,8 @@
                                                 </td>           
                                                 <td>{{$datum->phone}}</td>                                     
                                                 <td>{{$datum->office_address}}</td>                                     
-                                                <td>
-                                                    @if($datum->status=='0')
-                                                    <span class="label label-danger">Inactive</span>
 
-                                                    @else
-                                                    <span class="label label-success">Active</span>
-
-                                                    @endif
-                                                </td>
-                                                <td>{{$datum->created_at->diffForHumans()}}</td>
-                                                <td>{{$datum->total}}</td>
+                                                <td>{{$datum->total}} / {{ $datum->vaccinated_total }}</td>
                                                 <td>
                                                     
                                                     <form method="post" action="{{route('dho.destroy', $datum->id)}}" onsubmit="return confirmDelete()"> 
