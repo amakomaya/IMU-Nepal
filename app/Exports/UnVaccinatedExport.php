@@ -49,7 +49,10 @@ class UnVaccinatedExport implements FromCollection, WithHeadings
             $vaccinated_id_check = VaccinationRecord::whereIn('vaccinated_id', $ids)->pluck('vaccinated_id');
             if (count($vaccinated_id_check) > 0) {
                 HealthProfessional::whereIn('id', $vaccinated_id_check)->update(['vaccinated_status' => '1']);
-                $data->whereIn('id',$vaccinated_id_check)->forget();
+                $data = HealthProfessional::whereIn('checked_by', $tokens)
+                    ->whereNull('vaccinated_status')
+                    ->with('district','municipality')
+                    ->get();
             }
         }
 
