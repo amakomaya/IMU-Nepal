@@ -37,6 +37,7 @@ import CasesInOtherOrganization from "./components/CasesInOtherOrganization";
 import MapIndex from "./components/MapIndex";
 import AnalysisAntigen from "./components/analysis/Antigen";
 import PublicClientCreate from "./components/public_client/Create";
+import VaccinationList from "./components/VaccinationList";
 
 import AdminDashboard from "./components/AdminDashboard";
 
@@ -93,6 +94,7 @@ Vue.component('analysis-gender', AnalysisGender)
 Vue.component('analysis-occupation', AnalysisOccupation)
 Vue.component('analysis-antigen', AnalysisAntigen)
 Vue.component('public-client-create', require('./components/public_client/Create'));
+Vue.component('vaccination-list', VaccinationList);
 
 const app = new Vue({
     el: '#app'

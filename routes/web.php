@@ -112,6 +112,13 @@ Route::get('/admin/lab-positive-patients', function () {
     return view('backend.lab.positive-index');
 })->name('lab.positive.patients.index');
 
+Route::get('/admin/vaccination-list', function () {
+    return view('vaccination.list');
+})->name('vaccination.web.index');
+Route::get('/admin/vaccinated-list', function () {
+    return view('vaccination.vaccinated');
+})->name('vaccinated.web.index');
+
 //Backend Health Worker
 Route::resource('admin/health-worker', 'Backend\HealthWorkerController');
 
