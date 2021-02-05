@@ -26,9 +26,9 @@ class HealthProfessionalController extends Controller
 
     public function index(Request $request)
     {
-        if (User::checkAuthForIndexShowHealthpost() === false) {
-            return redirect('/admin');
-        }
+//        if (User::checkAuthForIndexShowHealthpost() === false) {
+//            return redirect('/admin');
+//        }
         if (Auth::user()->role === "municipality") {
             $token = Auth::user()->token;
             $municipality_id = MunicipalityInfo::where('token', $token)->first()->municipality_id;
@@ -45,6 +45,7 @@ class HealthProfessionalController extends Controller
                 ->whereNull('vaccinated_status')
                 ->latest()->paginate(1000);
         }
+        dd($data);
         return view('health-professional.index', compact('data'));
     }
 
