@@ -89,8 +89,8 @@
 </li>
 <li>
     <a href="{{ route('dho.vaccination.municipalities') }}">
-        <i class="fas fa-syringe"></i>
-        Vaccination
+        <i class="fa fa-hospital-o"></i>
+        Vaccination Center
     </a>
 </li>
 <li>

@@ -16,7 +16,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Municipalities
+                        @if(auth()->user()->role == 'dho') Municipalities @else Organization @endif
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -25,32 +25,66 @@
                                 {{ session()->get('message') }}
                             </div>
                         @endif
-                        <table id="vaccinatedTable"
-                               class="table table-responsive table-striped table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th>ID</th>
-                                <th title="Municipality Name">Municipality Name</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach ($datas as $d)
-                                @php($token = $d['token'] ?? '' )
-                                @php($office_address = $d['office_address'] ?? '' )
-                                <tr>
-                                    <td>
-                                        <div class="checkbox">
-                                            <input type="checkbox" id="dataList" value="{{ $token }}"
-                                                   name="dataList[]">
-                                        </div>
-                                    </td>
-                                    <td>{{$loop->iteration }}</td>
-                                    <td>{{ $office_address }}</td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                            @if(auth()->user()->role == 'dho')
+                                <table id="vaccinatedTable"
+                                       class="table table-responsive table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>ID</th>
+                                        <th title="Municipality Name">Municipality Name</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($datas as $d)
+                                        @php($token = $d['token'] ?? '' )
+                                        @php($office_address = $d['office_address'] ?? '' )
+                                        <tr>
+                                            <td>
+                                                <div class="checkbox">
+                                                    <input type="checkbox" id="dataList" value="{{ $token }}"
+                                                           name="dataList[]">
+                                                </div>
+                                            </td>
+                                            <td>{{$loop->iteration }}</td>
+                                            <td>{{ $office_address }}</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            @else
+                                <table id="vaccinatedTable"
+                                       class="table table-responsive table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>ID</th>
+                                        <th title="Name">Organization Name</th>
+                                        <th title="Address">Address</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($datas as $d)
+                                        @php($token = $d['token'] ?? '' )
+                                        @php($office_address = $d['office_address'] ?? '' )
+                                        <tr>
+                                            <td>
+                                                <div class="checkbox">
+                                                    <input type="checkbox" id="dataList" value="{{ $token }}"
+                                                           name="dataList[]">
+                                                </div>
+                                            </td>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $d['name'] }}</td>
+                                            <td>{{ $office_address }}</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+
+                            @endif
+
+
                         <div class="pull-right">
                             {{--                            {{ $data->links() }}--}}
                         </div>

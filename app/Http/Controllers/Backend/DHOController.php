@@ -204,30 +204,48 @@ class DHOController extends Controller
 
     public function findMunicipalities()
     {
-        $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
-        $data = MunicipalityInfo::where('district_id', $district_id)->get();
-        $datas = $data->map(
-            function ($items) {
-                $data['office_address'] = $items->office_address;
-                $data['token'] = $items->token;
-                return $data;
-            }
-        );
-        $organizations = Organization::where('district_id', $district_id)->get();
+        if (auth()->user()->role == 'dho'){
+            $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
+            $data = MunicipalityInfo::where('district_id', $district_id)->get();
+            $datas = $data->map(
+                function ($items) {
+                    $data['name'] = $items->name;
+                    $data['office_address'] = $items->office_address;
+                    $data['token'] = $items->token;
+                    return $data;
+                }
+            );
+            $organizations = Organization::where('district_id', $district_id)->get();
+        }
+        if (auth()->user()->role == 'municipality'){
+            $municipality_id = MunicipalityInfo::where('token',Auth::user()->token)->first()->municipality_id;
+            $data = Organization::where('municipality_id', $municipality_id)->get();
+            $datas = $data->map(
+                function ($items) {
+                    $data['name'] = $items->name;
+                    $data['office_address'] = $items->address;
+                    $data['token'] = $items->token;
+                    return $data;
+                }
+            );
+            $organizations = Organization::where('municipality_id', $municipality_id)->get();
+        }
 
         return view('backend.dho.vaccination', compact('datas', 'organizations'));
     }
 
     public function findAllHealthProfessionalDatas(Request $request)
     {
-        $token = $request->token;
-        $array = explode(',', $token);
-        $datas = [];
-        foreach ($array as $item) {
-            $data = HealthProfessional::where('checked_by', $item)->pluck('id');
-            foreach ($data as $d)
-                array_push($datas, $d);
+        $array = explode(',', $request->token);
+        if (auth()->user()->role == 'dho'){
+            $municipality_ids = MunicipalityInfo::whereIn('token', $array)->pluck('municipality_id');
+            $organizations_token = Organization::whereIn('municipality_id', $municipality_ids)->pluck('token');
+            $checked_by_tokens = collect($array)->merge($organizations_token)->toArray();
+            $data = HealthProfessional::whereIn('checked_by', $checked_by_tokens)->whereNull('vaccinated_status')->pluck('id')->toArray();
+            echo implode(',', $data);
+        }else{
+            $data = HealthProfessional::whereIn('checked_by', $array)->whereNull('vaccinated_status')->pluck('id')->toArray();
+            echo implode(',', $data);
         }
-        echo implode(',', $datas);
     }
 }

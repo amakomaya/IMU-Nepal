@@ -102,6 +102,12 @@
     </a>
 </li>
 <li>
+    <a href="{{ route('dho.vaccination.municipalities') }}">
+        <i class="fa fa-hospital-o"></i>
+        Vaccination Center
+    </a>
+</li>
+<li>
     <a href="#">
         <i class="fa fa-users" aria-hidden="true"></i>
         Health Professional <span class="fa arrow"></span>

@@ -37,6 +37,8 @@ class CovidImmunizationController extends Controller
 
     public function immunizationListByDistrictLogin(Request $request)
     {
+        dd($request->all());
+
         $data = $request->all();
         $data['hp_code'] = $request->hp_code;
         $data['municipality_id'] = DistrictInfo::where('token', auth()->user()->token)->first()->district_id;
