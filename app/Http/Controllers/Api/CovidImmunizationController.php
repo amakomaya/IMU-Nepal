@@ -73,6 +73,35 @@ class CovidImmunizationController extends Controller
         }
     }
 
+    public function showDataByUserLogin()
+    {
+        try{
+            $hp_code = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
+            $currentDate = Carbon::now()->format('Y-m-d');
+            $data = CovidImmunization::where('hp_code', $hp_code)
+                ->where('expire_date', '>=', $currentDate)
+                ->pluck('data_list');
+
+            $id_list = array();
+
+            foreach($data as $item){
+                $id_list[] = explode(",", $item);
+            }
+
+            $id_list = collect($id_list)->flatten()->unique();
+
+            $response = [];
+            $response['data'] = HealthProfessional::whereIn('id', $id_list)->get();
+
+            return response()->json([
+                'collection' => $response
+            ]);
+
+        }catch (\Exception $exception){
+            return response()->json(['message' => 'Data Not Found']);
+        }
+    }
+
     public function edit(CovidImmunization $covidImmunization)
     {
         //

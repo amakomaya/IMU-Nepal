@@ -20,26 +20,39 @@ class VaccinationController extends Controller
     {
         $token = $request->token;
         $responses = HealthProfessional::where('id', $token)->first();
-        if (!empty($responses)){
+        if (!empty($responses)) {
             $responses['vaccination_record'] = VaccinationRecord::where('vaccinated_id', $responses->id)->get();
             return response()->json($responses);
-        }else{
+        } else {
             return response()->json(['message' => 'Data Not Found']);
         }
     }
 
-    public function record(Request $request){
+    public function record(Request $request)
+    {
         $data = $request->json()->all();
         try {
-            foreach ($data as $input){
+            foreach ($data as $input) {
                 try {
                     VaccinationRecord::create($input);
-                }catch (\Exception $e){
+                } catch (\Exception $e) {
                 }
             }
         } catch (\Exception $e) {
             return response()->json(['message' => 'Something went wrong, Please try again.']);
         }
         return response()->json(['message' => 'Data Successfully Sync']);
+    }
+
+    public function store(Request $request){
+        dd($request->getContent());
+        $data['token'] = md5(microtime(true) . mt_Rand());
+        $data['vaccinated_id'] = '';
+        $data['hp_code'] = '';
+        $data['vaccine_name'] = 'Covi Shield';
+        $data['vaccine_period'] = '1M';
+        $data['vaccinated_date_en'] = '';
+        $data['vaccinated_date_np'] = '';
+        $data['status'] = 1;
     }
 }

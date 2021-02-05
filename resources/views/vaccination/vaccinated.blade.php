@@ -16,7 +16,7 @@
                     </div>
                 @endif
                 <div id="app">
-                    <lab-patient-list></lab-patient-list>
+                    <vaccinated-list></vaccinated-list>
                 </div>
             </div>
         </div>
