@@ -39,7 +39,7 @@ class CovidImmunizationController extends Controller
     {
         $data = $request->all();
         $data['hp_code'] = $request->hp_code;
-        $data['municipality_id'] = DistrictInfo::where('token', auth()->user()->token)->first()->district_id;
+        $data['municipality_id'] = auth()->user()->token;
         CovidImmunization::create($data);
         $request->session()->flash('message', 'Data Send for Immunization successfully');
         return redirect()->route('dho.vaccination.municipalities');
