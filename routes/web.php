@@ -38,17 +38,25 @@ Route::get('/admin/organization-select', 'AdminController@organizationSelect')->
 
 
 Route::get('/health-professional/add', function (\Illuminate\Http\Request $request) {
-
     $province_id = 1;
     $district_id = 1;
     $municipality_id = 1;
     $districts = District::where('province_id', $province_id)->orderBy('district_name', 'asc')->get();
     $municipalities = Municipality::where('district_id', $district_id)->orderBy('municipality_name', 'asc')->get();
-    $data = HealthProfessional::where('checked_by', Auth::user()->token)->latest()->first();
-    $data['organization_type'] = $data->organization_type ?? '';
-    $data['organization_name'] = $data->organization_name ?? '';
-    $data['organization_phn'] = $data->organization_phn ?? '';
-    $data['organization_address'] = $data->organization_address ?? '';
+
+    try{
+        $data = HealthProfessional::where('checked_by', Auth::user()->token)->latest()->first();
+        $data['organization_type'] = $data->organization_type ?? '';
+        $data['organization_name'] = $data->organization_name ?? '';
+        $data['organization_phn'] = $data->organization_phn ?? '';
+        $data['organization_address'] = $data->organization_address ?? '';
+    }catch (\Exception $exception){
+        $data['organization_type'] = '';
+        $data['organization_name'] = '';
+        $data['organization_phn'] = '';
+        $data['organization_address'] = '';
+        return view('health-professional.public-create', compact('province_id', 'district_id', 'municipality_id', 'districts','municipalities', 'data'));
+    }
     return view('health-professional.add', compact('province_id', 'district_id', 'municipality_id', 'districts','municipalities', 'data'));
 })->name('health.professional.add');
 Route::post('/health-professional', 'Backend\HealthProfessionalController@store')->name('health-professional.store');

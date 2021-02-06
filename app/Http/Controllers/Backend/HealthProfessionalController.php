@@ -19,10 +19,10 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class HealthProfessionalController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+//    public function __construct()
+//    {
+//        $this->middleware('auth');
+//    }
 
     public function index(Request $request)
     {
@@ -45,7 +45,6 @@ class HealthProfessionalController extends Controller
                 ->whereNull('vaccinated_status')
                 ->latest()->paginate(1000);
         }
-        dd($data);
         return view('health-professional.index', compact('data'));
     }
 
@@ -114,7 +113,7 @@ class HealthProfessionalController extends Controller
             $row['disease'] = "[]";
         }
         $row['serial_no'] = 1;
-        $row['checked_by'] = Auth::user()->token;
+        $row['checked_by'] = Auth::user()->token ?? 'global';
         $id = HealthProfessional::create($row)->id;
         $id = str_pad($id, 6, "0", STR_PAD_LEFT);
         return redirect()->back()->with('message', "Your information is successfully submitted. Your serial Number is : $id  And Please carefully note your Serial Numbers and your registered Ph number : " . $row['phone']);
