@@ -45,14 +45,24 @@ class VaccinationController extends Controller
     }
 
     public function store(Request $request){
-        dd($request->getContent());
+        $d = $request->all();
         $data['token'] = md5(microtime(true) . mt_Rand());
-        $data['vaccinated_id'] = '';
-        $data['hp_code'] = '';
+        $data['vaccinated_id'] = $d['vaccinated_id'];
+        $data['hp_code'] = auth()->user()->token;
         $data['vaccine_name'] = 'Covi Shield';
         $data['vaccine_period'] = '1M';
-        $data['vaccinated_date_en'] = '';
-        $data['vaccinated_date_np'] = '';
+        $data['vaccinated_date_en'] = $d['vaccinated_date_en'];
+        $data['vaccinated_date_np'] = $d['vaccinated_date_np'];
         $data['status'] = 1;
+
+        try{
+            HealthProfessional::where('id',$data['vaccinated_id'])->update(['vaccinated_status'=>1]);
+            VaccinationRecord::create($data);
+            return response()->json('success');
+        }catch (\Exception $e){
+            return response()->json('Something went wrong, Submit again ');
+
+        }
+
     }
 }

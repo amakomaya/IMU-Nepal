@@ -91,7 +91,25 @@ class CovidImmunizationController extends Controller
             $id_list = collect($id_list)->flatten()->unique();
 
             $response = [];
-            $response['data'] = HealthProfessional::whereIn('id', $id_list)->get();
+            $response['data'] = HealthProfessional::whereIn('id', $id_list)->whereNull('vaccinated_status')->get();
+
+            return response()->json([
+                'collection' => $response
+            ]);
+
+        }catch (\Exception $exception){
+            return response()->json(['message' => 'Data Not Found']);
+        }
+    }
+
+    public function immunized(Request $request){
+        try{
+            $hp_code = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
+
+            $check_hp_code = collect($hp_code)->merge(auth()->user()->token)->toArray();
+            $ids = VaccinationRecord::whereIn('hp_code', $check_hp_code)->pluck('vaccinated_id');
+
+            $response['data'] = HealthProfessional::whereIn('id', $ids)->get();
 
             return response()->json([
                 'collection' => $response

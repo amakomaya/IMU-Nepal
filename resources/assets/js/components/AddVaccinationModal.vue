@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="help-block" v-if="!$v.data.id.required">Field is required.</div>
-      <!--      <div class="help-block" v-if="!$v.data.id.minLength">Field must have valid numbers length.</div>-->
+<!--      <div class="help-block" v-if="!$v.data.id.maxLength">Field must have valid numbers length.</div>-->
     </div>
     <div class="form-group" :class="{ 'has-error': $v.data.vaccination_date.$error }">
       <label class="control-label">Vaccination Date</label>
@@ -34,7 +34,7 @@
 
 <script type="text/javascript">
 
-import {minLength, required} from "vuelidate/lib/validators";
+import {maxLength, required} from "vuelidate/lib/validators";
 import DataConverter from "ad-bs-converter";
 import axios from "axios";
 
@@ -50,7 +50,7 @@ export default {
   validations: {
     data: {
       id: {
-        required,
+        required
         // maxLength: maxLength(6)
       },
       vaccination_date: {
@@ -60,56 +60,72 @@ export default {
   },
   methods: {
     submitVaccinationData(data) {
-      console.log(data)
       this.$v.$touch()
       if (this.$v.$invalid) {
         return false;
       }
-      axios.post('/api/v1/vaccination-data', data)
+      const payload = {
+        'vaccinated_id': data.id,
+        'vaccinated_date_np': this.data.vaccination_date,
+        'vaccinated_date_en': this.bs2ad(this.data.vaccination_date),
+      }
+      axios.post('/api/v1/vaccination-data', payload)
           .then((response) => {
             if (response.data === 'success') {
-              this.$swal({
-                title: 'Vaccination Added',
-                type: 'success',
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000
+              this.$dlg.toast('Vaccination Added !', {
+                messageType: 'success',
+                closeTime: 3, // auto close dialog time(second)
+                language: 'en',
+                position : 'topRight'
               })
               this.$v.$reset();
               this.data = {};
+              var today = new Date();
+              this.data.vaccination_date = this.ad2bs(today);
               if (this.item) {
                 this.$dlg.closeAll(function () {
                   // do something after all dialog closed
                 })
               }
             } else {
-              this.$swal({
-                title: 'Oops. Something went wrong.',
-                type: 'error',
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000
+              this.$dlg.toast('Oops. Something went wrong.', {
+                messageType: 'error',
+                closeTime: 3, // auto close dialog time(second)
+                language: 'en',
+                position : 'topRight'
               })
             }
           })
     },
+    bs2ad: function (date) {
+      var dateObject = date.split("-");
+
+      var dateFormat = dateObject[0] + "/" + dateObject[1] + "/" + dateObject[2];
+
+      let dateConverter = DataConverter.bs2ad(dateFormat);
+
+      return dateConverter.year + '-' + dateConverter.month + '-' + dateConverter.day;
+
+    },
     ad2bs: function (date) {
+      if(date === undefined){
+        return '';
+      }
       var dateObject = new Date(date);
 
-      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
+      var dateFormat = dateObject.getFullYear()  + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getDate();
 
       let dateConverter = DataConverter.ad2bs(dateFormat);
 
       return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
 
-    },
+    }
+
   },
   created() {
-    // if(this.item){
-    //   this.data.token = this.item.latest_anc.labreport.token.split('-').splice(1).join('-');
-    // }
+    if(this.item){
+      this.data.id = this.item.id;
+    }
     var today = new Date();
     this.data.vaccination_date = this.ad2bs(today);
   }

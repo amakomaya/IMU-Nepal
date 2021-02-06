@@ -106,7 +106,7 @@
         </div>
       </div>
     </div>
-    <div class="filterable-export">
+    <div class="filterable-export" v-if="!checkPermission('vaccination')">
         <div class="btn btn-primary">
 
           <download-excel
@@ -120,7 +120,6 @@
 
         </div>
         <div class="btn btn-secondary">
-
           <download-excel
               :fetch   = "exportToExcelForDolphins"
               :fields = "json_fields_for_dolphins"
@@ -131,6 +130,7 @@
           </download-excel>
         </div>
         <!--        <button @click="exportToCSV()">Export</button>-->
+
       <div>
         <span>Order by:</span>
         <select :disabled="loading" @input="updateOrderColumn">
@@ -467,6 +467,10 @@ export default {
         this.query.page = Number(this.query.page) + 1
         this.applyChange()
       }
+    },
+    checkPermission(value){
+      var arr = this.$userPermissions.split(',');
+      return arr.includes(value);
     },
     getFilters() {
       const f = {}

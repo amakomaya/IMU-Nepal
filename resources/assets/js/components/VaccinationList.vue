@@ -10,10 +10,10 @@
         <th width="5%" title="Gender">G</th>
         <th width="8%" title="Contact Number">Phone</th>
         <th width="15%" title="Municipality">Municipality</th>
-        <th width="8%">War d</th>
+        <th width="8%">Ward</th>
         <th width="10%" title="Post">Post</th>
         <th width="10%" title="ID Number">ID Number</th>
-<!--        <th width="10%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>-->
+        <th width="10%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
       </tr>
       </thead>
       <tr slot-scope="{item}">
@@ -30,13 +30,26 @@
           {{ item.citizenship_no }}<br>
           /{{ item.issue_district }}
         </td>
-<!--        <td>-->
-<!--          <button v-on:click="addVaccination(item)" title="Add Vaccination">-->
-<!--            <i class="fa fa-plus-square-o" aria-hidden="true"></i>-->
-<!--          </button>-->
-<!--        </td>-->
+        <td>
+          <button class="btn btn-primary" v-on:click="addVaccination(item)" title="Add Vaccination">
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+          </button>
+        </td>
       </tr>
     </filterable>
+
+    <div>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+
+      <fab
+          :position="fabOptions.position"
+          :bg-color="fabOptions.bgColor"
+          :actions="fabActions"
+          :start-opened=true
+          @addVaccination="addVaccination"
+      ></fab>
+    </div>
   </div>
 </template>
 
@@ -50,9 +63,9 @@ export default {
   components: {Filterable, fab},
   data() {
     return {
-      // role: this.$userRole,
+      role: this.$userRole,
       filterable: {
-        url: '/api/v1/health-professional/immunized',
+        url: '/api/v1/covid-vaccination-list',
         orderables: [
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},
@@ -119,6 +132,15 @@ export default {
       } else {
         return this.municipalities.find(x => x.id === value).municipality_name;
       }
+    },
+    addVaccination(item){
+      this.$dlg.modal(AddVaccinationModal, {
+        title: 'Add Vaccination',
+        width : 700,
+        params: {
+          item : item,
+        },
+      })
     },
   }
 }

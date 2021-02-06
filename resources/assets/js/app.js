@@ -37,7 +37,7 @@ import CasesInOtherOrganization from "./components/CasesInOtherOrganization";
 import MapIndex from "./components/MapIndex";
 import AnalysisAntigen from "./components/analysis/Antigen";
 import PublicClientCreate from "./components/public_client/Create";
-import VaccinationList from "./components/VaccinationList";
+import VaccinationList from "./components/VaccinationList.vue";
 import VaccinatedList from "./components/VaccinatedList";
 import AdminDashboard from "./components/AdminDashboard";
 
