@@ -106,7 +106,7 @@
         </div>
       </div>
     </div>
-    <div class="filterable-export" v-if="!checkPermission('vaccination')">
+    <div class="filterable-export">
         <div class="btn btn-primary">
 
           <download-excel
