@@ -90,11 +90,10 @@ class CovidImmunizationController extends Controller
 
             $id_list = collect($id_list)->flatten()->unique();
 
-            $response = [];
-            $response['data'] = HealthProfessional::whereIn('id', $id_list)->whereNull('vaccinated_status')->get();
+            $response = HealthProfessional::whereIn('id', $id_list)->whereNull('vaccinated_status');
 
             return response()->json([
-                'collection' => $response
+                'collection' => $response->advancedFilter()
             ]);
 
         }catch (\Exception $exception){
@@ -109,10 +108,10 @@ class CovidImmunizationController extends Controller
             $check_hp_code = collect($hp_code)->merge(auth()->user()->token)->toArray();
             $ids = VaccinationRecord::whereIn('hp_code', $check_hp_code)->pluck('vaccinated_id');
 
-            $response['data'] = HealthProfessional::whereIn('id', $ids)->get();
+            $response = HealthProfessional::whereIn('id', $ids);
 
             return response()->json([
-                'collection' => $response
+                'collection' => $response->advancedFilter()
             ]);
 
         }catch (\Exception $exception){

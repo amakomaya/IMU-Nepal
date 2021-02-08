@@ -82,7 +82,6 @@ export default {
           }
         ],
       },
-      token: Filterable.data().collection.data,
       municipalities: [],
       exportHtml: '',
       fabOptions: {

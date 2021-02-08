@@ -3,11 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Support\Dataviewer;
+
 
 class HealthProfessional extends Model
 {
+    use Dataviewer;
     protected $table = 'health_professional';
+    protected $allowedFilters = [
+        'name', 'age',
+        'phone',
+        'created_at'
+    ];
 
+    protected $orderable = ['name', 'age', 'id','created_at'];
     protected $fillable = [
         'id', 'token', 'organization_type', 'organization_name', 'organization_phn', 'organization_address', 'designation',
         'level', 'service_date', 'name', 'gender', 'age', 'phone',

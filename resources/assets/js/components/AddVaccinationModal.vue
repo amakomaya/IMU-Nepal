@@ -3,16 +3,26 @@
     <div class="form-group" :class="{ 'has-error': $v.data.id.$error }">
       <label class="control-label">Enter Registered ID</label>
       <div class="inputGroupContainer">
-        <div class="input-group"><span class="input-group-addon"><i
-            class="fa fa-key"></i></span>
-          <input id="token" name="" placeholder="Enter Registered ID"
-                 class="form-control" required="true" v-model.trim="data.id"
-                 type="text">
+        <div>
+          <div class="input-group">
+            <span class="input-group-addon"><i
+              class="fa fa-key"></i></span>
+            <input id="token" name="" placeholder="Enter Registered ID"
+                   class="form-control" required="true" v-model.trim="data.id"
+                   type="text">
+          </div>
+          <button class="btn btn-primary pull-right" style="margin-top: 2px" @click="checkSID">Check</button>
         </div>
       </div>
       <div class="help-block" v-if="!$v.data.id.required">Field is required.</div>
 <!--      <div class="help-block" v-if="!$v.data.id.maxLength">Field must have valid numbers length.</div>-->
     </div>
+      <label style="margin-top:5px;" class="control-label btn-primary" id="message">{{ message }}</label>
+      <p style="margin-bottom:-10px; margin-top: -10px" class="panel-body"  v-show="isShow">
+        Name : {{ name }}<br>
+        Age : {{ age }}
+      </p>
+    <br>
     <div class="form-group" :class="{ 'has-error': $v.data.vaccination_date.$error }">
       <label class="control-label">Vaccination Date</label>
       <div class="inputGroupContainer">
@@ -24,6 +34,16 @@
         </div>
       </div>
       <div class="help-block" v-if="!$v.data.vaccination_date.required">Field is required.</div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Vaccinated Address</label>
+      <div class="inputGroupContainer">
+        <div class="input-group"><span class="input-group-addon"><i
+            class="fa fa-hospital-o"></i></span>
+          <input class="form-control" placeholder="Enter Vaccinated Address"
+                              v-model="data.vaccinated_address"/>
+        </div>
+      </div>
     </div>
     <button class="btn btn-primary btn-sm btn-block"
             @click.prevent="submitVaccinationData(data)">
@@ -45,6 +65,10 @@ export default {
   data() {
     return {
       data: {},
+      isShow: false,
+      name: '',
+      age: '',
+      message: '',
     }
   },
   validations: {
@@ -68,24 +92,27 @@ export default {
         'vaccinated_id': data.id,
         'vaccinated_date_np': this.data.vaccination_date,
         'vaccinated_date_en': this.bs2ad(this.data.vaccination_date),
+        'vaccinated_address' : this.data.vaccinated_address
       }
       axios.post('/api/v1/vaccination-data', payload)
           .then((response) => {
             if (response.data === 'success') {
-              this.$dlg.toast('Vaccination Added !', {
-                messageType: 'success',
-                closeTime: 3, // auto close dialog time(second)
-                language: 'en',
-                position : 'topRight'
-              })
+              this.$swal({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your work has been saved',
+                showConfirmButton: false,
+                timer: 1500
+              });
               this.$v.$reset();
               this.data = {};
               var today = new Date();
               this.data.vaccination_date = this.ad2bs(today);
               if (this.item) {
-                this.$dlg.closeAll(function () {
-                  // do something after all dialog closed
-                })
+                  this.$dlg.closeAll(function () {
+
+                  })
+
               }
             } else {
               this.$dlg.toast('Oops. Something went wrong.', {
@@ -119,7 +146,25 @@ export default {
 
       return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
 
-    }
+    },
+    checkSID: function () {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        return false;
+      }
+      axios.get('/api/vaccinated/qr-search?token=' + this.data.id)
+          .then((response) => {
+            if (response.data.message === 'Data Not Found') {
+              this.isShow = false;
+              this.message = response.data.message;
+            } else {
+              this.isShow = true;
+              this.message = 'Data Found Successfully';
+              this.name = response.data.name;
+              this.age = response.data.age;
+            }
+          });
+    },
 
   },
   created() {

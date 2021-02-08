@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import StatusIndicator from 'vue-status-indicator';
 import Vuetify from 'vuetify'
 import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 import 'vuetify/dist/vuetify.min.css'
 import DatePicker from 'vue2-datepicker'
 import Dialog from 'v-dialogs'
