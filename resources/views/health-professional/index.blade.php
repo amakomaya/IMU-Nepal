@@ -4,32 +4,6 @@
 @endsection
 @section('content')
     <div id="page-wrapper">
-
-{{--        <div class="panel">--}}
-{{--            <div class="panel-heading">--}}
-{{--                <div class="panel-title">--}}
-{{--                    Filter through--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <div class="panel-body">--}}
-{{--                <form action="{{ route('health-professional.index') }}" method="GET" name="filter" id="filter">--}}
-{{--                    <div class="row">--}}
-{{--                        <div class="form-group col-lg-9">--}}
-{{--                            <select name="organization" class="form-control" id="organization">--}}
-{{--                                <option value="">Select an organization</option>--}}
-{{--                                @foreach($organizations ?? '' as $immunizationCenter)--}}
-{{--                                    <option value="{{ $immunizationCenter->token }}">{{$immunizationCenter->name ?? ''}}</option>--}}
-{{--                                @endforeach--}}
-{{--                            </select>--}}
-{{--                        </div>--}}
-{{--                        <div class="form-group col-lg-3">--}}
-{{--                            <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-filter"></i> Filter--}}
-{{--                            </button>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </form>--}}
-{{--            </div>--}}
-{{--        </div>--}}
         <div class="row">
             <div class="col-lg-12">
                 <a href="#" class="btn btn-success"  id="btnDownload" data-toggle="modal" data-target="#healthProfessionalsDownloadModel">
@@ -42,10 +16,12 @@
                         <i class="fa fa-paper-plane"></i>
                         Send</a>
                 @endif
+                @if(auth()->user()->role !== "dho")
                 <a class="btn btn-info btn-sm pull-right"
                    href="{{ url('/health-professional/add') }}">
                     <i class="glyphicon glyphicon-plus"></i>Add Health Professional
                 </a>
+                @endif
             </div>
 
             <div class="col-lg-12">
@@ -152,7 +128,8 @@
                           action="{{ route('health-professional.export') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="form-group" hidden>
-                            <input type="text" id="organization_token" name="organization_token" value="{{ $orgToken ?? '' }}">
+                            <input type="text" id="organization_token" name="organization_token" value="{{ auth()->user()->token }}">
+                            <input type="text" id="type" name="type" value="0">
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="created_at">Created At *:</label>

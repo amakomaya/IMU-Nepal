@@ -14,6 +14,9 @@
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">{{ $data->total() }}</div>
+                                <a href="#" class="btn btn-success"  id="btnDownload" data-toggle="modal" data-target="#healthProfessionalsDownloadModel">
+                                    <i class="fa fa-file-excel-o"></i>
+                                    Download Data</a>
                                 <div>Total Vaccinated</div>
                             </div>
                         </div>
@@ -93,6 +96,54 @@
             <!-- /.col-lg-12 -->
         </div>
     </div>
+    <div class="modal fade" id="healthProfessionalsDownloadModel" tabindex="-1" role="dialog"
+         aria-labelledby="healthProfessionalsDownloadModel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Excel Download request form</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" name="excelExport" role="form" method="GET"
+                          action="{{ route('health-professional.export') }}" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        <div class="form-group" hidden>
+                            <input type="text" id="organization_token" name="organization_token" value="{{ auth()->user()->token }}">
+                            <input type="text" id="type" name="type" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="created_at">Created At *:</label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" id="from" placeholder="Enter from date"
+                                       name="from" min="2019-01-01" max="<?php echo date('Y-m-d'); ?>"
+                                       value="<?php echo date('Y-m-d'); ?>" required>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" id="to" placeholder="Enter to date" name="to"
+                                       min="2019-01-01" max="<?php echo date('Y-m-d'); ?>"
+                                       value="<?php echo date('Y-m-d'); ?>" required>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary pull-right">Submit Request</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    Note : * Required Fields
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @section('script')
     <script>

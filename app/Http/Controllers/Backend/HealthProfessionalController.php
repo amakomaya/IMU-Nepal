@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Exports\HealthProfessionalsExport;
 use App\Models\District;
+use App\Models\DistrictInfo;
 use App\Models\HealthProfessional;
 use App\Models\Municipality;
 use App\Models\MunicipalityInfo;
@@ -29,7 +30,22 @@ class HealthProfessionalController extends Controller
 //        if (User::checkAuthForIndexShowHealthpost() === false) {
 //            return redirect('/admin');
 //        }
-        if (Auth::user()->role === "municipality") {
+        if (Auth::user()->role === "dho") {
+            $token = Auth::user()->token;
+            $district_id = DistrictInfo::where('token', $token)->first()->district_id;
+
+            $municipality_token = MunicipalityInfo::where('district_id', $district_id)->pluck('token');
+            $organization_token = Organization::where('district_id', $district_id)->pluck('token');
+
+            $checked_by_tokens = collect($organization_token)->merge($municipality_token)->toArray();
+
+            $organizations = Organization::where('district_id', $district_id)->get();
+
+            $data = HealthProfessional::whereIn('checked_by', $checked_by_tokens)
+                ->whereNull('vaccinated_status')->paginate(1000);
+
+            return view('health-professional.index', compact('data', 'organizations'));
+        }elseif (Auth::user()->role === "municipality") {
             $token = Auth::user()->token;
             $municipality_id = MunicipalityInfo::where('token', $token)->first()->municipality_id;
             $organization_token = Organization::where('municipality_id', $municipality_id)->pluck('token');
@@ -54,7 +70,30 @@ class HealthProfessionalController extends Controller
             return redirect('/admin');
         }
 
-        if (Auth::user()->role === "municipality") {
+        if (Auth::user()->role === "dho") {
+            $token = Auth::user()->token;
+            $district_id = DistrictInfo::where('token', $token)->first()->district_id;
+
+            $municipality_token = MunicipalityInfo::where('district_id', $district_id)->pluck('token');
+            $organization_token = Organization::where('district_id', $district_id)->pluck('token');
+
+            $checked_by_tokens = collect($organization_token)->merge($municipality_token)->toArray();
+
+            $data_having_null = HealthProfessional::whereIn('checked_by', $checked_by_tokens)
+                ->whereNull('vaccinated_status')
+                ->pluck('id');
+            if (count($data_having_null) > 0) {
+                $vaccinated_id_check = VaccinationRecord::whereIn('vaccinated_id', $data_having_null)->pluck('vaccinated_id');
+                if (count($vaccinated_id_check) > 0) {
+                    HealthProfessional::whereIn('id', $vaccinated_id_check)->update(['vaccinated_status' => '1']);
+                }
+            }
+
+            $data = HealthProfessional::whereIn('checked_by', $checked_by_tokens)
+                ->where('vaccinated_status', '1')
+                ->paginate(1000);
+
+        }elseif (Auth::user()->role === "municipality") {
             $token = Auth::user()->token;
             $municipality_id = MunicipalityInfo::where('token', $token)->first()->municipality_id;
             $organization = Organization::where('municipality_id', $municipality_id)->pluck('token');
