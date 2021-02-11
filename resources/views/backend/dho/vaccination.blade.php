@@ -93,10 +93,44 @@
                     <!-- /.panel-body -->
                 </div>
                 <!-- /.panel -->
+                @if(auth()->user()->role == 'dho')
+                    <h3>All Organizations List</h3>
+                    <div class="panel-body">
+                        <table id="vaccinatedTable" class="table table-responsive table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>ID</th>
+                                    <th title="Name">Organization Name</th>
+                                    <th title="Name">Organization Phone</th>
+                                    <th title="Address">Address</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach ($org_user as $d)
+                                    <tr>
+                                        <td>
+                                                <input type="checkbox" id="dataList" value="{{ $d->organization_name }}"
+                                                       name="dataList[]">
+                                        </td>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $d->organization_name }}</td>
+                                        <td>{{ $d->organization_phn }}</td>
+                                        <td>{{ $d->organization_address }}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                @endif
+
             </div>
             <!-- /.col-lg-12 -->
         </div>
-    </div>
 
     <div class="modal fade" id="sendDataToImmunizationModel" tabindex="-1" role="dialog"
          aria-labelledby="sendDataToImmunizationModel">

@@ -216,6 +216,11 @@ class DHOController extends Controller
                 }
             );
             $organizations = Organization::where('district_id', $district_id)->get();
+            $checked_by = collect($data->pluck('token'))->merge($organizations->pluck('token'));
+            $org_user = HealthProfessional::whereIn('checked_by', $checked_by)->groupBy('organization_name')
+                ->select(['organization_name','organization_phn', 'organization_address'])
+                ->orderBy('organization_name', 'asc')
+                ->get();
         }
         if (auth()->user()->role == 'municipality'){
             $municipality_id = MunicipalityInfo::where('token',Auth::user()->token)->first()->municipality_id;
@@ -229,9 +234,14 @@ class DHOController extends Controller
                 }
             );
             $organizations = Organization::where('municipality_id', $municipality_id)->get();
+            $checked_by = collect($data->pluck('token'))->merge($organizations->pluck('token'));
+            $org_user = HealthProfessional::whereIn('checked_by', $checked_by)->groupBy('organization_name')
+                ->select(['organization_name','organization_phn', 'organization_address'])
+                ->orderBy('organization_name', 'asc')
+                ->get();
         }
 
-        return view('backend.dho.vaccination', compact('datas', 'organizations'));
+        return view('backend.dho.vaccination', compact('datas', 'organizations', 'org_user'));
     }
 
     public function findAllHealthProfessionalDatas(Request $request)
@@ -241,8 +251,11 @@ class DHOController extends Controller
             $municipality_ids = MunicipalityInfo::whereIn('token', $array)->pluck('municipality_id');
             $organizations_token = Organization::whereIn('municipality_id', $municipality_ids)->pluck('token');
             $checked_by_tokens = collect($array)->merge($organizations_token)->toArray();
-            $data = HealthProfessional::whereIn('checked_by', $checked_by_tokens)->whereNull('vaccinated_status')->pluck('id')->toArray();
-            echo implode(',', $data);
+            $data = HealthProfessional::whereIn('checked_by', $checked_by_tokens)->whereNull('vaccinated_status')->pluck('id');
+            $data2 = HealthProfessional::whereIn('organization_name', $array)->whereNull('vaccinated_status')->pluck('id');
+
+            $data_total = collect($data)->merge($data2)->toArray();
+            echo implode(',', $data_total);
         }else{
             $data = HealthProfessional::whereIn('checked_by', $array)->whereNull('vaccinated_status')->pluck('id')->toArray();
             echo implode(',', $data);
