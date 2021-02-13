@@ -315,7 +315,7 @@
     </div>
     <script type="text/javascript">
         $(window).on('load', function () {
-            $('#myModal').modal('show');
+            $('#myModal-hide').modal('show');
         });
     </script>
 </div>
