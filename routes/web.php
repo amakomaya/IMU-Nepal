@@ -272,3 +272,9 @@ Route::post('/excel-download/unvaccinated/{id}/{key}', function (\Illuminate\Htt
     return Excel::download(new \App\Exports\UnVaccinatedExport($arg), $key.'-'.$id.'-unvaccinated-data-' . date('Y-m-d H:i:s') . '.xlsx');
 
 })->name('excel-download.unvaccinated');
+
+Route::get('admin/download/positive-list', function (\Illuminate\Http\Request $request){
+
+    return Excel::download(new \App\Exports\DownloadablePositiveList($request), 'positive-list ' . date('Y-m-d H:i:s') . '.xlsx');
+
+});

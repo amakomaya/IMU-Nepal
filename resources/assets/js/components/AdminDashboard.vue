@@ -73,6 +73,12 @@
               </div>
             </div>
           </div>
+          <a href="/admin/download/positive-list">
+            <div class="panel-footer">
+              <span class="pull-left"><i class="fa fa-download"></i> Download</span>
+              <div class="clearfix"></div>
+            </div>
+          </a>
         </div>
       </div>
       <div class="col-lg-3 col-md-6" v-if="checkHospitalTypeForSampleFeature() || checkPermission('sample-collection') || !checkDataEntryRole()">
