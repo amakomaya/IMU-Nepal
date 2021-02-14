@@ -251,15 +251,6 @@ Route::get('/send-hp-data', function (\Illuminate\Http\Request $request){
    return 'Pass';
 });
 
-Route::get('vaccination-calc', function(){
-    $data_having_null = HealthProfessional::whereNull('vaccinated_status')->pluck('id');
-    if (!empty($data_having_null)) {
-        $vaccinated_id_check = VaccinationRecord::whereIn('vaccinated_id', $data_having_null)->pluck('vaccinated_id');
-        if (!empty($vaccinated_id_check)) {
-            HealthProfessional::whereIn('id', $vaccinated_id_check)->update(['vaccinated_status' => '1']);
-        }
-    }
-});
 Route::get('/public-client/add', 'Backend\PublicClientController@create')->name('public-client.add');
 Route::post('/public-client/store', 'Backend\PublicClientController@store')->name('public-client.store');
 
@@ -275,6 +266,12 @@ Route::post('/excel-download/unvaccinated/{id}/{key}', function (\Illuminate\Htt
 
 Route::get('admin/download/positive-list', function (\Illuminate\Http\Request $request){
 
-    return Excel::download(new \App\Exports\DownloadablePositiveList($request), 'positive-list ' . date('Y-m-d H:i:s') . '.xlsx');
+    return Excel::download(new \App\Exports\DownloadablePositiveList($request), 'positive-list' . date('Y-m-d H:i:s') . '.xlsx');
+
+});
+
+Route::get('download/vaccination-list', function (\Illuminate\Http\Request $request){
+
+    return Excel::download(new \App\Exports\VaccinationList($request), 'vaccination-list' . date('Y-m-d H:i:s') . '.xlsx');
 
 });

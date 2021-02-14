@@ -38,6 +38,14 @@
                             <div class="col-xs-9 text-right">
                                 <div class="huge">{{ $data['vaccination_count'] }}</div>
                                 <div>Total Immunization</div>
+                                @if(auth()->user()->role == 'dho' || auth()->user()->role == 'municipality' || auth()->user()->role == 'healthpost')
+                                    <a href="{{ url('download/vaccination-list') }}">
+                                        <div class="panel-footer pull-right">
+                                            <span class="pull-left"><i class="fa fa-download"></i> Download</span>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     </div>

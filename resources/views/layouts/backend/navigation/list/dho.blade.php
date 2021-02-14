@@ -88,6 +88,12 @@
     </ul>
 </li>
 <li>
+    <a href="{{ route('vaccination.report') }}">
+        <i class="fa fa-dashboard" aria-hidden="true"></i>
+        Vaccination Reports
+    </a>
+</li>
+<li>
     <a href="#">
         <i class="fa fa-users" aria-hidden="true"></i>
         Health Professional <span class="fa arrow"></span>
