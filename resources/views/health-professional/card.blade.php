@@ -115,7 +115,7 @@
 
             .qr {
                 position: absolute;
-                padding-left: 60%;
+                padding-left: 70%;
                 padding-top: 5px;
             }
 
@@ -166,7 +166,7 @@
                         <b>{{ $data->ward }}</b>
                     <p>
                     <p>सम्पर्क न : <b>{{ str_pad($data->phone,  10, "___") }}</b></p>
-                    <p>ब्यक्ति पहिचानको संकेत...................</p>
+                    <p>पहिचानको प्रमाण...................</p>
                     <br>
                     <p>नेपाल सरकार कोभिड १९ विरूद्धमा उपलब्ध भएको खोप मैले मेरो राजा खुशी साथ लिएको छु र पछि कुनै
                         भवीतब्य परी केहि भएमा कोही कसैलाई दोष नदिई म स्वयमं जिम्मेवारी हुनेछु। </p>
@@ -176,7 +176,7 @@
                     <table class="card-table">
                         <tr>
                             <td class="card-td">मात्रा</td>
-                            <td class="card-td">खोपको नाम र ब्याच नं</td>
+                            <td class="card-td">खोपको नाम र व्याच नं</td>
                             <td class="card-td">खोप लगाएको मिति</td>
                             <td class="card-td">खोप दिने स्वास्थ्यकर्मीको दस्तखत</td>
                         </tr>
@@ -219,6 +219,7 @@
                     {!! QrCode::size(150)->generate(str_pad($data->id, 6, "0", STR_PAD_LEFT)); !!}
                 </div>
                 <div class="container1">
+                    <b style="text-align: center;">खोप कार्ड– सेवाग्राही प्रति</b>
                     <p>दर्ता न.: {{ str_pad($data->id, 6, "0", STR_PAD_LEFT) }}</p>
                     <p>खोप लिने व्यक्ति को लक्षित समूह <b>.............................</b></p>
                     <p>नाम : <b>{{ str_pad($data->name,  24, "___") }}</b> उमेर : <b>{{ $data->age }}</b>
@@ -227,13 +228,12 @@
                         <b>{{ $data->ward }}</b>
                     <p>
                     <p>सम्पर्क न : <b>{{ str_pad($data->phone,  10, "___") }}</b></p>
-                    <b style="text-align: center;">खोप कार्ड– सेवाग्राही प्रति</b>
-                    <p>ब्यक्ति पहिचानको संकेत...................</p>
+                    <p>पहिचानको प्रमाण...................</p>
                     <br>
                     <table style="margin-top: 20px" class="table-card">
                         <tr>
                             <td class="card-td">मात्रा</td>
-                            <td class="card-td">खोपको नाम र ब्याच नं</td>
+                            <td class="card-td">खोपको नाम र व्याच नं</td>
                             <td class="card-td">खोप लगाएको मिति</td>
                             <td class="card-td">खोप दिने स्वास्थ्यकर्मीको दस्तखत</td>
                         </tr>

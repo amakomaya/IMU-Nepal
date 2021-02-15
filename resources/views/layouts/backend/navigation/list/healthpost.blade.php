@@ -127,11 +127,17 @@
     </li>
 @endif
 <li>
-    <a href="#">
-        <i class="fa fa-users" aria-hidden="true"></i>
-        Health Professional <span class="fa arrow"></span>
-    </a>
-
+    @if($h_type != 4)
+        <a href="#">
+            <i class="fa fa-users" aria-hidden="true"></i>
+            Health Professional <span class="fa arrow"></span>
+        </a>
+    @else
+        <a href="#">
+            <i class="fa fa-users" aria-hidden="true"></i>
+            Covid Immunization <span class="fa arrow"></span>
+        </a>
+    @endif
     <ul class="nav nav-second-level">
         <li>
             <a href="{{ route('health.professional.add') }}">
