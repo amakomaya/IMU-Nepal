@@ -8,13 +8,13 @@
 
     @section ('token',old('token'))
 
-    @php($province_id= old('province_id')) 
+    @php($province_id= old('province_id'))
 
-    @php($district_id= old('district_id')) 
+    @php($district_id= old('district_id'))
 
-    @php($municipality_id= old('municipality_id')) 
+    @php($municipality_id= old('municipality_id'))
 
-    @php($ward_no= old('ward_no')) 
+    @php($ward_no= old('ward_no'))
 
     @section ('hp_code',old('hp_code'))
 
@@ -31,9 +31,8 @@
     @section ('no_of_beds',old('no_of_beds'))
     @section ('no_of_ventilators',old('no_of_ventilators'))
     @section ('no_of_icu',old('no_of_icu'))
-    @php($hospital_type= old('hospital_type'))
-
-    @php($status= old('status')) 
+{{--    @php($hospital_type= old('hospital_type'))--}}
+    @php($status= old('status'))
 
     @section ('username',old('username'))
 

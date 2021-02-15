@@ -19,7 +19,7 @@ return [
         'show_password' => 'Show Password',
         'create_hp' => 'Create Hospital',
         'name' => 'Name',
-        'healthpost_code' => 'Hospital Code',
+        'healthpost_code' => 'Organization Code',
         'address' => 'Address',
         'hmis_uid' => 'HMIS UID',
         'create_local_level' => 'Create Local Government',

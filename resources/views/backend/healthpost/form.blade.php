@@ -37,9 +37,9 @@ input:focus ~ div{
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             @if (isset($data))
-                                Edit Hospitals
+                                Edit Organizations
                             @else
-                            {{trans('create.create_hp')}}
+                                Create Organizations
                             @endif
                         </div>
                         <!-- /.panel-heading -->
@@ -254,7 +254,7 @@ input:focus ~ div{
                                     </div>
                                 </div>
 
-                                <div class="form-group{{ $errors->has('hmis_uid') ? ' has-error' : '' }}">
+                                <div class="form-group{{ $errors->has('hmis_uid') ? ' has-error' : '' }}" hidden>
                                     <label for="hmis_uid" class="col-md-3 control-label"><i data-toggle="tooltip" title="यहाँ तपाईलाई HMIS मा डाटा पठाउने यूनिक आई. डी. थाहा छ भने हाल्नुहोस् यदि थाहा छैन भने छोड्दिनुहोस्।  "class="fa fa-info-circle" aria-hidden="true"></i>
                                     {{trans('create.hmis_uid')}}</label>
 
@@ -336,11 +336,11 @@ input:focus ~ div{
                                 </div>
                                 <div class="form-group{{ $errors->has('hospital_type') ? ' has-error' : '' }}">
                                     <label for="status" class="col-md-3 control-label"><i data-toggle="tooltip" class="fa fa-info-circle" aria-hidden="true"></i>
-                                        Hospital Type</label>
-                                    @php($list = [1=>'Sample Collection Only',2=>'Lab Test Only', 3=>'Both ( Sample Collection & Lab Test )'])
+                                        Organization Type</label>
+                                    @php($list = [1=>'Sample Collection Only',2=>'Lab Test Only', 3=>'Both ( Sample Collection & Lab Test )', 4=>'Normal'])
                                     <div class="col-md-7">
                                         <select id="status" class="form-control" name="hospital_type" >
-                                            <option value=""> Hospital Type</option>
+                                            <option value=""> Organization Type</option>
                                             @foreach ($list as $key => $value )
                                                 <option value="{{ $key }}" @if($hospital_type=="$key") {{ 'selected' }} @endif >
                                                     {{ $value }}
