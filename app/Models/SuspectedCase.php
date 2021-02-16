@@ -32,7 +32,7 @@ class SuspectedCase extends Model
         'screening_specific', 'emergency_contact_one', 'emergency_contact_two',
         'cases', 'case_where', 'end_case', 'payment', 'result', 'case_id', 'parent_case_id',
         'symptoms_recent', 'symptoms_within_four_week', 'symptoms_date', 'case_reason',
-        'temperature', 'date_of_onset_of_first_symptom', 'reson_for_testing'
+        'temperature', 'date_of_onset_of_first_symptom', 'reson_for_testing', 'case_type'
     ];
     protected $dates = ['deleted_at'];
     protected $allowedFilters = [

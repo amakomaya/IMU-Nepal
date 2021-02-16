@@ -38,7 +38,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3>Health Professional Information for Covid 19</h3>
+                        <h3>लक्षित समूहले कोभिड भ्याक्सिन सेवा प्राप्त गर्नको लागि, कृपया यहाँ दर्ता गर्नुहोस्</h3>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">

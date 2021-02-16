@@ -147,32 +147,32 @@
                                         <div class="form-group col-sm-3" id="province">
                                             <select name="province_id" class="form-control"
                                                     onchange="provinceOnchange($(this).val())">
-                                                @if(Auth::user()->role!="province" && Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
+{{--                                                @if(Auth::user()->role!="province" && Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")--}}
                                                     <option value="">Select All Provinces</option>
-                                                @endif
+{{--                                                @endif--}}
                                                 @foreach(App\Models\province::all() as $province)
                                                     @if($data->province_id == $province->id)
                                                         @php($selectedProvince = "selected")
                                                     @else
                                                         @php($selectedProvince = "")
                                                     @endif
-                                                    <option value="{{$data->province_id}}" {{$selectedProvince}}>{{$province->province_name}}</option>
+                                                    <option value="{{$province->id}}" {{$selectedProvince}}>{{$province->province_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="form-group  col-sm-3" id="district">
                                             <select name="district_id" class="form-control"
                                                     onchange="districtOnchange($(this).val())">
-                                                @if(Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
+{{--                                                @if(Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")--}}
                                                     <option value="">Select All Districts</option>
-                                                @endif
-                                                @foreach(App\Models\District::where('province_id', $data->province_id ?? '')->get() as $district)
+{{--                                                @endif--}}
+                                                @foreach(App\Models\District::all() as $district)
                                                     @if($data->district_id==$district->id)
                                                         @php($selectedDistrict = "selected")
                                                     @else
                                                         @php($selectedDistrict = "")
                                                     @endif
-                                                    <option value="{{$data->district_id}}" {{$selectedDistrict}}>{{$district->district_name}}</option>
+                                                    <option value="{{$district->id}}" {{$selectedDistrict}}>{{$district->district_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -180,16 +180,16 @@
                                             <select name="municipality_id" class="form-control"
                                                     onchange="municipalityOnchange($(this).val())"
                                                     id="municipality_id">
-                                                @if(Auth::user()->role!="municipality" && Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
+{{--                                                @if(Auth::user()->role!="municipality" && Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")--}}
                                                     <option value="">Select All Municipalities</option>
-                                                @endif
-                                                @foreach(\App\Models\Municipality::where('district_id', $data->district_id)->get() as $municipality)
+{{--                                                @endif--}}
+                                                @foreach(\App\Models\Municipality::all() as $municipality)
                                                     @if($data->municipality_id==$municipality->id)
                                                         @php($selectedMunicipality = "selected")
                                                     @else
                                                         @php($selectedMunicipality = "")
                                                     @endif
-                                                    <option value="{{$data->municipality_id}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>
+                                                    <option value="{{$municipality->id}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

@@ -215,9 +215,11 @@
             </div>
             <div style="display:inline-block; width:100%; height:auto;">
 
-{{--                <a href="{{ route('public-client.add') }}" class="btn btn-info center-block" role="button"><i--}}
-{{--                            class="fa fa-plus" aria-hidden="true"></i>--}}
-{{--                    Add Personal Information for Covi Shield</a>--}}
+                <a href="{{ route('health.professional.add') }}" class="btn btn-info center-block" role="button"
+                   title="लक्षित समूहले कोभिड भ्याक्सिन सेवा प्राप्त गर्नको लागि, कृपया यहाँ दर्ता गर्नुहोस्"
+                ><i
+                            class="fa fa-shield" aria-hidden="true"> भ्याक्सिन सेवा प्राप्त गर्नको लागि, कृपया यहाँ दर्ता गर्नुहोस्</i>
+                    </a>
 
                 <a target="_blank" href="https://play.google.com/store/apps/details?id=com.aamakomaya.hamrosurvey"><img
                             class="img-responsive center-block" src="{{ asset('images/google-play-badge.png') }}"></a>
