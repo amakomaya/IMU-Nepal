@@ -46,7 +46,7 @@ class HealthProfessionalsExport implements FromCollection, WithHeadings
                         ->get();
                 }else{
                     $data = $data->whereNotNull('vaccinated_status')
-                        ->with('district','municipality')
+                        ->with('district','municipality', 'vaccinated')
                         ->get();
                 }
 
@@ -66,7 +66,7 @@ class HealthProfessionalsExport implements FromCollection, WithHeadings
                     ->get();
             }else{
                 $data = $data->whereNotNull('vaccinated_status')
-                    ->with('district','municipality')
+                    ->with('district','municipality', 'vaccinated')
                     ->get();
             }
         } else {
@@ -79,10 +79,11 @@ class HealthProfessionalsExport implements FromCollection, WithHeadings
                     ->get();
             }else{
                 $data = $data->whereNotNull('vaccinated_status')
-                    ->with('district','municipality')
+                    ->with('district','municipality', 'vaccinated')
                     ->get();
             }
         }
+
 
         return $data->map(function ($item, $key) {
             try {
@@ -99,6 +100,11 @@ class HealthProfessionalsExport implements FromCollection, WithHeadings
                 $record['phone'] = $item->phone;
                 $record['post'] = $item->designation;
                 $record['id_number'] = $item->citizenship_no . ' / ' . $item->issue_district;
+                try {
+                    $record['vaccinated_date'] = $item->vaccinated->first()->vaccinated_date_en;
+                }catch (\Exception $e){
+                    $record['vaccinated_date'] = '';
+                }
                 return $record;
             } catch (\Exception $e) {
 
@@ -120,7 +126,8 @@ class HealthProfessionalsExport implements FromCollection, WithHeadings
             'Ward',
             'Phone',
             'Post',
-            'ID No'
+            'ID No',
+            'First Vaccinated Date'
         ];
     }
 

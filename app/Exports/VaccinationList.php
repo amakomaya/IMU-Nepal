@@ -39,7 +39,7 @@ class VaccinationList implements FromCollection, WithHeadings
         }
         $data_ids = $data_list->pluck('vaccinated_id');
 
-        $data = HealthProfessional::whereIn('id', $data_ids)->get();
+        $data = HealthProfessional::whereIn('id', $data_ids)->with('vaccinated')->get();
 
         return $data->map(function ($item, $key) {
             try {
@@ -56,6 +56,7 @@ class VaccinationList implements FromCollection, WithHeadings
                 $record['phone'] = $item->phone;
                 $record['post'] = $item->designation;
                 $record['id_number'] = $item->citizenship_no . ' / ' . $item->issue_district;
+                $record['vaccinated_date'] = $item->vaccinated->vaccinated_date_en ?? '';
                 return $record;
             } catch (\Exception $e) { }
         });
@@ -75,7 +76,8 @@ class VaccinationList implements FromCollection, WithHeadings
             'Ward',
             'Phone',
             'Post',
-            'ID No'
+            'ID No',
+            'Vaccinated Date'
         ];
     }
 
