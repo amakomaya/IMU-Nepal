@@ -6,7 +6,7 @@
         <div>
           <div class="input-group">
             <span class="input-group-addon"><i
-              class="fa fa-key"></i></span>
+                class="fa fa-key"></i></span>
             <input id="token" name="" placeholder="Enter Registered ID"
                    class="form-control" required="true" v-model.trim="data.id"
                    type="text">
@@ -15,13 +15,13 @@
         </div>
       </div>
       <div class="help-block" v-if="!$v.data.id.required">Field is required.</div>
-<!--      <div class="help-block" v-if="!$v.data.id.maxLength">Field must have valid numbers length.</div>-->
+      <!--      <div class="help-block" v-if="!$v.data.id.maxLength">Field must have valid numbers length.</div>-->
     </div>
-      <label style="margin-top:5px;" class="control-label btn-primary" id="message">{{ message }}</label>
-      <p style="margin-bottom:-10px; margin-top: -10px" class="panel-body"  v-show="isShow">
-        Name : {{ name }}<br>
-        Age : {{ age }}
-      </p>
+    <label style="margin-top:5px;" class="control-label btn-primary" id="message">{{ message }}</label>
+    <p style="margin-bottom:-10px; margin-top: -10px" class="panel-body" v-show="isShow">
+      Name : {{ name }}<br>
+      Age : {{ age }}
+    </p>
     <br>
     <div class="form-group" :class="{ 'has-error': $v.data.vaccination_date.$error }">
       <label class="control-label">Vaccination Date</label>
@@ -41,7 +41,7 @@
         <div class="input-group"><span class="input-group-addon"><i
             class="fa fa-hospital-o"></i></span>
           <input class="form-control" placeholder="Enter Vaccinated Address"
-                              v-model="data.vaccinated_address"/>
+                 v-model="data.vaccinated_address"/>
         </div>
       </div>
     </div>
@@ -92,7 +92,7 @@ export default {
         'vaccinated_id': data.id,
         'vaccinated_date_np': this.data.vaccination_date,
         'vaccinated_date_en': this.bs2ad(this.data.vaccination_date),
-        'vaccinated_address' : this.data.vaccinated_address
+        'vaccinated_address': this.data.vaccinated_address
       }
       axios.post('/api/v1/vaccination-data', payload)
           .then((response) => {
@@ -105,13 +105,15 @@ export default {
                 timer: 1500
               });
               this.$v.$reset();
-              this.data = {};
-              var today = new Date();
-              this.data.vaccination_date = this.ad2bs(today);
+              this.data.id = '';
+              this.data.vaccinated_address = '';
+              // this.data = {};
+              // var today = new Date();
+              // this.data.vaccination_date = this.ad2bs(today);
               if (this.item) {
-                  this.$dlg.closeAll(function () {
+                this.$dlg.closeAll(function () {
 
-                  })
+                })
 
               }
             } else {
@@ -119,7 +121,7 @@ export default {
                 messageType: 'error',
                 closeTime: 3, // auto close dialog time(second)
                 language: 'en',
-                position : 'topRight'
+                position: 'topRight'
               })
             }
           })
@@ -135,12 +137,12 @@ export default {
 
     },
     ad2bs: function (date) {
-      if(date === undefined){
+      if (date === undefined) {
         return '';
       }
       var dateObject = new Date(date);
 
-      var dateFormat = dateObject.getFullYear()  + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getDate();
+      var dateFormat = dateObject.getFullYear() + "/" + (dateObject.getMonth() + 1) + "/" + dateObject.getDate();
 
       let dateConverter = DataConverter.ad2bs(dateFormat);
 
@@ -168,7 +170,7 @@ export default {
 
   },
   created() {
-    if(this.item){
+    if (this.item) {
       this.data.id = this.item.id;
     }
     var today = new Date();

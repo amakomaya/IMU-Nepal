@@ -482,6 +482,43 @@
         </a>
       </div>
     </div>
+
+    <div class="col-lg-12" v-if="checkPermission('vaccination') ">
+      <h3>
+        Total Records</h3>
+    </div>
+    <div class="col-lg-4 col-md-6" v-if="checkPermission('vaccination') ">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-xs-3">
+              <i class="fa fa-check-square-o fa-3x"></i>
+            </div>
+            <div class="col-xs-9 text-right">
+              <div v-if="Object.keys(report).length === 0">
+                <loading-progress
+                    :progress="progress"
+                    :indeterminate="indeterminate"
+                    shape="line"
+                    size="30"
+                />
+              </div>
+              <div class="huge">{{ report.vaccinated }}</div>
+              <div>Vaccinated</div>
+            </div>
+          </div>
+        </div>
+        <a href="/admin/vaccinated-list">
+          <div class="panel-footer">
+            <span class="pull-left">View Details</span>
+            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+            <div class="clearfix"></div>
+          </div>
+        </a>
+      </div>
+    </div>
+
   </div>
 </template>
 

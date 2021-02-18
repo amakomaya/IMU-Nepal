@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Data\Api;
 
+use App\CovidImmunization;
 use App\Helpers\GetHealthpostCodes;
 use App\Models\HealthProfessional;
 use App\Models\LabTest;
 use App\Models\SampleCollection;
 use App\Models\SuspectedCase;
+use App\Models\VaccinationRecord;
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -57,6 +59,10 @@ class DashboardController extends Controller
             $immunized = Cache::remember('immunized' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
                 return HealthProfessional::where('checked_by', auth()->user()->token)->where('vaccinated_status', '1')->get()->count();
             });
+
+            $vaccinated = Cache::remember('vaccinated' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
+                return VaccinationRecord::whereIn('hp_code', $hpCodes)->get()->count();
+            });
         }
 
         $data = [
@@ -100,6 +106,7 @@ class DashboardController extends Controller
             'total_immunization_record' => $total_immunization_record ?? 0,
             'immunization_registered' => $immunization_registered ?? 0,
             'immunized' => $immunized ?? 0,
+            'vaccinated' => $vaccinated ?? 0,
 
             // time expiration in UMT add 5:45 to nepali time, sub 1 hrs to get updated at => 285
             'cache_created_at' => Carbon::parse(\DB::table('cache')->where('key', 'laravelregistered-'.auth()->user()->token)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s'),

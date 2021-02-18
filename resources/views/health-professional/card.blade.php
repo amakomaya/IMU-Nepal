@@ -141,7 +141,7 @@
 
                     <div class="lheadtitle">
                         <p class="govF">नेपाल सरकार</p>
-                        <p class="govF">स्वास्थ्य सेवा जनसंख्या मन्त्रालय</p>
+                        <p class="govF">स्वास्थ्य तथा जनसंख्या मन्त्रालय</p>
                         <p class="govM">स्वास्थ्य सेवा विभाग</p>
                         <p class="govB">परिवार कल्याण महाशाखा </p>
                     </div>
@@ -203,7 +203,7 @@
 
                     <div class="lheadtitle">
                         <p class="govF">नेपाल सरकार</p>
-                        <p class="govF">स्वास्थ्य सेवा जनसंख्या मन्त्रालय</p>
+                        <p class="govF">स्वास्थ्य तथा जनसंख्या मन्त्रालय</p>
                         <p class="govM">स्वास्थ्य सेवा विभाग</p>
                         <p class="govB">परिवार कल्याण महाशाखा </p>
                     </div>
