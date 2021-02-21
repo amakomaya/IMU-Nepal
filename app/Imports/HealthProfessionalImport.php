@@ -51,6 +51,6 @@ class HealthProfessionalImport implements ToCollection, WithColumnLimit
 
     public function endColumn(): string
     {
-        return 'T';
+        return 'Z';
     }
 }
