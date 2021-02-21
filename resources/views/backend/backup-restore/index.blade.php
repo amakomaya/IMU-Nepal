@@ -99,11 +99,11 @@
                                         <ul class="nav nav-tabs ">
                                             <li class="active">
                                                 <a href="#tab_default_1" data-toggle="tab">
-                                                    Restore </a>
+                                                    Register Only </a>
                                             </li>
                                             <li>
                                                 <a href="#tab_default_2" data-toggle="tab">
-                                                    Backup </a>
+                                                    Vaccinated Only </a>
                                             </li>
                                         </ul>
                                         <div class="tab-content">
@@ -111,6 +111,7 @@
                                                 <br><br>
                                                 {!! rcForm::open('POST', route('backup-restore.store')) !!}
                                                     <div class="form-group">
+                                                        <input type="text" name="import_type" value="1" hidden>
                                                         <div class="input-group input-file" name="file_path">
                                                                 <span class="input-group-btn">
                                                                     <button class="btn btn-default btn-choose" type="button">Choose</button>
@@ -123,8 +124,20 @@
                                                 </form>
                                             </div>
                                             <div class="tab-pane" id="tab_default_2">
-                                                Under Construction
-                                                </p>
+                                                <br><br>
+{{--                                                {!! rcForm::open('POST', route('backup-restore.store')) !!}--}}
+{{--                                                <div class="form-group">--}}
+{{--                                                    <input type="text" name="import_type" value="2" hidden>--}}
+{{--                                                    <div class="input-group input-file" name="file_path">--}}
+{{--                                                                <span class="input-group-btn">--}}
+{{--                                                                    <button class="btn btn-default btn-choose" type="button">Choose</button>--}}
+{{--                                                                </span>--}}
+{{--                                                        <input type="text" class="form-control" name="file_path"--}}
+{{--                                                               placeholder='Choose a file...'/>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+{{--                                                <button class="btn btn-primary text-center"> Restore</button>--}}
+{{--                                                </form>--}}
                                             </div>
                                         </div>
                                     </div>
