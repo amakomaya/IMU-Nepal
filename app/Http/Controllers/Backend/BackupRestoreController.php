@@ -22,7 +22,10 @@ class BackupRestoreController extends Controller
         $request->validate([
             'file_path' => 'required | mimes:xls,xlsx',
         ]);
-        $pathname = $request->file_path->getRealPath();
+//        $pathname = $request->file_path->getRealPath();
+
+        $path1 = $request->file('file_path')->store('temp');
+        $pathname=storage_path('app').'/'.$path1;
 
         if ($request->import_type === '1'){
             Excel::import(new HealthProfessionalImport, $pathname);
