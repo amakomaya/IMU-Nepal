@@ -26,6 +26,10 @@
                   />
                 </div>
                 <div class="huge">{{ report.sample_collection_in_24_hrs }}</div>
+                <div>
+                  RAT : {{ report.sample_collection_in_24_hrs_antigen }} <br>
+                  PCR : {{ report.sample_collection_in_24_hrs - report.sample_collection_in_24_hrs_antigen }}
+                </div>
                 <div>Swab Collection</div>
               </div>
             </div>
@@ -50,6 +54,10 @@
                   />
                 </div>
                 <div class="huge">{{ report.sample_received_in_lab_in_24_hrs }}</div>
+                <div>
+                  RAT : {{ report.sample_received_in_lab_in_24_hrs_antigen }} <br>
+                  PCR : {{ report.sample_received_in_lab_in_24_hrs - report.sample_received_in_lab_in_24_hrs_antigen }}
+                </div>
                 <div>Lab Received</div>
               </div>
             </div>
@@ -74,6 +82,10 @@
                   />
                 </div>
                 <div class="huge">{{ report.lab_result_positive_in_24_hrs }}</div>
+                <div>
+                  RAT : {{ report.lab_result_positive_in_24_hrs_antigen }} <br>
+                  PCR : {{ report.lab_result_positive_in_24_hrs_antigen - report.lab_result_positive_in_24_hrs_antigen }}
+                </div>
                 <div>Positive</div>
               </div>
             </div>
@@ -104,6 +116,10 @@
                   />
                 </div>
                 <div class="huge">{{ report.lab_result_negative_in_24_hrs }}</div>
+                <div>
+                  RAT : {{ report.lab_result_negative_in_24_hrs_antigen }} <br>
+                  PCR : {{ report.lab_result_negative_in_24_hrs - report.lab_result_negative_in_24_hrs_antigen }}
+                </div>
                 <div>Negative</div>
               </div>
             </div>
@@ -133,6 +149,10 @@
                   />
                 </div>
                 <div class="huge">{{ report.sample_collection }}</div>
+                <div>
+                  RAT : {{ report.sample_collection_antigen }} <br>
+                  PCR : {{ report.sample_collection - report.sample_collection_antigen }}
+                </div>
                 <div>Swab Collection</div>
               </div>
             </div>
@@ -165,6 +185,10 @@
                   />
                 </div>
                 <div class="huge">{{ report.sample_received_in_lab }}</div>
+                <div>
+                  RAT : {{ report.sample_received_in_lab_antigen }} <br>
+                  PCR : {{ report.sample_received_in_lab - report.sample_received_in_lab_antigen }}
+                </div>
                 <div>Lab Received</div>
               </div>
             </div>
@@ -197,6 +221,10 @@
                   />
                 </div>
                 <div class="huge">{{ report.lab_result_positive }}</div>
+                <div>
+                  RAT : {{ report.lab_result_positive_antigen }} <br>
+                  PCR : {{ report.lab_result_positive - report.lab_result_positive_antigen }}
+                </div>
                 <div>Positive</div>
               </div>
             </div>
@@ -229,6 +257,10 @@
                   />
                 </div>
                 <div class="huge">{{ report.lab_result_negative }}</div>
+                <div>
+                  RAT : {{ report.lab_result_negative_antigen }} <br>
+                  PCR : {{ report.lab_result_negative - report.lab_result_negative_antigen }}
+                </div>
                 <div>Negative</div>
               </div>
             </div>
@@ -242,6 +274,7 @@
             </div>
           </a>
         </div>
+        <div><mark>*RAT = Rapid Antigen Test  and <br> *PCR = SARS-CoV-2 RNA Test</mark></div>
       </div>
       <div class="col-lg-12" v-if="checkHospitalTypeForLabFeature() || checkPermission('lab-received')">
         <h3>Today's update in Lab
