@@ -31,7 +31,7 @@
         <li>
             <a href="{{ route('analysis.antigen') }}">
                 <i class="fa fa-flask" aria-hidden="true"></i>
-                Antigen
+                PCR / Antigen
             </a>
         </li>
     </ul>
