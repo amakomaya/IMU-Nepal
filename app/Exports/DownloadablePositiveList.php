@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Helpers\GetHealthpostCodes;
+use App\Models\OrganizationMember;
 use App\Models\SampleCollection;
 use App\Models\SuspectedCase;
 use App\Reports\FilterRequest;
@@ -41,7 +42,8 @@ class DownloadablePositiveList implements FromCollection, WithHeadings
                 ->active()
                 ->pluck('woman_token');
 
-            $data = SuspectedCase::whereIn('token', $tokens)->with('district', 'municipality', 'ancs')->get();
+            $data = SuspectedCase::whereIn('token', $tokens)->with('district', 'municipality', 'latestAnc')->get();
+
             return $data->map(function ($item, $key) {
                 try {
                     $record = [];
@@ -55,7 +57,9 @@ class DownloadablePositiveList implements FromCollection, WithHeadings
                     $record['ward'] = $item->ward;
                     $record['phone'] = $item->emergency_contact_one;
                     $record['phone_two'] = $item->emergency_contact_two;
-                    $record['swab_id'] = $item->ancs->last()->token;
+                    $record['swab_id'] = $item->latestAnc->token;
+                    $record['lab_id'] = $item->latestAnc->labreport->formated_token;
+                    $record['lab_name'] = $item->latestAnc->labreport->checked_by_name;
 
                     return $record;
                 } catch (\Exception $e) {
@@ -78,7 +82,9 @@ class DownloadablePositiveList implements FromCollection, WithHeadings
             'Ward',
             'Phone',
             'Phone Two',
-            'Swab ID'
+            'Swab ID',
+            'Lab ID',
+            'Tested by Lab Name'
         ];
     }
 }
