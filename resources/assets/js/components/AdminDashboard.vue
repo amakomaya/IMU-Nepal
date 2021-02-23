@@ -84,7 +84,7 @@
                 <div class="huge">{{ report.lab_result_positive_in_24_hrs }}</div>
                 <div>
                   RAT : {{ report.lab_result_positive_in_24_hrs_antigen }} <br>
-                  PCR : {{ report.lab_result_positive_in_24_hrs_antigen - report.lab_result_positive_in_24_hrs_antigen }}
+                  PCR : {{ report.lab_result_positive_in_24_hrs - report.lab_result_positive_in_24_hrs_antigen }}
                 </div>
                 <div>Positive</div>
               </div>
