@@ -20,11 +20,26 @@ class DownloadablePositiveList implements FromCollection, WithHeadings
     public function collection()
     {
         {
-
             $response = FilterRequest::filter($this->request);
             $hpCodes = GetHealthpostCodes::filter($response);
 
-            $tokens = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->whereDate('updated_at', Carbon::today())->active()->pluck('woman_token');
+            $check_at_1330 = Carbon::parse('today 1:30pm');
+
+            if($check_at_1330 < Carbon::now()){
+                // 1 pm today + current
+                $date_from = Carbon::parse('today 1:30pm');
+                $date_to = Carbon::now();
+            }else{
+                // 1pm yesterday + current
+                $date_from = Carbon::parse('yesterday 1:30pm');
+                $date_to = Carbon::now();
+            }
+
+            $tokens = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)
+//                ->whereDate('updated_at', Carbon::today())
+                ->whereBetween('updated_at', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
+                ->active()
+                ->pluck('woman_token');
 
             $data = SuspectedCase::whereIn('token', $tokens)->with('district', 'municipality', 'ancs')->get();
             return $data->map(function ($item, $key) {

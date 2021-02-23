@@ -3,7 +3,7 @@
     <div v-if="!checkHospitalTypeForOrganization()">
       <div class="col-lg-12"
            v-if="checkHospitalTypeForSampleFeature() || checkPermission('cases-registration') || !checkDataEntryRole()">
-        <h3>Today's update <sub>| Registered : {{ report.registered_in_24_hrs }}</sub>
+        <h3>{{ headingTitle() }} <sub>| Registered : {{ report.registered_in_24_hrs }}</sub>
           <small v-if="!report.cache_created_at" class="pull-right">loading...</small>
           <small v-else class="pull-right">Updated at : {{ recordUpdatedAt() }}</small>
         </h3>
@@ -607,8 +607,18 @@ export default {
     },
     checkHospitalTypeForOrganization() {
       return this.$hospitalType === '4';
+    },
+    headingTitle(){
+      var today = new Date().toISOString().slice(0, 10);
+      var check_at_1330 = new Date(today + ' 13:30:00');
+
+      if(check_at_1330 < new Date()){
+        return 'Today 1:30 pm to Now';
+      }else{
+        return 'Yesterday 1:30 pm to Now';
+      }
     }
-  }
+  },
 }
 </script>
 
