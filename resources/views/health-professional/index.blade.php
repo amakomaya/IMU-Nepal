@@ -6,7 +6,8 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <a href="#" class="btn btn-success"  id="btnDownload" data-toggle="modal" data-target="#healthProfessionalsDownloadModel">
+                <a href="#" class="btn btn-success" id="btnDownload" data-toggle="modal"
+                   data-target="#healthProfessionalsDownloadModel">
                     <i class="fa fa-file-excel-o"></i>
                     Download Data</a>
                 @if(Illuminate\Support\Facades\Auth::user()->role === "municipality")
@@ -17,10 +18,10 @@
                         Send</a>
                 @endif
                 @if(auth()->user()->role !== "dho")
-                <a class="btn btn-info btn-sm pull-right"
-                   href="{{ url('/health-professional/add') }}">
-                    <i class="glyphicon glyphicon-plus"></i>Add Health Professional
-                </a>
+                    <a class="btn btn-info btn-sm pull-right"
+                       href="{{ url('/health-professional/add') }}">
+                        <i class="glyphicon glyphicon-plus"></i>Add Health Professional
+                    </a>
                 @endif
             </div>
 
@@ -97,6 +98,13 @@
                                            href="{{ url('health-professional/edit/'.$d->id) }}" target="_blank">
                                             <i class="fa fa-edit" aria-hidden="true"></i>
                                         </a>
+                                        @if(Illuminate\Support\Facades\Auth::user()->role === "healthpost")
+                                            | <a href="#" title="Add Vaccination Record" data-toggle="modal"
+                                                 data-target="#vaccinationAddModal" id="vaccineRecord"
+                                                 onclick="vaccineRecord({{ $d->id }})">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -128,7 +136,8 @@
                           action="{{ route('health-professional.export') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="form-group" hidden>
-                            <input type="text" id="organization_token" name="organization_token" value="{{ auth()->user()->token }}">
+                            <input type="text" id="organization_token" name="organization_token"
+                                   value="{{ auth()->user()->token }}">
                             <input type="text" id="type" name="type" value="0">
                         </div>
                         <div class="form-group">
@@ -150,6 +159,70 @@
                             <div class="col-sm-offset-3 col-sm-9">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                 <button type="submit" class="btn btn-primary pull-right">Submit Request</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    Note : * Required Fields
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="vaccinationAddModal" tabindex="-1" role="dialog"
+         aria-labelledby="vaccinationAddModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Vaccination Record Form</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" style="padding: 10px !important" role="form" method="POST"
+                          action="{{ route('vaccination.store.org.login') }}">
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                            <label class="control-label">Enter Registered ID</label>
+                            <div class="inputGroupContainer">
+                                <div class="input-group"><span class="input-group-addon"><i
+                                                class="fa fa-key"></i></span>
+                                    <input id="vaccinated_id" name="vaccinated_id" placeholder="Enter Registered ID"
+                                           class="form-control" type="text">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" :class="{ 'has-error': $v.data.vaccination_date.$error }">
+                            <label class="control-label">Vaccination Date</label>
+                            <div class="inputGroupContainer">
+                                <div class="input-group"><span class="input-group-addon"><i
+                                                class="fa fa-calendar"></i></span>
+                                    <input type="date" class="form-control" id="vaccinated_date_en"
+                                           placeholder="Enter from date"
+                                           name="vaccinated_date_en" max="<?php echo date('Y-m-d'); ?>"
+                                           value="<?php echo date('Y-m-d'); ?>" required>
+                                </div>
+                            </div>
+                            <div class="help-block" v-if="!$v.data.vaccination_date.required">Field is required.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Vaccinated Address</label>
+                            <div class="inputGroupContainer">
+                                <div class="input-group"><span class="input-group-addon"><i
+                                                class="fa fa-hospital-o"></i></span>
+                                    <input class="form-control" placeholder="Enter Vaccinated Address"
+                                           name="vaccinated_address" id="vaccinated_address"/>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <button type="submit" class="btn btn-primary pull-right">Submit</button>
                             </div>
                         </div>
                     </form>
@@ -224,6 +297,10 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
 
     <script>
+        function vaccineRecord(id) {
+            $("#vaccinated_id").val(id);
+        }
+
         $(document).ready(function () {
             $('#vaccinatedTable').DataTable({
                 paging: false,
