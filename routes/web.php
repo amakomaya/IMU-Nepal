@@ -144,7 +144,12 @@ Route::get('/api/province', function () {
 });
 
 Route::get('/admin/overview-data', 'Backend\OverviewController@index')->name('admin.overview');
-Route::get('/admin/fchv-overview', 'Backend\OverviewController@fchv')->name('admin.fchv-overview'); 
+
+Route::get('/admin/organization-overview-cict', 'Backend\OverviewController@cict')->name('organization.overview.cict');
+Route::get('/admin/organization-overview-hospital', 'Backend\OverviewController@hospital')->name('organization.overview.hospital');
+Route::get('/admin/organization-overview-labtest', 'Backend\OverviewController@labtest')->name('organization.overview.labtest');
+Route::get('/admin/organization-overview-both', 'Backend\OverviewController@both')->name('organization.overview.both');
+Route::get('/admin/organization-overview-normal', 'Backend\OverviewController@normal')->name('organization.overview.normal');
 
 Route::resource('/admin/download-dev-apks', 'Backend\DownloadApksController');
 

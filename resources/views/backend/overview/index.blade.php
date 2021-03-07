@@ -7,7 +7,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Hospital Record Overview
+                            Record Overview
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -17,12 +17,12 @@
                                     <thead>
                                         <tr>
                                             <th>S.N</th>                                     
-                                            <th>Hospitals</th>
+                                            <th title="Organization Name">Name</th>
                                             <th>Username</th>
                                             <th>Province</th>
                                             <th>District</th>
                                             <th>Municipality</th>
-                                            <th title="Total Professional Data Information">Total / Vaccinated</th>
+                                            <th title="Total Register || Sample Collection || Lab Received">Data</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -40,7 +40,7 @@
                                                 <td>{{ $d->province->province_name ?? '' }}</td>
                                                 <td>{{ $d->district->district_name ?? '' }}</td>
                                                 <td>{{ $d->municipality->municipality_name ?? '' }}</td>
-                                                <td>{{ $d->sample_total }} / {{ $d->vaccinated_total }}</td>
+                                                <td>{{ $d->total_cases.' || '. $d->sample_collection_total }} </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
