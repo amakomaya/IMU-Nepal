@@ -17,12 +17,12 @@
                                     <thead>
                                         <tr>
                                             <th>S.N</th>                                     
-                                            <th title="Organization Name">Name</th>
+                                            <th title="Organization Name" width="25%">Name</th>
                                             <th>Username</th>
                                             <th>Province</th>
                                             <th>District</th>
                                             <th>Municipality</th>
-                                            <th title="Total Register || Sample Collection || Lab Received">Data</th>
+                                            <th title="Total Register || Sample Collection">Data</th>
                                         </tr>
                                     </thead>
                                     <tbody>
