@@ -14,6 +14,7 @@ Route::get('locale/{locale}', function ($locale) {
 
 Route::get('admin/search-organization', 'PermissionController@userByPermission')->name('user-by-permissions.index');
 
+
 //Frontend
 
 Route::get('/', function () {
@@ -27,7 +28,11 @@ Route::get('admin/user-by-permissions', 'PermissionController@userByPermission')
 Route::get('/admin/something', 'AdminController@index')->name('admin');
 
 //Backend Home
-Route::get('/update-vaccination-center','UpdateVaccinationCenter@index')->name('updateVaccinationCenter');
+// Route::get('/update-vaccination-center',' UpdateVaccinationCenter@index')->name('updateVaccinationCenter');
+
+Route::get('/update-vaccination-center', function(){
+    return view('UpdateVaccinationCenter');
+} )->name('updateVaccinationCenter');
 
 Route::get('/admin', 'AdminController@index')->name('admin');
 Route::get('/admin/healthpost-select', 'AdminController@healthpostSelect')->name('admin.healthpost-select');
