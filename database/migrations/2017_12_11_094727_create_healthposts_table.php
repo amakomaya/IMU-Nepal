@@ -20,6 +20,7 @@ class CreateHealthpostsTable extends Migration
             $table->integer('province_id');
             $table->integer('district_id');
             $table->integer('municipality_id');
+            $table->integer('vaccination_center_id');
             $table->integer('ward_no');
             $table->char('hp_code', 16);
             $table->string('phone')->nullable();

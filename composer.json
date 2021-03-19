@@ -11,7 +11,7 @@
         "consoletvs/charts": "^5.4",
         "farhanwazir/laravelgooglemaps": "^2.3",
         "fideloper/proxy": "^4.0",
-        "guzzlehttp/guzzle": "^6.5",
+        "guzzlehttp/guzzle": "^7.2",
         "hisorange/browser-detect": "3.*",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "~1.0",

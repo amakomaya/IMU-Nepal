@@ -108,6 +108,14 @@
         Vaccination Center
     </a>
 </li>
+
+<li>
+    <a href="{{ route('updateVaccinationCenter') }}">
+        <i class="fa fa-hospital-o"></i>
+         Update Vaccination center
+    </a>
+</li>
+
 <li>
     <a href="#">
         <i class="fa fa-users" aria-hidden="true"></i>
