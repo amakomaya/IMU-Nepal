@@ -85,10 +85,32 @@
         @endif
     </ul>
 </li>
- <li>
-    <a href="{{ route('admin.overview') }}">
-            <i class="fa fa-hospital-o" aria-hidden="true"></i> Hospitals / CICT Teams
+{{-- <li>--}}
+{{--    <a href="{{ route('admin.overview') }}">--}}
+{{--            <i class="fa fa-hospital-o" aria-hidden="true"></i> Hospitals / CICT Teams--}}
+{{--    </a>--}}
+{{--</li>--}}
+<li>
+    <a href="#">
+        <i class="fa fa-hospital-o" aria-hidden="true"></i> Organizations <span class="fa arrow"></span>
     </a>
+    <ul class="nav nav-second-level">
+        <li>
+            <a href="{{ route('organization.overview.cict') }}" title="Sample Collection Only (CICT)">CICT</a>
+        </li>
+        <li>
+            <a href="{{ route('organization.overview.hospital') }}" title="Sample Collection Only ( Hospital )">Hospital</a>
+        </li>
+        <li>
+            <a href="{{ route('organization.overview.labtest') }}" title="Lab Test Only">Lab Test Only</a>
+        </li>
+        <li>
+            <a href="{{ route('organization.overview.both') }}" title="Both ( Sample Collection & Lab Test )">Both</a>
+        </li>
+        <li>
+            <a href="{{ route('organization.overview.normal') }}" title="Normal">Normal</a>
+        </li>
+    </ul>
 </li>
 <li>
     <a href="{{ route('health-worker.index') }}">
