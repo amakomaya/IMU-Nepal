@@ -104,7 +104,7 @@ class BackupRestoreController extends Controller
                     }
 
                 }catch(\Exception $e){
-                    array_push($errors, "Sample Collection");
+                    // array_push($errors, "Sample Collection");
                 }
             });
             array_push($success, "Sample Collection");
