@@ -71,9 +71,16 @@ class BackupRestoreController extends Controller
         try {
             $suspectedCase->map(function ($item, $key) {
                 $data = collect($item)->except(['_id', 'sync', 'update_status'])->all();
-                SuspectedCase::updateOrCreate([
-                    'token' => $data['token']
-                ], $data);
+                // SuspectedCase::updateOrCreate([
+                //     'token' => $data['token']
+                // ], $data);
+                $case = SuspectedCase::where('token', $data['token'])->first();
+
+                    if ($case !== null) {
+                        $case->update($data);
+                    } else {
+                        $case = SuspectedCase::create($data);
+                    }
             });
             array_push($success, "Suspected Case");
         } catch (Exception $e) {
@@ -84,10 +91,18 @@ class BackupRestoreController extends Controller
             $sampleCollection->map(function ($item, $key) {
                 $data = collect($item)->except(['_id', 'sync', 'update_status'])->all();
                 try{
-                    SampleCollection::updateOrCreate([
-                        'token' => $data['token'],
-                        'woman_token' => $data['woman_token']
-                    ], $data);
+                    // SampleCollection::updateOrCreate([
+                    //     'token' => $data['token'],
+                    //     'woman_token' => $data['woman_token']
+                    // ], $data);
+                    $samp_collect = SampleCollection::where('token', $data['token'])->first();
+
+                    if ($samp_collect !== null) {
+                        $samp_collect->update($data);
+                    } else {
+                        $samp_collect = SampleCollection::create($data);
+                    }
+
                 }catch(\Exception $e){
                     array_push($errors, "Sample Collection");
                 }
@@ -100,9 +115,16 @@ class BackupRestoreController extends Controller
         try {
             $labTest->map(function ($item, $key) {
                 $data = collect($item)->except(['_id', 'regdev', 'sync', 'update_status'])->all();
-                LabTest::updateOrCreate([
-                    'token' => $data['token'],
-                ], $data);
+                // LabTest::updateOrCreate([
+                //     'token' => $data['token'],
+                // ], $data);
+                $lab = LabTest::where('token', $data['token'])->first();
+
+                if ($lab !== null) {
+                    $lab->update($data);
+                } else {
+                    $lab = LabTest::create($data);
+                }
             });
             array_push($success, "Lab Test");
         } catch (Exception $e) {
