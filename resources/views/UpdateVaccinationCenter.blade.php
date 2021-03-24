@@ -18,6 +18,11 @@
 
                 </div>
             @endif
+            @if($errors->any())
+                <div class="alert alert-block alert-danger">
+                    Select both organization and vaccination center
+                </div>
+            @endif
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Update Vaccination Center
@@ -31,7 +36,7 @@
 
                             <div class="col-md-7">
                                 <select id="organization_id" class="form-control" name="organization_id" onchange="organizationOnchange($(this).val())">
-                                    <option>Select Organization</option>
+                                    <option value="">Select Organization</option>
                                     @foreach($organizations as $organization)
                                     <option value="{{ $organization->id }}"> {{ $organization->name }}</option>
                                     @endforeach
@@ -48,7 +53,7 @@
 
                             <div class="col-md-7">
                                 <select id="vaccinationCenter_id" class="form-control" name="vaccinationCenter_id" onchange="vaccinationCenterOnchange($(this).val())">
-                                    <option>Select Vaccination Center</option>
+                                    <option value="">Select Vaccination Center</option>
                                     @foreach($vaccination_centers as $organization)
                                     <option value="{{ $organization->id }}"> {{ $organization->vaccination_center }}</option>
                                     @endforeach
@@ -69,6 +74,23 @@
                 <!-- /.panel-body -->
             </div>
             <!-- /.panel -->
+            <hr>
+                <table class="table">
+                <thead>
+                <tr>
+                    <th>Organization</th>
+                    <th>Vaccination Center</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach(collect($organizations)->where('vaccination_center_id', '>', 0) as $org)
+                <tr>
+                    <td>{{ $org->name }}</td>
+                    <td></td>
+                </tr>
+                @endforeach
+                </tbody>
+            </table>
         </div>
         <!-- /.col-lg-12 -->
     </div>
