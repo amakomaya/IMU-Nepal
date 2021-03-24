@@ -201,6 +201,15 @@ class HealthpostController extends Controller
         }
     }
 
+    public function organizationUpdate(Request $request)
+    {     
+        
+        $data = $request->all();
+        $orgaization = Organization::where('id', $data['organization_id'])->update(["vaccination_center_id" => $data['vaccinationCenter_id']]);
+        $request->session()->flash('message', 'Data Update successfully');
+        return redirect()->back();
+    }
+
     protected function validateForm(Request $request, $scenario)
     {
 
