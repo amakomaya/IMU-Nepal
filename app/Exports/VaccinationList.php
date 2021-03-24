@@ -56,7 +56,7 @@ class VaccinationList implements FromCollection, WithHeadings
                 $record['phone'] = $item->phone;
                 $record['post'] = $item->designation;
                 $record['id_number'] = $item->citizenship_no . ' / ' . $item->issue_district;
-                $record['vaccinated_date'] = $item->vaccinated->vaccinated_date_en ?? '';
+                $record['vaccinated_date'] = $item->vaccinated->first()->vaccinated_date_np ?? '';
                 return $record;
             } catch (\Exception $e) { }
         });
