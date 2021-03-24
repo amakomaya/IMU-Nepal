@@ -68,12 +68,12 @@ class Organization extends Model
     		return self::generateHpCode($hp);
     	}else{
     		return $hpCode;
-    	}
+    	} 
 	}
 
 	public function hospitalType($type){
-        $list = [1=>'Sample Collection Only',2=>'Lab Test Only', 3=>'Both ( Sample Collection & Lab Test )',4=>'Normal'];
-        return $list[$type];
+		$list = [1=>'Sample Collection Only ( CICT )',5=>'Sample Collection Only ( Hospital )',2=>'Lab Test Only', 3=>'Both ( Sample Collection & Lab Test )', 4=>'Normal'];
+		return $list[$type];
     }
 
 	public static function isHpCodeAlreadyExist($hpCode){
