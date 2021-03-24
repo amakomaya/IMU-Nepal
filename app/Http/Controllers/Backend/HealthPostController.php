@@ -203,7 +203,10 @@ class HealthpostController extends Controller
 
     public function organizationUpdate(Request $request)
     {     
-        
+        $this->validate($request,[
+            'organization_id'=>'required',
+            'vaccination_center_id'=>'required'
+         ]);
         $data = $request->all();
         $orgaization = Organization::where('id', $data['organization_id'])->update(["vaccination_center_id" => $data['vaccinationCenter_id']]);
         $request->session()->flash('message', 'Data Update successfully');
