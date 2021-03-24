@@ -108,6 +108,12 @@
                                                         Vaccinated Only </a>
                                                 </li>
                                             @endif
+                                            @if(auth()->user()->role == 'main')
+                                                <li>
+                                                    <a href="#tab_default_3" data-toggle="tab">
+                                                        IMU App Import</a>
+                                                </li>
+                                            @endif
 
                                         </ul>
                                         <div class="tab-content">
@@ -132,6 +138,22 @@
                                                 {!! rcForm::open('POST', route('backup-restore.store')) !!}
                                                 <div class="form-group">
                                                     <input type="text" name="import_type" value="2" hidden>
+                                                    <div class="input-group input-file" name="file_path">
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-default btn-choose" type="button">Choose</button>
+                                                                </span>
+                                                        <input type="text" class="form-control" name="file_path"
+                                                               placeholder='Choose a file...'/>
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-primary text-center"> Restore</button>
+                                                </form>
+                                            </div>
+                                            <div class="tab-pane" id="tab_default_3">
+                                                <br><br>
+                                                {!! rcForm::open('POST', route('backup-restore.store')) !!}
+                                                <div class="form-group">
+                                                    <input type="text" name="import_type" value="3" hidden>
                                                     <div class="input-group input-file" name="file_path">
                                                                 <span class="input-group-btn">
                                                                     <button class="btn btn-default btn-choose" type="button">Choose</button>

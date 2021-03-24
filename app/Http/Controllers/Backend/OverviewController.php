@@ -93,15 +93,11 @@ class OverviewController extends Controller
 
         $suspected_case = SuspectedCase::
             groupBy('hp_code')
-            ->select('hp_code', \DB::raw('count(*) as total'));
+            ->select('hp_code', \DB::raw('count(*) as total'))->get();
 
         $sample_collection = SampleCollection::
         groupBy('hp_code')
-            ->select('hp_code', \DB::raw('count(*) as total'));
-//
-//        $lab_test = LabTest::
-//        groupBy('checked_by')
-//            ->select('checked_by', \DB::raw('count(*) as total'));
+            ->select('hp_code', \DB::raw('count(*) as total'))->get();
 
         $merged = $data->map(function ($item) use ($sample_collection, $suspected_case){
             $item['total_cases'] = $suspected_case->where('hp_code', $item->hp_code)->first()->total ?? 0;
