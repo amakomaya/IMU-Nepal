@@ -42,6 +42,7 @@ import VaccinationList from "./components/VaccinationList.vue";
 import VaccinatedList from "./components/VaccinatedList";
 import AdminDashboard from "./components/AdminDashboard";
 import OrganizationSearch from "./components/organization/Search";
+import CasesTracing from "./components/CasesTracing";
 
 import AnalysisTimeSeries from "./components/analysis/TimeSeries";
 import AnalysisGender from "./components/analysis/Gender"
@@ -76,6 +77,7 @@ Vue.component('v-select', vSelect)
 Vue.component('women-list', WomenList);
 Vue.component('women-list-negative', WomanListNegative);
 Vue.component('women-list-positive', WomanListPositive);
+Vue.component('women-list-tracing', CasesTracing);
 Vue.component('lab-patient-list', LabPatientList);
 Vue.component('women-list-lab-received', PatientListLabReceived)
 Vue.component('cases-closed-recovered', CasesClosedRecovered)

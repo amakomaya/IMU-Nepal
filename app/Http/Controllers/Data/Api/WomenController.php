@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Data\Api;
 
 use App\Helpers\GetHealthpostCodes;
 use App\Http\Controllers\Controller;
+use App\Models\ContactTracing;
 use App\Models\Organization;
 use App\Models\SampleCollection;
 use App\Models\LabTest;
@@ -69,6 +70,21 @@ class WomenController extends Controller
             'collection' => $woman->advancedFilter()
         ]);
     }
+
+    public function tracingIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+//        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->pluck('woman_token');
+
+        $tracing_tokens = ContactTracing::whereIn('hp_code', $hpCodes)->pluck('woman_token');
+
+        $woman = SuspectedCase::whereIn('token', $tracing_tokens)->active()->withAll();
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
+
 
     public function labReceivedIndex(Request $request)
     {

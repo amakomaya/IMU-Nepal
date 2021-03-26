@@ -46,6 +46,11 @@ class WomanController extends Controller
         return view('backend.woman.index-positive');
     }
 
+    public function tracingIndex()
+    {
+        return view('backend.woman.index-tracing');
+    }
+
     public function labReceivedIndex()
     {
         return view('backend.woman.index-lab-received');
