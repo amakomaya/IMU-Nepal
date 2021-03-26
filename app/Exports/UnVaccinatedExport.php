@@ -72,6 +72,7 @@ class UnVaccinatedExport implements FromCollection, WithHeadings
                 $record['phone'] = $item->phone;
                 $record['post'] = $item->designation;
                 $record['id_number'] = $item->citizenship_no . ' / ' . $item->issue_district;
+                $record['register_date'] = $item->created_at;
                 return $record;
             } catch (\Exception $e) { }
 
@@ -92,7 +93,8 @@ class UnVaccinatedExport implements FromCollection, WithHeadings
             'Ward',
             'Phone',
             'Post',
-            'ID No'
+            'ID No',
+            'Register Date'
         ];
     }
 
