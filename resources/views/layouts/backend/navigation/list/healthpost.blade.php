@@ -56,6 +56,14 @@
 
                 </a>
             </li>
+            <li>
+                <a href="{{ route('patients.tracing.index') }}">
+                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                    Contact Tracing
+                    <span class="label label-primary pull-right">Tracing</span>
+
+                </a>
+            </li>
         </ul>
     </li>
     <li>
