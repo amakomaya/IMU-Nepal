@@ -66,7 +66,11 @@
                                         <td>{{ $municipalityInfo->hospital_total }} / {{ $municipalityInfo->vaccinated_total }}
                                             <form method="post" action="{{ route('excel-download.unvaccinated', [$municipalityInfo->municipality_id, 'municipality']) }}" onsubmit="return confirm('Are you sure you want to download all the unvaccinated records?');">
                                                 {{csrf_field()}}
-                                                <button name="submit" class="btn btn-warning btn-xs" title="Download unvaccinated records"><i class="fa fa-download"> Download</i></button>
+                                                <button name="submit" class="btn btn-warning btn-xs" title="Download unvaccinated records"><i class="fa fa-download"> Unvaccinated</i></button>
+                                            </form>
+                                            <form method="post" action="{{ route('excel-download.vaccinated', [$municipalityInfo->municipality_id, 'municipality']) }}" onsubmit="return confirm('Are you sure you want to download all the vaccinated records?');">
+                                                {{csrf_field()}}
+                                                <button name="submit" class="btn btn-warning btn-xs" title="Download vaccinated records"><i class="fa fa-download">Vaccinated</i></button>
                                             </form>
                                         </td>
                                         <td>
