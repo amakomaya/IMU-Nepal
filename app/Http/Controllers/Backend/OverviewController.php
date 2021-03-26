@@ -35,21 +35,15 @@ class OverviewController extends Controller
             ->get();
 
         $merged = $data->map(function ($item) use ($health_professional_vaccinated, $health_professional) {
-
             $single = $health_professional->where('checked_by',$item->token)->first();
-
             $item['sample_total'] = ($single) ? $single->total : 0;
             $item['vaccinated_total'] = $health_professional_vaccinated->whereIn('vaccinated_checked_by', $item->token)->sum('total');
-
             return $item;
         });
 
         return view('backend.overview.index', [
             'data' => $merged
         ]);
-
-
-
     }
 
     public function cict()
@@ -75,6 +69,10 @@ class OverviewController extends Controller
     public function normal()
     {
         return $this->filter(4);
+    }
+
+    public function search(){
+        return view('backend.overview.search');
     }
 
     private function filter($type)

@@ -86,6 +86,7 @@ export default {
           {
             name: 'Case',
             filters: [
+              {title: 'Case ID', name: 'case_id', type: 'string'},
               {title: 'Name', name: 'name', type: 'string'},
               {title: 'Age', name: 'age', type: 'numeric'},
               {title: 'Phone Number', name: 'emergency_contact_one', type: 'text'},

@@ -101,6 +101,8 @@ Route::post('/admin/user-manager/first-loggedin', 'Backend\UserManagerController
 
 //Bakend Organization
 Route::resource('admin/healthpost', 'Backend\HealthpostController');
+Route::get('admin/organization/{id}/edit-record', 'Backend\HealthpostController@editRecord');
+Route::post('admin/organization/update-record/{id}', 'Backend\HealthpostController@updateRecord')->name('admin.organization.update-record');
 Route::post('admin/vaccination_center_update', 'Backend\HealthpostController@organizationUpdate')->name('admin.organization.update');
 
 //Bakend Route
@@ -152,6 +154,7 @@ Route::get('/api/province', function () {
 Route::get('/admin/overview-data', 'Backend\OverviewController@index')->name('admin.overview');
 
 Route::get('/admin/organization-overview-cict', 'Backend\OverviewController@cict')->name('organization.overview.cict');
+Route::get('/admin/organization-overview-search', 'Backend\OverviewController@search')->name('organization.overview.search');
 Route::get('/admin/organization-overview-hospital', 'Backend\OverviewController@hospital')->name('organization.overview.hospital');
 Route::get('/admin/organization-overview-labtest', 'Backend\OverviewController@labtest')->name('organization.overview.labtest');
 Route::get('/admin/organization-overview-both', 'Backend\OverviewController@both')->name('organization.overview.both');

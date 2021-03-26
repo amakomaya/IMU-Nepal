@@ -1,16 +1,12 @@
 @extends('layouts.backend.app')
 @section('content')
-
     <div id="page-wrapper">
-        <!-- /.row -->
         <div class="row">
             <div class="col-lg-12">
-
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Create
                     </div>
-                    <!-- /.panel-heading -->
                     <div class="panel-body">
                         {!! rcForm::open('POST', route('patient.sample.store')) !!}
                         <div class="panel-body">
@@ -31,7 +27,6 @@
                                            class="form-text text-danger">{{ $errors->first('service_for') }}</small>
                                 @endif
                             </div>
-
                             <div id="sample">
                                 <div class="form-group">
                                     <label class="control-label">Sample Collection Type</label>
@@ -52,7 +47,6 @@
                                     @endif
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label class="control-label">Infection Type</label>
                                 <div class="control-group">

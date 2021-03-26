@@ -127,6 +127,40 @@ class HealthpostController extends Controller
         return view('backend.healthpost.edit', compact('data', 'provinces', 'districts', 'municipalities', 'wards', 'user'));
     }
 
+    public function editRecord($id){
+        $data = $this->findModel($id);
+        $user = $this->findModelUser($data->token);
+        $wards = [];
+        return view('backend.healthpost.edit-record', compact('wards','data','user'));
+    }
+
+    public function updateRecord(Request $request, $id){
+
+        $healthpost = $this->findModel($id);
+
+        $healthpost->update([
+            'name' => $request->get('name'),
+            'ward_no' => $request->get('ward_no'),
+            'phone' => $request->get('phone'),
+            'address' => $request->get('address'),
+            'status' => $request->get('status'),
+            'no_of_beds' => $request->get('no_of_beds'),
+            'no_of_ventilators' => $request->get('no_of_ventilators'),
+            'no_of_icu' => $request->get('no_of_icu'),
+            'hospital_type' => $request->get('hospital_type')
+        ]);
+
+        $user = $this->findModelUser($healthpost->token);
+
+        $user->update([
+            'email' => $request->get('email'),
+        ]);
+
+        $request->session()->flash('message', 'Data Updated successfully');
+
+        return redirect()->back();
+    }
+
     public function update(Request $request, $id)
     {
         if (User::checkAuthForCreateUpdateDelHealthpost() === false) {

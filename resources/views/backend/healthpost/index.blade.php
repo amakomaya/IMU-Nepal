@@ -18,14 +18,12 @@
                                             }
                     }
                 </script>
-
-                @if (Request::session()->has('message'))
+                @if (\Request::session()->has('message'))
                     <div class="alert alert-block alert-success">
                         <button type="button" class="close" data-dismiss="alert">
                             <i class="ace-icon fa fa-times"></i>
                         </button>
                         {!! Request::session()->get('message') !!}
-
                     </div>
                 @endif
                 @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
