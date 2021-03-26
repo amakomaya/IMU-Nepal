@@ -96,6 +96,9 @@
     </a>
     <ul class="nav nav-second-level">
         <li>
+            <a href="{{ route('organization.overview.search') }}" title="Search and Edit Organizations">Search</a>
+        </li>
+        <li>
             <a href="{{ route('organization.overview.cict') }}" title="Sample Collection Only (CICT)">CICT</a>
         </li>
         <li>
