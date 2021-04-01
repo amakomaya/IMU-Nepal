@@ -30,6 +30,29 @@ Route::get('/v1/healthposts', function () {
     return response()->json($healthpost);
 });
 
+Route::get('/v1/suspected-cases', function (Request $request) {
+    if($request->has('name')){
+        $cases = \App\Models\SuspectedCase::where('name', 'like', '%' . $request->name . '%')->withAll()->latest()->take(10)->get();
+        return response()->json($cases);
+    }
+    if($request->has('phone')){
+        $cases = \App\Models\SuspectedCase::
+        where('emergency_contact_one', 'like', '%' . $request->phone . '%')
+        ->orWhere('emergency_contact_two', 'like', '%' . $request->phone . '%')
+            ->withAll()->latest()->take(10)->get();
+        return response()->json($cases);
+    }
+    if($request->has('sid')){
+        $sid_to_caseid = SampleCollection::where('token', $request->sid)->first();
+        if ($sid_to_caseid){
+            $cases = \App\Models\SuspectedCase::where('token', $sid_to_caseid->woman_token)->withAll()->latest()->get();
+            return response()->json($cases);
+        }
+        return response()->json([]);
+    }
+    return response()->json([]);
+});
+
 Route::get('/api/v1/check-by-sid-or-lab-id', function () {
     $healthpost = \App\Models\Organization::with(['province', 'municipality', 'district'])->get();
     return response()->json($healthpost);

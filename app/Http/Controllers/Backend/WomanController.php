@@ -36,6 +36,10 @@ class WomanController extends Controller
         return view('backend.woman.index');
     }
 
+    public function addSampleCollection(){
+        return view('backend.woman.add-sample');
+    }
+
     public function negativeIndex()
     {
         return view('backend.woman.index-negative');

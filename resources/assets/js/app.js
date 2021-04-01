@@ -43,6 +43,7 @@ import VaccinatedList from "./components/VaccinatedList";
 import AdminDashboard from "./components/AdminDashboard";
 import OrganizationSearch from "./components/organization/Search";
 import CasesTracing from "./components/CasesTracing";
+import AddSampleCollection from "./components/AddSampleCollection";
 
 import AnalysisTimeSeries from "./components/analysis/TimeSeries";
 import AnalysisGender from "./components/analysis/Gender"
@@ -101,6 +102,7 @@ Vue.component('public-client-create', require('./components/public_client/Create
 Vue.component('vaccination-list', VaccinationList);
 Vue.component('vaccinated-list', VaccinatedList);
 Vue.component('organization-search', OrganizationSearch);
+Vue.component('add-sample', AddSampleCollection);
 
 const app = new Vue({
     el: '#app'

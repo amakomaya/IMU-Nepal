@@ -7,6 +7,13 @@
 
         <ul class="nav nav-second-level">
             <li>
+                <a href="{{ route('patient.multiple-sample.create') }}">
+                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                    Add Sample Collection
+                    <span class="label label-default pull-right"> + </span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('woman.index') }}">
                     <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                     Registered, Pending

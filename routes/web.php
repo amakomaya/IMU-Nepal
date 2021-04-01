@@ -133,6 +133,7 @@ Route::resource('admin/health-worker', 'Backend\HealthWorkerController');
 
 //Bakend Patients
 Route::resource('admin/patients', 'Backend\WomanController', ['names' => 'woman']);
+Route::get('admin/add-multiple-sample', 'Backend\WomanController@addSampleCollection')->name('patient.multiple-sample.create');
 Route::get('admin/negative-patients', 'Backend\WomanController@negativeIndex')->name('patients.negative.index');
 Route::get('admin/positive-patients', 'Backend\WomanController@positiveIndex')->name('patients.positive.index');
 Route::get('admin/tracing-patients', 'Backend\WomanController@tracingIndex')->name('patients.tracing.index');
