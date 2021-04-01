@@ -72,7 +72,8 @@ class LoginController extends Controller
                 'province_id'=>$healthworker->province_id,
                 'municipality_id'=>$healthworker->municipality_id,
                 'district_id'=>$healthworker->district_id,
-                'permissions' => implode(",", $user->getAllPermissions()->pluck('name')->toArray())
+                'permissions' => implode(",", $user->getAllPermissions()->pluck('name')->toArray()),
+                'vaccination_center_id' => Organization::where('hp_code', $healthworker->hp_code)->first()->vaccination_center_id
             ];
             $position = \Location::get();
             $detect = \Browser::detect();
