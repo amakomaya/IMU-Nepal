@@ -25,6 +25,7 @@ class Organization extends Model
     protected static $logOnlyDirty = true;
 
     protected $fillable = ['name','token','hmis_uid','province_id',
+        'district_id','municipality_id','hp_code','ward_no','phone',
         'no_of_beds', 'no_of_ventilators','vaccination_center_id', 'no_of_icu', 'hospital_type',
         'address','longitude','lattitude','status','created_at','updated_at'
     ];

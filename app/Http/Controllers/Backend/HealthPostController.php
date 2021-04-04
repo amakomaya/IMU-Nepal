@@ -85,7 +85,8 @@ class HealthpostController extends Controller
             'no_of_beds' => $request->get('no_of_beds'),
             'no_of_ventilators' => $request->get('no_of_ventilators'),
             'no_of_icu' => $request->get('no_of_icu'),
-            'hospital_type' => $request->get('hospital_type')
+            'hospital_type' => $request->get('hospital_type'),
+            'vaccination_center_id' => 0
         ]);
 
         User::create([
@@ -147,7 +148,8 @@ class HealthpostController extends Controller
             'no_of_beds' => $request->get('no_of_beds'),
             'no_of_ventilators' => $request->get('no_of_ventilators'),
             'no_of_icu' => $request->get('no_of_icu'),
-            'hospital_type' => $request->get('hospital_type')
+            'hospital_type' => $request->get('hospital_type'),
+            'vaccination_center_id' => $request->get('vaccination_center_id')
         ]);
 
         $user = $this->findModelUser($healthpost->token);
