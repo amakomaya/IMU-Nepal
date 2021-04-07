@@ -42,8 +42,7 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $resultArray = array(0,2);
-        $sample_collection_token = SampleCollection::where('hp_code', $hpCodes)->whereIn('result' ,$resultArray)->pluck('woman_token');
+        $sample_collection_token = SampleCollection::whereIn('hp_code', $hpCodes)->whereIn('result' ,[0,2])->pluck('woman_token');
         $woman = SuspectedCase::whereIn('token', $sample_collection_token)->active()->orderBy('created_at', 'desc')->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
