@@ -114,10 +114,9 @@ export default {
       }
       axios.post('/api/v1/cases-payment', data)
           .then((response) => {
-            console.log(response.data);
-            if (response.data === 'success') {
+            if (response.data.message === 'success') {
               this.$swal({
-                title: 'Record received in lab',
+                title: 'Successfully add records',
                 type: 'success',
                 toast: true,
                 position: 'top-end',
@@ -125,7 +124,10 @@ export default {
                 timer: 3000
               })
               this.$v.$reset();
-              this.data = {};
+              this.data = {
+                health_condition : 0,
+                    is_death : ''
+              };
               if (this.item){
                 this.$dlg.closeAll(function(){
                   // do something after all dialog closed
