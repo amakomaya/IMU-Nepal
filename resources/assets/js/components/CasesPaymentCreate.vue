@@ -24,6 +24,10 @@
           <input type="text" class="form-control" v-model.trim="data.phone" id="phone" />
         </div>
       </div>
+    <div class="form-group" :class="{ 'has-error': $v.data.address.$error }">
+      <label for="name">Address</label>
+      <input type="text" placeholder="Enter Full Address ( e.g Lazimpat-2, Kathmandu )" class="form-control" v-model.trim="data.address" id="address" />
+    </div>
     <hr>
     <div class="row">
       <div class="form-group col-lg-4">
@@ -98,7 +102,8 @@ export default {
         required,
       },
       phone : { required },
-      guardian_name : { required }
+      guardian_name : { required },
+      address : { required }
     }
   },
   methods: {
