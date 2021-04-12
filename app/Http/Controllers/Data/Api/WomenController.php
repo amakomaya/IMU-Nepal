@@ -7,6 +7,7 @@ use App\Helpers\GetHealthpostCodes;
 use App\Http\Controllers\Controller;
 use App\Models\ContactTracing;
 use App\Models\Organization;
+use App\Models\PaymentCase;
 use App\Models\SampleCollection;
 use App\Models\LabTest;
 use App\Models\SuspectedCase;
@@ -261,5 +262,20 @@ class WomenController extends Controller
             default:
                 return 'Years';
         }
+    }
+
+    public function casesPaymentIndex(Request $request){
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+
+        $data = PaymentCase::advancedFilter();
+        return response()->json(['collection' => $data]);
+
+//        $woman = SuspectedCase::where('municipality_id', $request['municipality_id'])
+//            ->whereNotIn('hp_code', $hp_codes)
+//            ->active()->withAll();
+//        return response()->json([
+//            'collection' => $woman->advancedFilter()
+//        ]);
     }
 }

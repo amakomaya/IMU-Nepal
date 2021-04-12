@@ -54,6 +54,8 @@ import VNepaliDatePicker from 'v-nepalidatepicker';
 
 import JsonExcel from 'vue-json-excel'
 import VueMask from 'v-mask'
+import CasesPaymentList from "./components/CasesPaymentList";
+import CasesPaymentCreate from "./components/CasesPaymentCreate";
 
 Vue.use(VueMask);
 Vue.use(VNepaliDatePicker);
@@ -103,6 +105,9 @@ Vue.component('vaccination-list', VaccinationList);
 Vue.component('vaccinated-list', VaccinatedList);
 Vue.component('organization-search', OrganizationSearch);
 Vue.component('add-sample', AddSampleCollection);
+
+Vue.component('cases-payment-list', CasesPaymentList);
+Vue.component('cases-payment-create', CasesPaymentCreate);
 
 const app = new Vue({
     el: '#app'

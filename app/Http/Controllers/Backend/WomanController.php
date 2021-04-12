@@ -65,6 +65,16 @@ class WomanController extends Controller
         return view('backend.woman.index-cases-recovered');
     }
 
+    public function casesPaymentIndex()
+    {
+        return view('backend.cases.payment.index');
+    }
+
+    public function casesPaymentCreate()
+    {
+        return view('backend.cases.payment.create');
+    }
+
     public function casesDeathIndex()
     {
         return view('backend.woman.index-cases-death');

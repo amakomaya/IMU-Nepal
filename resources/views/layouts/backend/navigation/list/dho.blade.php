@@ -124,7 +124,23 @@
         </li>
     </ul>
 </li>
+<li>
+    <a href="#">
+        <i class="fa fa-money" aria-hidden="true"></i>
 
+        CASES Payment <span class="fa arrow"></span>
+    </a>
+
+    <ul class="nav nav-second-level">
+        <li>
+            <a href="{{ route('cases.payment.index') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                List
+                <span class="label label-primary pull-right">List</span>
+            </a>
+        </li>
+    </ul>
+</li>
 <li>
     <a href="{{ route('dho.vaccination.municipalities') }}">
         <i class="fa fa-hospital-o"></i>

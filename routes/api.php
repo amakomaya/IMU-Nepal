@@ -586,3 +586,16 @@ Route::get('/v1/covid-immunization-list', 'Api\CovidImmunizationController@show'
 Route::get('/v1/covid-vaccination-list', 'Api\CovidImmunizationController@showDataByUserLogin');
 Route::get('/v1/health-professional/immunized', 'Api\CovidImmunizationController@immunized');
 Route::get('/v1/health-professionals-list', 'Backend\DHOController@findAllHealthProfessionalDatas')->name('health-professionals-list');
+
+Route::post('/v1/cases-payment', function (Request $request) {
+    $data = $request->all();
+    $data['hp_code'] = \App\Models\Organization::where('token', auth()->user()->token)->first()->hp_code;
+    try {
+        \App\Models\PaymentCase::insert($data);
+    } catch (\Exception $e) {
+        return response()->json($e);
+
+        return response()->json(['message' => 'error']);
+    }
+    return response()->json(['message' => 'success']);
+});
