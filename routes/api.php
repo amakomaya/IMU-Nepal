@@ -593,9 +593,31 @@ Route::post('/v1/cases-payment', function (Request $request) {
     try {
         \App\Models\PaymentCase::insert($data);
     } catch (\Exception $e) {
-        return response()->json($e);
-
         return response()->json(['message' => 'error']);
     }
     return response()->json(['message' => 'success']);
+});
+
+Route::post('/v1/cases-search-by-lab-and-id', function (Request $request) {
+    $id = $request->id;
+    $hp_code = $request->hp_code;
+    $organiation_member_tokens = OrganizationMember::where('hp_code', $hp_code)->pluck('token');
+    $lab_token = [];
+    foreach ($organiation_member_tokens as $item) {
+        array_push($lab_token, $item."-".$id);
+    }
+
+    $response_data = LabTest::whereIn('lab_tests.token', $lab_token)->where('women.name', '!=', null)
+        ->leftJoin('ancs', 'lab_tests.sample_token', '=', 'ancs.token')
+        ->leftJoin('women', 'ancs.woman_token', '=', 'women.token')
+        ->leftJoin('municipalities', 'women.municipality_id', '=', 'municipalities.id')
+        ->select('women.name', 'women.age', 'women.emergency_contact_one', 'women.sex', 'municipalities.municipality_name', 'women.tole', 'women.ward')->first();
+
+    if(count($response_data) == 0){
+        return response()->json(['message' => 'error']);
+    }
+    return response()->json(['message' => 'success',
+    'data' => $response_data
+    ]);
+
 });

@@ -1,5 +1,43 @@
 <template>
   <div class="container row">
+    <div class="panel panel-default">
+      <div class="panel-heading text-center"><strong>Search Lab ID in IMU</strong></div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-8">
+            <label>Lab Name :</label>
+            <v-select label="name"
+                      v-model="organizationSelected"
+                      placeholder="Type Lab Name to search informations .."
+                      :options="options"
+                      @search="onSearch"
+            >
+              <template vslot="no-options">
+                type to search informations ...
+              </template>
+              <template slot="option" slot-scope="option">
+                {{ option.name }} <br>
+                {{ option.province.province_name }}, {{ option.municipality.municipality_name }}, {{ option.district.district_name }}<br>
+                {{ option.address }}
+              </template>
+              <template slot="selected-option" slot-scope="option">
+                <div class="selected d-center">
+                  {{ option.name }}, {{ option.address }}
+                </div>
+              </template>
+            </v-select>
+
+          </div>
+          <div class="col-lg-4 form-group">
+            <label>Lab ID : </label> <input type="text" placeholder="Enter Lab ID here" class="form-control" v-model.trim="lab_id" />
+          </div>
+        </div>
+        <button class="btn btn-info pull-right" v-on:click="searchOrganization(organizationSelected, lab_id)" title="Send Patient">
+          <i class="fa fa-search"> Search</i>
+        </button>
+      </div>
+    </div>
+    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
       <div class="form-group" :class="{ 'has-error': $v.data.name.$error }">
         <label for="name">Name</label>
         <input type="text" placeholder="Enter Full Name" class="form-control" v-model.trim="data.name" id="name" />
@@ -91,6 +129,9 @@ export default {
         health_condition : 0,
         is_death : ''
       },
+      lab_id : '',
+      options: [],
+      organizationSelected : ''
     }
   },
   validations: {
@@ -107,6 +148,77 @@ export default {
     }
   },
   methods: {
+    onSearch(search, loading) {
+      loading(true);
+      this.search(loading, search, this);
+    },
+    search: _.debounce((loading, search, vm) => {
+      let url = window.location.protocol + '/api/v1/healthposts';
+      axios.get(url)
+          .then(response => {
+            vm.options = response.data;
+            loading(false);
+          })
+          .catch((error) => {
+            console.error(error)
+          })
+          .finally(() => {
+          })
+    }, 350),
+
+    searchOrganization(organization, id){
+      if (organization === '' || id === ''){
+        this.$swal({
+          title: 'Please fill both lab name and Id',
+          type: 'warning',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        })
+        return false;
+      }
+      var payload = {
+        id: id,
+        hp_code: organization.hp_code,
+      };
+      axios.post('/api/v1/cases-search-by-lab-and-id', payload)
+          .then((response) => {
+            if (response.data.message === 'success') {
+              this.$swal({
+                title: 'Record Found',
+                type: 'success',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+              })
+              this.data = {
+                name : response.data.data.name,
+                age : response.data.data.age,
+                gender : response.data.data.sex,
+                address : response.data.data.tole + '-' + response.data.data.ward + ',' + response.data.data.municipality_name,
+                phone : response.data.data.emergency_contact_one,
+                health_condition : 0,
+                is_death : ''
+              };
+              if (this.item){
+                this.$dlg.closeAll(function(){
+                  // do something after all dialog closed
+                })
+              }
+            } else {
+              this.$swal({
+                title: 'Oops. No record found.',
+                type: 'error',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+              })
+            }
+          })
+    },
     submitData(data){
       this.$v.$touch()
       if (this.$v.$invalid) {
