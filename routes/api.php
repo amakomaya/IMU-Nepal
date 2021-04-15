@@ -1,5 +1,6 @@
 <?php
 
+use App\Imports\CasesPaymentImport;
 use App\Models\SampleCollection;
 use App\Models\CaseManagement;
 use App\Models\ContactDetail;
@@ -11,6 +12,7 @@ use App\Models\LabTest;
 use App\Models\SuspectedCase;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Excel;
 use Yagiten\Nepalicalendar\Calendar;
 
 Route::get('/data/aggregate', 'Data\Api\AggregateController@forMonitor');
@@ -598,6 +600,16 @@ Route::post('/v1/cases-payment', function (Request $request) {
     return response()->json(['message' => 'success']);
 });
 
+Route::post('/v1/cases-payment-import', function (Request $request) {
+    $data = $request->file('file');
+
+
+    return response()->json();
+
+    Excel::import(new CasesPaymentImport, $data);
+        return response()->json(['message' => 'success']);
+});
+
 Route::post('/v1/cases-search-by-lab-and-id', function (Request $request) {
     $id = $request->id;
     $hp_code = $request->hp_code;
@@ -619,5 +631,4 @@ Route::post('/v1/cases-search-by-lab-and-id', function (Request $request) {
     return response()->json(['message' => 'success',
     'data' => $response_data
     ]);
-
 });

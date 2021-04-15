@@ -115,8 +115,21 @@
               :name    = "excelFileName()"
           >
             Download Data
-            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+            <i class="fa fa-download" aria-hidden="true"></i>
           </download-excel>
+        </div>
+        <div>
+            <div>
+              <label for="files" class="btn btn-primary">Import
+                <i class="fa fa-upload" aria-hidden="true"></i>
+              </label>
+              <a href="/downloads/excel/cases_import_template.xlsx" onclick="return confirm('Are you sure, do you want to download import format ! ')" title="Do you have template ? if not, please download first and fill data than import.">Do you have template ? </a>
+              <input id="files" type="file" ref="file" name="file" @change="handleFileChange" class="btn btn-default"  style="visibility:hidden;"/>
+            </div>
+
+<!--          <button class="btn btn-primary" title="Import"> Import -->
+<!--            <i class="fa fa-upload" aria-hidden="true"></i>-->
+<!--          </button>-->
         </div>
       <div>
         <span>Order by:</span>
@@ -203,6 +216,7 @@ export default {
       apiresponce : false,
       appliedFilters: [],
       filterCandidates: [],
+      file : '',
       query: {
         order_column: 'created_at',
         order_direction: 'desc',
@@ -215,13 +229,17 @@ export default {
       },
       json_fields: {
         'S.N': 'serial_number',
+        'Register Date' : 'created_at',
         'Name': 'name',
         'Age': 'age',
+        'Gender': 'gender',
         'Phone' : 'phone',
         'Address' : 'address',
+        'Parent/Guardian Name' : 'guardian_name',
         'Health Condition' : 'health_condition',
         'Safe / Free' : 'safe_free',
-        'Created At' : 'created_at'
+        'Death Status' : 'is_death',
+        'Remark' : 'remark'
       }
     }
   },
@@ -241,6 +259,28 @@ export default {
     this.addFilter()
   },
   methods: {
+    handleFileChange() {
+      // Whenever the file changes, emit the 'input' event with the file data.
+      this.file = this.$refs.file.files[0];
+
+
+      axios.post( '/api/v1/cases-payment-import',
+          this.file,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })
+              .then((response) => {
+                console.log(this.file);
+                console.log(response.data);
+              })
+              .catch((error) => {
+                console.error(error)
+              })
+              .finally(() => {
+              });
+   },
     ad2bs: function () {
       var dateObject = new Date();
 
@@ -276,16 +316,19 @@ export default {
           let exportableData = {};
           let formattedHealthConditionObject = {1:"No Symptoms", 2:"Mild", 3:"Moderate", 4:"Sever"};
           let formattedSafeOrFreeObject = {1:"Safe", 2:"Free"};
+          let formattedGenderObject = {1:"Male", 2:"Female", 3:"Other"};
           exportableData.serial_number = key +1;
+          exportableData.created_at = data.created_at;
           exportableData.name = data.name;
-          exportableData.phone = data.phone;
-
           exportableData.age = data.age;
-          exportableData.gender = data.gender;
+          exportableData.gender = formattedGenderObject[data.gender];
+          exportableData.phone = data.phone;
           exportableData.address = data.address;
+          exportableData.guardian_name = data.guardian_name;
+          exportableData.is_death = data.is_death;
           exportableData.health_condition = formattedHealthConditionObject[data.health_condition];
           exportableData.self_free = formattedSafeOrFreeObject[data.self_free];
-          exportableData.created_at = data.created_at;
+          exportableData.remark = data.remark;
           list.push(exportableData);
         });
         return list;

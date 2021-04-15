@@ -38,7 +38,16 @@
       </div>
     </div>
     <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-      <div class="form-group" :class="{ 'has-error': $v.data.name.$error }">
+    <div class="form-group" :class="{ 'has-error': $v.data.name.$error }">
+    <label for="date_of_death">Register Date</label>
+      <div class="input-group"><span class="input-group-addon"><i
+          class="fa fa-calendar"></i></span>
+        <v-nepalidatepicker id="register_date" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
+                            format="YYYY-MM-DD" v-model.trim="data.created_at" :yearSelect="false"
+                            :monthSelect="false"/>
+      </div>
+    </div>
+    <div class="form-group" :class="{ 'has-error': $v.data.name.$error }">
         <label for="name">Name</label>
         <input type="text" placeholder="Enter Full Name" class="form-control" v-model.trim="data.name" id="name" />
       </div>
@@ -121,6 +130,7 @@
 
 import axios from "axios";
 import {required} from "vuelidate/lib/validators";
+import DataConverter from "ad-bs-converter";
 
 export default {
   data() {
@@ -257,6 +267,20 @@ export default {
             }
           })
     },
+    ad2bs: function (date) {
+      var dateObject = new Date(date);
+
+      var dateFormat = dateObject.getFullYear()  + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getDate();
+
+      let dateConverter = DataConverter.ad2bs(dateFormat);
+
+      return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
+
+    }
+  },
+  created(){
+    var today = new Date();
+    this.data.created_at = this.ad2bs(today);
   }
 }
 </script>
