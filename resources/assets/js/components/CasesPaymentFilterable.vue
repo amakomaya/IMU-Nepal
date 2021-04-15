@@ -237,7 +237,7 @@ export default {
         'Address' : 'address',
         'Parent/Guardian Name' : 'guardian_name',
         'Health Condition' : 'health_condition',
-        'Safe / Free' : 'safe_free',
+        'Safe / Free' : 'self_free',
         'Death Status' : 'is_death',
         'Remark' : 'remark'
       }
