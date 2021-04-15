@@ -268,14 +268,7 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        $data = PaymentCase::whereNotIn('hp_code', $hpCodes)->advancedFilter();
+        $data = PaymentCase::whereIn('hp_code', $hpCodes)->latest()->advancedFilter();
         return response()->json(['collection' => $data]);
-
-//        $woman = SuspectedCase::where('municipality_id', $request['municipality_id'])
-//            ->whereNotIn('hp_code', $hp_codes)
-//            ->active()->withAll();
-//        return response()->json([
-//            'collection' => $woman->advancedFilter()
-//        ]);
     }
 }
