@@ -14,8 +14,12 @@ class CasesPaymentImport implements ToCollection
     public function collection(Collection $rows)
     {
         $token = auth()->user()->token;
-        return response()->json($token);
+        return response()->json($rows);
+
+
         $data = $rows->map(function ($row) use ($token) {
+            return response()->json($row);
+
             $data = [
                 'health_worker'         => $row[0],
                 'organization_type'     => $row[1],

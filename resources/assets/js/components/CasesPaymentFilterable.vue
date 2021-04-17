@@ -229,7 +229,7 @@ export default {
       },
       json_fields: {
         'S.N': 'serial_number',
-        'Register Date' : 'created_at',
+        'Register Date' : 'register_date_en',
         'Name': 'name',
         'Age': 'age',
         'Gender': 'gender',
@@ -238,7 +238,8 @@ export default {
         'Parent/Guardian Name' : 'guardian_name',
         'Health Condition' : 'health_condition',
         'Safe / Free' : 'self_free',
-        'Death Status' : 'is_death',
+        'Treatment Outcome' : 'treatment_outcome',
+        'Date of Outcome' : 'date_of_outcome',
         'Remark' : 'remark'
       }
     }
@@ -262,7 +263,6 @@ export default {
     handleFileChange() {
       // Whenever the file changes, emit the 'input' event with the file data.
       this.file = this.$refs.file.files[0];
-
 
       axios.post( '/api/v1/cases-payment-import',
           this.file,
@@ -314,18 +314,20 @@ export default {
         let role = this.$userRole;
         this.collection.data.map(function(data, key) {
           let exportableData = {};
-          let formattedHealthConditionObject = {1:"No Symptoms", 2:"Mild", 3:"Moderate", 4:"Sever"};
+          let formattedHealthConditionObject = {1:"No Symptoms", 2:"Mild", 3:"Moderate", 4:"Severe - ICU", 5:'Severe - Ventilator'};
           let formattedSafeOrFreeObject = {1:"Safe", 2:"Free"};
           let formattedGenderObject = {1:"Male", 2:"Female", 3:"Other"};
+          let formattedTreatmentOutcomeObject = {1:"Discharge", 2:"Death"};
           exportableData.serial_number = key +1;
-          exportableData.created_at = data.created_at;
+          exportableData.register_date_en = data.register_date_en;
           exportableData.name = data.name;
           exportableData.age = data.age;
           exportableData.gender = formattedGenderObject[data.gender];
           exportableData.phone = data.phone;
           exportableData.address = data.address;
           exportableData.guardian_name = data.guardian_name;
-          exportableData.is_death = data.is_death;
+          exportableData.treatment_outcome = formattedTreatmentOutcomeObject[data.is_death];
+          exportableData.date_of_outcome = data.date_of_outcome;
           exportableData.health_condition = formattedHealthConditionObject[data.health_condition];
           exportableData.self_free = formattedSafeOrFreeObject[data.self_free];
           exportableData.remark = data.remark;

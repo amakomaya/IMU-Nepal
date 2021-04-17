@@ -97,7 +97,10 @@ class ProfileController extends Controller
                 $data->update([
                     'name' => $request->name,
                     'phone' => $request->phone,
-                    'address' => $request->tole
+                    'address' => $request->tole,
+                    'no_of_beds' => $request->get('no_of_beds'),
+                    'no_of_ventilators' => $request->get('no_of_ventilators'),
+                    'no_of_icu' => $request->get('no_of_icu'),
                 ]);
                 break;
             default:
@@ -110,6 +113,6 @@ class ProfileController extends Controller
         $user->email = $request->email;
         $user->save();
         $request->session()->flash('message', 'Successfully updated your account\'s information !');
-        return redirect('/admin');
+        return redirect()->back();
     }
 }

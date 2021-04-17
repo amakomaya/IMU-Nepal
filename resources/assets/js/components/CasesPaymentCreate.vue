@@ -1,6 +1,6 @@
 <template>
   <div class="container row">
-    <div class="panel panel-default">
+    <div v-show="false" class="panel panel-default">
       <div class="panel-heading text-center"><strong>Search Lab ID in IMU</strong></div>
       <div class="panel-body">
         <div class="row">
@@ -37,21 +37,29 @@
         </button>
       </div>
     </div>
-    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-    <div class="form-group" :class="{ 'has-error': $v.data.name.$error }">
-    <label for="date_of_death">Register Date</label>
-      <div class="input-group"><span class="input-group-addon"><i
-          class="fa fa-calendar"></i></span>
-        <v-nepalidatepicker id="register_date" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
-                            format="YYYY-MM-DD" v-model.trim="data.created_at" :yearSelect="false"
-                            :monthSelect="false"/>
+    <hr v-show="false" style="height:2px;border-width:0;color:gray;background-color:gray">
+    <div class="row">
+      <div class="form-group col-lg-6">
+        <label for="hospital_register_id">Hospital Reg. ID for Case</label>
+        <input type="text" placeholder="Enter Hospital Register ID for Case" class="form-control" v-model.trim="data.hospital_register_id" id="hospital_register_id" />
       </div>
+
+
+      <div class="form-group col-lg-6">
+        <label for="date_of_death">Register Date</label>
+        <div class="input-group"><span class="input-group-addon"><i
+            class="fa fa-calendar"></i></span>
+          <v-nepalidatepicker id="register_date" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
+                              format="YYYY-MM-DD" v-model.trim="data.register_date_np" :yearSelect="false"
+                              :monthSelect="false"/>
+        </div>
+      </div>
+
     </div>
     <div class="form-group" :class="{ 'has-error': $v.data.name.$error }">
         <label for="name">Name</label>
         <input type="text" placeholder="Enter Full Name" class="form-control" v-model.trim="data.name" id="name" />
       </div>
-
       <div class="row">
         <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.age.$error }">
           <label for="age">Age</label>
@@ -84,7 +92,8 @@
           <option value="1">No Symptoms</option>
           <option value="2">Mild</option>
           <option value="3">Moderate</option>
-          <option value="4">Sever</option>
+          <option value="4">Severe - ICU</option>
+          <option value="5">Severe - Ventilator</option>
         </select>
 
       </div>
@@ -103,22 +112,40 @@
     </div>
     <div class="row">
       <div class="form-group col-lg-4">
-        <label>Death Status</label><br>
-        <input type="radio" id="yes" v-model.trim="data.is_death" value="">
-        <label for="no">No</label> &nbsp; &nbsp;
-        <input type="radio" id="no" v-model.trim="data.is_death" value="yes">
-        <label for="yes">Yes</label> &nbsp; &nbsp;
+        <label>Treatment Outcome</label><br>
+        <input type="radio" id="treatment" v-model.trim="data.is_death" value="">
+        <label for="treatment">Under Treatment</label> &nbsp; &nbsp;
+        <input type="radio" id="discharge" v-model.trim="data.is_death" value="1">
+        <label for="discharge">Discharge</label> &nbsp; &nbsp;
+        <input type="radio" id="death" v-model.trim="data.is_death" value="2">
+        <label for="death">Death</label> &nbsp; &nbsp;
       </div>
       <div v-show="data.is_death !== ''" class="form-group col-lg-4">
-        <label for="date_of_death">Date of death</label>
+        <label for="date_of_death">Date of Outcome</label>
           <div class="input-group"><span class="input-group-addon"><i
               class="fa fa-calendar"></i></span>
             <v-nepalidatepicker id="date_of_death" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
-                                format="YYYY-MM-DD" v-model.trim="data.is_death" :yearSelect="false"
+                                format="YYYY-MM-DD" v-model.trim="data.date_of_outcome" :yearSelect="false"
                                 :monthSelect="false"/>
         </div>
       </div>
     </div>
+    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+
+    <div class="row">
+      <div class="form-group col-lg-8">
+        <label for="lab_name">Lab Name</label>
+        <input type="text" placeholder="Enter Lab Name" class="form-control" v-model.trim="data.lab_name" id="lab_name" />
+      </div>
+
+      <div class="form-group col-lg-4">
+        <label for="lab_id">Lab Id</label>
+        <input type="text" placeholder="Enter Lab Id" class="form-control" v-model.trim="data.lab_id" id="lab_id" />
+      </div>
+      </div>
+
+    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+
     <div class="form-group">
         <label for="remark">Remarks</label>
         <textarea class="form-control" v-model.trim="data.remark" id="remark" rows="5"></textarea>
@@ -234,6 +261,7 @@ export default {
       if (this.$v.$invalid) {
         return false;
       }
+      data.register_date_en = this.bs2ad(data.register_date_np);
       axios.post('/api/v1/cases-payment', data)
           .then((response) => {
             if (response.data.message === 'success') {
@@ -246,9 +274,11 @@ export default {
                 timer: 3000
               })
               this.$v.$reset();
+              var today = new Date();
               this.data = {
                 health_condition : 0,
-                    is_death : ''
+                    is_death : '',
+                register_date_np : this.ad2bs(today)
               };
               if (this.item){
                 this.$dlg.closeAll(function(){
@@ -276,11 +306,18 @@ export default {
 
       return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
 
+    },
+    bs2ad: function (date) {
+      var split_date = date.split("-");
+      var formated_date = split_date[0]+ "/" + split_date[1]+ "/" + split_date[2];
+      let dateConverter;
+      dateConverter = DataConverter.bs2ad(formated_date);
+      return dateConverter.year + '-' + dateConverter.month + '-' + dateConverter.day;
     }
   },
   created(){
     var today = new Date();
-    this.data.created_at = this.ad2bs(today);
+    this.data.register_date_np = this.ad2bs(today);
   }
 }
 </script>

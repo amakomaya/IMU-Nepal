@@ -6,7 +6,14 @@
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
-
+                    @if (Request::session()->has('message'))
+                        <div class="alert alert-block alert-success">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="ace-icon fa fa-times"></i>
+                            </button>
+                            {!! Request::session()->get('message') !!}
+                        </div>
+                    @endif
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             Edit Profile
@@ -74,10 +81,52 @@
                                                 </span>
                                             @endif
                                         </div>
-                                    </div>                           
-                                   
+                                    </div>
 
-                                    <br>
+                                <div class="form-group{{ $errors->has('no_of_beds') ? ' has-error' : '' }}">
+                                    <label for="no_of_beds" class="col-md-3 control-label"><i data-toggle="tooltip" title=""class="fa fa-info-circle" aria-hidden="true"></i> No of Beds ( General )</label>
+
+                                    <div class="col-md-7">
+                                        <input id="no_of_beds" type="text" class="form-control" name="no_of_beds" value="{{ $data->no_of_beds ?? '' }}" >
+
+                                        @if ($errors->has('no_of_beds'))
+                                            <span class="help-block">
+                                                    <strong>{{ $errors->first('no_of_beds') }}</strong>
+                                                </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-group{{ $errors->has('no_of_icu') ? ' has-error' : '' }}">
+                                    <label for="no_of_icu" class="col-md-3 control-label"><i data-toggle="tooltip" title=""class="fa fa-info-circle" aria-hidden="true"></i> No of ICU </label>
+
+                                    <div class="col-md-7">
+                                        <input id="no_of_icu" type="text" class="form-control" name="no_of_icu" value="{{ $data->no_of_icu ?? '' }}" >
+
+                                        @if ($errors->has('no_of_icu'))
+                                            <span class="help-block">
+                                                    <strong>{{ $errors->first('no_of_icu') }}</strong>
+                                                </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-group{{ $errors->has('no_of_ventilators') ? ' has-error' : '' }}">
+                                    <label for="no_of_ventilators" class="col-md-3 control-label"><i data-toggle="tooltip" title=""class="fa fa-info-circle" aria-hidden="true"></i> No of Ventilators</label>
+
+                                    <div class="col-md-7">
+                                        <input id="no_of_ventilators" type="text" class="form-control" name="no_of_ventilators" value="{{ $data->no_of_ventilators ?? '' }}" >
+
+                                        @if ($errors->has('no_of_ventilators'))
+                                            <span class="help-block">
+                                                    <strong>{{ $errors->first('no_of_ventilators') }}</strong>
+                                                </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+
+                                <br>
                                     <div class="form-group"> <div class="col-md-7 col-md-offset-3">
                                         
                                     <h4>Change Password</h4>

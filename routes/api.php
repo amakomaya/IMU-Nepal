@@ -12,7 +12,7 @@ use App\Models\LabTest;
 use App\Models\SuspectedCase;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use Yagiten\Nepalicalendar\Calendar;
 
 Route::get('/data/aggregate', 'Data\Api\AggregateController@forMonitor');
@@ -601,13 +601,9 @@ Route::post('/v1/cases-payment', function (Request $request) {
 });
 
 Route::post('/v1/cases-payment-import', function (Request $request) {
-    $data = $request->file('file');
-
-
-    return response()->json();
-
-    Excel::import(new CasesPaymentImport, $data);
-        return response()->json(['message' => 'success']);
+    $path = $request->file('file');
+//    $data = Excel::load($path, function($reader) {})->get();
+    return response()->json($path);
 });
 
 Route::post('/v1/cases-search-by-lab-and-id', function (Request $request) {

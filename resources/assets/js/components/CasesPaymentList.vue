@@ -69,7 +69,9 @@ export default {
         case 3:
           return 'Moderate';
         case 4:
-          return 'Sever';
+          return 'Severe - ICU';
+        case 5:
+          return 'Severe - Ventilator';
         default:
           return 'N/A';
       }
