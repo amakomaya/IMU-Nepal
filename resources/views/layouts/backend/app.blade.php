@@ -129,7 +129,23 @@
                         <div class="triangle"></div>
                         <ul>
                           <li>{{ \App\User::getAppRole() }}</li>
-                          <li><a href="/admin/profile">Edit Profile</a></li>
+                          <li><a href="/admin/profile">
+                                  <i class="fa fa-edit" style="font-size:24px"></i>
+                                  Edit Profile</a></li>
+                            <hr style="height:2px;border-width:0; margin:15px 0 0 0;color:gray;background-color:gray">
+                            <li>
+                                <a href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                         document.getElementById('logout-form').submit();">
+                                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+
+                                    {{ trans('sidebar.logout') }} ({{ Auth::user()->username }})
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                            </li>
                         </ul>
                       </li>
                     </ul>

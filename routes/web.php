@@ -140,6 +140,8 @@ Route::get('admin/tracing-patients', 'Backend\WomanController@tracingIndex')->na
 Route::get('admin/lab-received-patients', 'Backend\WomanController@labReceivedIndex')->name('patients.lab-received.index');
 Route::get('admin/cases-recovered', 'Backend\WomanController@casesRecoveredIndex')->name('cases.recovered.index');
 Route::get('admin/cases-payment', 'Backend\WomanController@casesPaymentIndex')->name('cases.payment.index');
+Route::get('admin/cases-discharge-payment', 'Backend\WomanController@casesPaymentDischargeIndex')->name('cases.payment.index-discharge');
+Route::get('admin/cases-death-payment', 'Backend\WomanController@casesPaymentDeathIndex')->name('cases.payment.index-death');
 Route::get('admin/cases-payment-create', 'Backend\WomanController@casesPaymentCreate')->name('cases.payment.create');
 Route::get('admin/cases-death', 'Backend\WomanController@casesDeathIndex')->name('cases.death.index');
 Route::get('admin/sample-collection/create/{token}', 'Backend\WomanController@sampleCollectionCreate')->name('patients.sample-collection.store');

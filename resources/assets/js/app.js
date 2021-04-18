@@ -57,6 +57,9 @@ import VueMask from 'v-mask'
 import CasesPaymentList from "./components/CasesPaymentList";
 import CasesPaymentCreate from "./components/CasesPaymentCreate";
 
+import CasesPaymentDischargeList from "./components/CasesPaymentDischargeList"
+import CasesPaymentDeathList from "./components/CasesPaymentDeathList"
+
 Vue.use(VueMask);
 Vue.use(VNepaliDatePicker);
 
@@ -107,6 +110,8 @@ Vue.component('organization-search', OrganizationSearch);
 Vue.component('add-sample', AddSampleCollection);
 
 Vue.component('cases-payment-list', CasesPaymentList);
+Vue.component('cases-payment-discharge-list', CasesPaymentDischargeList);
+Vue.component('cases-payment-death-list', CasesPaymentDeathList);
 Vue.component('cases-payment-create', CasesPaymentCreate);
 
 const app = new Vue({

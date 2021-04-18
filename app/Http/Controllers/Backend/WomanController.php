@@ -70,6 +70,16 @@ class WomanController extends Controller
         return view('backend.cases.payment.index');
     }
 
+    public function casesPaymentDischargeIndex()
+    {
+        return view('backend.cases.payment.index-discharge');
+    }
+
+    public function casesPaymentDeathIndex()
+    {
+        return view('backend.cases.payment.index-death');
+    }
+
     public function casesPaymentCreate()
     {
         return view('backend.cases.payment.create');

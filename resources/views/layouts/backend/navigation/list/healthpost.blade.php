@@ -136,6 +136,13 @@
 
         <ul class="nav nav-second-level">
             <li>
+                <a href="{{ route('cases.payment.create') }}">
+                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                    Create
+                    <span class="label label-default pull-right"> Create </span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('cases.payment.report') }}">
                     <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                     Report
@@ -145,15 +152,22 @@
             <li>
                 <a href="{{ route('cases.payment.index') }}">
                     <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                    List
+                    Under Treatment
                     <span class="label label-primary pull-right">List</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('cases.payment.create') }}">
+                <a href="{{ route('cases.payment.index-discharge') }}">
                     <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                    Create
-                    <span class="label label-default pull-right"> Create </span>
+                    Discharge
+                    <span class="label label-success pull-right">List</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('cases.payment.index-death') }}">
+                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                    Death
+                    <span class="label label-danger pull-right">List</span>
                 </a>
             </li>
         </ul>

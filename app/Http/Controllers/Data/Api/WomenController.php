@@ -268,7 +268,23 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        $data = PaymentCase::whereIn('hp_code', $hpCodes)->latest()->advancedFilter();
+        $data = PaymentCase::whereIn('hp_code', $hpCodes)->whereNull('is_death')->latest()->advancedFilter();
+        return response()->json(['collection' => $data]);
+    }
+
+    public function casesPaymentDischargeIndex(Request $request){
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+
+        $data = PaymentCase::whereIn('hp_code', $hpCodes)->where('is_death', 1)->latest()->advancedFilter();
+        return response()->json(['collection' => $data]);
+    }
+
+    public function casesPaymentDeathIndex(Request $request){
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+
+        $data = PaymentCase::whereIn('hp_code', $hpCodes)->where('is_death', 2)->latest()->advancedFilter();
         return response()->json(['collection' => $data]);
     }
 }
