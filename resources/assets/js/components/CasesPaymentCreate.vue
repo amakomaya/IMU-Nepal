@@ -39,14 +39,14 @@
     </div>
     <hr v-show="false" style="height:2px;border-width:0;color:gray;background-color:gray">
     <div class="row">
-      <div class="form-group col-lg-6">
-        <label for="hospital_register_id">Hospital Reg. ID for Case</label>
+      <div class="form-group col-lg-6"  :class="{ 'has-error': $v.data.hospital_register_id.$error }">
+        <label class="control-label" for="hospital_register_id">Hospital Reg. ID for Case</label>
         <input type="text" placeholder="Enter Hospital Register ID for Case" class="form-control" v-model.trim="data.hospital_register_id" id="hospital_register_id" />
       </div>
 
 
-      <div class="form-group col-lg-6">
-        <label for="date_of_death">Register Date</label>
+      <div class="form-group col-lg-6" :class="{ 'has-error': $v.data.register_date_np.$error }">
+        <label class="control-label" for="date_of_death">Register Date</label>
         <div class="input-group"><span class="input-group-addon"><i
             class="fa fa-calendar"></i></span>
           <v-nepalidatepicker id="register_date" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
@@ -57,36 +57,36 @@
 
     </div>
     <div class="form-group" :class="{ 'has-error': $v.data.name.$error }">
-        <label for="name">Name</label>
+        <label class="control-label" for="name">Name</label>
         <input type="text" placeholder="Enter Full Name" class="form-control" v-model.trim="data.name" id="name" />
       </div>
       <div class="row">
         <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.age.$error }">
-          <label for="age">Age</label>
+          <label class="control-label" for="age">Age</label>
           <input type="text" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" v-model.trim="data.age" id="age"/>
         </div>
-        <div class="form-group col-lg-4">
-          <label>Gender</label><br>
+        <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.gender.$error }">
+          <label class="control-label">Gender</label><br>
           <input type="radio" id="male" v-model.trim="data.gender"  value="1">
-          <label for="male">Male</label> &nbsp; &nbsp;
+          <label class="control-label" for="male">Male</label> &nbsp; &nbsp;
           <input type="radio" id="female" v-model.trim="data.gender" value="2">
-          <label for="female">Female</label> &nbsp; &nbsp;
+          <label class="control-label" for="female">Female</label> &nbsp; &nbsp;
           <input type="radio" id="other" v-model.trim="data.gender" value="3">
-          <label for="other">Other</label>
+          <label class="control-label" for="other">Other</label>
         </div>
         <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.phone.$error }">
-          <label for="phone">Phone</label>
+          <label class="control-label" for="phone">Phone</label>
           <input type="text" class="form-control" v-model.trim="data.phone" id="phone" />
         </div>
       </div>
     <div class="form-group" :class="{ 'has-error': $v.data.address.$error }">
-      <label for="name">Address</label>
+      <label class="control-label" for="name">Address</label>
       <input type="text" placeholder="Enter Full Address ( e.g Lazimpat-2, Kathmandu )" class="form-control" v-model.trim="data.address" id="address" />
     </div>
     <hr>
     <div class="row">
-      <div class="form-group col-lg-4">
-        <label for="health_condition">Health Condition</label>
+      <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.health_condition.$error }">
+        <label class="control-label" for="health_condition">Health Condition</label>
         <select class="form-control" v-model.trim="data.health_condition" id="health_condition">
           <option value="0" selected hidden>Please Select Medical Condition</option>
           <option value="1">No Symptoms</option>
@@ -97,16 +97,16 @@
         </select>
 
       </div>
-      <div class="form-group col-lg-4">
+      <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.self_free.$error }">
         <br>
         <input type="radio" id="self" v-model.trim="data.self_free" value="1">
-        <label for="self">Self</label> &nbsp; &nbsp;
+        <label class="control-label" for="self">Self</label> &nbsp; &nbsp;
         <input type="radio" id="free" v-model.trim="data.self_free" value="2">
-        <label for="free">Free</label> &nbsp; &nbsp;
+        <label class="control-label" for="free">Free</label> &nbsp; &nbsp;
       </div>
     </div>
     <hr>
-    <div class="form-group" :class="{ 'has-error': $v.data.guardian_name.$error }">
+    <div class="form-group">
       <label for="guardian_name">Parent/Guardian Name</label>
       <input type="text" class="form-control" v-model.trim="data.guardian_name" id="guardian_name" />
     </div>
@@ -133,7 +133,7 @@
     <hr style="height:2px;border-width:0;color:gray;background-color:gray">
 
     <div class="row">
-      <div class="form-group col-lg-8">
+      <div class="form-group col-lg-8" :class="{ 'has-error': $v.data.lab_name.$error }">
         <label for="lab_name">Lab Name</label>
         <input type="text" placeholder="Enter Lab Name" class="form-control" v-model.trim="data.lab_name" id="lab_name" />
       </div>
@@ -156,7 +156,7 @@
 <script type="text/javascript">
 
 import axios from "axios";
-import {required} from "vuelidate/lib/validators";
+import {required, minValue} from "vuelidate/lib/validators";
 import DataConverter from "ad-bs-converter";
 
 export default {
@@ -164,7 +164,8 @@ export default {
     return {
       data : {
         health_condition : 0,
-        is_death : ''
+        is_death : '',
+        gender: undefined,
       },
       lab_id : '',
       options: [],
@@ -180,7 +181,12 @@ export default {
         required,
       },
       phone : { required },
-      guardian_name : { required },
+      hospital_register_id : { required },
+      register_date_np : { required },
+      gender : { required },
+      lab_name : { required },
+      self_free : { required },
+      health_condition : { required, minValue : minValue(1) },
       address : { required }
     }
   },
