@@ -153,26 +153,29 @@
         <div class="panel panel-primary">
             <div class="panel-heading text-center">HMIS ( DHIS2 ) को Username र Password राख्नुहोस</div>
             <div class="panel-body">
-                <form method="post" action="{{ route('cases.payment.report-send') }}">
+                <form class="form-inline" method="post" action="{{ route('cases.payment.report-send') }}">
                     @csrf
                     <div class="form-row">
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-5">
                             <label for="usernamehmis">Username</label>
-                            <input type="text" name="hmisUsername" placeholder="Username" required>
+                            <input class="form-control" style="border: 1px solid #313131;" type="text" name="hmisUsername" placeholder="Username" required>
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-5">
                             <label for="password">Password</label>
-                            <input type="password" name="hmisPassword" placeholder="Password" required>
+                            <input class="form-control" style="border: 1px solid #313131;" type="password" name="hmisPassword" placeholder="Password" required>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-success">Confirm & Send</button>
                         </div>
                     </div>
+                    <div>
+                            <input type="text" name="period" value="{{ $period }}" hidden>
+                        @foreach($data as $key => $value)
+                            <input type="text" name="{{$key}}" value="{{ $value }}" hidden>
+                            @endforeach
+                    </div>
                     <br>
-                    <input type="text" name="period" value="{{ $period }}" hidden>
-                @foreach($data as $key => $value)
-                    <input type="text" name="{{$key}}" value="{{ $value }}" hidden>
-                    @endforeach
-                    <button type="submit" class="btn btn-success">Confirm & Send</button>
-                    <br>
-                    <div class="text-center text-info">
+                    <div class="col-md-12 text-center text-info">
                         * HMIS ( DHIS2 )  मा डाटा पठाउन, DHIS2 को username र password टाइप् गरि Confirm & Send बटनमा थिच्नुहोस्।
                     </div>
                 </form>
