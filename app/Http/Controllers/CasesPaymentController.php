@@ -14,7 +14,7 @@ class CasesPaymentController extends Controller
 
         $json = json_encode([
             'dataSet' => 'EZA8TZsaRMA',
-            'completeDate' => \Carbon\Carbon::now()->addYears(56)->addMonths(8)->addDays(15)->format(('Y-m-d')),
+            'completeDate' => \Carbon\Carbon::now()->format(('Y-m-d')),
             'period' => $req['period'],
             'orgUnit' => $orgUnit,
             'dataValues' => $this->dataValues($req)
@@ -103,6 +103,5 @@ class CasesPaymentController extends Controller
             ['dataElement' => 'lJdBm4JQbxu', 'value' => $data['free_discharge']],
             ['dataElement' => 'qj1x5V3Zc7d', 'value' => $data['free_deaths']]
         ];
-
     }
 }

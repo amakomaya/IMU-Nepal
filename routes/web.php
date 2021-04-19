@@ -309,10 +309,10 @@ Route::get('download/vaccination-list', function (\Illuminate\Http\Request $requ
 Route::get('admin/cases-report-payment', function (\Illuminate\Http\Request $request) {
 
     if ($request->has('selected_date')){
-        $period = $request->selected_date;
+        $period = \Carbon\Carbon::parse($request->selected_date)->format('Ymd');
         $total = \App\Models\PaymentCase::whereDate('register_date_en', \Carbon\Carbon::parse($request->selected_date))->get();
     }else{
-        $period = date('Y-m-d');
+        $period = date('Ymd');
         $total = \App\Models\PaymentCase::whereDate('register_date_en', \Carbon\Carbon::today())->get();
     }
     $organization = \App\Models\Organization::where('token', \auth()->user()->token)->first();
