@@ -28,7 +28,18 @@
             </form>
 
         </div>
-
+        @if (Session::get('error'))
+            <div class="alert alert-danger">
+                {{ Session::get('error') }}
+            </div>
+        @endif
+        @if (Session::get('success'))
+            <div class="alert alert-success">
+                {{ Session::get('success') }}
+                <br>
+                कृपया डाटा हेर्न HMIS ( DHIS 2 ) मा जानुहोस
+            </div>
+        @endif
         <hr style="height:2px;border-width:0;color:gray;background-color:gray">
 
         <div class="row">
@@ -45,10 +56,10 @@
             <td class="b-color" width="17.5%">Total (A+B)</td>
         </tr>
         <tr>
-            <td><input type="text" value="{{ $data['total_beds_allocated_general'] }}"></td>
-            <td><input type="text" value="{{ $data['total_beds_allocated_icu'] }}"></td>
-            <td><input type="text" value="{{ $data['total_beds_allocated_ventilators_among_icu'] }}"></td>
-            <td ><input class="b-color" type="text" value="{{ $data['total_beds_allocated_general'] + $data['total_beds_allocated_icu'] }}"></td>
+            <td><input type="text" value="{{ $data['total_beds_allocated_general'] }}" readonly></td>
+            <td><input type="text" value="{{ $data['total_beds_allocated_icu'] }}" readonly></td>
+            <td><input type="text" value="{{ $data['total_beds_allocated_ventilators_among_icu'] }}" readonly></td>
+            <td ><input class="b-color" type="text" value="{{ $data['total_beds_allocated_general'] + $data['total_beds_allocated_icu'] }}" readonly></td>
         </tr>
 
     </table>
@@ -69,7 +80,7 @@
                                     $data['total_patients_with_moderate_symptoms'] +
                                     $data['total_patients_with_severe_symptoms_in_icu'] +
                                     $data['total_patients_with_severe_symptoms_in_ventilator']
-                        }}"></td>
+                        }}" readonly></td>
             <td><input type="text"
                        value="{{
                                     $data['free_patients_without_symptoms'] +
@@ -77,37 +88,37 @@
                                     $data['free_patients_with_moderate_symptoms'] +
                                     $data['free_patients_with_severe_symptoms_in_icu'] +
                                     $data['free_patients_with_severe_symptoms_in_ventilator']
-                        }}"></td>
+                        }}" readonly></td>
         </tr>
 
         <tr>
             <td class="b-color"><b>a. Patients without symptoms</b></td>
-            <td><input type="text" value="{{ $data['total_patients_without_symptoms'] }}"></td>
-            <td><input type="text" value="{{ $data['free_patients_without_symptoms'] }}"></td>
+            <td><input type="text" value="{{ $data['total_patients_without_symptoms'] }}" readonly></td>
+            <td><input type="text" value="{{ $data['free_patients_without_symptoms'] }}" readonly></td>
         </tr>
 
         <tr>
             <td class="b-color"><b>b. Patients with mild symptoms</b></td>
-            <td><input type="text" value="{{ $data['total_patients_with_mild_symptoms'] }}"></td>
-            <td><input type="text" value="{{ $data['free_patients_with_mild_symptoms'] }}"></td>
+            <td><input type="text" value="{{ $data['total_patients_with_mild_symptoms'] }}" readonly></td>
+            <td><input type="text" value="{{ $data['free_patients_with_mild_symptoms'] }}" readonly></td>
         </tr>
 
         <tr>
             <td class="b-color"><b>c. Patients with moderate symptoms</b></td>
-            <td><input type="text" value="{{ $data['total_patients_with_moderate_symptoms'] }}"></td>
-            <td><input type="text" value="{{ $data['free_patients_with_moderate_symptoms'] }}"></td>
+            <td><input type="text" value="{{ $data['total_patients_with_moderate_symptoms'] }}" readonly></td>
+            <td><input type="text" value="{{ $data['free_patients_with_moderate_symptoms'] }}" readonly></td>
         </tr>
 
         <tr>
             <td class="b-color"><b>d. Patients with severe symptoms in ICU(other than ventilator)</b></td>
-            <td><input type="text" value="{{ $data['total_patients_with_severe_symptoms_in_icu'] }}"></td>
-            <td><input type="text" value="{{ $data['free_patients_with_severe_symptoms_in_icu'] }}"></td>
+            <td><input type="text" value="{{ $data['total_patients_with_severe_symptoms_in_icu'] }}" readonly></td>
+            <td><input type="text" value="{{ $data['free_patients_with_severe_symptoms_in_icu'] }}" readonly></td>
         </tr>
 
         <tr>
             <td class="b-color"><b>e. Patients with severe symptoms in ventilator</b></td>
-            <td><input type="text" value="{{ $data['total_patients_with_severe_symptoms_in_ventilator'] }}"></td>
-            <td><input type="text" value="{{ $data['free_patients_with_severe_symptoms_in_ventilator'] }}"></td>
+            <td><input type="text" value="{{ $data['total_patients_with_severe_symptoms_in_ventilator'] }}" readonly></td>
+            <td><input type="text" value="{{ $data['free_patients_with_severe_symptoms_in_ventilator'] }}" readonly></td>
         </tr>
 
     </table>
@@ -121,24 +132,50 @@
 
         <tr>
             <td class="b-color"><b>a. Admission</b></td>
-            <td><input type="text" value="{{ $data['total_admissions'] }}"></td>
-            <td><input type="text" value="{{ $data['free_admissions'] }}"></td>
+            <td><input type="text" value="{{ $data['total_admissions'] }}" readonly></td>
+            <td><input type="text" value="{{ $data['free_admissions'] }}" readonly></td>
         </tr>
 
         <tr>
             <td class="b-color"><b>b. Discharge</b></td>
-            <td><input type="text" value="{{ $data['total_discharge'] }}"></td>
-            <td><input type="text" value="{{ $data['free_discharge'] }}"></td>
+            <td><input type="text" value="{{ $data['total_discharge'] }}" readonly></td>
+            <td><input type="text" value="{{ $data['free_discharge'] }}" readonly></td>
         </tr>
-
         <tr>
             <td class="b-color"><b>c. Death</b></td>
-            <td><input type="text" value="{{ $data['total_deaths'] }}"></td>
-            <td><input type="text" value="{{ $data['free_deaths'] }}"></td>
+            <td><input type="text" value="{{ $data['total_deaths'] }}" readonly></td>
+            <td><input type="text" value="{{ $data['free_deaths'] }}" readonly></td>
         </tr>
-
     </table>
-
+            </div>
+        </div>
+        <br>
+        <div class="panel panel-primary">
+            <div class="panel-heading text-center">HMIS ( DHIS2 ) को Username र Password राख्नुहोस</div>
+            <div class="panel-body">
+                <form method="post" action="{{ route('cases.payment.report-send') }}">
+                    @csrf
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="usernamehmis">Username</label>
+                            <input type="text" name="hmisUsername" placeholder="Username" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="password">Password</label>
+                            <input type="password" name="hmisPassword" placeholder="Password" required>
+                        </div>
+                    </div>
+                    <br>
+                    <input type="text" name="period" value="{{ $period }}" hidden>
+                @foreach($data as $key => $value)
+                    <input type="text" name="{{$key}}" value="{{ $value }}" hidden>
+                    @endforeach
+                    <button type="submit" class="btn btn-success">Confirm & Send</button>
+                    <br>
+                    <div class="text-center text-info">
+                        * HMIS ( DHIS2 )  मा डाटा पठाउन, DHIS2 को username र password टाइप् गरि Confirm & Send बटनमा थिच्नुहोस्।
+                    </div>
+                </form>
             </div>
         </div>
     </div>

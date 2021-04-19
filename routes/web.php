@@ -309,8 +309,10 @@ Route::get('download/vaccination-list', function (\Illuminate\Http\Request $requ
 Route::get('admin/cases-report-payment', function (\Illuminate\Http\Request $request) {
 
     if ($request->has('selected_date')){
+        $period = $request->selected_date;
         $total = \App\Models\PaymentCase::whereDate('register_date_en', \Carbon\Carbon::parse($request->selected_date))->get();
     }else{
+        $period = date('Y-m-d');
         $total = \App\Models\PaymentCase::whereDate('register_date_en', \Carbon\Carbon::today())->get();
     }
     $organization = \App\Models\Organization::where('token', \auth()->user()->token)->first();
@@ -423,5 +425,7 @@ Route::get('admin/cases-report-payment', function (\Illuminate\Http\Request $req
 
         ];
 
-    return view('backend.cases.payment.report', compact('data'));
+    return view('backend.cases.payment.report', compact('data', 'period'));
 })->name('cases.payment.report');
+
+Route::post('admin/cases-report-payment-send', 'CasesPaymentController@sendToDhis')->name('cases.payment.report-send');;
