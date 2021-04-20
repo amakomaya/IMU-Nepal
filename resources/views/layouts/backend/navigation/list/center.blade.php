@@ -115,12 +115,12 @@
         </li>
     </ul>
 </li>
-<li>
-    <a href="{{ route('health-worker.index') }}">
-    <i class="fa fa-user"></i>
-        Health Worker
-    </a>
-</li>
+{{--<li>--}}
+{{--    <a href="{{ route('health-worker.index') }}">--}}
+{{--    <i class="fa fa-user"></i>--}}
+{{--        Health Worker--}}
+{{--    </a>--}}
+{{--</li>--}}
 <li>
     <a href="#">
     <i class="fa fa-user" aria-hidden="true"></i>

@@ -95,35 +95,35 @@
         </li>
     </ul>
 </li>
-<li>
-    <a href="{{ route('vaccination.report') }}">
-        <i class="fa fa-dashboard" aria-hidden="true"></i>
-        Vaccination Reports
-    </a>
-</li>
-<li>
-    <a href="#">
-        <i class="fa fa-users" aria-hidden="true"></i>
-        Health Professional <span class="fa arrow"></span>
-    </a>
+{{--<li>--}}
+{{--    <a href="{{ route('vaccination.report') }}">--}}
+{{--        <i class="fa fa-dashboard" aria-hidden="true"></i>--}}
+{{--        Vaccination Reports--}}
+{{--    </a>--}}
+{{--</li>--}}
+{{--<li>--}}
+{{--    <a href="#">--}}
+{{--        <i class="fa fa-users" aria-hidden="true"></i>--}}
+{{--        Health Professional <span class="fa arrow"></span>--}}
+{{--    </a>--}}
 
-    <ul class="nav nav-second-level">
-        <li>
-            <a href="{{ route('health-professional.index') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Registered
-                <span class="label label-primary pull-right">&#x2714;</span>
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('health-professional.immunized') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Immunized
-                <span class="label label-success pull-right">&#x2714;</span>
-            </a>
-        </li>
-    </ul>
-</li>
+{{--    <ul class="nav nav-second-level">--}}
+{{--        <li>--}}
+{{--            <a href="{{ route('health-professional.index') }}">--}}
+{{--                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>--}}
+{{--                Registered--}}
+{{--                <span class="label label-primary pull-right">&#x2714;</span>--}}
+{{--            </a>--}}
+{{--        </li>--}}
+{{--        <li>--}}
+{{--            <a href="{{ route('health-professional.immunized') }}">--}}
+{{--                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>--}}
+{{--                Immunized--}}
+{{--                <span class="label label-success pull-right">&#x2714;</span>--}}
+{{--            </a>--}}
+{{--        </li>--}}
+{{--    </ul>--}}
+{{--</li>--}}
 <li>
     <a href="#">
         <i class="fa fa-money" aria-hidden="true"></i>
