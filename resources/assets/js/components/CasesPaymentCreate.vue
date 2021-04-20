@@ -1,58 +1,43 @@
 <template>
   <div class="container row">
-<!--    <div v-show="false" class="panel panel-default">-->
-<!--      <div class="panel-heading text-center"><strong>Search Lab ID in IMU</strong></div>-->
-<!--      <div class="panel-body">-->
-<!--        <div class="row">-->
-<!--          <div class="col-lg-8 form-group" :class="{ 'has-error': $v.data.lab_name.$error }">-->
-<!--            <label>Lab Name </label>-->
-<!--            <v-select label="name"-->
-<!--                      v-model="data.lab_name"-->
-<!--                      placeholder="Type Lab Name to search informations .."-->
-<!--                      :options="options"-->
-<!--                      @search="onSearch"-->
-<!--            >-->
-<!--              <template vslot="no-options">-->
-<!--                type to search informations ...-->
-<!--              </template>-->
-<!--              <template slot="option" slot-scope="option">-->
-<!--                {{ option.name }} <br>-->
-<!--                {{ option.province.province_name }}, {{ option.municipality.municipality_name }}, {{ option.district.district_name }}<br>-->
-<!--                {{ option.address }}-->
-<!--              </template>-->
-<!--              <template slot="selected-option" slot-scope="option">-->
-<!--                <div class="selected d-center">-->
-<!--                  {{ option.name }}, {{ option.address }}-->
-<!--                </div>-->
-<!--              </template>-->
-<!--            </v-select>-->
+    <div v-show="true" class="panel panel-default">
+      <div class="panel-heading text-center"><strong>Search Lab ID in IMU</strong></div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-8 form-group" :class="{ 'has-error': $v.labSelected.$error }">
+            <label>Lab Name </label>
+            <v-select label="name"
+                      v-model="labSelected"
+                      placeholder="Type Lab Name to search informations .."
+                      :options="options"
+                      @search="onSearch"
+            >
+              <template vslot="no-options">
+                type to search informations ...
+              </template>
+              <template slot="option" slot-scope="option">
+                {{ option.name }} <br>
+                {{ option.province.province_name }}, {{ option.municipality.municipality_name }}, {{ option.district.district_name }}<br>
+                {{ option.address }}
+              </template>
+              <template slot="selected-option" slot-scope="option">
+                <div class="selected d-center">
+                  {{ option.name }}, {{ option.address }}
+                </div>
+              </template>
+            </v-select>
 
-<!--          </div>-->
-<!--          <div class="col-lg-4 form-group">-->
-<!--            <label>Lab ID  </label> <input type="text" placeholder="Enter Lab ID here" class="form-control" v-model.trim="data.lab_id" />-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <button class="btn btn-info pull-right" v-on:click="searchOrganization(data.lab_name, lab_id)" title="Send Patient">-->
-<!--          <i class="fa fa-search"> Search</i>-->
-<!--        </button>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <hr v-show="false" style="height:2px;border-width:0;color:gray;background-color:gray">-->
-
-    <div v-show="true" class="row">
-      <div class="form-group col-lg-8" :class="{ 'has-error': $v.data.lab_name.$error }">
-        <label for="lab_name">Lab Name</label>
-        <input type="text" placeholder="Enter Lab Name" class="form-control" v-model.trim="data.lab_name" id="lab_name" />
-      </div>
-
-      <div class="form-group col-lg-4">
-        <label for="lab_id">Lab Id</label>
-        <input type="text" placeholder="Enter Lab Id" class="form-control" v-model.trim="data.lab_id" id="lab_id" />
+          </div>
+          <div class="col-lg-4 form-group">
+            <label>Lab ID  </label> <input type="text" placeholder="Enter Lab ID here" class="form-control" v-model.trim="data.lab_id" />
+          </div>
+        </div>
+        <button class="btn btn-info pull-right" v-on:click="searchOrganization(labSelected, data.lab_id)" title="Varified, Find, Search Patient">
+          <i class="fa fa-search"> Search</i>
+        </button>
       </div>
     </div>
-
     <hr v-show="true" style="height:2px;border-width:0;color:gray;background-color:gray">
-
     <div class="row">
       <div class="form-group col-lg-6"  :class="{ 'has-error': $v.data.hospital_register_id.$error }">
         <label class="control-label" for="hospital_register_id">Hospital Reg. ID for Case</label>
@@ -165,30 +150,25 @@ export default {
         health_condition : 0,
         is_death : '',
         gender: undefined,
-        lab_name : ''
       },
       lab_id : '',
-      options: []
-      // organizationSelected : ''
+      options: [],
+      labSelected : ''
     }
   },
   validations: {
     data: {
-      name: {
-        required,
-      },
-      age : {
-        required,
-      },
+      name: { required },
+      age : { required },
       phone : { required },
       hospital_register_id : { required },
       register_date_np : { required },
       gender : { required },
-      lab_name : { required },
       self_free : { required },
       health_condition : { required, minValue : minValue(1) },
       address : { required }
-    }
+    },
+    labSelected : { required }
   },
   methods: {
     onSearch(search, loading) {
@@ -196,7 +176,7 @@ export default {
       this.search(loading, search, this);
     },
     search: _.debounce((loading, search, vm) => {
-      let url = window.location.protocol + '/api/v1/healthposts';
+      let url = window.location.protocol + '/api/v1/healthposts-for-lab-and-hospital';
       axios.get(url)
           .then(response => {
             vm.options = response.data;
@@ -210,7 +190,6 @@ export default {
     }, 350),
 
     searchOrganization(organization, id){
-      console.log(organization);
       if (organization === '' || id === ''){
         this.$swal({
           title: 'Please fill both lab name and Id',
@@ -264,6 +243,7 @@ export default {
           })
     },
     submitData(data){
+      data.lab_name = this.labSelected.name;
       this.$v.$touch()
       if (this.$v.$invalid) {
         return false;
@@ -285,7 +265,8 @@ export default {
               this.data = {
                 health_condition : 0,
                     is_death : '',
-                register_date_np : this.ad2bs(today)
+                register_date_np : this.ad2bs(today),
+                lab_name : this.labSelected.name
               };
               if (this.item){
                 this.$dlg.closeAll(function(){

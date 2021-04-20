@@ -32,6 +32,11 @@ Route::get('/v1/healthposts', function () {
     return response()->json($healthpost);
 });
 
+Route::get('/v1/healthposts-for-lab-and-hospital', function () {
+    $healthpost = \App\Models\Organization::whereIn('hospital_type', [2,3,4])->with(['province', 'municipality', 'district'])->get();
+    return response()->json($healthpost);
+});
+
 Route::get('/v1/suspected-cases', function (Request $request) {
     if($request->has('name')){
         $cases = \App\Models\SuspectedCase::where('name', 'like', '%' . $request->name . '%')->withAll()->latest()->take(10)->get();
