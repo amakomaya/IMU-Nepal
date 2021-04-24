@@ -405,7 +405,12 @@ Route::post('/v1/contact-tracing', function (Request $request) {
 
 Route::get('/v1/case-mgmt', function (Request $request) {
     $hp_code = $request->hp_code;
-    $data = CaseManagement::where('hp_code', $hp_code)->get();
+    $data = CaseManagement::where('hp_code', $hp_code)->get()->toArray();
+
+    array_walk_recursive($data, function (&$item, $key) {
+        $item = null === $item ? '' : $item;
+    });
+
     return response()->json($data);
 });
 
