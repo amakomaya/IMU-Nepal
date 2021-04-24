@@ -32,6 +32,8 @@ class CaseManagement extends Model
         'first_source_info_specific',
         'second_dose', 'second_product_name',
         'second_date_vaccination', 'second_source_info' ,
-        'second_source_info_specific'
+        'second_source_info_specific',
+
+        'case_direct_care'
     ];
 }
