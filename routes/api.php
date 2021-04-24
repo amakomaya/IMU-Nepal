@@ -394,7 +394,9 @@ Route::get('/v1/contact-tracing', function (Request $request) {
 Route::post('/v1/contact-tracing', function (Request $request) {
     $data = $request->json()->all();
     try {
-        ContactTracing::create($data);
+        foreach ($data as $datum) {
+            ContactTracing::create($datum);
+        }
     } catch (\Exception $e) {
         return response()->json(['message' => 'Something went wrong, Please try again.']);
     }
@@ -410,7 +412,9 @@ Route::get('/v1/case-mgmt', function (Request $request) {
 Route::post('/v1/case-mgmt', function (Request $request) {
     $data = $request->json()->all();
     try {
-        CaseManagement::create($data);
+        foreach ($data as $datum){
+            CaseManagement::create($datum);
+        }
     } catch (\Exception $e) {
         return response()->json(['message' => 'Something went wrong, Please try again.']);
     }
@@ -438,7 +442,9 @@ Route::get('/v1/contact-follow-up', function (Request $request) {
 Route::post('/v1/contact-follow-up', function (Request $request) {
     $data = $request->json()->all();
     try {
-        ContactFollowUp::create($data);
+        foreach ($data as $datum){
+            ContactFollowUp::create($datum);
+        }
     } catch (\Exception $e) {
         return response()->json(['message' => 'Something went wrong, Please try again.']);
     }
@@ -454,7 +460,9 @@ Route::get('/v1/contact-detail', function (Request $request) {
 Route::post('/v1/contact-detail', function (Request $request) {
     $data = $request->json()->all();
     try {
-        ContactDetail::create($data);
+        foreach ($data as $row){
+            ContactDetail::create($row);
+        }
     } catch (\Exception $e) {
         return response()->json(['message' => 'Something went wrong, Please try again.']);
     }
