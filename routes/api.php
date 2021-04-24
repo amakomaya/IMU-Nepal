@@ -459,6 +459,9 @@ Route::post('/v1/contact-follow-up', function (Request $request) {
 Route::get('/v1/contact-detail', function (Request $request) {
     $hp_code = $request->hp_code;
     $data = ContactDetail::where('hp_code', $hp_code)->get();
+    array_walk_recursive($data, function (&$item, $key) {
+        $item = null === $item ? '' : $item;
+    });
     return response()->json($data);
 });
 
