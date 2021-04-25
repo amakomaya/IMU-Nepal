@@ -223,7 +223,8 @@ export default {
                 address : response.data.data.tole + '-' + response.data.data.ward + ',' + response.data.data.municipality_name,
                 phone : response.data.data.emergency_contact_one,
                 health_condition : 0,
-                is_death : ''
+                is_death : '',
+                lab_id : id
               };
               if (this.item){
                 this.$dlg.closeAll(function(){
