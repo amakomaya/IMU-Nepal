@@ -20,8 +20,8 @@ class CasesPaymentController extends Controller
             'dataValues' => $this->dataValues($req)
         ]);
 
-        $username = $req['hmisUsername'];
-        $password = $req['hmisPassword'];
+        $username = 'imu.user';
+        $password = 'Hmis@1234';
         $url = env('HMIS_BASE_URL', 'http://hmis.gov.np/hmisadditional').'/api/dataValueSets';
 
         $ch = curl_init($url);
