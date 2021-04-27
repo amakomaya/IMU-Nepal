@@ -2,19 +2,146 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Organization;
+use App\Models\PaymentCase;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CasesPaymentController extends Controller
 {
+
+    public function report(Request $request){
+
+        $organization = Organization::where('token', \auth()->user()->token)->first();
+
+        if ($request->has('selected_date')){
+            $period = Carbon::parse($request->selected_date)->format('Ymd');
+            $total = PaymentCase::where('hp_code', $organization->hp_code)->whereDate('register_date_en', Carbon::parse($request->selected_date))->get();
+        }else{
+            $period = date('Ymd');
+            $total = PaymentCase::where('hp_code', $organization->hp_code)->whereDate('register_date_en', Carbon::today())->get();
+        }
+
+        $total_beds_allocated_general = $organization->no_of_beds;
+        $total_beds_allocated_icu = $organization->no_of_icu;
+        $total_beds_allocated_ventilators_among_icu = $organization->no_of_ventilators;
+
+        $total_patients_without_symptoms = 0;
+        $total_patients_with_mild_symptoms = 0;
+        $total_patients_with_moderate_symptoms = 0;
+        $total_patients_with_severe_symptoms_in_icu = 0;
+        $total_patients_with_severe_symptoms_in_ventilator = 0;
+
+        $free_patients_without_symptoms = 0;
+        $free_patients_with_mild_symptoms = 0;
+        $free_patients_with_moderate_symptoms = 0;
+        $free_patients_with_severe_symptoms_in_icu = 0;
+        $free_patients_with_severe_symptoms_in_ventilator = 0;
+
+        $total_admissions = 0;
+        $total_discharge = 0;
+        $total_deaths = 0;
+
+        $free_admissions = 0;
+        $free_discharge = 0;
+        $free_deaths = 0;
+
+
+        foreach ($total as $item) {
+            switch ($item->health_condition){
+                case 1:
+                    $total_patients_without_symptoms++;
+                    if ($item->self_free){
+                        $free_patients_without_symptoms++;
+                    }
+                    break;
+                case 2:
+                    $total_patients_with_mild_symptoms++;
+                    if ($item->self_free){
+                        $free_patients_with_mild_symptoms++;
+                    }
+                    break;
+                case 3:
+                    $total_patients_with_moderate_symptoms++;
+                    if ($item->self_free){
+                        $free_patients_with_moderate_symptoms++;
+                    }
+                    break;
+                case 4:
+                    $total_patients_with_severe_symptoms_in_icu++;
+                    if ($item->self_free){
+                        $free_patients_with_severe_symptoms_in_icu++;
+                    }
+                    break;
+                case 5:
+                    $total_patients_with_severe_symptoms_in_ventilator++;
+                    if ($item->self_free){
+                        $free_patients_with_severe_symptoms_in_ventilator++;
+                    }
+                    break;
+            }
+
+            switch ($item->is_death){
+                case 1:
+                    $total_discharge++;
+                    if ($item->self_free){
+                        $free_discharge++;
+                    }
+                    break;
+                case 2:
+                    $total_deaths++;
+                    if ($item->self_free){
+                        $free_deaths++;
+                    }
+                    break;
+                default:
+                    $total_admissions++;
+                    if ($item->self_free){
+                        $free_admissions++;
+                    }
+                    break;
+            }
+        }
+
+
+        $data = [
+            'total_beds_allocated_general' => $total_beds_allocated_general,
+            'total_beds_allocated_icu' => $total_beds_allocated_icu,
+            'total_beds_allocated_ventilators_among_icu' => $total_beds_allocated_ventilators_among_icu,
+
+            'total_patients_without_symptoms' => $total_patients_without_symptoms,
+            'total_patients_with_mild_symptoms' => $total_patients_with_mild_symptoms,
+            'total_patients_with_moderate_symptoms' => $total_patients_with_moderate_symptoms,
+            'total_patients_with_severe_symptoms_in_icu' => $total_patients_with_severe_symptoms_in_icu,
+            'total_patients_with_severe_symptoms_in_ventilator' =>$total_patients_with_severe_symptoms_in_ventilator,
+
+            'free_patients_without_symptoms' => $free_patients_without_symptoms,
+            'free_patients_with_mild_symptoms' => $free_patients_with_mild_symptoms,
+            'free_patients_with_moderate_symptoms' => $free_patients_with_moderate_symptoms,
+            'free_patients_with_severe_symptoms_in_icu' => $free_patients_with_severe_symptoms_in_icu,
+            'free_patients_with_severe_symptoms_in_ventilator' => $free_patients_with_severe_symptoms_in_ventilator,
+
+            'total_admissions' => $total_admissions,
+            'total_discharge' => $total_discharge,
+            'total_deaths' => $total_deaths,
+            'free_admissions' => $free_admissions,
+            'free_discharge' => $free_discharge,
+            'free_deaths' => $free_deaths,
+
+        ];
+
+        return view('backend.cases.payment.report', compact('data', 'period'));
+    }
+
     public function sendToDhis(Request $request){
 
-        $orgUnit = \App\Models\Organization::where('token', \auth()->user()->token)->first()->hmis_uid;
+        $orgUnit = Organization::where('token', \auth()->user()->token)->first()->hmis_uid;
 
         $req = $request->all();
 
         $json = json_encode([
             'dataSet' => 'EZA8TZsaRMA',
-            'completeDate' => \Carbon\Carbon::now()->format(('Y-m-d')),
+            'completeDate' => Carbon::now()->format(('Y-m-d')),
             'period' => $req['period'],
             'orgUnit' => $orgUnit,
             'dataValues' => $this->dataValues($req)
