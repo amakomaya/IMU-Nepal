@@ -48,6 +48,9 @@
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
             <i class="fa fa-file" aria-hidden="true"></i> |
           </button>
+          <button v-on:click="viewCaseCICTDetails(item.token)" title="Case CICT Details Report">
+            <i class="fa fa-file-pdf-o" aria-hidden="true"></i> |
+          </button>
           <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)"
                   title="Add Sample Collection / Swab Collection Report">
             <i class="fa fa-medkit" aria-hidden="true"></i> |
@@ -334,6 +337,14 @@ export default {
           '_blank'
       );
     },
+
+    viewCaseCICTDetails(token) {
+      window.open(
+          '/admin/cict-patient-detail?token=' + token,
+          '_blank'
+      );
+    },
+
     editCaseDetails(token) {
       window.location.href = '/admin/patient/' + token + '/edit';
       window.open(
