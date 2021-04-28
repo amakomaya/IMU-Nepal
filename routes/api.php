@@ -144,6 +144,13 @@ Route::get('/v1/client', function (Request $request) {
         $response['payment'] = $row->payment ?? '';
         $response['result'] = $row->sample_result ?? '';
 
+        $response['nationality'] = $row->nationality ?? '';
+        $response['id_card_detail'] = $row->id_card_detail ?? '';
+        $response['id_card_issue'] = $row->id_card_issue ?? '';
+        $response['name_of_poe'] = $row->name_of_poe ?? '';
+        $response['covid_vaccination_details'] = $row->covid_vaccination_details ?? '';
+        $response['nearest_contact'] = $row->nearest_contact ?? '';
+
         if ($response['result'] == '3') {
             $response['case_id'] = $row->case_id ?? '';
         } else {
