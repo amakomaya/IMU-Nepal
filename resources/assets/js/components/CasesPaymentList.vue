@@ -22,7 +22,13 @@
         <td>{{ item.address }}</td>
         <td>{{ formattedHealthCondition(item.health_condition) }}</td>
         <td>{{ formattedSafeOrFree(item.self_free) }}</td>
-        <td></td>
+        <td>
+          <div v-show="checkEditButton()">
+            <button v-on:click="editData(item.id)" class="btn btn-primary btn-sm" title="Edit Data">
+              <i class="fa fa-edit" aria-hidden="true"> Edit</i>
+            </button>
+          </div>
+        </td>
         <!-- </div>             -->
       </tr>
       <!--            <span>Selected Ids: {{ item }}</span>-->
@@ -86,7 +92,16 @@ export default {
           return 'N/A';
       }
     },
-
+    editData : function (id){
+      window.open(
+          '/admin/cases-payment-create?token=' + id,
+          '_blank'
+      );
+      console.log(item);
+    },
+    checkEditButton(){
+      return this.$userRole === 'healthpost' || this.$userRole === 'main';
+    }
   }
 }
 </script>

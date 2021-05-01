@@ -619,14 +619,27 @@ Route::get('/v1/health-professionals-list', 'Backend\DHOController@findAllHealth
 
 Route::post('/v1/cases-payment', function (Request $request) {
     $data = $request->all();
-    $data['hp_code'] = \App\Models\Organization::where('token', auth()->user()->token)->first()->hp_code;
+
     try {
-        \App\Models\PaymentCase::insert($data);
+        if (isset($data['id'])){
+            $data = \App\Models\PaymentCase::where('id', $data['id'])->update($data);
+        }else{
+            $data['hp_code'] = \App\Models\Organization::where('token', auth()->user()->token)->first()->hp_code;
+            \App\Models\PaymentCase::insert($data);
+        }
+
     } catch (\Exception $e) {
         return response()->json(['message' => 'error']);
     }
     return response()->json(['message' => 'success']);
 });
+
+Route::get('/v1/search-cases-payment-by-id', function (Request $request) {
+    $data = $request->all();
+    $response = \App\Models\PaymentCase::where('id', $data['id'])->first();
+    return response()->json($response);
+});
+
 
 Route::post('/v1/cases-payment-import', function (Request $request) {
     $path = $request->file('file');

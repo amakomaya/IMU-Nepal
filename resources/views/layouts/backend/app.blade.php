@@ -38,6 +38,7 @@
     <script src="{{ asset('js/pace.min.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
     @php
+        $metaRole = auth()->user()->role;
         $metaPermission = implode(",", auth()->user()->getPermissionNames()->toArray());
         if (auth()->user()->role == 'healthworker'){
             $metaRole = \App\Models\OrganizationMember::where('token', Auth::user()->token)->first()->role;

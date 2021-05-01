@@ -153,7 +153,9 @@ export default {
       },
       lab_id : '',
       options: [],
-      labSelected : ''
+      labSelected : '',
+      is_to_update : false,
+      update_id : ''
     }
   },
   validations: {
@@ -244,7 +246,16 @@ export default {
           })
     },
     submitData(data){
-      data.lab_name = this.labSelected.name;
+      if (this.is_to_update){
+        this.data.id = this.update_id;
+        if(this.labSelected.name !== undefined){
+          data.lab_name = this.labSelected.name;
+        }else{
+          data.lab_name = this.labSelected;
+        }
+      }else{
+        data.lab_name = this.labSelected.name;
+      }
       this.$v.$touch()
       if (this.$v.$invalid) {
         return false;
@@ -261,6 +272,9 @@ export default {
                 showConfirmButton: false,
                 timer: 3000
               })
+              if (this.is_to_update) {
+                return false;
+              }
               this.$v.$reset();
               var today = new Date();
               this.data = {
@@ -268,12 +282,8 @@ export default {
                     is_death : '',
                 register_date_np : this.ad2bs(today),
                 lab_name : this.labSelected.name
-              };
-              if (this.item){
-                this.$dlg.closeAll(function(){
-                  // do something after all dialog closed
-                })
               }
+
             } else {
               this.$swal({
                 title: 'Oops. Something went wrong.',
@@ -307,6 +317,47 @@ export default {
   created(){
     var today = new Date();
     this.data.register_date_np = this.ad2bs(today);
+
+    let url = new URL(window.location.href);
+    let id = url.searchParams.get("token");
+
+    if(id){
+      // console.log(id);
+      axios.get('/api/v1/search-cases-payment-by-id?id='+id)
+          .then((response) => {
+            if(Object.keys(response.data).length > 0){
+              // this.data.lab_name = response.data.lab_name;
+              this.data.id  = response.data.id;
+              this.data.lab_id = response.data.lab_id;
+              this.data.name = response.data.name;
+              this.data.age = response.data.age;
+              this.data.phone = response.data.phone;
+              this.data.hospital_register_id = response.data.hospital_register_id;
+              this.data.register_date_np = response.data.register_date_np;
+              this.data.gender = response.data.gender;
+              this.data.self_free = response.data.self_free;
+              this.data.health_condition = response.data.health_condition;
+              this.data.date_of_outcome = response.data.date_of_outcome;
+              if (response.data.is_death == null){
+                this.data.is_death = '';
+              }else{
+                this.data.is_death = response.data.is_death;
+              }
+              this.data.guardian_name = response.data.guardian_name;
+              this.data.address = response.data.address;
+              this.data.remark = response.data.remark;
+              this.labSelected = response.data.lab_name;
+              this.is_to_update = true;
+              this.update_id = response.data.id;
+            }
+          })
+          .catch((error) => {
+            console.error(error)
+          })
+          .finally(() => {
+          })
+    }
+
   }
 }
 </script>
