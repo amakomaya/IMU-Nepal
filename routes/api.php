@@ -33,7 +33,7 @@ Route::get('/v1/healthposts', function () {
 });
 
 Route::get('/v1/healthposts-for-lab-and-hospital', function () {
-    $healthpost = \App\Models\Organization::whereIn('hospital_type', [2,3,4])->with(['province', 'municipality', 'district'])->get();
+    $healthpost = \App\Models\Organization::whereIn('hospital_type', [2,3])->with(['province', 'municipality', 'district'])->get();
     return response()->json($healthpost);
 });
 
