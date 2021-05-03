@@ -46,7 +46,7 @@
 
 
       <div class="form-group col-lg-6" :class="{ 'has-error': $v.data.register_date_np.$error }">
-        <label class="control-label" for="date_of_death">Register Date</label>
+        <label class="control-label" for="register_date">Register Date &nbsp;<span class="label label-info pull-right">{{ data.register_date_np }}</span></label>
         <div class="input-group"><span class="input-group-addon"><i
             class="fa fa-calendar"></i></span>
           <v-nepalidatepicker id="register_date" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
@@ -120,14 +120,15 @@
         <input type="radio" id="death" v-model.trim="data.is_death" value="2">
         <label for="death">Death</label> &nbsp; &nbsp;
       </div>
+
       <div v-show="data.is_death !== ''" class="form-group col-lg-4">
-        <label for="date_of_death">Date of Outcome</label>
+        <label for="date_of_outcome">Date of Outcome &nbsp;<span class="label label-info pull-right">{{ data.date_of_outcome }}</span></label>
           <div class="input-group"><span class="input-group-addon"><i
               class="fa fa-calendar"></i></span>
-            <v-nepalidatepicker id="date_of_death" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
+            <v-nepalidatepicker id="date_of_outcome" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
                                 format="YYYY-MM-DD" v-model.trim="data.date_of_outcome" :yearSelect="false"
                                 :monthSelect="false"/>
-        </div>
+          </div>
       </div>
     </div>
     <div class="form-group">
@@ -149,7 +150,7 @@ export default {
       data : {
         health_condition : 0,
         is_death : '',
-        gender: undefined,
+        gender: undefined
       },
       lab_id : '',
       options: [],
@@ -261,6 +262,13 @@ export default {
         return false;
       }
       data.register_date_en = this.bs2ad(data.register_date_np);
+      if(data.is_death !== ''){
+        data.date_of_outcome_en = this.bs2ad(data.date_of_outcome);
+      }
+      if (data.is_death === ''){
+        data.date_of_outcome_en = null;
+        data.date_of_outcome = null;
+      }
       axios.post('/api/v1/cases-payment', data)
           .then((response) => {
             if (response.data.message === 'success') {
@@ -315,9 +323,6 @@ export default {
     }
   },
   created(){
-    var today = new Date();
-    this.data.register_date_np = this.ad2bs(today);
-
     let url = new URL(window.location.href);
     let id = url.searchParams.get("token");
 
@@ -337,11 +342,11 @@ export default {
               this.data.gender = response.data.gender;
               this.data.self_free = response.data.self_free;
               this.data.health_condition = response.data.health_condition;
-              this.data.date_of_outcome = response.data.date_of_outcome;
               if (response.data.is_death == null){
                 this.data.is_death = '';
               }else{
                 this.data.is_death = response.data.is_death;
+                this.data.date_of_outcome = response.data.date_of_outcome;
               }
               this.data.guardian_name = response.data.guardian_name;
               this.data.address = response.data.address;
@@ -357,6 +362,13 @@ export default {
           .finally(() => {
           })
     }
+    else{
+      var today = new Date();
+      this.data.register_date_np = this.ad2bs(today);
+    }
+
+    console.log(this.data);
+
 
   }
 }

@@ -15,12 +15,31 @@ class CasesPaymentController extends Controller
         $organization = Organization::where('token', \auth()->user()->token)->first();
 
         if ($request->has('selected_date')){
+            $check_date = Carbon::parse($request->selected_date);
+        }
+        else{
+            $check_date = Carbon::today();
+        }
+        if ($request->has('selected_date')){
             $period = Carbon::parse($request->selected_date)->format('Ymd');
-            $total = PaymentCase::where('hp_code', $organization->hp_code)->whereDate('register_date_en', Carbon::parse($request->selected_date))->get();
+            $total = PaymentCase::where('hp_code', $organization->hp_code)
+                ->where(function($q) use ($request) {
+                    $q->whereNull('date_of_outcome_en')
+                        ->orWhereDate('date_of_outcome_en' ,Carbon::parse($request->selected_date))
+                        ->orWhereDate('register_date_en' ,Carbon::parse($request->selected_date));
+                })
+                ->get();
         }else{
             $period = date('Ymd');
-            $total = PaymentCase::where('hp_code', $organization->hp_code)->whereDate('register_date_en', Carbon::today())->get();
+            $total = PaymentCase::where('hp_code', $organization->hp_code)
+                ->where(function($q){
+                    $q->whereNull('date_of_outcome_en')
+                        ->orWhereDate('date_of_outcome_en',Carbon::today());
+                })
+                ->get();
         }
+
+//        dd($total);
 
         $total_beds_allocated_general = $organization->no_of_beds;
         $total_beds_allocated_icu = $organization->no_of_icu;
@@ -46,61 +65,70 @@ class CasesPaymentController extends Controller
         $free_discharge = 0;
         $free_deaths = 0;
 
-
         foreach ($total as $item) {
-            switch ($item->health_condition){
-                case 1:
-                    $total_patients_without_symptoms++;
-                    if ($item->self_free){
-                        $free_patients_without_symptoms++;
-                    }
-                    break;
-                case 2:
-                    $total_patients_with_mild_symptoms++;
-                    if ($item->self_free){
-                        $free_patients_with_mild_symptoms++;
-                    }
-                    break;
-                case 3:
-                    $total_patients_with_moderate_symptoms++;
-                    if ($item->self_free){
-                        $free_patients_with_moderate_symptoms++;
-                    }
-                    break;
-                case 4:
-                    $total_patients_with_severe_symptoms_in_icu++;
-                    if ($item->self_free){
-                        $free_patients_with_severe_symptoms_in_icu++;
-                    }
-                    break;
-                case 5:
-                    $total_patients_with_severe_symptoms_in_ventilator++;
-                    if ($item->self_free){
-                        $free_patients_with_severe_symptoms_in_ventilator++;
-                    }
-                    break;
+            if (
+                $item->date_of_outcome_en == null
+            ) {
+                switch ($item->health_condition) {
+                    case 1:
+                        $total_patients_without_symptoms++;
+                        if ($item->self_free) {
+                            $free_patients_without_symptoms++;
+                        }
+                        break;
+                    case 2:
+                        $total_patients_with_mild_symptoms++;
+                        if ($item->self_free) {
+                            $free_patients_with_mild_symptoms++;
+                        }
+                        break;
+                    case 3:
+                        $total_patients_with_moderate_symptoms++;
+                        if ($item->self_free) {
+                            $free_patients_with_moderate_symptoms++;
+                        }
+                        break;
+                    case 4:
+                        $total_patients_with_severe_symptoms_in_icu++;
+                        if ($item->self_free) {
+                            $free_patients_with_severe_symptoms_in_icu++;
+                        }
+                        break;
+                    case 5:
+                        $total_patients_with_severe_symptoms_in_ventilator++;
+                        if ($item->self_free) {
+                            $free_patients_with_severe_symptoms_in_ventilator++;
+                        }
+                        break;
+                }
+            }
+            if (
+                Carbon::parse($item->register_date_en)->equalTo($check_date) ||
+                Carbon::parse($item->date_of_outcome_en)->equalTo($check_date)
+            ){
+                switch ($item->is_death){
+                    case 1:
+                        $total_discharge++;
+                        if ($item->self_free){
+                            $free_discharge++;
+                        }
+                        break;
+                    case 2:
+                        $total_deaths++;
+                        if ($item->self_free){
+                            $free_deaths++;
+                        }
+                        break;
+                    default:
+                        $total_admissions++;
+                        if ($item->self_free){
+                            $free_admissions++;
+                        }
+                        break;
+                }
+
             }
 
-            switch ($item->is_death){
-                case 1:
-                    $total_discharge++;
-                    if ($item->self_free){
-                        $free_discharge++;
-                    }
-                    break;
-                case 2:
-                    $total_deaths++;
-                    if ($item->self_free){
-                        $free_deaths++;
-                    }
-                    break;
-                default:
-                    $total_admissions++;
-                    if ($item->self_free){
-                        $free_admissions++;
-                    }
-                    break;
-            }
         }
 
 
