@@ -1,11 +1,12 @@
 <template>
   <div class="container row">
-    <div v-show="true" class="panel panel-default">
+    <form @submit.prevent>
+    <div v-show="true" class="panel panel-default" :class="{ 'panel-danger': $v.labSelected.$error }">
       <div class="panel-heading text-center"><strong>Search Lab ID in IMU</strong></div>
       <div class="panel-body">
         <div class="row">
-          <div class="col-lg-8 form-group" :class="{ 'has-error': $v.labSelected.$error }">
-            <label>Lab Name </label>
+          <div class="col-lg-8 form-group">
+            <label>Lab Name * </label>
             <v-select label="name"
                       v-model="labSelected"
                       placeholder="Type Lab Name to search informations .."
@@ -29,7 +30,7 @@
 
           </div>
           <div class="col-lg-4 form-group">
-            <label>Lab ID  </label> <input type="text" placeholder="Enter Lab ID here" class="form-control" v-model.trim="data.lab_id" />
+            <label>Lab ID * </label> <input type="text" placeholder="Enter Lab ID here" class="form-control" v-model.trim="data.lab_id" />
           </div>
         </div>
         <button class="btn btn-info pull-right" v-on:click="searchOrganization(labSelected, data.lab_id)" title="Varified, Find, Search Patient">
@@ -40,13 +41,13 @@
     <hr v-show="true" style="height:2px;border-width:0;color:gray;background-color:gray">
     <div class="row">
       <div class="form-group col-lg-6"  :class="{ 'has-error': $v.data.hospital_register_id.$error }">
-        <label class="control-label" for="hospital_register_id">Hospital Reg. ID for Case</label>
+        <label class="control-label" for="hospital_register_id">Hospital Reg. ID for Case *</label>
         <input type="text" placeholder="Enter Hospital Register ID for Case" class="form-control" v-model.trim="data.hospital_register_id" id="hospital_register_id" />
       </div>
 
 
       <div class="form-group col-lg-6" :class="{ 'has-error': $v.data.register_date_np.$error }">
-        <label class="control-label" for="register_date">Register Date &nbsp;<span class="label label-info pull-right">{{ data.register_date_np }}</span></label>
+        <label class="control-label" for="register_date">Register Date * &nbsp;<span class="label label-info pull-right">{{ data.register_date_np }}</span></label>
         <div class="input-group"><span class="input-group-addon"><i
             class="fa fa-calendar"></i></span>
           <v-nepalidatepicker id="register_date" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
@@ -57,16 +58,16 @@
 
     </div>
     <div class="form-group" :class="{ 'has-error': $v.data.name.$error }">
-        <label class="control-label" for="name">Name</label>
+        <label class="control-label" for="name">Name *</label>
         <input type="text" placeholder="Enter Full Name" class="form-control" v-model.trim="data.name" id="name" />
       </div>
       <div class="row">
         <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.age.$error }">
-          <label class="control-label" for="age">Age</label>
+          <label class="control-label" for="age">Age *</label>
           <input type="text" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" v-model.trim="data.age" id="age"/>
         </div>
         <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.gender.$error }">
-          <label class="control-label">Gender</label><br>
+          <label class="control-label">Gender *</label><br>
           <input type="radio" id="male" v-model.trim="data.gender"  value="1">
           <label class="control-label" for="male">Male</label> &nbsp; &nbsp;
           <input type="radio" id="female" v-model.trim="data.gender" value="2">
@@ -75,18 +76,18 @@
           <label class="control-label" for="other">Other</label>
         </div>
         <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.phone.$error }">
-          <label class="control-label" for="phone">Phone</label>
+          <label class="control-label" for="phone">Phone *</label>
           <input type="text" class="form-control" v-model.trim="data.phone" id="phone" />
         </div>
       </div>
     <div class="form-group" :class="{ 'has-error': $v.data.address.$error }">
-      <label class="control-label" for="name">Address</label>
+      <label class="control-label" for="name">Address *</label>
       <input type="text" placeholder="Enter Full Address ( e.g Lazimpat-2, Kathmandu )" class="form-control" v-model.trim="data.address" id="address" />
     </div>
     <hr>
     <div class="row">
-      <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.health_condition.$error }">
-        <label class="control-label" for="health_condition">Health Condition</label>
+      <div v-if="!is_to_update" class="form-group col-lg-4" :class="{ 'has-error': $v.data.health_condition.$error }">
+        <label class="control-label" for="health_condition">Health Condition *</label>
         <select class="form-control" v-model.trim="data.health_condition" id="health_condition">
           <option value="0" selected hidden>Please Select Medical Condition</option>
           <option value="1">No Symptoms</option>
@@ -95,7 +96,52 @@
           <option value="4">Severe - ICU</option>
           <option value="5">Severe - Ventilator</option>
         </select>
+      </div>
+      <div v-else class="form-group col-lg-8">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Health Condition</th>
+            <th>Start Date</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>{{  getHealthCondition(data.health_condition) }}</td>
+            <td>{{ data.register_date_np }}</td>
+          </tr>
+          <tr v-if="health_condition_update_lists" v-for="item in health_condition_update_lists">
+            <td>{{  getHealthCondition(item.id) }}</td>
+            <td>{{ item.date }}</td>
+          </tr>
+          </tbody>
 
+        </table>
+        <div v-if="!isHealthConditionAddHidden" class="form-group col-lg-10">
+
+          <div class="form-group col-lg-6">
+            <select class="form-control" v-model.trim="health_condition_details_health_condition" id="health_condition_details_health_condition">
+              <option value="" selected="selected">Please Select Medical Condition</option>
+              <option value="1">No Symptoms</option>
+              <option value="2">Mild</option>
+              <option value="3">Moderate</option>
+              <option value="4">Severe - ICU</option>
+              <option value="5">Severe - Ventilator</option>
+            </select>
+          </div>
+          <div class="form-group col-lg-4">
+            <div class="input-group"><span class="input-group-addon"><i
+                class="fa fa-calendar"></i></span>
+              <v-nepalidatepicker id="health_condition_details_start_date" classValue="form-control" calenderType="Nepali" placeholder="Start Date"
+                                  format="YYYY-MM-DD" v-model.trim="health_condition_details_start_date" :yearSelect="false"
+                                  :monthSelect="false"/>
+            </div>
+          </div>
+          <button v-on:click="isHealthConditionAddHidden = true" type="button" class="btn btn-warning btn-sm pull-right"><i class="fa fa-remove" aria-hidden="true"></i>
+            Cancel</button>
+        </div>
+        <button v-on:click="isHealthConditionAddHidden = false" type="button" class="btn btn-primary btn-sm pull-right"><i class="fa fa-plus" aria-hidden="true"></i>
+          Add</button>
       </div>
       <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.self_free.$error }">
         <br>
@@ -105,6 +151,8 @@
         <label class="control-label" for="free">Free</label> &nbsp; &nbsp;
       </div>
     </div>
+    <p v-if="health_condition_details_validation !== ''" class="text-danger">{{ health_condition_details_validation }}</p>
+
     <hr>
     <div class="form-group">
       <label for="guardian_name">Parent/Guardian Name</label>
@@ -112,7 +160,7 @@
     </div>
     <div class="row">
       <div class="form-group col-lg-4">
-        <label>Treatment Outcome</label><br>
+        <label>Treatment Outcome * </label><br>
         <input type="radio" id="treatment" v-model.trim="data.is_death" value="">
         <label for="treatment">Under Treatment</label> &nbsp; &nbsp;
         <input type="radio" id="discharge" v-model.trim="data.is_death" value="1">
@@ -135,7 +183,12 @@
         <label for="remark">Remarks</label>
         <textarea class="form-control" v-model.trim="data.remark" id="remark" rows="5"></textarea>
       </div>
-      <button type="submit" @click.prevent="submitData(data)" class="btn btn-primary btn-lg btn-block">Save</button>
+      <div v-if="$v.invalid" class="alert alert-danger">
+        * Please fill the all required fields
+      </div>
+      <button type="submit" @click="submitData(data)" class="btn btn-primary btn-lg btn-block">Save</button>
+
+    </form>
   </div>
 </template>
 <script type="text/javascript">
@@ -156,7 +209,12 @@ export default {
       options: [],
       labSelected : '',
       is_to_update : false,
-      update_id : ''
+      update_id : '',
+      isHealthConditionAddHidden: true,
+      health_condition_details_health_condition : '',
+      health_condition_details_start_date : '',
+      health_condition_details_validation : '',
+      health_condition_update_lists : []
     }
   },
   validations: {
@@ -247,6 +305,10 @@ export default {
           })
     },
     submitData(data){
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        return false;
+      }
       if (this.is_to_update){
         this.data.id = this.update_id;
         if(this.labSelected.name !== undefined){
@@ -254,12 +316,32 @@ export default {
         }else{
           data.lab_name = this.labSelected;
         }
+        this.health_condition_details_validation = ''
+        if (!this.isHealthConditionAddHidden){
+          if(this.health_condition_details_health_condition !== '' &&
+              this.health_condition_details_start_date !== ''
+          ){
+            if(this.health_condition_update_lists.length === 0){
+              data.health_condition_update = JSON.stringify([{
+                id : this.health_condition_details_health_condition,
+                date : this.health_condition_details_start_date
+              }]);
+            }else{
+              this.health_condition_update_lists.push({
+                id : this.health_condition_details_health_condition,
+                date : this.health_condition_details_start_date
+              });
+              data.health_condition_update = JSON.stringify(this.health_condition_update_lists);
+            }
+            console.log("all Pass");
+          }else{
+            this.health_condition_details_validation = "Please select both Health Condition and Date"
+            return false;
+          }
+        }
+
       }else{
         data.lab_name = this.labSelected.name;
-      }
-      this.$v.$touch()
-      if (this.$v.$invalid) {
-        return false;
       }
       data.register_date_en = this.bs2ad(data.register_date_np);
       if(data.is_death !== ''){
@@ -320,6 +402,16 @@ export default {
       let dateConverter;
       dateConverter = DataConverter.bs2ad(formated_date);
       return dateConverter.year + '-' + dateConverter.month + '-' + dateConverter.day;
+    },
+    getHealthCondition(data){
+      var items = {
+        1: 'No Symptoms',
+        2: 'Mild',
+        3: 'Moderate',
+        4: "Severe - ICU",
+        5: 'Severe - Ventilator'
+      };
+      return items[data];
     }
   },
   created(){
@@ -354,6 +446,9 @@ export default {
               this.labSelected = response.data.lab_name;
               this.is_to_update = true;
               this.update_id = response.data.id;
+              if(response.data.health_condition_update !== null){
+                   this.health_condition_update_lists =  JSON.parse(response.data.health_condition_update);
+              }
             }
           })
           .catch((error) => {
@@ -368,7 +463,6 @@ export default {
     }
 
     console.log(this.data);
-
 
   }
 }
