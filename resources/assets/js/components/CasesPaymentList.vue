@@ -24,8 +24,8 @@
         <td>{{ formattedSafeOrFree(item.self_free) }}</td>
         <td>
           <div v-show="checkEditButton()">
-            <button v-on:click="editData(item.id)" class="btn btn-primary btn-sm" title="Edit Data">
-              <i class="fa fa-edit" aria-hidden="true"> Edit</i>
+            <button v-on:click="editData(item.id)" class="btn btn-primary btn-sm" title="Update Data">
+              <i class="fa fa-edit" aria-hidden="true"> Update</i>
             </button>
           </div>
         </td>

@@ -119,7 +119,7 @@
           </download-excel>
         </div>
         <div>
-            <div>
+            <div v-show="false">
               <label for="files" class="btn btn-primary">Import
                 <i class="fa fa-upload" aria-hidden="true"></i>
               </label>

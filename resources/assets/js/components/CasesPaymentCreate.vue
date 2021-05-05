@@ -363,6 +363,14 @@ export default {
                 timer: 3000
               })
               if (this.is_to_update) {
+                if (!this.isHealthConditionAddHidden){
+                  if(this.health_condition_details_health_condition !== '' &&
+                      this.health_condition_details_start_date !== ''
+                  ){
+                    this.health_condition_details_health_condition = ''
+                    this.health_condition_details_start_date = ''
+                  }
+                }
                 return false;
               }
               this.$v.$reset();

@@ -63,7 +63,9 @@
         </tr>
 
     </table>
-
+    <div>
+        <a href="{{ url('/admin/profile') }}">Update Total beds allocated for COVID-19</a>
+    </div>
     <table class="patients-today" border="1" cellpadding="10">
         <tr>
             <th class="b-color" width="70%"></th>
