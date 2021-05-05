@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\GetHealthpostCodes;
 use App\Models\Organization;
 use App\Models\PaymentCase;
+use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -12,7 +14,10 @@ class CasesPaymentController extends Controller
 
     public function report(Request $request){
 
-        $organization = Organization::where('token', \auth()->user()->token)->first();
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+
+        $organization = Organization::whereIn('hp_code', $hpCodes)->get();
 
         if ($request->has('selected_date')){
             $check_date = Carbon::parse($request->selected_date);
@@ -22,7 +27,7 @@ class CasesPaymentController extends Controller
         }
         if ($request->has('selected_date')){
             $period = Carbon::parse($request->selected_date)->format('Ymd');
-            $total = PaymentCase::where('hp_code', $organization->hp_code)
+            $total = PaymentCase::whereIn('hp_code', $hpCodes)
                 ->where(function($q) use ($request) {
                     $q->whereNull('date_of_outcome_en')
                         ->orWhereDate('date_of_outcome_en','>=' ,Carbon::parse($request->selected_date))
@@ -31,7 +36,7 @@ class CasesPaymentController extends Controller
                 ->get();
         }else{
             $period = date('Ymd');
-            $total = PaymentCase::where('hp_code', $organization->hp_code)
+            $total = PaymentCase::whereIn('hp_code', $hpCodes)
                 ->where(function($q){
                     $q->whereNull('date_of_outcome_en')
                         ->orWhereDate('date_of_outcome_en',Carbon::today());
@@ -39,9 +44,9 @@ class CasesPaymentController extends Controller
                 ->get();
         }
 
-        $total_beds_allocated_general = $organization->no_of_beds;
-        $total_beds_allocated_icu = $organization->no_of_icu;
-        $total_beds_allocated_ventilators_among_icu = $organization->no_of_ventilators;
+        $total_beds_allocated_general = $organization->sum('no_of_beds');
+        $total_beds_allocated_icu = $organization->sum('no_of_icu');
+        $total_beds_allocated_ventilators_among_icu = $organization->sum('no_of_ventilators');
 
         $total_patients_without_symptoms = 0;
         $total_patients_with_mild_symptoms = 0;

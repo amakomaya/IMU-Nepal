@@ -134,6 +134,13 @@
 
     <ul class="nav nav-second-level">
         <li>
+            <a href="{{ route('cases.payment.report') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Report
+                <span class="label label-info pull-right">Report</span>
+            </a>
+        </li>
+        <li>
             <a href="{{ route('cases.payment.index') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                 Under Treatment
