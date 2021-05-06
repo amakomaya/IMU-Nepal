@@ -26,7 +26,7 @@ class CaseDetailController extends Controller
         ])
             ->where('token', $token)->first();
         return view('backend.patient.detail', compact('data'));
-    }
+     }
 
     function edit($token)
     {

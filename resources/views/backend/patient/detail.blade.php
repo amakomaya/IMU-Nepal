@@ -1,9 +1,25 @@
 @extends('layouts.backend.app')
 @section('content')
-    <div id="page-wrapper">
+            <style>
+                input[type="checkbox"][readonly] {
+                pointer-events: none;
+                }
+            </style>
+                
+                @php 
+                        $symptoms = json_decode($data->symptoms, true);
+                        $symptomscontactdetail= json_decode($data->contactDetail->symptoms, true);
+                        $symptomsComorbidity = json_decode($data->symptoms_comorbidity, true);
+                        $symptomsComorbidityContactDetail = json_decode($data->contactDetail->symptoms_comorbidity, true);
+                        $travelled_from = json_decode($data->travelled_where, true);
+                        $vaccineDosefirst = json_decode($data->caseManagement->first_source_info, true);
+                        $vaccineDosesecond = json_decode($data->caseManagement->second_source_info, true);
+                        $meansOfTravel = json_decode($data->caseManagement->travel_medium, true);
+                    @endphp
+            <div id="page-wrapper">
                 <header>
                     <img src="{{ asset('images/v-card/gov_logo.png') }}" width="100" height="75" alt="" />
-                    <div class="header-title">
+                    <div class="header-title">   
                         <p>Government of Nepal</p>
                         <p>Ministry of Health and Population</p>
                         <p>Department of Health Services</p>
@@ -37,43 +53,53 @@
                                 <p>Unique Identifier (Case Epi Id): <u></u></p>
                                 <p>Father/mother’s name: <u></u></p>
                                 <div class="date">
-                                    <p>Age: <u></u></p>
-                                    <p>years: <u></u></p>
+                                    <p style="padding-right: 2em !important;">Age: <u>{{$data->age}}</u></p>
+                                    <p style="padding-right: 2em !important;">years: <u></u></p>
                                     <p>months: <u></u></p>
                                 </div>
-                                <p>Contact number: <u></u></p>
+                                <p>Contact number: <u>{{$data->emergency_contact_one}}</u></p>
                             </div>
                             <div class="pi-2">
-                                <p>Name: <u></u></p>
-                                <div class="gender">
-                                    <p>Age: <u></u></p>
-                                    <p>years: <u></u></p>
-                                    <p>months: <u></u></p>
-                                </div>
+                                <p>Name: <u>{{$data->name}}</u></p>
+                                <div style="display: flex; flex-direction: row;">
+                                        <p>Sex:</p>
+                                        <div style="padding-left: 1em;">
+                                            <input style="padding-left: 0.5em;" type="checkbox" id="Male" name="Male" value="" @if($data->contactDetail->sex == 2) checked readonly @else disabled @endif>
+                                            <label for="Male"> Male</label>
+                                        </div>
+                                        <div style="padding-left: 1em;">
+                                            <input style="padding-left: 0.5em;" type="checkbox" id="Female" name="Female" value="" @if($data->contactDetail->sex == 1) checked readonly @else disabled @endif>
+                                            <label for="Female"> Female</label>
+                                        </div>
+                                        <div style="padding-left: 1em;">
+                                            <input style="padding-left: 0.5em;" type="checkbox" id="Unknown" name="Unknown" value="" @if($data->contactDetail->sex == 3) checked readonly @else disabled @endif>
+                                            <label for="Unknown"> Unknown</label>
+                                        </div> 
+                                    </div>
                                 <p>Nationality: <u></u></p>
-                                <p>Alternate contact number: <u></u></p>
+                                <p>Alternate contact number: <u>{{$data->emergency_contact_two}}</u></p>
                             </div>
                         </div>
                         <sub-section>
                             <h5>Current Address</h5>
                             <table>
                                 <tr>
-                                    <td>Province; <u></u></td>
-                                    <td colspan="2">District:</td>
+                                    <td>Province: <u>{{$data->municipality->province_id}}</u></td>
+                                    <td colspan="2">District: <u>{{$data->municipality->district_name}}</u></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        Municipality: <u></u> <br />
+                                        Municipality: <u>{{$data->municipality->municipality_name}}</u> <br />
                                         <p>If information is given by any other than case,</p>
                                         <p>Name of the informant: <u></u></p>
                                     </td>
                                     <td>
-                                        <p>Ward No: <u></u></p>
+                                        <p>Ward No: {{$data->ward}}</p>
                                         <p>Relationship: <u></u></p>
                                     </td>
                                     <td>
-                                        <p>Tole/Landmark: <u></u></p>
-                                        <p>Contact no: <u></u></p>
+                                        <p>Tole/Landmark: {{$data-> tole}}</p>
+                                        <p>Contact no: {{$data->emergency_contact_one}}</p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -113,84 +139,85 @@
                         <p>I. Symptoms</p>
                         <div class="symptoms">
                             <p>
-                                2.1. Currently symptomatic:
-                                <input type="checkbox" id="yes" name="yes" value="" />
+                                2.1. Currently symptomatic: 
+                                <input type="checkbox" id="yes" name="yes" value=""  @if($data->symptoms_recent == 1) checked readonly @else disabled @endif/>
                                 <label for="yes"> Yes</label>
-                                <input type="checkbox" id="no" name="no" value="" />
-                                <label for="no"> No</label>
+                                <input type="checkbox" id="no" name="no" value="" @if($data->symptoms_recent != 1) checked readonly @else disabled @endif/>
+                                <label for="no"> No</label>      
                             </p>
                             <p>
                                 2.2 If no, whether symptomatic anytime during the past 2 weeks
-                                <input type="checkbox" id="yes" name="yes" value="" />
+                                <input type="checkbox" id="yes" name="yes" value="" @if($data->symptoms_within_four_week == 1) checked readonly @else disabled @endif/>
                                 <label for="yes"> Yes</label>
-                                <input type="checkbox" id="no" name="no" value="" />
+                                <input type="checkbox" id="no" name="no" value="" @if($data->symptoms_within_four_week != 1) checked readonly @else disabled @endif/>
                                 <label for="no"> No <u></u></label>
                             </p>
                             <p>
-                                If answer to 2.1 or 2.2 is Yes, Date of Onset of First set of Symptoms [dd/mm/yyyy]<u>_________________________</u> and check any and all applicable symptoms listed below:
+                                If answer to 2.1 or 2.2 is Yes, Date of Onset of First set of Symptoms [dd/mm/yyyy]  <u style="padding: 0 0.7em !important;">{{$data->date_of_onset_of_first_symptom}}</u> and check any and all applicable symptoms listed below:
                             </p>
                             <div class="list-symptoms">
+
                                 <div class="symptoms-1 col-md-4">
                                     <div>
-                                        <input type="checkbox" id="Fever" name="Fever" value="" />
-                                        <label for="Fever">Fever</label>
+                                        <input type="checkbox" id="Fever" name="Fever" value="t" @if(in_array(4, $symptoms)) checked @endif readonly/>
+                                        <label for="Fever">Fever</label>                                           
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="muscles" name="muscles" value="" />
+                                        <input type="checkbox" id="muscles" name="muscles" value="" @if(in_array(13, $symptoms)) checked @endif readonly/>
                                         <label for="muscles">Pain in the muscles</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="" name="" value="" />
+                                        <input type="checkbox" id="" name="" value="" readonly @if(in_array(13, $symptoms)) checked @endif readonly/>
                                         <label for="">Nausea / Vomiting / Loss of appetite </label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="lossoftaste" name="lossoftaste" value="" />
+                                        <input type="checkbox" id="lossoftaste" name="lossoftaste" value="" @if(in_array(11, $symptoms)) checked @endif readonly/>
                                         <label for="lossoftaste"> Recent loss of taste</label>
                                     </div>
                                 </div>
                                 <div class="symptoms-2 col-md-2">
                                     <div>
-                                        <input type="checkbox" id="Cough" name="Cough" value="" />
+                                        <input type="checkbox" id="Cough" name="Cough" value="" @if(in_array(6, $symptoms)) checked @endif readonly/>
                                         <label for="Cough"> Cough</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="Sorethroat" name="Sorethroat" value="" />
+                                        <input type="checkbox" id="Sorethroat" name="Sorethroat" value="" @if(in_array(7, $symptoms)) checked @endif readonly/>
                                         <label for="Sorethroat"> Sore throat</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="Diarrhoea" name="Diarrhoea" value="" />
+                                        <input type="checkbox" id="Diarrhoea" name="Diarrhoea" value="" @if(in_array(17, $symptoms)) checked @endif readonly/>
                                         <label for="Diarrhoea"> Diarrhoea</label>
                                     </div>
                                 </div>
                                 <div class="symptoms-3 col-md-3">
                                     <div>
-                                        <input type="checkbox" id="Tiredness" name="Tiredness" value="" />
+                                        <input type="checkbox" id="Tiredness" name="Tiredness" value="" @if(in_array(5, $symptoms)) checked @endif readonly/>
                                         <label for="Tiredness"> General weakness/Tiredness</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="runnynose" name="runnynose" value="" />
+                                        <input type="checkbox" id="runnynose" name="runnynose" value="" @if(in_array(8, $symptoms)) checked @endif readonly/>
                                         <label for="runnynose"> Runny nose </label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="Irritability/Confusion" name="Irritability/Confusion" value="" />
+                                        <input type="checkbox" id="Irritability/Confusion" name="Irritability/Confusion" value="" @if(in_array(10, $symptoms)) checked @endif readonly/>
                                         <label for="Irritability/Confusion"> Irritability/Confusion</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="specify" name="specify" value="" />
-                                        <label for="specify"> Others, specify <u>_____</u></label>
+                                        <input type="checkbox" id="specify" name="specify" value="" @if(!is_null($data->symptoms_specific)) checked @endif readonly/>
+                                        <label for="specify"> Others, specify: <span style="font-weight: 500 !important;">{{$data->symptoms_specific}}</span></label>
                                     </div>
                                 </div>
                                 <div class="symptoms-4 col-md-3">
                                     <div>
-                                        <input type="checkbox" id="Headache" name="Headache" value="" />
+                                        <input type="checkbox" id="Headache" name="Headache" value="" @if(in_array(19, $symptoms)) checked @endif readonly/>
                                         <label for="Headache"> Headache</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="shortbreath" name="shortbreath" value="" />
+                                        <input type="checkbox" id="shortbreath" name="shortbreath" value="" @if(in_array(9, $symptoms)) checked @endif readonly/>
                                         <label for="shortbreath"> Shortness of breath</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="recent-loss-of-smell" name="recent-loss-of-smell" value="" />
+                                        <input type="checkbox" id="recent-loss-of-smell" name="recent-loss-of-smell" value="" @if(in_array(12, $symptoms)) checked @endif readonly/>
                                         <label for="recent-loss-of-smell"> Recent loss of smell</label>
                                     </div>
                                 </div>
@@ -198,40 +225,48 @@
                         </div>
                         <p>II. Underlying medical conditions or disease / comorbidity (check all that apply):</p>
                         <div class="comorbidity">
-                            <div class="comorbidity1 col-md-6">
+                        <div class="comorbidity1 col-md-6">
                                 <div>
-                                    <input type="checkbox" id="recent-loss-of-smell" name="recent-loss-of-smell" value="" />
-                                    <label for="recent-loss-of-smell">Pregnancy (trimester: <u>____________</u> )</label>
+                                    <input type="checkbox" id="recent-loss-of-smell" name="recent-loss-of-smell" value="" @if(in_array(5, $symptomsComorbidity) || in_array(16, $symptomsComorbidity) || in_array(17, $symptomsComorbidity)) checked @endif readonly/>
+                                    @if(in_array(5, $symptomsComorbidity))
+                                     <label for="recent-loss-of-smell">Pregnancy (trimester: <u>One</u> )</label>
+                                    @elseif(in_array(16, $symptomsComorbidity))
+                                     <label for="recent-loss-of-smell">Pregnancy (trimester: <u>Two</u> )</label>
+                                    @elseif(in_array(17, $symptomsComorbidity))
+                                     <label for="recent-loss-of-smell">Pregnancy (trimester: <u>Three</u> )</label>
+                                    @else
+                                    <label for="recent-loss-of-smell">Pregnancy (trimester: <u></u> )</label>
+                                    @endif
                                 </div>
                                 <div>
                                     <input type="checkbox" id="post-delivery" name="post-delivery" value="" />
                                     <label for="post-delivery">Post-delivery <span> (<6 weeks) </span></label>
                                 </div>
                                 <div>
-                                    <input type="checkbox" id="cardiovascular-disease" name="cardiovascular-disease" value="" />
+                                    <input type="checkbox" id="cardiovascular-disease" name="cardiovascular-disease" value="" @if(in_array(7, $symptomsComorbidity)) checked @endif readonly/>
                                     <label for="cardiovascular-disease">Cardiovascular disease, including hypertension</label>
                                 </div>
                                 <div>
-                                    <input type="checkbox" id="diabetes" name="diabetes" value="" />
+                                    <input type="checkbox" id="diabetes" name="diabetes" value="" @if(in_array(1, $symptomsComorbidity)) checked @endif readonly/>
                                     <label for="diabetes"> Diabetes</label>
                                 </div>
                             </div>
                             <div class="comorbidity2 col-md-6">
                                 <div>
-                                    <input type="checkbox" id="malignancy" name="malignancy" value="" />
+                                    <input type="checkbox" id="malignancy" name="malignancy" value="" @if(in_array(14, $symptomsComorbidity)) checked @endif readonly/>
                                     <label for="malignancy"> Malignancy</label>
                                 </div>
                                 <div>
-                                    <input type="checkbox" id="COPD" name="COPD" value="" />
+                                    <input type="checkbox" id="COPD" name="COPD" value="" @if(in_array(15, $symptomsComorbidity)) checked @endif readonly/>
                                     <label for="COPD"> COPD</label>
                                 </div>
                                 <div>
-                                    <input type="checkbox" id="Chronic-Kidney-Diseases" name="Chronic-Kidney-Diseases" value="" />
+                                    <input type="checkbox" id="Chronic-Kidney-Diseases" name="Chronic-Kidney-Diseases" value="" @if(in_array(10, $symptomsComorbidity)) checked @endif readonly/>
                                     <label for="Chronic-Kidney-Diseases"> Chronic Kidney Diseases</label>
                                 </div>
                                 <div>
-                                    <input type="checkbox" id="malignancy" name="malignancy" value="" />
-                                    <label for="malignancy"> Others, specify__</label>
+                                    <input type="checkbox" id="malignancy" name="malignancy" value="" @if(!is_null($data->symptoms_comorbidity_specific)) checked @endif readonly/>
+                                    <label for="malignancy"> Others, specify: <span style="font-weight: 500 !important;">{{$data->symptoms_comorbidity_specific}}</span></label>
                                 </div>
                             </div>
                         </div>
@@ -242,97 +277,98 @@
                             </div>
                             <div class="col-md-12">
                                 <div>
-                                    <input type="checkbox" id="health-care" name="health-care" value="" />
+                                
+                                    <input type="checkbox" id="health-care" name="health-care" value="" @if($data->caseManagement->high_exposure == 1) checked readonly @else disabled @endif/>
                                     <label for="health-care"> Health Care Work (any type, level & facility, including cleaning staff)</label>
                                 </div>
                                 <div>
-                                    <input type="checkbox" id="community-health" name="community-health" value="" />
+                                    <input type="checkbox" id="community-health" name="community-health" value="" @if($data->caseManagement->high_exposure == 2) checked readonly @else disabled @endif/>
                                     <label for="community-health"> Community Health / Immunization Clinic Volunteer</label>
                                 </div>
                                 <div>
-                                    <input type="checkbox" id="sanitary" name="sanitary" value="" />
+                                    <input type="checkbox" id="sanitary" name="sanitary" value="" @if($data->caseManagement->high_exposure == 3) checked readonly @else disabled @endif/>
                                     <label for="sanitary"> Sanitary/Waste Collection/Management Worker/Transport Driver/Helper</label>
                                 </div>
                                 <div>
-                                    <input type="checkbox" id="patient-dead-body" name="shortbreath" value="" />
+                                    <input type="checkbox" id="patient-dead-body" name="shortbreath" value="" @if($data->caseManagement->high_exposure == 4) checked readonly @else disabled @endif/>
                                     <label for="shortbreath"> Patient & Dead body Transport Driver/Helper </label>
                                 </div>
                                 <div>
-                                    <input type="checkbox" id="management-work" name="management-work" value="" />
+                                    <input type="checkbox" id="management-work" name="management-work" value="" @if($data->caseManagement->high_exposure == 5) checked readonly @else disabled @endif/>
                                     <label for="management-work"> Dead body management work</label>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="col-md-4">
                                     <div>
-                                        <input type="checkbox" id="old-age-home" name="old-age-home" value="" />
+                                        <input type="checkbox" id="old-age-home" name="old-age-home" value="" @if($data->caseManagement->high_exposure == 6) checked readonly @else disabled @endif/>
                                         <label for="old-age-home"> Old Age Home/Care work </label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="border-crossing" name="border-crossing" value="" />
+                                        <input type="checkbox" id="border-crossing" name="border-crossing" value="" @if($data->caseManagement->high_exposure == 7) checked readonly @else disabled @endif/>
                                         <label for="border-crossing"> Border Crossing / Point of Entry Staff </label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="journalist" name="journalist" value="" />
+                                        <input type="checkbox" id="journalist" name="journalist" value="" @if($data->caseManagement->high_exposure == 12) checked readonly @else disabled @endif/>
                                         <label for="journalist"> Journalist </label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="prisoner" name="prisoner" value="" />
+                                        <input type="checkbox" id="prisoner" name="prisoner" value="" @if($data->caseManagement->high_exposure == 15) checked readonly @else disabled @endif/>
                                         <label for="prisoner"> Prisoner </label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="elected-representative" name="elected-representative" value="" />
+                                        <input type="checkbox" id="elected-representative" name="elected-representative" value="" @if($data->caseManagement->high_exposure == 18) checked readonly @else disabled @endif />
                                         <label for="elected-representative"> Local body Elected Representative </label>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div>
-                                        <input type="checkbox" id="security-staff" name="security-staff" value="" />
+                                        <input type="checkbox" id="security-staff" name="security-staff" value="" @if($data->caseManagement->high_exposure == 8) checked readonly @else disabled @endif/>
                                         <label for="security-staff"> Any Security Staff</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="hotel-restaurant" name="hotel-restaurant" value="" />
+                                        <input type="checkbox" id="hotel-restaurant" name="hotel-restaurant" value="" @if($data->caseManagement->high_exposure == 9) checked readonly @else disabled @endif/>
                                         <label for="hotel-restaurant"> Hotel/Restaurant/Bar work</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="migrant" name="migrant" value="" />
+                                        <input type="checkbox" id="migrant" name="migrant" value="" @if($data->caseManagement->high_exposure == 13) checked readonly @else disabled @endif />
                                         <label for="migrant"> Migrant </label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="teacher" name="teacher" value="" />
+                                        <input type="checkbox" id="teacher" name="teacher" value="" @if($data->caseManagement->high_exposure == 16) checked readonly @else disabled @endif/>
                                         <label for="teacher"> Teacher </label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="bank-govt-office" name="bank-govt-office" value="" />
+                                        <input type="checkbox" id="bank-govt-office" name="bank-govt-office" value="" @if($data->caseManagement->high_exposure == 19) checked readonly @else disabled @endif/>
                                         <label for="bank-govt-office"> Bank/Govt Office / Public Corporation staff </label>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div>
-                                        <input type="checkbox" id="farm-work" name="farm-work" value="" />
+                                        <input type="checkbox" id="farm-work" name="farm-work" value="" @if($data->caseManagement->high_exposure == 10) checked readonly @else disabled @endif/>
                                         <label for="farm-work"> Farm work</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="shop-worker" name="shop-worker" value="" />
+                                        <input type="checkbox" id="shop-worker" name="shop-worker" value="" @if($data->caseManagement->high_exposure == 11) checked readonly @else disabled @endif/>
                                         <label for="shop-worker"> Shop/Store worker</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="refugee" name="refugee" value="" />
+                                        <input type="checkbox" id="refugee" name="refugee" value="" @if($data->caseManagement->high_exposure == 14) checked readonly @else disabled @endif/>
                                         <label for="refugee"> Refugee </label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="Student" name="Student" value="" />
+                                        <input type="checkbox" id="Student" name="Student" value="" @if($data->caseManagement->high_exposure == 17) checked readonly @else disabled @endif/>
                                         <label for="Student"> Old Age Home/Care work </label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div>
-                                        <input type="checkbox" id="bank-govt-office" name="bank-govt-office" value="" />
+                                        <input type="checkbox" id="bank-govt-office" name="bank-govt-office" value="" @if($data->caseManagement->high_exposure == 20) checked readonly @else disabled @endif/>
                                         <label for="bank-govt-office"> UN / Development Partner / INGO / NGO Frontline worker</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="specify-other" name="specify-other" value="" />
-                                        <label for="specify-other"> Others (specify): ________________________________</label>
+                                        <input type="checkbox" id="specify-other" name="specify-other" value="" @if(!is_null($data->caseManagement->high_exposure_other)) checked @endif readonly/>
+                                        <label for="specify-other"> Others (specify): {{$data->caseManagement->high_exposure_other}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -342,11 +378,11 @@
                                     <p>IV. Travel during 14 days before OR aftersymptom onset or date of sample collection for testing:</p>
                                     <div class="travel-checkbox">
                                         <div class="checkbox-tra">
-                                            <input type="checkbox" id="vehicle1" name="vehicle1" value="Yes">
+                                            <input type="checkbox" id="vehicle1" name="vehicle1" value="Yes" @if($data->travelled == 1) checked readonly @else disabled @endif>
                                             <label for="vehicle1"> Yes </label>
                                         </div>
                                         <div class="checkbox-tra">
-                                            <input type="checkbox" id="vehicle1" name="vehicle1" value="No">
+                                            <input type="checkbox" id="vehicle1" name="vehicle1" value="No" @if($data->travelled != 1) checked readonly @else disabled @endif>
                                             <label for="vehicle1"> No</label>
                                         </div>
                                     </div>
@@ -362,23 +398,49 @@
                                                 </th>
                                                 <th style="background-color:#f0e3ca">Date of Arrival in Nepal or Current place of Residence [dd/mm/yyyy]
                                                 </th>
-                                                <th style="background-color:#f0e3ca">Mode of travel [ Air, Public Transport,</th>
+                                                <th style="background-color:#f0e3ca">Mode of travel [ Air, Public Transport,Private Vehicle]</th>
                                                 <th style="background-color:#f0e3ca">Flight/Vehicle No./ Bus Route / Driver Contact No.</th>
                                             </tr>
                                             <tr>
-                                                <td></td>
-                                                <td></td>
+                                                <td>{{$data->caseManagement->departure}}</td>
+                                                <td>{{$data->caseManagement->destination}}</td>
+                                                <!-- <td style="background-color:#f0e3ca">{{$data->travelled_date}}</td> -->
+                                                <td style="background-color:#f0e3ca">{{$data->caseManagement->travel_date}}</td>
                                                 <td style="background-color:#f0e3ca"></td>
-                                                <td style="background-color:#f0e3ca"></td>
-                                                <td style="background-color:#f0e3ca"></td>
-                                                <td style="background-color:#f0e3ca"></td>
+                                                <td style="background-color:#f0e3ca">
+                                                
+                                                @foreach ($meansOfTravel as $travel_means) 
+                                                    @if($travel_means == 1)   
+                                                        Air,
+                                                    @elseif($travel_means == 2)
+                                                        Taxi,
+                                                    @elseif($travel_means == 3)
+                                                        Bus/Micro,
+                                                    @elseif($travel_means == 4)
+                                                        Truck,
+                                                    @elseif($travel_means == 5)
+                                                        other,               
+                                                    @endif
+                                                @endforeach
+                                                </td>
+                                                <td style="background-color:#f0e3ca">
+                                                @if(!is_null($data->caseManagement->flight_no))
+                                                    <b>Flight:</b> {{$data->caseManagement->flight_no}},
+                                                @endif
+                                                @if(!is_null($data->caseManagement->vehicle_no))
+                                                    <b>Vehicle No.:</b> {{$data->caseManagement->vehicle_no}},
+                                                @endif
+                                                @if(!is_null($data->caseManagement->travel_route))
+                                                    <b>Bus Route:</b> {{$data->caseManagement->travel_route}},
+                                                @endif
+                                               </td>
                                             </tr>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+                        
                         <div class="information">
                             <div class="information-head">
                                 <p>V. Information on Source of Exposure of Case under Investigation</p>
@@ -386,20 +448,24 @@
                             <div class="box">
                                 <div class="box-head">
                                     <b>Identify the following categories of persons who the case might have contracted the infection from, upto 14 days before the development of the symptoms OR 24 days prior to the date of sample collection in case of asymptomatic Reference
-                                        period: From ______________ (dd/mm/yyyy) To _______________ (dd/mm/yyyy)
+                                        period: From {{$data->caseManagement->reference_date_from}} (dd/mm/yyyy) To {{$data->caseManagement->reference_date_from}} (dd/mm/yyyy)
                                     </b>
                                 </div>
                                 <div class="box-body">
                                     <p>Did any known case(s) of COVID-19 live in the same household as the case under investigation during the reference period? </p>
                                     <div>
                                         <div style="display: flex;" class="col-md-4">
-                                            <div style="display: flex;">
-                                                <input type="checkbox" id="yes" name="yes" value="" />
-                                                <label style="padding-left: 0.5em;" for="yes"> yes</label>
+                                             <div style="display: flex;">
+                                                <input type="checkbox" id="yes" name="yes" value="" @if($data->caseManagement->anyother_member_household == 1) checked readonly @else disabled @endif >
+                                                <label style="padding-left: 0.5em;" for="yes"> Yes</label>
                                             </div>
                                             <div style="display: flex; padding-left: 1em">
-                                                <input type="checkbox" id="no" name="no" value="" />
-                                                <label style="padding-left: 0.5em;" for="no"> no</label>
+                                            <input type="checkbox" id="no" name="no" value="" @if($data->caseManagement->anyother_member_household == 0) checked readonly @else disabled @endif>
+                                                <label style="padding-left: 0.5em;" for="no"> No</label>
+                                            </div>
+                                            <div style="display: flex; padding-left: 1em">
+                                                <input type="checkbox" id="unknown" name="unknown" value="" @if($data->caseManagement->anyother_member_household == 2) checked readonly @else disabled @endif>
+                                                <label style="padding-left: 0.5em;" for="Unknown"> Unknown</label>
                                             </div>
                                         </div>
 
@@ -408,7 +474,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <p>Total household members: _______________</p>
+                                            <p>Total household members: {{$data->caseManagement->total_member}}</p>
                                         </div>
                                     </div>
                                     <table>
@@ -494,15 +560,15 @@
                                     <div>
                                         <div style="display: flex;" class="col-md-4">
                                             <div style="display: flex;">
-                                                <input type="checkbox" id="yes" name="yes" value="" />
-                                                <label style="padding-left: 0.5em;" for="yes"> yes</label>
+                                                <input type="checkbox" id="yes" name="yes" value="" @if($data->caseManagement->case_direct_care == 1) checked readonly @else disabled @endif >
+                                                <label style="padding-left: 0.5em;" for="yes"> Yes</label>
                                             </div>
                                             <div style="display: flex; padding-left: 1em">
-                                                <input type="checkbox" id="no" name="no" value="" />
-                                                <label style="padding-left: 0.5em;" for="no"> no</label>
+                                            <input type="checkbox" id="no" name="no" value="" @if($data->caseManagement->case_direct_care == 0) checked readonly @else disabled @endif>
+                                                <label style="padding-left: 0.5em;" for="no"> No</label>
                                             </div>
                                             <div style="display: flex; padding-left: 1em">
-                                                <input type="checkbox" id="unknown" name="unknown" value="" />
+                                                <input type="checkbox" id="unknown" name="unknown" value="" @if($data->caseManagement->case_direct_care == 2) checked readonly @else disabled @endif>
                                                 <label style="padding-left: 0.5em;" for="Unknown"> Unknown</label>
                                             </div>
                                         </div>
@@ -545,16 +611,16 @@
                                     <div>
                                         <div style="display: flex;" class="col-md-4">
                                             <div style="display: flex;">
-                                                <input type="checkbox" id="yes" name="yes" value="" />
-                                                <label style="padding-left: 0.5em;" for="yes"> yes</label>
+                                                <input type="checkbox" id="yes" name="yes" value="" @if($data->caseManagement->case_gone_institution == 1) checked readonly @else disabled @endif >
+                                                <label style="padding-left: 0.5em;" for="yes"> Yes</label>
                                             </div>
                                             <div style="display: flex; padding-left: 1em">
-                                                <input type="checkbox" id="no" name="no" value="" />
-                                                <label style="padding-left: 0.5em;" for="no"> no</label>
+                                            <input type="checkbox" id="no" name="no" value="" @if($data->caseManagement->case_gone_institution == 0) checked readonly @else disabled @endif>
+                                                <label style="padding-left: 0.5em;" for="no"> No</label>
                                             </div>
                                             <div style="display: flex; padding-left: 1em">
-                                                <input type="checkbox" id="unknown" name="unknown" value="" />
-                                                <label style="padding-left: 0.5em;" for="unknown"> Unknown</label>
+                                                <input type="checkbox" id="unknown" name="unknown" value="" @if($data->caseManagement->case_gone_institution == 2) checked readonly @else disabled @endif>
+                                                <label style="padding-left: 0.5em;" for="Unknown"> Unknown</label>
                                             </div>
                                         </div>
 
@@ -590,13 +656,28 @@
                             <div class="vacc-status-body">
                                 <table style="margin-top: 1em;">
                                     <tr>
-                                        <th width="30%" colspan="2">Hasthe Case under Investigation
+                                        <th width="30%" colspan="2">Has the Case under Investigation
                                             received SARS-CoV-2 vaccine (COVID-19
                                             vaccine)?
                                         </th>
-                                        <th width="20%">Yes</th>
-                                        <th colspan="2">No</th>
-                                        <th colspan="2">Unknown</th>
+                                        <th width="20%">
+                                            <div style="display: flex; padding-left: 1em">
+                                                <input type="checkbox" id="yes" name="yes" value=""@if($data->caseManagement->sars_cov2_vaccinated == 1) checked readonly @else disabled @endif>
+                                                <label style="padding-left: 0.5em;" for="yes"> Yes</label>
+                                            </div>
+                                        </th>
+                                        <th colspan="2">
+                                            <div style="display: flex; padding-left: 1em">
+                                                <input type="checkbox" id="No" name="No" value="" @if($data->caseManagement->sars_cov2_vaccinated == 0) checked readonly @else disabled @endif>
+                                                <label style="padding-left: 0.5em;" for="No"> No</label>
+                                            </div>
+                                        </th>
+                                        <th colspan="2">
+                                            <div style="display: flex; padding-left: 1em">
+                                                <input type="checkbox" id="unknown" name="unknown" value="" @if($data->caseManagement->sars_cov2_vaccinated == 2)  checked readonly @else disabled @endif>
+                                                <label style="padding-left: 0.5em;" for="unknown"> Unknown</label>
+                                            </div>
+                                        </th>
                                     </tr>
                                     <tr>
                                         <td colspan="2" rowspan="2">If <b>Yes,</b>Name of the Vaccine(Product/Brand name)</td>
@@ -610,91 +691,91 @@
                                         <td>Others</td>
                                     </tr>
                                     <tr>
-                                        <td width="2%">Dose 1</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td style="display: flex; justify-content: center;">
-                                        <span>
-                                            <input type="checkbox" id="yes" name="yes" value="" />
-                                            <label for="yes">yes</label>
-                                        </span>
+                                        <td width="5%">Dose 1</td>
+                                        <td>{{$data->caseManagement->first_product_name}}</td>
+                                        <td>{{$data->caseManagement->first_date_vaccination}}</td>
+                                        <td style="display: flex; justify-content: center;"> 
+                                            <span>
+                                                <input type="checkbox" id="yes" name="yes" value="" @if(in_array(1, $vaccineDosefirst)) checked readonly @else disabled @endif/>
+                                                <label for="yes">yes</label>
+                                            </span>
                                             <span  style="padding-left: 2em;">
-                                            <input type="checkbox" id="no" name="no" value="" />
+                                                <input type="checkbox" id="no" name="no" value="" @if(!in_array(1, $vaccineDosefirst)) checked readonly @else disabled @endif/>
+                                                <label for="no">no</label>
+                                            </span>
+                                        </td>
+                                        <td>
+                                        <span>
+                                            <input type="checkbox" id="yes" name="yes" value="" @if(in_array(2, $vaccineDosefirst)) checked readonly @else disabled @endif/>
+                                            <label for="yes">yes</label>
+                                        </span>
+                                        <span  style="padding-left: 2em;">
+                                            <input type="checkbox" id="no" name="no" value="" @if(!in_array(2, $vaccineDosefirst)) checked readonly @else disabled @endif/>
                                             <label for="no">no</label>
                                         </span>
                                         </td>
                                         <td>
                                         <span>
-                                            <input type="checkbox" id="yes" name="yes" value="" />
+                                            <input type="checkbox" id="yes" name="yes" value="" @if(in_array(3, $vaccineDosefirst)) checked readonly @else disabled @endif/>
                                             <label for="yes">yes</label>
                                         </span>
-                                            <span  style="padding-left: 0.2em;">
-                                            <input type="checkbox" id="no" name="no" value="" />
+                                        <span  style="padding-left: 3em;">
+                                            <input type="checkbox" id="no" name="no" value="" @if(!in_array(3, $vaccineDosefirst)) checked readonly @else disabled @endif/>
                                             <label for="no">no</label>
                                         </span>
                                         </td>
                                         <td>
                                         <span>
-                                            <input type="checkbox" id="yes" name="yes" value="" />
+                                            <input type="checkbox" id="yes" name="yes" value="" @if(!is_null($data->caseManagement->first_source_info_specific))  checked readonly @else disabled @endif/>
                                             <label for="yes">yes</label>
                                         </span>
-                                            <span  style="padding-left: 0.2em;">
-                                            <input type="checkbox" id="no" name="no" value="" />
-                                            <label for="no">no</label>
-                                        </span>
-                                        </td>
-                                        <td>
-                                        <span>
-                                            <input type="checkbox" id="yes" name="yes" value="" />
-                                            <label for="yes">yes</label>
-                                        </span>
-                                            <span  style="padding-left: 0.2em;">
-                                            <input type="checkbox" id="no" name="no" value="" />
+                                        <span  style="padding-left: 0.2em;">
+                                            <input type="checkbox" id="no" name="no" value=""  @if(is_null($data->caseManagement->first_source_info_specific))  checked readonly @else disabled @endif/>
                                             <label for="no">no</label>
                                         </span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Dose 2</td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{{$data->caseManagement->second_product_name}}</td>
+                                        <td>{{$data->caseManagement->second_date_vaccination}}</td>
                                         <td style="display: flex; border: none; justify-content: center; ">
-                                        <span>
-                                            <input type="checkbox" id="yes" name="yes" value="" />
-                                            <label for="yes">yes</label>
-                                        </span>
+                                            <span>
+                                                <input type="checkbox" id="yes" name="yes" value="" @if(in_array(1, $vaccineDosesecond)) checked readonly @else disabled @endif/>
+                                                <label for="yes">yes</label>
+                                            </span>
                                             <span  style="padding-left: 2em;">
-                                            <input type="checkbox" id="no" name="no" value="" />
-                                            <label for="no">no</label>
-                                        </span>
+                                                <input type="checkbox" id="no" name="no" value="" @if(!in_array(1, $vaccineDosesecond)) checked readonly @else disabled @endif/>
+                                                <label for="no">no</label>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span>
+                                                <input type="checkbox" id="yes" name="yes" value="" @if(in_array(2, $vaccineDosesecond)) checked readonly @else disabled @endif/>
+                                                <label for="yes">yes</label>
+                                            </span>
+                                            <span  style="padding-left: 2em;">
+                                                <input type="checkbox" id="no" name="no" value="" @if(!in_array(2, $vaccineDosesecond)) checked readonly @else disabled @endif/>
+                                                <label for="no">no</label>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span>
+                                                <input type="checkbox" id="yes" name="yes" value="" @if(in_array(3, $vaccineDosesecond)) checked readonly @else disabled @endif/>
+                                                <label for="yes">yes</label>
+                                            </span>
+                                            <span  style="padding-left: 2em;">
+                                                <input type="checkbox" id="no" name="no" value="" @if(!in_array(3, $vaccineDosesecond)) checked readonly @else disabled @endif/>
+                                                <label for="no">no</label>
+                                            </span>
                                         </td>
                                         <td>
                                         <span>
-                                            <input type="checkbox" id="yes" name="yes" value="" />
+                                            <input type="checkbox" id="yes" name="yes" value="" @if(!is_null($data->caseManagement->second_source_info_specific)) checked readonly @else disabled @endif/>
                                             <label for="yes">yes</label>
                                         </span>
-                                            <span  style="padding-left: 0.2em;">
-                                            <input type="checkbox" id="no" name="no" value="" />
-                                            <label for="no">no</label>
-                                        </span>
-                                        </td>
-                                        <td>
-                                        <span>
-                                            <input type="checkbox" id="yes" name="yes" value="" />
-                                            <label for="yes">yes</label>
-                                        </span>
-                                            <span  style="padding-left: 0.2em;">
-                                            <input type="checkbox" id="no" name="no" value="" />
-                                            <label for="no">no</label>
-                                        </span>
-                                        </td>
-                                        <td>
-                                        <span>
-                                            <input type="checkbox" id="yes" name="yes" value="" />
-                                            <label for="yes">yes</label>
-                                        </span>
-                                            <span  style="padding-left: 0.2em;">
-                                            <input type="checkbox" id="no" name="no" value="" />
+                                        <span  style="padding-left: 0.2em;">
+                                            <input type="checkbox" id="no" name="no" value="" @if(is_null($data->caseManagement->second_source_info_specific)) checked readonly @else disabled @endif/>
                                             <label for="no">no</label>
                                         </span>
                                         </td>
@@ -837,7 +918,7 @@
                                                 <label style="padding-left: 0.5em;" for="yes"> Yes</label>
                                             </div>
                                             <div style="display: flex; padding-left: 1em">
-                                                <input type="checkbox" id="no" name="no" value="">
+                                                <input type="checkbox" id="no" name="no" value="" >
                                                 <label style="padding-left: 0.5em;" for="no"> No</label>
                                             </div>
                                             <div style="display: flex; padding-left: 1em">
@@ -879,30 +960,39 @@
                                 <th colspan="2">If RT-PCR result is already known</th>
                             </tr>
                             <tr>
-                                <th>sdfsd</th>
-                                <th>czcx</th>
+                                <th>Result Date (DD/MM/YYYY): </th>
+                                <th>Result:Pos/Neg: </th>
                             </tr>
                             <tr>
                                 <td rowspan="2">Nasopharyngealswab or Oropharyngealswab or Broncheo-Alveolar Lavage </td>
                                 <td rowspan="2">
                                 <span class="col-md-3">
-                                    <input type="checkbox" id="yes" name="yes" value="">
+                                    <input type="checkbox" id="yes" name="yes" value="" @if(!is_null($data->ancs()->first()->sample_type)) checked readonly @else disabled @endif >
                                     <label for="yes">yes</label>
                                 </span>
                                     <span class="col-md-3" style="padding-left: 2em;">
-                                    <input type="checkbox" id="no" name="no" value="">
+                                    <input type="checkbox" id="no" name="no" value="" @if(is_null($data->ancs()->first()->sample_type)) checked readonly @else disabled @endif>
                                     <label for="no">no</label>
                                 </span>
                                 </td>
-                                <td rowspan="2"></td>
-
+                                <td rowspan="2">{{$data->ancs()->first()->labreport->created_at}}</td>
                                 <td> <b>Date:</b> </td>
-                                <td rowspan="2"><b>Result: Pos/Neg</b></td>
-                                <td rowspan="2"> adasd </td>
-                                <td rowspan="2"> adasd </td>
+                                <td rowspan="2"></td>
+                                <td rowspan="2"> {{$data->ancs()->first()->labreport->sample_test_date}} </td>
+                                <td rowspan="2"> 
+                                    @if($data->ancs()->first()->labreport->sample_test_result == 3)
+                                        Positive
+                                    @elseif($data->ancs()->first()->labreport->sample_test_result == 4)
+                                        Negative
+                                    @elseif($data->ancs()->first()->labreport->sample_test_result == 5)
+                                        Don't know
+                                    @elseif($data->ancs()->first()->labreport->sample_test_result == 6)
+                                        Rejected
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
-                                <td>asds</td>
+                                <th>Result: Pos/Neg</th>
                             </tr>
                             <tr>
                                 <td colspan="3">Laboratory to which Sample was sent to for RT-PCR:</td>
@@ -917,11 +1007,11 @@
                         <h5>Section 4: Data collector information</h5>
                         <table>
                             <tr>
-                                <td>Name:</td>
-                                <td>Telephone</td>
+                            <td>Name: </td>
+                            <td>Telephone: </td>
                             </tr>
                             <tr>
-                                <td>Institution:</td>
+                                <td>Institution: </td>
                                 <td>Email:</td>
                             </tr>
                             <tr>
@@ -937,7 +1027,7 @@
                             </tr>
                             <tr>
                                 <td class="col-md-6">
-                                    <b>Name of the Case <u></u></b>
+                                    <b>Name of the Case: <u>{{$data->contactDetail->name}}</u></b>
                                 </td>
                                 <td class="col-md-6">
                                     <b>EPID ID</b>
@@ -948,25 +1038,25 @@
                             </tr>
                             <tr>
                                 <td>EPID ID no</td>
-                                <td>Name: </td>
+                                <td>Name: {{$data->contactDetail->name}}</td>
                             </tr>
                             <tr>
-                                <td>Date of birth (dd/mm/yyyy)/Age <u></u></td>
+                                <td>Date of birth (dd/mm/yyyy)/Age <u>{{$data->contactDetail->age}}</u></td>
                                 <td>
                                     <div style="display: flex; flex-direction: row;">
                                         <p>Sex:</p>
                                         <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="Male" name="Male" value="">
+                                            <input style="padding-left: 0.5em;" type="checkbox" id="Male" name="Male" value="" @if($data->contactDetail->sex == 1) checked readonly @else disabled @endif>
                                             <label for="Male"> Male</label>
                                         </div>
                                         <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="Female" name="Female" value="">
+                                            <input style="padding-left: 0.5em;" type="checkbox" id="Female" name="Female" value="" @if($data->sex == 2) checked readonly @else disabled @endif>
                                             <label for="Female"> Female</label>
                                         </div>
                                         <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="Unknown" name="Unknown" value="">
+                                            <input style="padding-left: 0.5em;" type="checkbox" id="Unknown" name="Unknown" value="" @if($data->sex == 3) checked readonly @else disabled @endif>
                                             <label for="Unknown"> Unknown</label>
-                                        </div>
+                                        </div> 
                                     </div>
                                 </td>
                             </tr>
@@ -981,14 +1071,14 @@
                             <tr>
                                 <td colspan="2">
                                     <div class="col-md-6">
-                                        <p>Current Address:</p>
-                                        <p>Province:</p>
-                                        <p>Municipality:</p>
-                                        <p>Tole/Landmark:</p>
+                                        <p>Current Address: </p>
+                                        <p>Province: {{$data->contactDetail->province_id}}</p>
+                                        <p>Municipality: {{$data->contactDetail->municipality_id}}</p>
+                                        <p>Tole/Landmark:{{$data->contactDetail->tole}}</p>
                                     </div>
                                     <div class="col-md-6">
-                                        <p>District</p>
-                                        <p>Ward</p>
+                                        <p>District: {{$data->contactDetail->district_id}}</p>
+                                        <p>Ward: {{$data->contactDetail->ward}}</p>
                                     </div>
                                 </td>
                             </tr>
@@ -998,11 +1088,11 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Telephone (mobile) number</td>
+                                <td>Telephone (mobile) number: {{$data->contactDetail->emergency_contact_one}}</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>Alternative Contact number</td>
+                                <td>Alternative Contact number: {{$data->contactDetail->emergency_contact_two}}</td>
                                 <td></td>
                             </tr>
                             <tr>
@@ -1028,13 +1118,15 @@
                                     <div>
                                         <p>3.1. Currently symptomatic: </p>
                                         <div style="display: flex; flex-direction: row;">
+                                        
+                                         
                                             <div style="padding-left: 1em;">
-                                                <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                                                <label for="Yes"> Yes</label>
+                                                <input type="checkbox" id="yes" name="yes" value=""  @if($data->contactDetail->symptoms_recent == 1) checked readonly @else disabled @endif/>
+                                                <label for="yes"> Yes</label>
                                             </div>
                                             <div style="padding-left: 1em;">
-                                                <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                                                <label for="No"> No</label>
+                                                <input type="checkbox" id="no" name="no" value="" @if($data->contactDetail->symptoms_recent != 1) checked readonly @else disabled @endif/>
+                                                <label for="no"> No</label>  
                                             </div>
                                         </div>
                                     </div>
@@ -1060,71 +1152,71 @@
                             <tr>
                                 <td colspan="2">
                                     <b>If answer to 3.1 or 3.2 is Yes,</b><br>
-                                    <b>Date of Onset of First set of Symptoms [dd/mm/yyyy] ____</b><br>
+                                    <b>Date of Onset of First set of Symptoms [dd/mm/yyyy]: {{$data->contactDetail->symptoms_date}}</b><br>
                                     <b>Check any and all applicable symptoms listed below</b>
                                     <div>
-                                        <div class="col-md-4">
-                                            <div style="padding-left: 1em;">
-                                                <input style="padding-left: 0.5em;" type="checkbox" id="Fever" name="Fever" value="">
-                                                <label for="Fever"> Fever</label>
-                                            </div>
-                                            <div style="padding-left: 1em;">
-                                                <input style="padding-left: 0.5em;" type="checkbox" id="Pain in the muscles" name="Pain in the muscles" value="">
-                                                <label for="Pain in the muscles"> Pain in the muscles</label>
-                                            </div>
-                                            <div style="padding-left: 1em;">
-                                                <input style="padding-left: 0.5em;" type="checkbox" id="loss-appetite" name="loss-appetite" value="">
-                                                <label for="loss-appetite"> Nausea / Vomiting / Loss of appetite</label>
-                                            </div>
-                                            <div style="padding-left: 1em;">
-                                                <input style="padding-left: 0.5em;" type="checkbox" id="loss-of-taste" name="loss-of-taste" value="">
-                                                <label for="loss-of-taste"> Recent loss of taste</label>
-                                            </div>
+                                    <div class=" col-md-4">
+                                        <div>
+                                            <input type="checkbox" id="Fever" name="Fever" value="t" @if(in_array(4, $symptomscontactdetail)) checked @endif readonly/>
+                                            <label for="Fever">Fever</label>                                           
                                         </div>
+                                        <div>
+                                            <input type="checkbox" id="muscles" name="muscles" value="" @if(in_array(13, $symptomscontactdetail)) checked @endif readonly/>
+                                            <label for="muscles">Pain in the muscles</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="" name="" value="" readonly @if(in_array(13, $symptomscontactdetail)) checked @endif readonly/>
+                                            <label for="">Nausea / Vomiting / Loss of appetite </label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="lossoftaste" name="lossoftaste" value="" @if(in_array(11, $symptomscontactdetail)) checked @endif readonly/>
+                                            <label for="lossoftaste"> Recent loss of taste</label>
+                                        </div>
+                                    </div>
                                         <div class="col-md-2">
-                                            <div style="padding-left: 1em;">
-                                                <input style="padding-left: 0.5em;" type="checkbox" id="Cough" name="Cough" value="">
+                                            <div>
+                                                <input type="checkbox" id="Cough" name="Cough" value="" @if(in_array(6, $symptomscontactdetail)) checked @endif readonly/>
                                                 <label for="Cough"> Cough</label>
                                             </div>
-                                            <div style="padding-left: 1em;">
-                                                <input style="padding-left: 0.5em;" type="checkbox" id="runny-nose" name="runny-nose" value="">
-                                                <label for="runny-nose"> Runny nose</label>
+                                            <div>
+                                                <input type="checkbox" id="Sorethroat" name="Sorethroat" value="" @if(in_array(7, $symptomscontactdetail)) checked @endif readonly/>
+                                                <label for="Sorethroat"> Sore throat</label>
                                             </div>
-                                            <div style="padding-left: 1em;">
-                                                <input style="padding-left: 0.5em;" type="checkbox" id="Diarrhoea" name="Diarrhoea" value="">
+                                            <div>
+                                                <input type="checkbox" id="Diarrhoea" name="Diarrhoea" value="" @if(in_array(17, $symptomscontactdetail)) checked @endif readonly/>
                                                 <label for="Diarrhoea"> Diarrhoea</label>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <div style="padding-left: 1em;">
-                                                <input style="padding-left: 0.5em;" type="checkbox" id="sore-throat" name="sore-throat" value="">
-                                                <label for="sore-throat"> Sore throat</label>
+                                            <div>
+                                                <input type="checkbox" id="Tiredness" name="Tiredness" value="" @if(in_array(5, $symptomscontactdetail)) checked @endif readonly/>
+                                                <label for="Tiredness"> General weakness/Tiredness</label>
                                             </div>
-                                            <div style="padding-left: 1em;">
-                                                <input style="padding-left: 0.5em;" type="checkbox" id="irritability" name="irritability" value="">
-                                                <label for="irritability"> Irritability/confusion</label>
+                                            <div>
+                                                <input type="checkbox" id="runnynose" name="runnynose" value="" @if(in_array(8, $symptomscontactdetail)) checked @endif readonly/>
+                                                <label for="runnynose"> Runny nose </label>
                                             </div>
-                                            <div style="padding-left: 1em;">
-                                                <input style="padding-left: 0.5em;" type="checkbox" id="weekness" name="weekness" value="">
-                                                <label for="weekness"> General weakness/Tiredness</label>
+                                            <div>
+                                                <input type="checkbox" id="Irritability/Confusion" name="Irritability/Confusion" value="" @if(in_array(10, $symptomscontactdetail)) checked @endif readonly/>
+                                                <label for="Irritability/Confusion"> Irritability/Confusion</label>
                                             </div>
-                                            <div style="padding-left: 1em;">
-                                                <input style="padding-left: 0.5em;" type="checkbox" id="Others" name="Others" value="">
-                                                <label for="Others"> Others, specify</label>
+                                            <div>
+                                                <input type="checkbox" id="specify" name="specify" value="" @if(!is_null($data->contactDetail->symptoms_specific)) checked @endif readonly/>
+                                                <label for="specify"> Others, specify: <span style="font-weight: 500 !important;">{{$data->contactDetail->symptoms_specific}}</span></label>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <div style="padding-left: 1em;">
-                                                <input style="padding-left: 0.5em;" type="checkbox" id="Headache" name="Headache" value="">
+                                            <div>
+                                                <input type="checkbox" id="Headache" name="Headache" value="" @if(in_array(19, $symptomscontactdetail)) checked @endif readonly/>
                                                 <label for="Headache"> Headache</label>
                                             </div>
-                                            <div style="padding-left: 1em;">
-                                                <input style="padding-left: 0.5em;" type="checkbox" id="shortness" name="shortness" value="">
-                                                <label for="shortness"> Shortness of breath</label>
+                                            <div>
+                                                <input type="checkbox" id="shortbreath" name="shortbreath" value="" @if(in_array(9, $symptomscontactdetail)) checked @endif readonly/>
+                                                <label for="shortbreath"> Shortness of breath</label>
                                             </div>
-                                            <div style="padding-left: 1em;">
-                                                <input style="padding-left: 0.5em;" type="checkbox" id="Diarrhoea" name="Diarrhoea" value="">
-                                                <label for="Diarrhoea"> Recent loss of smell</label>
+                                            <div>
+                                                <input type="checkbox" id="recent-loss-of-smell" name="recent-loss-of-smell" value="" @if(in_array(12, $symptomscontactdetail)) checked @endif readonly/>
+                                                <label for="recent-loss-of-smell"> Recent loss of smell</label>
                                             </div>
                                         </div>
                                     </div>
@@ -1139,86 +1231,47 @@
                                 <td>
                                     <div class="col-md-6">
                                         <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="pregnancy" name="pregnancy" value="">
-                                            <label for="pregnancy"> Pregnancy (trimester: <u>____</u> )</label>
+                                            <input  style="padding-left: 0.5em;" id="recent-loss-of-smell" type="checkbox" name="recent-loss-of-smell" value="" @if(in_array(5, $symptomsComorbidityContactDetail) || in_array(16, $symptomsComorbidityContactDetail) || in_array(17, $symptomsComorbidityContactDetail)) checked @endif readonly/>
+                                            @if(in_array(5, $symptomsComorbidityContactDetail))
+                                                <label for="recent-loss-of-smell">Pregnancy (trimester: <u>One</u> )</label>
+                                            @elseif(in_array(16, $symptomsComorbidityContactDetail))
+                                                <label for="recent-loss-of-smell">Pregnancy (trimester: <u>Two</u> )</label>
+                                            @elseif(in_array(17, $symptomsComorbidityContactDetail))
+                                                <label for="recent-loss-of-smell">Pregnancy (trimester: <u>Three</u> )</label>
+                                            @else
+                                            <label for="recent-loss-of-smell">Pregnancy (trimester: <u></u> )</label>
+                                            @endif
                                         </div>
                                         <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="chronic-lung" name="chronic-lung" value="">
-                                            <label for="chronic-lung"> Post-partum (<6 weeks) </label>
+                                            <input style="padding-left: 0.5em;" id="post-delivery" type="checkbox" name="post-delivery" value="" />
+                                            <label for="post-delivery">Post-delivery <span> (<6 weeks) </span></label>
                                         </div>
                                         <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="hypertension" name="hypertension" value="">
-                                            <label for="hypertension"> Cardiovascular disease, including hypertension</label>
+                                            <input style="padding-left: 0.5em;" id="cardiovascular-disease" type="checkbox" name="cardiovascular-disease" value="" @if(in_array(7, $symptomsComorbidityContactDetail)) checked @endif readonly/>
+                                            <label for="cardiovascular-disease">Cardiovascular disease, including hypertension</label>
                                         </div>
                                         <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="diabetes" name="diabetes" value="">
+                                            <input style="padding-left: 0.5em;" id="diabetes" name="diabetes" type="checkbox" value="" @if(in_array(1, $symptomsComorbidityContactDetail)) checked @endif readonly/>
                                             <label for="diabetes"> Diabetes</label>
                                         </div>
-
                                     </div>
                                     <div class="col-md-6">
-                                        <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="chronic-lung" name="chronic-lung" value="">
-                                            <label for="chronic-lung"> Chronic lung Disease COPD</label>
-                                        </div>
-                                        <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="chronic-kidney" name="chronic-kidney" value="">
-                                            <label for="chronic-kidney"> Chronic Kidney Disease</label>
-                                        </div>
-                                        <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="malignancy" name="malignancy" value="">
-                                            <label for="malignancy"> Malignancy</label>
-                                        </div>
-                                        <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="other-specify" name="other-specify" value="">
-                                            <label for="other-specify"> Other, specify</label>
-                                        </div>
+                                    <div style="padding-left: 1em;">
+                                        <input style="padding-left: 0.5em;" id="malignancy" name="malignancy" type="checkbox" value="" @if(in_array(14, $symptomsComorbidityContactDetail)) checked @endif readonly/>
+                                        <label for="malignancy"> Malignancy</label>
                                     </div>
-                                </td>
-                            </tr>
-                        </table>
-                        <table>
-                            <tr>
-                                <th colspan="2" style="background-color:#8eaadb">4. Contact pre-existing condition(s)</th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="col-md-6">
-                                        <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="pregnancy" name="pregnancy" value="">
-                                            <label for="pregnancy"> Pregnancy (trimester: <u>____</u> )</label>
-                                        </div>
-                                        <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="chronic-lung" name="chronic-lung" value="">
-                                            <label for="chronic-lung"> Post-partum (<6 weeks) </label>
-                                        </div>
-                                        <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="hypertension" name="hypertension" value="">
-                                            <label for="hypertension"> Cardiovascular disease, including hypertension</label>
-                                        </div>
-                                        <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="diabetes" name="diabetes" value="">
-                                            <label for="diabetes"> Diabetes</label>
-                                        </div>
-
+                                    <div style="padding-left: 1em;">
+                                        <input style="padding-left: 0.5em;" id="COPD" name="COPD" type="checkbox" value="" @if(in_array(15, $symptomsComorbidityContactDetail)) checked @endif readonly/>
+                                        <label for="COPD"> COPD</label>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="chronic-lung" name="chronic-lung" value="">
-                                            <label for="chronic-lung"> Chronic lung Disease COPD</label>
-                                        </div>
-                                        <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="chronic-kidney" name="chronic-kidney" value="">
-                                            <label for="chronic-kidney"> Chronic Kidney Disease</label>
-                                        </div>
-                                        <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="malignancy" name="malignancy" value="">
-                                            <label for="malignancy"> Malignancy</label>
-                                        </div>
-                                        <div style="padding-left: 1em;">
-                                            <input style="padding-left: 0.5em;" type="checkbox" id="other-specify" name="other-specify" value="">
-                                            <label for="other-specify"> Other, specify</label>
-                                        </div>
+                                    <div style="padding-left: 1em;">
+                                        <input style="padding-left: 0.5em;" id="Chronic-Kidney-Diseases" name="Chronic-Kidney-Diseases" type="checkbox" value="" @if(in_array(10, $symptomsComorbidityContactDetail)) checked @endif readonly/>
+                                        <label for="Chronic-Kidney-Diseases"> Chronic Kidney Diseases</label>
+                                    </div>
+                                    <div style="padding-left: 1em;">
+                                        <input style="padding-left: 0.5em;" id="malignancy" name="malignancy" type="checkbox" value="" @if(!is_null($data->contactDetail->symptoms_comorbidity_specific)) checked @endif readonly/>
+                                        <label for="malignancy"> Others, specify: <span style="font-weight: 500 !important;">{{$data->contactDetail->symptoms_comorbidity_specific}}</span></label>
+                                    </div>
                                     </div>
                                 </td>
                             </tr>
@@ -2458,16 +2511,17 @@
                             </td>
                         </tr>
                     </table>
+                   
                     <table style="margin-top: 1em;">
                         <tr>
                             <th colspan="2" style="background-color:#8eaadb">11. Data collector information</th>
                         </tr>
                         <tr>
-                            <td width="50%">Name:</td>
-                            <td width="50%">Institution</td>
+                            <td width="50%">Name: {{ $data->registerBy->name }}</td>
+                            <td width="50%">Institution: {{ $data->healthpost->name }}</td>
                         </tr>
                         <tr>
-                            <td>Telepphone number:</td>
+                            <td>Telepphone number:{{ $data->registerBy->phone }}</td>
                             <td>Email</td>
                         </tr>
                         <tr>
