@@ -121,6 +121,13 @@
         .input-group-addon .fa {
             font-size: 18px;
         }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
     </style>
 </head>
 <body style="background-color: #F7F7F7;">
@@ -215,7 +222,7 @@
             </div>
             <div style="display:inline-block; width:100%; height:auto;">
 
-                <a href="{{ route('health.professional.add') }}" class="btn btn-info center-block" role="button"
+                <a target="_blank" href="{{ url('http://vaccine.mohp.gov.np/') }}" class="btn btn-info center-block" role="button"
                    title="लक्षित समूहले कोभिड भ्याक्सिन सेवा प्राप्त गर्नको लागि, कृपया यहाँ दर्ता गर्नुहोस्"
                 ><i
                             class="fa fa-shield" aria-hidden="true"> भ्याक्सिन सेवा प्राप्त गर्नको लागि, कृपया यहाँ दर्ता गर्नुहोस्</i>
@@ -253,18 +260,45 @@
                                         allowfullscreen></iframe>
                             </div>
                     </div>
+                    <div id="myModal2" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">सूचना ! सूचना!! सूचना!!!</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <object data="{{ asset('/downloads/pdfs/IMU_WHO_IHMIS_Contact_list.pdf') }}" type="application/pdf" width="100%" height="800px">
+                                        <p>It appears you don't have a PDF plugin for this browser.
+                                            No biggie... you can <a href="{{ asset('/downloads/pdfs/IMU_WHO_IHMIS_Contact_list.pdf') }}">click here to
+                                                download the PDF file.</a></p>
+                                    </object>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                     <div id="myModal" class="modal fade" role="dialog">
                         <div class="modal-dialog">
                             <!-- Modal content-->
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">सूचना ! सूचना!! सूचना!!!</h4> <strong class="pull-right">१७
-                                        पुष २०७७, शुक्रवार</strong>
+                                    <h4 class="modal-title">सूचना ! सूचना!! सूचना!!!</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <img src="{{ asset('images/COVID-health_professional-letter.jpg') }}" alt=""
-                                         class="img-responsive">
+{{--                                    <img src="{{ asset('images/COVID-health_professional-letter.jpg') }}" alt=""--}}
+{{--                                         class="img-responsive">--}}
+                                    <object data="{{ asset('/downloads/pdfs/COVID_19_Case_Registration_IMU.pdf') }}" type="application/pdf" width="100%" height="800px">
+                                        <p>It appears you don't have a PDF plugin for this browser.
+                                            No biggie... you can <a href="{{ asset('/downloads/pdfs/COVID_19_Case_Registration_IMU.pdf') }}">click here to
+                                                download the PDF file.</a></p>
+                                    </object>
 
                                 </div>
                                 <div class="modal-footer">
@@ -317,9 +351,25 @@
     </div>
     <script type="text/javascript">
         $(window).on('load', function () {
-            $('#myModal-hide').modal('show');
+            $('#myModal').modal('show');
+            $('#myModal2').modal('show');
         });
     </script>
+</div>
+<div class="footer alert alert-danger">
+    <div class="row">
+        <div class="col-md-4">
+            Contacting IMU <br>
+            <a data-toggle="modal" data-target="#myModal2">IHMIS, IMU, WHO Contact list</a>
+        </div>
+        <div class="col-md-4">
+                    NTC No.: <a href="tel:+977-9841208827">+977-9841208827</a> <br>
+                    NCELL No.: <a href="tel:+977-9808066194">+977-9808066194</a>
+        </div>
+        <div class="col-md-4">
+            <i class="fa fa-envelope" aria-hidden="true"></i> Email : <a href="mailto: imucovidnepal@gmail.com">imucovidnepal@gmail.com</a>
+        </div>
+    </div>
 </div>
 </body>
 </html>
