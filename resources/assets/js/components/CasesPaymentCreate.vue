@@ -81,8 +81,8 @@
         </div>
       </div>
     <div class="form-group" :class="{ 'has-error': $v.data.address.$error }">
-      <label class="control-label" for="name">Address *</label>
-      <input type="text" placeholder="Enter Full Address ( e.g Lazimpat-2, Kathmandu )" class="form-control" v-model.trim="data.address" id="address" />
+      <label class="control-label" for="name">Current Address *</label>
+      <input type="text" placeholder="Enter Current Address ( e.g Lazimpat-2, Kathmandu )" class="form-control" v-model.trim="data.address" id="address" />
     </div>
     <hr>
     <div class="row">
@@ -92,7 +92,7 @@
           <option value="0" selected hidden>Please Select Medical Condition</option>
           <option value="1">No Symptoms</option>
           <option value="2">Mild</option>
-          <option value="3">Moderate</option>
+          <option value="3">Moderate &  HDU</option>
           <option value="4">Severe - ICU</option>
           <option value="5">Severe - Ventilator</option>
         </select>
@@ -124,7 +124,7 @@
               <option value="" selected="selected">Please Select Medical Condition</option>
               <option value="1">No Symptoms</option>
               <option value="2">Mild</option>
-              <option value="3">Moderate</option>
+              <option value="3">Moderate &  HDU</option>
               <option value="4">Severe - ICU</option>
               <option value="5">Severe - Ventilator</option>
             </select>
@@ -415,7 +415,7 @@ export default {
       var items = {
         1: 'No Symptoms',
         2: 'Mild',
-        3: 'Moderate',
+        3: 'Moderate &  HDU',
         4: "Severe - ICU",
         5: 'Severe - Ventilator'
       };
