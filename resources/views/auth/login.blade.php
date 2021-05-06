@@ -266,7 +266,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">सूचना ! सूचना!! सूचना!!!</h4>
+                                    <h4 class="modal-title">IHMIS मार्फत सहयोग लिनु परेमा</h4>
                                 </div>
                                 <div class="modal-body">
                                     <object data="{{ asset('/downloads/pdfs/IMU_WHO_IHMIS_Contact_list.pdf') }}" type="application/pdf" width="100%" height="800px">
@@ -289,7 +289,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">सूचना ! सूचना!! सूचना!!!</h4>
+                                    <h4 class="modal-title">उपचारमा रहेका कोभिड-१९ संक्रमितको दर्ताको लागि सहयोगि पुस्तिका!</h4>
                                 </div>
                                 <div class="modal-body">
 {{--                                    <img src="{{ asset('images/COVID-health_professional-letter.jpg') }}" alt=""--}}
