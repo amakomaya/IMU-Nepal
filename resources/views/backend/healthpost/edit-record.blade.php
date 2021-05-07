@@ -128,7 +128,7 @@
 
                             <div class="form-group{{ $errors->has('no_of_beds') ? ' has-error' : '' }}">
                                 <label for="no_of_beds" class="col-md-3 control-label"><i data-toggle="tooltip" class="fa fa-info-circle" aria-hidden="true"></i>
-                                    No of Beds</label>
+                                    No of Beds ( General )</label>
 
                                 <div class="col-md-7">
                                     <input type="number" class="form-control" name="no_of_beds" value="{{ $data->no_of_beds }}" min="0">
@@ -186,6 +186,21 @@
                                     @endif
                                 </div>
                             </div>
+
+                            <div class="form-group{{ $errors->has('hmis_uid') ? ' has-error' : '' }}">
+                                <label for="hmis_uid" class="col-md-3 control-label"><i data-toggle="tooltip" title="यहाँ तपाईलाई HMIS मा डाटा पठाउने यूनिक आई. डी. थाहा छ भने हाल्नुहोस् यदि थाहा छैन भने छोड्दिनुहोस्।  "class="fa fa-info-circle" aria-hidden="true"></i>
+                                    {{trans('create.hmis_uid')}}</label>
+
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control" name="hmis_uid" value="{{ $data->hmis_uid }}" >
+                                    @if ($errors->has('hmis_uid'))
+                                        <span class="help-block">
+                                                <strong>{{ $errors->first('hmis_uid') }}</strong>
+                                            </span>
+                                    @endif
+                                </div>
+                            </div>
+
                             <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
                                 <label for="status" class="col-md-3 control-label"><i data-toggle="tooltip" title="स्थिति छान्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i>
                                     {{trans('create.status')}}</label>

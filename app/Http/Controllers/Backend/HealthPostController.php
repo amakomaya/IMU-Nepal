@@ -149,7 +149,8 @@ class HealthpostController extends Controller
             'no_of_ventilators' => $request->get('no_of_ventilators'),
             'no_of_icu' => $request->get('no_of_icu'),
             'hospital_type' => $request->get('hospital_type'),
-            'vaccination_center_id' => $request->get('vaccination_center_id')
+            'vaccination_center_id' => $request->get('vaccination_center_id'),
+            'hmis_uid' => $request->get('hmis_uid')
         ]);
 
         $user = $this->findModelUser($healthpost->token);
