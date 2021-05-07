@@ -302,13 +302,13 @@ export default {
         $.each(this.collection.data, function(key, data) {
         let exportableData = {};
           exportableData.name = data.name;
-          if(role == 'dho' || role == 'province' || role == 'center'){
-            exportableData.name = '** ***';
-            exportableData.emergency_contact_one = '** ***';
-          }else {
+          // if(role == 'dho' || role == 'province' || role == 'center'){
+          //   exportableData.name = '** ***';
+          //   exportableData.emergency_contact_one = '** ***';
+          // }else {
             exportableData.name = data.name;
             exportableData.emergency_contact_one = data.emergency_contact_one;
-          }
+          // }
           exportableData.age = data.age;
           exportableData.gender = data.formated_gender;
         if(data.latest_anc){
@@ -329,15 +329,15 @@ export default {
         this.collection.data.map(function(data, key) {
           let exportableData = {};
           exportableData.serial_number = key +1;
-          if(role == 'dho' || role == 'province' || role == 'center'){
-              exportableData.name = '** ***';
-              exportableData.emergency_contact_one = '** ***';
-              exportableData.emergency_contact_two = '** ***';
-              }else {
+          // if(role == 'dho' || role == 'province' || role == 'center'){
+          //     exportableData.name = '** ***';
+          //     exportableData.emergency_contact_one = '** ***';
+          //     exportableData.emergency_contact_two = '** ***';
+          //     }else {
             exportableData.name = data.name;
             exportableData.emergency_contact_one = data.emergency_contact_one;
             exportableData.emergency_contact_two = data.emergency_contact_two;
-          }
+          // }
           exportableData.age = data.age;
           exportableData.age_unit = data.formated_age_unit;
           exportableData.gender = data.formated_gender;

@@ -307,9 +307,9 @@ export default {
     },
 
     roleVisibility(data) {
-      if (this.role === 'dho' || this.role === 'province' || this.role === 'center') {
-        return '** ***';
-      }
+      // if (this.role === 'dho' || this.role === 'province' || this.role === 'center') {
+      //   return '** ***';
+      // }
       return data;
     },
     addSampleCollection(token) {
