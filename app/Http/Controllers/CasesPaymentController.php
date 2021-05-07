@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\GetHealthpostCodes;
 use App\Models\Organization;
+use App\Models\OrganizationMember;
 use App\Models\PaymentCase;
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
@@ -232,8 +233,12 @@ class CasesPaymentController extends Controller
 
     public function sendToDhis(Request $request){
 
-        $orgUnit = Organization::where('token', \auth()->user()->token)->first()->hmis_uid;
-
+        if (auth()->user()->role == 'healthworker'){
+            $organization_hp_code = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
+            $orgUnit = Organization::where('hp_code', $organization_hp_code)->first()->hmis_uid;
+        }else{
+            $orgUnit = Organization::where('token', \auth()->user()->token)->first()->hmis_uid;
+        }
         $req = $request->all();
 
         $json = json_encode([

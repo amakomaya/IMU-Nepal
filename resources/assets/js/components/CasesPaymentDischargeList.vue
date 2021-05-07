@@ -9,7 +9,7 @@
         <th>Phone</th>
         <th>Address</th>
         <th>Health Condition</th>
-        <th>Safe / Free</th>
+        <th>Paid / Free</th>
         <th>Action</th>
       </tr>
       </thead>
@@ -85,7 +85,7 @@ export default {
     formattedSafeOrFree : function (type) {
       switch (type) {
         case 1:
-          return 'Safe';
+          return 'Paid';
         case 2:
           return 'Free';
         default:

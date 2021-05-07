@@ -22,7 +22,7 @@
             <form method="get" action="{{ route('cases.payment.report') }}">
                 <div class="form-group col-lg-6">
                     <label for="hospital_register_id">Period</label>
-                    <input type="date" name="selected_date" class="form-control" value="{{ app('request')->input('selected_date') ?? date('Y-m-d') }}" /><br>
+                    <input type="date" name="selected_date" class="form-control" value="{{ app('request')->input('selected_date') ?? date('Y-m-d') }}" min="2021-05-01"  max="{{ date('Y-m-d') }}"/><br>
                     <button type="submit" class="btn btn-success pull-right">Get Report</button>
                 </div>
             </form>

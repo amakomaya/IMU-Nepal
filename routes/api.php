@@ -1,6 +1,7 @@
 <?php
 
 use App\Imports\CasesPaymentImport;
+use App\Models\Organization;
 use App\Models\SampleCollection;
 use App\Models\CaseManagement;
 use App\Models\ContactDetail;
@@ -624,7 +625,11 @@ Route::post('/v1/cases-payment', function (Request $request) {
         if (isset($data['id'])){
             $data = \App\Models\PaymentCase::where('id', $data['id'])->update($data);
         }else{
-            $data['hp_code'] = \App\Models\Organization::where('token', auth()->user()->token)->first()->hp_code;
+            if (auth()->user()->role == 'healthworker'){
+                $data['hp_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
+            }else{
+                $data['hp_code'] = \App\Models\Organization::where('token', auth()->user()->token)->first()->hp_code;
+            }
             \App\Models\PaymentCase::insert($data);
         }
 

@@ -92,7 +92,7 @@
           <option value="0" selected hidden>Please Select Medical Condition</option>
           <option value="1">No Symptoms</option>
           <option value="2">Mild</option>
-          <option value="3">Moderate &  HDU</option>
+          <option value="3">Moderate ( HDU )</option>
           <option value="4">Severe - ICU</option>
           <option value="5">Severe - Ventilator</option>
         </select>
@@ -144,9 +144,9 @@
           Add</button>
       </div>
       <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.self_free.$error }">
-        <br>
+        <label class="control-label">Payment Provision *</label><br>
         <input type="radio" id="self" v-model.trim="data.self_free" value="1">
-        <label class="control-label" for="self">Self</label> &nbsp; &nbsp;
+        <label class="control-label" for="self">Paid</label> &nbsp; &nbsp;
         <input type="radio" id="free" v-model.trim="data.self_free" value="2">
         <label class="control-label" for="free">Free</label> &nbsp; &nbsp;
       </div>
@@ -415,7 +415,7 @@ export default {
       var items = {
         1: 'No Symptoms',
         2: 'Mild',
-        3: 'Moderate &  HDU',
+        3: 'Moderate ( HDU )',
         4: "Severe - ICU",
         5: 'Severe - Ventilator'
       };

@@ -9,7 +9,7 @@
         <th>Phone</th>
         <th>Address</th>
         <th>Health Condition</th>
-        <th>Safe / Free</th>
+        <th>Paid / Free</th>
         <th>Action</th>
       </tr>
       </thead>
@@ -73,7 +73,7 @@ export default {
         case 2:
           return 'Mild';
         case 3:
-          return 'Moderate';
+          return 'Moderate ( HDU )';
         case 4:
           return 'Severe - ICU';
         case 5:
@@ -100,7 +100,8 @@ export default {
       console.log(item);
     },
     checkEditButton(){
-      return this.$userRole === 'healthpost' || this.$userRole === 'main';
+      var arr = this.$userPermissions.split(',');
+      return this.$userRole === 'healthpost' || this.$userRole === 'main' || arr.includes('cases-payment');
     }
   }
 }

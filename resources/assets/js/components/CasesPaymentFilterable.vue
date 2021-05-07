@@ -314,7 +314,7 @@ export default {
         let role = this.$userRole;
         this.collection.data.map(function(data, key) {
           let exportableData = {};
-          let formattedHealthConditionObject = {1:"No Symptoms", 2:"Mild", 3:"Moderate", 4:"Severe - ICU", 5:'Severe - Ventilator'};
+          let formattedHealthConditionObject = {1:"No Symptoms", 2:"Mild", 3:"Moderate ( HDU )", 4:"Severe - ICU", 5:'Severe - Ventilator'};
           let formattedSafeOrFreeObject = {1:"Safe", 2:"Free"};
           let formattedGenderObject = {1:"Male", 2:"Female", 3:"Other"};
           let formattedTreatmentOutcomeObject = {1:"Discharge", 2:"Death"};
