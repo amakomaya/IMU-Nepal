@@ -140,6 +140,13 @@
             </a>
         </li>
         <li>
+            <a href="{{ route('cases.payment.by.organization') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                By Organization
+                <span class="label label-info pull-right">All</span>
+            </a>
+        </li>
+        <li>
             <a href="{{ route('cases.payment.index') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                 Under Treatment

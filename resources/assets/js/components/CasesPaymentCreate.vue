@@ -324,12 +324,12 @@ export default {
             if(this.health_condition_update_lists.length === 0){
               data.health_condition_update = JSON.stringify([{
                 id : this.health_condition_details_health_condition,
-                date : this.health_condition_details_start_date
+                date : this.bs2ad(this.health_condition_details_start_date)
               }]);
             }else{
               this.health_condition_update_lists.push({
                 id : this.health_condition_details_health_condition,
-                date : this.health_condition_details_start_date
+                date : this.bs2ad(this.health_condition_details_start_date)
               });
               data.health_condition_update = JSON.stringify(this.health_condition_update_lists);
             }
