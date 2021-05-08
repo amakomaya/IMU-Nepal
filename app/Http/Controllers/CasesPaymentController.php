@@ -48,7 +48,8 @@ class CasesPaymentController extends Controller
         $total_beds_allocated_general = $organization->sum('no_of_beds');
         $total_daily_consumption_of_oxygen = $organization->whereIn('is_oxygen_facility', [1,2])->sum('daily_consumption_of_oxygen');
         $total_beds_allocated_icu = $organization->sum('no_of_icu');
-        $total_beds_allocated_ventilators_among_icu = $organization->sum('no_of_ventilators');
+        $total_beds_allocated_hdu = $organization->sum('no_of_hdu');
+        $total_beds_allocated_ventilators_among_icu = $organization->sum('total_beds_allocated_ventilators_among_icu');
 
         $total_patients_without_symptoms = 0;
         $total_patients_with_mild_symptoms = 0;
@@ -79,31 +80,31 @@ class CasesPaymentController extends Controller
                 switch ($item->health_condition) {
                     case 1:
                         $total_patients_without_symptoms++;
-                        if ($item->self_free) {
+                        if ($item->self_free == 2) {
                             $free_patients_without_symptoms++;
                         }
                         break;
                     case 2:
                         $total_patients_with_mild_symptoms++;
-                        if ($item->self_free) {
+                        if ($item->self_free == 2) {
                             $free_patients_with_mild_symptoms++;
                         }
                         break;
                     case 3:
                         $total_patients_with_moderate_symptoms++;
-                        if ($item->self_free) {
+                        if ($item->self_free == 2) {
                             $free_patients_with_moderate_symptoms++;
                         }
                         break;
                     case 4:
                         $total_patients_with_severe_symptoms_in_icu++;
-                        if ($item->self_free) {
+                        if ($item->self_free == 2) {
                             $free_patients_with_severe_symptoms_in_icu++;
                         }
                         break;
                     case 5:
                         $total_patients_with_severe_symptoms_in_ventilator++;
-                        if ($item->self_free) {
+                        if ($item->self_free == 2) {
                             $free_patients_with_severe_symptoms_in_ventilator++;
                         }
                         break;
@@ -114,13 +115,13 @@ class CasesPaymentController extends Controller
                 switch ($item->is_death){
                     case 1:
                         $total_discharge++;
-                        if ($item->self_free){
+                        if ($item->self_free == 2){
                             $free_discharge++;
                         }
                         break;
                     case 2:
                         $total_deaths++;
-                        if ($item->self_free){
+                        if ($item->self_free == 2){
                             $free_deaths++;
                         }
                         break;
@@ -129,7 +130,7 @@ class CasesPaymentController extends Controller
 
             if (Carbon::parse($item->register_date_en)->equalTo($check_date)){
                 $total_admissions++;
-                if ($item->self_free){
+                if ($item->self_free == 2){
                     $free_admissions++;
                 }
             }elseif (
@@ -138,19 +139,19 @@ class CasesPaymentController extends Controller
                 switch ($item->is_death){
                     case 1:
                         $total_discharge++;
-                        if ($item->self_free){
+                        if ($item->self_free == 2){
                             $free_discharge++;
                         }
                         break;
                     case 2:
                         $total_deaths++;
-                        if ($item->self_free){
+                        if ($item->self_free == 2){
                             $free_deaths++;
                         }
                         break;
                     default:
                         $total_admissions++;
-                        if ($item->self_free){
+                        if ($item->self_free == 2){
                             $free_admissions++;
                         }
                         break;
@@ -168,31 +169,31 @@ class CasesPaymentController extends Controller
                 switch ($item->health_condition) {
                     case 1:
                         $total_patients_without_symptoms++;
-                        if ($item->self_free) {
+                        if ($item->self_free == 2) {
                             $free_patients_without_symptoms++;
                         }
                         break;
                     case 2:
                         $total_patients_with_mild_symptoms++;
-                        if ($item->self_free) {
+                        if ($item->self_free == 2) {
                             $free_patients_with_mild_symptoms++;
                         }
                         break;
                     case 3:
                         $total_patients_with_moderate_symptoms++;
-                        if ($item->self_free) {
+                        if ($item->self_free == 2) {
                             $free_patients_with_moderate_symptoms++;
                         }
                         break;
                     case 4:
                         $total_patients_with_severe_symptoms_in_icu++;
-                        if ($item->self_free) {
+                        if ($item->self_free == 2) {
                             $free_patients_with_severe_symptoms_in_icu++;
                         }
                         break;
                     case 5:
                         $total_patients_with_severe_symptoms_in_ventilator++;
-                        if ($item->self_free) {
+                        if ($item->self_free == 2) {
                             $free_patients_with_severe_symptoms_in_ventilator++;
                         }
                         break;
@@ -212,6 +213,7 @@ class CasesPaymentController extends Controller
             'total_daily_consumption_of_oxygen' => $total_daily_consumption_of_oxygen,
             'total_beds_allocated_general' => $total_beds_allocated_general,
             'total_beds_allocated_icu' => $total_beds_allocated_icu,
+            'total_beds_allocated_hdu' => $total_beds_allocated_hdu,
             'total_beds_allocated_ventilators_among_icu' => $total_beds_allocated_ventilators_among_icu,
 
             'total_patients_without_symptoms' => $total_patients_without_symptoms,

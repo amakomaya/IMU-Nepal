@@ -52,18 +52,20 @@
             <div class="col-lg-12">
             <table border="1" cellpadding="10">
         <tr>
-            <th class="b-color" width="30%" rowspan="4">1. Total beds allocated for COVID-19</th>
+            <th class="b-color text-center" width="25%" colspan="5">1. Total beds allocated for COVID-19</th>
 
         </tr>
         <tr>
-            <td width="17.5%">General (A)</td>
-            <td width="17.5%">ICU (B)</td>
-            <td width="17.5%">Ventilator (among ICU)</td>
-            <td class="b-color" width="17.5%">Total (A+B)</td>
+            <td width="15%">General (A)</td>
+            <td width="15%">ICU (B)</td>
+            <td width="15%">HDU (C)</td>
+            <td width="15%">Ventilator (among ICU)</td>
+            <td class="b-color" width="15%">Total (A+B)</td>
         </tr>
         <tr>
             <td><input type="text" id="no_of_beds" name="no_of_beds" value="{{ $data['total_beds_allocated_general'] }}"></td>
             <td><input type="text" id="no_of_icu" name="no_of_icu" value="{{ $data['total_beds_allocated_icu'] }}"></td>
+            <td><input type="text" name="no_of_hdu" value="{{ $data['total_beds_allocated_hdu'] }}"></td>
             <td><input type="text" name="no_of_ventilators" value="{{ $data['total_beds_allocated_ventilators_among_icu'] }}"></td>
 {{--            <td ><input class="b-color" type="text" value="{{ $data['total_beds_allocated_general'] + $data['total_beds_allocated_icu'] }}" readonly></td>--}}
             <td ><input class="b-color" id="total_a_sum_b" type="text" value="" readonly></td>
