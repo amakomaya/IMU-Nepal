@@ -92,7 +92,7 @@
                             </td>
                         @else
                             <td class="b-color" width="17.5%">Daily Consumption of Oxygen ( Cylinder in liter )<br>
-                                <input type="text" value="{{ $data['total_daily_consumption_of_oxygen'] }}">
+                                <input type="number" value="{{ $data['total_daily_consumption_of_oxygen'] }}">
                             </td>
                         @endif
                     </tr>
