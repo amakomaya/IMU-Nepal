@@ -63,10 +63,10 @@
             <td class="b-color" width="15%">Total (A+B)</td>
         </tr>
         <tr>
-            <td><input type="text" id="no_of_beds" name="no_of_beds" value="{{ $data['total_beds_allocated_general'] }}"></td>
-            <td><input type="text" id="no_of_icu" name="no_of_icu" value="{{ $data['total_beds_allocated_icu'] }}"></td>
-            <td><input type="text" name="no_of_hdu" value="{{ $data['total_beds_allocated_hdu'] }}"></td>
-            <td><input type="text" name="no_of_ventilators" value="{{ $data['total_beds_allocated_ventilators_among_icu'] }}"></td>
+            <td><input type="number" id="no_of_beds" name="no_of_beds" value="{{ $data['total_beds_allocated_general'] }}"></td>
+            <td><input type="number" id="no_of_icu" name="no_of_icu" value="{{ $data['total_beds_allocated_icu'] }}"></td>
+            <td><input type="number" name="no_of_hdu" value="{{ $data['total_beds_allocated_hdu'] }}"></td>
+            <td><input type="number" name="no_of_ventilators" value="{{ $data['total_beds_allocated_ventilators_among_icu'] }}"></td>
 {{--            <td ><input class="b-color" type="text" value="{{ $data['total_beds_allocated_general'] + $data['total_beds_allocated_icu'] }}" readonly></td>--}}
             <td ><input class="b-color" id="total_a_sum_b" type="text" value="" readonly></td>
         </tr>
@@ -87,14 +87,15 @@
                         <td width="17.5%">Not Available <br>
                             <input type="radio" id="is_oxygen_facility_not_available" name="is_oxygen_facility" value="3" @if ($data['is_oxygen_facility'] == 3) checked @endif>
                         </td>
+                            <td id="is_oxygen_facility_td" class="b-color" width="17.5%">Daily Consumption of Oxygen ( Cylinder in liter )<br>
+                                <input type="text" name="daily_consumption_of_oxygen" value="{{ $data['total_daily_consumption_of_oxygen'] }}">
+                            </td>
+                        @else
+                            <td class="b-color" width="17.5%">Daily Consumption of Oxygen ( Cylinder in liter )<br>
+                                <input type="text" value="{{ $data['total_daily_consumption_of_oxygen'] }}">
+                            </td>
                         @endif
-{{--                            @if ($data['is_oxygen_facility'] !== 3)--}}
-                        <td id="is_oxygen_facility_td" class="b-color" width="17.5%">Daily Consumption of Oxygen ( Cylinder in liter )<br>
-                            <input type="text" name="daily_consumption_of_oxygen" value="{{ $data['total_daily_consumption_of_oxygen'] }}">
-                        </td>
-{{--                            @endif--}}
                     </tr>
-
                 </table>
                 <div>
         <a href="{{ url('/admin/profile') }}">Update Total beds allocated for COVID-19</a>
@@ -226,7 +227,6 @@
 
             $("input[name$='is_oxygen_facility']").click(function() {
                 var is_oxygen_facility = $(this).val();
-                console.log(is_oxygen_facility);
                 if (is_oxygen_facility == "3") {
                     $("#is_oxygen_facility_td").hide();
                 }else{
