@@ -26,7 +26,6 @@
                     <button type="submit" class="btn btn-success pull-right">Get Report</button>
                 </div>
             </form>
-
         </div>
         @if (Session::get('error'))
             <div class="alert alert-danger">
@@ -41,7 +40,14 @@
             </div>
         @endif
         <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-
+        <form class="form-inline" method="post" action="{{ route('cases.payment.report-send') }}">
+            @csrf
+            <div>
+                <input type="text" name="period" value="{{ $period }}" hidden>
+                @foreach($data as $key => $value)
+                    <input type="text" name="{{$key}}" value="{{ $value }}" hidden>
+                @endforeach
+            </div>
         <div class="row">
             <div class="col-lg-12">
             <table border="1" cellpadding="10">
@@ -56,14 +62,39 @@
             <td class="b-color" width="17.5%">Total (A+B)</td>
         </tr>
         <tr>
-            <td><input type="text" value="{{ $data['total_beds_allocated_general'] }}" readonly></td>
-            <td><input type="text" value="{{ $data['total_beds_allocated_icu'] }}" readonly></td>
-            <td><input type="text" value="{{ $data['total_beds_allocated_ventilators_among_icu'] }}" readonly></td>
-            <td ><input class="b-color" type="text" value="{{ $data['total_beds_allocated_general'] + $data['total_beds_allocated_icu'] }}" readonly></td>
+            <td><input type="text" id="no_of_beds" name="no_of_beds" value="{{ $data['total_beds_allocated_general'] }}"></td>
+            <td><input type="text" id="no_of_icu" name="no_of_icu" value="{{ $data['total_beds_allocated_icu'] }}"></td>
+            <td><input type="text" name="no_of_ventilators" value="{{ $data['total_beds_allocated_ventilators_among_icu'] }}"></td>
+{{--            <td ><input class="b-color" type="text" value="{{ $data['total_beds_allocated_general'] + $data['total_beds_allocated_icu'] }}" readonly></td>--}}
+            <td ><input class="b-color" id="total_a_sum_b" type="text" value="" readonly></td>
         </tr>
 
     </table>
-    <div>
+                <table border="1" cellpadding="10">
+                    <tr>
+                        <th class="b-color" width="30%" rowspan="4">Oxygen Facility</th>
+                    </tr>
+                    <tr>
+                        @if(auth()->user()->role === 'healthpost' || auth()->user()->role === 'healthworker')
+                        <td width="17.5%">Available <br>
+                            <input type="radio" id="is_oxygen_facility_available" name="is_oxygen_facility" value="1" @if ($data['is_oxygen_facility'] == 1) checked @endif>
+                        </td>
+                        <td width="17.5%">Partially Available <br>
+                            <input type="radio" id="is_oxygen_facility_partially_available" name="is_oxygen_facility" value="2" @if ($data['is_oxygen_facility'] == 2) checked @endif>
+                        </td>
+                        <td width="17.5%">Not Available <br>
+                            <input type="radio" id="is_oxygen_facility_not_available" name="is_oxygen_facility" value="3" @if ($data['is_oxygen_facility'] == 3) checked @endif>
+                        </td>
+                        @endif
+{{--                            @if ($data['is_oxygen_facility'] !== 3)--}}
+                        <td id="is_oxygen_facility_td" class="b-color" width="17.5%">Daily Consumption of Oxygen ( Cylinder in liter )<br>
+                            <input type="text" name="daily_consumption_of_oxygen" value="{{ $data['total_daily_consumption_of_oxygen'] }}">
+                        </td>
+{{--                            @endif--}}
+                    </tr>
+
+                </table>
+                <div>
         <a href="{{ url('/admin/profile') }}">Update Total beds allocated for COVID-19</a>
     </div>
     <table class="patients-today" border="1" cellpadding="10">
@@ -152,11 +183,12 @@
             </div>
         </div>
         <br>
-        <div class="panel panel-primary">
+            @if(auth()->user()->role === 'healthpost' || auth()->user()->role === 'healthworker')
+
+            <div class="panel panel-primary">
 {{--            <div class="panel-heading text-center">* HMIS ( DHIS2 )  मा डाटा पठाउन, Confirm & Send बटनमा थिच्नुहोस्।</div>--}}
             <div class="panel-body">
-                <form class="form-inline" method="post" action="{{ route('cases.payment.report-send') }}">
-                    @csrf
+
                     <div class="form-row">
                         <div class="col-md-6 pull-right text-center">
                             <button type="submit" class="btn btn-info btn-block" onclick="if (!confirm('Are you sure, Do you want to send data to HMIS ( DHIS2 ) ?')) { return false }"><i class="fa fa-paper-plane" aria-hidden="true"></i>
@@ -164,14 +196,41 @@
                             <div class="text-info">* HMIS ( DHIS2 )  मा डाटा पठाउन, Confirm & Send बटनमा थिच्नुहोस्।</div>
                         </div>
                     </div>
-                    <div>
-                            <input type="text" name="period" value="{{ $period }}" hidden>
-                        @foreach($data as $key => $value)
-                            <input type="text" name="{{$key}}" value="{{ $value }}" hidden>
-                            @endforeach
-                    </div>
-                </form>
             </div>
         </div>
+            @endif
+        </form>
+
     </div>
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function(){
+            var no_of_beds=$("#no_of_beds");
+            var no_of_icu=$("#no_of_icu");
+            // qty.keyup(function(){
+            //     var total=isNaN(parseInt(no_of_icu.val() + no_of_beds.val())) ? 0 :(no_of_icu.val() +    no_of_beds.val())
+                $("#total_a_sum_b").val(parseInt(no_of_icu.val()) + parseInt(no_of_beds.val()));
+            // });
+            $("input").on("change", function() {
+                $("#total_a_sum_b").val(parseInt(no_of_icu.val()) + parseInt(no_of_beds.val()));
+            })
+
+            var is_oxygen_facility = $("#is_oxygen_facility_not_available").val();
+            if (is_oxygen_facility == "3"){
+                $("#is_oxygen_facility_td").hide();
+            }
+
+            $("input[name$='is_oxygen_facility']").click(function() {
+                var is_oxygen_facility = $(this).val();
+                console.log(is_oxygen_facility);
+                if (is_oxygen_facility == "3") {
+                    $("#is_oxygen_facility_td").hide();
+                }else{
+                    $("#is_oxygen_facility_td").show();
+
+                }
+            });
+        });
+    </script>
 @endsection

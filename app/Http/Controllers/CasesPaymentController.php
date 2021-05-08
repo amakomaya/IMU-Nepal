@@ -46,6 +46,7 @@ class CasesPaymentController extends Controller
         }
 
         $total_beds_allocated_general = $organization->sum('no_of_beds');
+        $total_daily_consumption_of_oxygen = $organization->whereIn('is_oxygen_facility', [1,2])->sum('daily_consumption_of_oxygen');
         $total_beds_allocated_icu = $organization->sum('no_of_icu');
         $total_beds_allocated_ventilators_among_icu = $organization->sum('no_of_ventilators');
 
@@ -201,8 +202,14 @@ class CasesPaymentController extends Controller
 
         }
 
-
+        if (auth()->user()->role === 'healthpost' || auth()->user()->role === 'healthworker'){
+            $organization_is_oxygen_facility = Organization::where('hp_code', $hpCodes)->first()->is_oxygen_facility;
+        }else{
+            $organization_is_oxygen_facility = '';
+        }
         $data = [
+            'is_oxygen_facility' => $organization_is_oxygen_facility,
+            'total_daily_consumption_of_oxygen' => $total_daily_consumption_of_oxygen,
             'total_beds_allocated_general' => $total_beds_allocated_general,
             'total_beds_allocated_icu' => $total_beds_allocated_icu,
             'total_beds_allocated_ventilators_among_icu' => $total_beds_allocated_ventilators_among_icu,
@@ -232,14 +239,18 @@ class CasesPaymentController extends Controller
     }
 
     public function sendToDhis(Request $request){
-
         if (auth()->user()->role == 'healthworker'){
             $organization_hp_code = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
-            $orgUnit = Organization::where('hp_code', $organization_hp_code)->first()->hmis_uid;
+            $organization = Organization::where('hp_code', $organization_hp_code)->first();
         }else{
-            $orgUnit = Organization::where('token', \auth()->user()->token)->first()->hmis_uid;
+            $organization = Organization::where('token', \auth()->user()->token)->first();
         }
+
         $req = $request->all();
+
+        $organization->update($req);
+
+        $orgUnit = $organization->hmis_uid;
 
         $json = json_encode([
             'dataSet' => 'EZA8TZsaRMA',
