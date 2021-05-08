@@ -218,8 +218,9 @@
                 $("#total_a_sum_b").val(parseInt(no_of_icu.val()) + parseInt(no_of_beds.val()));
             })
 
-            var is_oxygen_facility = $("#is_oxygen_facility_not_available").val();
-            if (is_oxygen_facility == "3"){
+            var is_oxygen_facility = $("input[name=is_oxygen_facility]").val();
+
+            if (is_oxygen_facility == "3" || is_oxygen_facility == ""){
                 $("#is_oxygen_facility_td").hide();
             }
 
