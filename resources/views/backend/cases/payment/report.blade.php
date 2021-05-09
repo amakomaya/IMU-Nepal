@@ -88,7 +88,7 @@
                             <input type="radio" id="is_oxygen_facility_not_available" name="is_oxygen_facility" value="3" @if ($data['is_oxygen_facility'] == 3) checked @endif>
                         </td>
                             <td id="is_oxygen_facility_td" class="b-color" width="17.5%">Daily Consumption of Oxygen ( Cylinder in liter )<br>
-                                <input type="text" name="daily_consumption_of_oxygen" value="{{ $data['total_daily_consumption_of_oxygen'] }}">
+                                <input type="number" name="daily_consumption_of_oxygen" value="{{ $data['total_daily_consumption_of_oxygen'] }}">
                             </td>
                         @else
                             <td class="b-color" width="17.5%">Daily Consumption of Oxygen ( Cylinder in liter )<br>
