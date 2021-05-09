@@ -447,7 +447,7 @@ class CasesPaymentController extends Controller
                 $return['health_condition'] = $value->health_condition;
             }else{
                 $array_health_condition = json_decode($value->health_condition_update, true);
-                $return['health_condition'] = collect($array_health_condition)->sortBy('date')->first()['id'];
+                $return['health_condition'] = collect($array_health_condition)->last()['id'];
             }
             return $return;
         })->groupBy(function($item) {
