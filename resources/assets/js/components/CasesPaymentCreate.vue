@@ -5,6 +5,14 @@
       <div class="panel-heading text-center"><strong>Search Lab ID in IMU</strong></div>
       <div class="panel-body">
         <div class="row">
+
+          <div class="large-12 medium-12 small-12 cell">
+            <label>File
+              <input type="file" id="file" ref="bulk_file" v-on:change="handleFileUpload()" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+            </label>
+              <button v-on:click="submitFile()">Submit</button>
+          </div>
+
           <div class="col-lg-8 form-group">
             <label>Lab Name * </label>
             <v-select label="name"
@@ -238,6 +246,7 @@ export default {
       health_condition_details_validation : '',
       health_condition_update_lists : [],
       isSubmitting: false,
+      bulk_file: ''
     }
   },
   validations: {
@@ -256,6 +265,30 @@ export default {
     labSelected : { required }
   },
   methods: {
+    handleFileUpload(){
+      this.bulk_file = this.$refs.bulk_file.files[0];
+    },
+    submitFile(){
+      let formData = new FormData();
+      if(!this.bulk_file){
+        alert('Please upload a valid excel file');
+        return;
+      }
+      formData.append('bulk_file', this.bulk_file);
+      axios.post( '/api/v1/bulk-case-payment',
+        formData,
+        {
+          headers: {
+              'Content-Type': 'multipart/form-data'
+          }
+        }
+      ).then(function(){
+        console.log('SUCCESS!!');
+      })
+      .catch(function(){
+        console.log('FAILURE!!');
+      });
+    },
     onSearch(search, loading) {
       loading(true);
       this.search(loading, search, this);

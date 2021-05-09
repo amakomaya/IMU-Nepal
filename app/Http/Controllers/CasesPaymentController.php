@@ -557,4 +557,15 @@ class CasesPaymentController extends Controller
             ['dataElement' => 'qj1x5V3Zc7d', 'value' => $data['free_deaths']]
         ];
     }
+
+    public function bulkUpload (Request $request) {
+      if ($request->hasFile('bulk_file')) {
+        $bulk_file = $request->file('bulk_file');
+      }
+      dd($bulk_file);
+      // return response()->json(['message' => 'success',
+      // 'data' => $response_data
+      // ]);
+
+    }
 }
