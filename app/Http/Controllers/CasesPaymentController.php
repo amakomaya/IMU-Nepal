@@ -49,7 +49,7 @@ class CasesPaymentController extends Controller
         $total_daily_consumption_of_oxygen = $organization->whereIn('is_oxygen_facility', [1,2])->sum('daily_consumption_of_oxygen');
         $total_beds_allocated_icu = $organization->sum('no_of_icu');
         $total_beds_allocated_hdu = $organization->sum('no_of_hdu');
-        $total_beds_allocated_ventilators_among_icu = $organization->sum('total_beds_allocated_ventilators_among_icu');
+        $total_beds_allocated_ventilators_among_icu = $organization->sum('no_of_ventilators');
 
         $total_patients_without_symptoms = 0;
         $total_patients_with_mild_symptoms = 0;
