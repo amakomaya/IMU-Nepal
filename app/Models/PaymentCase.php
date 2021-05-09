@@ -12,6 +12,7 @@ class PaymentCase extends Model
     use Dataviewer;
 
     protected $table='payment_cases';
+    protected $dates = ['register_date_en'];
 
     protected $fillable = [
     'id', 'name', 'age', 'gender', 'phone', 'address', 'health_condition', 'is_death',
@@ -20,11 +21,12 @@ class PaymentCase extends Model
         'health_condition_update'
         ];
 
-    protected $orderable = ['name', 'age', 'created_at'];
+    protected $orderable = ['name', 'age', 'created_at', 'register_date_en'];
 
     protected $allowedFilters = [
         'name', 'age',
         'created_at',
+        'register_date_en',
         'phone'
     ];
 }

@@ -10,6 +10,7 @@
         <th>Address</th>
         <th>Health Condition</th>
         <th>Paid / Free</th>
+        <th>Register Date</th>
         <th>Action</th>
       </tr>
       </thead>
@@ -22,6 +23,7 @@
         <td>{{ item.address }}</td>
         <td>{{ formattedHealthCondition(item.health_condition) }}</td>
         <td>{{ formattedSafeOrFree(item.self_free) }}</td>
+        <td>{{ item.register_date_np }}</td>
         <td>
           <div v-show="checkEditButton()">
             <button v-on:click="editData(item.id)" class="btn btn-primary btn-sm" title="Update Data">
@@ -49,6 +51,7 @@ export default {
         orderables: [
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},
+          {title: 'Register Date', name: 'register_date_en'},
           {title: 'Created At', name: 'created_at'}
         ],
         filterGroups: [
@@ -58,7 +61,8 @@ export default {
               {title: 'Name', name: 'name', type: 'string'},
               {title: 'Age', name: 'age', type: 'numeric'},
               {title: 'Phone Number', name: 'phone', type: 'text'},
-              {title: 'Created At', name: 'created_at', type: 'datetime'},
+              {title: 'Register Date', name: 'register_date_en', type: 'datetime'},
+              {title: 'Created Date', name: 'created_at', type: 'datetime'}
             ]
           }
         ]
