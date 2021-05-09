@@ -47,37 +47,17 @@
                                             <th>{{trans('index.district')}}</th>
                                             <th>{{trans('index.phone')}}</th>                                     
                                             <th>{{trans('index.office_address')}}</th>                                     
-{{--                                            <th>{{trans('index.status')}}</th>--}}
-{{--                                            <th>{{trans('index.created_at')}}</th>--}}
-                                            <th title="Total Vaccination Information Data">Total / Vaccinated </th>
                                             <th>{{trans('index.options')}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @php $i = 0; @endphp
                                         @foreach($data as $datum)
-                                            @php $i++ @endphp
                                             <tr>
-                                                <td>{{ $i }}</td>                                          
-                                                <td>@if(!empty(\App\Models\DistrictInfo::find($datum->id)->district->district_name))
-                                                        {{\App\Models\DistrictInfo::find($datum->id)->district->district_name}}
-                                                    @endif
-                                                </td>           
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{\App\Models\DistrictInfo::find($datum->id)->district->district_name}}</td>
                                                 <td>{{$datum->phone}}</td>                                     
-                                                <td>{{$datum->office_address}}</td>                                     
-
-                                                <td>{{$datum->total}} / {{ $datum->vaccinated_total }}
-                                                    <form method="post" action="{{ route('excel-download.unvaccinated', [$datum->district_id, 'district']) }}" onsubmit="return confirm('Are you sure you want to download all the unvaccinated records?');">
-                                                        {{csrf_field()}}
-                                                        <button name="submit" class="btn btn-warning btn-xs" title="Download unvaccinated records"><i class="fa fa-download"> Unvaccinated</i></button>
-                                                    </form>
-                                                    <form method="post" action="{{ route('excel-download.vaccinated', [$datum->district_id, 'district']) }}" onsubmit="return confirm('Are you sure you want to download all the vaccinated records?');">
-                                                        {{csrf_field()}}
-                                                        <button name="submit" class="btn btn-warning btn-xs" title="Download vaccinated records"><i class="fa fa-download">Vaccinated</i></button>
-                                                    </form>
-                                                </td>
+                                                <td>{{$datum->office_address}}</td>
                                                 <td>
-                                                    
                                                     <form method="post" action="{{route('dho.destroy', $datum->id)}}" onsubmit="return confirmDelete()"> 
                                                         <div class="icon">
                                                             <a  href="{{route('dho.show', $datum->id) }}">

@@ -39,32 +39,10 @@ class ProvinceController extends Controller
         }
 
         $provinces = provinceInfo::latest()->get();
-        $health_professional = HealthProfessional::groupBy('checked_by')
-            ->select('checked_by', \DB::raw('count(*) as total'))
-            ->get();
 
-        $health_professional_vaccinated = HealthProfessional::
-        select('vaccinated_id', 'checked_by')
-            ->join('vaccination_records', 'health_professional.id', 'vaccinated_id')
-            ->groupBy('checked_by')
-            ->select('checked_by as vaccinated_checked_by', \DB::raw('count(*) as total'))
-            ->get();
-
-        $merged = $provinces->map(function ($item) use ($health_professional_vaccinated, $health_professional) {
-
-            $organization = Organization::where('province_id', $item->province_id)->pluck('token');
-            $municipality = MunicipalityInfo::where('province_id', $item->province_id)->pluck('token');
-
-            $token = $organization->merge($municipality);
-
-            $item['total'] = $health_professional->whereIn('checked_by', $token)->sum('total');
-            $item['vaccinated_total'] = $health_professional_vaccinated->whereIn('vaccinated_checked_by', $token)->sum('total');
-
-            return $item;
-        });
 
         return view('backend.province.index',[
-            'provinces' => $merged
+            'provinces' => $provinces
         ]);
     }
 

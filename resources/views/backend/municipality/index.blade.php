@@ -46,7 +46,6 @@
                                         <th>{{trans('index.province')}}</th>                                     
                                         <th>{{trans('index.district')}}</th>                                    
                                         <th>{{trans('index.local_level')}}</th>
-                                        <th title="Total Vaccination Information Data">Total / Immunized</th>
                                         <th>{{trans('index.options')}}</th>
                                     </tr>
                                     </thead>
@@ -55,24 +54,14 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
-                                            {{ $municipalityInfo->province->province_name }}
+                                            {{ $municipalityInfo->province }}
                                         </td>                                     
                                         <td>
-                                            {{ $municipalityInfo->district->district_name }}
+                                            {{ $municipalityInfo->district }}
                                         </td>                                           
                                         <td>
-                                            {{ $municipalityInfo->municipality->municipality_name }}
+                                            {{ $municipalityInfo->municipality }}
                                         </td>  
-                                        <td>{{ $municipalityInfo->hospital_total }} / {{ $municipalityInfo->vaccinated_total }}
-                                            <form method="post" action="{{ route('excel-download.unvaccinated', [$municipalityInfo->municipality_id, 'municipality']) }}" onsubmit="return confirm('Are you sure you want to download all the unvaccinated records?');">
-                                                {{csrf_field()}}
-                                                <button name="submit" class="btn btn-warning btn-xs" title="Download unvaccinated records"><i class="fa fa-download"> Unvaccinated</i></button>
-                                            </form>
-                                            <form method="post" action="{{ route('excel-download.vaccinated', [$municipalityInfo->municipality_id, 'municipality']) }}" onsubmit="return confirm('Are you sure you want to download all the vaccinated records?');">
-                                                {{csrf_field()}}
-                                                <button name="submit" class="btn btn-warning btn-xs" title="Download vaccinated records"><i class="fa fa-download">Vaccinated</i></button>
-                                            </form>
-                                        </td>
                                         <td>
                                         <form method="post" action="{{route('municipality.destroy', $municipalityInfo->id)}}" onsubmit="return confirmDelete()">
                                             <div class="icon">
@@ -90,7 +79,7 @@
                                                 @endif
                                             </div>
                                             </form>
-                                            @if(\App\User::checkAuthForViewByMain()===true || Auth::user()->role === "center" || Auth::user()->role === "province" || Auth::user()->role === "dho" && $municipalityInfo->status=='1')
+                                            @if(\App\User::checkAuthForViewByMain()===true || Auth::user()->role === "center" || Auth::user()->role === "province" || Auth::user()->role === "dho")
                                                 <form method="post" action="{{route('user-manager.login-as', \App\User::getUserId($municipalityInfo->token) )}}" >
                                                     {{csrf_field()}}
                                                     <div class="form-group">

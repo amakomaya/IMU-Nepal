@@ -31,45 +31,31 @@ class MunicipalityController extends Controller
     public function index()
     {
        if(Auth::user()->role=="province"){
-            $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
-            $municipalityInfos = MunicipalityInfo::where('province_id', $province_id)->latest()->get();
+            $province_id = Province::modelProvinceInfo(auth()->user()->token)->province_id;
+            $municipalityInfos = MunicipalityInfo::where('municipality_infos.province_id', $province_id);
        }elseif(Auth::user()->role=="dho"){
-            $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
-            $municipalityInfos = MunicipalityInfo::where('district_id', $district_id)->latest()->get();
+            $district_id = District::modelDistrictInfo(auth()->user()->token)->district_id;
+            $municipalityInfos = MunicipalityInfo::where('municipality_infos.district_id', $district_id);
        }else{
-            $municipalityInfos = MunicipalityInfo::latest()->get();
+            $municipalityInfos = new MunicipalityInfo();
        }
 
-//        $count_hospital = \App\Models\Organization::groupBy('municipality_id')
-//            ->select('municipality_id', \DB::raw('count(*) as municipality_total'))
-//            ->get();
-
-        $health_professional = HealthProfessional::groupBy('checked_by')
-            ->select('checked_by', \DB::raw('count(*) as total'))
+        $municipalityInfos = $municipalityInfos
+            ->join('provinces', 'municipality_infos.province_id', '=', 'provinces.id')
+            ->join('districts', 'municipality_infos.district_id', '=', 'districts.id')
+            ->join('municipalities', 'municipality_infos.municipality_id', '=', 'municipalities.id')
+            ->select([
+                'municipality_infos.id',
+                'municipality_infos.token',
+                'provinces.province_name as province',
+                'districts.district_name as district',
+                'municipalities.municipality_name as municipality'
+            ])
+            ->orderBy('municipalities.municipality_name', 'asc')
             ->get();
-
-        $health_professional_vaccinated = HealthProfessional::
-            select('vaccinated_id', 'checked_by')
-            ->join('vaccination_records', 'health_professional.id', 'vaccinated_id')
-            ->groupBy('checked_by')
-            ->select('checked_by as vaccinated_checked_by', \DB::raw('count(*) as total'))
-            ->get();
-
-
-        $merged = $municipalityInfos->map(function ($item) use ($health_professional_vaccinated, $health_professional) {
-
-            $organization = Organization::where('municipality_id', $item->municipality_id)->pluck('token');
-            $municipality_info = MunicipalityInfo::where('municipality_id', $item->municipality_id)->pluck('token');
-            $token = $organization->merge($municipality_info);
-
-            $item['hospital_total'] = $health_professional->whereIn('checked_by', $token)->sum('total');
-            $item['vaccinated_total'] = $health_professional_vaccinated->whereIn('vaccinated_checked_by', $token)->sum('total');
-
-            return $item;
-        });
 
         return view('backend.municipality.index', [
-            'municipalityInfos' => $merged
+            'municipalityInfos' => $municipalityInfos
         ]);
     }
 

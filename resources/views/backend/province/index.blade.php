@@ -48,33 +48,16 @@
                                             <th>{{trans('index.province')}}</th>
                                             <th>{{trans('index.phone')}}</th>                                     
                                             <th>{{trans('index.office_address')}}</th>                                     
-                                            <th title="Total Vaccinated Data Information">Total / Vaccinated</th>
                                             <th>{{trans('index.options')}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @php $i = 0; @endphp
                                         @foreach($provinces as $province)
-                                            @php $i++ @endphp
                                             <tr>
-                                                <td>{{ $i }}</td>                                          
-                                                <td>@if(!empty(\App\Models\ProvinceInfo::find($province->id)->province->province_name))
-                                                        {{\App\Models\ProvinceInfo::find($province->id)->province->province_name}}
-                                                    @endif
-                                                </td>            
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{\App\Models\ProvinceInfo::find($province->id)->province->province_name}}</td>
                                                 <td>{{$province->phone}}</td>                                     
                                                 <td>{{$province->office_address}}</td>
-
-                                                <td>{{$province->total}} / {{ $province->vaccinated_total }}
-                                                    <form method="post" action="{{ route('excel-download.unvaccinated', [$province->province_id, 'province']) }}" onsubmit="return confirm('Are you sure you want to download all the unvaccinated records?');">
-                                                                {{csrf_field()}}
-                                                                <button name="submit" class="btn btn-warning btn-xs" title="Download unvaccinated records"><i class="fa fa-download"> Unvaccinated</i></button>
-                                                    </form>
-                                                    <form method="post" action="{{ route('excel-download.vaccinated', [$province->province_id, 'province']) }}" onsubmit="return confirm('Are you sure you want to download all the vaccinated records?');">
-                                                                {{csrf_field()}}
-                                                                <button name="submit" class="btn btn-warning btn-xs" title="Download vaccinated records"><i class="fa fa-download">Vaccinated</i></button>
-                                                    </form>
-                                                </td>
                                                 <td>
                                                     
                                                     <form method="post" action="{{route('province.destroy', $province->id)}}" onsubmit="return confirmDelete()"> 

@@ -22,7 +22,6 @@
                                             <th>Province</th>
                                             <th>District</th>
                                             <th>Municipality</th>
-                                            <th title="Total Register || Sample Collection">Data</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -40,7 +39,6 @@
                                                 <td>{{ $d->province->province_name ?? '' }}</td>
                                                 <td>{{ $d->district->district_name ?? '' }}</td>
                                                 <td>{{ $d->municipality->municipality_name ?? '' }}</td>
-                                                <td>{{ $d->total_cases.' || '. $d->sample_collection_total }} </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
