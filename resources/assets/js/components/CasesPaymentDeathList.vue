@@ -21,7 +21,7 @@
         <td>{{item.age}}</td>
         <td>{{item.phone}}</td>
         <td>{{ item.address }}</td>
-        <td>{{ formattedHealthCondition(item.health_condition) }}</td>
+        <td>{{ formattedHealthCondition(item.health_condition, item.health_condition_update) }}</td>
         <td>{{ formattedSafeOrFree(item.self_free) }}</td>
         <td>{{ item.register_date_np }}</td>
         <td>
@@ -70,7 +70,11 @@ export default {
     }
   },
   methods: {
-    formattedHealthCondition : function (type) {
+    formattedHealthCondition : function (type, update) {
+      if (update !== null){
+        var data = JSON.parse(update).slice(-1)[0] ;
+        type = parseInt(data.id);
+      }
       switch (type) {
         case 1:
           return 'No Symptoms';
