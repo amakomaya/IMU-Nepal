@@ -72,7 +72,14 @@ class CasesPaymentController extends Controller
         $free_deaths = 0;
 
         foreach ($total as $item) {
-
+            if ($item->health_condition_update != null){
+                $health_condition_update_array = json_decode($item->health_condition_update, true);
+                foreach ($health_condition_update_array as $arr){
+                    if (Carbon::parse($arr['date'])->between(Carbon::parse($item->register_date_en), $check_date)){
+                        $item->health_condition = $arr['id'];
+                    }
+                }
+            }
             if (
                 $item->date_of_outcome_en == null &&
                 Carbon::parse($item->register_date_en)->lessThanOrEqualTo($check_date)

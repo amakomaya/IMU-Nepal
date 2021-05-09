@@ -108,7 +108,7 @@
           <tbody>
           <tr>
             <td>{{  getHealthCondition(data.health_condition) }}</td>
-            <td>{{ data.register_date_np }}</td>
+            <td>{{ data.register_date_en }}</td>
           </tr>
           <tr v-if="health_condition_update_lists" v-for="item in health_condition_update_lists">
             <td>{{  getHealthCondition(item.id) }}</td>
@@ -439,6 +439,8 @@ export default {
               this.data.phone = response.data.phone;
               this.data.hospital_register_id = response.data.hospital_register_id;
               this.data.register_date_np = response.data.register_date_np;
+              this.data.register_date_en = (new Date(response.data.register_date_en)).toLocaleString().split(',')[0].split("/").reverse().join("-");
+              ;
               this.data.gender = response.data.gender;
               this.data.self_free = response.data.self_free;
               this.data.health_condition = response.data.health_condition;
