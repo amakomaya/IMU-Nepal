@@ -60,7 +60,7 @@ export default {
             filters: [
               {title: 'Name', name: 'name', type: 'string'},
               {title: 'Age', name: 'age', type: 'numeric'},
-              {title: 'Phone Number', name: 'phone', type: 'text'},
+              {title: 'Phone Number', name: 'phone', type: 'string'},
               {title: 'Register Date', name: 'register_date_en', type: 'datetime'},
               {title: 'Created Date', name: 'created_at', type: 'datetime'}
             ]
