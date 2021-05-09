@@ -307,6 +307,10 @@ class CasesPaymentController extends Controller
         }
     }
 
+    public function publicPortal(Request $request){
+        return view('backend.cases.payment.public-portal');
+    }
+
     public function allByOrganization(Request $request){
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);

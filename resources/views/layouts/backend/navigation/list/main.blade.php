@@ -211,6 +211,13 @@
 
     <ul class="nav nav-second-level">
         <li>
+            <a href="{{ route('cases.payment.public-portal') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Public Portal
+                <span class="label label-info pull-right">Portal</span>
+            </a>
+        </li>
+        <li>
             <a href="{{ route('cases.payment.report') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                 Report
