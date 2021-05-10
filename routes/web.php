@@ -312,5 +312,6 @@ Route::get('admin/cases-report-payment', 'CasesPaymentController@report')->name(
 Route::post('admin/cases-report-payment-send', 'CasesPaymentController@sendToDhis')->name('cases.payment.report-send');
 Route::get('admin/cases-payment-all-by-organization', 'CasesPaymentController@allByOrganization')->name('cases.payment.by.organization');
 
-Route::get('admin/public-portal', 'CasesPaymentController@publicPortal')->name('cases.payment.public-portal');
+Route::get('home', 'PublicDataController@index')->name('public.home.index');
+Route::get('api/status', 'PublicDataController@publicPortal');
 
