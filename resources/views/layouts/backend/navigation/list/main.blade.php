@@ -211,7 +211,7 @@
 
     <ul class="nav nav-second-level">
         <li>
-            <a href="{{ route('cases.payment.public-portal') }}">
+            <a href="{{ route('public.home.index') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                 Public Portal
                 <span class="label label-info pull-right">Portal</span>

@@ -1,0 +1,565 @@
+@extends('layouts.public.app')
+@section('style')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<style>
+
+  #province-selector,
+  #district-selector,
+  #municipality-selector {
+    width: 100%;
+  }
+
+  .public-content .card:hover {
+    cursor: pointer;
+  }
+
+  .public-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .public-content .card {
+    min-width: 400px;
+    border-radius: 15px;
+    color: #FFF;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .public-content .card .info-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .public-content .card .info-header .fa {
+    font-size: 60px !important;
+  }
+
+  .hospital-card {
+    background-color: #0443A5;
+  }
+
+  .hdu-card {
+    background-color: #0a70ae;
+    color: #FFF;
+  }
+
+  .icu-card {
+    background-color: #17bdce;
+    color: #FFF;
+  }
+
+  .ventilator-card {
+    background-color: #b30bd5;
+    color: #FFF;
+  }
+
+  .oxygen-card {
+    background-color: #037650;
+    color: #FFF;
+  }
+
+  .public-content .modal-dialog {
+    width: 90%;
+    height: 90%;
+  }
+
+  h2.info-count {
+    text-align: center;
+  }
+</style>
+@endsection
+@section('content')
+<div>
+  <div class="row">
+    <div class="container">
+      <div class="col-lg-12">
+        <h2>Dashboard</h2>
+        <div class="lg-controls">
+          <div class="row">
+            <div class="col-md-4">
+              <h4 class="text-center">Province</h4>
+              <select id="province-selector" name="province">
+              </select>
+            </div>
+            <div class="col-md-4">
+            <h4 class="text-center">District</h4>
+              <select id="district-selector" name="district" disabled>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <h4 class="text-center">Municipality</h4>
+              <select id="municipality-selector" name="municipality" disabled>
+              </select>
+            </div>
+          </div>
+          
+        </div>
+        <hr />
+        <h2 id="active-title">Nepal</h2>
+
+        <div class="public-content">
+          <div class="card hospital-card" data-toggle="modal" data-target="#hospital-modal">
+            <div class="card-body">
+              <div class="info-header">
+                <div class="icon">
+                  <i class="fa fa-h-square " style="color: #d6ff22;"></i>
+                </div>
+                <h3>Hospital</h3>
+              </div>
+              <h2  class="info-count" id="hospital-count"></h2>
+            </div>
+          </div>
+          <div class="card hdu-card" data-toggle="modal" data-target="#hdu-modal">
+            <div class="card-body">
+              <div class="info-header">
+                <div class="icon">
+                  <i class="fa fa-bed" style="color: #d6ff22;"></i>
+                </div>
+                <h3>General/Mild/HDU</h3>
+              </div>
+              <h2  class="info-count" id="hdu-count"></h2>
+            </div>
+          </div>
+
+          <div class="card icu-card" data-toggle="modal" data-target="#icu-modal">
+            <div class="card-body">
+              <div class="info-header">
+                <div class="icon">
+                  <i class="fa fa-bed" style="color: #d6ff22;"></i>
+                </div>
+                <h3>ICU</h3>
+              </div>
+              <h2  class="info-count" id="icu-count"></h2>
+            </div>
+          </div>
+
+          <div class="card ventilator-card" data-toggle="modal" data-target="#ventilator-modal">
+            <div class="card-body">
+              <div class="info-header">
+                <div class="icon">
+                  <i class="fa fa-heartbeat" style="color: #d6ff22;"></i>
+                </div>
+                <h3>Ventilators</h3>
+              </div>
+              <h2 class="info-count" id="ventilator-count"></h2>
+            </div>
+          </div>
+
+          <div class="card oxygen-card" data-toggle="modal" data-target="#oxygen-modal">
+            <div class="card-body">
+              <div class="info-header">
+                <div class="icon">
+                  <i class="fa fa-plus-square" style="color: #d6ff22;"></i>
+                </div>
+                <h3>Daily Oxygen Consumption <br />(in lts)</h3>
+              </div>
+              <h2 class="info-count" id="oxygen-count"></h2>
+            </div>
+          </div>
+
+          <div id="hospital-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Hospital</h4>
+                </div>
+                <div class="modal-body">
+                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                    <tr>
+                        <th>S.N</th>                                      
+                        <th>Name</th>
+                        <th>Province</th>
+                        <th>District</th>
+                        <th>Municipality</th> 
+                        <th>Address</th>
+                        <th>Phone No:</th> 
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="hdu-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">General/Mild/HDU</h4>
+                </div>
+                <div class="modal-body">
+                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                    <tr>
+                        <th>S.N</th>                                      
+                        <th>Name</th>
+                        <th>Province</th>
+                        <th>District</th>
+                        <th>Municipality</th>
+                        <th>Bed Usage</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="icu-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">ICU</h4>
+                </div>
+                <div class="modal-body">
+                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                    <tr>
+                        <th>S.N</th>                                      
+                        <th>Name</th>
+                        <th>Province</th>
+                        <th>District</th>
+                        <th>Municipality</th>
+                        <th>Bed Usage</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="ventilator-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Ventilators</h4>
+                </div>
+                <div class="modal-body">
+                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                    <tr>
+                        <th>S.N</th>                                      
+                        <th>Name</th>
+                        <th>Province</th>
+                        <th>District</th>
+                        <th>Municipality</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="oxygen-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Oxygen Facility</h4>
+                </div>
+                <div class="modal-body">
+                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                    <tr>
+                        <th>S.N</th>                                      
+                        <th>Name</th>
+                        <th>Province</th>
+                        <th>District</th>
+                        <th>Municipality</th>
+                        <th>Availability</th>
+                        <th>Daily Usage</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+@endsection
+@section('script')
+<script>
+  var activeProvince, activeDistrict, activeMunicipality, mainData;
+
+  function fetchData() {
+    let params = '?';
+    if(activeMunicipality) {
+      params += 'municipality_id='+activeMunicipality.id;
+    } else if(activeDistrict) {
+      params += 'district_id='+activeDistrict.id;
+    } else if(activeProvince) {
+      params += 'province_id='+activeProvince.id;
+    }
+    $.get("api/status"+params, function(data) {
+     mainData = data;
+     renderData();
+    });
+  }
+
+  function renderData() {
+    if(mainData) {
+      renderHospitalTable();
+      renderHDUTable();
+      renderICUTable();
+      renderVentilatorTable();
+      renderOxygenTable();
+    }
+  }
+
+  function renderHospitalTable() {
+    let tableDiv = $('#hospital-modal tbody');
+    let tableContent = '';
+    let totalCount = 0;
+    mainData.organizations.forEach(function(item,index){
+      tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+item.address+'</td><td>'+item.phone+'</td></tr>';
+      totalCount++;
+    });
+    $('#hospital-count').html(totalCount);
+    tableDiv.html(tableContent);
+  }
+
+  function renderHDUTable() {
+    let tableDiv = $('#hdu-modal tbody');
+    let tableContent = '';
+    let totalBedCount = 0;
+    let usedBedCount = 0;
+    mainData.organizations.forEach(function(item,index){
+      totalBedCount += item.total_general_hdu||0;
+      usedBedCount += item.used_general_hdu||0;
+      var itemUsage = item.used_general_hdu+' / '+item.total_general_hdu;
+      tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+itemUsage+'</td></tr>';
+    });
+    $('#hdu-count').html(usedBedCount+' / '+ totalBedCount);
+    tableDiv.html(tableContent);
+  }
+
+  function renderICUTable() {
+    let tableDiv = $('#icu-modal tbody');
+    let tableContent = '';
+    let totalBedCount = 0;
+    let usedBedCount = 0;
+    mainData.organizations.forEach(function(item,index){
+      totalBedCount += item.total_icu||0;
+      usedBedCount += item.used_icu||0;
+      var itemUsage = item.used_icu+' / '+item.total_icu;
+      tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+itemUsage+'</td></tr>';
+    });
+    $('#icu-count').html(usedBedCount+' / '+ totalBedCount);
+    tableDiv.html(tableContent);
+  }
+
+  function renderVentilatorTable() {
+    let tableDiv = $('#ventilator-modal tbody');
+    let tableContent = '';
+    let totalVentilatorCount = 0;
+    let usedVentilatorCount = 0;
+    mainData.organizations.forEach(function(item,index){
+      totalVentilatorCount += item.total_ventilators||0;
+      usedVentilatorCount += item.used_ventilators||0;
+      var itemUsage = item.used_ventilators+' / '+item.total_ventilators;
+      tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+itemUsage+'</td></tr>';
+    });
+    $('#ventilator-count').html(usedVentilatorCount+' / '+ totalVentilatorCount);
+    tableDiv.html(tableContent);
+  }
+
+  function renderOxygenTable() {
+    let tableDiv = $('#oxygen-modal tbody');
+    let tableContent = '';
+    let oxygenAvailabilityMap = {
+      1: 'Available',
+      2: 'Partially Available'
+    };
+    let totalDailyUsage = 0;
+    mainData.organizations.forEach(function(item,index){
+      if(item.oxygen_availability===1 || item.oxygen_availability===2) {
+        totalDailyUsage += parseFloat(item.daily_capacity_in_liter)||0;
+        var itemUsage = item.used_general_hdu+' / '+item.total_general_hdu;
+        tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+oxygenAvailabilityMap[item.oxygen_availability]+'</td><td>'+item.daily_capacity_in_liter+'</td></tr>';
+      }
+    });
+    $('#oxygen-count').html(totalDailyUsage);
+    tableDiv.html(tableContent);
+  }
+
+  function generateActiveTitle() {
+    var titleHtml;
+    if (activeMunicipality) {
+      titleHtml = activeMunicipality.name;
+    } else if (activeDistrict) {
+      titleHtml = activeDistrict.name;
+    } else if (activeProvince) {
+      titleHtml = activeProvince.name;
+    } else {
+      titleHtml = "Nepal";
+    }
+    $('#active-title').html(titleHtml);
+  }
+
+  function resetProvince() {
+    activeProvince = null;
+    resetDistrict();
+    resetMunicipality();
+  }
+
+  function resetDistrict() {
+    activeDistrict = null;
+    if (!activeProvince) {
+      $('#district-selector').html('');
+      $('#district-selector').prop('disabled', true);
+    }
+    resetMunicipality();
+  }
+
+  function resetMunicipality() {
+    activeMunicipality = null;
+    if (!activeDistrict) {
+      $('#municipality-selector').html('');
+      $('#municipality-selector').prop('disabled', true);
+    }
+  }
+
+  function loadProvince() {
+    $.get("/api/province", function(data) {
+      var provinceDropdown = $('#province-selector');
+      provinceDropdown.append($("<option />").val(null).text('Select'));
+      $.each(data, function() {
+        provinceDropdown.append($("<option />").val(this.id).text(this.province_name));
+      });
+    });
+  }
+
+  
+  function loadDistrict() {
+    $('#district-selector').prop('disabled', false);
+    $.get("/api/district?province=" + activeProvince.id, function(data) {
+      var districtDropdown = $('#district-selector');
+      districtDropdown.append($("<option />").val(null).text('Select'));
+      $.each(data, function() {
+        districtDropdown.append($("<option />").val(this.id).text(this.district_name));
+      });
+    });
+  }
+
+  function loadMunicipality() {
+    $("#municipality-selector").prop('disabled', false);
+    $.get("/api/municipality?district=" + activeDistrict.id, function(data) {
+      var municipalityDropdown = $('#municipality-selector');
+      municipalityDropdown.append($("<option />").val(null).text('Select'));
+      $.each(data, function() {
+        municipalityDropdown.append($("<option />").val(this.id).text(this.municipality_name + ' ' + this.type));
+      });
+    });
+  }
+
+  function loadSelect2() {
+    $('#province-selector, #district-selector, #municipality-selector').select2({
+      placeholder: "Select",
+      allowClear: true
+    });
+  }
+
+  function addDropdownOnChangeListners() {
+    $('#province-selector').on('change', function() {
+      var selectedValue = this.value;
+      if (selectedValue) {
+        activeProvince = {
+          name: $(this).children("option:selected").text(),
+          id: selectedValue
+        };
+        loadDistrict();
+      } else {
+        resetProvince();
+      }
+      generateActiveTitle();
+      fetchData();
+
+    });
+    $('#district-selector').on('change', function() {
+      var selectedValue = this.value;
+      if (selectedValue) {
+        activeDistrict = {
+          name: $(this).children("option:selected").text(),
+          id: selectedValue
+        };
+        loadMunicipality();
+      } else {
+        resetDistrict();
+      }
+      generateActiveTitle();
+      fetchData();
+    });
+    $('#municipality-selector').on('change', function() {
+      var selectedValue = this.value;
+      if (selectedValue) {
+        activeMunicipality = {
+          name: $(this).children("option:selected").text(),
+          id: selectedValue
+        };
+      } else {
+        resetMunicipality();
+      }
+      generateActiveTitle();
+      fetchData();
+    });
+  }
+
+  $(document).ready(function() {
+    loadSelect2();
+    loadProvince();
+    addDropdownOnChangeListners();
+    fetchData();
+
+  })
+</script>
+@endsection
