@@ -337,10 +337,10 @@ input:focus ~ div{
                                 <div class="form-group{{ $errors->has('hospital_type') ? ' has-error' : '' }}">
                                     <label for="status" class="col-md-3 control-label"><i data-toggle="tooltip" class="fa fa-info-circle" aria-hidden="true"></i>
                                         Organization Type</label>
-                                    @php($list = [1=>'Sample Collection Only ( CICT )',5=>'Sample Collection Only ( Hospital )',2=>'Lab Test Only', 3=>'Both ( Sample Collection & Lab Test )', 4=>'Normal'])
+                                    @php($list = [1=>'HOME Isolation & CICT',5=>'Institutional Isolation',2=>'Lab Test Only', 3=>'Lab & Treatment', 4=>'Normal'])
                                     <div class="col-md-7">
                                         <select id="status" class="form-control" name="hospital_type" >
-                                            <option value=""> Organization Type</option>
+                                            <option value="" hidden> Organization Type</option>
                                             @foreach ($list as $key => $value )
                                                 <option value="{{ $key }}" @if($hospital_type=="$key") {{ 'selected' }} @endif >
                                                     {{ $value }}

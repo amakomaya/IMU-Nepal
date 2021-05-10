@@ -99,16 +99,16 @@
             <a href="{{ route('organization.overview.search') }}" title="Search and Edit Organizations">Search</a>
         </li>
         <li>
-            <a href="{{ route('organization.overview.cict') }}" title="Sample Collection Only (CICT)">CICT</a>
+            <a href="{{ route('organization.overview.cict') }}" title="HOME Isolation">HOME Isolation</a>
         </li>
         <li>
-            <a href="{{ route('organization.overview.hospital') }}" title="Sample Collection Only ( Hospital )">Hospital</a>
+            <a href="{{ route('organization.overview.hospital') }}" title="Institutional Isolation">Institutional Isolation</a>
         </li>
         <li>
             <a href="{{ route('organization.overview.labtest') }}" title="Lab Test Only">Lab Test Only</a>
         </li>
         <li>
-            <a href="{{ route('organization.overview.both') }}" title="Both ( Sample Collection & Lab Test )">Both</a>
+            <a href="{{ route('organization.overview.both') }}" title="Lab & Treatment">Lab & Treatment</a>
         </li>
         <li>
             <a href="{{ route('organization.overview.normal') }}" title="Normal">Normal</a>

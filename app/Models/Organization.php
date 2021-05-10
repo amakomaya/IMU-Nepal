@@ -73,7 +73,7 @@ class Organization extends Model
 	}
 
 	public function hospitalType($type){
-		$list = [1=>'Sample Collection Only ( CICT )',5=>'Sample Collection Only ( Hospital )',2=>'Lab Test Only', 3=>'Both ( Sample Collection & Lab Test )', 4=>'Normal'];
+		$list = [1=>'HOME Isolation & CICT',5=>'Institutional Isolation',2=>'Lab Test Only', 3=>'Lab & Treatment', 4=>'Normal'];
 		return $list[$type];
     }
 
