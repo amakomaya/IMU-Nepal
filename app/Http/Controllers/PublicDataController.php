@@ -20,6 +20,10 @@ class PublicDataController extends Controller
         $data = \DB::table('payment_cases')
             ->whereNull('payment_cases.is_death');
 
+            if($request->has('organization_type')){
+                $data = $data->where('healthposts.hospital_type', $request->get('organization_type'));
+            }
+
             if ($request->has('province_id')){
                 $data = $data->where('healthposts.province_id', $request->get('province_id'));
             }
