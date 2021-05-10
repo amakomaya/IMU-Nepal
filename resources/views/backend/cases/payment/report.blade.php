@@ -40,7 +40,7 @@
             </div>
         @endif
         <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-        <form class="form-inline" method="post" action="{{ route('cases.payment.report-send') }}">
+        <form class="form-inline" method="post" action="{{ route('cases.payment.report-send') }}" onsubmit="syncCasePayment()">
             @csrf
             <div>
                 <input type="text" name="period" value="{{ $period }}" hidden>
@@ -194,7 +194,7 @@
 
                     <div class="form-row">
                         <div class="col-md-6 pull-right text-center">
-                            <button type="submit" class="btn btn-info btn-block" onclick="if (!confirm('Are you sure, Do you want to send data to HMIS ( DHIS2 ) ?')) { return false }"><i class="fa fa-paper-plane" aria-hidden="true"></i>
+                            <button type="submit" id="syncDhis2" class="btn btn-info btn-block" onclick="if (!confirm('Are you sure, Do you want to send data to HMIS ( DHIS2 ) ?')) { return false }"><i class="fa fa-paper-plane" aria-hidden="true"></i>
                                 Confirm & Send</button>
                             <div class="text-info">* HMIS ( DHIS2 )  मा डाटा पठाउन, Confirm & Send बटनमा थिच्नुहोस्।</div>
                         </div>
@@ -235,5 +235,11 @@
                 }
             });
         });
+
+        function syncCasePayment() {
+          $("#syncDhis2").prop('disabled', true);
+          $("#syncDhis2").html("Sending to HMIS (DHIS2)...");
+          return false;
+        }
     </script>
 @endsection
