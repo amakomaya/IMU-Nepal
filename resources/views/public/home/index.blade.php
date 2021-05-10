@@ -13,6 +13,7 @@
 
   .public-content .card:hover {
     cursor: pointer;
+    opacity: 0.8;
   }
 
   .public-content {
@@ -32,7 +33,7 @@
 
   .public-content .card .info-header {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-around;
     align-items: center;
   }
@@ -41,6 +42,12 @@
     font-size: 60px !important;
   }
 
+  .public-content .card .card-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;  
+  }
   .hospital-card {
     background-color: #0443A5;
   }
@@ -70,7 +77,8 @@
     height: 90%;
   }
 
-  h2.info-count {
+  h1.info-count {
+    margin: 0;
     text-align: center;
   }
 </style>
@@ -83,19 +91,27 @@
         <h2>Dashboard</h2>
         <div class="lg-controls">
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
               <h4 class="text-center">Province</h4>
               <select id="province-selector" name="province">
               </select>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
             <h4 class="text-center">District</h4>
               <select id="district-selector" name="district" disabled>
               </select>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <h4 class="text-center">Municipality</h4>
               <select id="municipality-selector" name="municipality" disabled>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <h4 class="text-center">Organization</h4>
+              <select id="organization-selector" name="organization-type">
+                <option value="">Select</option>
+                <option value="5"> Institutional Isolation</option>
+                <option value="3">Lab & Treatment( Hospital )</option>
               </select>
             </div>
           </div>
@@ -113,7 +129,7 @@
                 </div>
                 <h3>Hospital</h3>
               </div>
-              <h2  class="info-count" id="hospital-count"></h2>
+              <h1  class="info-count" id="hospital-count"></h1>
             </div>
           </div>
           <div class="card hdu-card" data-toggle="modal" data-target="#hdu-modal">
@@ -122,9 +138,9 @@
                 <div class="icon">
                   <i class="fa fa-bed" style="color: #d6ff22;"></i>
                 </div>
-                <h3>General/Mild/HDU</h3>
+                <h3>General/HDU</h3>
               </div>
-              <h2  class="info-count" id="hdu-count"></h2>
+              <h1  class="info-count" id="hdu-count"></h1>
             </div>
           </div>
 
@@ -136,7 +152,7 @@
                 </div>
                 <h3>ICU</h3>
               </div>
-              <h2  class="info-count" id="icu-count"></h2>
+              <h1  class="info-count" id="icu-count"></h1>
             </div>
           </div>
 
@@ -148,7 +164,7 @@
                 </div>
                 <h3>Ventilators</h3>
               </div>
-              <h2 class="info-count" id="ventilator-count"></h2>
+              <h1 class="info-count" id="ventilator-count"></h1>
             </div>
           </div>
 
@@ -158,9 +174,9 @@
                 <div class="icon">
                   <i class="fa fa-plus-square" style="color: #d6ff22;"></i>
                 </div>
-                <h3>Daily Oxygen Consumption <br />(in lts)</h3>
+                <h3>Daily Oxygen <br />Consumption (in lts)</h3>
               </div>
-              <h2 class="info-count" id="oxygen-count"></h2>
+              <h1 class="info-count" id="oxygen-count"></h1>
             </div>
           </div>
 
@@ -202,7 +218,7 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">General/Mild/HDU</h4>
+                  <h4 class="modal-title">General/HDU</h4>
                 </div>
                 <div class="modal-body">
                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -329,7 +345,7 @@
 @endsection
 @section('script')
 <script>
-  var activeProvince, activeDistrict, activeMunicipality, mainData;
+  var activeProvince, activeDistrict, activeMunicipality, mainData, activeOrganization;
 
   function fetchData() {
     let params = '?';
@@ -339,6 +355,9 @@
       params += 'district_id='+activeDistrict.id;
     } else if(activeProvince) {
       params += 'province_id='+activeProvince.id;
+    }
+    if(activeOrganization) {
+      params += '&organization_type='+activeOrganization.id;
     }
     $.get("api/status"+params, function(data) {
      mainData = data;
@@ -469,6 +488,10 @@
     }
   }
 
+  function resetOrganization() {
+    activeOrganization = null;
+  }
+
   function loadProvince() {
     $.get("/api/province", function(data) {
       var provinceDropdown = $('#province-selector');
@@ -503,7 +526,7 @@
   }
 
   function loadSelect2() {
-    $('#province-selector, #district-selector, #municipality-selector').select2({
+    $('#province-selector, #district-selector, #municipality-selector, #organization-selector').select2({
       placeholder: "Select",
       allowClear: true
     });
@@ -525,6 +548,7 @@
       fetchData();
 
     });
+
     $('#district-selector').on('change', function() {
       var selectedValue = this.value;
       if (selectedValue) {
@@ -539,6 +563,7 @@
       generateActiveTitle();
       fetchData();
     });
+
     $('#municipality-selector').on('change', function() {
       var selectedValue = this.value;
       if (selectedValue) {
@@ -550,6 +575,19 @@
         resetMunicipality();
       }
       generateActiveTitle();
+      fetchData();
+    });
+
+    $('#organization-selector').on('change', function() {
+      var selectedValue = this.value;
+      if (selectedValue) {
+        activeOrganization = {
+          name: $(this).children("option:selected").text(),
+          id: selectedValue
+        };
+      } else {
+        resetOrganization();
+      }
       fetchData();
     });
   }
