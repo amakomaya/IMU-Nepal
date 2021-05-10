@@ -7,6 +7,7 @@
 
   #province-selector,
   #district-selector,
+  #organization-selector,
   #municipality-selector {
     width: 100%;
   }
