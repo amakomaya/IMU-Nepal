@@ -3,7 +3,6 @@
 use App\Models\District;
 use App\Models\HealthProfessional;
 use App\Models\Municipality;
-use App\Models\VaccinationRecord;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 

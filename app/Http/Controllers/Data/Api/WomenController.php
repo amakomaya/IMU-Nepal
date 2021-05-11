@@ -43,10 +43,15 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $sample_collection_token = SampleCollection::whereIn('hp_code', $hpCodes)->whereIn('result' ,[0,2])->pluck('woman_token');
-        $woman_register_and_sample_collection_only = SuspectedCase::whereIn('hp_code', $hpCodes)->doesntHave('ancs')->pluck('token');
-        $merge_array = collect($sample_collection_token)->merge(collect($woman_register_and_sample_collection_only));
-        $woman = SuspectedCase::whereIn('token', $merge_array)->active()->orderBy('created_at', 'desc')->withAll();
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
+            ->whereHas('ancs', function($q){
+                $q->whereIn('result', [0,2]);
+            })->orWhere->doesntHave('ancs')->withAll();
+
+//        $sample_collection_token = SampleCollection::whereIn('hp_code', $hpCodes)->whereIn('result' ,[0,2])->pluck('woman_token');
+//        $woman_register_and_sample_collection_only = SuspectedCase::whereIn('hp_code', $hpCodes)->doesntHave('ancs')->pluck('token');
+//        $merge_array = collect($sample_collection_token)->merge(collect($woman_register_and_sample_collection_only));
+//        $woman = SuspectedCase::whereIn('token', $merge_array)->active()->orderBy('created_at', 'desc')->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -58,8 +63,12 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->pluck('woman_token');
-        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
+//        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->pluck('woman_token');
+//        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->whereHas('ancs', function($q){
+            $q->where('result', '=', '4');
+        })->withAll();
+
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -69,8 +78,10 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->pluck('woman_token');
-        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
+//        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->pluck('woman_token');
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->whereHas('ancs', function($q){
+                $q->where('result', '=', '3');
+            })->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -95,8 +106,11 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 9)->pluck('woman_token');
-        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->whereHas('ancs', function($q){
+            $q->where('result', '=', '9');
+        })->withAll();
+//        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 9)->pluck('woman_token');
+//        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -112,8 +126,13 @@ class WomenController extends Controller
                     ->orWhereIn('hp_code', $hpCodes);
             })->
             where('sample_test_result', '9')->pluck('sample_token');
-        $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
-        $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
+
+        $data = SuspectedCase::active()->whereHas('ancs', function($q) use ($sample_token) {
+            $q->whereIn('token', $sample_token);
+        })->withAll();
+
+//        $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
+//        $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
             'collection' => $data->advancedFilter()
         ]);
@@ -128,8 +147,9 @@ class WomenController extends Controller
         $q->where('checked_by', $user->token)
             ->orWhereIn('hp_code', $hpCodes);
         })->where('sample_test_result', '3')->pluck('sample_token');
-        $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
-        $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
+        $data = SuspectedCase::active()->whereHas('ancs', function($q) use ($sample_token) {
+            $q->whereIn('token', $sample_token);
+        })->withAll();
         return response()->json([
             'collection' => $data->advancedFilter()
         ]);
@@ -144,8 +164,9 @@ class WomenController extends Controller
             $q->where('checked_by', $user->token)
                 ->orWhereIn('hp_code', $hpCodes);
         })->where('sample_test_result', '4')->pluck('sample_token');
-        $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
-        $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
+        $data = SuspectedCase::active()->whereHas('ancs', function($q) use ($sample_token) {
+            $q->whereIn('token', $sample_token);
+        })->withAll();
         return response()->json([
             'collection' => $data->advancedFilter()
         ]);

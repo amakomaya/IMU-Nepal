@@ -28,6 +28,7 @@
     },
     "require-dev": {
         "astrotomic/ignition-stackoverflow": "^1.4",
+        "barryvdh/laravel-debugbar": "3.2.5",
         "facade/ignition": "^1.8",
         "facade/ignition-code-editor": "^1.0",
         "filp/whoops": "~2.0",
