@@ -150,13 +150,6 @@
     </ul>
 </li>
 <li>
-    <a href="{{ route('dho.vaccination.municipalities') }}">
-        <i class="fa fa-hospital-o"></i>
-        Vaccination Center
-    </a>
-</li>
-
-<li>
     <a href="{{ route('updateVaccinationCenter') }}">
         <i class="fa fa-hospital-o"></i>
          Update Vaccination center

@@ -26,6 +26,19 @@ use Yagiten\Nepalicalendar\Calendar;
 class WomanController extends Controller
 {
 
+    protected function roleViewCheck(){
+        $role = \auth()->user()->role;
+        $valid_roles = ['healthpost', 'healthworker', 'municipality'];
+        if (in_array($role, $valid_roles))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -33,7 +46,10 @@ class WomanController extends Controller
 
     public function index()
     {
-        return view('backend.woman.index');
+        if($this->roleViewCheck()){
+            return view('backend.woman.index');
+        };
+        return redirect('/admin');
     }
 
     public function addSampleCollection(){
@@ -42,27 +58,42 @@ class WomanController extends Controller
 
     public function negativeIndex()
     {
-        return view('backend.woman.index-negative');
+        if($this->roleViewCheck()){
+            return view('backend.woman.index-negative');
+        };
+        return redirect('/admin');
     }
 
     public function positiveIndex()
     {
-        return view('backend.woman.index-positive');
+        if($this->roleViewCheck()){
+            return view('backend.woman.index-positive');
+        };
+        return redirect('/admin');
     }
 
     public function tracingIndex()
     {
-        return view('backend.woman.index-tracing');
+        if($this->roleViewCheck()){
+            return view('backend.woman.index-tracing');
+        };
+        return redirect('/admin');
     }
 
     public function labReceivedIndex()
     {
-        return view('backend.woman.index-lab-received');
+        if($this->roleViewCheck()){
+            return view('backend.woman.index-lab-received');
+        };
+        return redirect('/admin');
     }
 
     public function casesRecoveredIndex()
     {
-        return view('backend.woman.index-cases-recovered');
+        if($this->roleViewCheck()){
+            return view('backend.woman.index-cases-recovered');
+        };
+        return redirect('/admin');
     }
 
     public function casesPaymentIndex()
@@ -87,7 +118,10 @@ class WomanController extends Controller
 
     public function casesDeathIndex()
     {
-        return view('backend.woman.index-cases-death');
+        if($this->roleViewCheck()){
+            return view('backend.woman.index-cases-death');
+        };
+        return redirect('/admin');
     }
 
     public function casesInOtherOrganization()

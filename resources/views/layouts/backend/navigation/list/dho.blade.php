@@ -124,14 +124,14 @@
 {{--        </li>--}}
 {{--    </ul>--}}
 {{--</li>--}}
-<li>
+<li class="active">
     <a href="#">
-        <i class="fa fa-money" aria-hidden="true"></i>
+        <i class="fa fa-money" aria-hidden="false"></i>
 
         CASES Payment <span class="fa arrow"></span>
     </a>
 
-    <ul class="nav nav-second-level">
+    <ul class="nav nav-second-level active">
         <li>
             <a href="{{ route('cases.payment.report') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
@@ -169,12 +169,12 @@
         </li>
     </ul>
 </li>
-<li>
-    <a href="{{ route('dho.vaccination.municipalities') }}">
-        <i class="fa fa-hospital-o"></i>
-        Vaccination Center
-    </a>
-</li>
+{{--<li>--}}
+{{--    <a href="{{ route('dho.vaccination.municipalities') }}">--}}
+{{--        <i class="fa fa-hospital-o"></i>--}}
+{{--        Vaccination Center--}}
+{{--    </a>--}}
+{{--</li>--}}
 <li>
     <a href="{{ route('center.woman.map') }}">
         <i class="fa fa-map-marker"></i>

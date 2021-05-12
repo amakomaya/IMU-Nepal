@@ -125,7 +125,7 @@
 {{--        </li>--}}
 {{--    </ul>--}}
 {{--</li>--}}
-<li>
+<li class="active">
     <a href="#">
         <i class="fa fa-money" aria-hidden="true"></i>
 
