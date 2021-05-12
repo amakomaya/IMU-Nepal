@@ -46,7 +46,7 @@ class WomenController extends Controller
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
             ->whereHas('ancs', function($q){
                 $q->whereIn('result', [0,2]);
-            })->orWhere->doesntHave('ancs')->withAll();
+            })->withAll();
 
 //        $sample_collection_token = SampleCollection::whereIn('hp_code', $hpCodes)->whereIn('result' ,[0,2])->pluck('woman_token');
 //        $woman_register_and_sample_collection_only = SuspectedCase::whereIn('hp_code', $hpCodes)->doesntHave('ancs')->pluck('token');

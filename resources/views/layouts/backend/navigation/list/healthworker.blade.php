@@ -127,31 +127,31 @@
 @endcan
 
 @can('vaccination')
-    <li>
-        <a href="#">
-            <i class="fa fa-users" aria-hidden="true"></i>
+{{--    <li>--}}
+{{--        <a href="#">--}}
+{{--            <i class="fa fa-users" aria-hidden="true"></i>--}}
 
-            Vaccination Records<span class="fa arrow"></span>
-        </a>
+{{--            Vaccination Records<span class="fa arrow"></span>--}}
+{{--        </a>--}}
 
-        <ul class="nav nav-second-level">
-            <li>
-                <a href="{{ route('vaccination.web.index') }}">
-                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                    List
-                    <span class="label label-info pull-right">List </span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('vaccinated.web.index') }}">
-                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                    Vaccinated
-                    <span class="label label-success pull-right">&#x2714;</span>
+{{--        <ul class="nav nav-second-level">--}}
+{{--            <li>--}}
+{{--                <a href="{{ route('vaccination.web.index') }}">--}}
+{{--                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>--}}
+{{--                    List--}}
+{{--                    <span class="label label-info pull-right">List </span>--}}
+{{--                </a>--}}
+{{--            </li>--}}
+{{--            <li>--}}
+{{--                <a href="{{ route('vaccinated.web.index') }}">--}}
+{{--                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>--}}
+{{--                    Vaccinated--}}
+{{--                    <span class="label label-success pull-right">&#x2714;</span>--}}
 
-                </a>
-            </li>
-        </ul>
-    </li>
+{{--                </a>--}}
+{{--            </li>--}}
+{{--        </ul>--}}
+{{--    </li>--}}
 @endcan
 @can('cases-payment')
 
