@@ -9,6 +9,8 @@ use App\Models\PaymentCase;
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\CasesPaymentImport;
 
 class CasesPaymentController extends Controller
 {
@@ -561,11 +563,30 @@ class CasesPaymentController extends Controller
     public function bulkUpload (Request $request) {
       if ($request->hasFile('bulk_file')) {
         $bulk_file = $request->file('bulk_file');
-      }
-      dd($bulk_file);
-      // return response()->json(['message' => 'success',
-      // 'data' => $response_data
-      // ]);
+        try {
+          Excel::queueImport(new CasesPaymentImport(auth()->user()), $bulk_file);
+          return response()->json(['message' => 'success',
+            'message' => 'Data imported Successfully'
+          ]);
 
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+          $errors = [];
+          $failures = $e->failures();
+          
+          foreach ($failures as $key=>$failure) {
+              $errors[$key]['row'] = $failure->row(); // row that went wrong
+              $errors[$key]['column'] = $failure->attribute(); // either heading key (if using heading row concern) or column index
+              $errors[$key]['error'] = $failure->errors(); // Actual error messages from Laravel validator
+              $errors[$key]['values'] = $failure->values(); // The values of the row that has failed.
+          }
+          return response()->json(['status' => 'fail',
+            'message' => $errors
+          ]);
+
+        }
+        return response()->json(['status' => 'success',
+            'message' => "Uploading"
+          ]);
+      }
     }
 }

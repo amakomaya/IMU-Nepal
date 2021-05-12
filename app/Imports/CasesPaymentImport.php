@@ -3,49 +3,102 @@
 namespace App\Imports;
 
 use App\Models\PaymentCase;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
+use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\WithValidation;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use App\Notifications\ImportHasFailedNotification;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class CasesPaymentImport implements ToCollection
+use App\User;
+
+class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
 {
-    /**
-    * @param Collection $collection
-    */
-    public function collection(Collection $rows)
+    use Importable;
+
+    // public function __construct(User $importedBy)
+    // {
+    //     $this->importedBy = $importedBy;
+    // }
+    
+    public function registerEvents(): array
     {
-        $token = auth()->user()->token;
-        return response()->json($rows);
+        return [
+            ImportFailed::class => function(ImportFailed $event) {
+                $this->importedBy->notify(new ImportHasFailedNotification);
+            },
+        ];
+    }
 
+    public function model(array $row)
+    {
+        if(!array_filter($row)) { return null;} //Ignore empty rows.
+        $enums = array(
+          'gender'=> array( 'Male' => 1, 'Female' => 2, 'Other' => 3 ),
+          'health_condition' => array ('No Symptoms'=> 1, 'Mild' => 2, 'Moderate' => 3, 'Severe' => 4),
+          'self_free' => array ('Self' => 1, 'Free' => 1)
+        );
+        return new PaymentCase([
+            'hospital_register_id' => $row['hospital_registration_id'] ,
+            'name' => $row['name'],
+            'date_of_outcome_en'=> Date::excelToDateTimeObject($row['registered_date_english_ad']),
+            'lab_id' => $row['lab_id']??'0123456789',
+            'age' => $row['age'],
+            'gender' => $enums['gender'][$row['gender']],
+            'phone' => $row['phone'],
+            'address' => $row['current_address'],
+            'guardian_name' => $row['parentguardian_name'],
+            'health_condition' => $enums['health_condition'][$row['health_condition']] ?? null,
+            'self_free' => $enums['self_free'][$row['self_free']] ?? null,
+            'remark' => $row['remark'],
+            'is_in_imu' => 0,
 
-        $data = $rows->map(function ($row) use ($token) {
-            return response()->json($row);
+        ]);
+    }
 
-            $data = [
-                'health_worker'         => $row[0],
-                'organization_type'     => $row[1],
-                'organization_name'     => $row[2],
-                'organization_phn'      => $row[3],
-                'organization_address'  => $row[4],
-                'designation'           => $row[5],
-                'level'                 => $row[6],
-                'service_date'          => $row[7],
-                'name'                  => $row[8],
-                'gender'                => $row[9],
-                'age'                   => $row[10],
-                'phone'                 => $row[11],
-                'province_id'           => $row[12],
-                'district_id'           => $row[13],
-                'municipality_id'       => $row[14],
-                'ward'                  => $row[15],
-                'tole'                  => $row[16],
-                'citizenship_no'        => $row[17],
-                'issue_district'        => $row[18],
-                'covid_status'          => $row[19],
-                'checked_by'            => $token,
-                'status'                => 1
-            ];
-            return $data;
-        })->toArray();
-        return PaymentCase::insert($data);
+    public function rules(): array
+    {
+        // return [
+        //   'name' => 'required|string',
+        //   'registered_date_english_ad' => 'required',
+        //   'age' => 'required',
+        //   'gender' => 'required',
+        //   'health_condition' => 'required',
+        // ];
+        return [
+            'name' => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Name cannot be empty');
+              }
+            },
+            'registered_date_english_ad' => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Registered Date cannot be empty');
+              }
+            },
+            'age' => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Age be empty');
+              }
+            },
+            'gender' => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Gender cannot be empty');
+              }
+            },
+            'health_condition' => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Health Condition cannot be empty');
+              }
+            },
+        ];
+    }
+
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 }
