@@ -186,7 +186,7 @@
       <div v-if="$v.invalid" class="alert alert-danger">
         * Please fill the all required fields
       </div>
-      <button type="submit" @click="submitData(data)" class="btn btn-primary btn-lg btn-block">Save</button>
+      <button type="submit" :disabled="isSubmitting" @click="submitData(data)" class="btn btn-primary btn-lg btn-block">Save</button>
 
     </form>
   </div>
@@ -214,7 +214,8 @@ export default {
       health_condition_details_health_condition : '',
       health_condition_details_start_date : '',
       health_condition_details_validation : '',
-      health_condition_update_lists : []
+      health_condition_update_lists : [],
+      isSubmitting: false,
     }
   },
   validations: {
@@ -306,7 +307,9 @@ export default {
     },
     submitData(data){
       this.$v.$touch()
+      this.isSubmitting = true;
       if (this.$v.$invalid) {
+        this.isSubmitting = false;
         return false;
       }
       if (this.is_to_update){
@@ -336,8 +339,10 @@ export default {
             console.log("all Pass");
           }else{
             this.health_condition_details_validation = "Please select both Health Condition and Date"
+            this.isSubmitting = false;
             return false;
           }
+          
         }
 
       }else{
@@ -371,6 +376,7 @@ export default {
                     this.health_condition_details_start_date = ''
                   }
                 }
+                this.isSubmitting = false;
                 return false;
               }
               this.$v.$reset();
@@ -381,6 +387,7 @@ export default {
                 register_date_np : this.ad2bs(today),
                 lab_name : this.labSelected.name
               }
+              this.isSubmitting = false;
 
             } else {
               this.$swal({
@@ -391,6 +398,7 @@ export default {
                 showConfirmButton: false,
                 timer: 3000
               })
+              this.isSubmitting = false;
             }
           })
     },
@@ -471,9 +479,6 @@ export default {
       var today = new Date();
       this.data.register_date_np = this.ad2bs(today);
     }
-
-    console.log(this.data);
-
   }
 }
 </script>
