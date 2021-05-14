@@ -30,6 +30,11 @@
               <i class="fa fa-edit" aria-hidden="true"> Update</i>
             </button>
           </div>
+          <div v-show="checkDeleteButton()">
+            <button v-on:click="deleteData(item.id)" class="btn btn-danger btn-sm" title="Delete Data">
+              <i class="fa fa-trash" aria-hidden="true"> Delete</i>
+            </button>
+          </div>
         </td>
         <!-- </div>             -->
       </tr>
@@ -41,6 +46,7 @@
 
 <script type="text/javascript">
 import Filterable from './CasesPaymentFilterable.vue'
+import axios from "axios";
 
 export default {
   components: {Filterable},
@@ -105,11 +111,59 @@ export default {
           '/admin/cases-payment-create?token=' + id,
           '_blank'
       );
-      console.log(item);
+    },
+    deleteData : function(id){
+      this.$swal({
+        title: "Are you sure?",
+        text: "You don\'t able to to retrieve this data.",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel please!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      }).then((result) => {
+        if (result.value) {
+          axios.post('/api/v1/cases-payment/delete', {'id':id})
+              .then((response) => {
+                if (response.data.message === 'success') {
+                  this.$swal({
+                    title: 'Record Deleted',
+                    type: 'success',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                  })
+                  if (this.item){
+                    this.$dlg.closeAll(function(){
+                      // do something after all dialog closed
+                    })
+                  }
+                } else {
+                  this.$swal({
+                    title: 'Oops. No record found.',
+                    type: 'error',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                  })
+                }
+              })
+        } else {
+          this.$swal("Cancelled", "Your imaginary data is safe :)", "error");
+        }
+      })
     },
     checkEditButton(){
       var arr = this.$userPermissions.split(',');
       return this.$userRole === 'healthpost' || this.$userRole === 'main' || arr.includes('cases-payment');
+    },
+    checkDeleteButton() {
+      // main super admin token
+      return this.$userSessionToken === '5a4425';
     }
   }
 }

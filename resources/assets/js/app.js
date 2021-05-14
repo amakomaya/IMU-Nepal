@@ -68,6 +68,7 @@ Vue.component('downloadExcel', JsonExcel)
 Vue.prototype.$userRole = document.querySelector("meta[name='user-role']").getAttribute('content');
 Vue.prototype.$userPermissions = document.querySelector("meta[name='user-permission']").getAttribute('content');
 Vue.prototype.$hospitalType = document.querySelector("meta[name='hospital-type']").getAttribute('content');
+Vue.prototype.$userSessionToken = document.querySelector("meta[name='user-session-token']").getAttribute('content');
 
 Vue.use(Vuelidate)
 Vue.use(StatusIndicator);

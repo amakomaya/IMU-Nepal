@@ -701,6 +701,12 @@ select {
     color: #fff;
     border-bottom: 1px solid darken($color-secondary, 10%);
   }
+
+  &-danger {
+    background: $color-error;
+    color : #fff;
+    border-bottom: 1px solid darken($color-error, 10%);
+  }
 }
 
 .filterable {

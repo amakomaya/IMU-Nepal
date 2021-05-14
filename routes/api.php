@@ -674,3 +674,19 @@ Route::post('/v1/cases-search-by-lab-and-id', function (Request $request) {
     'data' => $response_data
     ]);
 });
+
+
+Route::post('/v1/cases-payment/delete', function(Request $request){
+    try{
+        $data = \App\Models\PaymentCase::find($request->id);
+            if(!empty($data)){
+                $data->delete();
+            }else{
+                return response()->json(['message' => 'error']);
+            }
+        return response()->json(['message' => 'success']);
+    }
+    catch (\Exception $e){
+        return response()->json(['message' => 'error']);
+    }
+});

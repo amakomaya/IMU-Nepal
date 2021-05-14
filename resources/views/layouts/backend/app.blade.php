@@ -50,6 +50,7 @@
     <meta name="user-role" content="{{ $metaRole ?? '' }}">
     <meta name="hospital-type" content="{{ $h_type ?? '' }}">
     <meta name="user-permission" content="{{  $metaPermission }}">
+    <meta name="user-session-token" content="{{  Request::session()->get('user_token') }}">
     <script src="{{ asset('js/sortable.js') }}"></script>
 
 @yield('style')
