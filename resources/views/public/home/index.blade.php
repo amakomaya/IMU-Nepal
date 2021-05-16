@@ -25,7 +25,7 @@
   }
 
   .public-content .card {
-    min-width: 400px;
+    min-width: 360px;
     border-radius: 15px;
     color: #FFF;
     padding: 15px;
@@ -36,7 +36,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    align-items: center;
+    align-items: stretch;
   }
 
   .public-content .card .info-header .fa {
@@ -64,12 +64,27 @@
   }
 
   .ventilator-card {
-    background-color: #b30bd5;
+    background-color: #E75874;
     color: #FFF;
   }
 
   .oxygen-card {
     background-color: #037650;
+    color: #FFF;
+  }
+
+  .case-payment-death-card {
+    background-color: #E52165;
+    color: #FFF;
+  }
+
+  .discharge-card {
+    background-color: #077B8A;
+    color: #FFF;
+  }
+
+  .admission-card {
+    background-color: #b30bd5;
     color: #FFF;
   }
 
@@ -128,7 +143,7 @@
                 <div class="icon">
                   <i class="fa fa-h-square " style="color: #d6ff22;"></i>
                 </div>
-                <h3>Hospital</h3>
+                <h3>Hospital & Isolation</h3>
               </div>
               <h1  class="info-count" id="hospital-count"></h1>
             </div>
@@ -137,9 +152,9 @@
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
-                  <i class="fa fa-bed" style="color: #d6ff22;"></i>
+                  <i class="fa fa-square" style="color: #d6ff22;"></i>
                 </div>
-                <h3>General/HDU</h3>
+                <h3>General & HDU</h3>
               </div>
               <h1  class="info-count" id="hdu-count"></h1>
             </div>
@@ -173,13 +188,66 @@
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
-                  <i class="fa fa-plus-square" style="color: #d6ff22;"></i>
+                  <i class="fa fa-refresh" style="color: #d6ff22;"></i>
                 </div>
                 <h3>Daily Oxygen <br />Consumption (in lts)</h3>
               </div>
               <h1 class="info-count" id="oxygen-count"></h1>
             </div>
           </div>
+
+          <div class="card" data-toggle="modal">
+            <div class="card-body">
+              <div class="info-header">
+                <div class="icon">
+                  {{-- <i class="fa fa-plus-square" style="color: #d6ff22;"></i> --}}
+                </div>
+                <h3></h3>
+              </div>
+              <h1 class="info-count"></h1>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="active-title">Today's Data</h2>
+        <div class="public-content">
+
+          <div class="card discharge-card" data-toggle="modal" data-target="#discharge-modal">
+            <div class="card-body">
+              <div class="info-header">
+                <div class="icon">
+                  <i class="fa fa-minus" style="color: #d6ff22;"></i>
+                </div>
+                <h3>Discharge</h3>
+              </div>
+              <h1 class="info-count" id="discharge-count"></h1>
+            </div>
+          </div>
+
+          <div class="card admission-card" data-toggle="modal" data-target="#admission-modal">
+            <div class="card-body">
+              <div class="info-header">
+                <div class="icon">
+                  <i class="fa fa-plus" style="color: #d6ff22;"></i>
+                </div>
+                <h3>Admission</h3>
+              </div>
+              <h1 class="info-count" id="admission-count"></h1>
+            </div>
+          </div>
+        
+          <div class="card case-payment-death-card" data-toggle="modal" data-target="#case-payment-death-modal">
+            <div class="card-body">
+              <div class="info-header">
+                <div class="icon">
+                  <i class="fa fa-caret-right" style="color: #d6ff22;"></i>
+                </div>
+                <h3>Death</h3>
+              </div>
+              <h1 class="info-count" id="case-payment-death-count"></h1>
+            </div>
+          </div>
+        </div>
 
           <div id="hospital-modal" class="modal fade" role="dialog">
             <div class="modal-dialog">
