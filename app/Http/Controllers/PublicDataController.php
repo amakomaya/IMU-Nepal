@@ -17,8 +17,8 @@ class PublicDataController extends Controller
     }
 
     public function publicPortal(Request $request){
-        $data = \DB::table('payment_cases')
-            ->whereNull('payment_cases.is_death');
+        $data = \DB::table('payment_cases');
+//            ->whereNull('payment_cases.is_death');
 
             if($request->has('organization_type')){
                 $data = $data->where('healthposts.hospital_type', $request->get('organization_type'));
@@ -57,7 +57,10 @@ class PublicDataController extends Controller
                 'healthposts.daily_consumption_of_oxygen as daily_capacity_in_liter',
                 'healthposts.is_oxygen_facility as oxygen_availability',
                 'payment_cases.health_condition',
+                'payment_cases.is_death',
                 'payment_cases.health_condition_update',
+                'payment_cases.register_date_en',
+                'payment_cases.date_of_outcome_en',
             ])
             ->orderBy('healthposts.name', 'asc')
             ->get();
@@ -78,6 +81,33 @@ class PublicDataController extends Controller
 
             $return['daily_capacity_in_liter'] = $value->daily_capacity_in_liter;
             $return['oxygen_availability'] = $value->oxygen_availability;
+
+
+            $return['is_admission'] = 0;
+            $return['is_death'] = 0;
+            $return['is_discharge'] = 0;
+
+            $parse_register_date = Carbon::parse($value->register_date_en);
+            if(!empty($value->date_of_outcome_en)){
+                $parse_date_of_outcome_en = Carbon::parse($value->date_of_outcome_en);
+                if($parse_date_of_outcome_en->isToday()){
+                    if ($value->is_death === 1){
+                        $return['is_death'] = 1;
+                    }
+                    $return['is_discharge'] = 1;
+                }
+
+            }
+
+
+            if($parse_register_date->isToday()){
+                $return['is_admission'] = 1;
+            }
+
+
+
+            if (collect($value)->where('created_at', '=', Carbon::today())){
+            }
 
             if ($value->health_condition_update == null){
                 $return['health_condition'] = $value->health_condition;
@@ -103,6 +133,10 @@ class PublicDataController extends Controller
             $return['total_general_hdu'] = $value[0]['total_general_hdu'];
             $return['total_icu'] = $value[0]['total_icu'];
             $return['total_ventilators'] = $value[0]['total_ventilators'];
+
+            $return['today_total_admission'] = collect($value)->where('is_admission', 1)->count();
+            $return['today_total_death'] = collect($value)->where('is_death', 1)->count();
+            $return['today_total_discharge'] = collect($value)->where('is_discharge', 1)->count();
 
             $return['used_general_hdu'] = collect($value)->whereIn('health_condition', [1,2,3])->count();
             $return['used_icu'] = collect($value)->where('health_condition', 4)->count();
