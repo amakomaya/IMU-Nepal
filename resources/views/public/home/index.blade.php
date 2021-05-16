@@ -148,7 +148,7 @@
               <h1  class="info-count" id="hospital-count"></h1>
             </div>
           </div>
-          <div class="card hdu-card" data-toggle="modal" data-target="#hdu-modal">
+          <div class="card hdu-card insti-isolate" data-toggle="modal" data-target="#hdu-modal">
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
@@ -160,7 +160,7 @@
             </div>
           </div>
 
-          <div class="card icu-card" data-toggle="modal" data-target="#icu-modal">
+          <div class="card icu-card insti-isolate" data-toggle="modal" data-target="#icu-modal">
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
@@ -172,7 +172,7 @@
             </div>
           </div>
 
-          <div class="card ventilator-card" data-toggle="modal" data-target="#ventilator-modal">
+          <div class="card ventilator-card insti-isolate" data-toggle="modal" data-target="#ventilator-modal">
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
@@ -184,7 +184,7 @@
             </div>
           </div>
 
-          <div class="card oxygen-card" data-toggle="modal" data-target="#oxygen-modal">
+          <div class="card oxygen-card insti-isolate" data-toggle="modal" data-target="#oxygen-modal">
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
@@ -518,6 +518,11 @@
 <script>
   $('#organization-selector').on('change', function() {
     var org_val = $(this).val();
+    if(org_val == 5) {
+      $('.insti-isolate').hide();
+    } else {
+      $('.insti-isolate').show();
+    }
   });
 
   var activeProvince, activeDistrict, activeMunicipality, mainData, activeOrganization;
