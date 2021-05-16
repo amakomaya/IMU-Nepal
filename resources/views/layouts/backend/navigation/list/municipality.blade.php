@@ -162,6 +162,21 @@
     </a>
 </li>
 <li>
+    <a href="#">
+        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+        Observation Cases <span class="fa arrow"></span>
+    </a>
+    <ul class="nav nav-second-level">
+        <li>
+            <a href="{{ route('observation-cases.index') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                List
+                <span class="label label-primary pull-right"> List </span>
+            </a>
+        </li>
+    </ul>
+</li>
+<li>
     <a href="{{ route('center.woman.map') }}">
         <i class="fa fa-map-marker"></i>
         Map

@@ -216,6 +216,8 @@ Route::put('/admin/patient/{token}', 'Reports\CaseDetailController@update')->nam
 Route::get('/admin/sample/{token}/edit', 'Reports\AncDetailController@edit');
 Route::put('/admin/sample/{token}', 'Reports\AncDetailController@update')->name('sample.update');
 
+Route::resource('/observation-cases', 'Backend\ObservationCasesController');
+
 
 Route::get('/admin/analysis/gender', function () {
     return view('analysis.gender');
