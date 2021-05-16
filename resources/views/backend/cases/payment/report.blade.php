@@ -87,7 +87,7 @@
                         <td width="17.5%">Not Available <br>
                             <input type="radio" id="is_oxygen_facility_not_available" name="is_oxygen_facility" value="3" @if ($data['is_oxygen_facility'] == 3) checked @endif>
                         </td>
-                            <td id="is_oxygen_facility_td" class="b-color" width="17.5%">Daily Consumption of Oxygen ( Cylinder in liter )<br>
+                            <td id="is_oxygen_facility_td" class="b-color" width="17.5%">Daily Consumption of Oxygen ( in liter )<br>
                                 <input type="number" name="daily_consumption_of_oxygen" value="{{ $data['total_daily_consumption_of_oxygen'] }}">
                             </td>
                         @else
@@ -98,7 +98,7 @@
                     </tr>
                 </table>
                 <div>
-        <a href="{{ url('/admin/profile') }}">Update Total beds allocated for COVID-19</a>
+{{--        <a href="{{ url('/admin/profile') }}">Update Total beds allocated for COVID-19</a>--}}
     </div>
     <table class="patients-today" border="1" cellpadding="10">
         <tr>

@@ -30,7 +30,7 @@
 
           </div>
           <div class="col-lg-4 form-group">
-            <label>Lab ID * </label> <input type="text" placeholder="Enter Lab ID here" class="form-control" v-model.trim="data.lab_id" />
+            <label>Patient ID in Lab * </label> <input type="text" placeholder="Enter Patient ID in Lab" class="form-control" v-model.trim="data.lab_id" />
           </div>
         </div>
         <button class="btn btn-info pull-right" v-on:click="searchOrganization(labSelected, data.lab_id)" title="Varified, Find, Search Patient">
@@ -41,8 +41,8 @@
     <hr v-show="true" style="height:2px;border-width:0;color:gray;background-color:gray">
     <div class="row">
       <div class="form-group col-lg-6"  :class="{ 'has-error': $v.data.hospital_register_id.$error }">
-        <label class="control-label" for="hospital_register_id">Hospital Reg. ID for Case *</label>
-        <input type="text" placeholder="Enter Hospital Register ID for Case" class="form-control" v-model.trim="data.hospital_register_id" id="hospital_register_id" />
+        <label class="control-label" for="hospital_register_id">Patient ID in Hospital *</label>
+        <input type="text" placeholder="Enter Patient ID in your Hospital" class="form-control" v-model.trim="data.hospital_register_id" id="hospital_register_id" />
       </div>
 
 
@@ -59,12 +59,19 @@
     </div>
     <div class="form-group" :class="{ 'has-error': $v.data.name.$error }">
         <label class="control-label" for="name">Name *</label>
-        <input type="text" placeholder="Enter Full Name" class="form-control" v-model.trim="data.name" id="name" />
+        <input type="text" placeholder="Enter Full Name with space between first, middle and last name" class="form-control" v-model.trim="data.name" id="name" />
       </div>
       <div class="row">
         <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.age.$error }">
           <label class="control-label" for="age">Age *</label>
-          <input type="text" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" v-model.trim="data.age" id="age"/>
+          <input type="radio" id="age_years" v-model.trim="data.age_unit" value="0">
+          <label class="control-label" for="age_years">Years</label> &nbsp; &nbsp;
+          <input type="radio" id="age_months" v-model.trim="data.age_unit" value="1">
+          <label class="control-label" for="age_months">Months</label> &nbsp; &nbsp;
+          <input type="radio" id="age_days" v-model.trim="data.age_unit" value="2">
+          <label class="control-label" for="age_days">Days</label> &nbsp; &nbsp;
+
+          <input type="text" placeholder="Enter age" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" v-model.trim="data.age" id="age"/>
         </div>
         <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.gender.$error }">
           <label class="control-label">Gender *</label><br>
@@ -76,8 +83,8 @@
           <label class="control-label" for="other">Other</label>
         </div>
         <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.phone.$error }">
-          <label class="control-label" for="phone">Phone *</label>
-          <input type="text" class="form-control" v-model.trim="data.phone" id="phone" />
+          <label class="control-label" for="phone">Mobile No *</label>
+          <input type="text" placeholder="Enter mobile number" class="form-control" v-model.trim="data.phone" id="phone" />
         </div>
       </div>
     <div class="form-group" :class="{ 'has-error': $v.data.address.$error }">
@@ -85,6 +92,19 @@
       <input type="text" placeholder="Enter Current Address ( e.g Lazimpat-2, Kathmandu )" class="form-control" v-model.trim="data.address" id="address" />
     </div>
     <hr>
+      <div class="row">
+        <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.method_of_diagnosis.$error }">
+          <label class="control-label">Method df Diagnosis</label><br>
+          <input type="radio" id="pcr" v-model.trim="data.method_of_diagnosis"  value="1">
+          <label class="control-label" for="pcr">PCR</label> &nbsp; &nbsp;
+          <input type="radio" id="antigen" v-model.trim="data.method_of_diagnosis" value="2">
+          <label class="control-label" for="antigen">Antigen</label> &nbsp; &nbsp;
+          <input type="radio" id="clinical" v-model.trim="data.method_of_diagnosis" value="3">
+          <label class="control-label" for="clinical">Clinical Diagnosis</label> &nbsp; &nbsp;
+          <input type="radio" id="others" v-model.trim="data.method_of_diagnosis" value="10">
+          <label class="control-label" for="others">Others</label>
+        </div>
+      </div>
     <div class="row">
       <div v-if="!is_to_update" class="form-group col-lg-4" :class="{ 'has-error': $v.data.health_condition.$error }">
         <label class="control-label" for="health_condition">Health Condition *</label>
@@ -203,6 +223,8 @@ export default {
       data : {
         health_condition : 0,
         is_death : '',
+        age_unit : 0,
+        method_of_diagnosis : 0,
         gender: undefined
       },
       lab_id : '',
@@ -225,6 +247,7 @@ export default {
       phone : { required },
       hospital_register_id : { required },
       register_date_np : { required },
+      method_of_diagnosis : { required },
       gender : { required },
       self_free : { required },
       health_condition : { required, minValue : minValue(1) },
@@ -444,8 +467,11 @@ export default {
               this.data.lab_id = response.data.lab_id;
               this.data.name = response.data.name;
               this.data.age = response.data.age;
+              this.data.age_unit = response.data.age_unit;
               this.data.phone = response.data.phone;
+              this.data.method_of_diagnosis = response.data.method_of_diagnosis;
               this.data.hospital_register_id = response.data.hospital_register_id;
+              this.data.register_date_np = response.data.register_date_np;
               this.data.register_date_np = response.data.register_date_np;
               this.data.register_date_en = (new Date(response.data.register_date_en)).toLocaleString().split(',')[0].split("/").reverse().join("-");
               ;
