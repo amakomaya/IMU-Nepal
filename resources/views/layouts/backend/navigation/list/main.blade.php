@@ -225,11 +225,35 @@
             </a>
         </li>
         <li>
-            <a href="{{ route('cases.payment.by.organization') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                By Organization
-                <span class="label label-info pull-right">All</span>
+            <a href="#">
+                <i class="fa fa-money" aria-hidden="true"></i>
+
+                By Organization <span class="fa arrow"></span>
             </a>
+            <ul class="nav nav-third-level">
+                <li>
+                    <a href="{{ route('cases.payment.by.organization') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        All
+                        <span class="label label-info pull-right">All</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('cases.payment.by.institutional') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Institutional
+                        <span class="label label-info pull-right">Isolation</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('cases.payment.by.lab-treatment') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Lab & Treatment
+                        <span class="label label-info pull-right">LNT</span>
+                    </a>
+                </li>
+
+            </ul>
         </li>
 
         <li>
