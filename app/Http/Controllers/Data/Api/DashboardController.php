@@ -28,18 +28,20 @@ class DashboardController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
 
         // check at 13:300pm
-        $check_at_1330 = Carbon::parse('today 1:30pm');
+//        $check_at_1330 = Carbon::parse('today 1:30pm');
+//
+//        if($check_at_1330 < Carbon::now()){
+//            // 1 pm today + current
+//            $date_from = Carbon::parse('today 1:30pm');
+//            $date_to = Carbon::now();
+//        }else{
+//            // 1pm yesterday + current
+//            $date_from = Carbon::parse('yesterday 1:30pm');
+//            $date_to = Carbon::now();
+//        }
 
-        if($check_at_1330 < Carbon::now()){
-            // 1 pm today + current
-            $date_from = Carbon::parse('today 1:30pm');
-            $date_to = Carbon::now();
-        }else{
-            // 1pm yesterday + current
-            $date_from = Carbon::parse('yesterday 1:30pm');
-            $date_to = Carbon::now();
-        }
-
+        $date_from = Carbon::today()->startOfDay();
+        $date_to = Carbon::now();
         if (auth()->user()->role == 'healthworker' || auth()->user()->role == 'healthpost') {
             $in_lab_received = Cache::remember('in_lab_received-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
                 return LabTest::whereIn('hp_code', $hpCodes)->get()->count();
