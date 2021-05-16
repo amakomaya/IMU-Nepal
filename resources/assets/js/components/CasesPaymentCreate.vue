@@ -282,11 +282,15 @@ export default {
               'Content-Type': 'multipart/form-data'
           }
         }
-      ).then(function(){
-        console.log('SUCCESS!!');
+      ).then(function(res){
+        alert(res.data.message);
       })
-      .catch(function(){
-        console.log('FAILURE!!');
+      .catch(function(err){
+        let errorMsg = 'The Case Payment could not be uploaded due to the following problems: \n';
+        err.response.data.message.map((problem, index)=>{
+          errorMsg += (index+1)+'. Row: '+problem.row+', Column: '+problem.column+', Error: '+problem.error.join()+'\n';
+        })
+        alert(errorMsg);
       });
     },
     onSearch(search, loading) {

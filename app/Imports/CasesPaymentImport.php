@@ -61,13 +61,6 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
 
     public function rules(): array
     {
-        // return [
-        //   'name' => 'required|string',
-        //   'registered_date_english_ad' => 'required',
-        //   'age' => 'required',
-        //   'gender' => 'required',
-        //   'health_condition' => 'required',
-        // ];
         return [
             'name' => function($attribute, $value, $onFailure) {
               if ($value === '' || $value === null) {
@@ -99,6 +92,6 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
 
     public function chunkSize(): int
     {
-        return 1000;
+        return 2000;
     }
 }

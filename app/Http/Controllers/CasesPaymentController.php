@@ -566,22 +566,26 @@ class CasesPaymentController extends Controller
         try {
           Excel::queueImport(new CasesPaymentImport(auth()->user()), $bulk_file);
           return response()->json(['message' => 'success',
-            'message' => 'Data imported Successfully'
+            'message' => 'Case Payment Data uploaded successfully',
           ]);
 
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
           $errors = [];
           $failures = $e->failures();
-          
+          $error_msg = '';
           foreach ($failures as $key=>$failure) {
+              $error_msg .= ($key+1).'. Row: '.$failure->row().', Column: '.$failure->attribute().', Error: '.join(",", $failure->errors()).'<br />';
               $errors[$key]['row'] = $failure->row(); // row that went wrong
               $errors[$key]['column'] = $failure->attribute(); // either heading key (if using heading row concern) or column index
               $errors[$key]['error'] = $failure->errors(); // Actual error messages from Laravel validator
               $errors[$key]['values'] = $failure->values(); // The values of the row that has failed.
           }
-          return response()->json(['status' => 'fail',
+          
+          return response()->json([
+            'status' => 'fail',
             'message' => $errors
-          ]);
+            ], 422
+          );
 
         }
         return response()->json(['status' => 'success',
