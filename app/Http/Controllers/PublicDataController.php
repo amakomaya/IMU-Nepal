@@ -75,7 +75,8 @@ class PublicDataController extends Controller
             $return['phone'] = $value->phone;
             $return['hp_code'] = $value->hp_code;
 
-            $return['total_general_hdu'] = $value->no_of_beds + $value->no_of_hdu;
+            $return['total_general'] = $value->no_of_beds ;
+            $return['total_hdu'] = $value->no_of_hdu;
             $return['total_ventilators'] = $value->no_of_ventilators;
             $return['total_icu'] = $value->no_of_icu;
 
@@ -130,7 +131,8 @@ class PublicDataController extends Controller
             $return['address'] = $value[0]['address'];
             $return['phone'] = $value[0]['phone'];
 
-            $return['total_general_hdu'] = $value[0]['total_general_hdu'];
+            $return['total_general'] = $value[0]['total_general'];
+            $return['total_hdu'] = $value[0]['total_hdu'];
             $return['total_icu'] = $value[0]['total_icu'];
             $return['total_ventilators'] = $value[0]['total_ventilators'];
 
@@ -138,7 +140,8 @@ class PublicDataController extends Controller
             $return['today_total_death'] = collect($value)->where('is_death', 1)->count();
             $return['today_total_discharge'] = collect($value)->where('is_discharge', 1)->count();
 
-            $return['used_general_hdu'] = collect($value)->whereIn('health_condition', [1,2,3])->count();
+            $return['used_general'] = collect($value)->whereIn('health_condition', [1,2])->count();
+            $return['used_hdu'] = collect($value)->where('health_condition', 3)->count();
             $return['used_icu'] = collect($value)->where('health_condition', 4)->count();
             $return['used_ventilators'] = collect($value)->where('health_condition', 5)->count();
 
