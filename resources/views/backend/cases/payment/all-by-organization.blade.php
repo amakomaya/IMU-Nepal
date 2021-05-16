@@ -3,7 +3,7 @@
     <style>
         .table {
             max-width: 100%;
-            max-height: 500px;
+            max-height: 520px;
             overflow: scroll;
             position: relative;
         }
@@ -43,12 +43,12 @@
 @endsection
 @section('content')
     <div id="page-wrapper">
+            <h2><u>{{ $heading ?? 'All Organizational Data' }}</u></h2>
         <div class="row">
             <div class="col-lg-12">
                 <div class="table">
-                    <table class="table table-striped">
+                    <table class="table table-striped" id="organizationalTable">
                         <thead>
-                        <tr>
                             <th>S.N.</th>
                             <th width="40%">Organization Name</th>
                             <th>No of Beds</th>
@@ -56,7 +56,6 @@
                             <th>No of ICU</th>
                             <th>No of ventilators</th>
                             <th>Oxygen Facility</th>
-                        </tr>
                         </thead>
                         <tbody>
                         @foreach($data as $organization => $value)
@@ -95,7 +94,6 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>

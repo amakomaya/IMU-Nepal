@@ -92,26 +92,78 @@
 {{--</li>--}}
 <li>
     <a href="#">
-        <i class="fa fa-hospital-o" aria-hidden="true"></i> Organizations <span class="fa arrow"></span>
+        <i class="fa fa-money" aria-hidden="true"></i>
+
+        CASES Payment <span class="fa arrow"></span>
     </a>
+
     <ul class="nav nav-second-level">
         <li>
-            <a href="{{ route('organization.overview.search') }}" title="Search and Edit Organizations">Search</a>
+            <a href="{{ route('public.home.index') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Public Portal
+                <span class="label label-info pull-right">Portal</span>
+            </a>
         </li>
         <li>
-            <a href="{{ route('organization.overview.cict') }}" title="HOME Isolation">HOME Isolation</a>
+            <a href="{{ route('cases.payment.report') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Report
+                <span class="label label-info pull-right">Report</span>
+            </a>
         </li>
         <li>
-            <a href="{{ route('organization.overview.hospital') }}" title="Institutional Isolation">Institutional Isolation</a>
+            <a href="#">
+                <i class="fa fa-money" aria-hidden="true"></i>
+
+                By Organization <span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-third-level">
+                <li>
+                    <a href="{{ route('cases.payment.by.organization') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        All
+                        <span class="label label-info pull-right">All</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('cases.payment.by.institutional') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Institutional
+                        <span class="label label-info pull-right">Isolation</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('cases.payment.by.lab-treatment') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Lab & Treatment
+                        <span class="label label-info pull-right">LNT</span>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+
+        <li>
+            <a href="{{ route('cases.payment.index') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Under Treatment
+                <span class="label label-primary pull-right">List</span>
+            </a>
         </li>
         <li>
-            <a href="{{ route('organization.overview.labtest') }}" title="Lab Test Only">Lab Test Only</a>
+            <a href="{{ route('cases.payment.index-discharge') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Discharge
+                <span class="label label-success pull-right">List</span>
+            </a>
         </li>
         <li>
-            <a href="{{ route('organization.overview.both') }}" title="Lab & Treatment">Lab & Treatment</a>
-        </li>
-        <li>
-            <a href="{{ route('organization.overview.normal') }}" title="Normal">Normal</a>
+            <a href="{{ route('cases.payment.index-death') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Death
+                <span class="label label-danger pull-right">List</span>
+            </a>
         </li>
     </ul>
 </li>
