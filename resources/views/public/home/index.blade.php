@@ -36,7 +36,7 @@
   }
 
   .public-content .card {
-    min-width: 515px;
+    min-width: 540px;
     border-radius: 15px;
     color: #FFF;
     padding: 15px;
