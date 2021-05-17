@@ -12,6 +12,17 @@
     width: 100%;
   }
 
+  .card{
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      text-align: left;
+      position: relative;
+      background: #fff;
+      box-shadow: 12px 15px 20px 0px rgba(46,61,73,0.15);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+  }
+
   .public-content .card:hover {
     cursor: pointer;
     opacity: 0.8;
@@ -69,7 +80,7 @@
   }
 
   .ventilator-card {
-    background-color: #E75874;
+    background-color: #FF9900;
     color: #FFF;
   }
 
@@ -155,7 +166,7 @@
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
-                  <i class="fa fa-h-square " style="color: #d6ff22;"></i>
+                  <i class="fa fa-hospital-o " style="color: #d6ff22;"></i>
                 </div>
                 <h3>Hospital & Isolation</h3>
               </div>
@@ -215,7 +226,7 @@
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
-                  <i class="fa fa-refresh" style="color: #d6ff22;"></i>
+                  <i class="fa fa-gears" style="color: #d6ff22;"></i>
                 </div>
                 <h3>Daily Oxygen <br />Consumption (in lts)</h3>
               </div>
@@ -231,7 +242,7 @@
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
-                  <i class="fa fa-minus" style="color: #d6ff22;"></i>
+                  <i class="fa fa-smile-o" style="color: #d6ff22;"></i>
                 </div>
                 <h3>Discharge</h3>
               </div>
@@ -243,7 +254,7 @@
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
-                  <i class="fa fa-plus" style="color: #d6ff22;"></i>
+                  <i class="fa fa-plus-square" style="color: #d6ff22;"></i>
                 </div>
                 <h3>Admission</h3>
               </div>
@@ -255,7 +266,7 @@
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
-                  <i class="fa fa-caret-right" style="color: #d6ff22;"></i>
+                  <i class="fa fa-frown-o" style="color: #d6ff22;"></i>
                 </div>
                 <h3>Death</h3>
               </div>
@@ -576,6 +587,9 @@
 
   function fetchData() {
     let params = '?';
+    if (activeOrganization === undefined){
+        activeOrganization = {name: "Lab & Treatment( Hospital )", id: "3"};
+    }
     if(activeMunicipality) {
       params += 'municipality_id='+activeMunicipality.id;
     } else if(activeDistrict) {

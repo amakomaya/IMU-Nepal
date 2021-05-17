@@ -51,16 +51,10 @@
 </head>
 
 <body>
-
     <div id="wrapper">
-
-       
-
-        <div style="margin: 10px">
+        <div style="margin: -50px">
             @yield('content')
-
         </div>
-
     </div>
     <!-- /#wrapper -->
 
