@@ -159,6 +159,9 @@ Route::get('/api/province', function () {
 
 Route::get('/admin/overview-data', 'Backend\OverviewController@index')->name('admin.overview');
 
+Route::get('/admin/ancs-search', 'AdminController@ancsSearch')->name('admin.ancs.search');
+Route::post('/admin/ancs-search/update', 'AdminController@ancsUpdate')->name('admin.ancs.update');
+
 Route::get('/admin/organization-overview-cict', 'Backend\OverviewController@cict')->name('organization.overview.cict');
 Route::get('/admin/organization-overview-search', 'Backend\OverviewController@search')->name('organization.overview.search');
 Route::get('/admin/organization-overview-hospital', 'Backend\OverviewController@hospital')->name('organization.overview.hospital');
