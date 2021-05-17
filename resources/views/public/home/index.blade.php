@@ -642,11 +642,15 @@
     let tableContent = '';
     let totalBedCount = 0;
     let usedBedCount = 0;
+    let count = 0;
     mainData.organizations.forEach(function(item,index){
       totalBedCount += item.total_hdu||0;
       usedBedCount += item.used_hdu||0;
       var itemUsage = item.used_hdu+' / '+item.total_hdu;
-      tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+itemUsage+'</td></tr>';
+      if(item.total_hdu == 0 && item.used_hdu == 0) {} else {
+        count_single = ++count;
+        tableContent += '<tr><td>'+parseInt(count_single)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+itemUsage+'</td></tr>';
+      }
     });
     $('#hdu-count').html(usedBedCount+' / '+ totalBedCount);
     tableDiv.html(tableContent);
@@ -657,11 +661,15 @@
     let tableContent = '';
     let totalGeneralCount = 0;
     let usedGeneralCount = 0;
+    let count = 0;
     mainData.organizations.forEach(function(item,index){
       totalGeneralCount += item.total_general||0;
       usedGeneralCount += item.used_general||0;
       var itemUsage = item.used_general+' / '+item.total_general;
-      tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+itemUsage+'</td></tr>';
+      if(item.total_general == 0 && item.used_general == 0) {} else {
+        count_single = ++count;
+        tableContent += '<tr><td>'+parseInt(count_single)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+itemUsage+'</td></tr>';
+      }
     });
     $('#general-count').html(usedGeneralCount+' / '+ totalGeneralCount);
     tableDiv.html(tableContent);
@@ -672,11 +680,15 @@
     let tableContent = '';
     let totalBedCount = 0;
     let usedBedCount = 0;
+    let count = 0;
     mainData.organizations.forEach(function(item,index){
       totalBedCount += item.total_icu||0;
       usedBedCount += item.used_icu||0;
       var itemUsage = item.used_icu+' / '+item.total_icu;
-      tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+itemUsage+'</td></tr>';
+      if(item.total_icu == 0 && item.used_icu == 0) {} else {
+        count_single = ++count;
+        tableContent += '<tr><td>'+parseInt(count_single)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+itemUsage+'</td></tr>';
+      }
     });
     $('#icu-count').html(usedBedCount+' / '+ totalBedCount);
     tableDiv.html(tableContent);
@@ -687,11 +699,15 @@
     let tableContent = '';
     let totalVentilatorCount = 0;
     let usedVentilatorCount = 0;
+    let count = 0;
     mainData.organizations.forEach(function(item,index){
       totalVentilatorCount += item.total_ventilators||0;
       usedVentilatorCount += item.used_ventilators||0;
       var itemUsage = item.used_ventilators+' / '+item.total_ventilators;
-      tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+itemUsage+'</td></tr>';
+      if(item.total_ventilators == 0 && item.used_ventilators == 0) {} else {
+        count_single = ++count;
+        tableContent += '<tr><td>'+parseInt(count_single)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+itemUsage+'</td></tr>';
+      }
     });
     $('#ventilator-count').html(usedVentilatorCount+' / '+ totalVentilatorCount);
     tableDiv.html(tableContent);
@@ -720,9 +736,12 @@
     let tableDiv = $('#discharge-modal tbody');
     let tableContent = '';
     let totalCount = 0;
+    let count = 0;
     mainData.organizations.forEach(function(item,index){
       totalCount += item.today_total_discharge||0;
-      tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+item.address+'</td><td>'+item.today_total_discharge+'</td></tr>';
+      if(item.today_total_discharge != 0) {
+        tableContent += '<tr><td>'+parseInt(++count)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+item.address+'</td><td>'+item.today_total_discharge+'</td></tr>';
+      }
     });
     $('#discharge-count').html(totalCount);
     tableDiv.html(tableContent);
@@ -732,9 +751,12 @@
     let tableDiv = $('#admission-modal tbody');
     let tableContent = '';
     let totalCount = 0;
+    let count = 0;
     mainData.organizations.forEach(function(item,index){
       totalCount += item.today_total_admission||0;
-      tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+item.address+'</td><td>'+item.today_total_admission+'</td></tr>';
+      if(item.today_total_admission != 0) {
+        tableContent += '<tr><td>'+parseInt(++count)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+item.address+'</td><td>'+item.today_total_admission+'</td></tr>';
+      }
     });
     $('#admission-count').html(totalCount);
     tableDiv.html(tableContent);
@@ -744,9 +766,12 @@
     let tableDiv = $('#death-modal tbody');
     let tableContent = '';
     let totalCount = 0;
+    let count = 0;
     mainData.organizations.forEach(function(item,index){
       totalCount += item.today_total_death||0;
-      tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+item.address+'</td><td>'+item.today_total_death+'</td></tr>';
+      if(item.today_total_death == 0) {} else {
+        tableContent += '<tr><td>'+parseInt(++count)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+item.address+'</td><td>'+item.today_total_death+'</td></tr>';
+      }
     });
     $('#death-count').html(totalCount);
     tableDiv.html(tableContent);
