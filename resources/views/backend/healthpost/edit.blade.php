@@ -29,6 +29,7 @@
     @section ('no_of_beds',!!old('no_of_beds')? old('no_of_beds') : $data->no_of_beds)
     @section ('no_of_ventilators',!!old('no_of_ventilators')? old('no_of_ventilators') : $data->no_of_ventilators)
     @section ('no_of_icu',!!old('no_of_icu')? old('no_of_icu') : $data->no_of_icu)
+    @section ('no_of_hdu',!!old('no_of_hdu')? old('no_of_hdu') : $data->no_of_hdu)
 
 {{--    @section ('hmis_uid',!!old('hmis_uid')? old('hmis_uid') : $data->hmis_uid)--}}
 

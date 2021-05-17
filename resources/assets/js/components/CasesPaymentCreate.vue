@@ -355,8 +355,8 @@ export default {
               }
             } else {
               this.$swal({
-                title: 'Oops. No record found.',
-                type: 'error',
+                title: 'Oops. No record found. \n Even than you can continue to full data.',
+                type: 'warning',
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,

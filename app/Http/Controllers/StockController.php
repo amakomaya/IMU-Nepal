@@ -52,10 +52,12 @@ class StockController extends Controller
     {
       $asset_id = $request->asset_id;
       $stock_id = $request->stock_id;
-      $hp_code = $request->stock_id;
       $remove_stock = (int)$request->stock_id;
       $new_stock = (int)$request->new_stock;
       $hp_code = $request->hp_code;
+        return response()->json([
+            'message' => 'Successfully updated stock'
+        ]);
       if(!$stock_id){
         $current_stock = 0 + $new_stock - $remove_stock;
         \DB::insert('insert into stocks (hp_code, asset_id, current_stock) values (?, ?, ?)', [$hp_code, $asset_id, $current_stock ]);
