@@ -18,7 +18,7 @@
                                     <thead>
                                     <tr>
                                         <th>{{trans('index.sn')}}</th>                                      
-                                        <th>Assets</th>                                     
+                                        <th>Medicine</th>
                                         <th>Current Stock</th>                                    
                                         <th>New Stock</th>
                                         <th>Remove Stock</th>
