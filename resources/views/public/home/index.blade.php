@@ -53,6 +53,11 @@
     background-color: #0443A5;
   }
 
+  .general-card {
+    background-color: #6A8A82;
+    color: #FFF;
+  }
+
   .hdu-card {
     background-color: #0a70ae;
     color: #FFF;
@@ -96,6 +101,15 @@
   h1.info-count {
     margin: 0;
     text-align: center;
+  }
+
+  .modal-dialog{
+    position: relative;
+    display: table; / This is important /
+    overflow-y: auto;
+    overflow-x: auto;
+    width: auto;
+    min-width: 300px;
   }
 </style>
 @endsection
@@ -148,13 +162,26 @@
               <h1  class="info-count" id="hospital-count"></h1>
             </div>
           </div>
-          <div class="card hdu-card insti-isolate" data-toggle="modal" data-target="#hdu-modal">
+
+          <div class="card general-card insti-isolate" data-toggle="modal" data-target="#general-modal">
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
                   <i class="fa fa-square" style="color: #d6ff22;"></i>
                 </div>
-                <h3>General & HDU</h3>
+                <h3>General</h3>
+              </div>
+              <h1  class="info-count" id="general-count"></h1>
+            </div>
+          </div>
+          
+          <div class="card hdu-card insti-isolate" data-toggle="modal" data-target="#hdu-modal">
+            <div class="card-body">
+              <div class="info-header">
+                <div class="icon">
+                  <i class="fa fa-bars" style="color: #d6ff22;"></i>
+                </div>
+                <h3>HDU</h3>
               </div>
               <h1  class="info-count" id="hdu-count"></h1>
             </div>
@@ -193,18 +220,6 @@
                 <h3>Daily Oxygen <br />Consumption (in lts)</h3>
               </div>
               <h1 class="info-count" id="oxygen-count"></h1>
-            </div>
-          </div>
-
-          <div class="card" data-toggle="modal">
-            <div class="card-body">
-              <div class="info-header">
-                <div class="icon">
-                  {{-- <i class="fa fa-plus-square" style="color: #d6ff22;"></i> --}}
-                </div>
-                <h3></h3>
-              </div>
-              <h1 class="info-count"></h1>
             </div>
           </div>
         </div>
@@ -281,13 +296,13 @@
             </div>
           </div>
 
-          <div id="hdu-modal" class="modal fade" role="dialog">
+          <div id="general-modal" class="modal fade" role="dialog">
             <div class="modal-dialog">
               <!-- Modal content-->
               <div class="modal-content">
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">General & HDU</h4>
+                  <h4 class="modal-title">General</h4>
                 </div>
                 <div class="modal-body">
                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -311,6 +326,38 @@
               </div>
             </div>
           </div>
+
+          <div id="hdu-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">HDU</h4>
+                </div>
+                <div class="modal-body">
+                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                    <tr>
+                        <th>S.N</th>                                      
+                        <th>Name</th>
+                        <th>Province</th>
+                        <th>District</th>
+                        <th>Municipality</th>
+                        <th>Bed Usage</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div id="icu-modal" class="modal fade" role="dialog">
             <div class="modal-dialog">
               <!-- Modal content-->
@@ -548,6 +595,7 @@
   function renderData() {
     if(mainData) {
       renderHospitalTable();
+      renderGeneralTable();
       renderHDUTable();
       renderICUTable();
       renderVentilatorTable();
@@ -577,12 +625,27 @@
     let totalBedCount = 0;
     let usedBedCount = 0;
     mainData.organizations.forEach(function(item,index){
-      totalBedCount += item.total_general_hdu||0;
-      usedBedCount += item.used_general_hdu||0;
-      var itemUsage = item.used_general_hdu+' / '+item.total_general_hdu;
+      totalBedCount += item.total_hdu||0;
+      usedBedCount += item.used_hdu||0;
+      var itemUsage = item.used_hdu+' / '+item.total_hdu;
       tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+itemUsage+'</td></tr>';
     });
     $('#hdu-count').html(usedBedCount+' / '+ totalBedCount);
+    tableDiv.html(tableContent);
+  }
+
+  function renderGeneralTable() {
+    let tableDiv = $('#general-modal tbody');
+    let tableContent = '';
+    let totalGeneralCount = 0;
+    let usedGeneralCount = 0;
+    mainData.organizations.forEach(function(item,index){
+      totalGeneralCount += item.total_general||0;
+      usedGeneralCount += item.used_general||0;
+      var itemUsage = item.used_general+' / '+item.total_general;
+      tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+itemUsage+'</td></tr>';
+    });
+    $('#general-count').html(usedGeneralCount+' / '+ totalGeneralCount);
     tableDiv.html(tableContent);
   }
 
