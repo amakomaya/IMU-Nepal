@@ -122,6 +122,10 @@
     width: auto;
     min-width: 300px;
   }
+  .row {
+    margin-left: auto;
+    margin-right: auto;
+  }
 </style>
 @endsection
 @section('content')
