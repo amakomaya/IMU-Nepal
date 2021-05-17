@@ -157,7 +157,7 @@
         <a href="#">
             <i class="fa fa-medkit" aria-hidden="true"></i>
 
-            Stocks <span class="fa arrow"></span>
+            Medicine Stocks <span class="fa arrow"></span>
         </a>
 
         <ul class="nav nav-second-level">
