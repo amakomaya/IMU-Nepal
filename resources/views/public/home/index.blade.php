@@ -25,7 +25,7 @@
   }
 
   .public-content .card {
-    min-width: 400px;
+    min-width: 360px;
     border-radius: 15px;
     color: #FFF;
     padding: 15px;
@@ -36,7 +36,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    align-items: center;
+    align-items: stretch;
   }
 
   .public-content .card .info-header .fa {
@@ -64,12 +64,27 @@
   }
 
   .ventilator-card {
-    background-color: #b30bd5;
+    background-color: #E75874;
     color: #FFF;
   }
 
   .oxygen-card {
     background-color: #037650;
+    color: #FFF;
+  }
+
+  .death-card {
+    background-color: #E52165;
+    color: #FFF;
+  }
+
+  .discharge-card {
+    background-color: #077B8A;
+    color: #FFF;
+  }
+
+  .admission-card {
+    background-color: #b30bd5;
     color: #FFF;
   }
 
@@ -112,7 +127,7 @@
               <select id="organization-selector" name="organization-type">
                 <option value="">Select</option>
                 <option value="5"> Institutional Isolation</option>
-                <option value="3">Lab & Treatment( Hospital )</option>
+                <option value="3" selected>Lab & Treatment( Hospital )</option>
               </select>
             </div>
           </div>
@@ -128,24 +143,24 @@
                 <div class="icon">
                   <i class="fa fa-h-square " style="color: #d6ff22;"></i>
                 </div>
-                <h3>Hospital</h3>
+                <h3>Hospital & Isolation</h3>
               </div>
               <h1  class="info-count" id="hospital-count"></h1>
             </div>
           </div>
-          <div class="card hdu-card" data-toggle="modal" data-target="#hdu-modal">
+          <div class="card hdu-card insti-isolate" data-toggle="modal" data-target="#hdu-modal">
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
-                  <i class="fa fa-bed" style="color: #d6ff22;"></i>
+                  <i class="fa fa-square" style="color: #d6ff22;"></i>
                 </div>
-                <h3>General/HDU</h3>
+                <h3>General & HDU</h3>
               </div>
               <h1  class="info-count" id="hdu-count"></h1>
             </div>
           </div>
 
-          <div class="card icu-card" data-toggle="modal" data-target="#icu-modal">
+          <div class="card icu-card insti-isolate" data-toggle="modal" data-target="#icu-modal">
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
@@ -157,7 +172,7 @@
             </div>
           </div>
 
-          <div class="card ventilator-card" data-toggle="modal" data-target="#ventilator-modal">
+          <div class="card ventilator-card insti-isolate" data-toggle="modal" data-target="#ventilator-modal">
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
@@ -169,11 +184,11 @@
             </div>
           </div>
 
-          <div class="card oxygen-card" data-toggle="modal" data-target="#oxygen-modal">
+          <div class="card oxygen-card insti-isolate" data-toggle="modal" data-target="#oxygen-modal">
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
-                  <i class="fa fa-plus-square" style="color: #d6ff22;"></i>
+                  <i class="fa fa-refresh" style="color: #d6ff22;"></i>
                 </div>
                 <h3>Daily Oxygen <br />Consumption (in lts)</h3>
               </div>
@@ -181,13 +196,66 @@
             </div>
           </div>
 
+          <div class="card" data-toggle="modal">
+            <div class="card-body">
+              <div class="info-header">
+                <div class="icon">
+                  {{-- <i class="fa fa-plus-square" style="color: #d6ff22;"></i> --}}
+                </div>
+                <h3></h3>
+              </div>
+              <h1 class="info-count"></h1>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="active-title">Today's Record</h2>
+        <div class="public-content">
+
+          <div class="card discharge-card" data-toggle="modal" data-target="#discharge-modal">
+            <div class="card-body">
+              <div class="info-header">
+                <div class="icon">
+                  <i class="fa fa-minus" style="color: #d6ff22;"></i>
+                </div>
+                <h3>Discharge</h3>
+              </div>
+              <h1 class="info-count" id="discharge-count"></h1>
+            </div>
+          </div>
+
+          <div class="card admission-card" data-toggle="modal" data-target="#admission-modal">
+            <div class="card-body">
+              <div class="info-header">
+                <div class="icon">
+                  <i class="fa fa-plus" style="color: #d6ff22;"></i>
+                </div>
+                <h3>Admission</h3>
+              </div>
+              <h1 class="info-count" id="admission-count"></h1>
+            </div>
+          </div>
+        
+          <div class="card death-card" data-toggle="modal" data-target="#death-modal">
+            <div class="card-body">
+              <div class="info-header">
+                <div class="icon">
+                  <i class="fa fa-caret-right" style="color: #d6ff22;"></i>
+                </div>
+                <h3>Death</h3>
+              </div>
+              <h1 class="info-count" id="death-count"></h1>
+            </div>
+          </div>
+        </div>
+
           <div id="hospital-modal" class="modal fade" role="dialog">
             <div class="modal-dialog">
               <!-- Modal content-->
               <div class="modal-content">
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">Hospital</h4>
+                  <h4 class="modal-title">Hospital & Isolation</h4>
                 </div>
                 <div class="modal-body">
                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -219,7 +287,7 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">General/HDU</h4>
+                  <h4 class="modal-title">General & HDU</h4>
                 </div>
                 <div class="modal-body">
                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -338,6 +406,108 @@
             </div>
 
           </div>
+
+          <div id="discharge-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Discharge</h4>
+                </div>
+                <div class="modal-body">
+                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                    <tr>
+                        <th>S.N</th>                                      
+                        <th>Name</th>
+                        <th>Province</th>
+                        <th>District</th>
+                        <th>Municipality</th>
+                        <th>Availability</th>
+                        <th>Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div id="admission-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Admission</h4>
+                </div>
+                <div class="modal-body">
+                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                    <tr>
+                        <th>S.N</th>                                      
+                        <th>Name</th>
+                        <th>Province</th>
+                        <th>District</th>
+                        <th>Municipality</th>
+                        <th>Availability</th>
+                        <th>Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div id="death-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Death </h4>
+                </div>
+                <div class="modal-body">
+                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                    <tr>
+                        <th>S.N</th>                                      
+                        <th>Name</th>
+                        <th>Province</th>
+                        <th>District</th>
+                        <th>Municipality</th>
+                        <th>Availability</th>
+                        <th>Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -346,6 +516,15 @@
 @endsection
 @section('script')
 <script>
+  $('#organization-selector').on('change', function() {
+    var org_val = $(this).val();
+    if(org_val == 5) {
+      $('.insti-isolate').hide();
+    } else {
+      $('.insti-isolate').show();
+    }
+  });
+
   var activeProvince, activeDistrict, activeMunicipality, mainData, activeOrganization;
 
   function fetchData() {
@@ -373,6 +552,10 @@
       renderICUTable();
       renderVentilatorTable();
       renderOxygenTable();
+      renderDischargeTable();
+      renderAdmissionTable();
+      renderDeathTable();
+      renderDeathTable();
     }
   }
 
@@ -449,6 +632,42 @@
       }
     });
     $('#oxygen-count').html(totalDailyUsage);
+    tableDiv.html(tableContent);
+  }
+
+  function renderDischargeTable() {
+    let tableDiv = $('#discharge-modal tbody');
+    let tableContent = '';
+    let totalCount = 0;
+    mainData.organizations.forEach(function(item,index){
+      totalCount += item.today_total_discharge||0;
+      tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+item.address+'</td><td>'+item.today_total_discharge+'</td></tr>';
+    });
+    $('#discharge-count').html(totalCount);
+    tableDiv.html(tableContent);
+  }
+
+  function renderAdmissionTable() {
+    let tableDiv = $('#admission-modal tbody');
+    let tableContent = '';
+    let totalCount = 0;
+    mainData.organizations.forEach(function(item,index){
+      totalCount += item.today_total_admission||0;
+      tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+item.address+'</td><td>'+item.today_total_admission+'</td></tr>';
+    });
+    $('#admission-count').html(totalCount);
+    tableDiv.html(tableContent);
+  }
+
+  function renderDeathTable() {
+    let tableDiv = $('#death-modal tbody');
+    let tableContent = '';
+    let totalCount = 0;
+    mainData.organizations.forEach(function(item,index){
+      totalCount += item.today_total_death||0;
+      tableContent += '<tr><td>'+parseInt(index+1)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+item.address+'</td><td>'+item.today_total_death+'</td></tr>';
+    });
+    $('#death-count').html(totalCount);
     tableDiv.html(tableContent);
   }
 
