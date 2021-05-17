@@ -690,3 +690,4 @@ Route::post('/v1/cases-payment/delete', function(Request $request){
         return response()->json(['message' => 'error']);
     }
 });
+Route::post('/v1/bulk-case-payment', 'CasesPaymentController@bulkUpload')->name('cases.payment.bulk.upload');
