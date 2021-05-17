@@ -96,6 +96,10 @@ class ObservationCasesController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->add == null && $request->transfer_to_bed == null && $request->return_to_home == null){
+            $request->session()->flash('error', "Error on data insert. Please retry !");
+            return redirect()->back();
+        }
         try{
             // $organization_hp_code = DB::table('healthposts')->where('token', auth()->user()->token)->first()->hp_code;
             // $request['hp_code'] = $organization_hp_code;
@@ -104,6 +108,7 @@ class ObservationCasesController extends Controller
             $request->session()->flash('message', 'Data Inserted successfully');
         } catch(Exception $e) {
             $request->session()->flash('error', "Error on data insert. Please retry !");
+            return redirect()->back();
         }
 
         return redirect()->route('observation-cases.index');

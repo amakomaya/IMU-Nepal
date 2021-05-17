@@ -36,11 +36,11 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="card card-body col-md-4">
-                                <h5 class="card-title">Observation Cases/Emergency</h5>
+                                <h5 class="card-title">Total number of Observation Cases/Emergency</h5>
                                 <p class="card-text">{{ $add_sum - ($transfer_to_bed_sum + $return_to_home_sum) }}</p>
                             </div>
                             <div class="card card-body col-md-4">
-                                <h5 class="card-title">Today's Observation Cases/Emergency</h5>
+                                <h5 class="card-title">Today's number of Observation Cases/Emergency</h5>
                                 <p class="card-text">{{ $add_today_sum - ($transfer_to_bed_today_sum + $return_to_home_today_sum) }}</p>
                             </div>
                         </div>
@@ -49,9 +49,9 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Add</th>
-                                        <th>Transfer To Bed</th>
-                                        <th>Return To Home</th>
+                                        <th title="New number of Cases in Emergency or Observation">New number of Cases in Observation</th>
+                                        <th title="Number of persons transferred to bed">Number of persons transferred to bed</th>
+                                        <th title="Number of persons returned to home">Number of persons returned to home</th>
                                         <th>Created Date</th>
                                     </tr>
                                 </thead>

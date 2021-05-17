@@ -53,6 +53,15 @@
     <meta name="user-session-token" content="{{  Request::session()->get('user_token') }}">
     <script src="{{ asset('js/sortable.js') }}"></script>
 
+    <style>
+        .sidebar{
+            top: 0;
+            position: fixed;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            height: 90%;
+        }
+    </style>
 @yield('style')
   
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -155,7 +164,7 @@
             </div>
 
             {{-- </ul> --}}
-            <div class="navbar-default sidebar " role="navigation">
+            <div class="navbar-default sidebar" role="navigation">
                 <nav class="sidebar-nav navbar-collapse">
                     @include ('layouts.backend.navigation.list')
                 </nav>

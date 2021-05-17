@@ -125,30 +125,6 @@
         </ul>
     </li>
 @endif
-@if($h_type == 3 || $h_type == 5)
-    <li>
-        <a href="#">
-            <i class="fa fa-medkit" aria-hidden="true"></i>
-
-            Medicine Stocks <span class="fa arrow"></span>
-        </a>
-
-        <ul class="nav nav-second-level">
-            <li>
-                <a href="{{ route('stock.list') }}">
-                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                    Update Stocks
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('stock.transaction.list') }}">
-                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                    Update History
-                </a>
-            </li>
-        </ul>
-    </li>
-@endif
 @if($h_type != 4)
     <li>
         <a href="#">
@@ -193,14 +169,56 @@
                     <span class="label label-danger pull-right">List</span>
                 </a>
             </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+
+                    Observation Cases <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-third-level">
+                            <li>
+                                <a href="{{ route('observation-cases.create') }}">
+                                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                    Create
+                                    <span class="label label-default pull-right">Create</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('observation-cases.index') }}">
+                                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                    List
+                                    <span class="label label-primary pull-right"> List </span>
+                                </a>
+                            </li>
+                </ul>
+            </li>
+            @if($h_type == 3 || $h_type == 5)
+                <li>
+                    <a href="#">
+                        <i class="fa fa-medkit" aria-hidden="true"></i>
+
+                        Medicine Stocks <span class="fa arrow"></span>
+                    </a>
+
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="{{ route('stock.list') }}">
+                                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                Update Stocks
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('stock.transaction.list') }}">
+                                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                Update History
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+
         </ul>
     </li>
-{{--    <li>--}}
-{{--        <a href="{{ route('vaccination.report') }}">--}}
-{{--            <i class="fa fa-dashboard" aria-hidden="true"></i>--}}
-{{--            Vaccination Reports--}}
-{{--        </a>--}}
-{{--    </li>--}}
 @endif
 
 @if($h_type != 4)
@@ -209,28 +227,6 @@
             <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
             Case Report
         </a>
-    </li>
-    <li>
-        <a href="#">
-            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-            Observation Cases <span class="fa arrow"></span>
-        </a>
-        <ul class="nav nav-second-level">
-            <li>
-                <a href="{{ route('observation-cases.create') }}">
-                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                    Create
-                    <span class="label label-default pull-right">Create</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('observation-cases.index') }}">
-                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                    List
-                    <span class="label label-primary pull-right"> List </span>
-                </a>
-            </li>
-        </ul>
     </li>
     <li>
         <a href="{{ route('center.woman.map') }}">
