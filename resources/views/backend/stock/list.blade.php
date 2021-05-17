@@ -42,7 +42,7 @@
                                           <input type="number" name="remove_stock{{ $loop->iteration }}" value="0" />
                                         </td>
                                         <td>
-                                           <button class="btn btn-primary" onClick="confirmUpdate({{ $loop->iteration }}, {{$stock['id']}})">Update</button> 
+                                           <button class="btn btn-primary" onClick="confirmUpdate({{ $loop->iteration }}, {{$stock['id']?? ''}}, {{$stock['asset_id']}})">Update</button> 
                                     
                                         </td>
                                     </tr>
@@ -73,17 +73,18 @@ $.ajaxSetup({
 });
 </script>
 <script type="text/javascript">
-      function confirmUpdate(iteration, stockId){
+      function confirmUpdate(iteration, stockId, assetId){
+        console.log($("input[name='new_stock"+iteration+"']").val());
         if(confirm("Are you sure to update stock?")){
               var data = {
                 stock_id: stockId,
-                hp_code: "{{hpCode}}",
-                new_stock: $("input[name='new_stock"+iteration+"']").value,
-                remove_stock: $("input[name='remove_stock"+iteration+"']").value,
-                
+                asset_id: assetId,
+                hp_code: "{{ \App\Models\Organization::where('token', auth()->user()->token)->first()->hp_code }}",
+                new_stock: $("input[name='new_stock"+iteration+"']").val(),
+                remove_stock: $("input[name='remove_stock"+iteration+"']").val(),
+                current_stock:  $("input[name='current_stock"+iteration+"']").val(),
               }
-            
-              $.post( "/admin/stock-update", function( data ) {
+              $.post( "/admin/stock-update",data, function( res ) {
                   // location.reload(true);
               });
           }                                        
