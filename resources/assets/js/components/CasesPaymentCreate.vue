@@ -1,18 +1,18 @@
 <template>
   <div class="container row">
     <form @submit.prevent>
+      <div class="large-12 medium-12 small-12 cell">
+        <label>File
+          <input type="file" id="file" ref="bulk_file" v-on:change="handleFileUpload()" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+        </label>
+          <button class="btn btn-info pull-right" v-on:click="submitFile()">
+            Bulk Upload
+        </button>
+      </div>
     <div v-show="true" class="panel panel-default" :class="{ 'panel-danger': $v.labSelected.$error }">
       <div class="panel-heading text-center"><strong>Search Lab ID in IMU</strong></div>
       <div class="panel-body">
         <div class="row">
-
-          <div class="large-12 medium-12 small-12 cell">
-            <label>File
-              <input type="file" id="file" ref="bulk_file" v-on:change="handleFileUpload()" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
-            </label>
-              <button v-on:click="submitFile()">Submit</button>
-          </div>
-
           <div class="col-lg-8 form-group">
             <label>Lab Name * </label>
             <v-select label="name"

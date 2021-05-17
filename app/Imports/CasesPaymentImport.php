@@ -39,7 +39,9 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
         $enums = array(
           'gender'=> array( 'Male' => 1, 'Female' => 2, 'Other' => 3 ),
           'health_condition' => array ('No Symptoms'=> 1, 'Mild' => 2, 'Moderate' => 3, 'Severe' => 4),
-          'self_free' => array ('Self' => 1, 'Free' => 1)
+          'self_free' => array ('Self' => 1, 'Free' => 1),
+          'method_of_diagnosis' => array ('PCR' => 1, 'Antigen' => 2, 'Clinical Diagnosis' => 3, 'Others' => 10),
+          'age_unit' => array ('Year' => 0, 'Month' => 1, 'Day' => 2),
         );
         return new PaymentCase([
             'hospital_register_id' => $row['hospital_registration_id'] ,
@@ -47,6 +49,7 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             'date_of_outcome_en'=> Date::excelToDateTimeObject($row['registered_date_english_ad']),
             'lab_id' => $row['lab_id']??'0123456789',
             'age' => $row['age'],
+            'age_unit' => $enums['age_unit'][$row['age_unit']] ?? 0,
             'gender' => $enums['gender'][$row['gender']],
             'phone' => $row['phone'],
             'address' => $row['current_address'],
@@ -55,6 +58,7 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             'self_free' => $enums['self_free'][$row['self_free']] ?? null,
             'remark' => $row['remark'],
             'is_in_imu' => 0,
+            'method_of_diagnosis' => $enums['method_of_diagnosis'][$row['method_of_diagnosis']] ?? null,
 
         ]);
     }
@@ -85,6 +89,11 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             'health_condition' => function($attribute, $value, $onFailure) {
               if ($value === '' || $value === null) {
                    $onFailure('Health Condition cannot be empty');
+              }
+            },
+            'method_of_diagnosis' => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Method of Diagnosis cannot be empty');
               }
             },
         ];
