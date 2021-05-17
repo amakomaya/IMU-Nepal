@@ -57,15 +57,15 @@
         </tr>
         <tr>
             <td width="15%">General (A)</td>
-            <td width="15%">ICU (B)</td>
-            <td width="15%">HDU (C)</td>
+            <td width="15%">HDU-Moderate (B)</td>
+            <td width="15%">ICU (C)</td>
             <td width="15%">Ventilator (among ICU)</td>
-            <td class="b-color" width="15%">Total (A+B)</td>
+            <td class="b-color" width="15%">Total (A+B+C)</td>
         </tr>
         <tr>
             <td><input type="number" id="no_of_beds" name="no_of_beds" value="{{ $data['total_beds_allocated_general'] }}"></td>
+            <td><input type="number" id="no_of_hdu" name="no_of_hdu" value="{{ $data['total_beds_allocated_hdu'] }}"></td>
             <td><input type="number" id="no_of_icu" name="no_of_icu" value="{{ $data['total_beds_allocated_icu'] }}"></td>
-            <td><input type="number" name="no_of_hdu" value="{{ $data['total_beds_allocated_hdu'] }}"></td>
             <td><input type="number" name="no_of_ventilators" value="{{ $data['total_beds_allocated_ventilators_among_icu'] }}"></td>
 {{--            <td ><input class="b-color" type="text" value="{{ $data['total_beds_allocated_general'] + $data['total_beds_allocated_icu'] }}" readonly></td>--}}
             <td ><input class="b-color" id="total_a_sum_b" type="text" value="" readonly></td>
@@ -211,12 +211,13 @@
         $(document).ready(function(){
             var no_of_beds=$("#no_of_beds");
             var no_of_icu=$("#no_of_icu");
+            var no_of_hdu=$("#no_of_hdu");
             // qty.keyup(function(){
             //     var total=isNaN(parseInt(no_of_icu.val() + no_of_beds.val())) ? 0 :(no_of_icu.val() +    no_of_beds.val())
-                $("#total_a_sum_b").val(parseInt(no_of_icu.val()) + parseInt(no_of_beds.val()));
+                $("#total_a_sum_b").val(parseInt(no_of_icu.val()) + parseInt(no_of_beds.val()) + parseInt(no_of_hdu.val()));
             // });
             $("input").on("change", function() {
-                $("#total_a_sum_b").val(parseInt(no_of_icu.val()) + parseInt(no_of_beds.val()));
+                $("#total_a_sum_b").val(parseInt(no_of_icu.val()) + parseInt(no_of_beds.val()) + parseInt(no_of_hdu.val()));
             })
 
             var is_oxygen_facility = $("input[name=is_oxygen_facility]").val();
