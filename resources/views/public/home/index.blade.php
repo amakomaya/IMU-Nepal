@@ -36,11 +36,11 @@
   }
 
   .public-content .card {
-    min-width: 445px;
+    min-width: 515px;
     border-radius: 15px;
     color: #FFF;
     padding: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
   }
 
   .public-content .card .info-header {
