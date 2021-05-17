@@ -52,7 +52,7 @@
 
 <body>
     <div id="wrapper">
-        <div style="margin: -50px">
+        <div>
             @yield('content')
         </div>
     </div>
