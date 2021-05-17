@@ -96,6 +96,12 @@ class ObservationCasesController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'add' => 'required|numeric',
+            'transfer_to_bed' => 'required|numeric',
+            'return_to_home' => 'required|numeric',
+        ]);
+
         try{
             // $organization_hp_code = DB::table('healthposts')->where('token', auth()->user()->token)->first()->hp_code;
             // $request['hp_code'] = $organization_hp_code;
