@@ -27,11 +27,10 @@ class StockController extends Controller
         foreach($stocks as $stock) {
           array_push($stockIds, $stock['id']);
         }
-        $assets = Asset::all()->sortByDesc('created_at')->map(function ($data){
-            $data['data'] = json_decode($data->data, true);
-            array_push($assetIds, $data->id);
-            return $data;
-        });
+        $assets = Asset::latest()->get();
+        foreach($assets as $asset) {
+            array_push($assetIds, $asset->id);
+        };
         if(count($stocks)!== count($assets)) {
           foreach($assetIds as $index=>$assetId){
             if(!in_array($assetId, $stockIds)) {
@@ -45,18 +44,34 @@ class StockController extends Controller
           }
         }
         return view('backend.stock.list', [
-            'stocks' => $stocks,
-            'hpCode' => $hpCodes[0] 
+            'stocks' => $stocks
         ]);
     }
   
     public function updateStock(Request $request)
     {
-      $stock_id = $request['stock_id'];
-      echo($stock_id);
-      // hp_code: "{{hpCode}}",
-      // new_stock: $("input[name='new_stock"+iteration+"']").value,
-      // remove_stock: $("input[name='remove_stock"+iteration+"']").value, dd($request['new_stock']);
+      $asset_id = $request->asset_id;
+      $stock_id = $request->stock_id;
+      $hp_code = $request->stock_id;
+      $remove_stock = (int)$request->stock_id;
+      $new_stock = (int)$request->new_stock;
+      $hp_code = $request->hp_code;
+      if(!$stock_id){
+        $current_stock = 0 + $new_stock - $remove_stock;
+        \DB::insert('insert into stocks (hp_code, asset_id, current_stock) values (?, ?, ?)', [$hp_code, $asset_id, $current_stock ]);
+      } else {
+        $stock = \DB::table('stocks')->where('id', $stock_id);
+        $current_stock = 0;
+        $data = collect($stock)->map(function ($row) {
+          $current_stock = $row->current_stock;
+        });
+        dd($row->current_stock); 
+        $current_stock = $stock->get()->current_stock + $new_stock - $remove_stock;
+        $stock->update(array('current_stock' => $current_stock));  // update the record in the DB. 
+      }
+      return response()->json([ 
+        'message' => 'Successfully updated stock'
+      ]);
       
     }
     public function stockTransactionList(Request $request)
