@@ -20,8 +20,8 @@
                                         <th>{{trans('index.sn')}}</th>                                      
                                         <th>Medicine</th>
                                         <th>Current Stock</th>                                    
-                                        <th>New Stock</th>
-                                        <th>Remove Stock</th>
+                                        <th>Add Medicine</th>
+                                        <th>Used Medicine</th>
                                     </tr>
                                     </thead>
                                     
@@ -42,7 +42,7 @@
                                           <input type="number" name="remove_stock{{ $loop->iteration }}" value="0" />
                                         </td>
                                         <td>
-                                           <button class="btn btn-primary" onClick="confirmUpdate({{ $loop->iteration }}, {{$stock['id']?? ''}}, {{$stock['asset_id']}})">Update</button> 
+                                           <button class="btn btn-primary" onClick="confirmUpdate({{ $loop->iteration }}, {{$stock['id'] ?? "0"}}, {{$stock['asset_id']}})">Update</button>
                                     
                                         </td>
                                     </tr>
@@ -74,7 +74,6 @@ $.ajaxSetup({
 </script>
 <script type="text/javascript">
       function confirmUpdate(iteration, stockId, assetId){
-        console.log($("input[name='new_stock"+iteration+"']").val());
         if(confirm("Are you sure to update stock?")){
               var data = {
                 stock_id: stockId,
@@ -85,7 +84,7 @@ $.ajaxSetup({
                 current_stock:  $("input[name='current_stock"+iteration+"']").val(),
               }
               $.post( "/admin/stock-update",data, function( res ) {
-                  // location.reload(true);
+                  location.reload();
               });
           }                                        
           else
