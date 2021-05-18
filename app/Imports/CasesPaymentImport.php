@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use Carbon\Carbon;
 use App\Models\PaymentCase;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -39,14 +40,14 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
         $enums = array(
           'gender'=> array( 'Male' => 1, 'Female' => 2, 'Other' => 3 ),
           'health_condition' => array ('No Symptoms'=> 1, 'Mild' => 2, 'Moderate' => 3, 'Severe' => 4),
-          'self_free' => array ('Self' => 1, 'Free' => 1),
+          'paid_free' => array ('Paid' => 1, 'Free' => 1),
           'method_of_diagnosis' => array ('PCR' => 1, 'Antigen' => 2, 'Clinical Diagnosis' => 3, 'Others' => 10),
           'age_unit' => array ('Year' => 0, 'Month' => 1, 'Day' => 2),
         );
         return new PaymentCase([
             'hospital_register_id' => $row['hospital_registration_id'] ,
             'name' => $row['name'],
-            'date_of_outcome_en'=> Date::excelToDateTimeObject($row['registered_date_english_ad']),
+            'date_of_outcome_en'=> Carbon::now(),
             'lab_id' => $row['lab_id']??'0123456789',
             'age' => $row['age'],
             'age_unit' => $enums['age_unit'][$row['age_unit']] ?? 0,
@@ -55,7 +56,7 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             'address' => $row['current_address'],
             'guardian_name' => $row['parentguardian_name'],
             'health_condition' => $enums['health_condition'][$row['health_condition']] ?? null,
-            'self_free' => $enums['self_free'][$row['self_free']] ?? null,
+            'self_free' => $enums['paid_free'][$row['paid_free']] ?? null,
             'remark' => $row['remark'],
             'is_in_imu' => 0,
             'method_of_diagnosis' => $enums['method_of_diagnosis'][$row['method_of_diagnosis']] ?? null,

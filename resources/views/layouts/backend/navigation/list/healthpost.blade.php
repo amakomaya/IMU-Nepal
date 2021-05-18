@@ -125,6 +125,30 @@
         </ul>
     </li>
 @endif
+@if($h_type == 3 || $h_type == 5)
+  <li>
+        <a href="#">
+            <i class="fa fa-medkit" aria-hidden="true"></i>
+
+            Medicine Stocks <span class="fa arrow"></span>
+        </a>
+
+        <ul class="nav nav-second-level">
+            <li>
+                <a href="{{ route('stock.list') }}">
+                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                    Update Stocks
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('stock.transaction.list') }}">
+                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                    Update History
+                </a>
+            </li>
+        </ul>
+    </li>
+@endif
 @if($h_type != 4)
     <li>
         <a href="#">

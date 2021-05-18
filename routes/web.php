@@ -324,7 +324,7 @@ Route::get('admin/cases-payment-all-by-lab-and-treatment', 'CasesPaymentControll
 Route::get('home', 'PublicDataController@index')->name('public.home.index');
 Route::get('api/status', 'PublicDataController@publicPortal');
 
-Route::get('admin/cases-payment-stock-update', 'StockController@listStock')->name('stock.list');
+Route::get('admin/cases-payment-stock-update', 'StockController@listAdminStock')->name('stock.list');
 Route::get('admin/cases-payment-stock-history', 'StockController@stockTransactionList')->name('stock.transaction.list');
 Route::post('admin/stock-update', 'StockController@updateStock')->name('stock.update');
 

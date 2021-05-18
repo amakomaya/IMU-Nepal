@@ -21,6 +21,9 @@ class StockTransaction extends Model
       'hp_code',
       'user_id',
       'asset_id',
+      'current_stock',
+      'new_stock',
+      'used_stock',
       'created_at',
       'updated_at',
   ];

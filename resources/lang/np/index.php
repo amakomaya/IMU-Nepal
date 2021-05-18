@@ -29,7 +29,8 @@ return [
 'address' => 'ठेगाना',
 'local_level' => 'स्थानीय तह',
 'local_level_info' => 'स्थानीय तहको जानकारी',
-
+'stock_list' => 'Stock List',
+'stock_transaction' => 'Medicine Usage History',
 
 
 
