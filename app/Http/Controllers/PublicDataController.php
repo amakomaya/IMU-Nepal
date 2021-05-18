@@ -83,7 +83,6 @@ class PublicDataController extends Controller
             $return['daily_capacity_in_liter'] = $value->daily_capacity_in_liter;
             $return['oxygen_availability'] = $value->oxygen_availability;
 
-
             $return['is_admission'] = 0;
             $return['is_death'] = 0;
             $return['is_discharge'] = 0;
@@ -92,22 +91,17 @@ class PublicDataController extends Controller
             if(!empty($value->date_of_outcome_en)){
                 $parse_date_of_outcome_en = Carbon::parse($value->date_of_outcome_en);
                 if($parse_date_of_outcome_en->isToday()){
-                    if ($value->is_death === 1){
+                    if ($value->is_death === '1'){
                         $return['is_death'] = 1;
+                    }else{
+                        $return['is_discharge'] = 1;
                     }
-                    $return['is_discharge'] = 1;
                 }
 
             }
 
-
             if($parse_register_date->isToday()){
                 $return['is_admission'] = 1;
-            }
-
-
-
-            if (collect($value)->where('created_at', '=', Carbon::today())){
             }
 
             if ($value->health_condition_update == null){
