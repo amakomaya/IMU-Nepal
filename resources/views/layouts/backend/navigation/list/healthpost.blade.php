@@ -169,6 +169,14 @@
                     <span class="label label-danger pull-right">List</span>
                 </a>
             </li>
+            {{-- <li>
+                <a href="{{ route('cases.patient.detail') }}">
+                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                    Patient Detail
+                    <span class="label label-primary pull-right">Detail</span>
+                </a>
+            </li> --}}
+            
             <li>
                 <a href="#">
                     <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
