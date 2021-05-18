@@ -46,7 +46,6 @@ class StockController extends Controller
           }
         }
       }
-      dd($stocks);
       return view('backend.stock.list', [
           'stocks' => $stocks
       ]);
@@ -108,6 +107,7 @@ class StockController extends Controller
         'message' => 'Successfully updated stock'
       ]);
     }
+  
     public function stockTransactionList(Request $request)
     {
       $user = auth()->user();

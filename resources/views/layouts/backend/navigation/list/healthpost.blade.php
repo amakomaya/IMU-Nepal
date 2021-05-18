@@ -135,7 +135,7 @@
 
         <ul class="nav nav-second-level">
             <li>
-                <a href="{{ route('stock.list') }}">
+                <a href="{{ route('stock.updateList') }}">
                     <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                     Update Stocks
                 </a>
