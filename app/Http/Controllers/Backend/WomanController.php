@@ -14,6 +14,7 @@ use App\Models\Municipality;
 use App\Models\Province;
 use App\Models\VaccineVial;
 use App\Models\SuspectedCase;
+use App\Models\PaymentCase;
 use App\Reports\FilterRequest;
 use App\User;
 use Carbon\Carbon;
@@ -111,9 +112,67 @@ class WomanController extends Controller
         return view('backend.cases.payment.index-death');
     }
 
-    public function casesPaymentCreate()
+    public function casesPaymentCreate(Request $request)
     {
-        return view('backend.cases.payment.create');
+        if(Auth::user()->role == 'healthpost') {
+            $healthposts = Organization::where('token', Auth::user()->token)->first();
+        // dd($healthposts);
+
+            $total = $healthposts->no_of_beds + $healthposts->no_of_hdu + $healthposts->no_of_icu + $healthposts->no_of_ventilators;
+
+            if($total > 0) {
+                return view('backend.cases.payment.create');
+            }
+            return redirect('/admin');
+        }
+        return redirect('/admin');
+    }
+
+    public function casePaymentDropdown(Request $request)
+    {
+        $healthposts = Organization::where('token', Auth::user()->token)->first();
+        $total = $healthposts->no_of_beds + $healthposts->no_of_hdu + $healthposts->no_of_icu + $healthposts->no_of_ventilators;
+
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $data = PaymentCase::whereIn('hp_code', $hpCodes)->whereNull('is_death')->get();
+        $hdu_count = $icu_count = $venti_count = 0;
+        foreach($data as $datum) {
+            if($datum->health_condition_update == null) {
+                if($datum->health_condition == 3) {
+                    $hdu_count++;
+                }elseif($datum->health_condition == 4) {
+                    $icu_count++;
+                } elseif($datum->health_condition == 5) {
+                    $venti_count++;
+                }
+            }
+            else {
+                $condition_array = json_decode($datum->health_condition_update);
+                $condition = end($condition_array);
+                if($condition->id == 3) {
+                    $hdu_count++;
+                }elseif($condition->id == 4) {
+                    $icu_count++;
+                } elseif($condition->id == 5) {
+                    $venti_count++;
+                }
+            }
+        }
+
+        if($healthposts->no_of_hdu <= $hdu_count){ $hdu = 1; } else { $hdu = 0; }
+        if($healthposts->no_of_icu <= $icu_count){ $icu = 1; } else { $icu = 0; }
+        if($healthposts->no_of_ventilators <= $venti_count){ $venti = 1; } else { $venti = 0; }
+
+        $dropdown = [];
+        $dropdown['hdu'] = $hdu;
+        $dropdown['icu'] = $icu;
+        $dropdown['venti'] = $venti;
+        
+
+        return response()->json([
+            'dropdown' => $dropdown
+        ]); 
     }
 
     public function casesDeathIndex()

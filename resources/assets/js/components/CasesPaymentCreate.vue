@@ -110,11 +110,12 @@
         <label class="control-label" for="health_condition">Health Condition *</label>
         <select class="form-control" v-model.trim="data.health_condition" id="health_condition">
           <option value="0" selected hidden>Please Select Medical Condition</option>
-          <option value="1">No Symptoms</option>
-          <option value="2">Mild</option>
-          <option value="3">Moderate ( HDU )</option>
-          <option value="4">Severe - ICU</option>
-          <option value="5">Severe - Ventilator</option>
+          <option :value="entry_health_condition.id"  v-for="entry_health_condition in entry_health_conditions" >
+
+            {{entry_health_condition.name}}
+
+          </option>
+        
         </select>
       </div>
       <div v-else class="form-group col-lg-8">
@@ -237,8 +238,12 @@ export default {
       health_condition_details_start_date : '',
       health_condition_details_validation : '',
       health_condition_update_lists : [],
+      entry_health_conditions: [],
       isSubmitting: false,
     }
+  },
+  mounted () {
+    this.setEntryHealthCondition();
   },
   validations: {
     data: {
@@ -256,6 +261,50 @@ export default {
     labSelected : { required }
   },
   methods: {
+    deleteObjById(arrObj, searchId) {
+      let filterIndex;
+       var result = arrObj.filter((obj, index) => {
+         if(obj.id===searchId) filterIndex = index;
+        });
+        arrObj.splice(filterIndex,1);
+        return arrObj;
+    },
+    setEntryHealthCondition() {
+      let hcEnum = [
+        {
+          id: 1,
+          name: 'No Symptoms',
+        },
+        {
+          id: 2,
+          name: 'Mild',
+        },
+        {
+          id: 3,
+          name: 'Moderate (HDU)',
+        },
+        {
+          id: 4,
+          name: 'Severe - ICU',
+        },
+        {
+          id: 5,
+          name: 'Severe - Ventilator',
+        },
+      ];
+       axios.get('/admin/case-payment-dropdown')
+          .then((response) => {
+          //  console.log(response);
+           let res = response.data;
+          if (res.dropdown.hdu) this.deleteObjById(hcEnum, 3);
+          if (res.dropdown.icu) this.deleteObjById(hcEnum, 4);
+          if (res.dropdown.venti) this.deleteObjById(hcEnum, 5);
+          // console.log(hcEnum);
+          this.entry_health_conditions = hcEnum;
+
+          });
+    },
+  
     onSearch(search, loading) {
       loading(true);
       this.search(loading, search, this);

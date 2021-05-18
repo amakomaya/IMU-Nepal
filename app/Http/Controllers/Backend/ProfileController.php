@@ -101,6 +101,7 @@ class ProfileController extends Controller
                     'no_of_beds' => $request->get('no_of_beds'),
                     'no_of_ventilators' => $request->get('no_of_ventilators'),
                     'no_of_icu' => $request->get('no_of_icu'),
+                    'no_of_hdu' => $request->get('no_of_hdu'),
                 ]);
                 break;
             default:
