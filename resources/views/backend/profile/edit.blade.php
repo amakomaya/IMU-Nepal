@@ -14,6 +14,11 @@
                             {!! Request::session()->get('message') !!}
                         </div>
                     @endif
+                    @if (Session::get('error'))
+                        <div class="alert alert-danger">
+                            {{ Session::get('error') }}
+                        </div>
+                    @endif
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             Edit Profile

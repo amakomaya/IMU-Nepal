@@ -205,23 +205,6 @@
 
 <li>
     <a href="#">
-        <i class="fa fa-medkit" aria-hidden="true"></i>
-
-        Medicine Stocks <span class="fa arrow"></span>
-    </a>
-
-    <ul class="nav nav-second-level">
-        <li>
-            <a href="{{ route('stock.list') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                View Stocks
-            </a>
-        </li>
-    </ul>
-</li>
-
-<li>
-    <a href="#">
         <i class="fa fa-money" aria-hidden="true"></i>
 
         CASES Payment <span class="fa arrow"></span>
@@ -241,6 +224,13 @@
                 Report
                 <span class="label label-info pull-right">Report</span>
             </a>
+        </li>
+        <li>
+            <a href="{{ route('stock.list') }}">
+              <i class="fa fa-medkit" aria-hidden="true"></i>
+
+              Medicine Stocks <span class="fa arrow"></span>
+          </a>
         </li>
         <li>
             <a href="#">

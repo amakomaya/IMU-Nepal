@@ -625,6 +625,7 @@ Route::post('/v1/cases-payment', function (Request $request) {
         if (isset($data['id'])){
             $data = \App\Models\PaymentCase::where('id', $data['id'])->update($data);
         }else{
+            $dateToday = Carbon::now(); //#TODO validate register_date_en from serverside.
             if (auth()->user()->role == 'healthworker'){
                 $data['hp_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
             }else{
@@ -634,6 +635,7 @@ Route::post('/v1/cases-payment', function (Request $request) {
         }
 
     } catch (\Exception $e) {
+      dump($e);
         return response()->json(['message' => 'error']);
     }
     return response()->json(['message' => 'success']);
