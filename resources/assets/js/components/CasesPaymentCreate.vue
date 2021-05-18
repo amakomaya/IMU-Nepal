@@ -295,7 +295,6 @@ export default {
       var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
       var yyyy = today.getFullYear();
       today = yyyy + '-' + mm + '-' + dd;
-      console.log(today);
       this.data.register_date_np = this.ad2bs(today);
     },
     setEntryHealthCondition() {
@@ -336,6 +335,7 @@ export default {
   
     handleFileUpload(){
       this.bulk_file = this.$refs.bulk_file.files[0];
+      this.submitFile();
     },
     submitFile(){
       let formData = new FormData();
@@ -353,6 +353,7 @@ export default {
         }
       ).then(function(res){
         alert(res.data.message);
+        $("#file").val(null);
       })
       .catch(function(err){
         let errorMsg = 'The Case Payment could not be uploaded due to the following problems: \n';
@@ -360,6 +361,7 @@ export default {
           errorMsg += (index+1)+'. Row: '+problem.row+', Column: '+problem.column+', Error: '+problem.error.join()+'\n';
         })
         alert(errorMsg);
+        $("#file").val(null);
       });
     },
     onSearch(search, loading) {
@@ -484,8 +486,6 @@ export default {
         data.date_of_outcome_en = null;
         data.date_of_outcome = null;
       }
-      console.log('data');
-      console.log(data);
       axios.post('/api/v1/cases-payment', data)
           .then((response) => {
             if (response.data.message === 'success') {
@@ -565,11 +565,9 @@ export default {
     let id = url.searchParams.get("token");
 
     if(id){
-      // console.log(id);
       axios.get('/api/v1/search-cases-payment-by-id?id='+id)
           .then((response) => {
-            if(Object.keys(response.data).length > 0){
-              // this.data.lab_name = response.data.lab_name;
+            if(Object.keys(response.data).length > 0) {
               this.data.id  = response.data.id;
               this.data.lab_id = response.data.lab_id;
               this.data.name = response.data.name;
