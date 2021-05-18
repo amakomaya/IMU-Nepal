@@ -146,7 +146,7 @@
           </tr>
           <tr v-if="health_condition_update_lists" v-for="item in health_condition_update_lists">
             <td>{{  getHealthCondition(item.id) }}</td>
-            <td>{{ ad2bs(item.date) }}</td>
+            <td>{{ ad2bs(item.date)  }}</td>
           </tr>
           </tbody>
 
@@ -533,13 +533,17 @@ export default {
           })
     },
     ad2bs: function (date) {
-      var dateObject = new Date(date);
+      try{
+        var dateObject = new Date(date);
 
-      var dateFormat = dateObject.getFullYear()  + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getDate();
+        var dateFormat = dateObject.getFullYear()  + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getDate();
 
-      let dateConverter = DataConverter.ad2bs(dateFormat);
+        let dateConverter = DataConverter.ad2bs(dateFormat);
 
-      return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
+        return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
+      }catch (e){
+        return date;
+      }
 
     },
     bs2ad: function (date) {
