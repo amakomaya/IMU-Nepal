@@ -49,7 +49,7 @@
     <div class="row">
       <div class="form-group col-lg-6"  :class="{ 'has-error': $v.data.hospital_register_id.$error }">
         <label class="control-label" for="hospital_register_id">Patient ID in Hospital *</label>
-        <input type="text" placeholder="Enter Patient ID in your Hospital" class="form-control" v-model.trim="data.hospital_register_id" id="hospital_register_id" :readonly="is_to_update"/>
+        <input type="text" placeholder="Enter Patient ID in your Hospital" class="form-control" v-model.trim="data.hospital_register_id" id="hospital_register_id"/>
       </div>
 
 
@@ -63,58 +63,58 @@
     </div>
     <div class="form-group" :class="{ 'has-error': $v.data.name.$error }">
         <label class="control-label" for="name">Name *</label>
-        <input type="text" placeholder="Enter Full Name with space between first, middle and last name" class="form-control" v-model.trim="data.name" id="name" :readonly="is_to_update"/>
+        <input type="text" placeholder="Enter Full Name with space between first, middle and last name" class="form-control" v-model.trim="data.name" id="name"/>
       </div>
       <div class="row">
         <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.age.$error }">
           <label class="control-label" for="age">Age *</label>
-          <input type="radio" id="age_years" v-model.trim="data.age_unit" value="0" :disabled="is_to_update">
+          <input type="radio" id="age_years" v-model.trim="data.age_unit" value="0">
           <label class="control-label" for="age_years">Years</label> &nbsp; &nbsp;
-          <input type="radio" id="age_months" v-model.trim="data.age_unit" value="1" :disabled="is_to_update">
+          <input type="radio" id="age_months" v-model.trim="data.age_unit" value="1">
           <label class="control-label" for="age_months">Months</label> &nbsp; &nbsp;
-          <input type="radio" id="age_days" v-model.trim="data.age_unit" value="2" :disabled="is_to_update">
+          <input type="radio" id="age_days" v-model.trim="data.age_unit" value="2">
           <label class="control-label" for="age_days">Days</label> &nbsp; &nbsp;
 
-          <input type="text" placeholder="Enter age" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" v-model.trim="data.age" id="age" :readonly="is_to_update"/>
+          <input type="text" placeholder="Enter age" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" v-model.trim="data.age" id="age"/>
         </div>
         <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.gender.$error }">
           <label class="control-label">Gender *</label><br>
-          <input type="radio" id="male" v-model.trim="data.gender"  value="1" :disabled="is_to_update">
+          <input type="radio" id="male" v-model.trim="data.gender"  value="1">
           <label class="control-label" for="male">Male</label> &nbsp; &nbsp;
-          <input type="radio" id="female" v-model.trim="data.gender" value="2" :disabled="is_to_update">
+          <input type="radio" id="female" v-model.trim="data.gender" value="2">
           <label class="control-label" for="female">Female</label> &nbsp; &nbsp;
-          <input type="radio" id="other" v-model.trim="data.gender" value="3" :disabled="is_to_update">
+          <input type="radio" id="other" v-model.trim="data.gender" value="3">
           <label class="control-label" for="other">Other</label>
         </div>
         <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.phone.$error }">
           <label class="control-label" for="phone">Mobile No *</label>
-          <input type="text" placeholder="Enter mobile number" class="form-control" v-model.trim="data.phone" id="phone" :readonly="is_to_update"/>
+          <input type="text" placeholder="Enter mobile number" class="form-control" v-model.trim="data.phone" id="phone"/>
         </div>
       </div>
     <div class="form-group" :class="{ 'has-error': $v.data.address.$error }">
       <label class="control-label" for="name">Current Address *</label>
-      <input type="text" placeholder="Enter Current Address ( e.g Lazimpat-2, Kathmandu )" class="form-control" v-model.trim="data.address" id="address"  :readonly="is_to_update"/>
+      <input type="text" placeholder="Enter Current Address ( e.g Lazimpat-2, Kathmandu )" class="form-control" v-model.trim="data.address" id="address" />
     </div>
     <hr>
     <div class="row">
       <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.method_of_diagnosis.$error }">
         <label class="control-label">Method of Diagnosis</label><br>
-        <input type="radio" id="pcr" v-model.trim="data.method_of_diagnosis"  value="1" :disabled="is_to_update">
+        <input type="radio" id="pcr" v-model.trim="data.method_of_diagnosis"  value="1">
         <label class="control-label" for="pcr">PCR</label> &nbsp; &nbsp;
-        <input type="radio" id="antigen" v-model.trim="data.method_of_diagnosis" value="2" :disabled="is_to_update">
+        <input type="radio" id="antigen" v-model.trim="data.method_of_diagnosis" value="2">
         <label class="control-label" for="antigen">Antigen</label> &nbsp; &nbsp;
-        <input type="radio" id="clinical" v-model.trim="data.method_of_diagnosis" value="3" :disabled="is_to_update">
+        <input type="radio" id="clinical" v-model.trim="data.method_of_diagnosis" value="3">
         <label class="control-label" for="clinical">Clinical Diagnosis</label> &nbsp; &nbsp;
-        <input type="radio" id="others" v-model.trim="data.method_of_diagnosis" value="10" :disabled="is_to_update">
+        <input type="radio" id="others" v-model.trim="data.method_of_diagnosis" value="10">
         <label class="control-label" for="others">Others</label>
       </div>
     </div>
     <div class="row">
       <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.complete_vaccination.$error }">
         <label class="control-label">Completed vaccination (2nd Dose)*</label><br>
-        <input type="radio" id="vaccination" v-model.trim="data.complete_vaccination"  value="1" :disabled="is_to_update">
+        <input type="radio" id="vaccination" v-model.trim="data.complete_vaccination"  value="1">
         <label class="control-label" for="vaccination">Yes</label> &nbsp; &nbsp;
-        <input type="radio" id="antigen" v-model.trim="data.complete_vaccination" value="0" :disabled="is_to_update">
+        <input type="radio" id="antigen" v-model.trim="data.complete_vaccination" value="0">
         <label class="control-label" for="antigen">No</label> &nbsp; &nbsp;
       </div>
     </div>
@@ -142,11 +142,11 @@
           <tbody>
           <tr>
             <td>{{  getHealthCondition(data.health_condition) }}</td>
-            <td>{{ data.register_date_en }}</td>
+            <td>{{ data.register_date_np }}</td>
           </tr>
           <tr v-if="health_condition_update_lists" v-for="item in health_condition_update_lists">
             <td>{{  getHealthCondition(item.id) }}</td>
-            <td>{{ item.date }}</td>
+            <td>{{ ad2bs(item.date) }}</td>
           </tr>
           </tbody>
 
@@ -182,9 +182,9 @@
       </div>
       <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.self_free.$error }">
         <label class="control-label">Payment Provision *</label><br>
-        <input type="radio" id="self" v-model.trim="data.self_free" value="1" :disabled="is_to_update">
+        <input type="radio" id="self" v-model.trim="data.self_free" value="1">
         <label class="control-label" for="self">Paid</label> &nbsp; &nbsp;
-        <input type="radio" id="free" v-model.trim="data.self_free" value="2" :disabled="is_to_update">
+        <input type="radio" id="free" v-model.trim="data.self_free" value="2">
         <label class="control-label" for="free">Free</label> &nbsp; &nbsp;
       </div>
     </div>
@@ -595,6 +595,7 @@ export default {
               this.labSelected = response.data.lab_name;
               this.is_to_update = true;
               this.update_id = response.data.id;
+              this.data.complete_vaccination = response.data.complete_vaccination;
               var today = new Date();
               this.health_condition_details_start_date = this.ad2bs(today);
               if(response.data.health_condition_update !== null){
