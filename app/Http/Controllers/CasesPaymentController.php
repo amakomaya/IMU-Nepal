@@ -9,6 +9,8 @@ use App\Models\PaymentCase;
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\CasesPaymentImport;
 
 class CasesPaymentController extends Controller
 {
@@ -556,5 +558,39 @@ class CasesPaymentController extends Controller
             ['dataElement' => 'lJdBm4JQbxu', 'value' => $data['free_discharge']],
             ['dataElement' => 'qj1x5V3Zc7d', 'value' => $data['free_deaths']]
         ];
+    }
+
+    public function bulkUpload (Request $request) {
+      if ($request->hasFile('bulk_file')) {
+        $bulk_file = $request->file('bulk_file');
+        try {
+          Excel::queueImport(new CasesPaymentImport(auth()->user()), $bulk_file);
+          return response()->json(['message' => 'success',
+            'message' => 'Case Payment Data uploaded successfully',
+          ]);
+
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+          $errors = [];
+          $failures = $e->failures();
+          $error_msg = '';
+          foreach ($failures as $key=>$failure) {
+              $error_msg .= ($key+1).'. Row: '.$failure->row().', Column: '.$failure->attribute().', Error: '.join(",", $failure->errors()).'<br />';
+              $errors[$key]['row'] = $failure->row(); // row that went wrong
+              $errors[$key]['column'] = $failure->attribute(); // either heading key (if using heading row concern) or column index
+              $errors[$key]['error'] = $failure->errors(); // Actual error messages from Laravel validator
+              $errors[$key]['values'] = $failure->values(); // The values of the row that has failed.
+          }
+          
+          return response()->json([
+            'status' => 'fail',
+            'message' => $errors
+            ], 422
+          );
+
+        }
+        return response()->json(['status' => 'success',
+            'message' => "Uploading"
+          ]);
+      }
     }
 }

@@ -85,6 +85,8 @@ class HealthpostController extends Controller
             'no_of_beds' => $request->get('no_of_beds'),
             'no_of_ventilators' => $request->get('no_of_ventilators'),
             'no_of_icu' => $request->get('no_of_icu'),
+            'no_of_hdu' => $request->get('no_of_hdu'),
+            'daily_consumption_of_oxygen' => $request->get('daily_consumption_of_oxygen'),
             'hospital_type' => $request->get('hospital_type'),
             'vaccination_center_id' => 0
         ]);
@@ -150,6 +152,8 @@ class HealthpostController extends Controller
             'no_of_icu' => $request->get('no_of_icu'),
             'hospital_type' => $request->get('hospital_type'),
             'vaccination_center_id' => $request->get('vaccination_center_id'),
+            'no_of_hdu' => $request->get('no_of_hdu'),
+            'daily_consumption_of_oxygen' => $request->get('daily_consumption_of_oxygen'),
             'hmis_uid' => $request->get('hmis_uid')
         ]);
 
@@ -186,7 +190,10 @@ class HealthpostController extends Controller
             'no_of_beds' => $request->get('no_of_beds'),
             'no_of_ventilators' => $request->get('no_of_ventilators'),
             'no_of_icu' => $request->get('no_of_icu'),
+            'no_of_hdu' => $request->get('no_of_hdu'),
+            'daily_consumption_of_oxygen' => $request->get('daily_consumption_of_oxygen'),
             'hospital_type' => $request->get('hospital_type')
+
         ]);
 
         $user = $this->findModelUser($healthpost->token);

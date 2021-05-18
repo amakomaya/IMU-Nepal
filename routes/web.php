@@ -216,7 +216,8 @@ Route::put('/admin/patient/{token}', 'Reports\CaseDetailController@update')->nam
 Route::get('/admin/sample/{token}/edit', 'Reports\AncDetailController@edit');
 Route::put('/admin/sample/{token}', 'Reports\AncDetailController@update')->name('sample.update');
 
-Route::resource('/observation-cases', 'Backend\ObservationCasesController');
+//Route::resource('/observation-cases', 'Backend\ObservationCasesController');
+Route::resource('/admin/cases-payment-observation', 'Backend\ObservationCasesController', ['names' => 'observation-cases']);
 
 Route::get('/admin/ancs-search', 'AdminController@ancsSearch')->name('admin.ancs.search');
 Route::post('/admin/ancs-search/update', 'AdminController@ancsUpdate')->name('admin.ancs.update');
@@ -322,4 +323,9 @@ Route::get('admin/cases-payment-all-by-lab-and-treatment', 'CasesPaymentControll
 
 Route::get('home', 'PublicDataController@index')->name('public.home.index');
 Route::get('api/status', 'PublicDataController@publicPortal');
+
+Route::get('admin/cases-payment-stock-update', 'StockController@listStock')->name('stock.list');
+Route::get('admin/cases-payment-stock-history', 'StockController@stockTransactionList')->name('stock.transaction.list');
+Route::post('admin/stock-update', 'StockController@updateStock')->name('stock.update');
+
 

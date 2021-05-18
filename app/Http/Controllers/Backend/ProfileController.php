@@ -102,6 +102,7 @@ class ProfileController extends Controller
                     'no_of_ventilators' => $request->get('no_of_ventilators'),
                     'no_of_icu' => $request->get('no_of_icu'),
                     'no_of_hdu' => $request->get('no_of_hdu'),
+                    'daily_consumption_of_oxygen' => $request->get('daily_consumption_of_oxygen')
                 ]);
                 break;
             default:

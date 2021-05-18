@@ -36,11 +36,11 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="card card-body col-md-4">
-                                <h5 class="card-title">Observation Cases/Emergency</h5>
+                                <h5 class="card-title">Total number of Observation Cases/Emergency</h5>
                                 <p class="card-text">{{ $add_sum - ($transfer_to_bed_sum + $return_to_home_sum) }}</p>
                             </div>
                             <div class="card card-body col-md-4">
-                                <h5 class="card-title">Today's Observation Cases/Emergency</h5>
+                                <h5 class="card-title">Today's number of Observation Cases/Emergency</h5>
                                 <p class="card-text">{{ $add_today_sum - ($transfer_to_bed_today_sum + $return_to_home_today_sum) }}</p>
                             </div>
                         </div>
@@ -50,10 +50,10 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Organization Name</th>
-                                        <th>Add</th>
-                                        <th>Transfer To Bed</th>
-                                        <th>Return To Home</th>
-                                        {{-- <th>Created Date</th> --}}
+                                        <th title="Current total number of Observation Cases">Current total number of Observation Cases</th>
+                                        <th title="New number of Cases in Emergency or Observation">Today's New number of Cases in Observation</th>
+                                        <th title="Number of persons transferred to bed">Today's Number of persons transferred to bed</th>
+                                        <th title="Number of persons returned to home">Today's Number of persons returned to home</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -62,9 +62,10 @@
                                     <tr>
                                         <td>{{ $count++ }}</td>
                                         <td>{{ $observation_case[0]->name }}</td>
-                                        <td>{{ $observation_case->sum('add') }}</td>
-                                        <td>{{ $observation_case->sum('transfer_to_bed') }}</td>
-                                        <td>{{ $observation_case->sum('return_to_home') }}</td>
+                                        <td>{{ $observation_case->sum('add') - $observation_case->sum('transfer_to_bed') - $observation_case->sum('return_to_home') }}</td>
+                                        <td>{{ $observation_case->where('created_at', '>=', date('Y-m-d').' 00:00:00')->sum('add') }}</td>
+                                        <td>{{ $observation_case->where('created_at', '>=', date('Y-m-d').' 00:00:00')->sum('transfer_to_bed') }}</td>
+                                        <td>{{ $observation_case->where('created_at', '>=', date('Y-m-d').' 00:00:00')->sum('return_to_home') }}</td>
                                         {{-- <td>{{ $observation_case->created_at }}</td> --}}
                                     </tr>
                                     @endforeach

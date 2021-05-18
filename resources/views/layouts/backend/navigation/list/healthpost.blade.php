@@ -17,11 +17,10 @@
         </ul>
     </li>
 @endif
-@if($h_type == 1 || $h_type == 3)
+@if($h_type !== 4)
     <li>
         <a href="#">
             <i class="fa fa-users" aria-hidden="true"></i>
-
             ACTIVE CASES <span class="fa arrow"></span>
         </a>
 
@@ -170,79 +169,64 @@
                     <span class="label label-danger pull-right">List</span>
                 </a>
             </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+
+                    Observation Cases <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-third-level">
+                            <li>
+                                <a href="{{ route('observation-cases.create') }}">
+                                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                    Create
+                                    <span class="label label-default pull-right">Create</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('observation-cases.index') }}">
+                                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                    List
+                                    <span class="label label-primary pull-right"> List </span>
+                                </a>
+                            </li>
+                </ul>
+            </li>
+            @if($h_type == 3 || $h_type == 5)
+                <li>
+                    <a href="#">
+                        <i class="fa fa-medkit" aria-hidden="true"></i>
+
+                        Medicine Stocks <span class="fa arrow"></span>
+                    </a>
+
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="{{ route('stock.list') }}">
+                                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                Update Stocks
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('stock.transaction.list') }}">
+                                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                Update History
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+
         </ul>
     </li>
-{{--    <li>--}}
-{{--        <a href="{{ route('vaccination.report') }}">--}}
-{{--            <i class="fa fa-dashboard" aria-hidden="true"></i>--}}
-{{--            Vaccination Reports--}}
-{{--        </a>--}}
-{{--    </li>--}}
 @endif
-<li>
-    @if($h_type != 4)
-{{--        <a href="#">--}}
-{{--            <i class="fa fa-users" aria-hidden="true"></i>--}}
-{{--            Health Professional <span class="fa arrow"></span>--}}
-{{--        </a>--}}
-    @else
-        <a href="#">
-            <i class="fa fa-users" aria-hidden="true"></i>
-            Covid Immunization <span class="fa arrow"></span>
-        </a>
-    @endif
-    <ul class="nav nav-second-level">
-        <li>
-            <a href="{{ route('health.professional.add') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Create
-                <span class="label label-info pull-right"><i class="fa fa-plus"></i></span>
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('health-professional.index') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Registered
-                <span class="label label-primary pull-right">&#x2714;</span>
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('health-professional.immunized') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Immunized
-                <span class="label label-success pull-right">&#x2714;</span>
-            </a>
-        </li>
-    </ul>
-</li>
+
 @if($h_type != 4)
     <li>
         <a href="{{ route('lab.patient.report.index') }}">
             <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
             Case Report
         </a>
-    </li>
-    <li>
-        <a href="#">
-            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-            Observation Cases <span class="fa arrow"></span>
-        </a>
-        <ul class="nav nav-second-level">
-            <li>
-                <a href="{{ route('observation-cases.create') }}">
-                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                    Create
-                    <span class="label label-default pull-right">Create</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('observation-cases.index') }}">
-                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                    List
-                    <span class="label label-primary pull-right"> List </span>
-                </a>
-            </li>
-        </ul>
     </li>
     <li>
         <a href="{{ route('center.woman.map') }}">

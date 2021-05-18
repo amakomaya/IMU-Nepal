@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\User;
 use Auth;
 use Spatie\Activitylog\Traits\LogsActivity;
+use App\Models\Stock;
 
 class Organization extends Model
 {
@@ -91,7 +92,11 @@ class Organization extends Model
         return $model;
 	}
 
-    public function user(){
-        return $this->belongsTo('App\User', 'token', 'token');
-    }
+  public function user(){
+      return $this->belongsTo('App\User', 'token', 'token');
+  }
+
+  public function stocks(){
+      return $this->hasMany(Stock::class);
+  }
 }

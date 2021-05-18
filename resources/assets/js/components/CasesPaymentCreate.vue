@@ -1,6 +1,14 @@
 <template>
   <div class="container row">
     <form @submit.prevent>
+      <div class="large-12 medium-12 small-12 cell">
+        <label>File
+          <input type="file" id="file" ref="bulk_file" v-on:change="handleFileUpload()" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+        </label>
+          <button class="btn btn-info pull-right" v-on:click="submitFile()">
+            Bulk Upload
+        </button>
+      </div>
     <div v-show="true" class="panel panel-default" :class="{ 'panel-danger': $v.labSelected.$error }">
       <div class="panel-heading text-center"><strong>Search Lab ID in IMU</strong></div>
       <div class="panel-body">
@@ -240,6 +248,7 @@ export default {
       health_condition_update_lists : [],
       entry_health_conditions: [],
       isSubmitting: false,
+      bulk_file: ''
     }
   },
   mounted () {
@@ -305,6 +314,34 @@ export default {
           });
     },
   
+    handleFileUpload(){
+      this.bulk_file = this.$refs.bulk_file.files[0];
+    },
+    submitFile(){
+      let formData = new FormData();
+      if(!this.bulk_file){
+        alert('Please upload a valid excel file');
+        return;
+      }
+      formData.append('bulk_file', this.bulk_file);
+      axios.post( '/api/v1/bulk-case-payment',
+        formData,
+        {
+          headers: {
+              'Content-Type': 'multipart/form-data'
+          }
+        }
+      ).then(function(res){
+        alert(res.data.message);
+      })
+      .catch(function(err){
+        let errorMsg = 'The Case Payment could not be uploaded due to the following problems: \n';
+        err.response.data.message.map((problem, index)=>{
+          errorMsg += (index+1)+'. Row: '+problem.row+', Column: '+problem.column+', Error: '+problem.error.join()+'\n';
+        })
+        alert(errorMsg);
+      });
+    },
     onSearch(search, loading) {
       loading(true);
       this.search(loading, search, this);
@@ -367,8 +404,8 @@ export default {
               }
             } else {
               this.$swal({
-                title: 'Oops. No record found.',
-                type: 'error',
+                title: 'Oops. No record found. \n Even than you can continue to full data.',
+                type: 'warning',
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,

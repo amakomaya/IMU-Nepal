@@ -296,44 +296,75 @@ input:focus ~ div{
                                         </div>
                                     </div>
                                 <div class="form-group{{ $errors->has('no_of_beds') ? ' has-error' : '' }}">
-                                    <label for="no_of_beds" class="col-md-3 control-label"><i data-toggle="tooltip" class="fa fa-info-circle" aria-hidden="true"></i>
-                                        No of Beds</label>
+                                    <label for="no_of_beds" class="col-md-3 control-label"><i data-toggle="tooltip" title=""class="fa fa-info-circle" aria-hidden="true"></i> No of Beds ( General )</label>
 
                                     <div class="col-md-7">
-                                        <input type="number" class="form-control" name="no_of_beds" value="@yield('no_of_beds')" min="0">
+                                        <input id="no_of_beds" type="text" class="form-control" name="no_of_beds" value="{{ $data->no_of_beds ?? '' }}" >
+
                                         @if ($errors->has('no_of_beds'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('no_of_beds') }}</strong>
-                                            </span>
+                                                    <strong>{{ $errors->first('no_of_beds') }}</strong>
+                                                </span>
                                         @endif
                                     </div>
                                 </div>
-                                <div class="form-group{{ $errors->has('no_of_ventilators') ? ' has-error' : '' }}">
-                                    <label for="no_of_ventilators" class="col-md-3 control-label"><i data-toggle="tooltip" class="fa fa-info-circle" aria-hidden="true"></i>
-                                        No of Ventilators</label>
+
+                                <div class="form-group{{ $errors->has('no_of_hdu') ? ' has-error' : '' }}">
+                                    <label for="no_of_hdu" class="col-md-3 control-label"><i data-toggle="tooltip" title=""class="fa fa-info-circle" aria-hidden="true"></i>No of HDU</label>
 
                                     <div class="col-md-7">
-                                        <input type="text" class="form-control" name="no_of_ventilators" value="@yield('no_of_ventilators')"  min="0">
-                                        @if ($errors->has('no_of_ventilators'))
+                                        <input id="no_of_hdu" type="text" class="form-control" name="no_of_hdu" value="{{ $data->no_of_hdu ?? '' }}" >
+
+                                        @if ($errors->has('no_of_hdu'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('no_of_ventilators') }}</strong>
-                                            </span>
+                                                    <strong>{{ $errors->first('no_of_hdu') }}</strong>
+                                                </span>
                                         @endif
                                     </div>
                                 </div>
+
                                 <div class="form-group{{ $errors->has('no_of_icu') ? ' has-error' : '' }}">
-                                    <label for="no_of_icu" class="col-md-3 control-label"><i data-toggle="tooltip" class="fa fa-info-circle" aria-hidden="true"></i>
-                                        No of ICU</label>
+                                    <label for="no_of_icu" class="col-md-3 control-label"><i data-toggle="tooltip" title=""class="fa fa-info-circle" aria-hidden="true"></i> No of ICU </label>
 
                                     <div class="col-md-7">
-                                        <input type="number" class="form-control" name="no_of_icu" value="@yield('no_of_icu')" min="0">
+                                        <input id="no_of_icu" type="text" class="form-control" name="no_of_icu" value="{{ $data->no_of_icu ?? '' }}" >
+
                                         @if ($errors->has('no_of_icu'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('no_of_icu') }}</strong>
-                                            </span>
+                                                    <strong>{{ $errors->first('no_of_icu') }}</strong>
+                                                </span>
                                         @endif
                                     </div>
                                 </div>
+
+                                <div class="form-group{{ $errors->has('no_of_ventilators') ? ' has-error' : '' }}">
+                                    <label for="no_of_ventilators" class="col-md-3 control-label"><i data-toggle="tooltip" title=""class="fa fa-info-circle" aria-hidden="true"></i> No of Ventilators</label>
+
+                                    <div class="col-md-7">
+                                        <input id="no_of_ventilators" type="text" class="form-control" name="no_of_ventilators" value="{{ $data->no_of_ventilators ?? '' }}" >
+
+                                        @if ($errors->has('no_of_ventilators'))
+                                            <span class="help-block">
+                                                    <strong>{{ $errors->first('no_of_ventilators') }}</strong>
+                                                </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-group{{ $errors->has('daily_consumption_of_oxygen') ? ' has-error' : '' }}">
+                                    <label for="daily_consumption_of_oxygen" class="col-md-3 control-label"><i data-toggle="tooltip" title=""class="fa fa-info-circle" aria-hidden="true"></i> No of daily consumption of Oxygen</label>
+
+                                    <div class="col-md-7">
+                                        <input id="daily_consumption_of_oxygen" type="text" class="form-control" name="daily_consumption_of_oxygen" value="{{ $data->daily_consumption_of_oxygen ?? '' }}" >
+
+                                        @if ($errors->has('daily_consumption_of_oxygen'))
+                                            <span class="help-block">
+                                                    <strong>{{ $errors->first('daily_consumption_of_oxygen') }}</strong>
+                                                </span>
+                                        @endif
+                                    </div>
+                                </div>
+
                                 <div class="form-group{{ $errors->has('hospital_type') ? ' has-error' : '' }}">
                                     <label for="status" class="col-md-3 control-label"><i data-toggle="tooltip" class="fa fa-info-circle" aria-hidden="true"></i>
                                         Organization Type</label>

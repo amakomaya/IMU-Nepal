@@ -139,7 +139,6 @@
                                     </div>
                                 </div>
 
-
                                 <div class="form-group{{ $errors->has('daily_consumption_of_oxygen') ? ' has-error' : '' }}">
                                     <label for="daily_consumption_of_oxygen" class="col-md-3 control-label"><i data-toggle="tooltip" title=""class="fa fa-info-circle" aria-hidden="true"></i> No of daily consumption of Oxygen</label>
 

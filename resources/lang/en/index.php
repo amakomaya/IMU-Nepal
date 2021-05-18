@@ -28,6 +28,7 @@ return [
     'address' => 'Address',
     'local_level' => 'Local Government',
     'local_level_info' => 'Local Government Information',
+    'stock_list' => 'Stock List'
 
 
 
