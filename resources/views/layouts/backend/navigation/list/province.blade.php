@@ -30,10 +30,19 @@
         @endif
     </ul>
 </li>
- <li>
-    <a href="{{ route('admin.overview') }}">
-            <i class="fa fa-hospital-o" aria-hidden="true"></i> Organizations
+<li>
+    <a href="#">
+        Organizations <span class="fa arrow"></span>
     </a>
+
+    <ul class="nav nav-second-level">
+        <li>
+            <a href="{{ route('admin.overview') }}">List</a>
+        </li>
+        <li>
+            <a href="{{ route('healthpost.create') }}">Create</a>
+        </li>
+    </ul>
 </li>
 {{--<li>--}}
 {{--    <a href="#">--}}

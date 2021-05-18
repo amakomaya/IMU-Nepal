@@ -99,7 +99,7 @@ Route::post('/admin/user-manager/{id}/login-as', 'Backend\UserManagerController@
 Route::post('/admin/user-manager/first-loggedin', 'Backend\UserManagerController@loginAsFirstLoggedIn')->name('user-manager.first-loggedin');
 
 //Bakend Organization
-Route::resource('admin/healthpost', 'Backend\HealthpostController');
+Route::resource('admin/healthpost', 'Backend\HealthPostController');
 Route::get('admin/organization/{id}/edit-record', 'Backend\HealthpostController@editRecord');
 Route::post('admin/organization/update-record/{id}', 'Backend\HealthpostController@updateRecord')->name('admin.organization.update-record');
 Route::post('admin/vaccination_center_update', 'Backend\HealthpostController@organizationUpdate')->name('admin.organization.update');
@@ -144,6 +144,7 @@ Route::get('admin/cases-discharge-payment', 'Backend\WomanController@casesPaymen
 Route::get('admin/cases-death-payment', 'Backend\WomanController@casesPaymentDeathIndex')->name('cases.payment.index-death');
 Route::get('admin/cases-payment-create', 'Backend\WomanController@casesPaymentCreate')->name('cases.payment.create');
 Route::get('admin/cases-death', 'Backend\WomanController@casesDeathIndex')->name('cases.death.index');
+Route::get('admin/cases-patient-detail', 'Backend\WomanController@casesPatientDetail')->name('cases.patient.detail');
 Route::get('admin/sample-collection/create/{token}', 'Backend\WomanController@sampleCollectionCreate')->name('patients.sample-collection.store');
 Route::post('admin/sample-collection', 'Backend\WomanController@sampleCollectionStore')->name('patient.sample.store');
 

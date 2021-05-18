@@ -189,6 +189,15 @@ class WomanController extends Controller
         return view('backend.woman.index-cases-in-other-organization');
     }
 
+    public function casesPatientDetail(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+
+        $payment_cases = PaymentCase::whereIn('hp_code', $hpCodes)->latest()->get();
+        return view('backend.cases.payment.patient-detail', compact('payment_cases'));
+    }
+
     public function create(Request $request)
     {
         $response = FilterRequest::filter($request);
