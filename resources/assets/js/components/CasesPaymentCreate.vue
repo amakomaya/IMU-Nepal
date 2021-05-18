@@ -1,14 +1,13 @@
 <template>
   <div class="container row">
     <form @submit.prevent>
-      <div class="large-12 medium-12 small-12 cell">
-        <label>File
-          <input type="file" id="file" ref="bulk_file" v-on:change="handleFileUpload()" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
-        </label>
-          <button class="btn btn-info pull-right" v-on:click="submitFile()">
-            Bulk Upload
-        </button>
-      </div>
+      <label for="file" class="btn btn-primary">Bulk Upload
+        <i class="fa fa-upload" aria-hidden="true"></i>
+      </label>
+      <a href="/downloads/excel/cases_payment_import_template.xlsx" onclick="return confirm('Are you sure, do you want to download import format ! ')" title="Do you have template ? if not, please download first and fill data than import.">Do you have template ? </a>
+      <input type="file" id="file" ref="bulk_file" v-on:change="handleFileUpload()" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="visibility:hidden;"/>
+            
+      
     <div v-show="true" class="panel panel-default" :class="{ 'panel-danger': $v.labSelected.$error }">
       <div class="panel-heading text-center"><strong>Search Lab ID in IMU</strong></div>
       <div class="panel-body">
@@ -56,11 +55,8 @@
 
       <div class="form-group col-lg-6" :class="{ 'has-error': $v.data.register_date_np.$error }">
         <label class="control-label" for="register_date">Register Date * &nbsp;<span class="label label-info pull-right">{{ data.register_date_np }}</span></label>
-        <div class="input-group"><span class="input-group-addon"><i
-            class="fa fa-calendar"></i></span>
-          <v-nepalidatepicker id="register_date" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
-                              format="YYYY-MM-DD" v-model.trim="data.register_date_np" :yearSelect="false"
-                              :monthSelect="false"/>
+        <div class="input-group">
+          <span>{{data.register_date_np}}</span>
         </div>
       </div>
 
@@ -100,19 +96,28 @@
       <input type="text" placeholder="Enter Current Address ( e.g Lazimpat-2, Kathmandu )" class="form-control" v-model.trim="data.address" id="address" />
     </div>
     <hr>
-      <div class="row">
-        <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.method_of_diagnosis.$error }">
-          <label class="control-label">Method df Diagnosis</label><br>
-          <input type="radio" id="pcr" v-model.trim="data.method_of_diagnosis"  value="1">
-          <label class="control-label" for="pcr">PCR</label> &nbsp; &nbsp;
-          <input type="radio" id="antigen" v-model.trim="data.method_of_diagnosis" value="2">
-          <label class="control-label" for="antigen">Antigen</label> &nbsp; &nbsp;
-          <input type="radio" id="clinical" v-model.trim="data.method_of_diagnosis" value="3">
-          <label class="control-label" for="clinical">Clinical Diagnosis</label> &nbsp; &nbsp;
-          <input type="radio" id="others" v-model.trim="data.method_of_diagnosis" value="10">
-          <label class="control-label" for="others">Others</label>
-        </div>
+    <div class="row">
+      <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.method_of_diagnosis.$error }">
+        <label class="control-label">Method of Diagnosis</label><br>
+        <input type="radio" id="pcr" v-model.trim="data.method_of_diagnosis"  value="1">
+        <label class="control-label" for="pcr">PCR</label> &nbsp; &nbsp;
+        <input type="radio" id="antigen" v-model.trim="data.method_of_diagnosis" value="2">
+        <label class="control-label" for="antigen">Antigen</label> &nbsp; &nbsp;
+        <input type="radio" id="clinical" v-model.trim="data.method_of_diagnosis" value="3">
+        <label class="control-label" for="clinical">Clinical Diagnosis</label> &nbsp; &nbsp;
+        <input type="radio" id="others" v-model.trim="data.method_of_diagnosis" value="10">
+        <label class="control-label" for="others">Others</label>
       </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.complete_vaccination.$error }">
+        <label class="control-label">Completed vaccination (2nd Dose)*</label><br>
+        <input type="radio" id="vaccination" v-model.trim="data.complete_vaccination"  value="1">
+        <label class="control-label" for="vaccination">Yes</label> &nbsp; &nbsp;
+        <input type="radio" id="antigen" v-model.trim="data.complete_vaccination" value="0">
+        <label class="control-label" for="antigen">No</label> &nbsp; &nbsp;
+      </div>
+    </div>
     <div class="row">
       <div v-if="!is_to_update" class="form-group col-lg-4" :class="{ 'has-error': $v.data.health_condition.$error }">
         <label class="control-label" for="health_condition">Health Condition *</label>
@@ -234,7 +239,8 @@ export default {
         is_death : '',
         age_unit : 0,
         method_of_diagnosis : 0,
-        gender: undefined
+        gender: undefined,
+        complete_vaccination: undefined
       },
       lab_id : '',
       options: [],
@@ -248,11 +254,12 @@ export default {
       health_condition_update_lists : [],
       entry_health_conditions: [],
       isSubmitting: false,
-      bulk_file: ''
+      bulk_file: '',
     }
   },
   mounted () {
     this.setEntryHealthCondition();
+    this.setTodayRegisterDate();
   },
   validations: {
     data: {
@@ -265,7 +272,8 @@ export default {
       gender : { required },
       self_free : { required },
       health_condition : { required, minValue : minValue(1) },
-      address : { required }
+      address : { required },
+      complete_vaccination : { required },
     },
     labSelected : { required }
   },
@@ -277,6 +285,15 @@ export default {
         });
         arrObj.splice(filterIndex,1);
         return arrObj;
+    },
+    setTodayRegisterDate() {
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+      today = yyyy + '-' + mm + '-' + dd;
+      console.log(today);
+      this.data.register_date_np = this.ad2bs(today);
     },
     setEntryHealthCondition() {
       let hcEnum = [
@@ -445,7 +462,6 @@ export default {
               });
               data.health_condition_update = JSON.stringify(this.health_condition_update_lists);
             }
-            console.log("all Pass");
           }else{
             this.health_condition_details_validation = "Please select both Health Condition and Date"
             this.isSubmitting = false;
@@ -465,6 +481,8 @@ export default {
         data.date_of_outcome_en = null;
         data.date_of_outcome = null;
       }
+      console.log('data');
+      console.log(data);
       axios.post('/api/v1/cases-payment', data)
           .then((response) => {
             if (response.data.message === 'success') {
@@ -488,14 +506,14 @@ export default {
                 this.isSubmitting = false;
                 return false;
               }
-              this.$v.$reset();
-              var today = new Date();
-              this.data = {
-                health_condition : 0,
-                    is_death : '',
-                register_date_np : this.ad2bs(today),
-                lab_name : this.labSelected.name
-              }
+              // this.$v.$reset();
+              // var today = new Date();
+              // this.data = {
+              //   health_condition : 0,
+              //       is_death : '',
+              //   register_date_np : this.ad2bs(today),
+              //   lab_name : this.labSelected.name
+              // }
               this.isSubmitting = false;
 
             } else {
