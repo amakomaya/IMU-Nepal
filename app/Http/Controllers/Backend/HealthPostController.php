@@ -49,15 +49,26 @@ class HealthpostController extends Controller
 
     public function create()
     {
+        // dd(Auth::user());
         if (User::checkAuthForCreateUpdateDelHealthpost() === false) {
             return redirect('/admin');
         }
         $token = Auth::user()->token;
-        $municipalities = MunicipalityInfo::where('token', $token)->first();
-        $provinces = Province::where('id', $municipalities->province_id)->get();
-        $districts = District::where('id', $municipalities->district_id)->get();
         $hospital_type = '4';
-        return view('backend.healthpost.create', compact('municipalities', 'provinces', 'districts', 'hospital_type'));
+        if(Auth::user()->role != 'province') {
+            $municipalities = MunicipalityInfo::where('token', $token)->first();
+            $provinces = Province::where('id', $municipalities->province_id)->get();
+            $districts = District::where('id', $municipalities->district_id)->get();
+
+            return view('backend.healthpost.create', compact('municipalities', 'provinces', 'districts', 'hospital_type'));
+        } else {
+            $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
+            // $provinces = Province::where('token', $token)->first();
+            $districts = District::where('province_id', $province_id)->get();
+            $municipalities = Municipality::where('province_id', $province_id)->get();
+            return view('backend.healthpost.province-form', compact('municipalities', 'districts', 'hospital_type', 'province_id'));
+
+        }
     }
 
     public function store(Request $request)
@@ -65,9 +76,9 @@ class HealthpostController extends Controller
         if (User::checkAuthForCreateUpdateDelHealthpost() === false) {
             return redirect('/admin');
         }
-
+        
         $this->validateForm($request, $scenario = "create");
-
+        
         $healthpost = Organization::create([
             'name' => $request->get('name'),
             'token' => uniqid() . time(),
@@ -100,7 +111,12 @@ class HealthpostController extends Controller
         ]);
 
         $request->session()->flash('message', 'Data Inserted successfully');
-        return redirect()->route('healthpost.index');
+
+        if(Auth::user()->role != 'province') {
+            return redirect()->route('healthpost.index');
+        } else {
+            return redirect()->route('admin.overview');
+        }
     }
 
     public function show($id)

@@ -158,7 +158,7 @@ class User extends Authenticatable
     }
 
     public static function checkAuthForCreateUpdateDelHealthpost(){
-        if(Auth::user()->role!="municipality"){
+        if(Auth::user()->role!="municipality" && Auth::user()->role!="province"){
             return false;
         }
     }
