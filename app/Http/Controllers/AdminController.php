@@ -165,9 +165,6 @@ class AdminController extends Controller
 
     public function ancsSearch(Request $request) {
         if($request->sid) {
-
-            // dd($request->sid);
-
             $ancs = SampleCollection::leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
                 ->leftjoin('women', 'ancs.woman_token', '=', 'women.token')
                 ->where('ancs.token', $request->sid)
@@ -212,7 +209,7 @@ class AdminController extends Controller
                 'sample_token' => $request->sample_token,
             ]);
 
-            SampleCollection::where('token', $request->sid)->update(['token' => $request->sample_token]);
+            // SampleCollection::where('token', $request->sid)->update(['token' => $request->sample_token]);
 
             $request->session()->flash('message', 'Data updated successfully');
         } catch(Exception $e) {

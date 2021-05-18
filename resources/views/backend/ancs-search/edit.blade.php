@@ -76,14 +76,14 @@
                         <div class="form-group">
                             <label class="control-label" for="caste">Caste</label>
                             <select name="caste" class="form-control">
-                                <option {{ $ancs && $ancs->caste == '7' ? "selected" : "" }} value="6">Don't Know</option>
-                                <option {{ $ancs && $ancs->caste == '1' ? "selected" : "" }} value="0">Dalit</option>
-                                <option {{ $ancs && $ancs->caste == '2' ? "selected" : "" }} value="1">Janajati</option>
-                                <option {{ $ancs && $ancs->caste == '3' ? "selected" : "" }} value="2">Madheshi</option>
-                                <option {{ $ancs && $ancs->caste == '4' ? "selected" : "" }} value="3">Muslim</option>
-                                <option {{ $ancs && $ancs->caste == '5' ? "selected" : "" }} value="4">Brahmin/Chhetrai
+                                <option {{ $ancs && $ancs->caste == '6' ? "selected" : "" }} value="6">Don't Know</option>
+                                <option {{ $ancs && $ancs->caste == '0' ? "selected" : "" }} value="0">Dalit</option>
+                                <option {{ $ancs && $ancs->caste == '1' ? "selected" : "" }} value="1">Janajati</option>
+                                <option {{ $ancs && $ancs->caste == '2' ? "selected" : "" }} value="2">Madheshi</option>
+                                <option {{ $ancs && $ancs->caste == '3' ? "selected" : "" }} value="3">Muslim</option>
+                                <option {{ $ancs && $ancs->caste == '4' ? "selected" : "" }} value="4">Brahmin/Chhetrai
                                 </option>
-                                <option {{ $ancs && $ancs->caste == '6' ? "selected" : "" }} value="5">Other</option>
+                                <option {{ $ancs && $ancs->caste == '5' ? "selected" : "" }} value="5">Other</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -97,72 +97,6 @@
                             @if ($errors->has('sex'))
                                 <small id="help" class="form-text text-danger">{{ $errors->first('sex') }}</small>
                             @endif
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="company">Current Address</label>
-                            {{-- <div class="row">
-                                <div class="form-group col-sm-3" id="province">
-                                    <select name="province_id" class="form-control"
-                                            onchange="provinceOnchange($(this).val())">
-                                        @if(Auth::user()->role!="province" && Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
-                                            <option value="">Select All Provinces</option>
-                                        @endif
-                                        @foreach(App\Models\Province::all() as $province)
-                                            @if($province_id==$province->id || old('province_id')==$province->id)
-                                                @php($selectedProvince = "selected")
-                                            @else
-                                                @php($selectedProvince = "")
-                                            @endif
-                                            <option value="{{$province->id}}" {{$selectedProvince}}>{{$province->province_name}}</option>
-                                        @endforeach
-                                    </select>
-                                    @if ($errors->has('province_id'))
-                                        <small id="help"
-                                               class="form-text text-danger">{{ $errors->first('province_id') }}</small>
-                                    @endif
-                                </div>
-                                <div class="form-group  col-sm-3" id="district">
-                                    <select name="district_id" class="form-control"
-                                            onchange="districtOnchange($(this).val())">
-                                        @if(Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
-                                            <option value="">Select All Districts</option>
-                                        @endif
-                                        @foreach(App\Models\District::where('province_id', $province_id)->get() as $district)
-                                            @if($district_id==$district->id || old('district_id')==$district->id)
-                                                @php($selectedDistrict = "selected")
-                                            @else
-                                                @php($selectedDistrict = "")
-                                            @endif
-                                            <option value="{{$district->id}}" {{$selectedDistrict}}>{{$district->district_name}}</option>
-                                        @endforeach
-                                    </select>
-                                    @if ($errors->has('district_id'))
-                                        <small id="help"
-                                               class="form-text text-danger">{{ $errors->first('district_id') }}</small>
-                                    @endif
-                                </div>
-                                <div class="form-group  col-sm-3" id="municipality">
-                                    <select name="municipality_id" class="form-control"
-                                            onchange="municipalityOnchange($(this).val())"
-                                            id="municipality_id">
-                                        @if(Auth::user()->role!="municipality" && Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
-                                            <option value="">Select All Municipalities</option>
-                                        @endif
-                                        @foreach(\App\Models\Municipality::where('district_id', $district_id)->get() as $municipality)
-                                            @if($municipality_id==$municipality->id  || old('municipality_id')==$municipality->id)
-                                                @php($selectedMunicipality = "selected")
-                                            @else
-                                                @php($selectedMunicipality = "")
-                                            @endif
-                                            <option value="{{$municipality->id}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>
-                                        @endforeach
-                                    </select>
-                                    @if ($errors->has('municipality_id'))
-                                        <small id="help"
-                                               class="form-text text-danger">{{ $errors->first('municipality_id') }}</small>
-                                    @endif
-                                </div>
-                            </div> --}}
                         </div>
                         <div class="form-group {{ $errors->has('ward') ? 'has-error' : '' }}">
                             <label for="ward">Ward No</label>
@@ -259,22 +193,21 @@
                                 </label>
                             </div>
                         </div>
-                        {{-- @php @endphp --}}
-                        {{-- {{ dd(trim($ancs->reson_for_testing, "[]")) }} --}}
-                        {{-- <div class="form-group" id="case_reason">
+                        <div class="form-group" id="case_reason">
+                            @php $reasons = json_decode($ancs->reson_for_testing); @endphp
                             <label class="control-label" for="reson_for_testing">Reason for testing:</label><br>
-                            <input type="checkbox" name="reson_for_testing[]" value="1" @if(in_array(1, $ancs->reson_for_testing)) checked @endif>Planned travel<br>
-                            <input type="checkbox" name="reson_for_testing[]" value="2" @if(in_array(2, $ancs->reson_for_testing)) checked @endif>Mandatory requirement<br>
-                            <input type="checkbox" name="reson_for_testing[]" value="3" @if(in_array(3, $ancs->reson_for_testing)) checked @endif>Returnee/Migrant worker<br>
-                            <input type="checkbox" name="reson_for_testing[]" value="4" @if(in_array(4, $ancs->reson_for_testing)) checked @endif>Pre-medical/surgical procedure<br>
-                            <input type="checkbox" name="reson_for_testing[]" value="5" @if(in_array(5, $ancs->reson_for_testing)) checked @endif>Pregnancy complications/Pre-delivery<br>
-                            <input type="checkbox" name="reson_for_testing[]" value="6" @if(in_array(6, $ancs->reson_for_testing)) checked @endif>Testing by Government authority for other purpose<br>
-                            <input type="checkbox" name="reson_for_testing[]" value="7" @if(in_array(7, $ancs->reson_for_testing)) checked @endif>Test on demand by person<br>
+                            <input type="checkbox" name="reson_for_testing[]" value="1" @if(in_array(1, $reasons)) checked @endif>Planned travel<br>
+                            <input type="checkbox" name="reson_for_testing[]" value="2" @if(in_array(2, $reasons)) checked @endif>Mandatory requirement<br>
+                            <input type="checkbox" name="reson_for_testing[]" value="3" @if(in_array(3, $reasons)) checked @endif>Returnee/Migrant worker<br>
+                            <input type="checkbox" name="reson_for_testing[]" value="4" @if(in_array(4, $reasons)) checked @endif>Pre-medical/surgical procedure<br>
+                            <input type="checkbox" name="reson_for_testing[]" value="5" @if(in_array(5, $reasons)) checked @endif>Pregnancy complications/Pre-delivery<br>
+                            <input type="checkbox" name="reson_for_testing[]" value="6" @if(in_array(6, $reasons)) checked @endif>Testing by Government authority for other purpose<br>
+                            <input type="checkbox" name="reson_for_testing[]" value="7" @if(in_array(7, $reasons)) checked @endif>Test on demand by person<br>
                             @if ($errors->has('reson_for_testing'))
                                 <small id="help"
                                        class="form-text text-danger">{{ $errors->first('reson_for_testing') }}</small>
                             @endif
-                        </div> --}}
+                        </div>
 
                         <h2>Lab Data</h2>
                         <div class="form-group">
@@ -303,8 +236,21 @@
                         </div>
                         <div class="form-group">
                             <label for="name">Sample Test Result</label>
-                            <input type="text" id="sample_test_result" class="form-control" value="{{ $ancs ? $ancs->sample_test_result : '' }}" name="sample_test_result"
-                                   aria-describedby="help" placeholder="Enter Full Name">
+                            <select name="sample_test_result" class="form-control">
+                                <option value="" disabled selected>Select Sample Test Result</option>
+                                <option {{ $ancs && $ancs->sample_test_result == '3' ? "selected" : "" }} value="3">Positive</option>
+                                <option {{ $ancs && $ancs->sample_test_result == '4' ? "selected" : "" }} value="4">Negative</option>
+                                <option {{ $ancs && $ancs->sample_test_result == '9' ? "selected" : "" }}  value="9">Received</option>
+                                @php if($ancs->sample_test_result != 3 && $ancs->sample_test_result != 4 && $ancs->sample_test_result != 9) {
+                                    $is_select = 'selected';
+                                    $is_value = $ancs->sample_test_result;
+                                } else {
+                                    $is_select = '';
+                                    $is_value = '10';
+                                }
+                                @endphp
+                                <option {{ $is_select }} value="{{ $is_value }}">Don't Know</option>
+                            </select>
                             @if ($errors->has('sample_test_result'))
                                 <small id="help" class="form-text text-danger">{{ $errors->first('sample_test_result') }}</small>
                             @endif
