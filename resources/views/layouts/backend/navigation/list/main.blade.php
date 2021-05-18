@@ -322,11 +322,11 @@
 {{--        </li>--}}
 {{--    </ul>--}}
 {{--</li>--}}
-<li>
+{{-- <li>
     <a href="{{ route('admin.ancs.search') }}">
        ANCS search <span class=""></span>
     </a>
-</li>
+</li> --}}
 <li>
     <a href="#">
         <i class="fa fa-user" aria-hidden="true"></i>
