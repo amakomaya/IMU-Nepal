@@ -226,44 +226,6 @@
             </a>
         </li>
         <li>
-            <a href="{{ route('stock.list') }}">
-              <i class="fa fa-medkit" aria-hidden="true"></i>
-
-              Medicine Stocks <span class="fa arrow"></span>
-          </a>
-        </li>
-        <li>
-            <a href="#">
-                <i class="fa fa-money" aria-hidden="true"></i>
-
-                By Organization <span class="fa arrow"></span>
-            </a>
-            <ul class="nav nav-third-level">
-                <li>
-                    <a href="{{ route('cases.payment.by.organization') }}">
-                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                        All
-                        <span class="label label-info pull-right">All</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('cases.payment.by.institutional') }}">
-                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                        Institutional
-                        <span class="label label-info pull-right">Isolation</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('cases.payment.by.lab-treatment') }}">
-                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                        Lab & Treatment
-                        <span class="label label-info pull-right">LNT</span>
-                    </a>
-                </li>
-
-            </ul>
-        </li>
-        <li>
             <a href="{{ route('cases.payment.index') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                 Under Treatment
@@ -297,6 +259,44 @@
                         <span class="label label-primary pull-right"> List </span>
                     </a>
                 </li>
+            </ul>
+        </li>
+        <li>
+            <a href="{{ route('stock.list') }}">
+              <i class="fa fa-medkit" aria-hidden="true"></i>
+
+              Medicine Stocks
+          </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class="fa fa-money" aria-hidden="true"></i>
+
+                By Organization <span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-third-level">
+                <li>
+                    <a href="{{ route('cases.payment.by.organization') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        All
+                        <span class="label label-info pull-right">All</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('cases.payment.by.institutional') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Institutional
+                        <span class="label label-info pull-right">Isolation</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('cases.payment.by.lab-treatment') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Lab & Treatment
+                        <span class="label label-info pull-right">LNT</span>
+                    </a>
+                </li>
+
             </ul>
         </li>
     </ul>
