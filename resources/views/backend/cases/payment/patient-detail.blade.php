@@ -20,6 +20,17 @@
                         Observation Cases
                     </div>
                     <div class="panel-body">
+                        <div class="row">
+                            <form method="get" action="">
+                                <div class="form-group col-lg-6">
+                                    <label for="date_from">Date From</label>
+                                    <input type="date" name="date_from" class="form-control" value="{{ app('request')->input('date_from') }}" max="{{ date('Y-m-d') }}"/><br>
+                                    <label for="date_to">Date To</label>
+                                    <input type="date" name="date_to" class="form-control" value="{{ app('request')->input('date_to') }}" max="{{ date('Y-m-d') }}"/><br>
+                                    <button type="submit" class="btn btn-success pull-right">Filter</button>
+                                </div>
+                            </form>
+                        </div>
                         <div class="dataTable_wrapper">
                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
@@ -32,7 +43,7 @@
                                 </tr>
                                 <tr>
                                     <th>All Status</th>
-                                    <th>Admission Date</th>
+                                    <th>Start Date</th>
                                     <th>Days Stayed</th>
                                     <th>Current Status</th>
                                 </tr>
@@ -79,6 +90,7 @@
                                                 $current_status = '<span class="label label-info">N/A</span>';
                                             }
                                         }
+                                        $total_days = 0;
                                     @endphp
 
                                     <tr>
@@ -125,11 +137,13 @@
                                                     $datetime1 = new DateTime($item->date);
                                                     $datetime2 = new DateTime($next_date);
                                                     $interval = $datetime1->diff($datetime2);
-                                                    $days = $interval->format('%a');
-                                                    $days = $days + 1;
+                                                    $days_d = $interval->format('%a');
+                                                    $days = $days_d + 1;
+                                                    $total_days += $days;
                                                 @endphp
                                                 {{ $days }} days<br>
                                             @endforeach
+                                            <b>Total days: {{ $total_days }} days</b>
                                         </td>
                                         <td>
                                             {!! $current_status !!}
