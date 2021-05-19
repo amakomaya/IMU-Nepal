@@ -198,7 +198,7 @@ class WomanController extends Controller
         $payment_cases = PaymentCase::where('hp_code', $organization_hp_code)
             ->whereBetween(DB::raw('DATE(register_date_en)'), [$date_from, $date_to])
             ->latest()->get();
-        return view('backend.cases.payment.patient-detail', compact('payment_cases'));
+        return view('backend.cases.payment.patient-detail', compact('payment_cases', 'date_from', 'date_to'));
     }
 
     public function create(Request $request)
