@@ -410,13 +410,16 @@ export default {
                 timer: 3000
               })
               this.data.name = response.data.data.name
-                  this.data.age = response.data.data.age
-                  this.data.gender = response.data.data.sex
-                  this.data.address =  response.data.data.tole + '-' + response.data.data.ward + ',' + response.data.data.municipality_name
-                  this.data.phone = response.data.data.emergency_contact_one
-                  this.data.health_condition = 0
-                  this.data.is_death = ''
-                  this.data.lab_id = id
+              this.data.age = response.data.data.age
+              this.data.gender = response.data.data.sex
+              this.data.address =  response.data.data.tole + '-' + response.data.data.ward + ',' + response.data.data.municipality_name
+              this.data.phone = response.data.data.emergency_contact_one
+              this.data.health_condition = 0
+              this.data.is_death = ''
+              this.data.lab_id = id
+              var today = new Date();
+              this.data.register_date_np = this.ad2bs(today);
+              this.data.register_date_en = (new Date(response.data.register_date_en)).toLocaleString().split(',')[0].split("/").reverse().join("-");
               if (this.item){
                 this.$dlg.closeAll(function(){
                   // do something after all dialog closed
@@ -578,7 +581,6 @@ export default {
               this.data.phone = response.data.phone;
               this.data.method_of_diagnosis = response.data.method_of_diagnosis;
               this.data.hospital_register_id = response.data.hospital_register_id;
-              this.data.register_date_np = response.data.register_date_np;
               this.data.register_date_np = response.data.register_date_np;
               this.data.register_date_en = (new Date(response.data.register_date_en)).toLocaleString().split(',')[0].split("/").reverse().join("-");
               ;
