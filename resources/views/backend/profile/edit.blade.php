@@ -88,6 +88,7 @@
                                         </div>
                                     </div>
 
+                                @if(auth()->user()->role === 'healthpost')
                                 <div class="form-group{{ $errors->has('no_of_beds') ? ' has-error' : '' }}">
                                     <label for="no_of_beds" class="col-md-3 control-label"><i data-toggle="tooltip" title=""class="fa fa-info-circle" aria-hidden="true"></i> No of Beds ( General )</label>
 
@@ -158,7 +159,7 @@
                                     </div>
                                 </div>
 
-
+                                @endif
                                 <br>
                                     <div class="form-group"> <div class="col-md-7 col-md-offset-3">
                                         
