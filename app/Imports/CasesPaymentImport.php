@@ -21,6 +21,14 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
 {
     use Importable;
 
+    public $enums = array(
+      'gender'=> array( 'Male' => 1, 'Female' => 2, 'Other' => 3 ),
+      'health_condition' => array ('No Symptoms'=> 1, 'Mild' => 2, 'Moderate &  HDU' => 3, 'Severe - ICU' => 4, 'Severe - Ventilator'),
+      'paid_free' => array ('Paid' => "1", 'Free' => "2"),
+      'method_of_diagnosis' => array ('PCR' => 1, 'Antigen' => 2, 'Clinical Diagnosis' => 3, 'Others' => 10),
+      'age_unit' => array ('Year' => 0, 'Month' => 1, 'Day' => 2),
+    );
+  
     public function __construct(User $importedBy)
     {
         $this->importedBy = $importedBy;
@@ -38,73 +46,81 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
     public function model(array $row)
     {
         if(!array_filter($row)) { return null;} //Ignore empty rows.
-        $enums = array(
-          'gender'=> array( 'Male' => 1, 'Female' => 2, 'Other' => 3 ),
-          'health_condition' => array ('No Symptoms'=> 1, 'Mild' => 2, 'Moderate & HDU' => 3, 'Severe - ICU' => 4, 'Severe - Ventilator'),
-          'paid_free' => array ('Paid' => "1", 'Free' => "2"),
-          'method_of_diagnosis' => array ('PCR' => 1, 'Antigen' => 2, 'Clinical Diagnosis' => 3, 'Others' => 10),
-          'age_unit' => array ('Year' => 0, 'Month' => 1, 'Day' => 2),
-        );
+        
         $date_en = Carbon::now();
         $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
-        // echo ($row['parentguardian_name']);
-        // die;
+
         return new PaymentCase([
-            'hospital_register_id' => $row['hospital_id'] ,
+            'hospital_register_id' => $row['hospital_id'],
             'name' => $row['full_name_of_patient'],
             'register_date_en'=> $date_en->isoFormat("Y-M-D"),
             'register_date_np' => $date_np,
             'lab_name' => $row['lab_name']??'No Lab Found',
             'lab_id' => $row['lab_id']??'0123456789',
             'age' => $row['age'],
-            'age_unit' => $enums['age_unit'][$row['age_unit']] ?? 0,
-            'gender' => $enums['gender'][$row['gender']],
+            'age_unit' => $row['age_unit'],
+            'gender' => $row['gender'],
             'phone' => $row['mobile_number'],
             'address' => $row['current_address_of_patient'],
             'guardian_name' => $row['parentguardian_name'],
             'complete_vaccination' => null,
-            'health_condition' => $enums['health_condition'][$row['health_condition']] ?? null,
-            'self_free' => $enums['paid_free'][$row['paid_free']],
+            'health_condition' => $row['health_condition'],
+            'self_free' =>$row['paid_free'],
             'remark' => $row['remark'],
             'is_death' => null,
             'is_in_imu' => 0,
-            'method_of_diagnosis' => $enums['method_of_diagnosis'][$row['method_of_diagnosis']],
+            'method_of_diagnosis' => $row['method_of_diagnosis'],
             'hp_code' => \App\Models\Organization::where('token', auth()->user()->token)->first()->hp_code
-
         ]);
     }
-
+    
+    public function prepareForValidation($data, $index)
+    {
+        $data['paid_free'] = $this->enums['paid_free'][$data['paid_free']];
+        $data['gender'] = $this->enums['gender'][$data['gender']];
+        $data['age_unit'] = $this->enums['age_unit'][$data['age_unit']] ?? 0;
+        $data['health_condition'] = $this->enums['health_condition'][$data['health_condition']] ?? null;
+        $data['method_of_diagnosis'] = $this->enums['method_of_diagnosis'][$data['method_of_diagnosis']] ?? null;
+        
+        return $data;
+    }
+  
     public function rules(): array
     {
         return [
             'full_name_of_patient' => function($attribute, $value, $onFailure) {
               if ($value === '' || $value === null) {
-                   $onFailure('Patient Name cannot be empty');
+                   $onFailure('Invalid Patient Name');
               }
             },
             'age' => function($attribute, $value, $onFailure) {
               if ($value === '' || $value === null) {
-                   $onFailure('Age be empty');
+                   $onFailure('Invalid Age');
               }
             },
             'gender' => function($attribute, $value, $onFailure) {
               if ($value === '' || $value === null) {
-                   $onFailure('Gender cannot be empty');
+                   $onFailure('Invalid Gender');
               }
             },
             'health_condition' => function($attribute, $value, $onFailure) {
               if ($value === '' || $value === null) {
-                   $onFailure('Health Condition cannot be empty');
+                   $onFailure('Invalid Health Condition');
               }
             },
             'method_of_diagnosis' => function($attribute, $value, $onFailure) {
               if ($value === '' || $value === null) {
-                   $onFailure('Method of Diagnosis cannot be empty');
+                   $onFailure('Invalid Method');
               }
             },
             'paid_free' => function($attribute, $value, $onFailure) {
               if ($value === '' || $value === null) {
-                   $onFailure('Self/Paid cannot be empty');
+                   $onFailure('Invalid Self/Paid');
+              }
+            },
+            'mobile_number' => function($attribute, $value, $onFailure) {
+              if(!preg_match('/(?:\+977[- ])?\d{2}-?\d{7,8}/i', $value)) {
+                $onFailure('Invalid Mobile Number.');
               }
             }
         ];
