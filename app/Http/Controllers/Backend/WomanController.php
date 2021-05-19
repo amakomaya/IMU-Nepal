@@ -144,7 +144,13 @@ class WomanController extends Controller
 
     public function casePaymentDropdown(Request $request)
     {
-        $healthposts = Organization::where('token', Auth::user()->token)->first();
+        if(Auth::user()->role == 'healthpost'){
+            $healthposts = Organization::where('token', Auth::user()->token)->first();
+        }
+        if (Auth::user()->role == 'healthworker'){
+            $hp_code = OrganizationMember::where('token',Auth::user()->token)->first()->hp_code;
+            $healthposts = Organization::where('hp_code', $hp_code)->first();
+        }
         $total = $healthposts->no_of_beds + $healthposts->no_of_hdu + $healthposts->no_of_icu + $healthposts->no_of_ventilators;
 
         $response = FilterRequest::filter($request);
