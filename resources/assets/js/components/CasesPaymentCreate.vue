@@ -409,17 +409,19 @@ export default {
                 showConfirmButton: false,
                 timer: 3000
               })
-              this.data.name = response.data.data.name
-              this.data.age = response.data.data.age
-              this.data.gender = response.data.data.sex
-              this.data.address =  response.data.data.tole + '-' + response.data.data.ward + ',' + response.data.data.municipality_name
-              this.data.phone = response.data.data.emergency_contact_one
-              this.data.health_condition = 0
-              this.data.is_death = ''
-              this.data.lab_id = id
               var today = new Date();
-              this.data.register_date_np = this.ad2bs(today);
-              this.data.register_date_en = (new Date(response.data.register_date_en)).toLocaleString().split(',')[0].split("/").reverse().join("-");
+              this.data = {
+                name : response.data.data.name,
+                age : response.data.data.age,
+                gender : response.data.data.sex,
+                address :  response.data.data.tole + '-' + response.data.data.ward + ',' + response.data.data.municipality_name,
+                phone : response.data.data.emergency_contact_one,
+                health_condition : 0,
+                is_death : '',
+                lab_id : id,
+                register_date_np : this.ad2bs(today),
+                register_date_en : (new Date(response.data.register_date_en)).toLocaleString().split(',')[0].split("/").reverse().join("-")
+              };
               if (this.item){
                 this.$dlg.closeAll(function(){
                   // do something after all dialog closed
@@ -498,29 +500,32 @@ export default {
                 showConfirmButton: false,
                 timer: 3000
               })
-              if (this.is_to_update) {
-                if (!this.isHealthConditionAddHidden){
-                  if(this.health_condition_details_health_condition !== '' &&
-                      this.health_condition_details_start_date !== ''
-                  ){
-                    this.health_condition_details_health_condition = ''
-                    this.health_condition_details_start_date = ''
-                  }
+              if (this.is_to_update === false) {
+                this.$v.$reset();
+                var today = new Date();
+                this.data = {};
+                this.data = {
+                  health_condition: 0,
+                  is_death: '',
+                  register_date_np: this.ad2bs(today),
+                  lab_name: this.labSelected.name
                 }
-                this.isSubmitting = false;
-                return false;
               }
-              // this.$v.$reset();
-              // var today = new Date();
-              // this.data = {
-              //   health_condition : 0,
-              //       is_death : '',
-              //   register_date_np : this.ad2bs(today),
-              //   lab_name : this.labSelected.name
-              // }
               this.isSubmitting = false;
-
-            } else {
+            }
+            if (this.is_to_update) {
+              if (!this.isHealthConditionAddHidden) {
+                if (this.health_condition_details_health_condition !== '' &&
+                    this.health_condition_details_start_date !== ''
+                ) {
+                  this.health_condition_details_health_condition = ''
+                  this.health_condition_details_start_date = ''
+                }
+              }
+              this.isSubmitting = false;
+              return false;
+            }
+            else {
               this.$swal({
                 title: 'Oops. Something went wrong.',
                 type: 'error',
