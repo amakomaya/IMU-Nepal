@@ -635,6 +635,17 @@ namespace Yagiten\Nepalicalendar;
 				return $date = $_eng_date['date'];
 			}
 		}
+
+		// public function convert_eng_to_nep($date) {
+		// 	$yy = substr($date, 0, 4);
+		// 	$mm = substr($date, 5, 2);
+		// 	$dd = substr($date, 8, 2);
+			
+		// 	$eng_date = $this->eng_to_nep($yy, $mm, $dd);
+		// 	$eng_date_formatted = $eng_date['year']. '-'. sprintf('%02d', $eng_date['month']) . '-' . sprintf('%02d', $eng_date['date']);
+			
+		// 	return $eng_date_formatted;
+		// }
 	}
 
 	/* Example 
