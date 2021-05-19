@@ -409,16 +409,14 @@ export default {
                 showConfirmButton: false,
                 timer: 3000
               })
-              this.data = {
-                name : response.data.data.name,
-                age : response.data.data.age,
-                gender : response.data.data.sex,
-                address : response.data.data.tole + '-' + response.data.data.ward + ',' + response.data.data.municipality_name,
-                phone : response.data.data.emergency_contact_one,
-                health_condition : 0,
-                is_death : '',
-                lab_id : id
-              };
+              this.data.name = response.data.data.name
+                  this.data.age = response.data.data.age
+                  this.data.gender = response.data.data.sex
+                  this.data.address =  response.data.data.tole + '-' + response.data.data.ward + ',' + response.data.data.municipality_name
+                  this.data.phone = response.data.data.emergency_contact_one
+                  this.data.health_condition = 0
+                  this.data.is_death = ''
+                  this.data.lab_id = id
               if (this.item){
                 this.$dlg.closeAll(function(){
                   // do something after all dialog closed
@@ -426,7 +424,7 @@ export default {
               }
             } else {
               this.$swal({
-                title: 'Oops. No record found. \n Even than you can continue to full data.',
+                title: 'Oops. No record found. \n Even than you can continue to fill data.',
                 type: 'warning',
                 toast: true,
                 position: 'top-end',
