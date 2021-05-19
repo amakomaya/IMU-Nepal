@@ -24,20 +24,110 @@
                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                 <tr>
-                                    <th width="10px"></th>
-                                    <th>Name</th>
-                                    <th>Hospital ID</th>
-                                    <th>Register Date</th>
-                                    <th>Action</th>
+                                    <th rowspan="2" width="10px"></th>
+                                    <th rowspan="2">Name</th>
+                                    <th rowspan="2">Hospital ID</th>
+                                    <th rowspan="2">Register Date</th>
+                                    <th colspan="4" class="text-center">Health Condition</th>
+                                </tr>
+                                <tr>
+                                    <th>All Status</th>
+                                    <th>Admission Date</th>
+                                    <th>Days</th>
+                                    <th>Current Status</th>
                                 </tr>
                                 </thead>
+                                @php $conditions = []; @endphp
                                 <tbody>
                                     @foreach($payment_cases as $key => $cases)
+                                    @php
+                                        if($cases->health_condition_update != null) {
+                                            $conditions[$key] = json_decode($cases->health_condition_update);
+                                        } else {
+                                            $conditions[$key] = [];
+                                        }
+                                        $first_data = [
+                                            'id' => $cases->health_condition,
+                                            'date' => date("Y-m-d", strtotime($cases->register_date_en)),
+                                        ];
+                                        $new = (object)$first_data;
+                                        array_push($conditions[$key], $new);
+
+                                        $lastvalue = end($conditions[$key]);
+                                        $lastkey = key($conditions[$key]);
+
+                                        $arr1 = array($lastkey=>$lastvalue);
+
+                                        array_pop($conditions[$key]);
+
+                                        $conditions[$key] = array_merge($arr1,$conditions[$key]);
+
+                                        if($cases->date_of_outcome == null) {
+                                            $discharge_date = date('Y-m-d');
+                                        } else {
+                                            $discharge_date = $cases->date_of_outcome_en;
+                                        }
+
+                                        if($cases->is_death == null) {
+                                            $current_status = '<span class="label label-primary">Under Treatment</span>';
+                                        } else {
+                                            if($cases->is_death == 1){
+                                                $current_status = '<span class="label label-success">Discharged</span>';
+                                            } elseif ($cases->is_dead == 2) {
+                                                $current_status = '<span class="label label-danger">Dead</span>';
+                                            } else {
+                                                $current_status = '<span class="label label-info">N/A</span>';
+                                            }
+                                        }
+                                    @endphp
+
                                     <tr>
-                                        <td></td>
+                                        <td>{{ $key+1 }}</td>
                                         <td>{{ $cases->name }}</td>
                                         <td>{{ $cases->hospital_register_id }}</td>
-                                        <td>{{ $cases->register_date_np }}</td>
+                                        <td>{{ date("Y-m-d", strtotime($cases->register_date_en)) }}</td>
+                                        <td>
+                                            @foreach ($conditions[$key] as $key1 => $item)
+                                            @php
+                                                if($item->id == 1) {
+                                                    $con_name = 'No Symptoms';
+                                                } elseif ($item->id == 2) {
+                                                    $con_name = 'Mild';
+                                                } elseif ($item->id == 3) {
+                                                    $con_name = 'Moderate ( HDU )';
+                                                } elseif ($item->id == 4) {
+                                                    $con_name = 'Severe - ICU';
+                                                } elseif ($item->id == 5) {
+                                                    $con_name = 'Severe - Ventilator';
+                                                } else{
+                                                    $con_name = 'N/A';
+                                                }
+                                            @endphp
+                                                {{ $con_name }}<br>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @foreach ($conditions[$key] as $key2 => $item)
+                                                {{ $item->date }}<br>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @foreach ($conditions[$key] as $key2 => $item)
+                                                @php
+                                                    $next_date = array_key_exists($key2 + 1, $conditions[$key]) ? $conditions[$key][$key2 +1]->date : $discharge_date;
+
+                                                    $datetime1 = new DateTime($item->date);
+                                                    $datetime2 = new DateTime($next_date);
+                                                    $interval = $datetime1->diff($datetime2);
+                                                    $days = $interval->format('%a');
+                                                    $days = $days + 1;
+                                                @endphp
+                                                {{ $days }} days<br>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            {!! $current_status !!}
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
