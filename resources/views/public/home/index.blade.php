@@ -588,12 +588,40 @@
   });
 
   var activeProvince, activeDistrict, activeMunicipality, mainData, activeOrganization;
+  var province_id = {!! json_encode($province_id) !!};
+
+  $(function() {
+
+    if(province_id != null) {
+      if(activeProvince === undefined) {
+        if(province_id === 1) {
+          activeProvince = { name: "Province 1", id: province_id };
+        }else if(province_id === 2){
+          activeProvince = { name: "Province 2", id: province_id };
+        }else if(province_id === 3){
+          activeProvince = { name: "Bagmati Pradesh", id: province_id };
+        }else if(province_id === 4){
+          activeProvince = { name: "Gandaki Pradesh", id: province_id };
+        }else if(province_id === 5){
+          activeProvince = { name: "Province 5", id: province_id };
+        }else if(province_id === 6){
+          activeProvince = { name: "Karnali Pradesh", id: province_id };
+        }else if(province_id === 7){
+          activeProvince = { name: "Sudurpashchim Pradesh", id: province_id };
+        }
+      }
+    }
+    generateActiveTitle();
+    fetchData();
+  });
+
 
   function fetchData() {
     let params = '?';
     if (activeOrganization === undefined){
         activeOrganization = {name: "Lab & Treatment( Hospital )", id: "3"};
     }
+
     if(activeMunicipality) {
       params += 'municipality_id='+activeMunicipality.id;
     } else if(activeDistrict) {
@@ -823,7 +851,13 @@
       var provinceDropdown = $('#province-selector');
       provinceDropdown.append($("<option />").val(null).text('Select'));
       $.each(data, function() {
-        provinceDropdown.append($("<option />").val(this.id).text(this.province_name));
+        if(province_id == null) {
+          provinceDropdown.append($("<option />").val(this.id).text(this.province_name));
+        } else {
+          if(province_id === this.id) {
+            provinceDropdown.append($("<option />").val(this.id).text(this.province_name));
+          }
+        }
       });
     });
   }

@@ -6,14 +6,23 @@ use App\Helpers\GetHealthpostCodes;
 use App\Models\Organization;
 use App\Models\OrganizationMember;
 use App\Models\PaymentCase;
+use App\Models\ProvinceInfo;
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Auth;
 
 class PublicDataController extends Controller
 {
     public function index() {
-      return view('public.home.index');
+        if(Auth::user()->role == 'province') {
+            $province_id = ProvinceInfo::where('token', Auth::user()->token)->first()->province_id;
+        }elseif(Auth::user()->role == 'main') {
+            $province_id = null;
+        }else {
+            return redirect('/admin');
+        }
+        return view('public.home.index', compact('province_id'));
     }
 
     public function publicPortal(Request $request){

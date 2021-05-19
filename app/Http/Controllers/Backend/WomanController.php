@@ -23,6 +23,7 @@ use GMaps;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yagiten\Nepalicalendar\Calendar;
+use DB;
 
 class WomanController extends Controller
 {
@@ -210,11 +211,13 @@ class WomanController extends Controller
 
     public function casesPatientDetail(Request $request)
     {
-        $response = FilterRequest::filter($request);
-        $hpCodes = GetHealthpostCodes::filter($response);
-
-        $payment_cases = PaymentCase::whereIn('hp_code', $hpCodes)->latest()->get();
-        return view('backend.cases.payment.patient-detail', compact('payment_cases'));
+        $date_from = $request->date_from ?: date('Y-m-d',strtotime("-14 days"));
+        $date_to = $request->date_to ?: date('Y-m-d');
+        $organization_hp_code = Organization::where('token', Auth::user()->token)->first()->hp_code;
+        $payment_cases = PaymentCase::where('hp_code', $organization_hp_code)
+            ->whereBetween(DB::raw('DATE(register_date_en)'), [$date_from, $date_to])
+            ->latest()->get();
+        return view('backend.cases.payment.patient-detail', compact('payment_cases', 'date_from', 'date_to'));
     }
 
     public function create(Request $request)
