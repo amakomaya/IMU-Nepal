@@ -29,17 +29,4 @@ class PaymentCase extends Model
         'register_date_en',
         'phone'
     ];
-
-    
-
-    // public function conditionType() {
-    // 	$conditions = [
-    //         1 => 'No Symptoms',
-    //         2 => 'Mild',
-    //         3 => 'Moderate ( HDU )',
-    //         4 => 'Severe - ICU',
-    //         5 => 'Severe - Ventilator',
-    //     ];
-    //     return isset($conditions[$this->qualifications]) ? $conditions[$this->qualifications] : '';
-    // }
 }

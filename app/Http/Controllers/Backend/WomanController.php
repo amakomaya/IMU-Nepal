@@ -191,10 +191,8 @@ class WomanController extends Controller
 
     public function casesPatientDetail(Request $request)
     {
-        $response = FilterRequest::filter($request);
-        $hpCodes = GetHealthpostCodes::filter($response);
-
-        $payment_cases = PaymentCase::whereIn('hp_code', $hpCodes)->latest()->get();
+        $organization_hp_code = Organization::where('token', Auth::user()->token)->first()->hp_code;
+        $payment_cases = PaymentCase::where('hp_code', $organization_hp_code)->latest()->get();
         return view('backend.cases.payment.patient-detail', compact('payment_cases'));
     }
 
