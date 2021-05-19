@@ -33,7 +33,7 @@
                                 <tr>
                                     <th>All Status</th>
                                     <th>Admission Date</th>
-                                    <th>Days</th>
+                                    <th>Days Stayed</th>
                                     <th>Current Status</th>
                                 </tr>
                                 </thead>
@@ -108,7 +108,13 @@
                                         </td>
                                         <td>
                                             @foreach ($conditions[$key] as $key2 => $item)
-                                                {{ $item->date }}<br>
+                                            @php
+                                                $yy = substr($item->date, 0, 4);
+                                            	$mm = substr($item->date, 5, 2);
+                                            	$dd = substr($item->date, 8, 2);
+                                                $date_np = Yagiten\Nepalicalendar\Calendar::eng_to_nep((int)$yy, (int)$mm, (int)$dd)->getYearMonthDay();
+                                            @endphp
+                                                {{ $date_np }}<br>
                                             @endforeach
                                         </td>
                                         <td>
