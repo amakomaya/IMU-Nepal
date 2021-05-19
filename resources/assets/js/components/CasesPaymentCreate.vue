@@ -1,14 +1,13 @@
 <template>
   <div class="container row">
     <form @submit.prevent>
-      <div class="large-12 medium-12 small-12 cell">
-        <label>File
-          <input type="file" id="file" ref="bulk_file" v-on:change="handleFileUpload()" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
-        </label>
-          <button class="btn btn-info pull-right" v-on:click="submitFile()">
-            Bulk Upload
-        </button>
-      </div>
+      <label for="file" class="btn btn-primary">Bulk Upload
+        <i class="fa fa-upload" aria-hidden="true"></i>
+      </label>
+      <a href="/downloads/excel/cases_payment_import_template.xlsx" onclick="return confirm('Are you sure, do you want to download import format ! ')" title="Do you have template ? if not, please download first and fill data than import.">Do you have template ? </a>
+      <input type="file" id="file" ref="bulk_file" v-on:change="handleFileUpload()" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="visibility:hidden;"/>
+            
+      
     <div v-show="true" class="panel panel-default" :class="{ 'panel-danger': $v.labSelected.$error }">
       <div class="panel-heading text-center"><strong>Search Lab ID in IMU</strong></div>
       <div class="panel-body">
@@ -50,69 +49,75 @@
     <div class="row">
       <div class="form-group col-lg-6"  :class="{ 'has-error': $v.data.hospital_register_id.$error }">
         <label class="control-label" for="hospital_register_id">Patient ID in Hospital *</label>
-        <input type="text" placeholder="Enter Patient ID in your Hospital" class="form-control" v-model.trim="data.hospital_register_id" id="hospital_register_id" />
+        <input type="text" placeholder="Enter Patient ID in your Hospital" class="form-control" v-model.trim="data.hospital_register_id" id="hospital_register_id" :readonly="is_to_update"/>
       </div>
 
 
       <div class="form-group col-lg-6" :class="{ 'has-error': $v.data.register_date_np.$error }">
         <label class="control-label" for="register_date">Register Date * &nbsp;<span class="label label-info pull-right">{{ data.register_date_np }}</span></label>
-        <div class="input-group"><span class="input-group-addon"><i
-            class="fa fa-calendar"></i></span>
-          <v-nepalidatepicker id="register_date" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
-                              format="YYYY-MM-DD" v-model.trim="data.register_date_np" :yearSelect="false"
-                              :monthSelect="false"/>
+        <div class="input-group">
+          <span>{{data.register_date_np}}</span>
         </div>
       </div>
 
     </div>
     <div class="form-group" :class="{ 'has-error': $v.data.name.$error }">
         <label class="control-label" for="name">Name *</label>
-        <input type="text" placeholder="Enter Full Name with space between first, middle and last name" class="form-control" v-model.trim="data.name" id="name" />
+        <input type="text" placeholder="Enter Full Name with space between first, middle and last name" class="form-control" v-model.trim="data.name" id="name" :readonly="is_to_update"/>
       </div>
       <div class="row">
         <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.age.$error }">
           <label class="control-label" for="age">Age *</label>
-          <input type="radio" id="age_years" v-model.trim="data.age_unit" value="0">
+          <input type="radio" id="age_years" v-model.trim="data.age_unit" value="0" :disabled="is_to_update">
           <label class="control-label" for="age_years">Years</label> &nbsp; &nbsp;
-          <input type="radio" id="age_months" v-model.trim="data.age_unit" value="1">
+          <input type="radio" id="age_months" v-model.trim="data.age_unit" value="1" :disabled="is_to_update">
           <label class="control-label" for="age_months">Months</label> &nbsp; &nbsp;
-          <input type="radio" id="age_days" v-model.trim="data.age_unit" value="2">
+          <input type="radio" id="age_days" v-model.trim="data.age_unit" value="2" :disabled="is_to_update">
           <label class="control-label" for="age_days">Days</label> &nbsp; &nbsp;
 
-          <input type="text" placeholder="Enter age" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" v-model.trim="data.age" id="age"/>
+          <input type="text" placeholder="Enter age" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" v-model.trim="data.age" id="age" :readonly="is_to_update"/>
         </div>
         <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.gender.$error }">
           <label class="control-label">Gender *</label><br>
-          <input type="radio" id="male" v-model.trim="data.gender"  value="1">
+          <input type="radio" id="male" v-model.trim="data.gender"  value="1" :disabled="is_to_update">
           <label class="control-label" for="male">Male</label> &nbsp; &nbsp;
-          <input type="radio" id="female" v-model.trim="data.gender" value="2">
+          <input type="radio" id="female" v-model.trim="data.gender" value="2" :disabled="is_to_update">
           <label class="control-label" for="female">Female</label> &nbsp; &nbsp;
-          <input type="radio" id="other" v-model.trim="data.gender" value="3">
+          <input type="radio" id="other" v-model.trim="data.gender" value="3" :disabled="is_to_update">
           <label class="control-label" for="other">Other</label>
         </div>
         <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.phone.$error }">
           <label class="control-label" for="phone">Mobile No *</label>
-          <input type="text" placeholder="Enter mobile number" class="form-control" v-model.trim="data.phone" id="phone" />
+          <input type="text" placeholder="Enter mobile number" class="form-control" v-model.trim="data.phone" id="phone" :readonly="is_to_update"/>
         </div>
       </div>
     <div class="form-group" :class="{ 'has-error': $v.data.address.$error }">
       <label class="control-label" for="name">Current Address *</label>
-      <input type="text" placeholder="Enter Current Address ( e.g Lazimpat-2, Kathmandu )" class="form-control" v-model.trim="data.address" id="address" />
+      <input type="text" placeholder="Enter Current Address ( e.g Lazimpat-2, Kathmandu )" class="form-control" v-model.trim="data.address" id="address"  :readonly="is_to_update"/>
     </div>
     <hr>
-      <div class="row">
-        <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.method_of_diagnosis.$error }">
-          <label class="control-label">Method df Diagnosis</label><br>
-          <input type="radio" id="pcr" v-model.trim="data.method_of_diagnosis"  value="1">
-          <label class="control-label" for="pcr">PCR</label> &nbsp; &nbsp;
-          <input type="radio" id="antigen" v-model.trim="data.method_of_diagnosis" value="2">
-          <label class="control-label" for="antigen">Antigen</label> &nbsp; &nbsp;
-          <input type="radio" id="clinical" v-model.trim="data.method_of_diagnosis" value="3">
-          <label class="control-label" for="clinical">Clinical Diagnosis</label> &nbsp; &nbsp;
-          <input type="radio" id="others" v-model.trim="data.method_of_diagnosis" value="10">
-          <label class="control-label" for="others">Others</label>
-        </div>
+    <div class="row">
+      <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.method_of_diagnosis.$error }">
+        <label class="control-label">Method of Diagnosis</label><br>
+        <input type="radio" id="pcr" v-model.trim="data.method_of_diagnosis"  value="1" :disabled="is_to_update">
+        <label class="control-label" for="pcr">PCR</label> &nbsp; &nbsp;
+        <input type="radio" id="antigen" v-model.trim="data.method_of_diagnosis" value="2" :disabled="is_to_update">
+        <label class="control-label" for="antigen">Antigen</label> &nbsp; &nbsp;
+        <input type="radio" id="clinical" v-model.trim="data.method_of_diagnosis" value="3" :disabled="is_to_update">
+        <label class="control-label" for="clinical">Clinical Diagnosis</label> &nbsp; &nbsp;
+        <input type="radio" id="others" v-model.trim="data.method_of_diagnosis" value="10" :disabled="is_to_update">
+        <label class="control-label" for="others">Others</label>
       </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.complete_vaccination.$error }">
+        <label class="control-label">Completed vaccination (2nd Dose)*</label><br>
+        <input type="radio" id="vaccination" v-model.trim="data.complete_vaccination"  value="1" :disabled="is_to_update">
+        <label class="control-label" for="vaccination">Yes</label> &nbsp; &nbsp;
+        <input type="radio" id="antigen" v-model.trim="data.complete_vaccination" value="0" :disabled="is_to_update">
+        <label class="control-label" for="antigen">No</label> &nbsp; &nbsp;
+      </div>
+    </div>
     <div class="row">
       <div v-if="!is_to_update" class="form-group col-lg-4" :class="{ 'has-error': $v.data.health_condition.$error }">
         <label class="control-label" for="health_condition">Health Condition *</label>
@@ -159,12 +164,15 @@
             </select>
           </div>
           <div class="form-group col-lg-4">
-            <div class="input-group"><span class="input-group-addon"><i
-                class="fa fa-calendar"></i></span>
-              <v-nepalidatepicker id="health_condition_details_start_date" classValue="form-control" calenderType="Nepali" placeholder="Start Date"
-                                  format="YYYY-MM-DD" v-model.trim="health_condition_details_start_date" :yearSelect="false"
-                                  :monthSelect="false"/>
+            <div class="input-group">
+              <span>{{health_condition_details_start_date}}</span>
             </div>
+<!--            <div class="input-group"><span class="input-group-addon"><i-->
+<!--                class="fa fa-calendar"></i></span>-->
+<!--              <v-nepalidatepicker id="health_condition_details_start_date" classValue="form-control" calenderType="Nepali" placeholder="Start Date"-->
+<!--                                  format="YYYY-MM-DD" v-model.trim="health_condition_details_start_date" :yearSelect="false"-->
+<!--                                  :monthSelect="false"/>-->
+<!--            </div>-->
           </div>
           <button v-on:click="isHealthConditionAddHidden = true" type="button" class="btn btn-warning btn-sm pull-right"><i class="fa fa-remove" aria-hidden="true"></i>
             Cancel</button>
@@ -174,9 +182,9 @@
       </div>
       <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.self_free.$error }">
         <label class="control-label">Payment Provision *</label><br>
-        <input type="radio" id="self" v-model.trim="data.self_free" value="1">
+        <input type="radio" id="self" v-model.trim="data.self_free" value="1" :disabled="is_to_update">
         <label class="control-label" for="self">Paid</label> &nbsp; &nbsp;
-        <input type="radio" id="free" v-model.trim="data.self_free" value="2">
+        <input type="radio" id="free" v-model.trim="data.self_free" value="2" :disabled="is_to_update">
         <label class="control-label" for="free">Free</label> &nbsp; &nbsp;
       </div>
     </div>
@@ -234,7 +242,8 @@ export default {
         is_death : '',
         age_unit : 0,
         method_of_diagnosis : 0,
-        gender: undefined
+        gender: undefined,
+        complete_vaccination: undefined
       },
       lab_id : '',
       options: [],
@@ -248,11 +257,12 @@ export default {
       health_condition_update_lists : [],
       entry_health_conditions: [],
       isSubmitting: false,
-      bulk_file: ''
+      bulk_file: '',
     }
   },
   mounted () {
     this.setEntryHealthCondition();
+    this.setTodayRegisterDate();
   },
   validations: {
     data: {
@@ -265,7 +275,8 @@ export default {
       gender : { required },
       self_free : { required },
       health_condition : { required, minValue : minValue(1) },
-      address : { required }
+      address : { required },
+      complete_vaccination : { required },
     },
     labSelected : { required }
   },
@@ -277,6 +288,15 @@ export default {
         });
         arrObj.splice(filterIndex,1);
         return arrObj;
+    },
+    setTodayRegisterDate() {
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+      today = yyyy + '-' + mm + '-' + dd;
+      console.log(today);
+      this.data.register_date_np = this.ad2bs(today);
     },
     setEntryHealthCondition() {
       let hcEnum = [
@@ -445,7 +465,6 @@ export default {
               });
               data.health_condition_update = JSON.stringify(this.health_condition_update_lists);
             }
-            console.log("all Pass");
           }else{
             this.health_condition_details_validation = "Please select both Health Condition and Date"
             this.isSubmitting = false;
@@ -465,6 +484,8 @@ export default {
         data.date_of_outcome_en = null;
         data.date_of_outcome = null;
       }
+      console.log('data');
+      console.log(data);
       axios.post('/api/v1/cases-payment', data)
           .then((response) => {
             if (response.data.message === 'success') {
@@ -488,14 +509,14 @@ export default {
                 this.isSubmitting = false;
                 return false;
               }
-              this.$v.$reset();
-              var today = new Date();
-              this.data = {
-                health_condition : 0,
-                    is_death : '',
-                register_date_np : this.ad2bs(today),
-                lab_name : this.labSelected.name
-              }
+              // this.$v.$reset();
+              // var today = new Date();
+              // this.data = {
+              //   health_condition : 0,
+              //       is_death : '',
+              //   register_date_np : this.ad2bs(today),
+              //   lab_name : this.labSelected.name
+              // }
               this.isSubmitting = false;
 
             } else {
@@ -576,6 +597,8 @@ export default {
               this.labSelected = response.data.lab_name;
               this.is_to_update = true;
               this.update_id = response.data.id;
+              var today = new Date();
+              this.health_condition_details_start_date = this.ad2bs(today);
               if(response.data.health_condition_update !== null){
                    this.health_condition_update_lists =  JSON.parse(response.data.health_condition_update);
               }

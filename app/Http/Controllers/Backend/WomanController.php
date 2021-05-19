@@ -123,7 +123,8 @@ class WomanController extends Controller
             if($total > 0) {
                 return view('backend.cases.payment.create');
             }
-            return redirect('/admin');
+            $request->session()->flash('error', "You don't have any beds available. Please update the no. of beds from your profile.");
+            return redirect('/admin/profile');
         }
         return redirect('/admin');
     }
