@@ -120,6 +120,13 @@
             </a>
         </li>
         <li>
+            <a href="{{ route('stock.list') }}">
+              <i class="fa fa-medkit" aria-hidden="true"></i>
+
+              Medicine Stocks
+          </a>
+        </li>
+        <li>
             <a href="#">
                 <i class="fa fa-money" aria-hidden="true"></i>
 

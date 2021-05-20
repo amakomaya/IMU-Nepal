@@ -51,7 +51,7 @@
                         <thead>
                             <th>S.N.</th>
                             <th width="40%">Organization Name</th>
-                            <th>No of Beds</th>
+                            <th>No of General Beds</th>
                             <th>No of HDU</th>
                             <th>No of ICU</th>
                             <th>No of ventilators</th>

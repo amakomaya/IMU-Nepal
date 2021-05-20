@@ -115,7 +115,7 @@ class WomanController extends Controller
 
     public function casesPaymentCreate(Request $request)
     {
-        if(Auth::user()->role == 'healthpost') {
+        if(Auth::user()->role == 'healthpost'){
             $healthposts = Organization::where('token', Auth::user()->token)->first();
         // dd($healthposts);
 
@@ -127,12 +127,31 @@ class WomanController extends Controller
             $request->session()->flash('error', "You don't have any beds available. Please update the no. of beds from your profile.");
             return redirect('/admin/profile');
         }
+        if(Auth::user()->role == 'healthworker'){
+            $hp_code = OrganizationMember::where('token',Auth::user()->token)->first()->hp_code;
+            $healthposts = Organization::where('hp_code', $hp_code)->first();
+
+            $total = $healthposts->no_of_beds + $healthposts->no_of_hdu + $healthposts->no_of_icu + $healthposts->no_of_ventilators;
+
+            if($total > 0) {
+                return view('backend.cases.payment.create');
+            }
+            $request->session()->flash('error', "You don't have any beds available. Please update the no. of beds from your organizational profile.");
+            return redirect('/admin/profile');
+        }
+
         return redirect('/admin');
     }
 
     public function casePaymentDropdown(Request $request)
     {
-        $healthposts = Organization::where('token', Auth::user()->token)->first();
+        if(Auth::user()->role == 'healthpost'){
+            $healthposts = Organization::where('token', Auth::user()->token)->first();
+        }
+        if (Auth::user()->role == 'healthworker'){
+            $hp_code = OrganizationMember::where('token',Auth::user()->token)->first()->hp_code;
+            $healthposts = Organization::where('hp_code', $hp_code)->first();
+        }
         $total = $healthposts->no_of_beds + $healthposts->no_of_hdu + $healthposts->no_of_icu + $healthposts->no_of_ventilators;
 
         $response = FilterRequest::filter($request);
