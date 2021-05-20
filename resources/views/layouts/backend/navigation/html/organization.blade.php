@@ -3,7 +3,7 @@
         <i class="fa fa-hospital-o" aria-hidden="true"></i> Organizations <span class="fa arrow"></span>
     </a>
     <ul class="nav nav-second-level">
-        @if(auth()->user()->role != 'municipality')
+        @if(auth()->user()->role == 'main' || auth()->user()->role == 'center' || auth()->user()->role == 'dho' || auth()->user()->role == 'province')
         <li>
             <a href="{{ route('organization.overview.search') }}" title="Search and Edit Organizations">Search</a>
         </li>
