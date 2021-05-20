@@ -3,14 +3,27 @@
         <i class="fa fa-hospital-o" aria-hidden="true"></i> Organizations <span class="fa arrow"></span>
     </a>
     <ul class="nav nav-second-level">
+        @if(auth()->user()->role != 'municipality')
         <li>
             <a href="{{ route('organization.overview.search') }}" title="Search and Edit Organizations">Search</a>
         </li>
-        @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main' || auth()->user()->role == 'province')
+        @endif
+        @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main' || auth()->user()->role == 'province' || \App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Municipality')
+        <li>
+            <a href="{{ route('healthpost.index') }}">List</a>
+        </li>
         <li>
             <a href="{{ route('healthpost.create') }}">Create</a>
         </li>
+        @else
+            <li>
+                <a href="{{ route('healthpost.index') }}">
+                    <i class="fa fa-building-o"></i>
+                    Hospitals / CICT Teams
+                </a>
+            </li>
         @endif
+        @if(auth()->user()->role != 'municipality')
         <li>
             <a href="{{ route('organization.overview.cict') }}" title="HOME Isolation">HOME Isolation</a>
         </li>
@@ -26,5 +39,6 @@
         <li>
             <a href="{{ route('organization.overview.normal') }}" title="Normal">Normal</a>
         </li>
+        @endif
     </ul>
 </li>
