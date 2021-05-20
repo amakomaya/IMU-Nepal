@@ -222,23 +222,24 @@ class SuspectedCase extends Model
 
     public function caste($data){
         switch($data){
-            case '0':
+            case '1':
                 return 'Dalit';
 
-            case '1':
+            case '2':
                 return 'Janajati';
 
-            case '2':
+            case '3':
                 return 'Madhesi';
 
-            case '3':
+            case '4':
                 return 'Muslim';
 
-            case '4':
+            case '5':
                 return 'Brahmin / Chhetri';
 
-            case '5':
+            case '6':
                 return 'Other';
+
             default:
                 return 'Dnt\'t Know';
         }

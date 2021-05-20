@@ -55,9 +55,9 @@
                                 @foreach($healthposts as $healthpost)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{$healthpost->name}}</td>
+                                    <td>{{ $healthpost->name }}</td>
                                     <td>
-                                        {{ $healthpost->municipality->municipality_name }}
+                                        {{ $healthpost->municipality->municipality_name ?? '' }}
                                     </td>
                                     <td>
                                         @if($healthpost->status=='0')
