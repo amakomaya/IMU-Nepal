@@ -440,6 +440,13 @@ export default {
             }
           })
     },
+    resetForm() {
+      let self = this;
+      Object.keys(this.data).forEach(function(key,index) {
+        if(key==='register_date_np'|| key==='register_date_en') return;
+        self.data[key] = '';
+      });
+    },
     submitData(data){
       this.$v.$touch()
       this.isSubmitting = true;
@@ -504,6 +511,7 @@ export default {
               })
               if (this.is_to_update === false) {
                 this.$v.$reset();
+                this.resetForm();
                 var today = new Date();
                 this.data = {};
                 this.data = {
@@ -514,14 +522,14 @@ export default {
                 }
               }
               this.isSubmitting = false;
-            }
-            if (this.is_to_update) {
-              if (!this.isHealthConditionAddHidden) {
-                if (this.health_condition_details_health_condition !== '' &&
-                    this.health_condition_details_start_date !== ''
-                ) {
-                  this.health_condition_details_health_condition = ''
-                  this.health_condition_details_start_date = ''
+              if (this.is_to_update) {
+                if (!this.isHealthConditionAddHidden) {
+                  if (this.health_condition_details_health_condition !== '' &&
+                      this.health_condition_details_start_date !== ''
+                  ) {
+                    this.health_condition_details_health_condition = ''
+                    this.health_condition_details_start_date = ''
+                  }
                 }
               }
               this.isSubmitting = false;
