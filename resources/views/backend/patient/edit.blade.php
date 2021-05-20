@@ -150,7 +150,7 @@
 {{--                                                @if(Auth::user()->role!="province" && Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")--}}
                                                     <option value="">Select All Provinces</option>
 {{--                                                @endif--}}
-                                                @foreach(App\Models\province::all() as $province)
+                                                @foreach(App\Models\Province::all() as $province)
                                                     @if($data->province_id == $province->id)
                                                         @php($selectedProvince = "selected")
                                                     @else
