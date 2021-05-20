@@ -1,12 +1,13 @@
 <template>
   <div class="container row">
     <form @submit.prevent>
+      <div v-show="is_to_update==false">
       <label for="file" class="btn btn-primary">Bulk Upload
         <i class="fa fa-upload" aria-hidden="true"></i>
       </label>
       <a href="/downloads/excel/cases_payment_import_template.xlsx" onclick="return confirm('Are you sure, do you want to download import format ! ')" title="Do you have template ? if not, please download first and fill data than import.">Do you have template ? </a>
       <input type="file" id="file" ref="bulk_file" v-on:change="handleFileUpload()" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="visibility:hidden;"/>
-            
+      </div>  
       
     <div v-show="true" class="panel panel-default" :class="{ 'panel-danger': $v.labSelected.$error }">
       <div class="panel-heading text-center"><strong>Search Lab ID in IMU</strong></div>
@@ -262,7 +263,7 @@ export default {
   },
   mounted () {
     this.setEntryHealthCondition();
-    this.setTodayRegisterDate();
+    if(!this.is_to_update) this.setTodayRegisterDate();
   },
   validations: {
     data: {
@@ -439,6 +440,13 @@ export default {
             }
           })
     },
+    resetForm() {
+      let self = this;
+      Object.keys(this.data).forEach(function(key,index) {
+        if(key==='register_date_np'|| key==='register_date_en') return;
+        self.data[key] = '';
+      });
+    },
     submitData(data){
       this.$v.$touch()
       this.isSubmitting = true;
@@ -489,6 +497,7 @@ export default {
         data.date_of_outcome_en = null;
         data.date_of_outcome = null;
       }
+
       axios.post('/api/v1/cases-payment', data)
           .then((response) => {
             if (response.data.message === 'success') {
@@ -502,6 +511,7 @@ export default {
               })
               if (this.is_to_update === false) {
                 this.$v.$reset();
+                this.resetForm();
                 var today = new Date();
                 this.data = {};
                 this.data = {
@@ -512,14 +522,14 @@ export default {
                 }
               }
               this.isSubmitting = false;
-            }
-            if (this.is_to_update) {
-              if (!this.isHealthConditionAddHidden) {
-                if (this.health_condition_details_health_condition !== '' &&
-                    this.health_condition_details_start_date !== ''
-                ) {
-                  this.health_condition_details_health_condition = ''
-                  this.health_condition_details_start_date = ''
+              if (this.is_to_update) {
+                if (!this.isHealthConditionAddHidden) {
+                  if (this.health_condition_details_health_condition !== '' &&
+                      this.health_condition_details_start_date !== ''
+                  ) {
+                    this.health_condition_details_health_condition = ''
+                    this.health_condition_details_start_date = ''
+                  }
                 }
               }
               this.isSubmitting = false;
@@ -588,7 +598,6 @@ export default {
               this.data.hospital_register_id = response.data.hospital_register_id;
               this.data.register_date_np = response.data.register_date_np;
               this.data.register_date_en = (new Date(response.data.register_date_en)).toLocaleString().split(',')[0].split("/").reverse().join("-");
-              ;
               this.data.gender = response.data.gender;
               this.data.self_free = response.data.self_free;
               this.data.health_condition = response.data.health_condition;
