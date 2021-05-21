@@ -84,7 +84,7 @@
                                         } else {
                                             if($cases->is_death == 1){
                                                 $current_status = '<span class="label label-success">Discharged</span>';
-                                            } elseif ($cases->is_dead == 2) {
+                                            } elseif ($cases->is_death == 2) {
                                                 $current_status = '<span class="label label-danger">Dead</span>';
                                             } else {
                                                 $current_status = '<span class="label label-info">N/A</span>';

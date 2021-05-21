@@ -143,7 +143,7 @@ class WomanController extends Controller
         return redirect('/admin');
     }
 
-    public function casePaymentDropdown(Request $request)
+    public function getRemainingBeds(Request $request)
     {
         if(Auth::user()->role == 'healthpost'){
             $healthposts = Organization::where('token', Auth::user()->token)->first();
@@ -157,10 +157,13 @@ class WomanController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $data = PaymentCase::whereIn('hp_code', $hpCodes)->whereNull('is_death')->get();
-        $hdu_count = $icu_count = $venti_count = 0;
+        $hdu_count = $icu_count = $venti_count = $general_count = 0;
         foreach($data as $datum) {
             if($datum->health_condition_update == null) {
-                if($datum->health_condition == 3) {
+                if($datum->health_condition == 1 || $datum->health_condition == 2){
+                  $general_count++;
+                }
+                elseif($datum->health_condition == 3) {
                     $hdu_count++;
                 }elseif($datum->health_condition == 4) {
                     $icu_count++;
@@ -171,7 +174,10 @@ class WomanController extends Controller
             else {
                 $condition_array = json_decode($datum->health_condition_update);
                 $condition = end($condition_array);
-                if($condition->id == 3) {
+                if($condition->id == 1 || $condition->id == 2){
+                  $general_count++;
+                }
+                elseif($condition->id == 3) {
                     $hdu_count++;
                 }elseif($condition->id == 4) {
                     $icu_count++;
@@ -180,19 +186,12 @@ class WomanController extends Controller
                 }
             }
         }
-
-        if($healthposts->no_of_hdu <= $hdu_count){ $hdu = 1; } else { $hdu = 0; }
-        if($healthposts->no_of_icu <= $icu_count){ $icu = 1; } else { $icu = 0; }
-        if($healthposts->no_of_ventilators <= $venti_count){ $venti = 1; } else { $venti = 0; }
-
-        $dropdown = [];
-        $dropdown['hdu'] = $hdu;
-        $dropdown['icu'] = $icu;
-        $dropdown['venti'] = $venti;
-        
-
+        $dropdown['general'] = $healthposts->no_of_beds - $general_count;
+        $dropdown['hdu'] = $healthposts->no_of_hdu - $hdu_count;
+        $dropdown['icu'] = $healthposts->no_of_icu - $icu_count;
+        $dropdown['venti'] = $healthposts->no_of_ventilators - $venti_count;
         return response()->json([
-            'dropdown' => $dropdown
+            'remaining_beds' => $dropdown
         ]); 
     }
 
