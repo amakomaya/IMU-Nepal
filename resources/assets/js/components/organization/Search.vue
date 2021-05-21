@@ -79,7 +79,7 @@ export default {
     },
     organizationDelete: function () {
       // console.log(this.healthpostSelected.id);
-      axios.delete("/admin/healthpost/" + this.healthpostSelected.id)
+      axios.post("/admin/organization/api-delete/" + this.healthpostSelected.id)
       .then(res => { window.location.reload; })
       .catch(err => { console.error(err) })
     },

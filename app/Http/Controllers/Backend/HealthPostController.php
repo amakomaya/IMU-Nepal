@@ -116,7 +116,7 @@ class HealthpostController extends Controller
         if(Auth::user()->role != 'province') {
             return redirect()->route('healthpost.index');
         } else {
-            return redirect()->route('admin.overview');
+            return redirect()->back();
         }
     }
 
@@ -251,6 +251,32 @@ class HealthpostController extends Controller
         $request->session()->flash('message', 'Data Deleted successfully');
 
         return redirect()->route('healthpost.index');
+    }
+
+    public function apiDestroy($id)
+    {
+        if (User::checkAuthForCreateUpdateDelHealthpost() === false) {
+            return redirect('/admin');
+        }
+        
+        $healthpost = $this->findModel($id);
+        
+        $healthworkers = OrganizationMember::where('hp_code', $healthpost->hp_code)->get();
+
+        
+        foreach($healthworkers as $healthworker) {
+            $user = $this->findModelUser($healthworker->token);
+            $user->delete();
+
+            $healthworker->delete();
+        }
+
+        $user = $this->findModelUser($healthpost->token);
+        $user->delete();
+        
+        $healthpost->delete();
+
+        return true;
     }
 
     protected function findModel($id)
