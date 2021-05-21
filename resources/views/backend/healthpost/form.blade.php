@@ -368,7 +368,7 @@ input:focus ~ div{
                                 <div class="form-group{{ $errors->has('hospital_type') ? ' has-error' : '' }}">
                                     <label for="status" class="col-md-3 control-label"><i data-toggle="tooltip" class="fa fa-info-circle" aria-hidden="true"></i>
                                         Organization Type</label>
-                                    @php($list = [1=>'HOME Isolation & CICT',5=>'Institutional Isolation',2=>'Lab Test Only', 3=>'Lab & Treatment', 4=>'Normal'])
+                                    @php($list = (new \App\Models\Organization())->array_organization_type)
                                     <div class="col-md-7">
                                         <select id="status" class="form-control" name="hospital_type" >
                                             <option value="" hidden> Organization Type</option>
