@@ -54,6 +54,19 @@ return [
             'engine' => null,
         ],
 
+        'mysqldump' => [
+            'driver'    => env('DB_CONNECTION_DUMP'),
+            'host'      => env('DB_HOST_DUMP'),
+            'port'      => env('DB_PORT_DUMP'),
+            'database'  => env('DB_DATABASE_DUMP'),
+            'username'  => env('DB_USERNAME_DUMP'),
+            'password'  => env('DB_PASSWORD_DUMP'),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => ''
+        ],
+
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),
