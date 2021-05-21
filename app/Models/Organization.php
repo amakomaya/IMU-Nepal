@@ -82,7 +82,7 @@ class Organization extends Model
 	}
 
 	public function hospitalType($type){
-		return $this->array_organization_type[$type];
+		return $this->array_organization_type[$type] ?? 'Default';
     }
 
 	public static function isHpCodeAlreadyExist($hpCode){
