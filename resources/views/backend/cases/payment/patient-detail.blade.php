@@ -121,9 +121,11 @@
                                         <td>
                                             @foreach ($conditions[$key] as $key2 => $item)
                                             @php
-                                                $yy = substr($item->date, 0, 4);
-                                            	$mm = substr($item->date, 5, 2);
-                                            	$dd = substr($item->date, 8, 2);
+                                                $date_split = explode("-",$item->date);
+
+                                                $yy = $date_split[0];
+                                            	$mm = $date_split[1];
+                                            	$dd = $date_split[2];
                                                 $date_np = Yagiten\Nepalicalendar\Calendar::eng_to_nep((int)$yy, (int)$mm, (int)$dd)->getYearMonthDay();
                                             @endphp
                                                 {{ $date_np }}<br>
