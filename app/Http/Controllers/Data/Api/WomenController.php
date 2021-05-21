@@ -184,7 +184,10 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->casesRecoveredList()->withAll();
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->casesRecoveredList()
+        ->with(['ancs','healthpost' => function($q) {
+            $q->select('name', 'hp_code');
+        }, 'latestAnc']);
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -194,7 +197,9 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->casesDeathList()->withAll();
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->casesDeathList()->with(['ancs','healthpost' => function($q) {
+            $q->select('name', 'hp_code');
+        }, 'latestAnc']);
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
