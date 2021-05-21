@@ -1,9 +1,12 @@
 <?php
 
+use App\Helpers\GetHealthpostCodes;
 use App\Models\District;
 use App\Models\HealthProfessional;
 use App\Models\Municipality;
 use App\Models\SuspectedCase;
+use App\Reports\FilterRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -333,3 +336,77 @@ Route::get('admin/cases-payment-stock-list', 'StockController@listAdminStock')->
 Route::get('admin/cases-payment-stock-update', 'StockController@listStock')->name('stock.updateList');
 Route::get('admin/cases-payment-stock-history', 'StockController@stockTransactionList')->name('stock.transaction.list');
 Route::post('admin/stock-update', 'StockController@updateStock')->name('stock.update');
+
+
+
+Route::get('admin/get-org-rep', function (Request $request){
+    $response = FilterRequest::filter($request);
+    $hpCodes = GetHealthpostCodes::filter($response);
+
+    $data = \DB::table('payment_cases')
+        ->where('payment_cases.created_at', '>=' ,\Carbon\Carbon::now()->subDays($request->date))
+        ->whereIn('payment_cases.hp_code', $hpCodes)
+        ->join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
+        ->join('municipalities', 'healthposts.municipality_id', '=', 'municipalities.id')
+        ->select(['healthposts.name as organiation_name',
+            'healthposts.no_of_beds',
+            'healthposts.no_of_ventilators',
+            'healthposts.no_of_icu',
+            'healthposts.no_of_hdu',
+            'healthposts.daily_consumption_of_oxygen',
+            'healthposts.is_oxygen_facility',
+            'municipalities.municipality_name as municipality',
+            'payment_cases.health_condition', 'payment_cases.health_condition_update',
+            'payment_cases.self_free', 'payment_cases.is_death'
+        ])
+        ->orderBy('healthposts.name', 'asc')
+        ->get();
+
+
+    $mapped_data = $data->map(function ($value) {
+        $return = [];
+        $return['organiation_name'] = $value->organiation_name.', '.$value->municipality;
+        $return['no_of_beds'] = $value->no_of_beds;
+        $return['no_of_ventilators'] = $value->no_of_ventilators;
+        $return['no_of_icu'] = $value->no_of_icu;
+        $return['no_of_hdu'] = $value->no_of_hdu;
+        $return['daily_consumption_of_oxygen'] = $value->daily_consumption_of_oxygen;
+        $return['is_oxygen_facility'] = $value->is_oxygen_facility;
+        $return['self_free'] = $value->self_free;
+        $return['is_death'] = $value->is_death;
+
+        if ($value->health_condition_update == null){
+            $return['health_condition'] = $value->health_condition;
+        }else{
+            $array_health_condition = json_decode($value->health_condition_update, true);
+            $return['health_condition'] = collect($array_health_condition)->last()['id'];
+        }
+        return $return;
+    })->groupBy(function($item) {
+        return $item['organiation_name'];
+    });
+
+    $mapped_data_second = $mapped_data->map(function ($value){
+        $return = [];
+        $value = collect($value);
+        $return['total_no_of_beds'] = collect($value->first())['no_of_beds'];
+        $return['total_no_of_ventilators'] = collect($value->first())['no_of_ventilators'];
+        $return['total_no_of_icu'] = collect($value->first())['no_of_icu'];
+        $return['total_no_of_hdu'] = collect($value->first())['no_of_hdu'];
+        $return['daily_consumption_of_oxygen'] = collect($value->first())['daily_consumption_of_oxygen'];
+        $return['is_oxygen_facility'] = collect($value->first())['is_oxygen_facility'];
+
+        $return['used_total_no_of_beds'] = collect($value)->where('is_death', null)->whereIn('health_condition', [1,2])->count();
+        $return['used_total_no_of_hdu'] = collect($value)->where('is_death', null)->where('health_condition', 3)->count();
+        $return['used_total_no_of_icu'] = collect($value)->where('is_death', null)->where('health_condition', 4)->count();
+        $return['used_total_no_of_ventilators'] = collect($value)->where('is_death', null)->where('health_condition', 5)->count();
+
+        $return['total_cases'] = $value->count();
+        $return['total_under_treatment'] = $value->where('is_death', null)->count();
+
+        $return['total_discharge'] = $value->where('is_death', 1)->count();
+        $return['total_death'] = $value->where('is_death', 2)->count();
+        return $return;
+    });
+    return response()->json($mapped_data_second);
+});
