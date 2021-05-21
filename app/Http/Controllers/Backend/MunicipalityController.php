@@ -52,7 +52,7 @@ class MunicipalityController extends Controller
                 'municipalities.municipality_name as municipality'
             ])
             ->orderBy('municipalities.municipality_name', 'asc')
-            ->get();
+            ->paginate(50);
 
         return view('backend.municipality.index', [
             'municipalityInfos' => $municipalityInfos

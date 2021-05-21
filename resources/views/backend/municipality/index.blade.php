@@ -20,7 +20,16 @@
                                             return false;
                                         }
                 }
+
+                $(document).ready(function() {
+                    $('#dataTables-example').DataTable( {
+                        "paging":   false,
+                        "ordering": false,
+                        "info":     false
+                    } );
+                } );
             </script>
+            
 
             @if (Request::session()->has('message'))
                 <div class="alert alert-block alert-success">
@@ -95,6 +104,7 @@
                                     @endforeach
                                     </tbody>
                                 </table>
+                                <span style="float: right">{{ $municipalityInfos->links() }}</span>
                             </div>
                             <!-- /.table-responsive -->
                         </div>

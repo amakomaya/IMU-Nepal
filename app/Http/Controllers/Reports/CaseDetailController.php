@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Reports;
 
 use App\Http\Requests\WomenRequest;
-use App\Models\province;
+use App\Models\Province;
 use App\Models\SampleCollection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
