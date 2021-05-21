@@ -3,6 +3,7 @@
 use App\Models\District;
 use App\Models\HealthProfessional;
 use App\Models\Municipality;
+use App\Models\SuspectedCase;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -330,5 +331,3 @@ Route::get('admin/cases-payment-stock-list', 'StockController@listAdminStock')->
 Route::get('admin/cases-payment-stock-update', 'StockController@listStock')->name('stock.updateList');
 Route::get('admin/cases-payment-stock-history', 'StockController@stockTransactionList')->name('stock.transaction.list');
 Route::post('admin/stock-update', 'StockController@updateStock')->name('stock.update');
-
-
