@@ -53,6 +53,11 @@ class OverviewController extends Controller
         return $this->filter(4);
     }
 
+    public function hospitalnopcr()
+    {
+        return $this->filter(6);
+    }
+
     public function search(){
         return view('backend.overview.search');
     }

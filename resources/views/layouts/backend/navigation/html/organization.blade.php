@@ -33,13 +33,13 @@
             <a href="{{ route('organization.overview.hospital') }}" title="Institutional Isolation">Institutional Isolation</a>
         </li>
         <li>
-            <a href="{{ route('organization.overview.labtest') }}" title="Lab Test Only">Lab Test Only</a>
+            <a href="{{ route('organization.overview.labtest') }}" title="PCR Lab Test Only">PCR Lab Test Only</a>
         </li>
         <li>
-            <a href="{{ route('organization.overview.both') }}" title="Lab & Treatment">Lab & Treatment</a>
+            <a href="{{ route('organization.overview.both') }}" title="PCR Lab & Treatment( Hospital )">PCR Lab & Treatment( Hospital )</a>
         </li>
         <li>
-            <a href="{{ route('organization.overview.normal') }}" title="Normal">Normal</a>
+            <a href="{{ route('organization.overview.hospitalnopcr') }}" title="Hospital without PCR Lab">Hospital without PCR Lab</a>
         </li>
         @endif
     </ul>

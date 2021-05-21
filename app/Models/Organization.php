@@ -31,6 +31,14 @@ class Organization extends Model
         'address','longitude','lattitude','status','created_at','updated_at' , 'daily_consumption_of_oxygen', 'is_oxygen_facility', 'no_of_hdu'
     ];
 
+    public $array_organization_type = [
+        1=>'HOME Isolation & CICT',
+        5=>'Institutional Isolation',
+        2=>'PCR Lab Test Only',
+        3=>'PCR Lab & Treatment',
+        6=>'Hospital Without PCR Lab'
+    ];
+
     public function province()
     {
 		return $this->belongsTo(Province::class);
@@ -74,8 +82,7 @@ class Organization extends Model
 	}
 
 	public function hospitalType($type){
-		$list = [1=>'HOME Isolation & CICT',5=>'Institutional Isolation',2=>'Lab Test Only', 3=>'Lab & Treatment', 4=>'Normal'];
-		return $list[$type];
+		return $this->array_organization_type[$type];
     }
 
 	public static function isHpCodeAlreadyExist($hpCode){

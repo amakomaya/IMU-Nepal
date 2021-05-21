@@ -12,26 +12,34 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use App\Notifications\ImportHasFailedNotification;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\RemembersRowNumber;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Yagiten\Nepalicalendar\Calendar;
+use Maatwebsite\Excel\Validators\ValidationException;
+use Maatwebsite\Excel\Validators\Failure;
 
 use App\User;
 
 class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
 {
-    use Importable;
+    use Importable, RemembersRowNumber;
 
     public $enums = array(
       'gender'=> array( 'Male' => 1, 'Female' => 2, 'Other' => 3 ),
-      'health_condition' => array ('No Symptoms'=> 1, 'Mild' => 2, 'Moderate &  HDU' => 3, 'Severe - ICU' => 4, 'Severe - Ventilator'),
+      'health_condition' => array ('No Symptoms'=> 1, 'Mild' => 2, 'Moderate &  HDU' => 3, 'Severe - ICU' => 4, 'Severe - Ventilator' => 5),
       'paid_free' => array ('Paid' => "1", 'Free' => "2"),
       'method_of_diagnosis' => array ('PCR' => 1, 'Antigen' => 2, 'Clinical Diagnosis' => 3, 'Others' => 10),
       'age_unit' => array ('Year' => 0, 'Month' => 1, 'Day' => 2),
     );
   
-    public function __construct(User $importedBy)
+    public function __construct(User $importedBy, $bed_status)
     {
         $this->importedBy = $importedBy;
+        $this->bed_status = $bed_status;
+        $this->totalHduCases = 0;
+        $this->totalIcuCases = 0;
+        $this->totalVentilatorCases = 0;
+        $this->totalGeneralCases = 0;
     }
     
     public function registerEvents(): array
@@ -46,10 +54,50 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
     public function model(array $row)
     {
         if(!array_filter($row)) { return null;} //Ignore empty rows.
-        
+        $currentRowNumber = $this->getRowNumber();
         $date_en = Carbon::now();
         $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
-
+        $health_condition = $row['health_condition'];
+        $bed_status = $this->bed_status;
+        if($health_condition === 3) {
+          $this->totalHduCases++;
+        } else if($health_condition === 4) {
+          $this->totalIcuCases++;
+        } else if($health_condition === 5) {
+          $this->totalVentilatorCases++;
+        }
+        if($this->totalHduCases > $bed_status->general) {
+          $error = ['health_condition' => 'No. of patient with No Symptoms/Mild condition exeeds the no. of available General bed('.$bed_status->general.'). Please update the data of your existing patient to free up bed & try again.'];
+          $failures[] = new Failure(1, 'health_condition', $error, $row);
+          throw new ValidationException(
+              \Illuminate\Validation\ValidationException::withMessages($error),
+              $failures
+          );
+        }
+        if($this->totalHduCases > $bed_status->hdu) {
+            $error = ['health_condition' => 'No. of patient with Moderate &  HDU condition exeeds the no. of available HDU bed('.$bed_status->hdu.'). Please update the data of your existing patient to free up bed & try again.'];
+            $failures[] = new Failure(1, 'health_condition', $error, $row);
+            throw new ValidationException(
+                \Illuminate\Validation\ValidationException::withMessages($error),
+                $failures
+            );
+        }
+        if($this->totalIcuCases > $bed_status->icu) {
+            $error = ['health_condition' => 'No. of patient with Severe - ICU condition exeeds the no. of available ICU bed('.$bed_status->icu.'). Please update the data of your existing patient to free up bed & try again.'];
+            $failures[] = new Failure(1, 'health_condition', $error, $row);
+            throw new ValidationException(
+                \Illuminate\Validation\ValidationException::withMessages($error),
+                $failures
+            );
+        }
+        if($this->totalHduCases > $bed_status->venti) {
+            $error = ['health_condition' => 'No. of patient with Severe - Ventilator condition exeeds the no. of available ventilators('.$bed_status->venti.'). Please update the data of your existing patient to free up bed & try again.'];
+            $failures[] = new Failure(1, 'health_condition', $error, $row);
+            throw new ValidationException(
+                \Illuminate\Validation\ValidationException::withMessages($error),
+                $failures
+            );
+        } 
         return new PaymentCase([
             'hospital_register_id' => $row['hospital_id'],
             'name' => $row['full_name_of_patient'],

@@ -321,17 +321,19 @@ export default {
           name: 'Severe - Ventilator',
         },
       ];
-       axios.get('/admin/case-payment-dropdown')
-          .then((response) => {
-          //  console.log(response);
-           let res = response.data;
-          if (res.dropdown.hdu) this.deleteObjById(hcEnum, 3);
-          if (res.dropdown.icu) this.deleteObjById(hcEnum, 4);
-          if (res.dropdown.venti) this.deleteObjById(hcEnum, 5);
-          // console.log(hcEnum);
+      axios.get('/admin/remaining-beds')
+        .then((response) => {
+          let res = response.data;
+          if (res.remaining_beds.general<1) {
+            this.deleteObjById(hcEnum, 1);
+            this.deleteObjById(hcEnum, 2);
+          }
+          if (res.remaining_beds.hdu<1) this.deleteObjById(hcEnum, 3);
+          if (res.remaining_beds.icu<1) this.deleteObjById(hcEnum, 4);
+          if (res.remaining_beds.venti<1) this.deleteObjById(hcEnum, 5);
           this.entry_health_conditions = hcEnum;
-
-          });
+          this.bed_status = res.remaining_beds;
+      });
     },
   
     handleFileUpload(){
@@ -345,6 +347,7 @@ export default {
         return;
       }
       formData.append('bulk_file', this.bulk_file);
+      formData.append('bed_status', JSON.stringify(this.bed_status));
       axios.post( '/api/v1/bulk-case-payment',
         formData,
         {
@@ -357,10 +360,22 @@ export default {
         $("#file").val(null);
       })
       .catch(function(err){
-        let errorMsg = 'The Case Payment could not be uploaded due to the following problems: \n';
-        err.response.data.message.map((problem, index)=>{
-          errorMsg += (index+1)+'. Row: '+problem.row+', Column: '+problem.column+', Error: '+problem.error.join()+'\n';
-        })
+        let errorMsg;
+        if(err.response.status===500) {
+          errorMsg = 'Please use the latest valid template downloaded from the system. If problem persists, please contact support.';
+        } else {
+          errorMsg = 'The Case Payment could not be uploaded due to the following problems: \n';
+        
+          err.response.data.message.map((problem, index)=>{
+            let mainError = '';
+            if(problem.error instanceof Object){
+              mainError = Object.values(problem.error).join(',');
+            } else if(problem.error instanceof Array) {
+              mainError = problem.error.join();
+            }
+            errorMsg += (index+1)+'. Row: '+problem.row+', Column: '+problem.column+', Error: '+mainError+'\n';
+          });
+        }
         alert(errorMsg);
         $("#file").val(null);
       });

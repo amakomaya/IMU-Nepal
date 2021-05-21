@@ -525,8 +525,9 @@ class CasesPaymentController extends Controller
         return [
             ['dataElement' => 'xsKRc9OwBof', 'value' => $data['total_beds_allocated_general']],
             ['dataElement' => 'TmxN1Fi6AO8', 'value' => $data['total_beds_allocated_icu']],
+            ['dataElement' => 'Nzp8lgMpO4W', 'value' => $data['total_beds_allocated_hdu']],
             ['dataElement' => 'oHAzqKL4JRN', 'value' => $data['total_beds_allocated_ventilators_among_icu']],
-            ['dataElement' => 'ukRwct4JOlH', 'value' => $data['total_beds_allocated_general'] + $data['total_beds_allocated_icu']],
+            ['dataElement' => 'ukRwct4JOlH', 'value' => $data['total_beds_allocated_general'] + $data['total_beds_allocated_icu'] + $data['total_beds_allocated_hdu']],
 
             ['dataElement' => 'N2OMXZJ68XO', 'value' => $data['total_patients_without_symptoms'] +
                                                         $data['total_patients_with_mild_symptoms'] +
@@ -561,10 +562,11 @@ class CasesPaymentController extends Controller
     }
 
     public function bulkUpload (Request $request) {
+      $bed_status = json_decode(request()->bed_status);
       if ($request->hasFile('bulk_file')) {
         $bulk_file = $request->file('bulk_file');
         try {
-          Excel::queueImport(new CasesPaymentImport(auth()->user()), $bulk_file);
+          Excel::queueImport(new CasesPaymentImport(auth()->user(), $bed_status), $bulk_file);
           return response()->json(['message' => 'success',
             'message' => 'Case Payment Data uploaded successfully',
           ]);
@@ -574,13 +576,12 @@ class CasesPaymentController extends Controller
           $failures = $e->failures();
           $error_msg = '';
           foreach ($failures as $key=>$failure) {
-              $error_msg .= ($key+1).'. Row: '.$failure->row().', Column: '.$failure->attribute().', Error: '.join(",", $failure->errors()).'<br />';
+              // $error_msg .= ($key+1).'. Row: '.$failure->row().', Column: '.$failure->attribute().', Error: '.join(",", $failure->errors()).'<br />';
               $errors[$key]['row'] = $failure->row(); // row that went wrong
               $errors[$key]['column'] = $failure->attribute(); // either heading key (if using heading row concern) or column index
               $errors[$key]['error'] = $failure->errors(); // Actual error messages from Laravel validator
               $errors[$key]['values'] = $failure->values(); // The values of the row that has failed.
           }
-          
           return response()->json([
             'status' => 'fail',
             'message' => $errors

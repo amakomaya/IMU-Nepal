@@ -168,6 +168,7 @@ Route::get('/admin/organization-overview-hospital', 'Backend\OverviewController@
 Route::get('/admin/organization-overview-labtest', 'Backend\OverviewController@labtest')->name('organization.overview.labtest');
 Route::get('/admin/organization-overview-both', 'Backend\OverviewController@both')->name('organization.overview.both');
 Route::get('/admin/organization-overview-normal', 'Backend\OverviewController@normal')->name('organization.overview.normal');
+Route::get('/admin/organization-overview-hospitalnopcr', 'Backend\OverviewController@hospitalnopcr')->name('organization.overview.hospitalnopcr');
 
 Route::resource('/admin/download-dev-apks', 'Backend\DownloadApksController');
 
@@ -224,7 +225,7 @@ Route::resource('/admin/cases-payment-observation', 'Backend\ObservationCasesCon
 
 Route::get('/admin/ancs-search', 'AdminController@ancsSearch')->name('admin.ancs.search');
 Route::post('/admin/ancs-search/update', 'AdminController@ancsUpdate')->name('admin.ancs.update');
-Route::get('/admin/case-payment-dropdown', 'Backend\WomanController@casePaymentDropdown');
+Route::get('/admin/remaining-beds', 'Backend\WomanController@getRemainingBeds');
 
 
 Route::get('/admin/analysis/gender', function () {
