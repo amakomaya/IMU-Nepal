@@ -23,7 +23,7 @@
                 </a>
             </li>
         @endif
-        @if(auth()->user()->role != 'municipality')
+        @if(auth()->user()->role == 'main' || auth()->user()->role == 'center' || auth()->user()->role == 'dho' || auth()->user()->role == 'province')
         <li>
             <a href="{{ route('organization.overview.cict') }}" title="HOME Isolation">HOME Isolation</a>
         </li>

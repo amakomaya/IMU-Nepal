@@ -6,7 +6,7 @@
     </a>
 
     <ul class="nav nav-second-level">
-        @if(auth()->user()->role === 'main' && auth()->user()->role === 'province')
+        @if(auth()->user()->role === 'main' || auth()->user()->role === 'province')
         <li>
             <a href="{{ route('public.home.index') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
@@ -31,7 +31,7 @@
                 <span class="label label-info pull-right">Report</span>
             </a>
         </li>
-        @if(auth()->user()->role === 'municipality')
+        @if(auth()->user()->role === 'dho' || auth()->user()->role === 'municipality')
         <li>
             <a href="{{ route('stock.list') }}">
               <i class="fa fa-medkit" aria-hidden="true"></i>
@@ -40,7 +40,7 @@
             </a>
         </li>
         @endif
-        @if(auth()->user()->role === 'main' || auth()->user()->role === 'province' || auth()->user()->role === 'municipality')
+        @if(auth()->user()->role === 'main' || auth()->user()->role === 'province' || auth()->user()->role === 'municipality' || auth()->user()->role === 'dho')
         <li>
             <a href="#">
                 <i class="fa fa-money" aria-hidden="true"></i>
