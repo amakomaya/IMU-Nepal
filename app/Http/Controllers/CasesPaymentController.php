@@ -525,6 +525,7 @@ class CasesPaymentController extends Controller
         return [
             ['dataElement' => 'xsKRc9OwBof', 'value' => $data['total_beds_allocated_general']],
             ['dataElement' => 'TmxN1Fi6AO8', 'value' => $data['total_beds_allocated_icu']],
+            ['dataElement' => 'Nzp8lgMpO4W', 'value' => $data['total_beds_allocated_hdu']],
             ['dataElement' => 'oHAzqKL4JRN', 'value' => $data['total_beds_allocated_ventilators_among_icu']],
             ['dataElement' => 'ukRwct4JOlH', 'value' => $data['total_beds_allocated_general'] + $data['total_beds_allocated_icu']],
 
