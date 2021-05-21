@@ -134,7 +134,7 @@
                                         <td>
                                             @foreach ($conditions[$key] as $key2 => $item)
                                                 @php
-                                                    $next_date = array_key_exists($key2 + 1, $conditions[$key]) ? $conditions[$key][$key2 +1]->date : $discharge_date;
+                                                    $next_date = array_key_exists($key2 + 1, $conditions[$key]) ? $conditions[$key][$key2 + 1]->date : $discharge_date;
 
                                                     $datetime1 = new DateTime($item->date);
                                                     $datetime2 = new DateTime($next_date);
