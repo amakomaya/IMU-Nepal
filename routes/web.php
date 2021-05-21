@@ -224,7 +224,7 @@ Route::resource('/admin/cases-payment-observation', 'Backend\ObservationCasesCon
 
 Route::get('/admin/ancs-search', 'AdminController@ancsSearch')->name('admin.ancs.search');
 Route::post('/admin/ancs-search/update', 'AdminController@ancsUpdate')->name('admin.ancs.update');
-Route::get('/admin/case-payment-dropdown', 'Backend\WomanController@casePaymentDropdown');
+Route::get('/admin/remaining-beds', 'Backend\WomanController@getRemainingBeds');
 
 
 Route::get('/admin/analysis/gender', function () {
