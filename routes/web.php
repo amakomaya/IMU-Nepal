@@ -101,9 +101,9 @@ Route::post('/admin/user-manager/first-loggedin', 'Backend\UserManagerController
 
 //Bakend Organization
 Route::resource('admin/healthpost', 'Backend\HealthPostController');
-Route::get('admin/organization/{id}/edit-record', 'Backend\HealthpostController@editRecord');
-Route::post('admin/organization/update-record/{id}', 'Backend\HealthpostController@updateRecord')->name('admin.organization.update-record');
-Route::post('admin/vaccination_center_update', 'Backend\HealthpostController@organizationUpdate')->name('admin.organization.update');
+Route::get('admin/organization/{id}/edit-record', 'Backend\HealthPostController@editRecord');
+Route::post('admin/organization/update-record/{id}', 'Backend\HealthPostController@updateRecord')->name('admin.organization.update-record');
+Route::post('admin/vaccination_center_update', 'Backend\HealthPostController@organizationUpdate')->name('admin.organization.update');
 
 //Bakend Route
 Route::resource('admin/ward', 'Backend\WardController');

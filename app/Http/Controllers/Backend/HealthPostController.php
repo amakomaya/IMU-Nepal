@@ -10,6 +10,7 @@ use App\Models\District;
 use App\Models\Municipality;
 use App\Models\MunicipalityInfo;
 use App\Models\Ward;
+use App\Models\OrganizationMember;
 use App\User;
 use Auth;
 
@@ -228,8 +229,18 @@ class HealthpostController extends Controller
         if (User::checkAuthForCreateUpdateDelHealthpost() === false) {
             return redirect('/admin');
         }
-
+        
         $healthpost = $this->findModel($id);
+        
+        $healthworkers = OrganizationMember::where('hp_code', $healthpost->hp_code)->get();
+
+        
+        foreach($healthworkers as $healthworker) {
+            $user = $this->findModelUser($healthworker->token);
+            $user->delete();
+
+            $healthworker->delete();
+        }
 
         $healthpost->delete();
 

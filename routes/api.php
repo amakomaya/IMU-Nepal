@@ -11,10 +11,12 @@ use App\Models\OrganizationMember;
 use App\Models\LaboratoryParameter;
 use App\Models\LabTest;
 use App\Models\SuspectedCase;
+use App\Models\ProvinceInfo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Yagiten\Nepalicalendar\Calendar;
+use Auth;
 
 Route::get('/data/aggregate', 'Data\Api\AggregateController@forMonitor');
 
@@ -29,7 +31,13 @@ Route::post('/v3/amc/login', 'Api\LoginController@v3AmcLogin');
 
 
 Route::get('/v1/healthposts', function () {
-    $healthpost = \App\Models\Organization::with(['province', 'municipality', 'district'])->get();
+    $healthpost_query = \App\Models\Organization::with(['province', 'municipality', 'district']);
+    if(Auth::user()->role == 'province') {
+        $province_id = ProvinceInfo::where('token', Auth::user()->token)->first()->province_id;
+        $healthpost_query->where('province_id', $province_id);
+    }
+
+    $healthpost = $healthpost_query->get();
     return response()->json($healthpost);
 });
 

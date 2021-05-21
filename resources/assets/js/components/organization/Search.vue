@@ -48,6 +48,9 @@
               <a v-on:click="organizationEdit">
                 <i class="fa fa-edit fa-2x" style="color:green"></i>
               </a>
+              <a v-on:click="organizationDelete">
+                <i class="fa fa-trash fa-2x" style="color:red"></i>
+              </a>
             </td>
           </tr>
           </tbody>
@@ -73,6 +76,12 @@ export default {
     organizationEdit: function () {
       var url = "/admin/organization/" + this.healthpostSelected.id + "/edit-record";
       window.open(url, '_blank').focus();
+    },
+    organizationDelete: function () {
+      // console.log(this.healthpostSelected.id);
+      axios.delete("/admin/healthpost/" + this.healthpostSelected.id)
+      .then(res => { window.location.reload; })
+      .catch(err => { console.error(err) })
     },
     onSearch(search, loading) {
       loading(true);
