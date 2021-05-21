@@ -5,16 +5,15 @@
     pointer-events: none;
     }
 </style>
-    
 @php 
-    $symptoms = json_decode($data->symptoms, true);
-    $symptomscontactdetail= json_decode($data->contactDetail->symptoms, true);
-    $symptomsComorbidity = json_decode($data->symptoms_comorbidity, true);
-    $symptomsComorbidityContactDetail = json_decode($data->contactDetail->symptoms_comorbidity, true);
-    $travelled_from = json_decode($data->travelled_where, true);
-    $vaccineDosefirst = json_decode($data->caseManagement->first_source_info, true);
-    $vaccineDosesecond = json_decode($data->caseManagement->second_source_info, true);
-    $meansOfTravel = json_decode($data->caseManagement->travel_medium, true);
+    $symptoms = json_decode($data->symptoms ?? []);
+    $symptomscontactdetail= json_decode(isset($data->contactDetail) ? $data->contactDetail->symptoms : [], true);
+    $symptomsComorbidity = json_decode(isset($data->symptoms_comorbidity) ? $data->symptoms_comorbidity : [], true);
+    $symptomsComorbidityContactDetail = json_decode(isset($data->contactDetail) ? $data->contactDetail->symptoms_comorbidity : [] , true);
+    $travelled_from = json_decode($data->travelled_where ?? [], true);
+    $vaccineDosefirst = json_decode(isset($data->caseManagement) ? $data->caseManagement->first_source_info : [], true);
+    $vaccineDosesecond = json_decode(isset($data->caseManagement) ? $data->caseManagement->second_source_info : [], true);
+    $meansOfTravel = json_decode(isset($data->caseManagement) ? $data->caseManagement->travel_medium : [], true);
 @endphp
 
 <div id="page-wrapper">
@@ -65,15 +64,15 @@
                     <div style="display: flex; flex-direction: row;">
                             <p>Sex:</p>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="Male" name="Male" value="" @if($data->contactDetail->sex == 2) checked readonly @else disabled @endif>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="Male" name="Male" value="" @if(isset($data->contactDetail) && $data->contactDetail->sex == 2) checked readonly @else disabled @endif>
                                 <label for="Male"> Male</label>
                             </div>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="Female" name="Female" value="" @if($data->contactDetail->sex == 1) checked readonly @else disabled @endif>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="Female" name="Female" value="" @if(isset($data->contactDetail) && $data->contactDetail->sex == 1) checked readonly @else disabled @endif>
                                 <label for="Female"> Female</label>
                             </div>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="Unknown" name="Unknown" value="" @if($data->contactDetail->sex == 3) checked readonly @else disabled @endif>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="Unknown" name="Unknown" value="" @if(isset($data->contactDetail) && $data->contactDetail->sex == 3) checked readonly @else disabled @endif>
                                 <label for="Unknown"> Unknown</label>
                             </div> 
                         </div>
@@ -1028,7 +1027,7 @@
                 </tr>
                 <tr>
                     <td class="col-md-6">
-                        <b>Name of the Case: <u>{{$data->contactDetail->name}}</u></b>
+                        <b>Name of the Case: <u>{{ isset($data->contactDetail) ? $data->contactDetail->name : '' }}</u></b>
                     </td>
                     <td class="col-md-6">
                         <b>EPID ID</b>
@@ -1039,15 +1038,15 @@
                 </tr>
                 <tr>
                     <td>EPID ID no</td>
-                    <td>Name: {{$data->contactDetail->name}}</td>
+                    <td>Name: {{ isset($data->contactDetail) ? $data->contactDetail->name : ''}}</td>
                 </tr>
                 <tr>
-                    <td>Date of birth (dd/mm/yyyy)/Age <u>{{$data->contactDetail->age}}</u></td>
+                    <td>Date of birth (dd/mm/yyyy)/Age <u>{{ isset($data->contactDetail) ? $data->contactDetail->age : ''}}</u></td>
                     <td>
                         <div style="display: flex; flex-direction: row;">
                             <p>Sex:</p>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="Male" name="Male" value="" @if($data->contactDetail->sex == 1) checked readonly @else disabled @endif>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="Male" name="Male" value="" @if(isset($data->contactDetail) && $data->contactDetail->sex == 1) checked readonly @else disabled @endif>
                                 <label for="Male"> Male</label>
                             </div>
                             <div style="padding-left: 1em;">
@@ -1073,13 +1072,13 @@
                     <td colspan="2">
                         <div class="col-md-6">
                             <p>Current Address: </p>
-                            <p>Province: {{$data->contactDetail->province_id}}</p>
-                            <p>Municipality: {{$data->contactDetail->municipality_id}}</p>
-                            <p>Tole/Landmark:{{$data->contactDetail->tole}}</p>
+                            <p>Province: {{ isset($data->contactDetail) ? $data->contactDetail->province_id : ''}}</p>
+                            <p>Municipality: {{ isset($data->contactDetail) ? $data->contactDetail->municipality_id : ''}}</p>
+                            <p>Tole/Landmark:{{ isset($data->contactDetail) ? $data->contactDetail->tole : ''}}</p>
                         </div>
                         <div class="col-md-6">
-                            <p>District: {{$data->contactDetail->district_id}}</p>
-                            <p>Ward: {{$data->contactDetail->ward}}</p>
+                            <p>District: {{ isset($data->contactDetail) ? $data->contactDetail->district_id : ''}}</p>
+                            <p>Ward: {{ isset($data->contactDetail) ? $data->contactDetail->ward : ''}}</p>
                         </div>
                     </td>
                 </tr>
@@ -1089,11 +1088,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Telephone (mobile) number: {{$data->contactDetail->emergency_contact_one}}</td>
+                    <td>Telephone (mobile) number: {{ isset($data->contactDetail) ? $data->contactDetail->emergency_contact_one : ''}}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td>Alternative Contact number: {{$data->contactDetail->emergency_contact_two}}</td>
+                    <td>Alternative Contact number: {{ isset($data->contactDetail) ? $data->contactDetail->emergency_contact_two : ''}}</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -1122,11 +1121,11 @@
                             
                                 
                                 <div style="padding-left: 1em;">
-                                    <input type="checkbox" id="yes" name="yes" value=""  @if($data->contactDetail->symptoms_recent == 1) checked readonly @else disabled @endif/>
+                                    <input type="checkbox" id="yes" name="yes" value=""  @if(isset($data->contactDetail) && $data->contactDetail->symptoms_recent == 1) checked readonly @else disabled @endif/>
                                     <label for="yes"> Yes</label>
                                 </div>
                                 <div style="padding-left: 1em;">
-                                    <input type="checkbox" id="no" name="no" value="" @if($data->contactDetail->symptoms_recent != 1) checked readonly @else disabled @endif/>
+                                    <input type="checkbox" id="no" name="no" value="" @if( isset($data->contactDetail) && $data->contactDetail->symptoms_recent != 1) checked readonly @else disabled @endif/>
                                     <label for="no"> No</label>  
                                 </div>
                             </div>
@@ -1153,7 +1152,7 @@
                 <tr>
                     <td colspan="2">
                         <b>If answer to 3.1 or 3.2 is Yes,</b><br>
-                        <b>Date of Onset of First set of Symptoms [dd/mm/yyyy]: {{$data->contactDetail->symptoms_date}}</b><br>
+                        <b>Date of Onset of First set of Symptoms [dd/mm/yyyy]: {{ isset($data->contactDetail) ? $data->contactDetail->symptoms_date : ''}}</b><br>
                         <b>Check any and all applicable symptoms listed below</b>
                         <div>
                         <div class=" col-md-4">
@@ -1202,8 +1201,8 @@
                                     <label for="Irritability/Confusion"> Irritability/Confusion</label>
                                 </div>
                                 <div>
-                                    <input type="checkbox" id="specify" name="specify" value="" @if(!is_null($data->contactDetail->symptoms_specific)) checked @endif readonly/>
-                                    <label for="specify"> Others, specify: <span style="font-weight: 500 !important;">{{$data->contactDetail->symptoms_specific}}</span></label>
+                                    <input type="checkbox" id="specify" name="specify" value="" @if(isset($data->contactDetail) && !is_null($data->contactDetail->symptoms_specific)) checked @endif readonly/>
+                                    <label for="specify"> Others, specify: <span style="font-weight: 500 !important;">{{ isset($data->contactDetail) ? $data->contactDetail->symptoms_specific : ''}}</span></label>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -1270,8 +1269,8 @@
                             <label for="Chronic-Kidney-Diseases"> Chronic Kidney Diseases</label>
                         </div>
                         <div style="padding-left: 1em;">
-                            <input style="padding-left: 0.5em;" id="malignancy" name="malignancy" type="checkbox" value="" @if(!is_null($data->contactDetail->symptoms_comorbidity_specific)) checked @endif readonly/>
-                            <label for="malignancy"> Others, specify: <span style="font-weight: 500 !important;">{{$data->contactDetail->symptoms_comorbidity_specific}}</span></label>
+                            <input style="padding-left: 0.5em;" id="malignancy" name="malignancy" type="checkbox" value="" @if(isset($data->contactDetail) && !is_null($data->contactDetail->symptoms_comorbidity_specific)) checked @endif readonly/>
+                            <label for="malignancy"> Others, specify: <span style="font-weight: 500 !important;">{{ isset($data->contactDetail) ? $data->contactDetail->symptoms_comorbidity_specific : ''}}</span></label>
                         </div>
                         </div>
                     </td>
