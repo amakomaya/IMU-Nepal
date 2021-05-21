@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 
 use Illuminate\Console\Command;
 
@@ -42,12 +41,6 @@ class MySqlDump extends Command
 
     public function handle()
     {
-//        try {
-            $this->process->mustRun();
-
-//            $this->info('The backup has been proceed successfully.');
-//        } catch (ProcessFailedException $exception) {
-//            $this->error('The backup process has been failed.');
-//        }
+        $this->process->mustRun();
     }
 }
