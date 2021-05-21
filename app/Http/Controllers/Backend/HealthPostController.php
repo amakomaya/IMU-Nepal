@@ -116,7 +116,7 @@ class HealthpostController extends Controller
         if(Auth::user()->role != 'province') {
             return redirect()->route('healthpost.index');
         } else {
-            return redirect()->back();
+            return redirect()->route('healthpost.create');
         }
     }
 
@@ -276,7 +276,7 @@ class HealthpostController extends Controller
         
         $healthpost->delete();
 
-        return true;
+        return response()->json(['message' => 'Deleted']);
     }
 
     protected function findModel($id)
