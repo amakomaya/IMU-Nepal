@@ -42,6 +42,14 @@ input:focus ~ div{
                                 Create Organizations
                             @endif
                         </div>
+                        @if (\Request::session()->has('message'))
+                            <div class="alert alert-block alert-success">
+                                <button type="button" class="close" data-dismiss="alert">
+                                    <i class="ace-icon fa fa-times"></i>
+                                </button>
+                                {!! Request::session()->get('message') !!}
+                            </div>
+                        @endif
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                 			<form class="form-horizontal" role="form" method="POST" action="@yield('action')" >
