@@ -527,7 +527,7 @@ class CasesPaymentController extends Controller
             ['dataElement' => 'TmxN1Fi6AO8', 'value' => $data['total_beds_allocated_icu']],
             ['dataElement' => 'Nzp8lgMpO4W', 'value' => $data['total_beds_allocated_hdu']],
             ['dataElement' => 'oHAzqKL4JRN', 'value' => $data['total_beds_allocated_ventilators_among_icu']],
-            ['dataElement' => 'ukRwct4JOlH', 'value' => $data['total_beds_allocated_general'] + $data['total_beds_allocated_icu']],
+            ['dataElement' => 'ukRwct4JOlH', 'value' => $data['total_beds_allocated_general'] + $data['total_beds_allocated_icu'] + $data['total_beds_allocated_hdu']],
 
             ['dataElement' => 'N2OMXZJ68XO', 'value' => $data['total_patients_without_symptoms'] +
                                                         $data['total_patients_with_mild_symptoms'] +
