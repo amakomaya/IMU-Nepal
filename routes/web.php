@@ -341,9 +341,9 @@ Route::post('admin/stock-update', 'StockController@updateStock')->name('stock.up
 Route::get('admin/get-org-rep', function (Request $request){
     $response = FilterRequest::filter($request);
     $hpCodes = GetHealthpostCodes::filter($response);
-
+    $dateReference = (\Carbon\Carbon::now()->subDays($request->date)->startOfDay());
     $data = \DB::table('payment_cases')
-        ->where('payment_cases.created_at', '>=' ,\Carbon\Carbon::now()->subDays($request->date))
+        ->where('payment_cases.updated_at', '>=' ,$dateReference)
         ->whereIn('payment_cases.hp_code', $hpCodes)
         ->join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
         ->join('municipalities', 'healthposts.municipality_id', '=', 'municipalities.id')
@@ -407,5 +407,5 @@ Route::get('admin/get-org-rep', function (Request $request){
         $return['total_death'] = $value->where('is_death', 2)->count();
         return $return;
     });
-    return response()->json($mapped_data_second);
+    return response()->json(['date_from' => $dateReference, 'date_to' => \Carbon\Carbon::now(), 'data' => $mapped_data_second]);
 });
