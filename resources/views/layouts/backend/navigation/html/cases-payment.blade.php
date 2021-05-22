@@ -15,7 +15,7 @@
             </a>
         </li>
         @endif
-        @if(auth()->user()->role === 'healthpost')
+        @if(auth()->user()->role === 'healthpost' || auth()->user()->hasDirectPermission('cases-payment'))
             <li>
                 <a href="{{ route('cases.payment.create') }}">
                     <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
@@ -137,7 +137,7 @@
                         </a>
                     </li>
                 @endif
-                <li>
+                    <li>
                     <a href="{{ route('observation-cases.index') }}">
                         <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                         List
