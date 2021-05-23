@@ -155,16 +155,26 @@ class HealthpostController extends Controller
             $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
             $districts = District::where('province_id', $province_id)->get();
             $municipalities = Municipality::where('province_id', $province_id)->get();
+            $provinces = null;
         } else {
-            $province_id = $districts = $municipalities = null;
+            $provinces = Province::get();
+            $districts = District::get();
+            $municipalities = Municipality::get();
         }
         $wards = [];
-        return view('backend.healthpost.edit-record', compact('wards','data','user', 'districts', 'municipalities'));
+        return view('backend.healthpost.edit-record', compact('wards','data','user', 'provinces', 'districts', 'municipalities'));
     }
 
     public function updateRecord(Request $request, $id){
 
         $healthpost = $this->findModel($id);
+
+        if($request->get('province_id')) {
+            $province_id = $request->get('province_id');
+        } 
+        else {
+            $province_id = $healthpost->province_id;
+        }
 
         $healthpost->update([
             'name' => $request->get('name'),
@@ -179,7 +189,10 @@ class HealthpostController extends Controller
             'vaccination_center_id' => $request->get('vaccination_center_id'),
             'no_of_hdu' => $request->get('no_of_hdu'),
             'daily_consumption_of_oxygen' => $request->get('daily_consumption_of_oxygen'),
-            'hmis_uid' => $request->get('hmis_uid')
+            'hmis_uid' => $request->get('hmis_uid'),
+            'district_id' => $request->get('district_id'),
+            'municipality_id' => $request->get('municipality_id'),
+            'province_id' => $province_id
         ]);
 
         $user = $this->findModelUser($healthpost->token);

@@ -408,8 +408,9 @@ input:focus ~ div{
                                 <input type="hidden" name="province_id" value="{{ $province_id }}">
 
                                 <div class="form-group">
-                                    <div class="col-md-8 col-md-offset-4">
-                                        <button type="submit" class="btn btn-success">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-7">
+                                        <button type="submit" class="btn btn-success" style="display: block; width: 100%;">
                                             {{ __('create.submit') }}
                                         </button>
                                     </div>

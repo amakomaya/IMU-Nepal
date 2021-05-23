@@ -29,6 +29,20 @@
         }
 
     </style>
+    <script type="text/javascript">
+        function provinceOnchange(id){
+            $("#district").text("Loading...").fadeIn("slow");
+            $.get( "{{route("admin.district-select-province")}}?id="+id,function(data){
+                $("#district").html(data);
+            });
+        }
+        function districtOnchange(id){
+            $("#municipality").text("Loading...").fadeIn("slow");
+            $.get( "{{route("admin.municipality-select-district")}}?id="+id,function(data){
+                $("#municipality").html(data);
+            });
+        }
+    </script>
 
     <div id="page-wrapper">
         <!-- /.row -->
@@ -58,7 +72,27 @@
                                 </div>
                             </div>
 
-                            @if(Auth::user()->role == 'province')
+                            @if(Auth::user()->role == 'main')
+
+                            <div class="form-group{{ $errors->has('province_id') ? ' has-error' : '' }}">
+                                <label for="province_id" class="col-md-3 control-label" >Province</label>
+                                
+                                <div class="col-md-7">
+                                    <select id="province_id" class="form-control" name="province_id" onchange="provinceOnchange($(this).val())">
+                                            @foreach ($provinces as $province )
+                                               <option value="{{ $province->id }}" @if($data->province_id=="$province->id") {{ 'selected' }} @endif >{{ $province->province_name }}</option>
+                                            @endforeach
+                                    </select>
+
+                                    @if ($errors->has('province_id'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('province_id') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            @endif
 
                             <div class="form-group{{ $errors->has('district_id') ? ' has-error' : '' }}">
                                 <label for="district_id" class="col-md-3 control-label">@lang('create.district')</label>
@@ -101,8 +135,6 @@
                                     @endif
                                 </div>
                             </div>
-
-                            @endif
 
                             <div class="form-group{{ $errors->has('ward_no') ? ' has-error' : '' }}">
                                 <label for="ward_no" class="col-md-3 control-label">
