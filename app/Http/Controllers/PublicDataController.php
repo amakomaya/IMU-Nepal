@@ -106,19 +106,21 @@ class PublicDataController extends Controller
                         $return['is_death'] = 1;
                     }
                 }
+            }
 
+            if(empty($value->date_of_outcome_en)){
+                if ($value->health_condition_update == null){
+                    $return['health_condition'] = $value->health_condition;
+                }else{
+                    $array_health_condition = json_decode($value->health_condition_update, true);
+                    $return['health_condition'] = (int)collect($array_health_condition)->sortBy('date')->first()['id'];
+                }
             }
 
             if($parse_register_date->isToday()){
                 $return['is_admission'] = 1;
             }
 
-            if ($value->health_condition_update == null){
-                $return['health_condition'] = $value->health_condition;
-            }else{
-                $array_health_condition = json_decode($value->health_condition_update, true);
-                $return['health_condition'] = (int)collect($array_health_condition)->sortBy('date')->first()['id'];
-            }
             return $return;
         })->groupBy(function($item) {
             return $item['hp_code'];
@@ -143,7 +145,6 @@ class PublicDataController extends Controller
             $return['today_total_death'] = collect($value)->where('is_death', 1)->count();
             $return['today_total_discharge'] = collect($value)->where('is_discharge', 1)->count();
 
-            $return['raw'] = collect($value);
             $return['used_general'] = collect($value)->whereIn('health_condition', [1,2])->count();
             $return['used_hdu'] = collect($value)->where('health_condition', 3)->count();
             $return['used_icu'] = collect($value)->where('health_condition', 4)->count();
