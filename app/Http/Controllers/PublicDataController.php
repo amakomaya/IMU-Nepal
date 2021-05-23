@@ -143,6 +143,7 @@ class PublicDataController extends Controller
             $return['today_total_death'] = collect($value)->where('is_death', 1)->count();
             $return['today_total_discharge'] = collect($value)->where('is_discharge', 1)->count();
 
+            $return['raw'] = collect($value);
             $return['used_general'] = collect($value)->whereIn('health_condition', [1,2])->count();
             $return['used_hdu'] = collect($value)->where('health_condition', 3)->count();
             $return['used_icu'] = collect($value)->where('health_condition', 4)->count();
