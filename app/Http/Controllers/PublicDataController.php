@@ -110,7 +110,7 @@ class PublicDataController extends Controller
 
             if(empty($value->date_of_outcome_en)){
                 if ($value->health_condition_update == null){
-                    $return['health_condition'] = $value->health_condition;
+                    $return['health_condition'] = (int)$value->health_condition;
                 }else{
                     $array_health_condition = json_decode($value->health_condition_update, true);
                     $return['health_condition'] = (int)collect($array_health_condition)->sortBy('date')->first()['id'];
