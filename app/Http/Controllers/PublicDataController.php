@@ -108,13 +108,11 @@ class PublicDataController extends Controller
                 }
             }
 
-            if(empty($value->date_of_outcome_en)){
-                if ($value->health_condition_update == null){
-                    $return['health_condition'] = (int)$value->health_condition;
-                }else{
-                    $array_health_condition = json_decode($value->health_condition_update, true);
-                    $return['health_condition'] = (int)collect($array_health_condition)->sortBy('date')->first()['id'];
-                }
+            if ($value->health_condition_update == null){
+                $return['health_condition'] = $value->health_condition;
+            }else{
+                $array_health_condition = json_decode($value->health_condition_update, true);
+                $return['health_condition'] = collect($array_health_condition)->last()['id'];
             }
 
             if($parse_register_date->isToday()){
@@ -145,10 +143,10 @@ class PublicDataController extends Controller
             $return['today_total_death'] = collect($value)->where('is_death', 1)->count();
             $return['today_total_discharge'] = collect($value)->where('is_discharge', 1)->count();
 
-            $return['used_general'] = collect($value)->whereIn('health_condition', [1,2])->count();
-            $return['used_hdu'] = collect($value)->where('health_condition', 3)->count();
-            $return['used_icu'] = collect($value)->where('health_condition', 4)->count();
-            $return['used_ventilators'] = collect($value)->where('health_condition', 5)->count();
+            $return['used_general'] = collect($value)->where('is_death', 0)->whereIn('health_condition', [1,2])->count();
+            $return['used_hdu'] = collect($value)->where('is_death', 0)->where('health_condition', 3)->count();
+            $return['used_icu'] = collect($value)->where('is_death', 0)->where('health_condition', 4)->count();
+            $return['used_ventilators'] = collect($value)->where('is_death', 0)->where('health_condition', 5)->count();
 
             $return['daily_capacity_in_liter'] = $value[0]['daily_capacity_in_liter'];
             $return['oxygen_availability'] = $value[0]['oxygen_availability'];
