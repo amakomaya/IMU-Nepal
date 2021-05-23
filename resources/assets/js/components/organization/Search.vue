@@ -40,7 +40,12 @@
           </thead>
           <tbody>
           <tr>
-            <td>{{ healthpostSelected.name }}</td>
+            <td>
+              <form ref="form">
+                <input type="hidden" name="_token" v-bind:value="csrf">
+                  <a href="#" v-on:click="organizationLogin">{{ healthpostSelected.name }}</a>
+              </form>
+            </td>
             <td>{{ healthpostSelected.province.province_name }}</td>
             <td>{{ healthpostSelected.district.district_name }}</td>
             <td>{{ healthpostSelected.municipality.municipality_name }}</td>
@@ -70,6 +75,7 @@ export default {
       womanTokens: [],
       options: [],
       healthpostSelected : null,
+      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
     }
   },
   methods: {
@@ -77,7 +83,6 @@ export default {
       var url = "/admin/organization/" + this.healthpostSelected.id + "/edit-record";
       window.open(url, '_blank').focus();
     },
-
     organizationDelete : function(){
       this.$swal({
         title: "Are you sure?",
@@ -118,6 +123,12 @@ export default {
         } else {
           this.$swal("Cancelled", "Data not deleted :)", "error");
         }
+      })
+    },
+    organizationLogin : function() {
+      axios.post('/api/user-manager/' + this.healthpostSelected.token + '/login-as?key=token')
+       .then(response => {
+        window.location.href = '/admin';
       })
     },
     onSearch(search, loading) {
