@@ -102,7 +102,8 @@ class PublicDataController extends Controller
                 if($parse_date_of_outcome_en->isToday()){
                     if ($value->is_death === '1'){
                         $return['is_discharge'] = 1;
-                    }else{
+                    }
+                    if($value->is_death === '2'){
                         $return['is_death'] = 1;
                     }
                 }
