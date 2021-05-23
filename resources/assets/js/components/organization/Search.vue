@@ -79,6 +79,10 @@ export default {
     },
     organizationDelete: function () {
       // console.log(this.healthpostSelected.id);
+
+
+
+
       axios.post("/admin/organization/api-delete/" + this.healthpostSelected.id)
       .then(res => { console.log(res) })
       .catch(err => { console.error(err) });
