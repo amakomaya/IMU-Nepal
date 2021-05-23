@@ -101,10 +101,10 @@ class PublicDataController extends Controller
                 $parse_date_of_outcome_en = Carbon::parse($value->date_of_outcome_en);
                 if($parse_date_of_outcome_en->isToday()){
                     if ($value->is_death === '1'){
-                        $return['is_discharge'] = 1;
+                        $return['is_discharge'] = 11;
                     }
                     if($value->is_death === '2'){
-                        $return['is_death'] = 1;
+                        $return['is_death'] = 12;
                     }
                 }
             }
@@ -117,7 +117,7 @@ class PublicDataController extends Controller
             }
 
             if($parse_register_date->isToday()){
-                $return['is_admission'] = 1;
+                $return['is_admission'] = 10;
             }
 
             return $return;
@@ -140,9 +140,9 @@ class PublicDataController extends Controller
             $return['total_icu'] = $value[0]['total_icu'];
             $return['total_ventilators'] = $value[0]['total_ventilators'];
 
-            $return['today_total_admission'] = collect($value)->where('is_admission', 1)->count();
-            $return['today_total_death'] = collect($value)->where('is_death', 1)->count();
-            $return['today_total_discharge'] = collect($value)->where('is_discharge', 1)->count();
+            $return['today_total_admission'] = collect($value)->where('is_admission', 10)->count();
+            $return['today_total_death'] = collect($value)->where('is_death', 12)->count();
+            $return['today_total_discharge'] = collect($value)->where('is_discharge', 11)->count();
 
             $return['used_general'] = collect($value)->where('is_death', null)->whereIn('health_condition', [1,2])->count();
             $return['used_hdu'] = collect($value)->where('is_death', null)->where('health_condition', 3)->count();
