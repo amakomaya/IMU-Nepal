@@ -8,7 +8,7 @@
     <ul class="nav nav-second-level">
         @if(auth()->user()->role === 'main' || auth()->user()->role === 'province')
         <li>
-            <a href="{{ route('public.home.index') }}">
+            <a href="{{ route('public.home.index') }}" target="_blank">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                 Public Portal
                 <span class="label label-info pull-right">Portal</span>

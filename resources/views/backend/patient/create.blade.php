@@ -91,14 +91,14 @@
                             <div class="form-group">
                                 <label class="control-label" for="caste">Caste</label>
                                 <select name="caste" class="form-control">
-                                    <option {{ old('caste') == '6' ? "selected" : "" }} value="6">Don't Know</option>
-                                    <option {{ old('caste') == '0' ? "selected" : "" }} value="0">Dalit</option>
-                                    <option {{ old('caste') == '1' ? "selected" : "" }} value="1">Janajati</option>
-                                    <option {{ old('caste') == '2' ? "selected" : "" }} value="2">Madheshi</option>
-                                    <option {{ old('caste') == '3' ? "selected" : "" }} value="3">Muslim</option>
-                                    <option {{ old('caste') == '4' ? "selected" : "" }} value="4">Brahmin/Chhetrai
+                                    <option {{ old('caste') == '7' ? "selected" : "" }} value="7">Don't Know</option>
+                                    <option {{ old('caste') == '1' ? "selected" : "" }} value="1">Dalit</option>
+                                    <option {{ old('caste') == '2' ? "selected" : "" }} value="2">Janajati</option>
+                                    <option {{ old('caste') == '3' ? "selected" : "" }} value="3">Madheshi</option>
+                                    <option {{ old('caste') == '4' ? "selected" : "" }} value="4">Muslim</option>
+                                    <option {{ old('caste') == '5' ? "selected" : "" }} value="5">Brahmin/Chhetrai
                                     </option>
-                                    <option {{ old('caste') == '5' ? "selected" : "" }} value="5">Other</option>
+                                    <option {{ old('caste') == '6' ? "selected" : "" }} value="6">Other</option>
                                 </select>
                             </div>
                             <div class="form-group">

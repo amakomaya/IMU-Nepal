@@ -10,6 +10,7 @@ use App\Models\Province;
 use App\Models\District;
 use App\Models\Municipality;
 use App\Models\Organization;
+use App\Models\ProvinceInfo;
 use App\Models\Ward;
 use App\User;
 use Auth;

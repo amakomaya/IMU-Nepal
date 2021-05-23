@@ -34,7 +34,7 @@ class ObservationCasesController extends Controller
             $return_to_home_sum = $observation_cases->sum('return_to_home');
 
             $observation_cases_today = OrganizationObservationCases::where('hp_code', $organization_hp_code)
-                ->whereDate('created_at', Carbon::today())
+                ->whereDate('created_at', date('Y-m-d'))
                 ->orderBy('created_at', 'desc')
                 ->get();
             $add_today_sum = $observation_cases_today->sum('add');
@@ -62,11 +62,11 @@ class ObservationCasesController extends Controller
             $observation_cases_today = OrganizationObservationCases::whereIn('organization_observation_cases.hp_code', $hpCodes)
                 ->leftjoin('healthposts', 'organization_observation_cases.hp_code', '=', 'healthposts.hp_code')
                 ->select('organization_observation_cases.*', 'healthposts.name')
-                ->whereDate('organization_observation_cases.created_at', Carbon::today())
+                ->whereDate('organization_observation_cases.created_at', date('Y-m-d'))
                 ->orderBy('organization_observation_cases.created_at', 'desc')
                 ->get()
                 ->groupBy('hp_code');
-            foreach($observation_cases as $cases) {
+            foreach($observation_cases_today as $cases) {
                 $add_today_sum += $cases->sum('add');
                 $transfer_to_bed_today_sum += $cases->sum('transfer_to_bed');
                 $return_to_home_today_sum += $cases->sum('return_to_home');
