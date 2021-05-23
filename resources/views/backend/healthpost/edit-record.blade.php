@@ -58,6 +58,50 @@
                                 </div>
                             </div>
 
+                            {{-- {{dd($data)}} --}}
+
+                            <div class="form-group{{ $errors->has('district_id') ? ' has-error' : '' }}">
+                                <label for="district_id" class="col-md-3 control-label">@lang('create.district')</label>
+                                
+                                <div class="col-md-7">
+                                    <div id="district">
+                                        <select id="district_id" class="form-control" name="district_id" onchange="districtOnchange($(this).val())">
+                                                <option value="">Select District</option>
+                                                @foreach ($districts as $district )
+                                                   <option value="{{ $district->id }}" @if($data->district_id == $district->id) {{ 'selected' }} @endif>{{ $district->district_name }}</option>
+                                                @endforeach
+                                        </select>
+                                    </div>
+
+                                    @if ($errors->has('district_id'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('district_id') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group{{ $errors->has('municipality_id') ? ' has-error' : '' }}">
+                                <label for="municipality_id" class="col-md-3 control-label">{{ trans('create.local_level') }}</label>
+                                
+                                <div class="col-md-7">
+                                    <div id="municipality">
+                                        <select id="municipality_id" class="form-control" name="municipality_id" >
+                                                <option value="">Select Local Government</option>
+                                                @foreach ($municipalities as $municipality )
+                                                   <option value="{{ $municipality->id }}" @if($data->municipality_id == $municipality->id) {{ 'selected' }} @endif>{{ $municipality->municipality_name }}</option>
+                                                @endforeach
+                                        </select>
+                                    </div>
+
+                                    @if ($errors->has('municipality_id'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('municipality_id') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+
                             <div class="form-group{{ $errors->has('ward_no') ? ' has-error' : '' }}">
                                 <label for="ward_no" class="col-md-3 control-label">
                                     <i data-toggle="tooltip" title="यहाँबाट वार्ड छान्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i>

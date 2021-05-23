@@ -150,8 +150,16 @@ class HealthpostController extends Controller
     public function editRecord($id){
         $data = $this->findModel($id);
         $user = $this->findModelUser($data->token);
+
+        if(Auth::user()->role == 'province') {
+            $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
+            $districts = District::where('province_id', $province_id)->get();
+            $municipalities = Municipality::where('province_id', $province_id)->get();
+        } else {
+            $province_id = $districts = $municipalities = null;
+        }
         $wards = [];
-        return view('backend.healthpost.edit-record', compact('wards','data','user'));
+        return view('backend.healthpost.edit-record', compact('wards','data','user', 'districts', 'municipalities'));
     }
 
     public function updateRecord(Request $request, $id){
