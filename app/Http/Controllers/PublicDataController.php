@@ -93,7 +93,7 @@ class PublicDataController extends Controller
             $return['oxygen_availability'] = $value->oxygen_availability;
 
             $return['is_admission'] = 0;
-            $return['is_death'] = 0;
+            $return['is_death'] = $value->is_death;
             $return['is_discharge'] = 0;
 
             $parse_register_date = Carbon::parse($value->register_date_en);
@@ -143,10 +143,10 @@ class PublicDataController extends Controller
             $return['today_total_death'] = collect($value)->where('is_death', 1)->count();
             $return['today_total_discharge'] = collect($value)->where('is_discharge', 1)->count();
 
-            $return['used_general'] = collect($value)->where('is_death', 0)->whereIn('health_condition', [1,2])->count();
-            $return['used_hdu'] = collect($value)->where('is_death', 0)->where('health_condition', 3)->count();
-            $return['used_icu'] = collect($value)->where('is_death', 0)->where('health_condition', 4)->count();
-            $return['used_ventilators'] = collect($value)->where('is_death', 0)->where('health_condition', 5)->count();
+            $return['used_general'] = collect($value)->where('is_death', null)->whereIn('health_condition', [1,2])->count();
+            $return['used_hdu'] = collect($value)->where('is_death', null)->where('health_condition', 3)->count();
+            $return['used_icu'] = collect($value)->where('is_death', null)->where('health_condition', 4)->count();
+            $return['used_ventilators'] = collect($value)->where('is_death', null)->where('health_condition', 5)->count();
 
             $return['daily_capacity_in_liter'] = $value[0]['daily_capacity_in_liter'];
             $return['oxygen_availability'] = $value[0]['oxygen_availability'];
