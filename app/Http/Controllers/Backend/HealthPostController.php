@@ -255,28 +255,33 @@ class HealthpostController extends Controller
 
     public function apiDestroy($id)
     {
-        if (User::checkAuthForCreateUpdateDelHealthpost() === false) {
-            return redirect('/admin');
-        }
-        
-        $healthpost = $this->findModel($id);
-        
-        $healthworkers = OrganizationMember::where('hp_code', $healthpost->hp_code)->get();
+        try{
+            if (User::checkAuthForCreateUpdateDelHealthpost() === false) {
+                return redirect('/admin');
+            }
+            
+            $healthpost = $this->findModel($id);
+            
+            $healthworkers = OrganizationMember::where('hp_code', $healthpost->hp_code)->get();
 
-        
-        foreach($healthworkers as $healthworker) {
-            $user = $this->findModelUser($healthworker->token);
+            
+            foreach($healthworkers as $healthworker) {
+                $user = $this->findModelUser($healthworker->token);
+                $user->delete();
+
+                $healthworker->delete();
+            }
+
+            $user = $this->findModelUser($healthpost->token);
             $user->delete();
+            
+            $healthpost->delete();
 
-            $healthworker->delete();
+            return response()->json(['message' => 'success']);
         }
-
-        $user = $this->findModelUser($healthpost->token);
-        $user->delete();
-        
-        $healthpost->delete();
-
-        return response()->json(['message' => 'Deleted']);
+        catch (\Exception $e){
+            return response()->json(['message' => 'error']);
+        }
     }
 
     protected function findModel($id)
