@@ -70,8 +70,6 @@ input:focus ~ div{
                                     </div>
                                 </div>
 
-                                @if(Auth::user()->role == 'province')
-
                                 <div class="form-group{{ $errors->has('district_id') ? ' has-error' : '' }}">
                                     <label for="district_id" class="col-md-3 control-label">@lang('create.district')</label>
                                     
@@ -113,8 +111,6 @@ input:focus ~ div{
                                         @endif
                                     </div>
                                 </div>
-
-                                @endif
 
                                  <div class="form-group{{ $errors->has('ward_no') ? ' has-error' : '' }}">
                                     <label for="ward_no" class="col-md-3 control-label">
