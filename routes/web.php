@@ -44,42 +44,6 @@ Route::get('/admin/district-value', 'AdminController@getDistrictValue')->name('a
 
 Route::get('/admin/organization-select', 'AdminController@organizationSelect')->name('admin.organization-select');
 
-
-Route::get('/health-professional/add', function (\Illuminate\Http\Request $request) {
-    $province_id = 1;
-    $district_id = 1;
-    $municipality_id = 1;
-    $districts = District::where('province_id', $province_id)->orderBy('district_name', 'asc')->get();
-    $municipalities = Municipality::where('district_id', $district_id)->orderBy('municipality_name', 'asc')->get();
-
-    try{
-        $data = HealthProfessional::where('checked_by', Auth::user()->token)->latest()->first();
-        $data['organization_type'] = $data->organization_type ?? '';
-        $data['organization_name'] = $data->organization_name ?? '';
-        $data['organization_phn'] = $data->organization_phn ?? '';
-        $data['organization_address'] = $data->organization_address ?? '';
-    }catch (\Exception $exception){
-        $data['organization_type'] = '';
-        $data['organization_name'] = '';
-        $data['organization_phn'] = '';
-        $data['organization_address'] = '';
-        return view('health-professional.public-create', compact('province_id', 'district_id', 'municipality_id', 'districts','municipalities', 'data'));
-    }
-    return view('health-professional.add', compact('province_id', 'district_id', 'municipality_id', 'districts','municipalities', 'data'));
-})->name('health.professional.add');
-Route::post('/health-professional', 'Backend\HealthProfessionalController@store')->name('health-professional.store');
-Route::get('/health-professional/index', 'Backend\HealthProfessionalController@index')->name('health-professional.index');
-Route::get('/health-professional/immunized', 'Backend\HealthProfessionalController@immunized')->name('health-professional.immunized');
-Route::get('/health-professional/show/{id}', 'Backend\HealthProfessionalController@show')->name('health-professional.show');
-Route::get('/health-professional/edit/{id}', 'Backend\HealthProfessionalController@edit')->name('health-professional.edit');
-Route::put('/health-professional/update/{id}', 'Backend\HealthProfessionalController@update')->name('health-professional.update');
-Route::get('/health-professional/temp-municipality-select-district', 'Backend\AddressController@municipalitySelectByDistrict')->name('temp-municipality-select-district');
-Route::get('/health-professional/temp-district-select-province', 'Backend\AddressController@districtSelectByProvince')->name('temp-district-select-province');
-Route::get('/health-professional/perm-municipality-select-district', 'Backend\AddressController@permMunicipalitySelectByDistrict')->name('perm-municipality-select-district');
-Route::get('/health-professional/perm-district-select-province', 'Backend\AddressController@permDistrictSelectByProvince')->name('perm-district-select-province');
-Route::get('/health-professional/export', 'Backend\HealthProfessionalController@export')->name('health-professional.export');
-Route::get('/vaccination/reports', 'Backend\VaccinationReportsController@index')->name('vaccination.report');
-
 //Backend Center
 Route::resource('admin/center', 'Backend\CenterController');
 Route::get('/admin/maps', 'Backend\MapController@map')->name('center.woman.map');

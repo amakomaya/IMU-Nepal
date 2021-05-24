@@ -30,7 +30,7 @@ class WomanController extends Controller
 
     protected function roleViewCheck(){
         $role = \auth()->user()->role;
-        $valid_roles = ['healthpost', 'healthworker', 'municipality'];
+        $valid_roles = ['healthpost', 'healthworker', 'municipality', 'dho'];
         if (in_array($role, $valid_roles))
         {
             return true;
