@@ -44,11 +44,16 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
-            ->whereHas('ancs', function($q){
-                $q->whereIn('result', [0,2]);
-            })->with(['ancs','healthpost' => function($q) {
-                $q->select('name', 'hp_code');
-            }, 'latestAnc']);
+            ->where(function ($query){
+                $query->whereHas('ancs', function($q){
+                    $q->whereIn('result', [0,2]);
+                })
+                ->orDoesntHave('ancs');
+            })
+            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+                'healthpost' => function($q) {
+                    $q->select('name', 'hp_code');
+                }]);
 
 //        $sample_collection_token = SampleCollection::whereIn('hp_code', $hpCodes)->whereIn('result' ,[0,2])->pluck('woman_token');
 //        $woman_register_and_sample_collection_only = SuspectedCase::whereIn('hp_code', $hpCodes)->doesntHave('ancs')->pluck('token');
