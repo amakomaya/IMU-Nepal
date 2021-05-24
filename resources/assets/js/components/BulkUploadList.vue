@@ -13,7 +13,7 @@
       <tbody>
         <tr v-if="checkPermission('lab-received')">
           <td>Lab Received</td>
-          <td>Create Lab Received</td>
+          <td>Create Lab Received by entering SID (17 digit IMU genereted code) & Patient Lab ID(Unique ID for your patient for external/own reference.) </td>
           <td><a href="/downloads/excel/lab_received_template.xlsx" onclick="return confirm('Are you sure, do you want to download import format ! ')" title="Do you have template ? If not, please download first and fill data than import.">Download Latest Template</a></td>
           <td>
             <label for="bulk_file_lab_received" class="btn btn-primary">Bulk Upload
@@ -24,7 +24,7 @@
         </tr>
         <tr v-if="checkPermission('lab-result')">
           <td>Lab Results</td>
-          <td>Update Lab Results of existing Lab Received</td>
+          <td>Update Lab Results of existing "Lab Received" by entering Patient Lab ID (Unique ID for your patient for external/own reference) & Result (Positive/Negative)</td>
           <td><a href="/downloads/excel/lab_result_template.xlsx" onclick="return confirm('Are you sure, do you want to download import format ! ')" title="Do you have template ? If not, please download first and fill data than import.">Download Latest Template</a></td>
           <td>
             <label for="bulk_file_lab_result" class="btn btn-primary">Bulk Upload
@@ -46,7 +46,7 @@
         </tr>
         <tr v-if="checkPermission('sample-collection') && checkPermission('cases-registration')">
           <td>Registration & Sample Collection</td>
-          <td>Register new supected cases & create sample collection.</td>
+          <td>Register new "Registered/Pending case" & create "sample collection" (you'll get an imu generated 17 digit code).</td>
           <td><a href="/downloads/excel/registration_sample_collection_template.xlsx" onclick="return confirm('Are you sure, do you want to download import format ! ')" title="Do you have template ? If not, please download first and fill data than import.">Download Latest Template</a></td>
           <td>
             <label for="bulk_file_registration_sample_collection" class="btn btn-primary">Bulk Upload
@@ -57,7 +57,7 @@
         </tr>
         <tr v-if="checkPermission('lab-result') && checkPermission('lab-received') && checkPermission('sample-collection') && checkPermission('cases-registration')">
           <td>Registration, Sample Collection & Lab Received/Results</td>
-          <td>Register new supected cases, create sample collection & update lab received.</td>
+          <td>Register new "New Case"(Case Type will vary according to the Lab Received), create "Sample Collection" ,create "Lab Received" & update "Lab Results".</td>
           <td><a href="/downloads/excel/registration_sample_collection_lab_tests_template.xlsx" onclick="return confirm('Are you sure, do you want to download import format ! ')" title="Do you have template ? If not, please download first and fill data than import.">Download Latest Template</a></td>
           <td>
             <label for="bulk_file_registration_sample_collection_lab_test" class="btn btn-primary">Bulk Upload
