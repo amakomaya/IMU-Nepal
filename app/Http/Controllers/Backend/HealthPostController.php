@@ -113,11 +113,8 @@ class HealthpostController extends Controller
 
         $request->session()->flash('message', 'Data Inserted successfully');
 
-        if(Auth::user()->role != 'province') {
-            return redirect()->route('healthpost.index');
-        } else {
-            return redirect()->route('healthpost.create');
-        }
+        return redirect()->route('healthpost.create');
+
     }
 
     public function show($id)

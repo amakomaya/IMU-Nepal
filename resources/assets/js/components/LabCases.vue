@@ -43,7 +43,7 @@
           <div>{{ labToken(item.latest_anc.labreport) }}</div>
         </td>
         <td>
-           <button v-on:click="addResultInLab(item)" title="Add Result">
+           <button v-if="checkPermission('lab-result')" v-on:click="addResultInLab(item)" title="Add Result">
              <i class = "material-icons">biotech</i>
           </button>
         </td>

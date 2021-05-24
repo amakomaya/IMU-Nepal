@@ -31,39 +31,6 @@
                 <span class="label label-info pull-right">Report</span>
             </a>
         </li>
-        @if(auth()->user()->role === 'main' || auth()->user()->role === 'province' || auth()->user()->role === 'municipality' || auth()->user()->role === 'dho')
-        <li>
-            <a href="#">
-                <i class="fa fa-money" aria-hidden="true"></i>
-
-                By Organization <span class="fa arrow"></span>
-            </a>
-            <ul class="nav nav-third-level">
-                <li>
-                    <a href="{{ route('cases.payment.by.organization') }}">
-                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                        All
-                        <span class="label label-info pull-right">All</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('cases.payment.by.institutional') }}">
-                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                        Institutional
-                        <span class="label label-info pull-right">Isolation</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('cases.payment.by.lab-treatment') }}">
-                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                        Lab & Treatment
-                        <span class="label label-info pull-right">LNT</span>
-                    </a>
-                </li>
-
-            </ul>
-        </li>
-        @endif
 
         <li>
             <a href="{{ route('cases.payment.index') }}">
@@ -95,33 +62,76 @@
             </a>
         </li>
         @endif
-            @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Province' || auth()->user()->role === 'province' || auth()->user()->role === 'dho' || auth()->user()->role === 'municipality')
+
+        @if(auth()->user()->role === 'main' || auth()->user()->role === 'province' || auth()->user()->role === 'municipality' || auth()->user()->role === 'dho')
+        <li>
+            <a href="#">
+                <i class="fa fa-money" aria-hidden="true"></i>
+
+                By Organization <span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-third-level">
                 <li>
-                    <a href="#">
-                        <i class="fa fa-medkit" aria-hidden="true"></i>
-                        Medicine Stocks <span class="fa arrow"></span>
+                    <a href="{{ route('cases.payment.by.organization') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        All
+                        <span class="label label-info pull-right">All</span>
                     </a>
-                    <ul class="nav nav-third-level">
-                        @if(auth()->user()->role === 'healthpost')
-                            <li>
-                                <a href="{{ route('stock.updateList') }}">
-                                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                                    Create
-                                    <span class="label label-default pull-right">Create</span>
-                                </a>
-                            </li>
-                        @endif
-                        <li>
-                            <a href="{{ route('stock.list') }}">
-                                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                                List
-                                <span class="label label-primary pull-right"> List </span>
-                            </a>
-                        </li>
-                    </ul>
+                </li>
+                <li>
+                    <a href="{{ route('cases.payment.by.institutional') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Institutional
+                        <span class="label label-info pull-right">Isolation</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('cases.payment.by.lab-treatment') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Lab & Treatment
+                        <span class="label label-info pull-right">LNT</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('cases.payment.by.hospital.wo.pcrlab') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Hospital without PCR Lab
+                        <span class="label label-info pull-right">HPCR</span>
+                    </a>
                 </li>
 
-            @endif
+            </ul>
+        </li>
+        @endif
+
+        @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Province' || auth()->user()->role === 'province' || auth()->user()->role === 'dho' || auth()->user()->role === 'municipality')
+            <li>
+                <a href="#">
+                    <i class="fa fa-medkit" aria-hidden="true"></i>
+                    Medicine Stocks <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-third-level">
+                    @if(auth()->user()->role === 'healthpost')
+                        <li>
+                            <a href="{{ route('stock.updateList') }}">
+                                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                Create
+                                <span class="label label-default pull-right">Create</span>
+                            </a>
+                        </li>
+                    @endif
+                    <li>
+                        <a href="{{ route('stock.list') }}">
+                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                            List
+                            <span class="label label-primary pull-right"> List </span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+        @endif
+
         <li>
             <a href="#">
                 <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
