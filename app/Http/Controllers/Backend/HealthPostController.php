@@ -150,13 +150,31 @@ class HealthpostController extends Controller
     public function editRecord($id){
         $data = $this->findModel($id);
         $user = $this->findModelUser($data->token);
+
+        if(Auth::user()->role == 'province') {
+            $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
+            $districts = District::where('province_id', $province_id)->get();
+            $municipalities = Municipality::where('province_id', $province_id)->get();
+            $provinces = null;
+        } else {
+            $provinces = Province::get();
+            $districts = District::get();
+            $municipalities = Municipality::get();
+        }
         $wards = [];
-        return view('backend.healthpost.edit-record', compact('wards','data','user'));
+        return view('backend.healthpost.edit-record', compact('wards','data','user', 'provinces', 'districts', 'municipalities'));
     }
 
     public function updateRecord(Request $request, $id){
 
         $healthpost = $this->findModel($id);
+
+        if($request->get('province_id')) {
+            $province_id = $request->get('province_id');
+        } 
+        else {
+            $province_id = $healthpost->province_id;
+        }
 
         $healthpost->update([
             'name' => $request->get('name'),
@@ -171,7 +189,10 @@ class HealthpostController extends Controller
             'vaccination_center_id' => $request->get('vaccination_center_id'),
             'no_of_hdu' => $request->get('no_of_hdu'),
             'daily_consumption_of_oxygen' => $request->get('daily_consumption_of_oxygen'),
-            'hmis_uid' => $request->get('hmis_uid')
+            'hmis_uid' => $request->get('hmis_uid'),
+            'district_id' => $request->get('district_id'),
+            'municipality_id' => $request->get('municipality_id'),
+            'province_id' => $province_id
         ]);
 
         $user = $this->findModelUser($healthpost->token);
@@ -255,28 +276,33 @@ class HealthpostController extends Controller
 
     public function apiDestroy($id)
     {
-        if (User::checkAuthForCreateUpdateDelHealthpost() === false) {
-            return redirect('/admin');
-        }
-        
-        $healthpost = $this->findModel($id);
-        
-        $healthworkers = OrganizationMember::where('hp_code', $healthpost->hp_code)->get();
+        try{
+            if (User::checkAuthForCreateUpdateDelHealthpost() === false) {
+                return redirect('/admin');
+            }
+            
+            $healthpost = $this->findModel($id);
+            
+            $healthworkers = OrganizationMember::where('hp_code', $healthpost->hp_code)->get();
 
-        
-        foreach($healthworkers as $healthworker) {
-            $user = $this->findModelUser($healthworker->token);
+            
+            foreach($healthworkers as $healthworker) {
+                $user = $this->findModelUser($healthworker->token);
+                $user->delete();
+
+                $healthworker->delete();
+            }
+
+            $user = $this->findModelUser($healthpost->token);
             $user->delete();
+            
+            $healthpost->delete();
 
-            $healthworker->delete();
+            return response()->json(['message' => 'success']);
         }
-
-        $user = $this->findModelUser($healthpost->token);
-        $user->delete();
-        
-        $healthpost->delete();
-
-        return response()->json(['message' => 'Deleted']);
+        catch (\Exception $e){
+            return response()->json(['message' => 'error']);
+        }
     }
 
     protected function findModel($id)

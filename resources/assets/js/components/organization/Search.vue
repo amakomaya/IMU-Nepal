@@ -40,13 +40,18 @@
           </thead>
           <tbody>
           <tr>
-            <td>{{ healthpostSelected.name }}</td>
+            <td>
+              <form ref="form">
+                <input type="hidden" name="_token" v-bind:value="csrf">
+                  <a href="#" v-on:click="organizationLogin">{{ healthpostSelected.name }}</a>
+              </form>
+            </td>
             <td>{{ healthpostSelected.province.province_name }}</td>
             <td>{{ healthpostSelected.district.district_name }}</td>
             <td>{{ healthpostSelected.municipality.municipality_name }}</td>
             <td>
               <a v-on:click="organizationEdit">
-                <i class="fa fa-edit fa-2x" style="color:green"></i>
+                <i class="fa fa-edit fa-2x" style="color:green; padding-right: 15px;"></i>
               </a>
               <a v-on:click="organizationDelete">
                 <i class="fa fa-trash fa-2x" style="color:red"></i>
@@ -70,6 +75,7 @@ export default {
       womanTokens: [],
       options: [],
       healthpostSelected : null,
+      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
     }
   },
   methods: {
@@ -77,16 +83,53 @@ export default {
       var url = "/admin/organization/" + this.healthpostSelected.id + "/edit-record";
       window.open(url, '_blank').focus();
     },
-    organizationDelete: function () {
-      // console.log(this.healthpostSelected.id);
-
-
-
-
-      axios.post("/admin/organization/api-delete/" + this.healthpostSelected.id)
-      .then(res => { console.log(res) })
-      .catch(err => { console.error(err) });
-      window.location.reload();
+    organizationDelete : function(){
+      this.$swal({
+        title: "Are you sure?",
+        text: "You don\'t able to to retrieve this data.",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel please!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      }).then((result) => {
+        if (result.value) {
+          axios.post('/admin/organization/api-delete/' + this.healthpostSelected.id)
+              .then((response) => {
+                if (response.data.message === 'success') {
+                  this.$swal({
+                    title: 'Record Deleted',
+                    type: 'success',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                  })
+                  this.healthpostSelected = null;
+                  
+                } else {
+                  this.$swal({
+                    title: 'Oops. No record found.',
+                    type: 'error',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                  })
+                }
+              })
+        } else {
+          this.$swal("Cancelled", "Data not deleted :)", "error");
+        }
+      })
+    },
+    organizationLogin : function() {
+      axios.post('/api/user-manager/' + this.healthpostSelected.token + '/login-as?key=token')
+       .then(response => {
+        window.location.href = '/admin';
+      })
     },
     onSearch(search, loading) {
       loading(true);

