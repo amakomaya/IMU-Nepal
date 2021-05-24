@@ -31,6 +31,38 @@
                 <span class="label label-info pull-right">Report</span>
             </a>
         </li>
+
+        <li>
+            <a href="{{ route('cases.payment.index') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Under Treatment
+                <span class="label label-primary pull-right">List</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('cases.payment.index-discharge') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Discharge
+                <span class="label label-success pull-right">List</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('cases.payment.index-death') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Death
+                <span class="label label-danger pull-right">List</span>
+            </a>
+        </li>
+        @if(auth()->user()->role === 'healthpost')
+        <li>
+            <a href="{{ route('cases.patient.detail') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Patient Detail
+                <span class="label label-primary pull-right">Detail</span>
+            </a>
+        </li>
+        @endif
+
         @if(auth()->user()->role === 'main' || auth()->user()->role === 'province' || auth()->user()->role === 'municipality' || auth()->user()->role === 'dho')
         <li>
             <a href="#">
@@ -64,64 +96,35 @@
             </ul>
         </li>
         @endif
-
-        <li>
-            <a href="{{ route('cases.payment.index') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Under Treatment
-                <span class="label label-primary pull-right">List</span>
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('cases.payment.index-discharge') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Discharge
-                <span class="label label-success pull-right">List</span>
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('cases.payment.index-death') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Death
-                <span class="label label-danger pull-right">List</span>
-            </a>
-        </li>
-        @if(auth()->user()->role === 'healthpost')
-        <li>
-            <a href="{{ route('cases.patient.detail') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Patient Detail
-                <span class="label label-primary pull-right">Detail</span>
-            </a>
-        </li>
-        @endif
-            @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Province' || auth()->user()->role === 'province' || auth()->user()->role === 'dho' || auth()->user()->role === 'municipality')
-                <li>
-                    <a href="#">
-                        <i class="fa fa-medkit" aria-hidden="true"></i>
-                        Medicine Stocks <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-third-level">
-                        @if(auth()->user()->role === 'healthpost')
-                            <li>
-                                <a href="{{ route('stock.updateList') }}">
-                                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                                    Create
-                                    <span class="label label-default pull-right">Create</span>
-                                </a>
-                            </li>
-                        @endif
+        
+        @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Province' || auth()->user()->role === 'province' || auth()->user()->role === 'dho' || auth()->user()->role === 'municipality')
+            <li>
+                <a href="#">
+                    <i class="fa fa-medkit" aria-hidden="true"></i>
+                    Medicine Stocks <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-third-level">
+                    @if(auth()->user()->role === 'healthpost')
                         <li>
-                            <a href="{{ route('stock.list') }}">
+                            <a href="{{ route('stock.updateList') }}">
                                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                                List
-                                <span class="label label-primary pull-right"> List </span>
+                                Create
+                                <span class="label label-default pull-right">Create</span>
                             </a>
                         </li>
-                    </ul>
-                </li>
+                    @endif
+                    <li>
+                        <a href="{{ route('stock.list') }}">
+                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                            List
+                            <span class="label label-primary pull-right"> List </span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-            @endif
+        @endif
+
         <li>
             <a href="#">
                 <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
