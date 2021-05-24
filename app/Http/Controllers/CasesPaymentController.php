@@ -584,7 +584,7 @@ class CasesPaymentController extends Controller
             $value['total_under_treatment'] = $value->where('is_death', null)->count();
             return $return;
         });
-        return view('backend.cases.payment.all-by-organization', ['data' => $mapped_data_second, 'heading' => 'Lab And Treatment']);
+        return view('backend.cases.payment.all-by-organization', ['data' => $mapped_data_second, 'heading' => 'Hospital without PCR Lab']);
     }
 
 
