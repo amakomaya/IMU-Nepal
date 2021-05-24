@@ -142,7 +142,7 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
               }
             },
             'age' => function($attribute, $value, $onFailure) {
-              if ($value === '' || $value === null) {
+              if ($value === '' || $value === null || !is_numeric($value) ) {
                    $onFailure('Invalid Age');
               }
             },
