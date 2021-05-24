@@ -92,11 +92,18 @@
                         <span class="label label-info pull-right">LNT</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('cases.payment.by.hospital.wo.pcrlab') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Hospital without PCR Lab
+                        <span class="label label-info pull-right">HPCR</span>
+                    </a>
+                </li>
 
             </ul>
         </li>
         @endif
-        
+
         @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Province' || auth()->user()->role === 'province' || auth()->user()->role === 'dho' || auth()->user()->role === 'municipality')
             <li>
                 <a href="#">
