@@ -43,6 +43,14 @@ input:focus ~ div{
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
+                    @if (\Request::session()->has('message'))
+                        <div class="alert alert-block alert-success">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="ace-icon fa fa-times"></i>
+                            </button>
+                            {!! Request::session()->get('message') !!}
+                        </div>
+                    @endif
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             @if (isset($data))
