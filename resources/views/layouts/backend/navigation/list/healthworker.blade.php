@@ -15,4 +15,5 @@
     @include('layouts.backend.navigation.html.cases-payment')
 @endcan
 
+@include('layouts.backend.navigation.html.bulk-upload')
 
