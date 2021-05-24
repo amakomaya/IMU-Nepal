@@ -44,6 +44,8 @@
                         </div>
                     </div>
                     <hr>
+                    @php $initial_token = '' @endphp
+                    @if($ancs)
                     <div class="panel-body">
                         <form action="{{ route('admin.ancs.update') }}" method="POST" id="all_form">
                         @csrf
@@ -194,7 +196,7 @@
                             </div>
                         </div>
                         <div class="form-group" id="case_reason">
-                            @php $reasons = json_decode($ancs->reson_for_testing); @endphp
+                            @php $reasons = json_decode(isset($ancs) ? $ancs->reson_for_testing : [] ); @endphp
                             <label class="control-label" for="reson_for_testing">Reason for testing:</label><br>
                             <input type="checkbox" name="reson_for_testing[]" value="1" @if(in_array(1, $reasons)) checked @endif>Planned travel<br>
                             <input type="checkbox" name="reson_for_testing[]" value="2" @if(in_array(2, $reasons)) checked @endif>Mandatory requirement<br>
@@ -241,7 +243,7 @@
                                 <option {{ $ancs && $ancs->sample_test_result == '3' ? "selected" : "" }} value="3">Positive</option>
                                 <option {{ $ancs && $ancs->sample_test_result == '4' ? "selected" : "" }} value="4">Negative</option>
                                 <option {{ $ancs && $ancs->sample_test_result == '9' ? "selected" : "" }}  value="9">Received</option>
-                                @php if($ancs->sample_test_result != 3 && $ancs->sample_test_result != 4 && $ancs->sample_test_result != 9) {
+                                @php if($ancs && $ancs->sample_test_result != 3 && $ancs->sample_test_result != 4 && $ancs->sample_test_result != 9) {
                                     $is_select = 'selected';
                                     $is_value = $ancs->sample_test_result;
                                 } else {
@@ -255,25 +257,49 @@
                                 <small id="help" class="form-text text-danger">{{ $errors->first('sample_test_result') }}</small>
                             @endif
                         </div>
+                        @php
+                            if($ancs) {
+                                $s_token = explode('-', $ancs->lab_tests_token);
+                                $initial_token = $s_token[0];
+                                array_shift($s_token);
+                                $remaining_token = implode('-', $s_token);
+                            } else {
+                                $initial_token = '';
+                                $remaining_token = '';
+                            }
+                        @endphp
                         <div class="form-group">
-                            <label for="name">Sample Token</label>
-                            <input type="text" id="sample_token" class="form-control" value="{{ $ancs ? $ancs->sample_token : '' }}" name="sample_token"
-                                   aria-describedby="help" placeholder="Enter Full Name">
-                            @if ($errors->has('sample_token'))
+                            <label for="name">Sample Token</label> 
+                            <div>
+                                {{ $initial_token }}-
+                                <input type="text" id="remaining_token" class="form-control" value="{{ $remaining_token }}" name="remaining_token"
+                                       aria-describedby="help" placeholder="Enter Full Name" required>
+                            </div>
+                            {{-- @if ($errors->has('sample_token'))
                                 <small id="help" class="form-text text-danger">{{ $errors->first('sample_token') }}</small>
-                            @endif
+                            @endif --}}
                         </div>
 
-                        <input type="hidden" name="woman_token" value="{{ $ancs ? $ancs->woman_token : '' }}">
+                        <input type="hidden" id="lab_tests_token" name="lab_tests_token" value="{{ $ancs ? $ancs->lab_tests_token : '' }}">
+                        <input type="hidden" name="woman_token" value="{{ $ancs ? $ancs->token : '' }}">
                         <input type="hidden" name="sid" value="{{ request()->get('sid') }}">
 
                         {!! rcForm::close('post') !!}
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 @endsection
 @section('script')
-    {{-- <script type="text/javascript" src="{{ mix('js/app.js') }}"></script> --}}
+<script>
+    var tok = {!! json_encode($initial_token) !!};
+    if(tok != ''){
+        tok = tok + '-';
+    }
+    $('#remaining_token').keyup(function() {
+        $('#lab_tests_token').val(tok + $('#remaining_token').val());
+    });
+</script>
 @endsection

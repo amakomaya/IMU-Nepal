@@ -6,6 +6,7 @@
 @include('layouts.backend.navigation.html.organization')
 @include('layouts.backend.navigation.html.lab-users')
 @include('layouts.backend.navigation.html.cases-payment')
+@include('layouts.backend.navigation.html.swab')
 @include('layouts.backend.navigation.html.map')
 @include('layouts.backend.navigation.html.notice')
 @include('layouts.backend.navigation.html.user-manager')

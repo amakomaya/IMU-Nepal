@@ -21,6 +21,7 @@ use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Charts;
 use DB;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -164,58 +165,66 @@ class AdminController extends Controller
     }
 
     public function ancsSearch(Request $request) {
-        if($request->sid) {
-            $ancs = SampleCollection::leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
-                ->leftjoin('women', 'ancs.woman_token', '=', 'women.token')
-                ->where('ancs.token', $request->sid)
-                ->where('lab_tests.sample_token', $request->sid)
-                ->first();
-        } else {
-            $ancs = null;
-        }
-        // dd($ancs);
-        $dateToday = Carbon::now()->format('Y-d-m');
+        if(Auth::user()->role == 'main' || Auth::user()->role == 'province') {
+            if($request->sid) {
+                // $response = FilterRequest::filter($request);
+                // $hpCodes = GetHealthpostCodes::filter($response);
 
-        return view('backend.ancs-search.edit', compact('ancs', 'dateToday'));
+                $ancs = SampleCollection::leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
+                    ->leftjoin('women', 'ancs.woman_token', '=', 'women.token')
+                    ->where('ancs.token', $request->sid)
+                    ->where('lab_tests.sample_token', $request->sid)
+                    ->select('women.*', 'ancs.token as ancs_token', 'lab_tests.token as lab_tests_token', 'lab_tests.sample_recv_date', 'lab_tests.sample_test_date', 'lab_tests.sample_test_time', 'lab_tests.sample_test_result')
+                    ->first();
+            } else {
+                $ancs = null;
+            }
+            $dateToday = Carbon::now()->format('Y-d-m');
+    
+            return view('backend.ancs-search.edit', compact('ancs', 'dateToday'));
+        } else {
+            return redirect('/admin');
+        }
     }
 
     public function ancsUpdate(Request $request) {
-        // dd($request->all());
-        $reson_for_testing = $request->reson_for_testing ? "[" . implode(', ', $request->reson_for_testing) . "]" : '[]';
-        try{
-            $woman_id = SuspectedCase::where('token', $request->woman_token)->first()->id;
-            SuspectedCase::where('id', $woman_id)->update([
-                'name' => $request->name,
-                'age' => $request->age,
-                'age_unit' => $request->age_unit,
-                'caste' => $request->caste,
-                'sex' => $request->sex,
-                'ward' => $request->ward,
-                'tole' => $request->tole,
-                'emergency_contact_one' => $request->emergency_contact_one,
-                'emergency_contact_two' => $request->emergency_contact_two,
-                'date_of_onset_of_first_symptom' => $request->date_of_onset_of_first_symptom,
-                'occupation' => $request->occupation,
-                'travelled' => $request->travelled,
-                'reson_for_testing' => $reson_for_testing
-            ]);
+        if(Auth::user()->role == 'main' || Auth::user()->role == 'province') {
+            $reson_for_testing = $request->reson_for_testing ? "[" . implode(', ', $request->reson_for_testing) . "]" : '[]';
+            try{
+                $woman_id = SuspectedCase::where('token', $request->woman_token)->first()->id;
+                SuspectedCase::where('id', $woman_id)->update([
+                    'name' => $request->name,
+                    'age' => $request->age,
+                    'age_unit' => $request->age_unit,
+                    'caste' => $request->caste,
+                    'sex' => $request->sex,
+                    'ward' => $request->ward,
+                    'tole' => $request->tole,
+                    'emergency_contact_one' => $request->emergency_contact_one,
+                    'emergency_contact_two' => $request->emergency_contact_two,
+                    'date_of_onset_of_first_symptom' => $request->date_of_onset_of_first_symptom,
+                    'occupation' => $request->occupation,
+                    'travelled' => $request->travelled,
+                    'reson_for_testing' => $reson_for_testing
+                ]);
 
-            $lab_id = LabTest::where('sample_token', $request->sid)->first()->id;
-            LabTest::where('id', $lab_id)->update([
-                'sample_recv_date' => $request->sample_recv_date,
-                'sample_test_date' => $request->sample_test_date,
-                'sample_test_time' => $request->sample_test_time,
-                'sample_test_result' => $request->sample_test_result,
-                'sample_token' => $request->sample_token,
-            ]);
+                $lab_id = LabTest::where('sample_token', $request->sid)->first()->id;
+                LabTest::where('id', $lab_id)->update([
+                    'sample_recv_date' => $request->sample_recv_date,
+                    'sample_test_date' => $request->sample_test_date,
+                    'sample_test_time' => $request->sample_test_time,
+                    'sample_test_result' => $request->sample_test_result,
+                    'token' => $request->lab_tests_token,
+                ]);
 
-            // SampleCollection::where('token', $request->sid)->update(['token' => $request->sample_token]);
+                $request->session()->flash('message', 'Data updated successfully');
+            } catch(Exception $e) {
+                $request->session()->flash('error', "Error on data update. Please retry !");
+            }
 
-            $request->session()->flash('message', 'Data updated successfully');
-        } catch(Exception $e) {
-            $request->session()->flash('error', "Error on data update. Please retry !");
+            return redirect()->back();
+        } else {
+            return redirect('/admin');
         }
-
-        return redirect()->back();
     }
 }
