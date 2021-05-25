@@ -21,11 +21,10 @@ class SampleCollection extends Model
 
     'checked_by_name', 'sample_type', 'sample_type_specific', 'sample_case',
         'sample_case_specific', 'sample_identification_type',
-        'service_type', 'result','infection_type',
+        'service_type', 'result','infection_type', 'regdev',
+      'created_at', 'updated_at', 'situation'];
 
-    'created_at', 'updated_at', 'situation'];
-
-    protected $dates = ['deleted_at'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
     protected $appends = ['formatted_result'];
 
