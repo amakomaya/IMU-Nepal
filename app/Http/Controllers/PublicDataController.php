@@ -7,6 +7,10 @@ use App\Models\Organization;
 use App\Models\OrganizationMember;
 use App\Models\PaymentCase;
 use App\Models\ProvinceInfo;
+use App\Models\Province;
+use App\Models\District;
+use App\Models\Municipality;
+
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -23,6 +27,25 @@ class PublicDataController extends Controller
             return redirect('/admin');
         }
         return view('public.home.index', compact('province_id'));
+    }
+
+    public function federalInfo() {
+      $province_list = Province::select('id', 'province_name')->get()->toArray();
+      $response = [];
+      foreach($province_list as $province) {
+        $district_list = District::select('id', 'district_name')->where('province_id', $province['id'])->get()->toArray();
+        $response[$province['province_name']] = [];
+        foreach($district_list as $district) {
+          $response[$district['district_name']] = [];
+          $response[$province['province_name']][] = $district['district_name'];
+          $mun_list = Municipality::select('id', 'municipality_name')->where('district_id', $district['id'])->get()->toArray();
+          
+          foreach($mun_list as $municipality) {
+            $response[$district['district_name']][] = $municipality['municipality_name'];
+          }
+        } 
+      }
+      return response()->json($response);
     }
 
     public function publicPortal(Request $request){

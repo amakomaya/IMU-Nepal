@@ -34,12 +34,19 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
   
     public function __construct(User $importedBy, $bed_status)
     {
+        $hpCode = '';
+        if($importedBy->role === 'healthworker') {
+          $hpCode = \App\Models\OrganizationMember::where('token', $importedBy->token)->first()->hp_code;
+        } else {
+          $hpCode = \App\Models\Organization::where('token', auth()->user()->token)->first()->hp_code;
+        }
         $this->importedBy = $importedBy;
         $this->bed_status = $bed_status;
         $this->totalHduCases = 0;
         $this->totalIcuCases = 0;
         $this->totalVentilatorCases = 0;
         $this->totalGeneralCases = 0;
+        $this->hpCode = $hpCode;
     }
     
     public function registerEvents(): array
@@ -59,14 +66,17 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
         $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
         $health_condition = $row['health_condition'];
         $bed_status = $this->bed_status;
-        if($health_condition === 3) {
+        if($health_condition === 1 || $health_condition === 2){
+          $this->totalGeneralCases++;
+        }else if($health_condition === 3) {
           $this->totalHduCases++;
         } else if($health_condition === 4) {
           $this->totalIcuCases++;
         } else if($health_condition === 5) {
           $this->totalVentilatorCases++;
         }
-        if($this->totalHduCases > $bed_status->general) {
+        
+        if($this->totalGeneralCases > $bed_status->general) {
           $error = ['health_condition' => 'No. of patient with No Symptoms/Mild condition exeeds the no. of available General bed('.$bed_status->general.'). Please update the data of your existing patient to free up bed & try again.'];
           $failures[] = new Failure(1, 'health_condition', $error, $row);
           throw new ValidationException(
@@ -98,6 +108,8 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
                 $failures
             );
         } 
+
+        return;
         return new PaymentCase([
             'hospital_register_id' => $row['hospital_id'],
             'name' => $row['full_name_of_patient'],
@@ -118,7 +130,7 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             'is_death' => null,
             'is_in_imu' => 0,
             'method_of_diagnosis' => $row['method_of_diagnosis'],
-            'hp_code' => \App\Models\Organization::where('token', auth()->user()->token)->first()->hp_code
+            'hp_code' => $this->hpCode
         ]);
     }
     
