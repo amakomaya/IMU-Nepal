@@ -7,6 +7,10 @@ use App\Models\Organization;
 use App\Models\OrganizationMember;
 use App\Models\PaymentCase;
 use App\Models\ProvinceInfo;
+use App\Models\Province;
+use App\Models\District;
+use App\Models\Municipality;
+
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -23,6 +27,26 @@ class PublicDataController extends Controller
             return redirect('/admin');
         }
         return view('public.home.index', compact('province_id'));
+    }
+
+    public function federalInfo() {
+      echo("List of Province with District<br/>");
+      $province_list = Province::select('id', 'province_name')->get()->toArray();
+      foreach($province_list as $province) {
+        $district_list = District::get()->where('province_id', $province['id'])->pluck('district_name')->toArray();
+        echo($province['province_name'].',Total Districts = '.count($district_list));
+        dump(implode(',',$district_list));
+      }
+      echo ('<hr />');
+      echo("List of District with Municipality <br />");
+      foreach($province_list as $province) {
+        $district_list = District::select('id', 'district_name')->where('province_id', $province['id'])->get()->toArray();
+        foreach($district_list as $district) {
+          $mun_list = Municipality::get()->where('district_id', $district['id'])->pluck('municipality_name')->toArray();
+          echo($province['province_name'].' -> '.$district['district_name'].',Total Muns = '.count($mun_list));
+          dump(implode(',',$mun_list));
+        }
+      }
     }
 
     public function publicPortal(Request $request){
