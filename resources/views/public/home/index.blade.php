@@ -649,7 +649,6 @@
       renderDischargeTable();
       renderAdmissionTable();
       renderDeathTable();
-      renderDeathTable();
     }
   }
 
