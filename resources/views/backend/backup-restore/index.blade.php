@@ -97,24 +97,12 @@
                                 <div class="tabbable-panel">
                                     <div class="tabbable-line">
                                         <ul class="nav nav-tabs ">
-                                            <li class="active">
-                                                <a href="#tab_default_1" data-toggle="tab">
-                                                    Register Only </a>
-                                            </li>
-                                            @if(auth()->user()->hasAnyDirectPermission(['vaccination'])
-)
-                                                <li>
-                                                    <a href="#tab_default_2" data-toggle="tab">
-                                                        Vaccinated Only </a>
-                                                </li>
-                                            @endif
-                                            @if(auth()->user()->role == 'main')
+                                            @if(auth()->user()->role == 'healthpost')
                                                 <li>
                                                     <a href="#tab_default_3" data-toggle="tab">
-                                                        IMU App Import</a>
+                                                        IMU App data Import</a>
                                                 </li>
                                             @endif
-
                                         </ul>
                                         <div class="tab-content">
                                             <div class="tab-pane active" id="tab_default_1">
@@ -130,38 +118,6 @@
                                                                    placeholder='Choose a file...'/>
                                                         </div>
                                                     </div>
-                                                <button class="btn btn-primary text-center"> Restore</button>
-                                                </form>
-                                            </div>
-                                            <div class="tab-pane" id="tab_default_2">
-                                                <br><br>
-                                                {!! rcForm::open('POST', route('backup-restore.store')) !!}
-                                                <div class="form-group">
-                                                    <input type="text" name="import_type" value="2" hidden>
-                                                    <div class="input-group input-file" name="file_path">
-                                                                <span class="input-group-btn">
-                                                                    <button class="btn btn-default btn-choose" type="button">Choose</button>
-                                                                </span>
-                                                        <input type="text" class="form-control" name="file_path"
-                                                               placeholder='Choose a file...'/>
-                                                    </div>
-                                                </div>
-                                                <button class="btn btn-primary text-center"> Restore</button>
-                                                </form>
-                                            </div>
-                                            <div class="tab-pane" id="tab_default_3">
-                                                <br><br>
-                                                {!! rcForm::open('POST', route('backup-restore.store')) !!}
-                                                <div class="form-group">
-                                                    <input type="text" name="import_type" value="3" hidden>
-                                                    <div class="input-group input-file" name="file_path">
-                                                                <span class="input-group-btn">
-                                                                    <button class="btn btn-default btn-choose" type="button">Choose</button>
-                                                                </span>
-                                                        <input type="text" class="form-control" name="file_path"
-                                                               placeholder='Choose a file...'/>
-                                                    </div>
-                                                </div>
                                                 <button class="btn btn-primary text-center"> Restore</button>
                                                 </form>
                                             </div>
