@@ -105,9 +105,6 @@
                             <p class="govF">Government of Nepal</p>
                             <p class="govF">Ministry of Health & Population</p>
                             <p class="govM">Department of Health Service</p>
-                            <p class="govB">{{ $data->healthpost->name }}</p>
-                            <p class="govA">{{ $data->healthpost->address }}
-                                , {{ $data->healthpost->district_id }}</p>
                         </div>
 
                         <div class="titleSide">
