@@ -177,7 +177,7 @@ class AdminController extends Controller
                     ->select('women.*', 'ancs.token as ancs_token', 'lab_tests.token as lab_tests_token', 'lab_tests.sample_recv_date', 'lab_tests.sample_test_date', 'lab_tests.sample_test_time', 'lab_tests.sample_test_result')
                     ->first();
             } else {
-                $ancs = null;
+                $ancs = [1];
             }
             $dateToday = Carbon::now()->format('Y-d-m');
     

@@ -115,7 +115,7 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" for="caste">Caste</label>
+                                    <label class="control-label" for="caste">Ethnicity</label>
                                     <select name="caste" class="form-control">
                                         <option {{ $data->caste == '7' ? "selected" : "" }} value="7">Don't Know
                                         </option>

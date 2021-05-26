@@ -89,7 +89,7 @@
                                 @endif
                             </div>
                             <div class="form-group">
-                                <label class="control-label" for="caste">Caste</label>
+                                <label class="control-label" for="caste">Ethnicity</label>
                                 <select name="caste" class="form-control">
                                     <option {{ old('caste') == '7' ? "selected" : "" }} value="7">Don't Know</option>
                                     <option {{ old('caste') == '1' ? "selected" : "" }} value="1">Dalit</option>
