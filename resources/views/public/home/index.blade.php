@@ -155,11 +155,12 @@
               <h4 class="text-center">Organization</h4>
               <select id="organization-selector" name="organization-type">
                 <option value="">Select</option>
-                <option value="5"> Institutional Isolation</option>
+                  <option value="6">Hospital without PCR Lab</option>
+                  <option value="5"> Institutional Isolation</option>
                 <option value="3" selected>Lab & Treatment( Hospital )</option>
               </select>
             </div>
-          </div>
+          </div>e
           
         </div>
         <hr />
@@ -648,7 +649,6 @@
       renderOxygenTable();
       renderDischargeTable();
       renderAdmissionTable();
-      renderDeathTable();
       renderDeathTable();
     }
   }

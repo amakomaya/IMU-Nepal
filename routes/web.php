@@ -307,7 +307,7 @@ Route::post('admin/stock-update', 'StockController@updateStock')->name('stock.up
 Route::get('admin/get-org-rep', function (Request $request){
     $response = FilterRequest::filter($request);
     $hpCodes = GetHealthpostCodes::filter($response);
-    $dateReference = (\Carbon\Carbon::now()->subDays($request->date)->startOfDay());
+    $dateReference = (\Carbon\Carbon::now()->subDays($request->date)->setTime(0, 0, 0));
     $data = \DB::table('payment_cases')
         ->where('payment_cases.updated_at', '>=' ,$dateReference)
         ->whereIn('payment_cases.hp_code', $hpCodes)
@@ -350,11 +350,26 @@ Route::get('admin/get-org-rep', function (Request $request){
     })->groupBy(function($item) {
         return $item['organiation_name'];
     });
-
-    $mapped_data_second = $mapped_data->map(function ($value){
+    $total = [
+      'total_no_of_beds' => 0,
+      'total_no_of_ventilators' => 0,
+      'total_no_of_icu'=> 0,
+      'total_no_of_hdu'=> 0,
+      'daily_consumption_of_oxygen'=> 0,
+      'used_total_no_of_beds'=> 0,
+      'used_total_no_of_hdu'=> 0,
+      'used_total_no_of_icu'=> 0,
+      'used_total_no_of_ventilators'=> 0,
+      'total_cases'=> 0,
+      'total_under_treatment'=> 0,
+      'total_discharge'=> 0,
+      'total_death'=> 0
+    ];
+    $mapped_data_second = $mapped_data->map(function ($value) use (&$total){
         $return = [];
         $value = collect($value);
         $return['total_no_of_beds'] = collect($value->first())['no_of_beds'];
+       
         $return['total_no_of_ventilators'] = collect($value->first())['no_of_ventilators'];
         $return['total_no_of_icu'] = collect($value->first())['no_of_icu'];
         $return['total_no_of_hdu'] = collect($value->first())['no_of_hdu'];
@@ -371,7 +386,12 @@ Route::get('admin/get-org-rep', function (Request $request){
 
         $return['total_discharge'] = $value->where('is_death', 1)->count();
         $return['total_death'] = $value->where('is_death', 2)->count();
+        foreach(array_keys($total) as $key) {
+          $total[$key] = $total[$key] + $return[$key];
+        }
         return $return;
     });
-    return response()->json(['date_from' => $dateReference, 'date_to' => \Carbon\Carbon::now(), 'data' => $mapped_data_second]);
+    return response()->json(['date_from' => date('Y-M-D H:i A', strtotime($dateReference)), 'date_to' => date('Y-M-D H:i A', strtotime(\Carbon\Carbon::now())),'total' => $total, 'data' => $mapped_data_second]);
 });
+
+Route::get('/admin/bulk-upload', 'Backend\BulkUploadController@list')->name('bulk.upload');

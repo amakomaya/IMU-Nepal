@@ -258,10 +258,10 @@ class WomanController extends Controller
         $row['travelled_where'] = "[]";
         $row['hp_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
         $row['symptoms_comorbidity'] = "[]";
-        $row['cases'] = 0;
-        $row['case_where'] = 0;
-        $row['end_case'] = 0;
-        $row['payment'] = 0;
+        $row['cases'] = '0';
+        $row['case_where'] = '0';
+        $row['end_case'] = '0';
+        $row['payment'] = '0';
         $row['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id . '-' . bin2hex(random_bytes(3));
         $row['registered_device'] = 'web';
         $row['reson_for_testing'] = "[" . implode(', ', $row['reson_for_testing']) . "]";

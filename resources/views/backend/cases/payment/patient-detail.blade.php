@@ -140,7 +140,7 @@
                                                     $datetime2 = new DateTime($next_date);
                                                     $interval = $datetime1->diff($datetime2);
                                                     $days_d = $interval->format('%a');
-                                                    $days = $days_d + 1;
+                                                    $days = array_key_exists($key2 + 1, $conditions[$key]) ? $days_d : $days_d + 1;
                                                     $total_days += $days;
                                                 @endphp
                                                 {{ $days }} days<br>

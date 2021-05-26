@@ -59,6 +59,7 @@ import CasesPaymentCreate from "./components/CasesPaymentCreate";
 
 import CasesPaymentDischargeList from "./components/CasesPaymentDischargeList"
 import CasesPaymentDeathList from "./components/CasesPaymentDeathList"
+import BulkUploadList from "./components/BulkUploadList";
 
 Vue.use(VueMask);
 Vue.use(VNepaliDatePicker);
@@ -116,6 +117,7 @@ Vue.component('cases-payment-list', CasesPaymentList);
 Vue.component('cases-payment-discharge-list', CasesPaymentDischargeList);
 Vue.component('cases-payment-death-list', CasesPaymentDeathList);
 Vue.component('cases-payment-create', CasesPaymentCreate);
+Vue.component('bulk-upload-list', BulkUploadList)
 
 const app = new Vue({
     el: '#app'
