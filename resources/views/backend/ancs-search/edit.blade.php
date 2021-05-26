@@ -45,7 +45,12 @@
                     </div>
                     <hr>
                     @php $initial_token = '' @endphp
-                    @if($ancs)
+                    @if($ancs == [1])
+                    @elseif($ancs == null)
+                    <div class="panel-body">
+                        <h3>No Records Found</h3>
+                    </div>
+                    @else
                     <div class="panel-body">
                         <form action="{{ route('admin.ancs.update') }}" method="POST" id="all_form">
                         @csrf
