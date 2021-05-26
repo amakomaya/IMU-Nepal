@@ -150,7 +150,7 @@
                             <td>{{ $data->formated_gender }}
                         </tr>
                         <tr>
-                            <td>Caste :</td>
+                            <td>Ethnicity :</td>
                             <td>{{ $data->caste($data->caste) }}
 
                         </tr>
@@ -720,7 +720,7 @@
                                 <tr>
                                     <td> {{ $loop->iteration }}</td>
                                     <td> Name : {{ $row->name }} <br>
-                                        Caste : {{ $data->caste($row->caste) }}<br>
+                                        Ethnicity : {{ $data->caste($row->caste) }}<br>
                                         Age : {{ $row->age }} <br>
                                         Contact Classification : @if($row->contact_classification == "1")
                                             Close

@@ -76,7 +76,7 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="caste">Caste</label>
+                            <label class="control-label" for="caste">Ethnicity</label>
                             <select name="caste" class="form-control">
                                 <option {{ $ancs && $ancs->caste == '6' ? "selected" : "" }} value="6">Don't Know</option>
                                 <option {{ $ancs && $ancs->caste == '0' ? "selected" : "" }} value="0">Dalit</option>
