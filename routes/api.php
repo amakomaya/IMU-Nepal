@@ -451,12 +451,12 @@ Route::post('/v1/case-mgmt', function (Request $request) {
 
 Route::post('/v1/case-mgmt-update', function (Request $request) {
     $data = $request->json()->all();
-    foreach ($data as $value) {
-        try {
+    try {
+        foreach ($data as $value) {
             CaseManagement::where('token', $value['token'])->update($value);
-        } catch (\Exception $e) {
-
         }
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'Something went wrong, Please try again.']);
     }
     return response()->json(['message' => 'Data Successfully Sync and Update']);
 });
