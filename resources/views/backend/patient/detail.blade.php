@@ -86,12 +86,20 @@
             font-size: 14px;
         }
 
+        @media print
+        {    
+            .submit-btn
+            {
+                display: none !important;
+            }
+        }
+
     </style>
     <div id="page-wrapper">
         <div class="row">
             <div>
                 <div class="pull-right">
-                    <button type="submit" class="btn btn-primary btn-lg">
+                    <button type="submit" class="btn btn-primary btn-lg submit-btn">
                         <i class="fa fa-print"> Print </i>
                     </button>
                 </div>
@@ -755,13 +763,18 @@
         {{--        </div>--}}
         {{--    </div>--}}
         @endsection
-        @section('script')
-            <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
-            <script type="text/javascript">
-                function getProvinceName(id) {
-                    $.get("{{ route("admin.district-value") }}?id=" + id, function (data) {
-                        console.log(data);
-                    })
-                }
-            </script>
+@section('script')
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript">
+        function getProvinceName(id) {
+            $.get("{{ route("admin.district-value") }}?id=" + id, function (data) {
+                console.log(data);
+            })
+        }
+    </script>
+    <script>
+        $('.submit-btn').click(function(){
+            window.print();
+        });
+    </script>
 @endsection
