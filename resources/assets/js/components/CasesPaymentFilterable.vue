@@ -260,6 +260,26 @@ export default {
     this.addFilter()
   },
   methods: {
+    formattedHealthCondition : function (type, update) {
+      if (update !== null){
+        var data = JSON.parse(update).slice(-1)[0] ;
+        type = parseInt(data.id);
+      }
+      switch (type) {
+        case 1:
+          return 'No Symptoms';
+        case 2:
+          return 'Mild';
+        case 3:
+          return 'Moderate';
+        case 4:
+          return 'Severe - ICU';
+        case 5:
+          return 'Severe - Ventilator';
+        default:
+          return 'N/A';
+      }
+    },
     handleFileChange() {
       // Whenever the file changes, emit the 'input' event with the file data.
       this.file = this.$refs.file.files[0];
@@ -309,12 +329,12 @@ export default {
       return 'IMU Nepal Export Data '+ new Date()+ext;
     },
     exportToExcel() {
+      let self = this;
       if (confirm("Do you want to Download all records in excel ! ")) {
         let list=[];
         let role = this.$userRole;
         this.collection.data.map(function(data, key) {
           let exportableData = {};
-          let formattedHealthConditionObject = {1:"No Symptoms", 2:"Mild", 3:"Moderate ( HDU )", 4:"Severe - ICU", 5:'Severe - Ventilator'};
           let formattedSafeOrFreeObject = {1:"Safe", 2:"Free"};
           let formattedGenderObject = {1:"Male", 2:"Female", 3:"Other"};
           let formattedTreatmentOutcomeObject = {1:"Discharge", 2:"Death"};
@@ -328,7 +348,7 @@ export default {
           exportableData.guardian_name = data.guardian_name;
           exportableData.treatment_outcome = formattedTreatmentOutcomeObject[data.is_death];
           exportableData.date_of_outcome = data.date_of_outcome;
-          exportableData.health_condition = formattedHealthConditionObject[data.health_condition];
+          exportableData.health_condition = self.formattedHealthCondition(data.health_condition,data.health_condition_update);
           exportableData.self_free = formattedSafeOrFreeObject[data.self_free];
           exportableData.remark = data.remark;
           list.push(exportableData);
