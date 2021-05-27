@@ -1,0 +1,172 @@
+<?php
+//For Duplicating SID on local system for test purpose on bulk upload
+namespace App\Imports;
+
+use Carbon\Carbon;
+use App\Models\LabTest;
+use App\Models\SampleCollection;
+use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\WithValidation;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use App\Notifications\ImportHasFailedNotification;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\RemembersRowNumber;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Yagiten\Nepalicalendar\Calendar;
+use Maatwebsite\Excel\Validators\ValidationException;
+use Maatwebsite\Excel\Validators\Failure;
+
+use App\User;
+
+class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
+{
+    use Importable, RemembersRowNumber;
+
+    public function __construct(User $importedBy)
+    {
+        $userToken = auth()->user()->token;
+        $healthWorker = \App\Models\OrganizationMember::where('token', $userToken)->first();
+        $hpCode = $healthWorker->hp_code;
+        $this->importedBy = $importedBy;
+        $this->userToken =  $userToken;
+        $this->hpCode = $hpCode;
+        $this->healthWorker = $healthWorker;
+    }
+    
+    public function registerEvents(): array
+    {
+        return [
+            ImportFailed::class => function(ImportFailed $event) {
+                $this->importedBy->notify(new ImportHasFailedNotification);
+            },
+        ];
+    }
+
+    public function model(array $row)
+    {
+        if(!array_filter($row)) { return null;} //Ignore empty rows.
+        $currentRowNumber = $this->getRowNumber();
+        $date_en = Carbon::now();
+        $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
+        $sId = $row['sid'];
+        $suspectedCase =  \App\Models\SuspectedCase::create([
+          'name' => 'test',
+          'age' => 20,
+          'age_unit' => 0,
+          'province_id' => 3,
+          'district_id' => 26,
+          'municipality_id' => 293,
+          'hp_code' => $this->hpCode,
+          'tole' => 'test',
+          'ward' => 'ward',
+          'caste' => 'eth',
+          'created_by' => $this->userToken,
+          'registered_device' => 'excel',
+          'status' => 1,
+          'token' => 'e-' . md5(microtime(true) . mt_Rand()),
+          'sex' => '0',
+          'emergency_contact_one' => '9841589683',
+          'emergency_contact_two' => '',
+          'swab_collection_conformation' => '1',
+          'cases' => '0',
+          'case_type' => '1',
+          'case_id' => $this->healthWorker->id . '-' . bin2hex(random_bytes(3))
+        ]);
+
+
+
+        $sampleCollectionData = [
+          'service_for' => '1',
+          'checked_by' => $this->userToken,
+          'hp_code' => $this->hpCode,
+          'status' => 1,
+          'checked_by_name'=> $this->healthWorker->name,
+          'sample_identification_type' => 'unique_id',
+          'service_type' => '1',
+          'result' => 9,
+          'regdev' => 'excel',
+          'woman_token' => $suspectedCase->token,
+          'infection_type' => '1',
+          'sample_type' => '[1,2]',
+          'token' => $sId
+        ];
+        // $id = $this->healthWorker->id;
+        // $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
+        // $sampleCollectionData['token'] = $swabId;
+        // if ($sampleCollectionData['service_for'] === '1')
+        //     $sampleCollectionData['sample_type'] = $row['sample_type'];
+        SampleCollection::create($sampleCollectionData);
+        
+        // $labId = $row['patient_lab_id'];
+        // $sampleTestTime = $date_en->format('g : i A');
+        // $ancs = $this->getAncsBySid($sId);
+        // if(!$ancs) {
+        //   $error = ['sid' => 'The patient with the given Sample ID couldnot be found. Please create the data of the patient & try again.'];
+        //   $failures[] = new Failure($currentRowNumber, 'sid', $error, $row);
+        //   throw new ValidationException(
+        //       \Illuminate\Validation\ValidationException::withMessages($error),
+        //       $failures
+        //   );
+        // } else {
+        //   try {
+        //     LabTest::create([
+        //       'token' => $this->userToken.'-'.$labId,
+        //       'hp_code' => $this->hpCode,
+        //       'status' => 1,
+        //       'sample_recv_date' =>  $date_np,
+        //       'sample_test_result' => '9',
+        //       'checked_by' => $this->userToken,
+        //       'checked_by_name' => $this->healthWorker->name,
+        //       'sample_token' => $sId,
+        //       'regdev' => 'excel'
+        //     ]);
+          
+        //   } catch (\Illuminate\Database\QueryException $e) {
+        //     $error = ['sid' => 'The patient with the given Sample ID and Lab ID already exists in the system.'];
+        //     $failures[] = new Failure($currentRowNumber, 'sid', $error, $row);
+        //     throw new ValidationException(
+        //         \Illuminate\Validation\ValidationException::withMessages($error),
+        //         $failures
+        //     );
+        //     return;
+        //   }
+            
+        //   $ancs->update([
+        //     'result' => 9
+        //   ]);
+        // }
+        // return;
+    }
+    
+    private function getAncsBySid ($sId) {
+      $ancs = SampleCollection::where('token', $sId);
+      if($ancs->count() > 0){
+        return $ancs;
+      }
+      return false;
+    }
+  
+    public function rules(): array
+    {
+        return [
+            // 'sid' => function($attribute, $value, $onFailure) {
+            //   if ($value === '' || $value === null || strlen($value) !== 17) {
+            //        $onFailure('Invalid SID');
+            //   }
+            // },
+            // 'patient_lab_id' => function($attribute, $value, $onFailure) {
+            //   if ($value === '' || $value === null) {
+            //        $onFailure('Invalid Lab ID');
+            //   }
+            // },
+        ];
+    }
+
+    public function chunkSize(): int
+    {
+        return 2000;
+    }
+}
