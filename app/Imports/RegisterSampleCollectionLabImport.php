@@ -63,7 +63,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'infection_type' => array ('Symptomatic' => 1, 'Asymptomatic' => 2),
           'age_unit' => array ('Year' => 0, 'Month' => 1, 'Day' => 2),
           'gender'=> array( 'Male' => 1, 'Female' => 2, 'Other' => 3 ),
-          'caste' => array( "Don't Know"=> 6, 'Dalit'=> 0, 'Janajati'=> 1, 'Madheshi'=> 2, 'Muslim'=> 3, 'Brahmin'=> 4, 'Other'=> 5),
+          'ethnicity' => array( "Don't Know"=> 6, 'Dalit'=> 0, 'Janajati'=> 1, 'Madheshi'=> 2, 'Muslim'=> 3, 'Brahmin'=> 4, 'Other'=> 5),
           'province' => $provinces,
           'district' => $districts,
           'municipality' => $municipalities,
@@ -95,7 +95,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'token' => 'e-' . md5(microtime(true) . mt_Rand()),
           'tole' => $row['tole'],
           'ward' => $row['ward'],
-          'caste' => $row['caste'],
+          'caste' => $row['ethnicity'],
           'created_by' => $this->userToken,
           'registered_device' => 'excel',
           'status' => 1,
@@ -156,20 +156,36 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
         return ($d[0] * 3600) + ($d[1] * 60) + $d[2];
     }
   
+    private function filterEmptyRow($data) {
+      $unset = true;
+      foreach($data as $key=>$col){
+        if($col) {
+          $unset = false;
+          break;
+        }
+      }
+      if($unset){
+        foreach($data as $key=>$col){
+          unset($data[$key]);
+        }
+      }
+      return $data;
+    }
+  
     public function prepareForValidation($data, $index)
     {
         $data['test_type'] = $this->enums['test_type'][$data['test_type']] ?? null;
         $data['sample_type'] = $this->enums['sample_type'][$data['sample_type']] ?? null;
         $data['age_unit'] = $this->enums['age_unit'][$data['age_unit']] ?? 0;
         $data['gender'] = $this->enums['gender'][$data['gender']] ?? null;
-        $data['caste'] = $this->enums['caste'][$data['caste']] ?? null;
+        $data['ethnicity'] = $this->enums['ethnicity'][$data['ethnicity']] ?? null;
         $data['province'] = $this->enums['province'][$data['province']] ?? null;
         $data['district'] = $this->enums['district'][$data['district']] ?? null;
         $data['municipality'] = $this->enums['municipality'][$data['municipality']] ?? null;
         $data['service_type'] = $this->enums['service_type'][$data['service_type']] ?? null;
         $data['infection_type'] = $this->enums['infection_type'][$data['infection_type']] ?? null;
         $data['result'] = $this->enums['result'][$data['result']] ?? null;
-        
+        $data = $this->filterEmptyRow($data);
         return $data;
     }
   
