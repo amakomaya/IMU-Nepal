@@ -43,6 +43,9 @@ class CaseDetailController extends Controller
     function edit($token)
     {
         $data = SuspectedCase::withAll()->where('token', $token)->first();
+        dd($data);
+
+        // @php $reasons = json_decode(isset($ancs) ? $ancs->reson_for_testing : [] ); @endphp
 
         $samples = SampleCollection::where('status', '1')->where('woman_token', $token)->get();
 //
