@@ -255,11 +255,12 @@ class WomanController extends Controller
         $row['status'] = 1;
         $row['created_by'] = auth()->user()->token;
         if($request->symptoms_recent == 1) {
+            $row['symptoms_comorbidity'] = [];
             if($request->symptoms_comorbidity_trimester) {
                 array_push($row['symptoms_comorbidity'], $request->symptoms_comorbidity_trimester);
             }
-            $row['symptoms'] = "[" . implode(', ', $row['symptoms']) . "]";
-            $row['symptoms_comorbidity'] = "[" . implode(', ', $row['symptoms_comorbidity']) . "]";
+            $row['symptoms'] = isset($row['symptoms']) ? "[" . implode(', ', $row['symptoms']) . "]" : "[]";
+            $row['symptoms_comorbidity'] = isset($row['symptoms_comorbidity']) ? "[" . implode(', ', $row['symptoms_comorbidity']) . "]" : "[]";
         } else {
             $row['symptoms'] = "[]";
             $row['symptoms_specific'] = "";
