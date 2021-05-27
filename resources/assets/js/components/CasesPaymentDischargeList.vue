@@ -105,7 +105,6 @@ export default {
           '/admin/cases-payment-create?token=' + id,
           '_blank'
       );
-      console.log(item);
     },
     checkEditButton(){
       return this.$userRole === 'healthpost' || this.$userRole === 'main';
