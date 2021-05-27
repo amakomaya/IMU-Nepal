@@ -48,7 +48,7 @@ class AdminController extends Controller
     public function districtSelectByProvince(Request $request)
     {
         $id = $request->get('id');
-        echo '<select class="form-control" name="district_id" id="district_id" onchange="districtOnchange($(this).val())" required>';
+        echo '<select class="form-control" name="district_id" id="district_id" onchange="districtOnchange($(this).val())">';
         $districts = District::where('province_id', $id)->orderBy('district_name', 'asc')->get();;
         echo "<option value=\"\">Select District</option>";
         foreach ($districts as $district) {
@@ -60,7 +60,7 @@ class AdminController extends Controller
     public function municipalitySelectByDistrict(Request $request)
     {
         $id = $request->get('id');
-        echo '<select class="form-control" name="municipality_id" id="municipality_id" onchange="municipalityOnchange($(this).val())" required>';
+        echo '<select class="form-control" name="municipality_id" id="municipality_id" onchange="municipalityOnchange($(this).val())">';
         $municipalities = Municipality::where('district_id', $id)->orderBy('municipality_name', 'asc')->get();
         echo "<option value=\"\">Select Municipality</option>";
         foreach ($municipalities as $municipality) {
@@ -72,7 +72,7 @@ class AdminController extends Controller
     public function wardSelectByMunicipality(Request $request)
     {
         $id = $request->get('id');
-        echo '<select name="ward_id" class="form-control" id="ward_id" onchange="wardOnchange($(this).val())" required>';
+        echo '<select name="ward_id" class="form-control" id="ward_id" onchange="wardOnchange($(this).val())">';
         $wards = Ward::where('municipality_id', $id)->orderBy('ward_no', 'asc')->get();;
         echo "<option value=\"\">Select Ward</option>";
         foreach ($wards as $ward) {
@@ -87,7 +87,7 @@ class AdminController extends Controller
         $id = $request->get('id');
         $ward_no = Ward::getWardNo($id);
         $municipality_id = $request->get('municipality_id');
-        echo '<select id="hp_code" class="form-control" name="hp_code" required>';
+        echo '<select id="hp_code" class="form-control" name="hp_code">';
 
         $healthposts = Organization::where([['municipality_id', $municipality_id], ['ward_no', $ward_no]])->orderBy('name', 'asc')->get();
 
@@ -114,10 +114,9 @@ class AdminController extends Controller
     public function organizationSelect(Request $request)
     {
         $id = $request->get('id');
-        echo '<label for="organization">Select working Organization</label>';
         echo '<select id="organization" class="form-control" name="organization">';
-        $organizations = HealthProfessional::where('municipality_id', $id)->orderBy('organization_name', 'asc')->pluck('organization_name')->unique();
-        echo "<option value=\"\">Select All Organization Name</option>";
+        $organizations = Organization::where('municipality_id', $id)->whereIn('hospital_type', [5,3,6])->orderBy('name', 'asc')->pluck('name')->unique();
+        echo "<option value=\"\">Select Organization Name</option>";
         foreach ($organizations as $Healthpost) {
             echo "<option value=\"$Healthpost\">$Healthpost</option>";
         }

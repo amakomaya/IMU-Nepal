@@ -18,9 +18,9 @@
         }
 
         function municipalityOnchange(id){
-            $("#ward").text("Loading...").fadeIn("slow");
+            $("#organization").text("Loading...").fadeIn("slow");
             $.get( "{{route("admin.organization-select")}}?id="+id,function(data){
-                $("#ward").html(data);
+                $("#organization").html(data);
             });
         }
 
@@ -59,7 +59,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Woman Info
+                        Cases Payment Report Overview
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -110,10 +110,10 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group  col-sm-3" id="healthpost">
+                            <div class="form-group  col-sm-3" id="organization">
                                 <select name="hp_code" class="form-control"  >
                                     @if(Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
-                                        <option value="">Select All Healthposts</option>
+                                        <option value="">All Organization</option>
                                     @endif
                                     @foreach($healthposts as $healthpost)
                                         @if($hp_code==$healthpost->hp_code)
@@ -131,8 +131,46 @@
                             </div>
                         </form>
                         <div class="clearfix"></div>
+                        <hr>
 
-                        {{ $data }}
+                        <div class="dataTable_wrapper">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                <tr>
+                                    <th rowspan="2">S.N</th>
+                                    <th rowspan="2">Name of the Hospital</th>
+                                    <th rowspan="2">Province</th>
+                                    <th rowspan="2">District</th>
+                                    <th colspan="4">Facility</th>
+                                    <th rowspan="2">Total Cost</th>
+                                </tr>
+                                <tr>
+                                    <th>General Bed</th>
+                                    <th>HDU</th>
+                                    <th>ICU</th>
+                                    <th>Ventilator</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($data as $datum)
+                                    <tr>
+                                        <td> {{ $loop->iteration }}</td>
+                                        <td> {{ $datum['name'] }}</td>
+                                        <td> {{ $datum['province_name'] }}</td>
+                                        <td> {{ $datum['district_name'] }}</td>
+                                        <td> {{ $datum['used_general'] }}</td>
+                                        <td> {{ $datum['used_hdu'] }}</td>
+                                        <td> {{ $datum['used_icu'] }}</td>
+                                        <td> {{ $datum['used_ventilators'] }}</td>
+                                        <td></td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+
+
                     </div>
                     <!-- /.panel-body -->
                 </div>
