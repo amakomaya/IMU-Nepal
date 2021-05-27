@@ -116,11 +116,7 @@ class AdminController extends Controller
         $id = $request->get('id');
         echo '<label for="organization">Select working Organization</label>';
         echo '<select id="organization" class="form-control" name="organization">';
-//        $healthposts = Organization::where('municipality_id', $id)->orderBy('name', 'asc')->get();
-        $municipality_token = MunicipalityInfo::where('municipality_id', $id)->first()->token;
-        $organization_token = Organization::where('municipality_id', $id)->pluck('token');
-        $list = collect($organization_token)->merge($municipality_token);
-        $organizations = HealthProfessional::whereIn('checked_by', $list)->orderBy('organization_name', 'asc')->pluck('organization_name')->unique();
+        $organizations = HealthProfessional::where('municipality_id', $id)->orderBy('organization_name', 'asc')->pluck('organization_name')->unique();
         echo "<option value=\"\">Select All Organization Name</option>";
         foreach ($organizations as $Healthpost) {
             echo "<option value=\"$Healthpost\">$Healthpost</option>";
