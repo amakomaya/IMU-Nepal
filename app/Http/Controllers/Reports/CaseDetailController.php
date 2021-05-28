@@ -61,9 +61,8 @@ class CaseDetailController extends Controller
     {
         $woman = SuspectedCase::find($id);
         $row = $request->all();
-        $row['reson_for_testing'] = "[".implode(', ', $row['reson_for_testing'])."]";
+        $row['reson_for_testing'] = $row['reson_for_testing'] ? "[".implode(', ', $row['reson_for_testing'])."]" : '[]';
         if($request->symptoms_recent == 1) {
-            $row['symptoms_comorbidity'] = [];
             if($request->symptoms_comorbidity_trimester) {
                 array_push($row['symptoms_comorbidity'], $request->symptoms_comorbidity_trimester);
             }
@@ -74,6 +73,7 @@ class CaseDetailController extends Controller
             $row['symptoms_specific'] = "";
             $row['symptoms_comorbidity'] = "[]";
             $row['symptoms_comorbidity_specific'] = "";
+            $row['date_of_onset_of_first_symptom'] = "";
         }
         unset($row['symptoms_comorbidity_trimester']);
         $woman->update($row);

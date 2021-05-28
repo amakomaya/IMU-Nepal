@@ -122,7 +122,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
 
         ];
         $id = $this->healthWorker->id;
-        $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
+        $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber)->format('H:i:s'));
         $sampleCollectionData['token'] = $swabId;
         if ($sampleCollectionData['service_for'] === '1')
             $sampleCollectionData['sample_type'] = $row['sample_type'];
@@ -157,23 +157,24 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
     }
   
     private function filterEmptyRow($data) {
+      $required_row = ['test_type', 'sample_type', 'age_unit', 'gender', 'ethnicity', 'province' , 'district', 'municipality', 'service_type', 'infection_type', 'result']; //added to solve teplate throwing wierd default values
       $unset = true;
       foreach($data as $key=>$col){
-        if($col) {
+        if($col && in_array($key, $required_row)) {
           $unset = false;
           break;
         }
       }
       if($unset){
-        foreach($data as $key=>$col){
-          unset($data[$key]);
-        }
+        $data = array();
       }
       return $data;
     }
   
     public function prepareForValidation($data, $index)
     {
+      $data = $this->filterEmptyRow($data);
+      if(array_filter($data)) {
         $data['test_type'] = $this->enums['test_type'][$data['test_type']] ?? null;
         $data['sample_type'] = $this->enums['sample_type'][$data['sample_type']] ?? null;
         $data['age_unit'] = $this->enums['age_unit'][$data['age_unit']] ?? 0;
@@ -185,10 +186,10 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
         $data['service_type'] = $this->enums['service_type'][$data['service_type']] ?? null;
         $data['infection_type'] = $this->enums['infection_type'][$data['infection_type']] ?? null;
         $data['result'] = $this->enums['result'][$data['result']] ?? null;
-        $data = $this->filterEmptyRow($data);
-        return $data;
+      }
+      return $data;
     }
-  
+
     public function rules(): array
     {
         return [

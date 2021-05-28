@@ -1,6 +1,6 @@
 <li>
-    <a href="{{ route('admin.ancs.search') }}">
-        <i class="fa fa-search"></i>
-        SID Search
+    <a href="{{ route('admin.sid.search') }}" title="Search Data By Swab ID and Update">
+        <i class="fa fa-edit"></i>
+        SID Search and Update
     </a>
 </li>
