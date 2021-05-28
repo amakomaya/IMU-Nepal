@@ -60,7 +60,25 @@ class WomenController extends Controller
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
-                    $q->whereIn('result', [0,2]);
+                    $q->whereNot('serviece_for', 2)->whereIn('result', [0,2]);
+                });
+            })
+            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+                'healthpost' => function($q) {
+                    $q->select('name', 'hp_code');
+                }]);
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
+    public function activeAntigenPendingIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
+            ->where(function ($query){
+                $query->whereHas('ancs', function($q){
+                    $q->where('serviece_for', 2)->whereIn('result', [0,2]);
                 });
             })
             ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
