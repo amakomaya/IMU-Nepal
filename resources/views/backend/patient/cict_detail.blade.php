@@ -10,7 +10,7 @@
     $symptomscontactdetail= json_decode(isset($data->contactDetail) ? $data->contactDetail->symptoms : [], true);
     $symptomsComorbidity = json_decode(isset($data->symptoms_comorbidity) ? $data->symptoms_comorbidity : [], true);
     $symptomsComorbidityContactDetail = json_decode(isset($data->contactDetail) ? $data->contactDetail->symptoms_comorbidity : [] , true);
-    $travelled_from = json_decode($data->travelled_where ?? [], true);
+    $travelled_from = json_decode($data->travelled_where ?? '', true);
     $vaccineDosefirst = json_decode(isset($data->caseManagement) ? $data->caseManagement->first_source_info : [], true);
     $vaccineDosesecond = json_decode(isset($data->caseManagement) ? $data->caseManagement->second_source_info : [], true);
     $meansOfTravel = json_decode(isset($data->caseManagement) ? $data->caseManagement->travel_medium : [], true);
@@ -278,97 +278,97 @@
                 <div class="col-md-12">
                     <div>
                     
-                        <input type="checkbox" id="health-care" name="health-care" value="" @if($data->caseManagement->high_exposure == 1) checked readonly @else disabled @endif/>
+                        <input type="checkbox" id="health-care" name="health-care" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 1) checked readonly @else disabled @endif/>
                         <label for="health-care"> Health Care Work (any type, level & facility, including cleaning staff)</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="community-health" name="community-health" value="" @if($data->caseManagement->high_exposure == 2) checked readonly @else disabled @endif/>
+                        <input type="checkbox" id="community-health" name="community-health" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 2) checked readonly @else disabled @endif/>
                         <label for="community-health"> Community Health / Immunization Clinic Volunteer</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="sanitary" name="sanitary" value="" @if($data->caseManagement->high_exposure == 3) checked readonly @else disabled @endif/>
+                        <input type="checkbox" id="sanitary" name="sanitary" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 3) checked readonly @else disabled @endif/>
                         <label for="sanitary"> Sanitary/Waste Collection/Management Worker/Transport Driver/Helper</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="patient-dead-body" name="shortbreath" value="" @if($data->caseManagement->high_exposure == 4) checked readonly @else disabled @endif/>
+                        <input type="checkbox" id="patient-dead-body" name="shortbreath" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 4) checked readonly @else disabled @endif/>
                         <label for="shortbreath"> Patient & Dead body Transport Driver/Helper </label>
                     </div>
                     <div>
-                        <input type="checkbox" id="management-work" name="management-work" value="" @if($data->caseManagement->high_exposure == 5) checked readonly @else disabled @endif/>
+                        <input type="checkbox" id="management-work" name="management-work" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 5) checked readonly @else disabled @endif/>
                         <label for="management-work"> Dead body management work</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="col-md-4">
                         <div>
-                            <input type="checkbox" id="old-age-home" name="old-age-home" value="" @if($data->caseManagement->high_exposure == 6) checked readonly @else disabled @endif/>
+                            <input type="checkbox" id="old-age-home" name="old-age-home" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 6) checked readonly @else disabled @endif/>
                             <label for="old-age-home"> Old Age Home/Care work </label>
                         </div>
                         <div>
-                            <input type="checkbox" id="border-crossing" name="border-crossing" value="" @if($data->caseManagement->high_exposure == 7) checked readonly @else disabled @endif/>
+                            <input type="checkbox" id="border-crossing" name="border-crossing" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 7) checked readonly @else disabled @endif/>
                             <label for="border-crossing"> Border Crossing / Point of Entry Staff </label>
                         </div>
                         <div>
-                            <input type="checkbox" id="journalist" name="journalist" value="" @if($data->caseManagement->high_exposure == 12) checked readonly @else disabled @endif/>
+                            <input type="checkbox" id="journalist" name="journalist" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 12) checked readonly @else disabled @endif/>
                             <label for="journalist"> Journalist </label>
                         </div>
                         <div>
-                            <input type="checkbox" id="prisoner" name="prisoner" value="" @if($data->caseManagement->high_exposure == 15) checked readonly @else disabled @endif/>
+                            <input type="checkbox" id="prisoner" name="prisoner" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 15) checked readonly @else disabled @endif/>
                             <label for="prisoner"> Prisoner </label>
                         </div>
                         <div>
-                            <input type="checkbox" id="elected-representative" name="elected-representative" value="" @if($data->caseManagement->high_exposure == 18) checked readonly @else disabled @endif />
+                            <input type="checkbox" id="elected-representative" name="elected-representative" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 18) checked readonly @else disabled @endif />
                             <label for="elected-representative"> Local body Elected Representative </label>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div>
-                            <input type="checkbox" id="security-staff" name="security-staff" value="" @if($data->caseManagement->high_exposure == 8) checked readonly @else disabled @endif/>
+                            <input type="checkbox" id="security-staff" name="security-staff" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 8) checked readonly @else disabled @endif/>
                             <label for="security-staff"> Any Security Staff</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="hotel-restaurant" name="hotel-restaurant" value="" @if($data->caseManagement->high_exposure == 9) checked readonly @else disabled @endif/>
+                            <input type="checkbox" id="hotel-restaurant" name="hotel-restaurant" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 9) checked readonly @else disabled @endif/>
                             <label for="hotel-restaurant"> Hotel/Restaurant/Bar work</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="migrant" name="migrant" value="" @if($data->caseManagement->high_exposure == 13) checked readonly @else disabled @endif />
+                            <input type="checkbox" id="migrant" name="migrant" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 13) checked readonly @else disabled @endif />
                             <label for="migrant"> Migrant </label>
                         </div>
                         <div>
-                            <input type="checkbox" id="teacher" name="teacher" value="" @if($data->caseManagement->high_exposure == 16) checked readonly @else disabled @endif/>
+                            <input type="checkbox" id="teacher" name="teacher" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 16) checked readonly @else disabled @endif/>
                             <label for="teacher"> Teacher </label>
                         </div>
                         <div>
-                            <input type="checkbox" id="bank-govt-office" name="bank-govt-office" value="" @if($data->caseManagement->high_exposure == 19) checked readonly @else disabled @endif/>
+                            <input type="checkbox" id="bank-govt-office" name="bank-govt-office" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 19) checked readonly @else disabled @endif/>
                             <label for="bank-govt-office"> Bank/Govt Office / Public Corporation staff </label>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div>
-                            <input type="checkbox" id="farm-work" name="farm-work" value="" @if($data->caseManagement->high_exposure == 10) checked readonly @else disabled @endif/>
+                            <input type="checkbox" id="farm-work" name="farm-work" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 10) checked readonly @else disabled @endif/>
                             <label for="farm-work"> Farm work</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="shop-worker" name="shop-worker" value="" @if($data->caseManagement->high_exposure == 11) checked readonly @else disabled @endif/>
+                            <input type="checkbox" id="shop-worker" name="shop-worker" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 11) checked readonly @else disabled @endif/>
                             <label for="shop-worker"> Shop/Store worker</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="refugee" name="refugee" value="" @if($data->caseManagement->high_exposure == 14) checked readonly @else disabled @endif/>
+                            <input type="checkbox" id="refugee" name="refugee" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 14) checked readonly @else disabled @endif/>
                             <label for="refugee"> Refugee </label>
                         </div>
                         <div>
-                            <input type="checkbox" id="Student" name="Student" value="" @if($data->caseManagement->high_exposure == 17) checked readonly @else disabled @endif/>
+                            <input type="checkbox" id="Student" name="Student" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 17) checked readonly @else disabled @endif/>
                             <label for="Student"> Old Age Home/Care work </label>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div>
-                            <input type="checkbox" id="bank-govt-office" name="bank-govt-office" value="" @if($data->caseManagement->high_exposure == 20) checked readonly @else disabled @endif/>
+                            <input type="checkbox" id="bank-govt-office" name="bank-govt-office" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 20) checked readonly @else disabled @endif/>
                             <label for="bank-govt-office"> UN / Development Partner / INGO / NGO Frontline worker</label>
                         </div>
                         <div>
-                            <input type="checkbox" id="specify-other" name="specify-other" value="" @if(!is_null($data->caseManagement->high_exposure_other)) checked @endif readonly/>
-                            <label for="specify-other"> Others (specify): {{$data->caseManagement->high_exposure_other}}</label>
+                            <input type="checkbox" id="specify-other" name="specify-other" value="" @if(isset($data->caseManagement) && !is_null($data->caseManagement->high_exposure_other)) checked @endif readonly/>
+                            <label for="specify-other"> Others (specify): {{isset($data->caseManagement) ? $data->caseManagement->high_exposure_other : ''}}</label>
                         </div>
                     </div>
                 </div>
@@ -402,10 +402,10 @@
                                     <th style="background-color:#f0e3ca">Flight/Vehicle No./ Bus Route / Driver Contact No.</th>
                                 </tr>
                                 <tr>
-                                    <td>{{$data->caseManagement->departure}}</td>
-                                    <td>{{$data->caseManagement->destination}}</td>
+                                    <td>{{ isset($data->caseManagement) ? $data->caseManagement->departure : ''}}</td>
+                                    <td>{{ isset($data->caseManagement) ? $data->caseManagement->destination : ''}}</td>
                                     <!-- <td style="background-color:#f0e3ca">{{$data->travelled_date}}</td> -->
-                                    <td style="background-color:#f0e3ca">{{$data->caseManagement->travel_date}}</td>
+                                    <td style="background-color:#f0e3ca">{{ isset($data->caseManagement) ? $data->caseManagement->travel_date : ''}}</td>
                                     <td style="background-color:#f0e3ca"></td>
                                     <td style="background-color:#f0e3ca">
                                     
@@ -424,13 +424,13 @@
                                     @endforeach
                                     </td>
                                     <td style="background-color:#f0e3ca">
-                                    @if(!is_null($data->caseManagement->flight_no))
+                                    @if(isset($data->caseManagement) && !is_null($data->caseManagement->flight_no))
                                         <b>Flight:</b> {{$data->caseManagement->flight_no}},
                                     @endif
-                                    @if(!is_null($data->caseManagement->vehicle_no))
+                                    @if(isset($data->caseManagement) && !is_null($data->caseManagement->vehicle_no))
                                         <b>Vehicle No.:</b> {{$data->caseManagement->vehicle_no}},
                                     @endif
-                                    @if(!is_null($data->caseManagement->travel_route))
+                                    @if(isset($data->caseManagement) && !is_null($data->caseManagement->travel_route))
                                         <b>Bus Route:</b> {{$data->caseManagement->travel_route}},
                                     @endif
                                     </td>
@@ -448,7 +448,7 @@
                 <div class="box">
                     <div class="box-head">
                         <b>Identify the following categories of persons who the case might have contracted the infection from, upto 14 days before the development of the symptoms OR 24 days prior to the date of sample collection in case of asymptomatic Reference
-                            period: From {{$data->caseManagement->reference_date_from}} (dd/mm/yyyy) To {{$data->caseManagement->reference_date_from}} (dd/mm/yyyy)
+                            period: From {{isset($data->caseManagement) ? $data->caseManagement->reference_date_from : ''}} (dd/mm/yyyy) To {{isset($data->caseManagement) ? $data->caseManagement->reference_date_from : ''}} (dd/mm/yyyy)
                         </b>
                     </div>
                     <div class="box-body">
@@ -456,15 +456,15 @@
                         <div>
                             <div style="display: flex;" class="col-md-4">
                                     <div style="display: flex;">
-                                    <input type="checkbox" id="yes" name="yes" value="" @if($data->caseManagement->anyother_member_household == 1) checked readonly @else disabled @endif >
+                                    <input type="checkbox" id="yes" name="yes" value="" @if(isset($data->caseManagement) && $data->caseManagement->anyother_member_household == 1) checked readonly @else disabled @endif >
                                     <label style="padding-left: 0.5em;" for="yes"> Yes</label>
                                 </div>
                                 <div style="display: flex; padding-left: 1em">
-                                <input type="checkbox" id="no" name="no" value="" @if($data->caseManagement->anyother_member_household == 0) checked readonly @else disabled @endif>
+                                <input type="checkbox" id="no" name="no" value="" @if(isset($data->caseManagement) && $data->caseManagement->anyother_member_household == 0) checked readonly @else disabled @endif>
                                     <label style="padding-left: 0.5em;" for="no"> No</label>
                                 </div>
                                 <div style="display: flex; padding-left: 1em">
-                                    <input type="checkbox" id="unknown" name="unknown" value="" @if($data->caseManagement->anyother_member_household == 2) checked readonly @else disabled @endif>
+                                    <input type="checkbox" id="unknown" name="unknown" value="" @if(isset($data->caseManagement) && $data->caseManagement->anyother_member_household == 2) checked readonly @else disabled @endif>
                                     <label style="padding-left: 0.5em;" for="Unknown"> Unknown</label>
                                 </div>
                             </div>
@@ -474,7 +474,7 @@
                             </div>
 
                             <div class="col-md-4">
-                                <p>Total household members: {{$data->caseManagement->total_member}}</p>
+                                <p>Total household members: {{isset($data->caseManagement) ? $data->caseManagement->total_member : ''}}</p>
                             </div>
                         </div>
                         <table>
@@ -560,15 +560,15 @@
                         <div>
                             <div style="display: flex;" class="col-md-4">
                                 <div style="display: flex;">
-                                    <input type="checkbox" id="yes" name="yes" value="" @if($data->caseManagement->case_direct_care == 1) checked readonly @else disabled @endif >
+                                    <input type="checkbox" id="yes" name="yes" value="" @if(isset($data->caseManagement) && $data->caseManagement->case_direct_care == 1) checked readonly @else disabled @endif >
                                     <label style="padding-left: 0.5em;" for="yes"> Yes</label>
                                 </div>
                                 <div style="display: flex; padding-left: 1em">
-                                <input type="checkbox" id="no" name="no" value="" @if($data->caseManagement->case_direct_care == 0) checked readonly @else disabled @endif>
+                                <input type="checkbox" id="no" name="no" value="" @if(isset($data->caseManagement) && $data->caseManagement->case_direct_care == 0) checked readonly @else disabled @endif>
                                     <label style="padding-left: 0.5em;" for="no"> No</label>
                                 </div>
                                 <div style="display: flex; padding-left: 1em">
-                                    <input type="checkbox" id="unknown" name="unknown" value="" @if($data->caseManagement->case_direct_care == 2) checked readonly @else disabled @endif>
+                                    <input type="checkbox" id="unknown" name="unknown" value="" @if(isset($data->caseManagement) && $data->caseManagement->case_direct_care == 2) checked readonly @else disabled @endif>
                                     <label style="padding-left: 0.5em;" for="Unknown"> Unknown</label>
                                 </div>
                             </div>
@@ -611,15 +611,15 @@
                         <div>
                             <div style="display: flex;" class="col-md-4">
                                 <div style="display: flex;">
-                                    <input type="checkbox" id="yes" name="yes" value="" @if($data->caseManagement->case_gone_institution == 1) checked readonly @else disabled @endif >
+                                    <input type="checkbox" id="yes" name="yes" value="" @if(isset($data->caseManagement) && $data->caseManagement->case_gone_institution == 1) checked readonly @else disabled @endif >
                                     <label style="padding-left: 0.5em;" for="yes"> Yes</label>
                                 </div>
                                 <div style="display: flex; padding-left: 1em">
-                                <input type="checkbox" id="no" name="no" value="" @if($data->caseManagement->case_gone_institution == 0) checked readonly @else disabled @endif>
+                                <input type="checkbox" id="no" name="no" value="" @if(isset($data->caseManagement) && $data->caseManagement->case_gone_institution == 0) checked readonly @else disabled @endif>
                                     <label style="padding-left: 0.5em;" for="no"> No</label>
                                 </div>
                                 <div style="display: flex; padding-left: 1em">
-                                    <input type="checkbox" id="unknown" name="unknown" value="" @if($data->caseManagement->case_gone_institution == 2) checked readonly @else disabled @endif>
+                                    <input type="checkbox" id="unknown" name="unknown" value="" @if(isset($data->caseManagement) && $data->caseManagement->case_gone_institution == 2) checked readonly @else disabled @endif>
                                     <label style="padding-left: 0.5em;" for="Unknown"> Unknown</label>
                                 </div>
                             </div>
@@ -662,19 +662,19 @@
                             </th>
                             <th width="20%">
                                 <div style="display: flex; padding-left: 1em">
-                                    <input type="checkbox" id="yes" name="yes" value=""@if($data->caseManagement->sars_cov2_vaccinated == 1) checked readonly @else disabled @endif>
+                                    <input type="checkbox" id="yes" name="yes" value=""@if(isset($data->caseManagement) && $data->caseManagement->sars_cov2_vaccinated == 1) checked readonly @else disabled @endif>
                                     <label style="padding-left: 0.5em;" for="yes"> Yes</label>
                                 </div>
                             </th>
                             <th colspan="2">
                                 <div style="display: flex; padding-left: 1em">
-                                    <input type="checkbox" id="No" name="No" value="" @if($data->caseManagement->sars_cov2_vaccinated == 0) checked readonly @else disabled @endif>
+                                    <input type="checkbox" id="No" name="No" value="" @if(isset($data->caseManagement) && $data->caseManagement->sars_cov2_vaccinated == 0) checked readonly @else disabled @endif>
                                     <label style="padding-left: 0.5em;" for="No"> No</label>
                                 </div>
                             </th>
                             <th colspan="2">
                                 <div style="display: flex; padding-left: 1em">
-                                    <input type="checkbox" id="unknown" name="unknown" value="" @if($data->caseManagement->sars_cov2_vaccinated == 2)  checked readonly @else disabled @endif>
+                                    <input type="checkbox" id="unknown" name="unknown" value="" @if(isset($data->caseManagement) && $data->caseManagement->sars_cov2_vaccinated == 2)  checked readonly @else disabled @endif>
                                     <label style="padding-left: 0.5em;" for="unknown"> Unknown</label>
                                 </div>
                             </th>
@@ -692,8 +692,8 @@
                         </tr>
                         <tr>
                             <td width="5%">Dose 1</td>
-                            <td>{{$data->caseManagement->first_product_name}}</td>
-                            <td>{{$data->caseManagement->first_date_vaccination}}</td>
+                            <td>{{isset($data->caseManagement) ? $data->caseManagement->first_product_name : ''}}</td>
+                            <td>{{isset($data->caseManagement) ? $data->caseManagement->first_date_vaccination : ''}}</td>
                             <td style="display: flex; justify-content: center;"> 
                                 <span>
                                     <input type="checkbox" id="yes" name="yes" value="" @if(in_array(1, $vaccineDosefirst)) checked readonly @else disabled @endif/>
@@ -726,19 +726,19 @@
                             </td>
                             <td>
                             <span>
-                                <input type="checkbox" id="yes" name="yes" value="" @if(!is_null($data->caseManagement->first_source_info_specific))  checked readonly @else disabled @endif/>
+                                <input type="checkbox" id="yes" name="yes" value="" @if(isset($data->caseManagement) && !is_null($data->caseManagement->first_source_info_specific))  checked readonly @else disabled @endif/>
                                 <label for="yes">yes</label>
                             </span>
                             <span  style="padding-left: 0.2em;">
-                                <input type="checkbox" id="no" name="no" value=""  @if(is_null($data->caseManagement->first_source_info_specific))  checked readonly @else disabled @endif/>
+                                <input type="checkbox" id="no" name="no" value=""  @if(isset($data->caseManagement) && is_null($data->caseManagement->first_source_info_specific))  checked readonly @else disabled @endif/>
                                 <label for="no">no</label>
                             </span>
                             </td>
                         </tr>
                         <tr>
                             <td>Dose 2</td>
-                            <td>{{$data->caseManagement->second_product_name}}</td>
-                            <td>{{$data->caseManagement->second_date_vaccination}}</td>
+                            <td>{{isset($data->caseManagement) ? $data->caseManagement->second_product_name : ''}}</td>
+                            <td>{{isset($data->caseManagement) ? $data->caseManagement->second_date_vaccination : ''}}</td>
                             <td style="display: flex; border: none; justify-content: center; ">
                                 <span>
                                     <input type="checkbox" id="yes" name="yes" value="" @if(in_array(1, $vaccineDosesecond)) checked readonly @else disabled @endif/>
@@ -771,11 +771,11 @@
                             </td>
                             <td>
                             <span>
-                                <input type="checkbox" id="yes" name="yes" value="" @if(!is_null($data->caseManagement->second_source_info_specific)) checked readonly @else disabled @endif/>
+                                <input type="checkbox" id="yes" name="yes" value="" @if(isset($data->caseManagement) && !is_null($data->caseManagement->second_source_info_specific)) checked readonly @else disabled @endif/>
                                 <label for="yes">yes</label>
                             </span>
                             <span  style="padding-left: 0.2em;">
-                                <input type="checkbox" id="no" name="no" value="" @if(is_null($data->caseManagement->second_source_info_specific)) checked readonly @else disabled @endif/>
+                                <input type="checkbox" id="no" name="no" value="" @if(isset($data->caseManagement) && is_null($data->caseManagement->second_source_info_specific)) checked readonly @else disabled @endif/>
                                 <label for="no">no</label>
                             </span>
                             </td>
@@ -967,19 +967,20 @@
                     <td rowspan="2">Nasopharyngealswab or Oropharyngealswab or Broncheo-Alveolar Lavage </td>
                     <td rowspan="2">
                     <span class="col-md-3">
-                        <input type="checkbox" id="yes" name="yes" value="" @if(!is_null($data->ancs()->first()->sample_type)) checked readonly @else disabled @endif >
+                        <input type="checkbox" id="yes" name="yes" value="" @if(isset($data->ancs()->first()->sample_type) && !is_null($data->ancs()->first()->sample_type)) checked readonly @else disabled @endif >
                         <label for="yes">yes</label>
                     </span>
                         <span class="col-md-3" style="padding-left: 2em;">
-                        <input type="checkbox" id="no" name="no" value="" @if(is_null($data->ancs()->first()->sample_type)) checked readonly @else disabled @endif>
+                        <input type="checkbox" id="no" name="no" value="" @if(isset($data->ancs()->first()->sample_type) && is_null($data->ancs()->first()->sample_type)) checked readonly @else disabled @endif>
                         <label for="no">no</label>
                     </span>
                     </td>
-                    <td rowspan="2">{{$data->ancs()->first()->labreport->created_at}}</td>
+                    <td rowspan="2">{{ isset($data->ancs()->first()->labreport) ? $data->ancs()->first()->labreport->created_at : ''}}</td>
                     <td> <b>Date:</b> </td>
                     <td rowspan="2"></td>
-                    <td rowspan="2"> {{$data->ancs()->first()->labreport->sample_test_date}} </td>
+                    <td rowspan="2"> {{isset($data->ancs()->first()->labreport) ? $data->ancs()->first()->labreport->sample_test_date : ''}} </td>
                     <td rowspan="2"> 
+                        @if(isset($data->ancs()->first()->labreport))
                         @if($data->ancs()->first()->labreport->sample_test_result == 3)
                             Positive
                         @elseif($data->ancs()->first()->labreport->sample_test_result == 4)
@@ -988,6 +989,7 @@
                             Don't know
                         @elseif($data->ancs()->first()->labreport->sample_test_result == 6)
                             Rejected
+                        @endif
                         @endif
                     </td>
                 </tr>
@@ -2517,11 +2519,11 @@
                 <th colspan="2" style="background-color:#8eaadb">11. Data collector information</th>
             </tr>
             <tr>
-                <td width="50%">Name: {{ $data->registerBy->name }}</td>
-                <td width="50%">Institution: {{ $data->healthpost->name }}</td>
+                <td width="50%">Name: {{ isset($data->registerBy) ? $data->registerBy->name : '' }}</td>
+                <td width="50%">Institution: {{ isset($data->registerBy) ? $data->healthpost->name : '' }}</td>
             </tr>
             <tr>
-                <td>Telepphone number:{{ $data->registerBy->phone }}</td>
+                <td>Telepphone number:{{ isset($data->registerBy) ? $data->registerBy->phone : '' }}</td>
                 <td>Email</td>
             </tr>
             <tr>

@@ -109,7 +109,6 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             );
         } 
 
-        return;
         return new PaymentCase([
             'hospital_register_id' => $row['hospital_id'],
             'name' => $row['full_name_of_patient'],
@@ -133,6 +132,22 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             'hp_code' => $this->hpCode
         ]);
     }
+
+    private function filterEmptyRow($data) {
+      $unset = true;
+      foreach($data as $key=>$col){
+        if($col) {
+          $unset = false;
+          break;
+        }
+      }
+      if($unset){
+        foreach($data as $key=>$col){
+          unset($data[$key]);
+        }
+      }
+      return $data;
+    }
     
     public function prepareForValidation($data, $index)
     {
@@ -141,7 +156,7 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
         $data['age_unit'] = $this->enums['age_unit'][$data['age_unit']] ?? 0;
         $data['health_condition'] = $this->enums['health_condition'][$data['health_condition']] ?? null;
         $data['method_of_diagnosis'] = $this->enums['method_of_diagnosis'][$data['method_of_diagnosis']] ?? null;
-        
+        $data = $this->filterEmptyRow($data);
         return $data;
     }
   

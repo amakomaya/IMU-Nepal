@@ -97,9 +97,26 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
       return false;
     }
   
+    private function filterEmptyRow($data) {
+      $unset = true;
+      foreach($data as $key=>$col){
+        if($col) {
+          $unset = false;
+          break;
+        }
+      }
+      if($unset){
+        foreach($data as $key=>$col){
+          unset($data[$key]);
+        }
+      }
+      return $data;
+    }
+  
     public function prepareForValidation($data, $index)
     {
         $data['result'] = $this->enums['result'][$data['result']]?? null;
+        $data = $this->filterEmptyRow($data);
         return $data;
     }
   
