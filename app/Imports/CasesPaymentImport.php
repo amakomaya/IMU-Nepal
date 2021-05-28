@@ -152,8 +152,8 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
     {
         $data = $this->filterEmptyRow($data);
         if(array_filter($data)) {
-          $data['paid_free'] = $this->enums['paid_free'][$data['paid_free']];
-          $data['gender'] = $this->enums['gender'][$data['gender']];
+          $data['paid_free'] = $this->enums['paid_free'][$data['paid_free']]??null;
+          $data['gender'] = $this->enums['gender'][$data['gender']]??null;
           $data['age_unit'] = $this->enums['age_unit'][$data['age_unit']] ?? 0;
           $data['health_condition'] = $this->enums['health_condition'][$data['health_condition']] ?? null;
           $data['method_of_diagnosis'] = $this->enums['method_of_diagnosis'][$data['method_of_diagnosis']] ?? null;
