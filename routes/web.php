@@ -193,8 +193,8 @@ Route::put('/admin/sample/{token}', 'Reports\AncDetailController@update')->name(
 //Route::resource('/observation-cases', 'Backend\ObservationCasesController');
 Route::resource('/admin/cases-payment-observation', 'Backend\ObservationCasesController', ['names' => 'observation-cases']);
 
-Route::get('/admin/sid-search', 'AdminController@ancsSearch')->name('admin.ancs.search');
-Route::post('/admin/sid-search/update', 'AdminController@ancsUpdate')->name('admin.ancs.update');
+Route::get('/admin/sid-search', 'AdminController@sidSearch')->name('admin.sid.search');
+Route::post('/admin/sid-search/update', 'AdminController@sidUpdate')->name('admin.sid.update');
 Route::get('/admin/remaining-beds', 'Backend\WomanController@getRemainingBeds');
 
 

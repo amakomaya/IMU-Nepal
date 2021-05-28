@@ -271,7 +271,7 @@
                                 <div class="is-symptomatic" style="display: none;">
                                     <div class="form-group {{ $errors->has('date_of_onset_of_first_symptom') ? 'has-error' : '' }}">
                                         <label for="date_of_onset_of_first_symptom">Date of onset of first symptom:</label>
-                                        <input type="text" class="form-control" value="{{ date('Y-m-d') }}"
+                                        <input type="text" class="form-control" value="{{ $data->date_of_onset_of_first_symptom }}"
                                             name="date_of_onset_of_first_symptom" aria-describedby="help">
                                         @if ($errors->has('date_of_onset_of_first_symptom'))
                                             <small id="help"
@@ -279,7 +279,7 @@
                                         @endif
                                     </div>
                                     <div class="form-group" id="symptomatic-patient">
-                                        <label class="control-label" for="symptoms">Reason for testing:</label><br>
+                                        <label class="control-label" for="symptoms">Symptomatic patient with:</label><br>
                                         <input type="checkbox" name="symptoms[]" value="1" @if(in_array(1, $data->symptoms)) checked @endif>Pneumonia<br>
                                         <input type="checkbox" name="symptoms[]" value="2" @if(in_array(2, $data->symptoms)) checked @endif>ARDS<br>
                                         <input type="checkbox" name="symptoms[]" value="3" @if(in_array(3, $data->symptoms)) checked @endif>Influenza-like illness<br>
@@ -361,17 +361,7 @@
                                         @endif
                                     </div>
                                 </div>
-
-                                <div class="form-group {{ $errors->has('date_of_onset_of_first_symptom') ? 'has-error' : '' }}">
-                                    <label for="date_of_onset_of_first_symptom">Date of onset of first symptom:</label>
-                                    <input type="text" class="form-control"
-                                           value="{{ $data->date_of_onset_of_first_symptom }}"
-                                           name="date_of_onset_of_first_symptom" aria-describedby="help">
-                                    @if ($errors->has('date_of_onset_of_first_symptom'))
-                                        <small id="help"
-                                               class="form-text text-danger">{{ $errors->first('date_of_onset_of_first_symptom') }}</small>
-                                    @endif
-                                </div>
+                                
                                 <div class="form-group">
                                     <label class="control-label" for="caste">Occupation</label>
                                     <select name="occupation" class="form-control">

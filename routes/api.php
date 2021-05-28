@@ -12,6 +12,7 @@ use App\Models\LaboratoryParameter;
 use App\Models\LabTest;
 use App\Models\SuspectedCase;
 use App\Models\ProvinceInfo;
+use App\Models\MunicipalityInfo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yagiten\Nepalicalendar\Calendar;
@@ -42,6 +43,10 @@ Route::get('/v1/healthposts', function () {
     if(Auth::user()->role == 'province') {
         $province_id = ProvinceInfo::where('token', Auth::user()->token)->first()->province_id;
         $healthpost_query->where('province_id', $province_id);
+    }
+    elseif(Auth::user()->role == 'municipality') {
+        $municipality_id = MunicipalityInfo::where('token', Auth::user()->token)->first()->municipality_id;
+        $healthpost_query->where('municipality_id', $municipality_id);
     }
 
     $healthpost = $healthpost_query->get();
@@ -301,7 +306,6 @@ Route::post('/v1/patient-transfer', function (Request $request) {
 
     return response()->json($data['token']);
 });
-
 
 Route::post('/v1/patient-symptoms', function (Request $request) {
     $data = $request->json()->all();

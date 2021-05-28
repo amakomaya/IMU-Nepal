@@ -47,6 +47,11 @@
           <button v-on:click="viewCaseDetails(item.token)" target="_blank" title="Case Details Report">
             <i class="fa fa-file" aria-hidden="true"></i> |
           </button>
+          <span v-if="item.latest_anc.result === 3">
+            <button v-on:click="receivePatientData(item)" title="Receive Patient from other Hospital">
+              <i class="fa fa-hospital-o"></i>
+            </button>
+          </span>
         </td>
         <!-- </div>             -->
       </tr>
@@ -61,6 +66,7 @@ import DataConverter from 'ad-bs-converter'
 import axios from 'axios'
 import ViewLabResultReportModel from './ViewLabResultReportModel.vue'
 import SendPatientDataModel from './SendPatientDataModel.vue'
+import ReceivePatientDataModel from './ReceivePatientDataModel.vue'
 import viewConfirmReportFormModel from './viewConfirmReportFormModel.vue'
 import fab from 'vue-fab'
 
@@ -126,6 +132,21 @@ export default {
           provinces: this.provinces,
           districts: this.districts,
           municipalities: this.municipalities
+        },
+      })
+    },
+
+
+    receivePatientData: function (item) {
+      this.$dlg.modal(ReceivePatientDataModel, {
+        title: 'Do you want to receive '+item.name+' \'s patients data ?',
+        height : 600,
+        width : 700,
+        params: {
+          data : item,
+          provinces : this.provinces,
+          districts : this.districts,
+          municipalities : this.municipalities
         },
       })
     },

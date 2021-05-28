@@ -164,32 +164,56 @@ class AdminController extends Controller
         ";
     }
 
-    public function ancsSearch(Request $request) {
+    public function sidSearch(Request $request) {
         if(Auth::user()->role == 'main' || Auth::user()->role == 'province') {
             if($request->sid) {
                 // $response = FilterRequest::filter($request);
                 // $hpCodes = GetHealthpostCodes::filter($response);
 
-                $ancs = SampleCollection::leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
-                    ->leftjoin('women', 'ancs.woman_token', '=', 'women.token')
-                    ->where('ancs.token', $request->sid)
-                    ->where('lab_tests.sample_token', $request->sid)
-                    ->select('women.*', 'ancs.token as ancs_token', 'lab_tests.token as lab_tests_token', 'lab_tests.sample_recv_date', 'lab_tests.sample_test_date', 'lab_tests.sample_test_time', 'lab_tests.sample_test_result')
+                $ancs = SampleCollection::with('woman', 'labreport')
+                    ->where('token', $request->sid)
                     ->first();
+
+                // $ancs = SampleCollection::leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
+                //     ->leftjoin('women', 'ancs.woman_token', '=', 'women.token')
+                //     ->where('ancs.token', $request->sid)
+                //     ->where('lab_tests.sample_token', $request->sid)
+                //     ->select('women.*', 'ancs.token as ancs_token', 'lab_tests.token as lab_tests_token', 'lab_tests.sample_recv_date', 'lab_tests.sample_test_date', 'lab_tests.sample_test_time', 'lab_tests.sample_test_result')
+                //     ->first();
+
+                // dd($ancs);
             } else {
                 $ancs = [1];
             }
             $dateToday = Carbon::now()->format('Y-d-m');
     
-            return view('backend.ancs-search.edit', compact('ancs', 'dateToday'));
+            return view('backend.sid-search.edit', compact('ancs', 'dateToday'));
         } else {
             return redirect('/admin');
         }
     }
 
-    public function ancsUpdate(Request $request) {
+    public function sidUpdate(Request $request) {
         if(Auth::user()->role == 'main' || Auth::user()->role == 'province') {
             $reson_for_testing = $request->reson_for_testing ? "[" . implode(', ', $request->reson_for_testing) . "]" : '[]';
+            if($request->symptoms_recent == 1) {
+                $request->symptoms_comorbidity = $request->symptoms_comorbidity ?? [];
+                if($request->symptoms_comorbidity_trimester) {
+                    array_push($request->symptoms_comorbidity, $request->symptoms_comorbidity_trimester);
+                }
+                $symptoms = isset($request->symptoms) ? "[" . implode(', ', $request->symptoms) . "]" : "[]";
+                $symptoms_comorbidity = isset($request->symptoms_comorbidity) ? "[" . implode(', ', $request->symptoms_comorbidity) . "]" : "[]";
+                
+                $symptoms_specific = $request->symptoms_specific;
+                $symptoms_comorbidity_specific = $request->symptoms_comorbidity_specific;
+                $date_of_onset_of_first_symptom = $request->date_of_onset_of_first_symptom;
+            } else {
+                $symptoms = "[]";
+                $symptoms_specific = "";
+                $symptoms_comorbidity = "[]";
+                $symptoms_comorbidity_specific = "";
+                $date_of_onset_of_first_symptom = "";
+            }
             try{
                 $woman_id = SuspectedCase::where('token', $request->woman_token)->first()->id;
                 SuspectedCase::where('id', $woman_id)->update([
@@ -202,20 +226,28 @@ class AdminController extends Controller
                     'tole' => $request->tole,
                     'emergency_contact_one' => $request->emergency_contact_one,
                     'emergency_contact_two' => $request->emergency_contact_two,
-                    'date_of_onset_of_first_symptom' => $request->date_of_onset_of_first_symptom,
+                    'date_of_onset_of_first_symptom' => $date_of_onset_of_first_symptom,
                     'occupation' => $request->occupation,
                     'travelled' => $request->travelled,
-                    'reson_for_testing' => $reson_for_testing
+                    'reson_for_testing' => $reson_for_testing,
+                    'symptoms_recent' => $request->symptoms_recent,
+                    'symptoms_within_four_week' => $request->symptoms_within_four_week,
+                    'symptoms' => $symptoms,
+                    'symptoms_specific' => $symptoms_specific,
+                    'symptoms_comorbidity' => $symptoms_comorbidity,
+                    'symptoms_comorbidity_specific' => $symptoms_comorbidity_specific,
                 ]);
-
-                $lab_id = LabTest::where('sample_token', $request->sid)->first()->id;
-                LabTest::where('id', $lab_id)->update([
-                    'sample_recv_date' => $request->sample_recv_date,
-                    'sample_test_date' => $request->sample_test_date,
-                    'sample_test_time' => $request->sample_test_time,
-                    'sample_test_result' => $request->sample_test_result,
-                    'token' => $request->lab_tests_token,
-                ]);
+                
+                if($request->sample_recv_date != null && $request->remaining_token != null) {
+                    $lab_id = LabTest::where('sample_token', $request->sid)->first()->id;
+                    LabTest::where('id', $lab_id)->update([
+                        'sample_recv_date' => $request->sample_recv_date,
+                        'sample_test_date' => $request->sample_test_date,
+                        'sample_test_time' => $request->sample_test_time,
+                        'sample_test_result' => $request->sample_test_result,
+                        'token' => $request->lab_tests_token,
+                    ]);
+                }
 
                 $request->session()->flash('message', 'Data updated successfully');
             } catch(Exception $e) {
