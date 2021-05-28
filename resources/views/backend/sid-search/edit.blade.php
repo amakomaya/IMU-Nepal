@@ -372,7 +372,7 @@
                                 <option {{ isset($ancs->labreport) && $ancs->labreport->sample_test_result == '3' ? "selected" : "" }} value="3">Positive</option>
                                 <option {{ isset($ancs->labreport) && $ancs->labreport->sample_test_result == '4' ? "selected" : "" }} value="4">Negative</option>
                                 <option {{ isset($ancs->labreport) && $ancs->labreport->sample_test_result == '9' ? "selected" : "" }}  value="9">Received</option>
-                                @php if(isset($ancs->labreport) && $ancs->labreport->sample_test_result != 3 && $anc->labreports->sample_test_result != 4 && $ancs->labreport->sample_test_result != 9) {
+                                @php if(isset($ancs->labreport) && $ancs->labreport->sample_test_result != 3 && $ancs->labreports->sample_test_result != 4 && $ancs->labreport->sample_test_result != 9) {
                                     $is_select = 'selected';
                                     $is_value = $ancs->labreport->sample_test_result;
                                 } else {
