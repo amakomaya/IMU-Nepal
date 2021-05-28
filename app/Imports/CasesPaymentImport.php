@@ -134,29 +134,30 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
     }
 
     private function filterEmptyRow($data) {
+      $required_row = ['paid_free', 'gender', 'age_unit', 'health_condition', 'method_of_diagnosis']; //added to solve teplate throwing wierd default values
       $unset = true;
       foreach($data as $key=>$col){
-        if($col) {
+        if($col && in_array($key, $required_row)) {
           $unset = false;
           break;
         }
       }
       if($unset){
-        foreach($data as $key=>$col){
-          unset($data[$key]);
-        }
+        $data = array();
       }
       return $data;
     }
-    
+  
     public function prepareForValidation($data, $index)
     {
-        $data['paid_free'] = $this->enums['paid_free'][$data['paid_free']];
-        $data['gender'] = $this->enums['gender'][$data['gender']];
-        $data['age_unit'] = $this->enums['age_unit'][$data['age_unit']] ?? 0;
-        $data['health_condition'] = $this->enums['health_condition'][$data['health_condition']] ?? null;
-        $data['method_of_diagnosis'] = $this->enums['method_of_diagnosis'][$data['method_of_diagnosis']] ?? null;
         $data = $this->filterEmptyRow($data);
+        if(array_filter($data)) {
+          $data['paid_free'] = $this->enums['paid_free'][$data['paid_free']];
+          $data['gender'] = $this->enums['gender'][$data['gender']];
+          $data['age_unit'] = $this->enums['age_unit'][$data['age_unit']] ?? 0;
+          $data['health_condition'] = $this->enums['health_condition'][$data['health_condition']] ?? null;
+          $data['method_of_diagnosis'] = $this->enums['method_of_diagnosis'][$data['method_of_diagnosis']] ?? null;
+        }
         return $data;
     }
   
