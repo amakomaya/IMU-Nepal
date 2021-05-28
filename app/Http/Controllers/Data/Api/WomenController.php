@@ -60,7 +60,7 @@ class WomenController extends Controller
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
-                    $q->whereNot('serviece_for', 2)->whereIn('result', [0,2]);
+                    $q->where('service_for', '!==' ,2)->whereIn('result', [0,2]);
                 });
             })
             ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
@@ -78,7 +78,7 @@ class WomenController extends Controller
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
-                    $q->where('serviece_for', 2)->whereIn('result', [0,2]);
+                    $q->where('service_for', 2)->whereIn('result', [0,2]);
                 });
             })
             ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
