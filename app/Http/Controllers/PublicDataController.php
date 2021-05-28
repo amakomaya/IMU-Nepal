@@ -21,7 +21,7 @@ class PublicDataController extends Controller
     public function index() {
         if(Auth::user()->role == 'province') {
             $province_id = ProvinceInfo::where('token', Auth::user()->token)->first()->province_id;
-        }elseif(Auth::user()->role == 'main') {
+        }elseif(Auth::user()->role == 'main' || auth()->user()->role == 'center') {
             $province_id = null;
         }else {
             return redirect('/admin');
