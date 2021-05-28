@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CaseManagement extends Model
 {
-    protected $table='case_management';
+    protected $table='case_mgmt';
     protected $fillable = [
         'token', 'woman_token', 'contact_with_covid_place', 'contact_travel', 'name',
         'relation', 'last_meet_date', 'covid_infect_place', 'case_gone_festival',
