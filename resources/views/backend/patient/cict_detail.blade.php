@@ -368,7 +368,7 @@
                         </div>
                         <div>
                             <input type="checkbox" id="specify-other" name="specify-other" value="" @if(isset($data->caseManagement) && !is_null($data->caseManagement->high_exposure_other)) checked @endif readonly/>
-                            <label for="specify-other"> Others (specify): {{$data->caseManagement->high_exposure_other}}</label>
+                            <label for="specify-other"> Others (specify): {{isset($data->caseManagement) ? $data->caseManagement->high_exposure_other : ''}}</label>
                         </div>
                     </div>
                 </div>
@@ -402,10 +402,10 @@
                                     <th style="background-color:#f0e3ca">Flight/Vehicle No./ Bus Route / Driver Contact No.</th>
                                 </tr>
                                 <tr>
-                                    <td>{{$data->caseManagement->departure}}</td>
-                                    <td>{{$data->caseManagement->destination}}</td>
+                                    <td>{{ isset($data->caseManagement) ? $data->caseManagement->departure : ''}}</td>
+                                    <td>{{ isset($data->caseManagement) ? $data->caseManagement->destination : ''}}</td>
                                     <!-- <td style="background-color:#f0e3ca">{{$data->travelled_date}}</td> -->
-                                    <td style="background-color:#f0e3ca">{{$data->caseManagement->travel_date}}</td>
+                                    <td style="background-color:#f0e3ca">{{ isset($data->caseManagement) ? $data->caseManagement->travel_date : ''}}</td>
                                     <td style="background-color:#f0e3ca"></td>
                                     <td style="background-color:#f0e3ca">
                                     
