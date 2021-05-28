@@ -3,6 +3,7 @@
 
 Route::resource('api/women', 'Data\Api\WomenController');
 Route::get('api/active-patient', 'Data\Api\WomenController@activeIndex');
+Route::get('api/active-pending-patient', 'Data\Api\WomenController@activePendingIndex');
 Route::get('api/passive-patient', 'Data\Api\WomenController@passiveIndex');
 Route::get('api/positive-patient', 'Data\Api\WomenController@positiveIndex');
 Route::get('api/tracing-patient', 'Data\Api\WomenController@tracingIndex');

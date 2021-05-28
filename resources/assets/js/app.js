@@ -23,7 +23,8 @@ Vue.use(VueProgress, {
     // defaultShape: 'circle',
 })
 
-import WomenList from './components/CasesRegisteredOrPending.vue'
+import WomenList from './components/CasesRegistered.vue'
+import CasePendingList from './components/CasesPending.vue'
 import WomanListNegative from './components/CasesNegative'
 import WomanListPositive from "./components/CasesPositive";
 import PatientListLabReceived from './components/CasesLabRecieved'
@@ -85,6 +86,8 @@ Vue.use(VueHtmlToPaper);
 Vue.component('v-select', vSelect)
 
 Vue.component('women-list', WomenList);
+Vue.component('pending-case-list', CasePendingList);
+
 Vue.component('women-list-negative', WomanListNegative);
 Vue.component('women-list-positive', WomanListPositive);
 Vue.component('women-list-tracing', CasesTracing);
