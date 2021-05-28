@@ -160,8 +160,7 @@
                 <option value="3" selected>Lab & Treatment( Hospital )</option>
               </select>
             </div>
-          </div>e
-          
+          </div>
         </div>
         <hr />
         <h2 id="active-title">Nepal</h2>

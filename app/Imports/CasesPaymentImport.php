@@ -109,7 +109,6 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             );
         } 
 
-        return;
         return new PaymentCase([
             'hospital_register_id' => $row['hospital_id'],
             'name' => $row['full_name_of_patient'],
