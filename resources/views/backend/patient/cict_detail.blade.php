@@ -10,7 +10,7 @@
     $symptomscontactdetail= json_decode(isset($data->contactDetail) ? $data->contactDetail->symptoms : [], true);
     $symptomsComorbidity = json_decode(isset($data->symptoms_comorbidity) ? $data->symptoms_comorbidity : [], true);
     $symptomsComorbidityContactDetail = json_decode(isset($data->contactDetail) ? $data->contactDetail->symptoms_comorbidity : [] , true);
-    $travelled_from = json_decode($data->travelled_where ?? [], true);
+    $travelled_from = json_decode($data->travelled_where ?? '', true);
     $vaccineDosefirst = json_decode(isset($data->caseManagement) ? $data->caseManagement->first_source_info : [], true);
     $vaccineDosesecond = json_decode(isset($data->caseManagement) ? $data->caseManagement->second_source_info : [], true);
     $meansOfTravel = json_decode(isset($data->caseManagement) ? $data->caseManagement->travel_medium : [], true);
