@@ -259,7 +259,7 @@
                                     @endif
                                 </div>
                                 <div class="form-group" id="symptomatic-patient">
-                                    <label class="control-label" for="symptoms">Reason for testing:</label><br>
+                                    <label class="control-label" for="symptoms">Symptomatic patient with:</label><br>
                                     <input type="checkbox" name="symptoms[]" value="1">Pneumonia<br>
                                     <input type="checkbox" name="symptoms[]" value="2">ARDS<br>
                                     <input type="checkbox" name="symptoms[]" value="3">Influenza-like illness<br>
