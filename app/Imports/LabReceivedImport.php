@@ -117,25 +117,24 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
     }
 
     private function filterEmptyRow($data) {
+      $required_row = ['sid', 'patient_lab_id']; //added to solve teplate throwing wierd default values
       $unset = true;
       foreach($data as $key=>$col){
-        if($col) {
+        if($col && in_array($key, $required_row)) {
           $unset = false;
           break;
         }
       }
       if($unset){
-        foreach($data as $key=>$col){
-          unset($data[$key]);
-        }
+        $data = array();
       }
       return $data;
     }
   
     public function prepareForValidation($data, $index)
     {
-      $data = $this->filterEmptyRow($data);
-      return $data;
+        $data = $this->filterEmptyRow($data);
+        return $data;
     }
   
     public function chunkSize(): int

@@ -98,25 +98,26 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
     }
   
     private function filterEmptyRow($data) {
+      $required_row = ['result', 'patient_lab_id']; //added to solve teplate throwing wierd default values
       $unset = true;
       foreach($data as $key=>$col){
-        if($col) {
+        if($col && in_array($key, $required_row)) {
           $unset = false;
           break;
         }
       }
       if($unset){
-        foreach($data as $key=>$col){
-          unset($data[$key]);
-        }
+        $data = array();
       }
       return $data;
     }
   
     public function prepareForValidation($data, $index)
     {
-        $data['result'] = $this->enums['result'][$data['result']]?? null;
         $data = $this->filterEmptyRow($data);
+        if(array_filter($data)) {
+          $data['result'] = $this->enums['result'][$data['result']]?? null;
+        }
         return $data;
     }
   
