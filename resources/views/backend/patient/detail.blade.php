@@ -86,12 +86,20 @@
             font-size: 14px;
         }
 
+        @media print
+        {    
+            .submit-btn
+            {
+                display: none !important;
+            }
+        }
+
     </style>
     <div id="page-wrapper">
         <div class="row">
             <div>
                 <div class="pull-right">
-                    <button type="submit" class="btn btn-primary btn-lg">
+                    <button type="submit" class="btn btn-primary btn-lg submit-btn">
                         <i class="fa fa-print"> Print </i>
                     </button>
                 </div>
@@ -105,9 +113,6 @@
                             <p class="govF">Government of Nepal</p>
                             <p class="govF">Ministry of Health & Population</p>
                             <p class="govM">Department of Health Service</p>
-                            <p class="govB">{{ $data->healthpost->name }}</p>
-                            <p class="govA">{{ $data->healthpost->address }}
-                                , {{ $data->healthpost->district_id }}</p>
                         </div>
 
                         <div class="titleSide">
@@ -150,7 +155,7 @@
                             <td>{{ $data->formated_gender }}
                         </tr>
                         <tr>
-                            <td>Caste :</td>
+                            <td>Ethnicity :</td>
                             <td>{{ $data->caste($data->caste) }}
 
                         </tr>
@@ -720,7 +725,7 @@
                                 <tr>
                                     <td> {{ $loop->iteration }}</td>
                                     <td> Name : {{ $row->name }} <br>
-                                        Caste : {{ $data->caste($row->caste) }}<br>
+                                        Ethnicity : {{ $data->caste($row->caste) }}<br>
                                         Age : {{ $row->age }} <br>
                                         Contact Classification : @if($row->contact_classification == "1")
                                             Close
@@ -758,13 +763,18 @@
         {{--        </div>--}}
         {{--    </div>--}}
         @endsection
-        @section('script')
-            <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
-            <script type="text/javascript">
-                function getProvinceName(id) {
-                    $.get("{{ route("admin.district-value") }}?id=" + id, function (data) {
-                        console.log(data);
-                    })
-                }
-            </script>
+@section('script')
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript">
+        function getProvinceName(id) {
+            $.get("{{ route("admin.district-value") }}?id=" + id, function (data) {
+                console.log(data);
+            })
+        }
+    </script>
+    <script>
+        $('.submit-btn').click(function(){
+            window.print();
+        });
+    </script>
 @endsection

@@ -49,7 +49,7 @@ Route::get('/v1/healthposts', function () {
 });
 
 Route::get('/v1/healthposts-for-lab-and-hospital', function () {
-    $healthpost = \App\Models\Organization::whereIn('hospital_type', [2,3])->with(['province', 'municipality', 'district'])->get();
+    $healthpost = \App\Models\Organization::whereIn('hospital_type', [2,3,5,6])->with(['province', 'municipality', 'district'])->get();
     return response()->json($healthpost);
 });
 
@@ -451,12 +451,12 @@ Route::post('/v1/case-mgmt', function (Request $request) {
 
 Route::post('/v1/case-mgmt-update', function (Request $request) {
     $data = $request->json()->all();
-    foreach ($data as $value) {
-        try {
+    try {
+        foreach ($data as $value) {
             CaseManagement::where('token', $value['token'])->update($value);
-        } catch (\Exception $e) {
-
         }
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'Something went wrong, Please try again.']);
     }
     return response()->json(['message' => 'Data Successfully Sync and Update']);
 });
@@ -590,6 +590,7 @@ Route::get('/v1/ext/province', 'External\ExtProvinceController@index');
 Route::get('/v1/ext/cases', 'External\ExtCaseController@index');
 Route::post('/v1/ext/cases', 'External\ExtCaseController@store');
 Route::get('/v1/ext/get-case-detail', 'External\ExtCaseController@getCaseDetailBySample');
+Route::get('/v1/federal-info', 'PublicDataController@federalInfo');
 
 
 //Route::get('/v1/ext/cases', 'External\ExtCaseController@index');
@@ -708,3 +709,9 @@ Route::post('/v1/cases-payment/delete', function(Request $request){
     }
 });
 Route::post('/v1/bulk-case-payment', 'CasesPaymentController@bulkUpload')->name('cases.payment.bulk.upload');
+
+Route::post('/v1/bulk-upload/lab-received', 'Backend\BulkUploadController@labReceived')->name('bulk.upload.lab-received');
+Route::post('/v1/bulk-upload/lab-result', 'Backend\BulkUploadController@labResult')->name('bulk.upload.lab-result');
+Route::post('/v1/bulk-upload/lab-received-result', 'Backend\BulkUploadController@labReceivedResult')->name('bulk.upload.lab-received.lab-result');
+Route::post('/v1/bulk-upload/registration-sample-collection', 'Backend\BulkUploadController@registrationSampleCollection')->name('bulk.upload.register.sample-collection');
+Route::post('/v1/bulk-upload/registration-sample-collection-lab-test', 'Backend\BulkUploadController@registrationSampleCollectionLabTest')->name('bulk.upload.register.sample.lab');

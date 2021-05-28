@@ -76,7 +76,7 @@ class WomenController extends Controller
             $q->where('result', '=', '4');
         })->with(['ancs','healthpost' => function($q) {
             $q->select('name', 'hp_code');
-        }, 'latestAnc']);
+        }, 'latestAnc', 'district', 'municipality']);
 
         return response()->json([
             'collection' => $woman->advancedFilter()
@@ -92,7 +92,7 @@ class WomenController extends Controller
                 $q->where('result', '=', '3');
             })->with(['ancs','healthpost' => function($q) {
                 $q->select('name', 'hp_code');
-            }, 'latestAnc']);
+            }, 'latestAnc', 'district', 'municipality']);
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -121,7 +121,7 @@ class WomenController extends Controller
             $q->where('result', '=', '9');
         })->with(['ancs','healthpost' => function($q) {
             $q->select('name', 'hp_code');
-        }, 'latestAnc']);
+        }, 'latestAnc', 'district', 'municipality']);
 //        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 9)->pluck('woman_token');
 //        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
@@ -192,7 +192,7 @@ class WomenController extends Controller
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->casesRecoveredList()
         ->with(['ancs','healthpost' => function($q) {
             $q->select('name', 'hp_code');
-        }, 'latestAnc']);
+        }, 'latestAnc', 'district', 'municipality']);
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -204,7 +204,7 @@ class WomenController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->casesDeathList()->with(['ancs','healthpost' => function($q) {
             $q->select('name', 'hp_code');
-        }, 'latestAnc']);
+        }, 'latestAnc', 'district', 'municipality']);
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);

@@ -30,7 +30,7 @@ class WomanController extends Controller
 
     protected function roleViewCheck(){
         $role = \auth()->user()->role;
-        $valid_roles = ['healthpost', 'healthworker', 'municipality'];
+        $valid_roles = ['healthpost', 'healthworker', 'municipality', 'dho'];
         if (in_array($role, $valid_roles))
         {
             return true;
@@ -225,8 +225,7 @@ class WomanController extends Controller
         foreach ($response as $key => $value) {
             $$key = $value;
         }
-        $dateToday = Carbon::now()->format('Y-d-m');
-        return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id', 'dateToday'));
+        return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id'));
     }
 
     public function store(Request $request)
@@ -251,20 +250,34 @@ class WomanController extends Controller
             $$key = $value;
         }
         $row = $request->all();
+        $row['case_type'] = '1';
         $row['token'] = md5(microtime(true) . mt_Rand());
         $row['status'] = 1;
         $row['created_by'] = auth()->user()->token;
-        $row['symptoms'] = "[]";
+        if($request->symptoms_recent == 1) {
+            $row['symptoms_comorbidity'] = [];
+            if($request->symptoms_comorbidity_trimester) {
+                array_push($row['symptoms_comorbidity'], $request->symptoms_comorbidity_trimester);
+            }
+            $row['symptoms'] = isset($row['symptoms']) ? "[" . implode(', ', $row['symptoms']) . "]" : "[]";
+            $row['symptoms_comorbidity'] = isset($row['symptoms_comorbidity']) ? "[" . implode(', ', $row['symptoms_comorbidity']) . "]" : "[]";
+        } else {
+            $row['symptoms'] = "[]";
+            $row['symptoms_specific'] = "";
+            $row['symptoms_comorbidity'] = "[]";
+            $row['symptoms_comorbidity_specific'] = "";
+        }
         $row['travelled_where'] = "[]";
         $row['hp_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
-        $row['symptoms_comorbidity'] = "[]";
-        $row['cases'] = 0;
-        $row['case_where'] = 0;
-        $row['end_case'] = 0;
-        $row['payment'] = 0;
+        $row['cases'] = '0';
+        $row['case_where'] = '0';
+        $row['end_case'] = '0';
+        $row['payment'] = '0';
         $row['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id . '-' . bin2hex(random_bytes(3));
         $row['registered_device'] = 'web';
         $row['reson_for_testing'] = "[" . implode(', ', $row['reson_for_testing']) . "]";
+        unset($row['symptoms_comorbidity_trimester']);
+
         SuspectedCase::create($row);
 
         $request->session()->flash('message', 'Data Inserted successfully');

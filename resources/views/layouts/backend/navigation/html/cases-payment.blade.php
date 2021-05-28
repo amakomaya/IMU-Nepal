@@ -6,7 +6,7 @@
     </a>
 
     <ul class="nav nav-second-level">
-        @if(auth()->user()->role === 'main' || auth()->user()->role === 'province')
+        @if(auth()->user()->role === 'main' || auth()->user()->role === 'center' || auth()->user()->role === 'province')
         <li>
             <a href="{{ route('public.home.index') }}" target="_blank">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>

@@ -44,42 +44,6 @@ Route::get('/admin/district-value', 'AdminController@getDistrictValue')->name('a
 
 Route::get('/admin/organization-select', 'AdminController@organizationSelect')->name('admin.organization-select');
 
-
-Route::get('/health-professional/add', function (\Illuminate\Http\Request $request) {
-    $province_id = 1;
-    $district_id = 1;
-    $municipality_id = 1;
-    $districts = District::where('province_id', $province_id)->orderBy('district_name', 'asc')->get();
-    $municipalities = Municipality::where('district_id', $district_id)->orderBy('municipality_name', 'asc')->get();
-
-    try{
-        $data = HealthProfessional::where('checked_by', Auth::user()->token)->latest()->first();
-        $data['organization_type'] = $data->organization_type ?? '';
-        $data['organization_name'] = $data->organization_name ?? '';
-        $data['organization_phn'] = $data->organization_phn ?? '';
-        $data['organization_address'] = $data->organization_address ?? '';
-    }catch (\Exception $exception){
-        $data['organization_type'] = '';
-        $data['organization_name'] = '';
-        $data['organization_phn'] = '';
-        $data['organization_address'] = '';
-        return view('health-professional.public-create', compact('province_id', 'district_id', 'municipality_id', 'districts','municipalities', 'data'));
-    }
-    return view('health-professional.add', compact('province_id', 'district_id', 'municipality_id', 'districts','municipalities', 'data'));
-})->name('health.professional.add');
-Route::post('/health-professional', 'Backend\HealthProfessionalController@store')->name('health-professional.store');
-Route::get('/health-professional/index', 'Backend\HealthProfessionalController@index')->name('health-professional.index');
-Route::get('/health-professional/immunized', 'Backend\HealthProfessionalController@immunized')->name('health-professional.immunized');
-Route::get('/health-professional/show/{id}', 'Backend\HealthProfessionalController@show')->name('health-professional.show');
-Route::get('/health-professional/edit/{id}', 'Backend\HealthProfessionalController@edit')->name('health-professional.edit');
-Route::put('/health-professional/update/{id}', 'Backend\HealthProfessionalController@update')->name('health-professional.update');
-Route::get('/health-professional/temp-municipality-select-district', 'Backend\AddressController@municipalitySelectByDistrict')->name('temp-municipality-select-district');
-Route::get('/health-professional/temp-district-select-province', 'Backend\AddressController@districtSelectByProvince')->name('temp-district-select-province');
-Route::get('/health-professional/perm-municipality-select-district', 'Backend\AddressController@permMunicipalitySelectByDistrict')->name('perm-municipality-select-district');
-Route::get('/health-professional/perm-district-select-province', 'Backend\AddressController@permDistrictSelectByProvince')->name('perm-district-select-province');
-Route::get('/health-professional/export', 'Backend\HealthProfessionalController@export')->name('health-professional.export');
-Route::get('/vaccination/reports', 'Backend\VaccinationReportsController@index')->name('vaccination.report');
-
 //Backend Center
 Route::resource('admin/center', 'Backend\CenterController');
 Route::get('/admin/maps', 'Backend\MapController@map')->name('center.woman.map');
@@ -226,8 +190,8 @@ Route::put('/admin/sample/{token}', 'Reports\AncDetailController@update')->name(
 //Route::resource('/observation-cases', 'Backend\ObservationCasesController');
 Route::resource('/admin/cases-payment-observation', 'Backend\ObservationCasesController', ['names' => 'observation-cases']);
 
-Route::get('/admin/ancs-search', 'AdminController@ancsSearch')->name('admin.ancs.search');
-Route::post('/admin/ancs-search/update', 'AdminController@ancsUpdate')->name('admin.ancs.update');
+Route::get('/admin/sid-search', 'AdminController@ancsSearch')->name('admin.ancs.search');
+Route::post('/admin/sid-search/update', 'AdminController@ancsUpdate')->name('admin.ancs.update');
 Route::get('/admin/remaining-beds', 'Backend\WomanController@getRemainingBeds');
 
 
@@ -343,7 +307,7 @@ Route::post('admin/stock-update', 'StockController@updateStock')->name('stock.up
 Route::get('admin/get-org-rep', function (Request $request){
     $response = FilterRequest::filter($request);
     $hpCodes = GetHealthpostCodes::filter($response);
-    $dateReference = (\Carbon\Carbon::now()->subDays($request->date)->startOfDay());
+    $dateReference = (\Carbon\Carbon::now()->subDays($request->date)->setTime(0, 0, 0));
     $data = \DB::table('payment_cases')
         ->where('payment_cases.updated_at', '>=' ,$dateReference)
         ->whereIn('payment_cases.hp_code', $hpCodes)
@@ -386,11 +350,26 @@ Route::get('admin/get-org-rep', function (Request $request){
     })->groupBy(function($item) {
         return $item['organiation_name'];
     });
-
-    $mapped_data_second = $mapped_data->map(function ($value){
+    $total = [
+      'total_no_of_beds' => 0,
+      'total_no_of_ventilators' => 0,
+      'total_no_of_icu'=> 0,
+      'total_no_of_hdu'=> 0,
+      'daily_consumption_of_oxygen'=> 0,
+      'used_total_no_of_beds'=> 0,
+      'used_total_no_of_hdu'=> 0,
+      'used_total_no_of_icu'=> 0,
+      'used_total_no_of_ventilators'=> 0,
+      'total_cases'=> 0,
+      'total_under_treatment'=> 0,
+      'total_discharge'=> 0,
+      'total_death'=> 0
+    ];
+    $mapped_data_second = $mapped_data->map(function ($value) use (&$total){
         $return = [];
         $value = collect($value);
         $return['total_no_of_beds'] = collect($value->first())['no_of_beds'];
+       
         $return['total_no_of_ventilators'] = collect($value->first())['no_of_ventilators'];
         $return['total_no_of_icu'] = collect($value->first())['no_of_icu'];
         $return['total_no_of_hdu'] = collect($value->first())['no_of_hdu'];
@@ -407,7 +386,12 @@ Route::get('admin/get-org-rep', function (Request $request){
 
         $return['total_discharge'] = $value->where('is_death', 1)->count();
         $return['total_death'] = $value->where('is_death', 2)->count();
+        foreach(array_keys($total) as $key) {
+          $total[$key] = $total[$key] + $return[$key];
+        }
         return $return;
     });
-    return response()->json(['date_from' => $dateReference, 'date_to' => \Carbon\Carbon::now(), 'data' => $mapped_data_second]);
+    return response()->json(['date_from' => date('Y-M-D H:i A', strtotime($dateReference)), 'date_to' => date('Y-M-D H:i A', strtotime(\Carbon\Carbon::now())),'total' => $total, 'data' => $mapped_data_second]);
 });
+
+Route::get('/admin/bulk-upload', 'Backend\BulkUploadController@list')->name('bulk.upload');

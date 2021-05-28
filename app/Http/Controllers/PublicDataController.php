@@ -7,6 +7,10 @@ use App\Models\Organization;
 use App\Models\OrganizationMember;
 use App\Models\PaymentCase;
 use App\Models\ProvinceInfo;
+use App\Models\Province;
+use App\Models\District;
+use App\Models\Municipality;
+
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,7 +21,7 @@ class PublicDataController extends Controller
     public function index() {
         if(Auth::user()->role == 'province') {
             $province_id = ProvinceInfo::where('token', Auth::user()->token)->first()->province_id;
-        }elseif(Auth::user()->role == 'main') {
+        }elseif(Auth::user()->role == 'main' || auth()->user()->role == 'center') {
             $province_id = null;
         }else {
             return redirect('/admin');
@@ -25,8 +29,27 @@ class PublicDataController extends Controller
         return view('public.home.index', compact('province_id'));
     }
 
+    public function federalInfo() {
+      $province_list = Province::select('id', 'province_name')->get()->toArray();
+      $response = [];
+      foreach($province_list as $province) {
+        $district_list = District::select('id', 'district_name')->where('province_id', $province['id'])->get()->toArray();
+        $response[$province['province_name']] = [];
+        foreach($district_list as $district) {
+          $response[$district['district_name']] = [];
+          $response[$province['province_name']][] = $district['district_name'];
+          $mun_list = Municipality::select('id', 'municipality_name')->where('district_id', $district['id'])->get()->toArray();
+          
+          foreach($mun_list as $municipality) {
+            $response[$district['district_name']][] = $municipality['municipality_name'];
+          }
+        } 
+      }
+      return response()->json($response);
+    }
+
     public function publicPortal(Request $request){
-        $data = \DB::table('payment_cases')->whereIn('healthposts.hospital_type', [3,5]);
+        $data = \DB::table('payment_cases')->whereIn('healthposts.hospital_type', [3,5,6]);
 //            ->whereNull('payment_cases.is_death');
 
             if($request->has('organization_type')){
@@ -93,7 +116,7 @@ class PublicDataController extends Controller
             $return['oxygen_availability'] = $value->oxygen_availability;
 
             $return['is_admission'] = 0;
-            $return['is_death'] = 0;
+            $return['is_death'] = $value->is_death;
             $return['is_discharge'] = 0;
 
             $parse_register_date = Carbon::parse($value->register_date_en);
@@ -101,24 +124,25 @@ class PublicDataController extends Controller
                 $parse_date_of_outcome_en = Carbon::parse($value->date_of_outcome_en);
                 if($parse_date_of_outcome_en->isToday()){
                     if ($value->is_death === '1'){
-                        $return['is_discharge'] = 1;
-                    }else{
-                        $return['is_death'] = 1;
+                        $return['is_discharge'] = 11;
+                    }
+                    if($value->is_death === '2'){
+                        $return['is_death'] = 12;
                     }
                 }
-
-            }
-
-            if($parse_register_date->isToday()){
-                $return['is_admission'] = 1;
             }
 
             if ($value->health_condition_update == null){
                 $return['health_condition'] = $value->health_condition;
             }else{
                 $array_health_condition = json_decode($value->health_condition_update, true);
-                $return['health_condition'] = collect($array_health_condition)->sortBy('date')->first()['id'];
+                $return['health_condition'] = collect($array_health_condition)->last()['id'];
             }
+
+            if($parse_register_date->isToday()){
+                $return['is_admission'] = 10;
+            }
+
             return $return;
         })->groupBy(function($item) {
             return $item['hp_code'];
@@ -139,14 +163,14 @@ class PublicDataController extends Controller
             $return['total_icu'] = $value[0]['total_icu'];
             $return['total_ventilators'] = $value[0]['total_ventilators'];
 
-            $return['today_total_admission'] = collect($value)->where('is_admission', 1)->count();
-            $return['today_total_death'] = collect($value)->where('is_death', 1)->count();
-            $return['today_total_discharge'] = collect($value)->where('is_discharge', 1)->count();
+            $return['today_total_admission'] = collect($value)->where('is_admission', 10)->count();
+            $return['today_total_death'] = collect($value)->where('is_death', 12)->count();
+            $return['today_total_discharge'] = collect($value)->where('is_discharge', 11)->count();
 
-            $return['used_general'] = collect($value)->whereIn('health_condition', [1,2])->count();
-            $return['used_hdu'] = collect($value)->where('health_condition', 3)->count();
-            $return['used_icu'] = collect($value)->where('health_condition', 4)->count();
-            $return['used_ventilators'] = collect($value)->where('health_condition', 5)->count();
+            $return['used_general'] = collect($value)->where('is_death', null)->whereIn('health_condition', [1,2])->count();
+            $return['used_hdu'] = collect($value)->where('is_death', null)->where('health_condition', 3)->count();
+            $return['used_icu'] = collect($value)->where('is_death', null)->where('health_condition', 4)->count();
+            $return['used_ventilators'] = collect($value)->where('is_death', null)->where('health_condition', 5)->count();
 
             $return['daily_capacity_in_liter'] = $value[0]['daily_capacity_in_liter'];
             $return['oxygen_availability'] = $value[0]['oxygen_availability'];
