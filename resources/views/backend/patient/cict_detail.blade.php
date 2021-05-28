@@ -967,7 +967,7 @@
                     <td rowspan="2">Nasopharyngealswab or Oropharyngealswab or Broncheo-Alveolar Lavage </td>
                     <td rowspan="2">
                     <span class="col-md-3">
-                        <input type="checkbox" id="yes" name="yes" value="" @if(isset($data->caseManagement) && !is_null($data->ancs()->first()->sample_type)) checked readonly @else disabled @endif >
+                        <input type="checkbox" id="yes" name="yes" value="" @if(isset($data->ancs()->first()->sample_type) && !is_null($data->ancs()->first()->sample_type)) checked readonly @else disabled @endif >
                         <label for="yes">yes</label>
                     </span>
                         <span class="col-md-3" style="padding-left: 2em;">
