@@ -68,13 +68,7 @@
                                 <td>
                                     <form method="post" action="{{route('fchv.destroy', $healthWorker->id)}}" onsubmit="return confirm('Are you sure?')">
                                         <div class="icon">
-                                            <a  href="{{route('fchv.show', $healthWorker->id) }}" title="View">
-                                                <span class="glyphicon glyphicon-eye-open"></span>                                            
-                                            </a>
-                                                <a href="{{route('fchv.edit', $healthWorker->id) }}" title="Edit">
-                                                    <i class="fa fa-pencil"></i>
-                                                </a>
-                                                @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
+                                                @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main' || auth()->role == 'province')
                                                 {{csrf_field()}}
                                                 {{method_field('DELETE')}}
                                                 <button name="submit" class="pull-right" style="border: 0; background: transparent;" title="Delete"><i class="fa fa-trash-o"></i></button>

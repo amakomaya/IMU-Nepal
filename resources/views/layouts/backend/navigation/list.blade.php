@@ -27,10 +27,6 @@
             @include ('layouts.backend.navigation.list.municipality')
         @endif
 
-        @if(Auth::user()->role=="ward")
-            @include ('layouts.backend.navigation.list.ward')
-        @endif
-
         @if(Auth::user()->role=="healthpost")
             @include ('layouts.backend.navigation.list.healthpost')
         @endif
