@@ -73,6 +73,7 @@ class CaseDetailController extends Controller
             $row['symptoms_specific'] = "";
             $row['symptoms_comorbidity'] = "[]";
             $row['symptoms_comorbidity_specific'] = "";
+            $row['date_of_onset_of_first_symptom'] = "";
         }
         unset($row['symptoms_comorbidity_trimester']);
         $woman->update($row);

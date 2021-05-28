@@ -206,11 +206,13 @@ class AdminController extends Controller
                 
                 $symptoms_specific = $request->symptoms_specific;
                 $symptoms_comorbidity_specific = $request->symptoms_comorbidity_specific;
+                $date_of_onset_of_first_symptom = $request->date_of_onset_of_first_symptom;
             } else {
                 $symptoms = "[]";
                 $symptoms_specific = "";
                 $symptoms_comorbidity = "[]";
                 $symptoms_comorbidity_specific = "";
+                $date_of_onset_of_first_symptom = "";
             }
             try{
                 $woman_id = SuspectedCase::where('token', $request->woman_token)->first()->id;
@@ -224,7 +226,7 @@ class AdminController extends Controller
                     'tole' => $request->tole,
                     'emergency_contact_one' => $request->emergency_contact_one,
                     'emergency_contact_two' => $request->emergency_contact_two,
-                    'date_of_onset_of_first_symptom' => $request->date_of_onset_of_first_symptom,
+                    'date_of_onset_of_first_symptom' => $date_of_onset_of_first_symptom,
                     'occupation' => $request->occupation,
                     'travelled' => $request->travelled,
                     'reson_for_testing' => $reson_for_testing,
