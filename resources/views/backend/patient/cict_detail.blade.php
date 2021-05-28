@@ -7,13 +7,20 @@
 </style>
 @php 
     $symptoms = json_decode($data->symptoms ?? '[]');
+    $symptoms = $symptoms ?? [];
     $symptomscontactdetail= json_decode(isset($data->contactDetail) ? $data->contactDetail->symptoms : '[]', true);
+    $symptomscontactdetail = $symptomscontactdetail ?? [];
     $symptomsComorbidity = json_decode(isset($data->symptoms_comorbidity) ? $data->symptoms_comorbidity : '[]', true);
+    $symptomsComorbidity = $symptomsComorbidity ?? [];
     $symptomsComorbidityContactDetail = json_decode(isset($data->contactDetail) ? $data->contactDetail->symptoms_comorbidity : '[]' , true);
+    $symptomsComorbidityContactDetail = $symptomsComorbidityContactDetail ?? [];
     $travelled_from = json_decode($data->travelled_where ?? '', true);
     $vaccineDosefirst = json_decode(isset($data->caseManagement) ? $data->caseManagement->first_source_info : '[]', true);
+    $vaccineDosefirst = $vaccineDosefirst ?? [];
     $vaccineDosesecond = json_decode(isset($data->caseManagement) ? $data->caseManagement->second_source_info : '[]', true);
+    $vaccineDosesecond = $vaccineDosesecond ?? [];
     $meansOfTravel = json_decode(isset($data->caseManagement) ? $data->caseManagement->travel_medium : '[]', true);
+    $meansOfTravel = $meansOfTravel ?? [];
 @endphp
 
 <div id="page-wrapper">
