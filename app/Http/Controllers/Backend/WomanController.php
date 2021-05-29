@@ -72,10 +72,26 @@ class WomanController extends Controller
         return view('backend.woman.add-sample');
     }
 
+    public function negativeAntigenIndex()
+    {
+        if($this->roleViewCheck()){
+            return view('backend.woman.index-negative-antigen');
+        };
+        return redirect('/admin');
+    }
+
     public function negativeIndex()
     {
         if($this->roleViewCheck()){
             return view('backend.woman.index-negative');
+        };
+        return redirect('/admin');
+    }
+
+    public function positiveAntigenIndex()
+    {
+        if($this->roleViewCheck()){
+            return view('backend.woman.index-positive-antigen');
         };
         return redirect('/admin');
     }
@@ -100,6 +116,14 @@ class WomanController extends Controller
     {
         if($this->roleViewCheck()){
             return view('backend.woman.index-lab-received');
+        };
+        return redirect('/admin');
+    }
+
+    public function labReceivedAntigenIndex()
+    {
+        if($this->roleViewCheck()){
+            return view('backend.woman.index-lab-received-antigen');
         };
         return redirect('/admin');
     }
