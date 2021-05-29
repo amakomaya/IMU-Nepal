@@ -1,6 +1,7 @@
 <li>
     <a href="#">
         <i class="fa fa-users" aria-hidden="true"></i>
+        
         ACTIVE CASES <span class="fa arrow"></span>
     </a>
 
@@ -23,7 +24,8 @@
         </li>
         <li>
             <a href="#">
-                <i class="fa fa-folder-open" aria-hidden="true"></i> Pending <span class="fa arrow"></span>
+                <i class="fa fa-spinner" aria-hidden="true"></i> 
+                Pending <span class="fa arrow"></span>
             </a>
             <ul class="nav nav-third-level">
                 <li>
@@ -43,26 +45,70 @@
             </ul>
         </li>
         <li>
-            <a href="{{ route('patients.lab-received.index') }}">
-                <i class="fa fa-spinner" aria-hidden="true"></i>
-                Lab Received
-                <span class="label label-warning pull-right"> Lab Received </span>
+            <a href="#">
+                <i class="fa fa-flask" aria-hidden="true"></i> 
+                Lab Received <span class="fa arrow"></span>
             </a>
+            <ul class="nav nav-third-level">
+                <li>
+                    <a href="{{ route('patients.lab-received-antigen.index') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Antigen
+                        <span class="label label-default pull-right" title="Rapid Antigen Test"> RAT </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('patients.lab-received.index') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        PCR
+                        <span class="label label-default pull-right" title="Polymerase Chain Reaction"> PCR </span>
+                    </a>
+                </li>
+            </ul>
         </li>
         <li>
-            <a href="{{ route('patients.positive.index') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Positive
-                <span class="label label-danger pull-right">Positive</span>
+            <a href="#">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 
+                Positive <span class="fa arrow"></span>
             </a>
+            <ul class="nav nav-third-level">
+                <li>
+                    <a href="{{ route('patients.positive-antigen.index') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Antigen
+                        <span class="label label-default pull-right" title="Rapid Antigen Test"> RAT </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('patients.positive.index') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        PCR
+                        <span class="label label-default pull-right" title="Polymerase Chain Reaction"> PCR </span>
+                    </a>
+                </li>
+            </ul>
         </li>
         <li>
-            <a href="{{ route('patients.negative.index') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Negative
-                <span class="label label-success pull-right">Negative</span>
-
+            <a href="#">
+                <i class="fa fa-check" aria-hidden="true"></i> 
+                Negative <span class="fa arrow"></span>
             </a>
+            <ul class="nav nav-third-level">
+                <li>
+                    <a href="{{ route('patients.negative-antigen.index') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Antigen
+                        <span class="label label-default pull-right" title="Rapid Antigen Test"> RAT </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('patients.negative.index') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        PCR
+                        <span class="label label-default pull-right" title="Polymerase Chain Reaction"> PCR </span>
+                    </a>
+                </li>
+            </ul>
         </li>
         <li>
             <a href="{{ route('patients.tracing.index') }}">
