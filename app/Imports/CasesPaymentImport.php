@@ -100,7 +100,7 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
                 $failures
             );
         }
-        if($this->totalHduCases > $bed_status->venti) {
+        if($this->totalVentilatorCases > $bed_status->venti) {
             $error = ['health_condition' => 'No. of patient with Severe - Ventilator condition exeeds the no. of available ventilators('.$bed_status->venti.'). Please update the data of your existing patient to free up bed & try again.'];
             $failures[] = new Failure(1, 'health_condition', $error, $row);
             throw new ValidationException(

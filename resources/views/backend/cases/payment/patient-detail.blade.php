@@ -17,14 +17,14 @@
                 @endif
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Observation Cases
+                        Patient Details
                     </div>
                     <div class="panel-body">
                         <div class="row">
                             <form method="get" action="">
                                 <div class="form-group col-lg-6">
                                     <label for="date_from">Date From</label>
-                                    <input type="date" name="date_from" class="form-control" value="{{ $date_from }}" min="2021-05-01" max="{{ date('Y-m-d') }}"/><br>
+                                    <input type="date" name="date_from" class="form-control" value="{{ $date_from }}" min="2021-04-17" max="{{ date('Y-m-d') }}"/><br>
                                     <label for="date_to">Date To</label>
                                     <input type="date" name="date_to" class="form-control" value="{{ $date_to }}" min="2021-05-01" max="{{ date('Y-m-d') }}"/><br>
                                     <button type="submit" class="btn btn-success pull-right">Filter</button>
