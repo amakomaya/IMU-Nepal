@@ -18,7 +18,6 @@ import VueProgress from 'vue-progress-path'
 
 import 'leaflet/dist/leaflet.css';
 
-
 Vue.use(VueProgress, {
     // defaultShape: 'circle',
 })
@@ -65,6 +64,12 @@ import CasesPaymentCreate from "./components/CasesPaymentCreate";
 import CasesPaymentDischargeList from "./components/CasesPaymentDischargeList"
 import CasesPaymentDeathList from "./components/CasesPaymentDeathList"
 import BulkUploadList from "./components/BulkUploadList";
+
+
+import VueTimepicker from 'vue2-timepicker';
+import 'vue2-timepicker/dist/VueTimepicker.css';
+
+// Vue.use(VueTimepicker);
 
 Vue.use(VueMask);
 Vue.use(VNepaliDatePicker);
@@ -128,8 +133,14 @@ Vue.component('cases-payment-list', CasesPaymentList);
 Vue.component('cases-payment-discharge-list', CasesPaymentDischargeList);
 Vue.component('cases-payment-death-list', CasesPaymentDeathList);
 Vue.component('cases-payment-create', CasesPaymentCreate);
-Vue.component('bulk-upload-list', BulkUploadList)
-
+Vue.component('bulk-upload-list', BulkUploadList);
+Vue.component('vue-timepicker', VueTimepicker);
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    mounted:function(){
+        // $('.date-picker').nepaliDatePicker({
+        //   language: 'english',
+        //   disableAfter: "2078-02-25"
+        // });
+    }
 });

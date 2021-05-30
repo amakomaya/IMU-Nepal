@@ -640,7 +640,10 @@ Route::get('/v1/health-professionals-list', 'Backend\DHOController@findAllHealth
 
 Route::post('/v1/cases-payment', function (Request $request) {
     $data = $request->all();
-
+    if($data['comorbidity']) {
+      $data['comorbidity'] = '[' . implode(',', $data['comorbidity']) . ']';
+    }
+    // dd($data);
     try {
         if (isset($data['id'])){
             $data = \App\Models\PaymentCase::where('id', $data['id'])->update($data);
@@ -719,3 +722,4 @@ Route::post('/v1/bulk-upload/lab-result', 'Backend\BulkUploadController@labResul
 Route::post('/v1/bulk-upload/lab-received-result', 'Backend\BulkUploadController@labReceivedResult')->name('bulk.upload.lab-received.lab-result');
 Route::post('/v1/bulk-upload/registration-sample-collection', 'Backend\BulkUploadController@registrationSampleCollection')->name('bulk.upload.register.sample-collection');
 Route::post('/v1/bulk-upload/registration-sample-collection-lab-test', 'Backend\BulkUploadController@registrationSampleCollectionLabTest')->name('bulk.upload.register.sample.lab');
+Route::get('/v1/server-date', 'Data\Api\DateController@index');
