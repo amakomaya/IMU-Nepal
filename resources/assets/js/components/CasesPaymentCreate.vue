@@ -120,7 +120,7 @@
     <div class="row">
       <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.comorbidity.$error }">
         <label class="control-label">
-          Co Morbidity
+          Comorbidity
         </label><br>
         <label class="control-label">
           <input type="checkbox" @change="toggleHealthy(data)" v-model.trim="data.comorbidity" value="21">
@@ -778,6 +778,9 @@ export default {
       }
     },
     toggleComorbitidy(data){
+      if (data.comorbidity.includes(21)) {
+          (data.comorbidity).splice((data.comorbidity).indexOf(21), 1)
+      }
       if (data.comorbidity.includes('21')) {
           (data.comorbidity).splice((data.comorbidity).indexOf("21"), 1)
       }
@@ -829,7 +832,7 @@ export default {
               this.data.date_of_positive_np = response.data.date_of_positive_np;
               this.data.cause_of_death = response.data.cause_of_death;
               this.data.other_death_cause = response.data.other_death_cause;
-              this.data.comorbidity = JSON.parse(response.data.comorbidity);
+              this.data.comorbidity = response.data.comorbidity?JSON.parse(response.data.comorbidity):[];
               this.data.other_comorbidity = response.data.other_comorbidity;
               this.data.time_of_death = response.data.time_of_death,
               this.data.pregnant_status = response.data.pregnant_status;
