@@ -37,6 +37,7 @@
     <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('js/pace.min.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
+    <link href="http://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/css/nepali.datepicker.v3.5.min.css" rel="stylesheet" type="text/css"/>
     @php
         $metaRole = auth()->user()->role;
         $metaPermission = implode(",", auth()->user()->getPermissionNames()->toArray());
@@ -187,6 +188,8 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
+    <script src="http://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/js/nepali.datepicker.v3.5.min.js" type="text/javascript"></script>
 
     <!-- Metis Menu Plugin JavaScript -->
     <script src="{{ asset('bower_components/metisMenu/dist/metisMenu.min.js') }}"></script>

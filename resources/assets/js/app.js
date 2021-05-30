@@ -122,9 +122,14 @@ Vue.component('cases-payment-list', CasesPaymentList);
 Vue.component('cases-payment-discharge-list', CasesPaymentDischargeList);
 Vue.component('cases-payment-death-list', CasesPaymentDeathList);
 Vue.component('cases-payment-create', CasesPaymentCreate);
-Vue.component('bulk-upload-list', BulkUploadList)
-Vue.component('bulk-upload-list', BulkUploadList)
-Vue.component('vue-timepicker', VueTimepicker)
+Vue.component('bulk-upload-list', BulkUploadList);
+Vue.component('vue-timepicker', VueTimepicker);
 const app = new Vue({
     el: '#app',
+    mounted:function(){
+        // $('.date-picker').nepaliDatePicker({
+        //   language: 'english',
+        //   disableAfter: "2078-02-25"
+        // });
+    }
 });
