@@ -134,19 +134,29 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
         $labResult = $row['result'];
         $patientLabId = $row['patient_lab_id'];
         $sampleTestTime = $date_en->format('g : i A');
-        LabTest::create([
-          'token' => $this->userToken.'-'.$patientLabId,
-          'hp_code' => $this->hpCode,
-          'status' => 1,
-          'sample_recv_date' =>  $date_np,
-          'sample_test_date' => $date_np,
-          'sample_test_time' => $sampleTestTime,
-          'sample_test_result' => $labResult,
-          'checked_by' => $this->userToken,
-          'checked_by_name' => $this->healthWorker->name,
-          'sample_token' => $sampleCollection->token,
-          'regdev' => 'excel'
-      ]);
+        try {
+          LabTest::create([
+            'token' => $this->userToken.'-'.$patientLabId,
+            'hp_code' => $this->hpCode,
+            'status' => 1,
+            'sample_recv_date' =>  $date_np,
+            'sample_test_date' => $date_np,
+            'sample_test_time' => $sampleTestTime,
+            'sample_test_result' => $labResult,
+            'checked_by' => $this->userToken,
+            'checked_by_name' => $this->healthWorker->name,
+            'sample_token' => $sampleCollection->token,
+            'regdev' => 'excel'
+          ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+          $error = ['patient_lab_id' => 'The test with the given Patient Lab ID already exists in the system.'];
+          $failures[] = new Failure($currentRowNumber, 'patient_lab_id', $error, $row);
+          throw new ValidationException(
+              \Illuminate\Validation\ValidationException::withMessages($error),
+              $failures
+          );
+          return;
+        }
       return;
     }
   
