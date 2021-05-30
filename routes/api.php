@@ -465,6 +465,26 @@ Route::post('/v1/case-mgmt-update', function (Request $request) {
     return response()->json(['message' => 'Data Successfully Sync and Update']);
 });
 
+Route::post('/v1/payment-cases', function (Request $request) {
+    $payment_cases = $request->json()->all();
+    try {
+        foreach ($payment_cases as $payment_case){
+            $payment_case_create = $payment_case;
+            $payment_case_create['age'] = $payment_case->age ?? ' ';
+            $payment_case_create['age_unit'] = $payment_case->age_unit ?? 0;
+            $payment_case_create['gender'] = $payment_case->gender ?? 3;
+            $payment_case_create['health_condition'] = $payment_case->health_condition ?? 1;
+            $payment_case_create['method_of_diagnosis'] = $payment_case->method_of_diagnosis ?? 10;
+            $payment_case_create['lab_id'] = $payment_case->lab_id ?? 'N/A';
+            $payment_case_create['is_in_imu'] = $payment_case->is_in_imu ?? 0;
+            PaymentCase::create($payment_case_create);
+        }
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'Something went wrong, Please try again.']);
+    }
+    return response()->json(['message' => 'Data Successfully Sync']);
+});
+
 Route::get('/v1/contact-follow-up', function (Request $request) {
     $hp_code = $request->hp_code;
     $data = ContactFollowUp::where('hp_code', $hp_code)->get();
