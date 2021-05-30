@@ -118,7 +118,7 @@ export default {
           return;
         case "bulk_file_lab_received_result":
           this.bulk_file_lab_received_result = this.$refs.bulk_file_lab_received_result.files[0];
-          this.submitBulkRegistrationSampleCollectionFile();
+          this.submitBulkLabReceivedResultFile();
           return;
         case "bulk_file_registration_sample_collection":
           this.bulk_file_registration_sample_collection = this.$refs.bulk_file_registration_sample_collection.files[0];
@@ -230,7 +230,7 @@ export default {
           $("#bulk_file_lab_received").val(null);
         });
     },
-    submitBulkRegistrationSampleCollectionFile(type) {
+    submitBulkLabReceivedResultFile(type) {
       let formData = new FormData();
       if (!this.bulk_file_lab_received_result) {
         alert("Please upload a valid excel file");

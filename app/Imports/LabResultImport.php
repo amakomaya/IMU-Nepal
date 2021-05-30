@@ -103,6 +103,9 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
       foreach($data as $key=>$col){
         if($col && in_array($key, $required_row)) {
           $unset = false;
+          if($data['patient_lab_id']===500 && $data['result'] === null) { //#TODO fix weird bug with 500 default value on the last empty row from the template. must properly update the template & remove this code.
+            $unset = true;
+          }
           break;
         }
       }
