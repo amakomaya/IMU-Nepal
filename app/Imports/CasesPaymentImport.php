@@ -100,7 +100,7 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
                 $failures
             );
         }
-        if($this->totalHduCases > $bed_status->venti) {
+        if($this->totalVentilatorCases > $bed_status->venti) {
             $error = ['health_condition' => 'No. of patient with Severe - Ventilator condition exeeds the no. of available ventilators('.$bed_status->venti.'). Please update the data of your existing patient to free up bed & try again.'];
             $failures[] = new Failure(1, 'health_condition', $error, $row);
             throw new ValidationException(
@@ -109,7 +109,6 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             );
         } 
 
-        return;
         return new PaymentCase([
             'hospital_register_id' => $row['hospital_id'],
             'name' => $row['full_name_of_patient'],
@@ -133,15 +132,32 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             'hp_code' => $this->hpCode
         ]);
     }
-    
+
+    private function filterEmptyRow($data) {
+      $required_row = ['paid_free', 'gender', 'age_unit', 'health_condition', 'method_of_diagnosis']; //added to solve teplate throwing wierd default values
+      $unset = true;
+      foreach($data as $key=>$col){
+        if($col && in_array($key, $required_row)) {
+          $unset = false;
+          break;
+        }
+      }
+      if($unset){
+        $data = array();
+      }
+      return $data;
+    }
+  
     public function prepareForValidation($data, $index)
     {
-        $data['paid_free'] = $this->enums['paid_free'][$data['paid_free']];
-        $data['gender'] = $this->enums['gender'][$data['gender']];
-        $data['age_unit'] = $this->enums['age_unit'][$data['age_unit']] ?? 0;
-        $data['health_condition'] = $this->enums['health_condition'][$data['health_condition']] ?? null;
-        $data['method_of_diagnosis'] = $this->enums['method_of_diagnosis'][$data['method_of_diagnosis']] ?? null;
-        
+        $data = $this->filterEmptyRow($data);
+        if(array_filter($data)) {
+          $data['paid_free'] = $this->enums['paid_free'][$data['paid_free']]??null;
+          $data['gender'] = $this->enums['gender'][$data['gender']]??null;
+          $data['age_unit'] = $this->enums['age_unit'][$data['age_unit']] ?? 0;
+          $data['health_condition'] = $this->enums['health_condition'][$data['health_condition']] ?? null;
+          $data['method_of_diagnosis'] = $this->enums['method_of_diagnosis'][$data['method_of_diagnosis']] ?? null;
+        }
         return $data;
     }
   

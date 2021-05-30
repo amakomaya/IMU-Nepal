@@ -67,6 +67,7 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
               $failures
           );
         } else {
+          try {
             LabTest::create([
               'token' => $this->userToken.'-'.$labId,
               'hp_code' => $this->hpCode,
@@ -80,6 +81,16 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
               'sample_token' => $sId,
               'regdev' => 'excel'
           ]);
+          
+          } catch (\Illuminate\Database\QueryException $e) {
+            $error = ['sid' => 'The test with the given Sample ID already exists in the system.'];
+            $failures[] = new Failure($currentRowNumber, 'sid', $error, $row);
+            throw new ValidationException(
+                \Illuminate\Validation\ValidationException::withMessages($error),
+                $failures
+            );
+            return;
+          }
           $ancs->update([
             'result' => $labResult
           ]);
@@ -95,9 +106,28 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
       return false;
     }
   
+    private function filterEmptyRow($data) {
+      $required_row = ['result', 'patient_lab_id', 'sid']; //added to solve teplate throwing wierd default values
+      $unset = true;
+      foreach($data as $key=>$col){
+        if($col && in_array($key, $required_row)) {
+          $unset = false;
+          break;
+        }
+      }
+      if($unset){
+        $data = array();
+      }
+      return $data;
+    }
+  
     public function prepareForValidation($data, $index)
     {
-        $data['result'] = $this->enums['result'][$data['result']]?? null;
+        $data = $this->filterEmptyRow($data);
+        print_r($data);
+        if(array_filter($data)) {
+          $data['result'] = $this->enums['result'][$data['result']]?? null;
+        }
         return $data;
     }
   

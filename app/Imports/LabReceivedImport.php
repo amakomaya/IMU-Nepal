@@ -63,6 +63,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
               $failures
           );
         } else {
+          try {
             LabTest::create([
               'token' => $this->userToken.'-'.$labId,
               'hp_code' => $this->hpCode,
@@ -74,6 +75,16 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
               'sample_token' => $sId,
               'regdev' => 'excel'
           ]);
+          
+          } catch (\Illuminate\Database\QueryException $e) {
+            $error = ['sid' => 'The patient with the given Sample ID and Lab ID already exists in the system.'];
+            $failures[] = new Failure($currentRowNumber, 'sid', $error, $row);
+            throw new ValidationException(
+                \Illuminate\Validation\ValidationException::withMessages($error),
+                $failures
+            );
+            return;
+          }
           $ancs->update([
             'result' => 9
           ]);
@@ -105,6 +116,27 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
         ];
     }
 
+    private function filterEmptyRow($data) {
+      $required_row = ['sid', 'patient_lab_id']; //added to solve teplate throwing wierd default values
+      $unset = true;
+      foreach($data as $key=>$col){
+        if($col && in_array($key, $required_row)) {
+          $unset = false;
+          break;
+        }
+      }
+      if($unset){
+        $data = array();
+      }
+      return $data;
+    }
+  
+    public function prepareForValidation($data, $index)
+    {
+        $data = $this->filterEmptyRow($data);
+        return $data;
+    }
+  
     public function chunkSize(): int
     {
         return 2000;

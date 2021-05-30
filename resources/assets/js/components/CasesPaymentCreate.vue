@@ -65,38 +65,124 @@
     <div class="form-group" :class="{ 'has-error': $v.data.name.$error }">
         <label class="control-label" for="name">Name *</label>
         <input type="text" placeholder="Enter Full Name with space between first, middle and last name" class="form-control" v-model.trim="data.name" id="name"/>
-      </div>
-      <div class="row">
-        <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.age.$error }">
-          <label class="control-label" for="age">Age *</label>
-          <input type="radio" id="age_years" v-model.trim="data.age_unit" value="0">
-          <label class="control-label" for="age_years">Years</label> &nbsp; &nbsp;
-          <input type="radio" id="age_months" v-model.trim="data.age_unit" value="1">
-          <label class="control-label" for="age_months">Months</label> &nbsp; &nbsp;
-          <input type="radio" id="age_days" v-model.trim="data.age_unit" value="2">
-          <label class="control-label" for="age_days">Days</label> &nbsp; &nbsp;
+    </div>
+    <div class="row">
+      <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.age.$error }">
+        <label class="control-label" for="age">Age *</label>
+        <input type="radio" id="age_years" v-model.trim="data.age_unit" value="0">
+        <label class="control-label" for="age_years">Years</label> &nbsp; &nbsp;
+        <input type="radio" id="age_months" v-model.trim="data.age_unit" value="1">
+        <label class="control-label" for="age_months">Months</label> &nbsp; &nbsp;
+        <input type="radio" id="age_days" v-model.trim="data.age_unit" value="2">
+        <label class="control-label" for="age_days">Days</label> &nbsp; &nbsp;
 
-          <input type="text" placeholder="Enter age" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" v-model.trim="data.age" id="age"/>
-        </div>
-        <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.gender.$error }">
-          <label class="control-label">Gender *</label><br>
-          <input type="radio" id="male" v-model.trim="data.gender"  value="1">
-          <label class="control-label" for="male">Male</label> &nbsp; &nbsp;
-          <input type="radio" id="female" v-model.trim="data.gender" value="2">
-          <label class="control-label" for="female">Female</label> &nbsp; &nbsp;
-          <input type="radio" id="other" v-model.trim="data.gender" value="3">
-          <label class="control-label" for="other">Other</label>
-        </div>
-        <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.phone.$error }">
-          <label class="control-label" for="phone">Mobile No *</label>
-          <input type="text" placeholder="Enter mobile number" class="form-control" v-model.trim="data.phone" id="phone"/>
-        </div>
+        <input type="text" placeholder="Enter age" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" v-model.trim="data.age" id="age"/>
       </div>
+      <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.gender.$error }">
+        <label class="control-label">Gender *</label><br>
+        <input type="radio" id="male" v-model.trim="data.gender"  value="1">
+        <label class="control-label" for="male">Male</label> &nbsp; &nbsp;
+        <input type="radio" id="female" v-model.trim="data.gender" value="2">
+        <label class="control-label" for="female">Female</label> &nbsp; &nbsp;
+        <input type="radio" id="other" v-model.trim="data.gender" value="3">
+        <label class="control-label" for="other">Other</label>
+      </div>
+      <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.phone.$error }">
+        <label class="control-label" for="phone">Mobile No *</label>
+        <input type="text" placeholder="Enter mobile number" class="form-control" v-model.trim="data.phone" id="phone"/>
+      </div>
+    </div>
     <div class="form-group" :class="{ 'has-error': $v.data.address.$error }">
       <label class="control-label" for="name">Current Address *</label>
       <input type="text" placeholder="Enter Current Address ( e.g Lazimpat-2, Kathmandu )" class="form-control" v-model.trim="data.address" id="address" />
     </div>
+     <div class="row">
+        <div v-show="data.gender=='2'" class="form-group col-lg-4" :class="{ 'has-error': $v.data.pregnant_status.$error }">
+            <label class="control-label" for="age">Pregnent? *</label><br />
+            <input type="radio" id="preg_yes" v-model.trim="data.pregnant_status" value="1">
+            <label class="control-label" for="preg_yes">Yes</label> &nbsp; &nbsp;
+            <input type="radio" id="preg_no" v-model.trim="data.pregnant_status" value="0">
+            <label class="control-label" for="preg_no">No</label> &nbsp; &nbsp;
+        </div>
+        <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.date_of_positive_np.$error }">
+          <label class="control-label" for="date_of_positive_np">Covid 19 Positive Date *</label><br />
+          <div class="input-group"><span class="input-group-addon"><i
+              class="fa fa-calendar"></i></span>
+
+              <input id="date_of_positive_np" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.date_of_positive_np" value="" name="date" class="form-control date-picker-np" />
+            <!-- <v-nepalidatepicker id="date_of_positive_np" classValue="form-control" calenderType="Nepali" placeholder="Covid 19 Positive Date"
+                                format="YYYY-MM-DD" v-model.trim="data.date_of_positive_np" :yearSelect="false"
+                                :monthSelect="false"/> -->
+          </div>
+        </div>
+      </div>
     <hr>
+    <div class="row">
+      <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.comorbidity.$error }">
+        <label class="control-label">
+          Co Morbidity
+        </label><br>
+        <label class="control-label">
+          <input type="checkbox" @change="toggleHealthy(data)" v-model.trim="data.comorbidity" value="21">
+          Normal Health Condition
+        </label><br />
+        <label class="control-label">
+          <input type="checkbox" @change="toggleComorbitidy(data)" v-model.trim="data.comorbidity" value="8">
+          Blood Pressure (High/ Low)
+        </label><br />
+        
+        <label class="control-label">  
+          <input type="checkbox" @change="toggleComorbitidy(data)" v-model.trim="data.comorbidity" value="1">
+          Cancer
+        </label><br />
+        <label class="control-label">
+          <input type="checkbox" @change="toggleComorbitidy(data)" v-model.trim="data.comorbidity" value="2">
+          Chronic kidney disease
+        </label><br />
+        <label class="control-label">
+          <input type="checkbox" @change="toggleComorbitidy(data)" v-model.trim="data.comorbidity" value="3">
+          Chronic respiratory diseases / Lung Diseases
+        </label><br />
+        <label class="control-label">
+          <input type="checkbox" @change="toggleComorbitidy(data)" v-model.trim="data.comorbidity" value="4">
+          Cardio related disease
+        </label><br />
+        <label class="control-label">
+          <input type="checkbox" @change="toggleComorbitidy(data)" v-model.trim="data.comorbidity" value="5">
+          Diabetes
+        </label><br />
+        <label class="control-label">
+          <input type="checkbox" @change="toggleComorbitidy(data)" v-model.trim="data.comorbidity" value="9">
+          Neuro related diseases
+        </label><br />
+        <label class="control-label">
+          <input type="checkbox" @change="toggleComorbitidy(data)" v-model.trim="data.comorbidity" value="11">
+          Tuberculosis (TB)
+        </label><br />
+        <label class="control-label">
+          <input type="checkbox" @change="toggleComorbitidy(data)" v-model.trim="data.comorbidity" value="22">
+          Mental Disease
+        </label><br />
+        <label class="control-label">
+          <input type="checkbox" @change="toggleComorbitidy(data)" v-model.trim="data.comorbidity" value="31">
+          HIV / AIDS
+        </label><br />
+        <label class="control-label">
+          <input type="checkbox" @change="toggleComorbitidy(data)" v-model.trim="data.comorbidity" value="23">
+          Already Covid-19 infected
+        </label><br />
+        <label class="control-label">
+          <input type="checkbox" @change="toggleComorbitidy(data)" v-model.trim="data.comorbidity" value="10">
+          Other
+        </label><br />
+      </div>
+    </div>
+    <div v-show="data.comorbidity && (data.comorbidity.includes('10') || data.comorbidity.includes(10))" class="form-group col-lg-4" :class="{ 'has-error': $v.data.other_comorbidity.$error }">
+        <label for="other_comorbidity">Specify Other Comorbidity</label>
+          <div class="input-group">
+              <input type="text" class="form-control" v-model.trim="data.other_comorbidity" id="other_comorbidity" />
+          </div>
+      </div>
     <div class="row">
       <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.method_of_diagnosis.$error }">
         <label class="control-label">Method of Diagnosis</label><br>
@@ -207,13 +293,49 @@
         <label for="death">Death</label> &nbsp; &nbsp;
       </div>
 
-      <div v-show="data.is_death !== ''" class="form-group col-lg-4">
+      <div v-show="data.is_death !== ''" class="form-group col-lg-4" :class="{ 'has-error': $v.data.date_of_outcome.$error }">
         <label for="date_of_outcome">Date of Outcome &nbsp;<span class="label label-info pull-right">{{ data.date_of_outcome }}</span></label>
           <div class="input-group"><span class="input-group-addon"><i
               class="fa fa-calendar"></i></span>
-            <v-nepalidatepicker id="date_of_outcome" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
+              <input id="date_of_outcome" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.date_of_outcome" value="" name="date" class="form-control date-picker-np" />
+            <!-- <v-nepalidatepicker id="date_of_outcome" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
                                 format="YYYY-MM-DD" v-model.trim="data.date_of_outcome" :yearSelect="false"
-                                :monthSelect="false"/>
+                                :monthSelect="false"/> -->
+          </div>
+      </div>
+      <div v-show="data.is_death === '2'" class="form-group col-lg-4" :class="{ 'has-error': $v.data.time_of_death.$error }">
+        <label for="time_of_death">Time of Death &nbsp;<span class="label label-info pull-right">02:20 pm</span></label>
+          <div class="input-group"><span class="input-group-addon"><i
+              class="fa fa-calendar"></i></span>
+              <vue-timepicker id="time_of_death" classValue="form-control" format="hh:mm a" v-model.trim="data.time_of_death"></vue-timepicker>
+          </div>
+      </div>
+      
+  
+
+
+
+
+      <div  v-show="data.is_death === '2'" class="form-group col-lg-12" :class="{ 'has-error': $v.data.cause_of_death.$error }">
+        <label class="control-label">Cause of Death</label><br>
+        <input type="radio" id="d-covid" v-model.trim="data.cause_of_death"  value="1">
+        <label class="control-label" for="d-covid">COVID-19</label> &nbsp; &nbsp;
+        <input type="radio" id="d-cov-pne" v-model.trim="data.cause_of_death" value="2">
+        <label class="control-label" for="d-cov-pne">COVID 19, Pneumonia</label> &nbsp; &nbsp;
+        <input type="radio" id="d-cov-pne-cardio" v-model.trim="data.cause_of_death" value="3">
+        <label class="control-label" for="d-cov-pne-cardio">COVID 19, Pneumonia with Cardio Respiratory Failure</label> &nbsp; &nbsp;
+        <br />
+        <input type="radio" id="d-cov-ards" v-model.trim="data.cause_of_death" value="4">
+        <label class="control-label" for="d-cov-ards">COVID 19 with ARDS</label>&nbsp; &nbsp;
+        <input type="radio" id="d-cov-pne-htn" v-model.trim="data.cause_of_death" value="5">
+        <label class="control-label" for="d-cov-pne-htn">Severe COVID 19, Pneumonia with HTN</label>&nbsp; &nbsp;
+        <input type="radio" id="d-other" v-model.trim="data.cause_of_death" value="10">
+        <label class="control-label" for="d-other">Others</label>
+      </div>
+      <div v-show="data.is_death === '2' && data.cause_of_death=='10'" class="form-group col-lg-4" :class="{ 'has-error': $v.data.other_death_cause.$error }">
+        <label for="other_death_cause">Specify Other Cause of Death</label>
+          <div class="input-group">
+              <input type="text" class="form-control" v-model.trim="data.other_death_cause" id="other_death_cause" />
           </div>
       </div>
     </div>
@@ -229,8 +351,8 @@
     </form>
   </div>
 </template>
-<script type="text/javascript">
 
+<script type="text/javascript">
 import axios from "axios";
 import {required, minValue} from "vuelidate/lib/validators";
 import DataConverter from "ad-bs-converter";
@@ -244,7 +366,31 @@ export default {
         age_unit : 0,
         method_of_diagnosis : 0,
         gender: undefined,
-        complete_vaccination: undefined
+        complete_vaccination: undefined,
+        time_of_death: null,
+        comorbidity: [],
+        other_comorbidity: null,
+        pregnant_status: null,
+        date_of_positive: '',
+        date_of_positive_np: '',
+        cause_of_death: null,
+        other_death_cause: null,
+        // lab_id: '123',
+        // name: 'test',
+        // age: 20,
+        // age_unit: 0,
+        // phone: '9841589683',
+        // method_of_diagnosis: '1',
+        // hospital_register_id: 'pat-123',
+        // date_of_positive_np: '2078/2/20',
+        // comorbidity: ['1','2','3','10'],
+        // other_comorbidity: 'test other',
+        // pregnant_status: 1,
+        // gender: '2',
+        // self_free: 1,
+        // guardian_name: 'test',
+        // address: 'test',
+        // remark: 'test'
       },
       lab_id : '',
       options: [],
@@ -263,23 +409,40 @@ export default {
   },
   mounted () {
     this.setEntryHealthCondition();
-    if(!this.is_to_update) this.setTodayRegisterDate();
+    this.getTodayDate();
   },
-  validations: {
-    data: {
-      name: { required },
-      age : { required },
-      phone : { required },
-      hospital_register_id : { required },
-      register_date_np : { required },
-      method_of_diagnosis : { required },
-      gender : { required },
-      self_free : { required },
-      health_condition : { required, minValue : minValue(1) },
-      address : { required },
-      complete_vaccination : { required },
-    },
-    labSelected : { required }
+  validations() {
+    let causeOfDeathVdn = this.data.is_death && this.data.is_death.toString()==='2'?{ required }:{};
+    let otherDeathCauseVdn = (this.data.is_death && this.data.cause_of_death && this.data.is_death.toString()==='2' && this.data.cause_of_death.toString() === '10')?{ required }:{};
+    let pregnantStatusVdn = this.data.gender && this.data.gender.toString()==='2'?{ required }:{};
+    let otherComorbidityVdn = this.data.comorbidity && (this.data.comorbidity.includes('10')||this.data.comorbidity.includes(10))?{ required }:{};
+    let dateofOutcomeVdn = this.data.is_death && this.data.is_death !== '' ?{ required }:{};
+    let timeOfDeathVdn = this.data.is_death && this.data.is_death.toString()==='2'?{ required }:{};
+    let validationRules = {
+      data: {
+        name: { required },
+        age : { required },
+        phone : { required },
+        hospital_register_id : { required },
+        register_date_np : { required },
+        method_of_diagnosis : { required },
+        gender : { required },
+        self_free : { required },
+        health_condition : { required, minValue: minValue(1) },
+        address : { required },
+        complete_vaccination : { required },
+        comorbidity: {required},
+        cause_of_death: causeOfDeathVdn,
+        other_death_cause: otherDeathCauseVdn,
+        pregnant_status: pregnantStatusVdn,
+        date_of_positive_np: { required },
+        other_comorbidity: otherComorbidityVdn,
+        date_of_outcome: dateofOutcomeVdn,
+        time_of_death: timeOfDeathVdn
+      },
+      labSelected : { required }
+    }
+    return validationRules;
   },
   methods: {
     deleteObjById(arrObj, searchId) {
@@ -290,13 +453,18 @@ export default {
         arrObj.splice(filterIndex,1);
         return arrObj;
     },
+    getTodayDate() {
+      axios.get('/api/v1/server-date')
+        .then((response) => {
+          let date = response.data.date;
+          this.date_today_en = date;
+          this.date_today_np = this.ad2bs(date);
+          if(!this.is_to_update) this.setTodayRegisterDate();
+          this.renderDatepickerNp();
+      });
+    },
     setTodayRegisterDate() {
-      var today = new Date();
-      var dd = String(today.getDate()).padStart(2, '0');
-      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-      var yyyy = today.getFullYear();
-      today = yyyy + '-' + mm + '-' + dd;
-      this.data.register_date_np = this.ad2bs(today);
+      this.data.register_date_np = this.date_today_np;
     },
     setEntryHealthCondition() {
       let hcEnum = [
@@ -435,7 +603,7 @@ export default {
                 health_condition : 0,
                 is_death : '',
                 lab_id : id,
-                register_date_np : this.ad2bs(today),
+                register_date_np : response.data.register_date_np,
                 register_date_en : (new Date(response.data.register_date_en)).toLocaleString().split(',')[0].split("/").reverse().join("-")
               };
               if (this.item){
@@ -508,11 +676,19 @@ export default {
       if(data.is_death !== ''){
         data.date_of_outcome_en = this.bs2ad(data.date_of_outcome);
       }
+      if(data.date_of_positive_np) {  
+        data.date_of_positive = this.bs2ad(data.date_of_positive_np);
+      }
       if (data.is_death === ''){
         data.date_of_outcome_en = null;
         data.date_of_outcome = null;
+        data.time_of_death = null;
+        data.cause_of_death = null;
+        data.other_death_cause = null;
       }
-
+      if(data.time_of_death && Array.isArray(data.time_of_death)){
+        data.time_of_death =   data.time_of_death["hh"]+':'+data.time_of_death["mm"]+' '+data.time_of_death["a"];
+      }
       axios.post('/api/v1/cases-payment', data)
           .then((response) => {
             if (response.data.message === 'success') {
@@ -527,12 +703,11 @@ export default {
               if (this.is_to_update === false) {
                 this.$v.$reset();
                 this.resetForm();
-                var today = new Date();
                 this.data = {};
                 this.data = {
                   health_condition: 0,
                   is_death: '',
-                  register_date_np: this.ad2bs(today),
+                  // register_date_np: this.ad2bs(today),
                   lab_name: this.labSelected.name
                 }
               }
@@ -593,12 +768,37 @@ export default {
         5: 'Severe - Ventilator'
       };
       return items[data];
+    },
+    toggleHealthy(data){
+    if (data.comorbidity.includes('21')) {
+          data.comorbidity = []
+          data.comorbidity = ['21']
+          data.other_comorbidity = null
+      }
+    },
+    toggleComorbitidy(data){
+      if (data.comorbidity.includes('21')) {
+          (data.comorbidity).splice((data.comorbidity).indexOf("21"), 1)
+      }
+    },
+    renderDatepickerNp(){
+      let regNp = this.data.register_date_np.split('-');
+      if(regNp[1].length===1) {
+        regNp[1] = '0'+regNp[1];
+      }
+      if(regNp[2]) {
+        regNp[2] = '0'+regNp[2];
+      }
+      $('.date-picker-np').nepaliDatePicker({
+        language: 'english',
+        disableBefore: regNp.join('-'),
+        disableAfter: this.date_today_np
+      });
     }
   },
   created(){
     let url = new URL(window.location.href);
     let id = url.searchParams.get("token");
-
     if(id){
       axios.get('/api/v1/search-cases-payment-by-id?id='+id)
           .then((response) => {
@@ -613,6 +813,14 @@ export default {
               this.data.hospital_register_id = response.data.hospital_register_id;
               this.data.register_date_np = response.data.register_date_np;
               this.data.register_date_en = (new Date(response.data.register_date_en)).toLocaleString().split(',')[0].split("/").reverse().join("-");
+              this.data.date_of_positive = response.data.date_of_positive?(new Date(response.data.date_of_positive)).toLocaleString().split(',')[0].split("/").reverse().join("-"):null;
+              this.data.date_of_positive_np = response.data.date_of_positive_np;
+              this.data.cause_of_death = response.data.cause_of_death;
+              this.data.other_death_cause = response.data.other_death_cause;
+              this.data.comorbidity = JSON.parse(response.data.comorbidity);
+              this.data.other_comorbidity = response.data.other_comorbidity;
+              this.data.time_of_death = response.data.time_of_death,
+              this.data.pregnant_status = response.data.pregnant_status;
               this.data.gender = response.data.gender;
               this.data.self_free = response.data.self_free;
               this.data.health_condition = response.data.health_condition;
@@ -643,8 +851,7 @@ export default {
           })
     }
     else{
-      var today = new Date();
-      this.data.register_date_np = this.ad2bs(today);
+      this.setTodayRegisterDate();
     }
   }
 }

@@ -62,7 +62,7 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
           'infection_type' => array ('Symptomatic' => '1', 'Asymptomatic' => '2'),
           'age_unit' => array ('Year' => '0', 'Month' => '1', 'Day' => '2'),
           'gender'=> array( 'Male' => '1', 'Female' => '2', 'Other' => '3' ),
-          'caste' => array( "Don't Know"=> 6, 'Dalit'=> 0, 'Janajati'=> 1, 'Madheshi'=> 2, 'Muslim'=> 3, 'Brahmin'=> 4, 'Other'=> 5),
+          'ethnicity' => array( "Don't Know"=> 6, 'Dalit'=> 0, 'Janajati'=> 1, 'Madheshi'=> 2, 'Muslim'=> 3, 'Brahmin'=> 4, 'Other'=> 5),
           'province' => $provinces,
           'district' => $districts,
           'municipality' => $municipalities,
@@ -94,7 +94,7 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
           'hp_code' => $this->hpCode,
           'tole' => $row['tole'],
           'ward' => $row['ward'],
-          'caste' => $row['caste'],
+          'caste' => $row['ethnicity'],
           'created_by' => $this->userToken,
           'registered_device' => 'excel',
           'status' => 1,
@@ -115,13 +115,13 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
           'checked_by_name'=> $this->healthWorker->name,
           'sample_identification_type' => 'unique_id',
           'service_type' => $row['service_type'],
-          'result' => 9,
+          'result' => 2,
           'regdev' => 'excel',
           'woman_token' => $suspectedCase->token,
           'infection_type' => $row['infection_type'],
         ];
         $id = $this->healthWorker->id;
-        $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
+        $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber)->format('H:i:s'));
         $sampleCollectionData['token'] = $swabId;
         if ($sampleCollectionData['service_for'] === '1')
             $sampleCollectionData['sample_type'] = $row['sample_type'];
@@ -135,22 +135,40 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
         return ($d[0] * 3600) + ($d[1] * 60) + $d[2];
     }
   
+    private function filterEmptyRow($data) {
+      $required_row = ['test_type', 'sample_type', 'age_unit', 'gender', 'ethnicity', 'province' , 'district', 'municipality', 'service_type', 'infection_type']; //added to solve teplate throwing wierd default values
+      $unset = true;
+      foreach($data as $key=>$col){
+        if($col && in_array($key, $required_row)) {
+          $unset = false;
+          break;
+        }
+      }
+      if($unset){
+        $data = array();
+      }
+      return $data;
+    }
+  
     public function prepareForValidation($data, $index)
     {
+      $data = $this->filterEmptyRow($data);
+      if(array_filter($data)) {
         $data['test_type'] = $this->enums['test_type'][$data['test_type']] ?? null;
         $data['sample_type'] = $this->enums['sample_type'][$data['sample_type']] ?? null;
         $data['age_unit'] = $this->enums['age_unit'][$data['age_unit']] ?? 0;
         $data['gender'] = $this->enums['gender'][$data['gender']] ?? null;
-        $data['caste'] = $this->enums['caste'][$data['caste']] ?? null;
+        $data['ethnicity'] = $this->enums['ethnicity'][$data['ethnicity']] ?? null;
         $data['province'] = $this->enums['province'][$data['province']] ?? null;
         $data['district'] = $this->enums['district'][$data['district']] ?? null;
         $data['municipality'] = $this->enums['municipality'][$data['municipality']] ?? null;
         $data['service_type'] = $this->enums['service_type'][$data['service_type']] ?? null;
         $data['infection_type'] = $this->enums['infection_type'][$data['infection_type']] ?? null;
-        
-        return $data;
+      }
+      return $data;
     }
   
+
     public function rules(): array
     {
         return [

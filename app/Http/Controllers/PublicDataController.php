@@ -21,7 +21,7 @@ class PublicDataController extends Controller
     public function index() {
         if(Auth::user()->role == 'province') {
             $province_id = ProvinceInfo::where('token', Auth::user()->token)->first()->province_id;
-        }elseif(Auth::user()->role == 'main') {
+        }elseif(Auth::user()->role == 'main' || auth()->user()->role == 'center') {
             $province_id = null;
         }else {
             return redirect('/admin');
@@ -49,7 +49,7 @@ class PublicDataController extends Controller
     }
 
     public function publicPortal(Request $request){
-        $data = \DB::table('payment_cases')->whereIn('healthposts.hospital_type', [3,5]);
+        $data = \DB::table('payment_cases')->whereIn('healthposts.hospital_type', [3,5,6]);
 //            ->whereNull('payment_cases.is_death');
 
             if($request->has('organization_type')){

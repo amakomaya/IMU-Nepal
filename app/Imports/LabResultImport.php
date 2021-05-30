@@ -97,9 +97,30 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
       return false;
     }
   
+    private function filterEmptyRow($data) {
+      $required_row = ['result', 'patient_lab_id']; //added to solve teplate throwing wierd default values
+      $unset = true;
+      foreach($data as $key=>$col){
+        if($col && in_array($key, $required_row)) {
+          $unset = false;
+          if($data['patient_lab_id']===500 && $data['result'] === null) { //#TODO fix weird bug with 500 default value on the last empty row from the template. must properly update the template & remove this code.
+            $unset = true;
+          }
+          break;
+        }
+      }
+      if($unset){
+        $data = array();
+      }
+      return $data;
+    }
+  
     public function prepareForValidation($data, $index)
     {
-        $data['result'] = $this->enums['result'][$data['result']]?? null;
+        $data = $this->filterEmptyRow($data);
+        if(array_filter($data)) {
+          $data['result'] = $this->enums['result'][$data['result']]?? null;
+        }
         return $data;
     }
   
