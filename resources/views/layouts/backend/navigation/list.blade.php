@@ -69,6 +69,8 @@
                 {{ csrf_field() }}
             </form>
         </li>
+        @include('layouts.backend.navigation.html.forum')
+
     @endguest
 </ul>
 
