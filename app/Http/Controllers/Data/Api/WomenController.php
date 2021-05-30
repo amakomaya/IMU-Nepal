@@ -60,7 +60,7 @@ class WomenController extends Controller
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
-                    $q->where('service_for', '!==' ,2)->whereIn('result', [0,2]);
+                    $q->where('service_for', '!=' ,"2")->whereIn('result', [0,2]);
                 });
             })
             ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
@@ -78,7 +78,7 @@ class WomenController extends Controller
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
-                    $q->where('service_for', 2)->whereIn('result', [0,2]);
+                    $q->where('service_for', "2")->whereIn('result', [0,2]);
                 });
             })
             ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
@@ -99,7 +99,7 @@ class WomenController extends Controller
 //        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->pluck('woman_token');
 //        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->whereHas('ancs', function($q){
-            $q->where('service_for', '!==' , 2)->where('result', '=', 4);
+            $q->where('service_for', '!=' , "2")->where('result', '=', 4);
         })
         ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
             'healthpost' => function($q) {
@@ -117,7 +117,7 @@ class WomenController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
         ->whereHas('ancs', function($q){
-            $q->where('service_for', 2)->where('result', '=', 4);
+            $q->where('service_for', "2")->where('result', '=', 4);
         })
         ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
             'healthpost' => function($q) {
@@ -135,7 +135,7 @@ class WomenController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
 //        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->pluck('woman_token');
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->whereHas('ancs', function($q){
-                $q->where('service_for', '!==' , 2)->where('result', '=', 3);
+                $q->where('service_for', '!=' , "2")->where('result', '=', 3);
             })->with(['ancs','healthpost' => function($q) {
                 $q->select('name', 'hp_code');
             }, 'latestAnc', 'district', 'municipality']);
@@ -152,7 +152,7 @@ class WomenController extends Controller
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
-                    $q->where('service_for', 2)->where('result', 3);
+                    $q->where('service_for', "2")->where('result', 3);
                 });
             })
             ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
@@ -184,7 +184,7 @@ class WomenController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
             ->whereHas('ancs', function($q){
-                $q->where('service_for', '!==' , 2)->where('result', '=', 9);
+                $q->where('service_for', '!=' , "2")->where('result', '=', 9);
             })->with(['ancs','healthpost' => function($q) {
                 $q->select('name', 'hp_code');
             }, 'latestAnc', 'district', 'municipality']);
@@ -202,7 +202,7 @@ class WomenController extends Controller
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
-                    $q->where('service_for', 2)->where('result', 9);
+                    $q->where('service_for', "2")->where('result', 9);
                 });
             })
             ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
