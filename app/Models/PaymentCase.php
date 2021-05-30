@@ -19,8 +19,9 @@ class PaymentCase extends Model
     'remark', 'lab_name', 'lab_id', 'is_in_imu', 'hp_code', 'created_at', 'updated_at',
         'register_date_en', 'register_date_np', 'hospital_register_id', 'date_of_outcome', 'date_of_outcome_en',
         'health_condition_update' , 'method_of_diagnosis', 'age_unit',
-        'guardian_name', 'self_free'
-        ];
+        'guardian_name', 'self_free', 'comorbidity', 'other_comorbidity', 'pregnant_status', 'date_of_positive', 'date_of_positive_np',
+        'cause_of_death', 'other_death_cause', 'time_of_death'
+    ];
 
     protected $orderable = ['name', 'age', 'created_at', 'register_date_en'];
 
