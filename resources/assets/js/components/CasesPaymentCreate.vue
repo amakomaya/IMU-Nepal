@@ -108,9 +108,11 @@
           <label class="control-label" for="date_of_positive_np">Covid 19 Positive Date *</label><br />
           <div class="input-group"><span class="input-group-addon"><i
               class="fa fa-calendar"></i></span>
-            <v-nepalidatepicker id="date_of_positive_np" classValue="form-control" calenderType="Nepali" placeholder="Covid 19 Positive Date"
+
+              <input id="date_of_positive_np" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.date_of_positive_np" value="" name="date" class="form-control date-picker-np" />
+            <!-- <v-nepalidatepicker id="date_of_positive_np" classValue="form-control" calenderType="Nepali" placeholder="Covid 19 Positive Date"
                                 format="YYYY-MM-DD" v-model.trim="data.date_of_positive_np" :yearSelect="false"
-                                :monthSelect="false"/>
+                                :monthSelect="false"/> -->
           </div>
         </div>
       </div>
@@ -175,7 +177,7 @@
         </label><br />
       </div>
     </div>
-    <div v-show="data.comorbidity && (data.comorbidity.includes('10') || data.comorbidity.includes(10))" class="form-group col-lg-4">
+    <div v-show="data.comorbidity && (data.comorbidity.includes('10') || data.comorbidity.includes(10))" class="form-group col-lg-4" :class="{ 'has-error': $v.data.other_comorbidity.$error }">
         <label for="other_comorbidity">Specify Other Comorbidity</label>
           <div class="input-group">
               <input type="text" class="form-control" v-model.trim="data.other_comorbidity" id="other_comorbidity" />
@@ -287,22 +289,22 @@
         <label for="treatment">Under Treatment</label> &nbsp; &nbsp;
         <input type="radio" id="discharge" v-model.trim="data.is_death" value="1">
         <label for="discharge">Discharge</label> &nbsp; &nbsp;
-        <div v-show="is_to_update && data.is_death!=''"><p>Please fill all the patient details before changing the outcome.</p></div>
         <input type="radio" id="death" v-model.trim="data.is_death" value="2">
         <label for="death">Death</label> &nbsp; &nbsp;
       </div>
 
-      <div v-show="data.is_death !== ''" class="form-group col-lg-4">
+      <div v-show="data.is_death !== ''" class="form-group col-lg-4" :class="{ 'has-error': $v.data.date_of_outcome.$error }">
         <label for="date_of_outcome">Date of Outcome &nbsp;<span class="label label-info pull-right">{{ data.date_of_outcome }}</span></label>
           <div class="input-group"><span class="input-group-addon"><i
               class="fa fa-calendar"></i></span>
-            <v-nepalidatepicker id="date_of_outcome" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
+              <input id="date_of_outcome" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.date_of_outcome" value="" name="date" class="form-control date-picker-np" />
+            <!-- <v-nepalidatepicker id="date_of_outcome" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
                                 format="YYYY-MM-DD" v-model.trim="data.date_of_outcome" :yearSelect="false"
-                                :monthSelect="false"/>
+                                :monthSelect="false"/> -->
           </div>
       </div>
-      <div v-show="data.is_death === '2'" class="form-group col-lg-4">
-        <label for="time_of_death">Time of Death &nbsp;<span class="label label-info pull-right">02:20 P.M</span></label>
+      <div v-show="data.is_death === '2'" class="form-group col-lg-4" :class="{ 'has-error': $v.data.time_of_death.$error }">
+        <label for="time_of_death">Time of Death &nbsp;<span class="label label-info pull-right">02:20 pm</span></label>
           <div class="input-group"><span class="input-group-addon"><i
               class="fa fa-calendar"></i></span>
               <vue-timepicker id="time_of_death" classValue="form-control" format="hh:mm a" v-model.trim="data.time_of_death"></vue-timepicker>
@@ -330,7 +332,7 @@
         <input type="radio" id="d-other" v-model.trim="data.cause_of_death" value="10">
         <label class="control-label" for="d-other">Others</label>
       </div>
-      <div v-show="data.is_death === '2' && data.cause_of_death=='10'" class="form-group col-lg-4">
+      <div v-show="data.is_death === '2' && data.cause_of_death=='10'" class="form-group col-lg-4" :class="{ 'has-error': $v.data.other_death_cause.$error }">
         <label for="other_death_cause">Specify Other Cause of Death</label>
           <div class="input-group">
               <input type="text" class="form-control" v-model.trim="data.other_death_cause" id="other_death_cause" />
@@ -349,8 +351,8 @@
     </form>
   </div>
 </template>
-<script type="text/javascript">
 
+<script type="text/javascript">
 import axios from "axios";
 import {required, minValue} from "vuelidate/lib/validators";
 import DataConverter from "ad-bs-converter";
@@ -407,29 +409,40 @@ export default {
   },
   mounted () {
     this.setEntryHealthCondition();
-    if(!this.is_to_update) this.setTodayRegisterDate();
+    this.getTodayDate();
   },
-  validations: {
-    data: {
-      name: { required },
-      age : { required },
-      phone : { required },
-      hospital_register_id : { required },
-      register_date_np : { required },
-      method_of_diagnosis : { required },
-      gender : { required },
-      self_free : { required },
-      health_condition : { required, minValue : minValue(1) },
-      address : { required },
-      complete_vaccination : { required },
-      comorbidity: {required},
-      cause_of_death: {},
-      other_death_cause: {},
-      pregnant_status: {},
-      date_of_positive_np: {},
-
-    },
-    labSelected : { required }
+  validations() {
+    let causeOfDeathVdn = this.data.is_death && this.data.is_death.toString()==='2'?{ required }:{};
+    let otherDeathCauseVdn = (this.data.is_death && this.data.cause_of_death && this.data.is_death.toString()==='2' && this.data.cause_of_death.toString() === '10')?{ required }:{};
+    let pregnantStatusVdn = this.data.gender && this.data.gender.toString()==='2'?{ required }:{};
+    let otherComorbidityVdn = this.data.comorbidity && (this.data.comorbidity.includes('10')||this.data.comorbidity.includes(10))?{ required }:{};
+    let dateofOutcomeVdn = this.data.is_death && this.data.is_death !== '' ?{ required }:{};
+    let timeOfDeathVdn = this.data.is_death && this.data.is_death.toString()==='2'?{ required }:{};
+    let validationRules = {
+      data: {
+        name: { required },
+        age : { required },
+        phone : { required },
+        hospital_register_id : { required },
+        register_date_np : { required },
+        method_of_diagnosis : { required },
+        gender : { required },
+        self_free : { required },
+        health_condition : { required, minValue: minValue(1) },
+        address : { required },
+        complete_vaccination : { required },
+        comorbidity: {required},
+        cause_of_death: causeOfDeathVdn,
+        other_death_cause: otherDeathCauseVdn,
+        pregnant_status: pregnantStatusVdn,
+        date_of_positive_np: { required },
+        other_comorbidity: otherComorbidityVdn,
+        date_of_outcome: dateofOutcomeVdn,
+        time_of_death: timeOfDeathVdn
+      },
+      labSelected : { required }
+    }
+    return validationRules;
   },
   methods: {
     deleteObjById(arrObj, searchId) {
@@ -440,12 +453,18 @@ export default {
         arrObj.splice(filterIndex,1);
         return arrObj;
     },
-    setTodayRegisterDate() {
+    getTodayDate() {
       axios.get('/api/v1/server-date')
         .then((response) => {
           let date = response.data.date;
-          this.data.register_date_np = this.ad2bs(date);
+          this.date_today_en = date;
+          this.date_today_np = this.ad2bs(date);
+          if(!this.is_to_update) this.setTodayRegisterDate();
+          this.renderDatepickerNp();
       });
+    },
+    setTodayRegisterDate() {
+      this.data.register_date_np = this.date_today_np;
     },
     setEntryHealthCondition() {
       let hcEnum = [
@@ -663,8 +682,11 @@ export default {
       if (data.is_death === ''){
         data.date_of_outcome_en = null;
         data.date_of_outcome = null;
+        data.time_of_death = null;
+        data.cause_of_death = null;
+        data.other_death_cause = null;
       }
-      if(data.time_of_death){
+      if(data.time_of_death && Array.isArray(data.time_of_death)){
         data.time_of_death =   data.time_of_death["hh"]+':'+data.time_of_death["mm"]+' '+data.time_of_death["a"];
       }
       axios.post('/api/v1/cases-payment', data)
@@ -681,7 +703,6 @@ export default {
               if (this.is_to_update === false) {
                 this.$v.$reset();
                 this.resetForm();
-                var today = new Date();
                 this.data = {};
                 this.data = {
                   health_condition: 0,
@@ -760,6 +781,20 @@ export default {
           (data.comorbidity).splice((data.comorbidity).indexOf("21"), 1)
       }
     },
+    renderDatepickerNp(){
+      let regNp = this.data.register_date_np.split('-');
+      if(regNp[1].length===1) {
+        regNp[1] = '0'+regNp[1];
+      }
+      if(regNp[2]) {
+        regNp[2] = '0'+regNp[2];
+      }
+      $('.date-picker-np').nepaliDatePicker({
+        language: 'english',
+        disableBefore: regNp.join('-'),
+        disableAfter: this.date_today_np
+      });
+    }
   },
   created(){
     let url = new URL(window.location.href);
@@ -767,7 +802,6 @@ export default {
     if(id){
       axios.get('/api/v1/search-cases-payment-by-id?id='+id)
           .then((response) => {
-            console.log(response.data);
             if(Object.keys(response.data).length > 0) {
               this.data.id  = response.data.id;
               this.data.lab_id = response.data.lab_id;
@@ -779,7 +813,7 @@ export default {
               this.data.hospital_register_id = response.data.hospital_register_id;
               this.data.register_date_np = response.data.register_date_np;
               this.data.register_date_en = (new Date(response.data.register_date_en)).toLocaleString().split(',')[0].split("/").reverse().join("-");
-              this.data.date_of_positive = (new Date(response.data.date_of_positive)).toLocaleString().split(',')[0].split("/").reverse().join("-");
+              this.data.date_of_positive = response.data.date_of_positive?(new Date(response.data.date_of_positive)).toLocaleString().split(',')[0].split("/").reverse().join("-"):null;
               this.data.date_of_positive_np = response.data.date_of_positive_np;
               this.data.cause_of_death = response.data.cause_of_death;
               this.data.other_death_cause = response.data.other_death_cause;
@@ -808,7 +842,6 @@ export default {
               if(response.data.health_condition_update !== null){
                    this.health_condition_update_lists =  JSON.parse(response.data.health_condition_update);
               }
-              console.log(this.data);
             }
           })
           .catch((error) => {

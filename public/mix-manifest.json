@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "/js/app.js": "/js/app.js?id=df7b1a20410e5dd3ef54",
     "/css/app.css": "/css/app.css?id=c5d264d7421bab5a6494"
 =======
@@ -28,4 +29,8 @@
     "/js/app.js": "/js/app.js?id=e492d012bc4b7878983d",
     "/css/app.css": "/css/app.css?id=06b421708d61f0a2f599"
 >>>>>>> npm changes
+=======
+    "/js/app.js": "/js/app.js?id=d84895403cbbfd8d18bf",
+    "/css/app.css": "/css/app.css?id=c5d264d7421bab5a6494"
+>>>>>>> Added case payment fields, nepali date picker new plugin, imporoved validation
 }
