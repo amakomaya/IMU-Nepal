@@ -37,28 +37,54 @@ class WomenController extends Controller
         ]);
     }
 
-    // Registered or Pending
+    // Registered
 
     public function activeIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->doesnthave('ancs')->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+                'healthpost' => function($q) {
+                    $q->select('name', 'hp_code');
+                }]);
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
+
+ // Pending
+    public function activePendingIndex(Request $request)
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
-                    $q->whereIn('result', [0,2]);
-                })
-                ->orDoesntHave('ancs');
+                    $q->where('service_for', '!==' ,2)->whereIn('result', [0,2]);
+                });
             })
             ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
                 'healthpost' => function($q) {
                     $q->select('name', 'hp_code');
                 }]);
-
-//        $sample_collection_token = SampleCollection::whereIn('hp_code', $hpCodes)->whereIn('result' ,[0,2])->pluck('woman_token');
-//        $woman_register_and_sample_collection_only = SuspectedCase::whereIn('hp_code', $hpCodes)->doesntHave('ancs')->pluck('token');
-//        $merge_array = collect($sample_collection_token)->merge(collect($woman_register_and_sample_collection_only));
-//        $woman = SuspectedCase::whereIn('token', $merge_array)->active()->orderBy('created_at', 'desc')->withAll();
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
+    public function activeAntigenPendingIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
+            ->where(function ($query){
+                $query->whereHas('ancs', function($q){
+                    $q->where('service_for', 2)->whereIn('result', [0,2]);
+                });
+            })
+            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+                'healthpost' => function($q) {
+                    $q->select('name', 'hp_code');
+                }]);
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -73,10 +99,30 @@ class WomenController extends Controller
 //        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->pluck('woman_token');
 //        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->whereHas('ancs', function($q){
-            $q->where('result', '=', '4');
-        })->with(['ancs','healthpost' => function($q) {
-            $q->select('name', 'hp_code');
-        }, 'latestAnc', 'district', 'municipality']);
+            $q->where('service_for', '!==' , 2)->where('result', '=', '4');
+        })
+        ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+            'healthpost' => function($q) {
+                $q->select('name', 'hp_code');
+            }]);
+
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
+
+    public function passiveAntigenIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
+        ->whereHas('ancs', function($q){
+            $q->where('service_for', 2)->where('result', '=', '4');
+        })
+        ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+            'healthpost' => function($q) {
+                $q->select('name', 'hp_code');
+            }]);
 
         return response()->json([
             'collection' => $woman->advancedFilter()
@@ -89,10 +135,30 @@ class WomenController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
 //        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->pluck('woman_token');
         $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->whereHas('ancs', function($q){
-                $q->where('result', '=', '3');
+                $q->where('service_for', '!==' , 2)->where('result', '=', '3');
             })->with(['ancs','healthpost' => function($q) {
                 $q->select('name', 'hp_code');
             }, 'latestAnc', 'district', 'municipality']);
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
+
+    public function positiveAntigenIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
+            ->where(function ($query){
+                $query->whereHas('ancs', function($q){
+                    $q->where('service_for', 2)->where('result', '3');
+                });
+            })
+            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+                'healthpost' => function($q) {
+                    $q->select('name', 'hp_code');
+                }]);
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -112,18 +178,37 @@ class WomenController extends Controller
         ]);
     }
 
-
     public function labReceivedIndex(Request $request)
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->whereHas('ancs', function($q){
-            $q->where('result', '=', '9');
-        })->with(['ancs','healthpost' => function($q) {
-            $q->select('name', 'hp_code');
-        }, 'latestAnc', 'district', 'municipality']);
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
+            ->whereHas('ancs', function($q){
+                $q->where('service_for', '!==' , 2)->where('result', '=', '9');
+            })->with(['ancs','healthpost' => function($q) {
+                $q->select('name', 'hp_code');
+            }, 'latestAnc', 'district', 'municipality']);
 //        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 9)->pluck('woman_token');
 //        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
+    }
+
+    public function labReceivedAntigenIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
+            ->where(function ($query){
+                $query->whereHas('ancs', function($q){
+                    $q->where('service_for', 2)->where('result', '9');
+                });
+            })
+            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+                'healthpost' => function($q) {
+                    $q->select('name', 'hp_code');
+                }]);
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);

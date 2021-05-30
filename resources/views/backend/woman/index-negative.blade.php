@@ -4,13 +4,13 @@
 @endsection
 @section('content')
     <div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <div id="app">
-                <women-list-negative></women-list-negative>
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="app">
+                    <women-list-negative></women-list-negative>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 @endsection
 @section('script')

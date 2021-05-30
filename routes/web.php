@@ -102,11 +102,17 @@ Route::resource('admin/health-worker', 'Backend\HealthWorkerController');
 
 //Bakend Patients
 Route::resource('admin/patients', 'Backend\WomanController', ['names' => 'woman']);
+Route::get('admin/patients-pending', 'Backend\WomanController@pendingIndex')->name('woman.pending-index');
+Route::get('admin/antigen-patients-pending', 'Backend\WomanController@antigenPendingIndex')->name('woman.antigen-pending-index');
+
 Route::get('admin/add-multiple-sample', 'Backend\WomanController@addSampleCollection')->name('patient.multiple-sample.create');
 Route::get('admin/negative-patients', 'Backend\WomanController@negativeIndex')->name('patients.negative.index');
+Route::get('admin/negative-patients-antigen', 'Backend\WomanController@negativeAntigenIndex')->name('patients.negative-antigen.index');
 Route::get('admin/positive-patients', 'Backend\WomanController@positiveIndex')->name('patients.positive.index');
+Route::get('admin/positive-patients-antigen', 'Backend\WomanController@positiveAntigenIndex')->name('patients.positive-antigen.index');
 Route::get('admin/tracing-patients', 'Backend\WomanController@tracingIndex')->name('patients.tracing.index');
 Route::get('admin/lab-received-patients', 'Backend\WomanController@labReceivedIndex')->name('patients.lab-received.index');
+Route::get('admin/lab-received-patients-antigen', 'Backend\WomanController@labReceivedAntigenIndex')->name('patients.lab-received-antigen.index');
 Route::get('admin/cases-recovered', 'Backend\WomanController@casesRecoveredIndex')->name('cases.recovered.index');
 Route::get('admin/cases-payment', 'Backend\WomanController@casesPaymentIndex')->name('cases.payment.index');
 Route::get('admin/cases-discharge-payment', 'Backend\WomanController@casesPaymentDischargeIndex')->name('cases.payment.index-discharge');
