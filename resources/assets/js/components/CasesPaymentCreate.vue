@@ -57,7 +57,7 @@
       <div class="form-group col-lg-6" :class="{ 'has-error': $v.data.register_date_np.$error }">
         <label class="control-label" for="register_date">Register Date * &nbsp;<span class="label label-info pull-right">{{ data.register_date_np }}</span></label>
         <div class="input-group">
-          <span>{{data.register_date_np}}</span>
+          <span >{{data.register_date_np}}</span>
         </div>
       </div>
 
@@ -109,7 +109,7 @@
           <div class="input-group"><span class="input-group-addon"><i
               class="fa fa-calendar"></i></span>
 
-              <input id="date_of_positive_np" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.date_of_positive_np" value="" name="date" class="form-control date-picker-np" />
+              <input id="date_of_positive_np" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.date_of_positive_np" value="" name="date" class="form-control date-picker-date_of_positive_np" />
             <!-- <v-nepalidatepicker id="date_of_positive_np" classValue="form-control" calenderType="Nepali" placeholder="Covid 19 Positive Date"
                                 format="YYYY-MM-DD" v-model.trim="data.date_of_positive_np" :yearSelect="false"
                                 :monthSelect="false"/> -->
@@ -199,10 +199,10 @@
     <div class="row">
       <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.complete_vaccination.$error }">
         <label class="control-label">Completed vaccination (2nd Dose)*</label><br>
-        <input type="radio" id="vaccination" v-model.trim="data.complete_vaccination"  value="1">
-        <label class="control-label" for="vaccination">Yes</label> &nbsp; &nbsp;
-        <input type="radio" id="antigen" v-model.trim="data.complete_vaccination" value="0">
-        <label class="control-label" for="antigen">No</label> &nbsp; &nbsp;
+        <input type="radio" id="v_yes" v-model.trim="data.complete_vaccination"  value="1">
+        <label class="control-label" for="v_yes">Yes</label> &nbsp; &nbsp;
+        <input type="radio" id="v_no" v-model.trim="data.complete_vaccination" value="0">
+        <label class="control-label" for="v_no">No</label> &nbsp; &nbsp;
       </div>
     </div>
     <div class="row">
@@ -297,7 +297,7 @@
         <label for="date_of_outcome">Date of Outcome &nbsp;<span class="label label-info pull-right">{{ data.date_of_outcome }}</span></label>
           <div class="input-group"><span class="input-group-addon"><i
               class="fa fa-calendar"></i></span>
-              <input id="date_of_outcome" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.date_of_outcome" value="" name="date" class="form-control date-picker-np" />
+              <input id="date_of_outcome" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.date_of_outcome" value="" name="date" class="form-control date-picker-date_of_outcome" />
             <!-- <v-nepalidatepicker id="date_of_outcome" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
                                 format="YYYY-MM-DD" v-model.trim="data.date_of_outcome" :yearSelect="false"
                                 :monthSelect="false"/> -->
@@ -361,6 +361,7 @@ export default {
   data() {
     return {
       data : {
+        register_date_np: null,
         health_condition : 0,
         is_death : '',
         age_unit : 0,
@@ -782,6 +783,7 @@ export default {
       }
     },
     renderDatepickerNp(){
+      let self = this;
       let regNp = this.data.register_date_np.split('-');
       if(regNp[1].length===1) {
         regNp[1] = '0'+regNp[1];
@@ -789,10 +791,20 @@ export default {
       if(regNp[2]) {
         regNp[2] = '0'+regNp[2];
       }
-      $('.date-picker-np').nepaliDatePicker({
+      $('.date-picker-date_of_positive_np').nepaliDatePicker({
+        language: 'english',
+        disableAfter: this.date_today_np,
+        onChange: function() {
+            self.data.date_of_positive_np = $('#date_of_positive_np').val()
+        }
+      });
+      $('.date-picker-date_of_outcome').nepaliDatePicker({
         language: 'english',
         disableBefore: regNp.join('-'),
-        disableAfter: this.date_today_np
+        disableAfter: this.date_today_np,
+        onChange: function() {
+            self.data.date_of_outcome = $('#date_of_outcome').val()
+        }
       });
     }
   },
