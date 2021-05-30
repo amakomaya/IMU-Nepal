@@ -24,17 +24,20 @@ class DownloadablePositiveList implements FromCollection, WithHeadings
             $response = FilterRequest::filter($this->request);
             $hpCodes = GetHealthpostCodes::filter($response);
 
-            $check_at_1330 = Carbon::parse('today 1:30pm');
+//            $check_at_1330 = Carbon::parse('today 1:30pm');
+//
+//            if($check_at_1330 < Carbon::now()){
+//                // 1 pm today + current
+//                $date_from = Carbon::parse('today 1:30pm');
+//                $date_to = Carbon::now();
+//            }else{
+//                // 1pm yesterday + current
+//                $date_from = Carbon::parse('yesterday 1:30pm');
+//                $date_to = Carbon::now();
+//            }
 
-            if($check_at_1330 < Carbon::now()){
-                // 1 pm today + current
-                $date_from = Carbon::parse('today 1:30pm');
-                $date_to = Carbon::now();
-            }else{
-                // 1pm yesterday + current
-                $date_from = Carbon::parse('yesterday 1:30pm');
-                $date_to = Carbon::now();
-            }
+            $date_from = Carbon::today()->startOfDay();
+            $date_to = Carbon::now();
 
             $tokens = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)
 //                ->whereDate('updated_at', Carbon::today())
@@ -58,6 +61,7 @@ class DownloadablePositiveList implements FromCollection, WithHeadings
                     $record['phone'] = $item->emergency_contact_one;
                     $record['phone_two'] = $item->emergency_contact_two;
                     $record['swab_id'] = $item->latestAnc->token;
+                    $record['method_of_diagnosis'] = $this->checkServiceFor($item->latestAnc->service_for);
                     $record['lab_id'] = $item->latestAnc->labreport->formated_token;
                     $record['lab_name'] = $item->latestAnc->labreport->checked_by_name;
 
@@ -83,8 +87,19 @@ class DownloadablePositiveList implements FromCollection, WithHeadings
             'Phone',
             'Phone Two',
             'Swab ID',
+            'Method of Diagnosis',
             'Lab ID',
             'Tested by Lab Name'
         ];
+    }
+
+    private function checkServiceFor($service_for)
+    {
+        switch ($service_for){
+            case "2":
+                return "Antigen";
+            default:
+                return "PCR";
+        }
     }
 }

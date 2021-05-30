@@ -129,7 +129,8 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             'is_death' => null,
             'is_in_imu' => 0,
             'method_of_diagnosis' => $row['method_of_diagnosis'],
-            'hp_code' => $this->hpCode
+            'hp_code' => $this->hpCode,
+            'reg_dev' => 'excel'
         ]);
     }
 

@@ -13,9 +13,12 @@ use App\Models\LabTest;
 use App\Models\SuspectedCase;
 use App\Models\ProvinceInfo;
 use App\Models\MunicipalityInfo;
+use App\Models\PaymentCase;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yagiten\Nepalicalendar\Calendar;
+use App\User;
+
 
 Route::post('/user-manager/{id}/login-as', function ($id, Request $request)
 {
@@ -465,6 +468,51 @@ Route::post('/v1/case-mgmt-update', function (Request $request) {
     return response()->json(['message' => 'Data Successfully Sync and Update']);
 });
 
+Route::post('/v1/payment-cases', function (Request $request) {
+    ini_set('max_execution_time', 120 );
+
+    $key = request()->getUser();
+    $secret = request()->getPassword();
+    $user = User::where([['username', $key], ['password', md5($secret)], ['role', 'healthworker']])->get()->first();
+    if (!empty($user)) {
+        $healthworker = OrganizationMember::where('token', $user->token)->get()->first();
+        $payment_cases = $request->json()->all();
+        try {
+            foreach ($payment_cases as $payment_case){
+                $payment_case_create = $payment_case;
+                $payment_case_create['age'] = $payment_case['age'] ?? ' ';
+                $payment_case_create['age_unit'] = $payment_case['age_unit'] ?? 0;
+                $payment_case_create['gender'] = $payment_case['gender'] ?? 3;
+                $payment_case_create['health_condition'] = $payment_case['health_condition'] ?? 1;
+                $payment_case_create['method_of_diagnosis'] = $payment_case->method_of_diagnosis ?? 10;
+                $payment_case_create['lab_id'] = $payment_case['lab_id'] ?? 'N/A';
+                $payment_case_create['is_in_imu'] = $payment_case['is_in_imu'] ?? 0;
+                $payment_case_create['pregnant_status'] = $payment_case['pregnant_status'] ?? 0;
+                $payment_case_create['hp_code'] = $healthworker->hp_code;
+                
+                if(isset($payment_case['register_date_en'])) {
+                    $date_en_array = explode("-", date("Y-m-d", strtotime($payment_case['register_date_en'])));
+                    $payment_case_create['register_date_np'] = Calendar::eng_to_nep($date_en_array[0], $date_en_array[1], $date_en_array[2])->getYearMonthDay();
+                }
+                if(isset($payment_case['date_of_outcome_en'])) {
+                    $date_en_array = explode("-", date("Y-m-d", strtotime($payment_case['date_of_outcome_en'])));
+                    $payment_case_create['date_of_outcome'] = Calendar::eng_to_nep($date_en_array[0], $date_en_array[1], $date_en_array[2])->getYearMonthDay();
+                }
+                if(isset($payment_case['date_of_positive'])) {
+                    $date_en_array = explode("-", date("Y-m-d", strtotime($payment_case['date_of_positive'])));
+                    $payment_case_create['date_of_positive_np'] = Calendar::eng_to_nep($date_en_array[0], $date_en_array[1], $date_en_array[2])->getYearMonthDay();
+                }
+                PaymentCase::create($payment_case_create);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Something went wrong, Please try again.']);
+        }
+        return response()->json(['message' => 'Data Successfully Sync']);
+    } else {
+        return response()->json(['message' => 'Something went wrong, User not found.']);
+    }
+});
+
 Route::get('/v1/contact-follow-up', function (Request $request) {
     $hp_code = $request->hp_code;
     $data = ContactFollowUp::where('hp_code', $hp_code)->get();
@@ -640,7 +688,10 @@ Route::get('/v1/health-professionals-list', 'Backend\DHOController@findAllHealth
 
 Route::post('/v1/cases-payment', function (Request $request) {
     $data = $request->all();
-
+    if($data['comorbidity']) {
+      $data['comorbidity'] = '[' . implode(',', $data['comorbidity']) . ']';
+    }
+    // dd($data);
     try {
         if (isset($data['id'])){
             $data = \App\Models\PaymentCase::where('id', $data['id'])->update($data);
@@ -719,3 +770,4 @@ Route::post('/v1/bulk-upload/lab-result', 'Backend\BulkUploadController@labResul
 Route::post('/v1/bulk-upload/lab-received-result', 'Backend\BulkUploadController@labReceivedResult')->name('bulk.upload.lab-received.lab-result');
 Route::post('/v1/bulk-upload/registration-sample-collection', 'Backend\BulkUploadController@registrationSampleCollection')->name('bulk.upload.register.sample-collection');
 Route::post('/v1/bulk-upload/registration-sample-collection-lab-test', 'Backend\BulkUploadController@registrationSampleCollectionLabTest')->name('bulk.upload.register.sample.lab');
+Route::get('/v1/server-date', 'Data\Api\DateController@index');
