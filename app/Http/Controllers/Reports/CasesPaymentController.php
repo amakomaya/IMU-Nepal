@@ -68,42 +68,81 @@ class CasesPaymentController extends Controller
             $return['phone'] = $value->phone;
             $return['hp_code'] = $value->hp_code;
 
-            $return['is_admission'] = 0;
-            $return['is_death'] = $value->is_death;
-            $return['is_discharge'] = 0;
 
             $parse_register_date = Carbon::parse($value->register_date_en);
+            $array_health_condition_update = [];
 
-
-
-            if(!empty($value->date_of_outcome_en)){
-                $parse_date_of_outcome_en = Carbon::parse($value->date_of_outcome_en);
-                if($parse_date_of_outcome_en->isToday()){
-                    if ($value->is_death === '1'){
-                        $return['is_discharge'] = 11;
+            // Check date between if date of outcome is null in between date and not in range
+            $diff_if_health_condition_is_null = 0;
+            if(empty($value->health_condition_update)){
+                if ($parse_register_date->isBetween($filter_date['from_date'], $filter_date['to_date'])){
+                    if (empty($value->date_of_outcome_en)){
+                        $diff_if_health_condition_is_null = $parse_register_date->diffInDays($filter_date['to_date']);
+                    }else{
+                        $diff_if_health_condition_is_null = $parse_register_date->diffInDays(Carbon::parse($value->date_of_outcome_en));
                     }
-                    if($value->is_death === '2'){
-                        $return['is_death'] = 12;
+                }elseif($parse_register_date->lessThan(($filter_date['from_date']))){
+                    if (empty($value->date_of_outcome_en)) {
+                        $diff_if_health_condition_is_null = $filter_date['from_date']->diffInDays($filter_date['to_date']);
+                    }else{
+                        $diff_if_health_condition_is_null = $filter_date['from_date']->diffInDays(Carbon::parse($value->date_of_outcome_en));
                     }
+                }
+            }else{
+                $array_health_condition = json_decode($value->health_condition_update, true);
+                for ($i = 0; $i< count($array_health_condition); $i++){
+                    $arr_update_value = [];
+                    $arr_update_value['health_condition'] = $array_health_condition[$i]['id'];
+                    $parse_date = Carbon::parse($array_health_condition[$i]['date']);
+
+                    if ($i == 0){
+                        if ($parse_date->isBetween($filter_date['from_date'], $filter_date['to_date'])){
+                            if ($parse_register_date->lessThan($filter_date['from_date'])){
+                                $arr_update_value['date_diff'] = $parse_date->diffInDays($filter_date['from_date']);
+                            }
+                            if ($parse_register_date->isBetween($filter_date['from_date'], $filter_date['to_date'])){
+                                $arr_update_value['date_diff'] = $parse_date->diffInDays($parse_register_date);
+                            }
+                        }
+                    }else{
+                        if ($parse_date->isBetween($filter_date['from_date'], $filter_date['to_date'])){
+                            if ($parse_register_date->lessThan($filter_date['from_date'])){
+                                $arr_update_value['date_diff'] = $parse_date->diffInDays($filter_date['from_date']);
+                            }
+                            if ($parse_register_date->isBetween($filter_date['from_date'], $filter_date['to_date'])){
+                                $arr_update_value['date_diff'] = $parse_date->diffInDays(Carbon::parse($array_health_condition[$i-1]['date']));
+                            }
+                        }
+                    }
+                    array_push($array_health_condition_update, $arr_update_value);
                 }
             }
 
-            if ($value->health_condition_update == null){
-                $return['health_condition'] = $value->health_condition;
-            }else{
-                $array_health_condition = json_decode($value->health_condition_update, true);
-                $return['health_condition'] = collect($array_health_condition)->last()['id'];
-            }
 
-            if($parse_register_date->isToday()){
-                $return['is_admission'] = 10;
-            }
+
+
+            $return['diff_if_health_condition_update_is_null'] = $diff_if_health_condition_is_null;
+            $return['health_condition_initial'] = $value->health_condition;
+            $return['array_health_condition_update'] = $array_health_condition_update;
+
+            $return['value'] = $value;
+//            if ($value->health_condition_update == null){
+//                $return['health_condition'] = $value->health_condition;
+//            }else{
+//                $array_health_condition = json_decode($value->health_condition_update, true);
+//                $return['health_condition'] = collect($array_health_condition)->last()['id'];
+//            }
+//
+//            if($parse_register_date->isToday()){
+//                $return['is_admission'] = 10;
+//            }
 
             return $return;
         })->groupBy(function($item) {
             return $item['hp_code'];
-        });
+        })->first();
 
+        dd($mapped_data);
 
         $mapped_data_second = $mapped_data->map(function ($value){
             $return = [];
