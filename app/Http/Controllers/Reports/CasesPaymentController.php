@@ -68,7 +68,6 @@ class CasesPaymentController extends Controller
             $return['phone'] = $value->phone;
             $return['hp_code'] = $value->hp_code;
 
-
             $parse_register_date = Carbon::parse($value->register_date_en);
             $array_health_condition_update = [];
 
@@ -118,31 +117,23 @@ class CasesPaymentController extends Controller
                 }
             }
 
+            $arr_initial_health_condition = array([
+                'health_condition' => $value->health_condition,
+                'date_diff' => $diff_if_health_condition_is_null
+            ]);
+            $array_all_condition = array_merge($arr_initial_health_condition,$array_health_condition_update);
+            $collection_health_condition = collect($array_all_condition);
 
-
-
-            $return['diff_if_health_condition_update_is_null'] = $diff_if_health_condition_is_null;
-            $return['health_condition_initial'] = $value->health_condition;
-            $return['array_health_condition_update'] = $array_health_condition_update;
-
-            $return['value'] = $value;
-//            if ($value->health_condition_update == null){
-//                $return['health_condition'] = $value->health_condition;
-//            }else{
-//                $array_health_condition = json_decode($value->health_condition_update, true);
-//                $return['health_condition'] = collect($array_health_condition)->last()['id'];
-//            }
-//
-//            if($parse_register_date->isToday()){
-//                $return['is_admission'] = 10;
-//            }
+            $return['used_general'] = $collection_health_condition->whereIn('health_condition', ['1','2'])->sum('date_diff');
+            $return['used_hdu'] = $collection_health_condition->where('health_condition', '3')->sum('date_diff');
+            $return['used_icu'] = $collection_health_condition->where('health_condition', '4')->sum('date_diff');
+            $return['used_ventilators'] = $collection_health_condition->where('health_condition', '5')->sum('date_diff');
 
             return $return;
         })->groupBy(function($item) {
             return $item['hp_code'];
-        })->first();
+        });
 
-        dd($mapped_data);
 
         $mapped_data_second = $mapped_data->map(function ($value){
             $return = [];
@@ -153,10 +144,10 @@ class CasesPaymentController extends Controller
             $return['municipality_name'] = $value[0]['municipality_name'];
             $return['phone'] = $value[0]['phone'];
 
-            $return['used_general'] = collect($value)->where('is_death', null)->whereIn('health_condition', [1,2])->count();
-            $return['used_hdu'] = collect($value)->where('is_death', null)->where('health_condition', 3)->count();
-            $return['used_icu'] = collect($value)->where('is_death', null)->where('health_condition', 4)->count();
-            $return['used_ventilators'] = collect($value)->where('is_death', null)->where('health_condition', 5)->count();
+            $return['used_general'] = collect($value)->sum('used_general');
+            $return['used_hdu'] = collect($value)->sum('used_hdu');
+            $return['used_icu'] = collect($value)->sum('used_icu');
+            $return['used_ventilators'] = collect($value)->sum('used_ventilators');
 
             return $return;
         })->values();
