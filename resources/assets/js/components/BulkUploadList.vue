@@ -109,7 +109,6 @@ export default {
       switch (type) {
         case "bulk_file_lab_received":
           this.bulk_file_lab_received = this.$refs.bulk_file_lab_received.files[0];
-          console.log(this.bulk_file_lab_received);
           this.submitBulkLabReceivedFile();
           return;
         case "bulk_file_lab_result":
