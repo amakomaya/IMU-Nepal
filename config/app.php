@@ -220,6 +220,7 @@ return [
         'rcForm'    => App\Helpers\Classes\rcForm::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Event' => App\Facades\Event::class,
 
     ],
 
