@@ -14,3 +14,5 @@ Route::get('select-from-to', 'Reports\FilterController@selectFromTo');
 Route::get('dashboard', 'Reports\DashboardController@index')->name('report.dashboard');
 
 Route::get('case-payment/overview' , 'Reports\CasesPaymentController@overview')->name('report.case-payment-overview');
+
+Route::get('case-payment/monthly-line-listing' , 'Reports\CasesPaymentController@monthlyLineListing')->name('report.case-payment-monthly-line-listing');
