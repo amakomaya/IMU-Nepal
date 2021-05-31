@@ -31,7 +31,6 @@
                 <span class="label label-info pull-right">Report</span>
             </a>
         </li>
-
         <li>
             <a href="{{ route('cases.payment.index') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
@@ -77,8 +76,8 @@
                     @endif
                 </ul>
             </li>
-        @if(auth()->user()->role === 'main' || auth()->user()->role === 'province' || auth()->user()->role === 'municipality' || auth()->user()->role === 'dho')
-        <li>
+                @if(auth()->user()->role === 'main' || auth()->user()->role === 'province' || auth()->user()->role === 'municipality' || auth()->user()->role === 'dho')
+                    <li>
             <a href="#">
                 <i class="fa fa-money" aria-hidden="true"></i>
 
@@ -116,20 +115,9 @@
 
             </ul>
         </li>
-        @endif
-<<<<<<< HEAD
-
-       
-        <li>
-            <a href="#">
-                <i class="fa fa-medkit" aria-hidden="true"></i>
-                Medicine Stocks <span class="fa arrow"></span>
-            </a>
-            <ul class="nav nav-third-level">
-                @if(auth()->user()->role === 'healthpost')
-=======
-        @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Province' || auth()->user()->role === 'province' || auth()->user()->role === 'dho' || auth()->user()->role === 'municipality')
-            <li>
+                @endif
+                @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Province' || auth()->user()->role === 'province' || auth()->user()->role === 'dho' || auth()->user()->role === 'municipality')
+                <li>
                 <a href="#">
                     <i class="fa fa-medkit" aria-hidden="true"></i>
                     Medicine Stocks <span class="fa arrow"></span>
@@ -144,7 +132,6 @@
                             </a>
                         </li>
                     @endif
->>>>>>> monthly-report
                     <li>
                         <a href="{{ route('stock.updateList') }}">
                             <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
@@ -159,6 +146,8 @@
                             <span class="label label-default pull-right">History</span>
                         </a>
                     </li>
+                </ul>
+            </li>
                 @endif
                 @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Province' || auth()->user()->role === 'province' || auth()->user()->role === 'dho' || auth()->user()->role === 'municipality')
                 <li>
@@ -169,9 +158,6 @@
                     </a>
                 </li>
                 @endif
-            </ul>
-        </li>
-
         <li>
             <a href="#">
                 <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
