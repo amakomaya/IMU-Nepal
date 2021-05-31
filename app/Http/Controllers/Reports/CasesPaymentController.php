@@ -40,8 +40,8 @@ class CasesPaymentController extends Controller
             ->join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
             ->where(function($query) use ($filter_date) {
                 return $query
-                    ->whereDate('payment_cases.register_date_en', '>', $filter_date['from_date'])
-                    ->orWhere('payment_cases.date_of_outcome_en', '>', $filter_date['from_date'])
+                    ->whereDate('payment_cases.register_date_en', '>', $filter_date['from_date']->toDateString())
+                    ->where('payment_cases.date_of_outcome_en', '>', $filter_date['from_date']->toDateString())
                     ->orWhere('payment_cases.date_of_outcome_en', null);
             })->select([
                 'payment_cases.name as name',
@@ -86,8 +86,12 @@ class CasesPaymentController extends Controller
             $days_calculation_array = [];
             foreach ($array_all_condition as $i => $value){
                 $next_date = array_key_exists($i + 1, $array_all_condition) ? Carbon::parse($array_all_condition[$i + 1]['date']) : $end_case_date;
+                if (Carbon::parse($next_date)->lessThan($filter_date['from_date']->toDateString())){
+                    $next_date = $filter_date['from_date']->toDateString();
+                }
 
-                if (Carbon::parse($value['date'])->lessThan($filter_date['from_date'])){
+
+                if (Carbon::parse($value['date'])->lessThan($filter_date['from_date']->toDateString())){
                     $value['date'] = $filter_date['from_date']->toDateString();
                 }
 
