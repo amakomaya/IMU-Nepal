@@ -78,10 +78,10 @@ class CasesPaymentController extends Controller
             $array_health_condition = json_decode($item->health_condition_update, true) ?? [];
             $array_all_condition = array_merge($arr_initial_health_condition,$array_health_condition);
 
-            if($item->date_of_outcome_en == null) {
-                $end_case_date = Carbon::now();
+            if(!empty($item->date_of_outcome_en)) {
+                $end_case_date = Carbon::parse($item->date_of_outcome_en);
             } else {
-                $end_case_date = $item->date_of_outcome_en;
+                $end_case_date = Carbon::now();
             }
             $days_calculation_array = [];
             foreach ($array_all_condition as $i => $value){
