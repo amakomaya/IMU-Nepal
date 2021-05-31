@@ -129,7 +129,7 @@
       <div class="col-lg-12"
            v-if="checkHospitalTypeForSampleFeature() || checkPermission('cases-registration') || !checkDataEntryRole()">
         <h3>
-          Total Last 15 Days Records <sub> | Registered : {{ report.registered }}</sub></h3>
+          Total Records <sub> | Registered : {{ report.registered }}</sub></h3>
       </div>
       <div v-if="checkHospitalTypeForSampleFeature() || checkPermission('sample-collection') || !checkDataEntryRole()"
            class="col-lg-3 col-md-6">
@@ -352,7 +352,7 @@
         </div>
       </div>
       <div v-if="checkHospitalTypeForLabFeature() || checkPermission('lab-received')" class="col-lg-12">
-        <h3>Total Last 15 Days Records in lab</h3>
+        <h3>Total Records in lab</h3>
       </div>
       <div v-if="checkHospitalTypeForLabFeature() || checkPermission('lab-received')" class="col-lg-4 col-md-6">
         <div class="panel panel-warning">
