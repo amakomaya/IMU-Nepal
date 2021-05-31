@@ -53,16 +53,30 @@
                 <span class="label label-danger pull-right">List</span>
             </a>
         </li>
-        @if(auth()->user()->role === 'healthpost')
-        <li>
-            <a href="{{ route('cases.patient.detail') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Patient Detail
-                <span class="label label-primary pull-right">Detail</span>
-            </a>
-        </li>
-        @endif
-
+            <li>
+                <a href="#">
+                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                    Reports <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-third-level">
+                    <li>
+                        <a href="{{ route('report.case-payment-monthly-line-listing') }}">
+                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                            Line Listing
+                            <span class="label label-primary pull-right"> Monthly </span>
+                        </a>
+                    </li>
+                    @if(auth()->user()->role === 'healthpost')
+                        <li>
+                            <a href="{{ route('cases.patient.detail') }}">
+                                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                Patient Detail
+                                <span class="label label-primary pull-right">Detail</span>
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+            </li>
         @if(auth()->user()->role === 'main' || auth()->user()->role === 'province' || auth()->user()->role === 'municipality' || auth()->user()->role === 'dho')
         <li>
             <a href="#">
@@ -103,6 +117,7 @@
             </ul>
         </li>
         @endif
+<<<<<<< HEAD
 
        
         <li>
@@ -112,6 +127,24 @@
             </a>
             <ul class="nav nav-third-level">
                 @if(auth()->user()->role === 'healthpost')
+=======
+        @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Province' || auth()->user()->role === 'province' || auth()->user()->role === 'dho' || auth()->user()->role === 'municipality')
+            <li>
+                <a href="#">
+                    <i class="fa fa-medkit" aria-hidden="true"></i>
+                    Medicine Stocks <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-third-level">
+                    @if(auth()->user()->role === 'healthpost')
+                        <li>
+                            <a href="{{ route('stock.updateList') }}">
+                                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                Create
+                                <span class="label label-default pull-right">Create</span>
+                            </a>
+                        </li>
+                    @endif
+>>>>>>> monthly-report
                     <li>
                         <a href="{{ route('stock.updateList') }}">
                             <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
