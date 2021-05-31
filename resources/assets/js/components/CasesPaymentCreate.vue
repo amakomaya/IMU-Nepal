@@ -687,7 +687,7 @@ export default {
         data.cause_of_death = null;
         data.other_death_cause = null;
       }
-      if(data.time_of_death && Array.isArray(data.time_of_death)){
+      if(data.time_of_death && typeof data.time_of_death === 'object'){
         data.time_of_death =   data.time_of_death["hh"]+':'+data.time_of_death["mm"]+' '+data.time_of_death["a"];
       }
       axios.post('/api/v1/cases-payment', data)
