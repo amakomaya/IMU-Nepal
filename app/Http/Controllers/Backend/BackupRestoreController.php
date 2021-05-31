@@ -60,7 +60,6 @@ class BackupRestoreController extends Controller
             $case_mgmts = $builder->newQuery()->from('case_mgmt')->get();
             $contact_details = $builder->newQuery()->from('contact_detail')->get();
             $vial_details = $builder->newQuery()->from('vial_details')->get();
-            dd($vial_details);
 
             try {
                 $suspectedCase->map(function ($item, $key) {
@@ -222,9 +221,9 @@ class BackupRestoreController extends Controller
                     $data = collect($item)->except(['_id', 'regdev', 'sync', 'update_status'])->all();
                     VialDetail::create($data);
                 });
-                array_push($success, "Contact Detail");
+                array_push($success, "Vial Details");
             } catch (\Exception $e) {
-                array_push($errors, "Contact Detail");
+                array_push($errors, "Vial Details");
             }
 
             return redirect()->back()->with('success', 'All Data Uploaded!');
