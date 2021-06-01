@@ -148,8 +148,7 @@ class CasesPaymentController extends Controller
             return $return;
         })->values();
         $data = $mapped_data;
-        dd($reporting_days);
-        // return view('backend.cases.reports.monthly-line-listing', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+        return view('backend.cases.reports.monthly-line-listing', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
 
     }
 
