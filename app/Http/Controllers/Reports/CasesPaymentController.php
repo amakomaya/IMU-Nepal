@@ -16,6 +16,15 @@ class CasesPaymentController extends Controller
             $$key = $value;
         }
 
+        if ($response['province_id'] == null ||
+            $response['municipality_id'] == null ||
+            $response['district_id'] == null
+        ){
+            $data = [];
+            $request->session()->flash('message', 'Please, Select all the field to filter organizational Monthly Line Listing');
+            return view('backend.cases.reports.monthly-line-listing', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month'));
+        }
+
         $data = \DB::table('payment_cases')->whereIn('healthposts.hospital_type', [3,5,6]);
 
         if ($response['province_id'] !== null){
