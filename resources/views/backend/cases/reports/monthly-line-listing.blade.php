@@ -134,7 +134,7 @@
                         <hr>
 
                         <div class="dataTable_wrapper">
-                            <table class="table table-striped table-bordered table-hover dataTable" id="dataTable">
+                            <table class="table table-striped table-bordered table-hover display dataTable" id="dataTable">
                                 <thead>
                                 <tr>
                                     <th>S.N</th>
@@ -193,18 +193,24 @@
     <!-- /#page-wrapper -->
 @endsection
 @section('Style')
-    <style>
-        table.dataTable td {
-            padding: 3px 10px;
-            width: 1px;
-            white-space: nowrap;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
+
 @endsection
 @section('script')
     <script>
         $('#dataTable').DataTable( {
-            scrollX: true
+            scrollX: true,
+            pageLength: 50,
+            dom :
+                '<"top"f>rt<"button"lp><"clear">',
+
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ]
         } );
     </script>
 @endsection
