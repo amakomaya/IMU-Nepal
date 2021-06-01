@@ -375,23 +375,7 @@ export default {
         date_of_positive: '',
         date_of_positive_np: '',
         cause_of_death: null,
-        other_death_cause: null,
-        // lab_id: '123',
-        // name: 'test',
-        // age: 20,
-        // age_unit: 0,
-        // phone: '9841589683',
-        // method_of_diagnosis: '1',
-        // hospital_register_id: 'pat-123',
-        // date_of_positive_np: '2078/2/20',
-        // comorbidity: ['1','2','3','10'],
-        // other_comorbidity: 'test other',
-        // pregnant_status: 1,
-        // gender: '2',
-        // self_free: 1,
-        // guardian_name: 'test',
-        // address: 'test',
-        // remark: 'test'
+        other_death_cause: null
       },
       lab_id : '',
       options: [],
@@ -594,19 +578,14 @@ export default {
                 showConfirmButton: false,
                 timer: 3000
               })
-              var today = new Date();
-              this.data = {
-                name : response.data.data.name,
-                age : response.data.data.age,
-                gender : response.data.data.sex,
-                address :  response.data.data.tole + '-' + response.data.data.ward + ',' + response.data.data.municipality_name,
-                phone : response.data.data.emergency_contact_one,
-                health_condition : 0,
-                is_death : '',
-                lab_id : id,
-                register_date_np : response.data.register_date_np,
-                register_date_en : (new Date(response.data.register_date_en)).toLocaleString().split(',')[0].split("/").reverse().join("-")
-              };
+              this.data.name = response.data.data.name;
+                this.data.age = response.data.data.age;
+                this.data.gender = response.data.data.sex;
+                this.data.address =  response.data.data.tole + '-' + response.data.data.ward + ',' + response.data.data.municipality_name;
+                this.data.phone = response.data.data.emergency_contact_one;
+                this.data.health_condition = 0;
+                this.data.is_death = '';
+                this.data.lab_id = id;
               if (this.item){
                 this.$dlg.closeAll(function(){
                   // do something after all dialog closed
@@ -704,12 +683,14 @@ export default {
               if (this.is_to_update === false) {
                 this.$v.$reset();
                 this.resetForm();
+                var register_date_old = this.data.register_date_np;
                 this.data = {};
                 this.data = {
                   health_condition: 0,
                   is_death: '',
-                  // register_date_np: this.ad2bs(today),
+                  register_date_np: register_date_old,
                   lab_name: this.labSelected.name
+
                 }
               }
               this.isSubmitting = false;
