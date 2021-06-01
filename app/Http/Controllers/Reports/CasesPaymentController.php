@@ -44,6 +44,7 @@ class CasesPaymentController extends Controller
         }
 
         $filter_date = $this->dataFromAndTo($request);
+        $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']);
 
         $running_period_cases = $data
             ->join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
@@ -147,7 +148,7 @@ class CasesPaymentController extends Controller
             return $return;
         })->values();
         $data = $mapped_data;
-        return view('backend.cases.reports.monthly-line-listing', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month'));
+        return view('backend.cases.reports.monthly-line-listing', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
 
     }
 
