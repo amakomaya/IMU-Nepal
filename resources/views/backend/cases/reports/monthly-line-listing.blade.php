@@ -122,6 +122,10 @@
                                 <button type="submit" class="btn btn-success">Submit</button>
                             </div>
                         </form>
+                        {{-- <br> --}}
+                        <div class="row col-md-12" style="padding-left: 30px;">
+                            Reporting Days: {{ $reporting_days }}
+                        </div>
                         <div class="clearfix"></div>
                         @if(Request::session()->has('message'))
                         <div class="panel-body">
