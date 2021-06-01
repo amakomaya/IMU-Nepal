@@ -115,7 +115,17 @@
                                 <button type="submit" class="btn btn-success">Submit</button>
                             </div>
                         </form>
+                        <div class="row col-md-12" style="padding-left: 30px;">
+                            Reporting Days: {{ $reporting_days }}
+                        </div>
                         <div class="clearfix"></div>
+                        @if(Request::session()->has('message'))
+                        <div class="panel-body">
+                            <div class="alert alert-warning" role="alert">
+                                <span class="text-danger">{!! Request::session()->get('message') !!}</span>
+                            </div>
+                        </div>
+                        @endif
                         <hr>
 
                         <div class="dataTable_wrapper">
