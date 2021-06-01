@@ -132,7 +132,9 @@
                         </form>
                         <div class="clearfix"></div>
                         <div class="panel-body">
-                            <span class="text-danger">{!! Request::session()->get('message') !!}</span>
+                            <div class="alert alert-warning" role="alert">
+                                <span class="text-danger">{!! Request::session()->get('message') !!}</span>
+                            </div>
                         </div>
                         <hr>
 

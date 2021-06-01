@@ -118,7 +118,7 @@ By Organization <span class="fa arrow"></span>
 </ul>
 </li>
 @endif
-@if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Province' || auth()->user()->role === 'province' || auth()->user()->role === 'dho' || auth()->user()->role === 'municipality')
+@if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Province' || auth()->user()->role === 'province' || auth()->user()->role === 'dho' || auth()->user()->role === 'municipality' || auth()->user()->role === 'main')
 <li>
 <a href="#">
 <i class="fa fa-medkit" aria-hidden="true"></i>
@@ -133,31 +133,24 @@ Medicine Stocks <span class="fa arrow"></span>
             <span class="label label-default pull-right">Create</span>
         </a>
     </li>
+        <li>
+            <a href="{{ route('stock.transaction.list') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                History
+                <span class="label label-default pull-right">History</span>
+            </a>
+        </li>
 @endif
-<li>
-    <a href="{{ route('stock.updateList') }}">
-        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-        Create
-        <span class="label label-default pull-right">Create</span>
-    </a>
-</li>
-<li>
-    <a href="{{ route('stock.transaction.list') }}">
-        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-        History
-        <span class="label label-default pull-right">History</span>
-    </a>
-</li>
+    @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Province' || auth()->user()->role === 'province' || auth()->user()->role === 'dho' || auth()->user()->role === 'municipality' || auth()->user()->role === 'main')
+        <li>
+            <a href="{{ route('stock.list') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                List
+                <span class="label label-primary pull-right"> List </span>
+            </a>
+        </li>
+    @endif
 </ul>
-</li>
-@endif
-@if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Province' || auth()->user()->role === 'province' || auth()->user()->role === 'dho' || auth()->user()->role === 'municipality')
-<li>
-<a href="{{ route('stock.list') }}">
-    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-    List
-    <span class="label label-primary pull-right"> List </span>
-</a>
 </li>
 @endif
 <li>

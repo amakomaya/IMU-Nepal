@@ -21,7 +21,7 @@ class CasesPaymentController extends Controller
             $response['district_id'] == null
         ){
             $data = [];
-            $request->session()->flash('message', 'Please, Select all the field to filter organizational Monthly Line Listing');
+            $request->session()->flash('message', 'Please select all the above filters to view the line listing data of the selected organization within the selected date range.');
             return view('backend.cases.reports.monthly-line-listing', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month'));
         }
 
