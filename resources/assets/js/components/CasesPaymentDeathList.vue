@@ -11,6 +11,7 @@
         <th>Health Condition</th>
         <th>Paid / Free</th>
         <th>Register Date</th>
+        <th>Date of Outcome</th>
         <th>Action</th>
       </tr>
       </thead>
@@ -24,6 +25,7 @@
         <td>{{ formattedHealthCondition(item.health_condition, item.health_condition_update) }}</td>
         <td>{{ formattedSafeOrFree(item.self_free) }}</td>
         <td>{{ item.register_date_np }}</td>
+        <td>{{ item.date_of_outcome }}</td>
         <td>
           <div v-show="checkEditButton()">
             <button v-on:click="editData(item.id)" class="btn btn-primary btn-sm" title="Update Data">
@@ -52,6 +54,7 @@ export default {
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},
           {title: 'Register Date', name: 'register_date_en'},
+          {title: 'Date of Outcome', name: 'date_of_outcome_en'},
           {title: 'Created At', name: 'created_at'},
         ],
         filterGroups: [
@@ -62,6 +65,7 @@ export default {
               {title: 'Age', name: 'age', type: 'numeric'},
               {title: 'Phone Number', name: 'phone', type: 'string'},
               {title: 'Register Date', name: 'register_date_en', type: 'datetime'},
+              {title: 'Date of Outcome', name: 'date_of_outcome_en', type: 'datetime'},
               {title: 'Created Date', name: 'created_at', type: 'datetime'},
             ]
           }
