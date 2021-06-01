@@ -131,6 +131,9 @@
                             </div>
                         </form>
                         <div class="clearfix"></div>
+                        <div class="panel-body">
+                            <span class="text-danger">{!! Request::session()->get('message') !!}</span>
+                        </div>
                         <hr>
 
                         <div class="dataTable_wrapper">
