@@ -1,4 +1,4 @@
-<li>
+<li @if(Request::segment(3) == 'monthly-line-listing') class="active" @endif>
     <a href="#">
         <i class="fa fa-money" aria-hidden="true"></i>
 
