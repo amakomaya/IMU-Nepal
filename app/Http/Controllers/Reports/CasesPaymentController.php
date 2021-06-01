@@ -162,9 +162,7 @@ class CasesPaymentController extends Controller
         $filter_date = $this->dataFromAndTo($request);
         $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']);
 
-        if ($response['province_id'] == null ||
-        $response['municipality_id'] == null ||
-        $response['district_id'] == null)
+        if ($response['province_id'] == null)
         {
             $data = [];
             $request->session()->flash('message', 'Please select all the above filters to view the line listing data of the selected organization within the selected date range.');
