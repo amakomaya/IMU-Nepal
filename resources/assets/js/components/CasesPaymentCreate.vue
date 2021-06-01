@@ -689,8 +689,19 @@ export default {
                   health_condition: 0,
                   is_death: '',
                   register_date_np: register_date_old,
-                  lab_name: this.labSelected.name
-
+                  lab_name: this.labSelected.name,
+                  age_unit : 0,
+                  method_of_diagnosis : 0,
+                  gender: undefined,
+                  complete_vaccination: undefined,
+                  time_of_death: null,
+                  comorbidity: [],
+                  other_comorbidity: null,
+                  pregnant_status: null,
+                  date_of_positive: '',
+                  date_of_positive_np: '',
+                  cause_of_death: null,
+                  other_death_cause: null
                 }
               }
               this.isSubmitting = false;
