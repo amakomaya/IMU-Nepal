@@ -9,7 +9,7 @@
         <li>
             <a href="{{ route('cases.recovered.index') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Recovered / Discharged
+                Discharged
                 <span class="label label-success pull-right">R/D</span>
             </a>
         </li>

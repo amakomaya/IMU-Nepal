@@ -10,7 +10,7 @@
             <a href="{{ route('lab.patient.index') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                 Lab Received
-                <span class="label label-warning pull-right"> Lab Received </span>
+                <span class="label label-warning pull-right"> LR </span>
             </a>
         </li>
         <li>
