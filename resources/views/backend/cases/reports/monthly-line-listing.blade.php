@@ -213,7 +213,12 @@
             pageLength: 50,
             dom : 'Bfrtip',
             buttons: [
-                'csv', 'excel', 'pdf', 'print'
+                'csv', 'excel',
+                {
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL'
+                }
             ]
         });
     });
