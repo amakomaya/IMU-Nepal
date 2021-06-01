@@ -22,7 +22,7 @@ class ExtLabTestController extends Controller
             $healthworker = OrganizationMember::where('token', $user->token)->get()->first();
             $record = LabTest::where('hp_code', $healthworker->hp_code)->get();
 
-            $data = collect($record)->map(function ($row) {
+            $data = collect($record)->map(function ($row) use ($user){
                 $response = [];
                 $response['token'] = $row->token;
                 $response['sample_token'] = $row->sample_token ?? '';
@@ -52,17 +52,18 @@ class ExtLabTestController extends Controller
             foreach ($data as $value) {
                 try {
                     if ($value['sample_test_date'] == '') {
-                        $value['sample_test_result'] = 9;
+                        $value['sample_test_result'] = '9';
+                        if($value['token']) $value['token'] = $user->token.'-'.$value['token'];
                         LabTest::create($value);
                         SampleCollection::where('token', $value['sample_token'])->update(['result' => '9']);
                     } else {
                         SampleCollection::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
-                        $find_test = LabTest::where('token', $value['token']);
+                        $find_test = LabTest::where('token', $user->token.'-'.$value['token']); //check all the token for users
                         if ($find_test) {
                             $find_test->update([
                                 'sample_test_date' => $value['sample_test_date'],
                                 'sample_test_time' => $value['sample_test_time'],
-                                'sample_test_result' => $value['sample_test_result'],
+                                'sample_test_result' => strval($value['sample_test_result']),
                                 'checked_by' => $value['checked_by'],
                                 'hp_code' => $value['hp_code'],
                                 'status' => $value['status'],
@@ -72,12 +73,12 @@ class ExtLabTestController extends Controller
                         } else {
                             try {
                                 LabTest::insert([
-                                    'token' => md5(microtime(true).mt_Rand()),
+                                    'token' => $user->token.'-'.md5(microtime(true).mt_Rand()),
                                     'sample_token' => $value['sample_token'],
                                     'sample_recv_date' => $value['sample_recv_date'],
                                     'sample_test_date' => $value['sample_test_date'],
                                     'sample_test_time' => $value['sample_test_time'],
-                                    'sample_test_result' => $value['sample_test_result'],
+                                    'sample_test_result' => strval($value['sample_test_result']),
                                     'hp_code' => $healthworker->hp_code,
                                     'checked_by' => $healthworker->token,
                                     'status' => 1

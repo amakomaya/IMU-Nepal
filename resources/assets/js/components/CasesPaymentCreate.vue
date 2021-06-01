@@ -577,7 +577,8 @@ export default {
                 position: 'top-end',
                 showConfirmButton: false,
                 timer: 3000
-              })
+              });
+              console.log(resonse.data.data);
               this.data.name = response.data.data.name;
                 this.data.age = response.data.data.age;
                 this.data.gender = response.data.data.sex;

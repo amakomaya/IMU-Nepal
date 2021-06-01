@@ -124,7 +124,6 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
     public function prepareForValidation($data, $index)
     {
         $data = $this->filterEmptyRow($data);
-        print_r($data);
         if(array_filter($data)) {
           $data['result'] = $this->enums['result'][$data['result']]?? null;
         }

@@ -83,7 +83,21 @@
         </tr>
       </tbody>
     </table>
-    
+    <div v-show="isUploading==true" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Uploading</h5>
+          </div>
+          <div class="modal-body">
+            <p>The bulk file is being uploaded...</p>
+          </div>
+          <div class="modal-footer">
+           
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -98,6 +112,7 @@ export default {
       bulk_file_lab_received_result: "",
       bulk_file_registration_sample_collection: "",
       bulk_file_registration_sample_collection_lab_test: "",
+      isUploading: false,
     };
   },
   methods: {
@@ -106,6 +121,7 @@ export default {
       return arr.includes(value);
     },
     handleFileUpload(type) {
+      this.isUploading = true;
       switch (type) {
         case "bulk_file_lab_received":
           this.bulk_file_lab_received = this.$refs.bulk_file_lab_received.files[0];
@@ -145,11 +161,13 @@ export default {
           },
         })
         .then(function (res) {
+          this.isUploading = false;
           alert(res.data.message);
           $("#bulk_file_lab_result").val(null);
         })
         .catch(function (err) {
           let errorMsg;
+          this.isUploading = false;
           if (err.response.status === 500) {
             errorMsg =
               "Please use the latest valid template downloaded from the system. If problem persists, please contact support.";
@@ -194,10 +212,12 @@ export default {
           },
         })
         .then(function (res) {
+          this.isUploading = false;
           alert(res.data.message);
           $("#bulk_file_lab_received").val(null);
         })
         .catch(function (err) {
+          this.isUploading = false;
           let errorMsg;
           if (err.response.status === 500) {
             errorMsg =
@@ -246,10 +266,12 @@ export default {
           },
         })
         .then(function (res) {
+          this.isUploading = false;
           alert(res.data.message);
           $("#bulk_file_lab_received_result").val(null);
         })
         .catch(function (err) {
+          this.isUploading = false;
           let errorMsg;
           if (err.response.status === 500) {
             errorMsg =
@@ -298,10 +320,12 @@ export default {
           },
         })
         .then(function (res) {
+          this.isUploading = false;
           alert(res.data.message);
           $("#bulk_file_registration_sample_collection").val(null);
         })
         .catch(function (err) {
+          this.isUploading = false;
           let errorMsg;
           if (err.response.status === 500) {
             errorMsg =
@@ -354,10 +378,12 @@ export default {
           }
         )
         .then(function (res) {
+          this.isUploading = false;
           alert(res.data.message);
           $("#bulk_file_registration_sample_collection_lab_test").val(null);
         })
         .catch(function (err) {
+          this.isUploading = false;
           let errorMsg;
           if (err.response.status === 500) {
             errorMsg =
