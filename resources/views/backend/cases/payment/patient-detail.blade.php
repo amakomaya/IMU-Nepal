@@ -1,7 +1,4 @@
 @extends('layouts.backend.app')
-@section('style')
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-@endsection
 @section('content')
     <div id="page-wrapper">
         <div class="row">
@@ -32,7 +29,7 @@
                             </form>
                         </div>
                         <div class="dataTable_wrapper">
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <table class="table table-striped table-bordered table-hover table-responsive" id="dataTable" style="width:100%;">
                                 <thead>
                                 <tr>
                                     <th rowspan="2" width="10px"></th>
@@ -161,6 +158,29 @@
         </div>
     </div>
 @endsection
+@section('Style')
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
+@endsection
+
 @section('script')
-    <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
+<script src="{{ asset('js/datatable/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('js/datatable/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('js/datatable/jszip.min.js') }}"></script>
+<script src="{{ asset('js/datatable/pdfmake.min.js') }}"></script>
+<script src="{{ asset('js/datatable/vfs_fonts.js') }}"></script>
+<script src="{{ asset('js/datatable/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('js/datatable/buttons.print.min.js') }}"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            responsive: true,
+            pageLength: 50,
+            dom : 'Bfrtip',
+            buttons: [
+                'csv', 'excel', 'pdf', 'print'
+            ],
+        });
+    });
+</script>
 @endsection

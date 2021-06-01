@@ -208,13 +208,13 @@
 <script>
     $(document).ready(function() {
         $('#dataTable').DataTable({
-                responsive: true,
-                scrollX: true,
-                pageLength: 50,
-                dom : 'Bfrtip',
-                buttons: [
-                    'csv', 'excel', 'pdf', 'print'
-                ]
+            responsive: true,
+            scrollX: true,
+            pageLength: 50,
+            dom : 'Bfrtip',
+            buttons: [
+                'csv', 'excel', 'pdf', 'print'
+            ]
         });
     });
 </script>
