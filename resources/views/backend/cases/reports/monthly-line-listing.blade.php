@@ -114,6 +114,14 @@
                                 <select name="hp_code" class="form-control"  >
                                     @if(Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
                                         <option value="">All Organization</option>
+                                        @foreach(collect($healthposts)->whereIn('hospital_type', [3,5,6])->all() as $healthpost)
+                                            @if($hp_code==$healthpost->hp_code)
+                                                @php($selectedHealthpost = "selected")
+                                            @else
+                                                @php($selectedHealthpost = "")
+                                            @endif
+                                            <option value="{{$healthpost->hp_code}}" {{$selectedHealthpost}}>{{$healthpost->name}}</option>
+                                        @endforeach
                                     @endif
                                 </select>
                             </div>
