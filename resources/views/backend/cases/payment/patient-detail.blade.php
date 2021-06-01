@@ -140,9 +140,9 @@
                                                     $days = array_key_exists($key2 + 1, $conditions[$key]) ? $days_d : $days_d + 1;
                                                     $total_days += $days;
                                                 @endphp
-                                                {{ $days }} days<br>
+                                                {{ $days }} {{ \Illuminate\Support\Str::plural('day', $days) }}<br>
                                             @endforeach
-                                            <b>Total days: {{ $total_days }} days</b>
+                                            <b>Total days: {{ $total_days }} {{ \Illuminate\Support\Str::plural('day', $total_days) }}</b>
                                         </td>
                                         <td>
                                             {!! $current_status !!}
