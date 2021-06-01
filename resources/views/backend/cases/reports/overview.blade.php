@@ -65,7 +65,7 @@
                     <div class="panel-body">
 
                         <form method="get" name="info">
-                            <div class="form-group col-sm-3" id="province">
+                            <div class="form-group col-sm-4" id="province">
                                 <select name="province_id" class="form-control" onchange="provinceOnchange($(this).val())">
                                     @if(Auth::user()->role!="province" && Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
                                         <option value="">Select All Provinces</option>
@@ -80,7 +80,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group  col-sm-3" id = "district">
+                            <div class="form-group  col-sm-4" id = "district">
                                 <select name="district_id" class="form-control" onchange="districtOnchange($(this).val())">
                                     @if(Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
                                         <option value="">Select All Districts</option>
@@ -95,7 +95,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group  col-sm-3" id="municipality">
+                            <div class="form-group  col-sm-4" id="municipality">
                                 <select name="municipality_id" class="form-control" onchange="municipalityOnchange($(this).val())" id="municipality_id">
                                     @if(Auth::user()->role!="municipality" && Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
                                         <option value="">Select All Municipalities</option>
@@ -110,23 +110,8 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group  col-sm-3" id="organization">
-                                <select name="hp_code" class="form-control"  >
-                                    @if(Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
-                                        <option value="">All Organization</option>
-                                    @endif
-                                    @foreach($healthposts as $healthpost)
-                                        @if($hp_code==$healthpost->hp_code)
-                                            @php($selectedHealthpost = "selected")
-                                        @else
-                                            @php($selectedHealthpost = "")
-                                        @endif
-                                        <option value="{{$healthpost->hp_code}}" {{$selectedHealthpost}}>{{$healthpost->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
                             <div id ="from_to"></div>
-                            <div class="form-group col-sm-3">
+                            <div class="form-group col-sm-4">
                                 <button type="submit" class="btn btn-success">Submit</button>
                             </div>
                         </form>
