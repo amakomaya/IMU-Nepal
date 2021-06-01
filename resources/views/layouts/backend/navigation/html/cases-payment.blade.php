@@ -58,7 +58,6 @@
                     Reports <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-third-level">
-@if(auth()->user()->role === 'main')
 <li>
     <a href="{{ route('report.case-payment-monthly-line-listing') }}">
         <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
@@ -66,7 +65,6 @@
         <span class="label label-primary pull-right"> Monthly </span>
     </a>
 </li>
-                    @endif
 @if(auth()->user()->role === 'healthpost')
     <li>
         <a href="{{ route('cases.patient.detail') }}">
