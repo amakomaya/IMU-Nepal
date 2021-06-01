@@ -165,7 +165,7 @@ class CasesPaymentController extends Controller
         if ($response['province_id'] == null)
         {
             $data = [];
-            $request->session()->flash('message', 'Please select all the above filters to view the line listing data of the selected organization within the selected date range.');
+            $request->session()->flash('message', 'Please select the above filters to view the line listing data within the selected date range.');
             return view('backend.cases.reports.overview', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
         }
 
@@ -213,7 +213,7 @@ class CasesPaymentController extends Controller
 
 
         $mapped_data = [];
-        $mapped_data_second = $mapped_data->map(function ($value){
+        $mapped_data_second = collect($mapped_data)->map(function ($value){
             $return = [];
             $value = collect($value);
             $return['name'] = $value[0]['name'];
