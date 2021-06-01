@@ -131,11 +131,13 @@
                             </div>
                         </form>
                         <div class="clearfix"></div>
+                        @if(Request::session()->has('message'))
                         <div class="panel-body">
                             <div class="alert alert-warning" role="alert">
                                 <span class="text-danger">{!! Request::session()->get('message') !!}</span>
                             </div>
                         </div>
+                        @endif
                         <hr>
 
                         <div class="dataTable_wrapper">
