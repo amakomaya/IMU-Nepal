@@ -1,4 +1,5 @@
-<li @if(Request::segment(3) == 'monthly-line-listing' || Request::segment(3) == 'overview'|| Request::segment(2) == 'cases-patient-detail') class="active" @endif>
+<li @if(Request::segment(3) == 'monthly-line-listing' || Request::segment(3) == 'overview' || 
+    Request::segment(3) == 'daily-listing'|| Request::segment(2) == 'cases-patient-detail') class="active" @endif>
     <a href="#">
         <i class="fa fa-money" aria-hidden="true"></i>
 
@@ -58,24 +59,38 @@
                     Reports <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-third-level">
-<li>
-    <a href="{{ route('report.case-payment-monthly-line-listing') }}">
-        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-        Line Listing
-        <span class="label label-primary pull-right"> Monthly </span>
-    </a>
-</li>
-@if(auth()->user()->role === 'healthpost')
-    <li>
-        <a href="{{ route('cases.patient.detail') }}">
-            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-            Patient Detail
-            <span class="label label-primary pull-right">Detail</span>
-        </a>
-    </li>
-@endif
-</ul>
-</li>
+                    <li>
+                        <a href="{{ route('report.case-payment-overview') }}">
+                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                            Overview
+                            <span class="label label-primary pull-right"> Monthly </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('report.case-payment-monthly-line-listing') }}">
+                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                            Line Listing
+                            <span class="label label-info pull-right"> Monthly </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('report.case-payment-daily-listing') }}">
+                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                            Daily List
+                            <span class="label label-primary pull-right"> Daily </span>
+                        </a>
+                    </li>
+                    @if(auth()->user()->role === 'healthpost')
+                    <li>
+                        <a href="{{ route('cases.patient.detail') }}">
+                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                            Patient Detail
+                            <span class="label label-primary pull-right">Detail</span>
+                        </a>
+                    </li>
+                    @endif
+                </ul>
+            </li>
 @if(auth()->user()->role === 'main' || auth()->user()->role === 'province' || auth()->user()->role === 'municipality' || auth()->user()->role === 'dho')
 <li>
 <a href="#">
