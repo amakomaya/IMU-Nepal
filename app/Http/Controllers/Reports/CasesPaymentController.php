@@ -234,6 +234,7 @@ class CasesPaymentController extends Controller
 
         return view('backend.cases.reports.overview', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
     }
+
     public function dailyListing(Request $request){
         $response = FilterRequest::filter($request);
         foreach ($response as $key => $value) {
@@ -345,20 +346,30 @@ class CasesPaymentController extends Controller
         ksort($result);
 
         $final_data = [];
+        $total_general = $total_hdu = $total_icu = $total_ventilator = $grand_total_cost = 0;
         foreach($result as $keyn => $result_solo_aray) {
             $final_data[$keyn]['general_count'] = $final_data[$keyn]['hdu_count'] = $final_data[$keyn]['icu_count'] = $final_data[$keyn]['ventilator_count'] = 0;
+
+            $date_en_array = explode("-", $keyn);
+            $date_en = Calendar::eng_to_nep($date_en_array[0], $date_en_array[1], $date_en_array[2])->getYearMonthDay();
+
+            $final_data[$keyn]['date_np'] = $date_en;
             foreach($result_solo_aray as $keym => $res) {
                 if($res['health_condition'] == '2') {
                     $final_data[$keyn]['general_count'] +=  $res['days_difference'];
+                    $total_general += $res['days_difference'];
                 }
                 elseif($res['health_condition'] == '3') {
                     $final_data[$keyn]['hdu_count'] +=  $res['days_difference'];
+                    $total_hdu += $res['days_difference'];
                 }
                 elseif($res['health_condition'] == '4') {
                     $final_data[$keyn]['icu_count'] +=  $res['days_difference'];
+                    $total_icu +=  $res['days_difference'];
                 }
                 elseif($res['health_condition'] == '5') {
                     $final_data[$keyn]['ventilator_count'] +=  $res['days_difference'];
+                    $total_ventilator += $res['days_difference'];
                 }
             }
 
@@ -366,9 +377,16 @@ class CasesPaymentController extends Controller
                                                 ($final_data[$keyn]['hdu_count'] * 100) +
                                                 ($final_data[$keyn]['icu_count'] * 100) +
                                                 ($final_data[$keyn]['ventilator_count'] * 100);
+            $grand_total_cost += $final_data[$keyn]['total_cost'];
         }
-        
-        return view('backend.cases.reports.daily-listing', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+
+        $grandsum['total_general'] = $total_general;
+        $grandsum['total_hdu'] = $total_hdu;
+        $grandsum['total_icu'] = $total_icu;
+        $grandsum['total_ventilator'] = $total_ventilator;
+        $grandsum['grand_total_cost'] = $grand_total_cost;
+
+        return view('backend.cases.reports.daily-listing', compact('final_data', 'grandsum', 'provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
 
     }
 

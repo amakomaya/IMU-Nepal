@@ -164,7 +164,7 @@
                                 <tbody>
                                 @foreach($final_data as $key => $case)
                                     <tr>
-                                        <td>{{ $key }}</td>
+                                        <td>{{ $case['date_np'] }}</td>
                                         <td>{{ $case['general_count'] }} </td>
                                         <td>{{ $case['hdu_count'] }} </td>
                                         <td>{{ $case['icu_count'] }} </td>
@@ -173,6 +173,16 @@
                                     </tr>
                                 @endforeach
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td><b>Grand Total</b></td>
+                                        <td><b>{{ $grandsum['total_general'] }}</b> </td>
+                                        <td><b>{{ $grandsum['total_hdu'] }}</b> </td>
+                                        <td><b>{{ $grandsum['total_icu'] }}</b> </td>
+                                        <td><b>{{ $grandsum['total_ventilator'] }}</b> </td>
+                                        <td><b>{{ $grandsum['grand_total_cost'] }}</b> </td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
