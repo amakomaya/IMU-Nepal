@@ -53,31 +53,43 @@
                 <span class="label label-danger pull-right">List</span>
             </a>
         </li>
-            <li>
+            <li @if(Request::segment(3) == 'overview' || Request::segment(3) == 'daily-listing' || Request::segment(3) == 'monthly-line-listing') class="active" @endif >
                 <a href="#">
                     <i class="fa fa-file-excel-o" aria-hidden="true"></i>
                     Reports <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-third-level">
-                    <li>
-                        <a href="{{ route('report.case-payment-overview') }}">
-                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                            Overview
-                            <span class="label label-primary pull-right"> Monthly </span>
-                        </a>
-                    </li>
+                    @if(auth()->user()->role == 'main')
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-calculator"></i>
+                                Cost Calculation <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-forth-level">
+                                <li>
+                                    <a href="{{ route('report.case-payment-overview') }}">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                        Overview
+                                        <span class="label label-primary pull-right"> Monthly </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('report.case-payment-daily-listing') }}">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                        Daily List
+                                        <span class="label label-primary pull-right"> Daily </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
                     <li>
                         <a href="{{ route('report.case-payment-monthly-line-listing') }}">
                             <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                             Line Listing
                             <span class="label label-info pull-right"> Monthly </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('report.case-payment-daily-listing') }}">
-                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                            Daily List
-                            <span class="label label-primary pull-right"> Daily </span>
                         </a>
                     </li>
                     @if(auth()->user()->role === 'healthpost')
