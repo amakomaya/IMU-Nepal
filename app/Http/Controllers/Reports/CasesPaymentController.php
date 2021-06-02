@@ -396,6 +396,8 @@ class CasesPaymentController extends Controller
             $$key = $value;
         }
 
+        // dd($response);
+
 
         $filter_date = $this->dataFromAndTo($request);
         $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']);
@@ -429,6 +431,8 @@ class CasesPaymentController extends Controller
 
         $running_period_cases = $data
             ->join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
+            ->leftjoin('municipalities', 'municipalities.id', '=', 'healthposts.municipality_id')
+            ->leftjoin('provinces', 'provinces.id', '=', 'healthposts.province_id')
             ->where(function($query) use ($filter_date) {
                 return $query
                     ->whereDate('payment_cases.register_date_en', '>', $filter_date['from_date']->toDateString())
@@ -452,6 +456,10 @@ class CasesPaymentController extends Controller
                 'healthposts.no_of_hdu',
                 'healthposts.no_of_icu',
                 'healthposts.no_of_ventilators',
+
+                'provinces.province_name',
+                'municipalities.district_name',
+                'municipalities.municipality_name',
             ])
             ->get();
 
@@ -460,9 +468,9 @@ class CasesPaymentController extends Controller
             $return = [];
             $return['healthpost_name'] = $item->healthpost_name;
             $return['healthpost_id'] = $item->healthpost_id;
-            $return['province_id'] = $item->province_id;
-            $return['district_id'] = $item->district_id;
-            $return['municipality_id'] = $item->municipality_id;
+            $return['province_id'] = $item->province_name;
+            $return['district_id'] = $item->district_name;
+            $return['municipality_id'] = $item->municipality_name;
             $return['no_of_beds'] = $item->no_of_beds;
             $return['no_of_hdu'] = $item->no_of_hdu;
             $return['no_of_icu'] = $item->no_of_icu;
