@@ -26,11 +26,11 @@
           </td>
         </tr>
         <tr>
-          <td>Lab Results</td>
+          <td>PCR/Antigen Results</td>
           <td>Update Lab Results of existing "Lab Received" by entering Patient Lab ID (Unique ID for your patient for external/own reference) & Result (Positive/Negative)</td>
           <td><a href="/downloads/excel/lab_result_template.xlsx" onclick="return confirm('Are you sure, do you want to download import format ! ')" title="Do you have template ? If not, please download first and fill data than import.">Download Latest Template</a></td>
           <td>
-            <div v-if="checkPermission('lab-result')">
+            <div v-if="checkPermission('lab-result')||checkPermission('antigen-result')">
               <label for="bulk_file_lab_result" class="btn btn-primary">Bulk Upload
                 <i class="fa fa-upload" aria-hidden="true"></i>
               </label>
@@ -148,6 +148,7 @@ export default {
       }
     },
     submitBulkLabResultFile() {
+      let self = this;
       let formData = new FormData();
       if (!this.bulk_file_lab_result) {
         alert("Please upload a valid excel file");
@@ -161,13 +162,13 @@ export default {
           },
         })
         .then(function (res) {
-          this.isUploading = false;
+          self.isUploading = false;
           alert(res.data.message);
           $("#bulk_file_lab_result").val(null);
         })
         .catch(function (err) {
           let errorMsg;
-          this.isUploading = false;
+          self.isUploading = false;
           if (err.response.status === 500) {
             errorMsg =
               "Please use the latest valid template downloaded from the system. If problem persists, please contact support.";
@@ -199,6 +200,7 @@ export default {
         });
     },
     submitBulkLabReceivedFile(type) {
+      let self = this;
       let formData = new FormData();
       if (!this.bulk_file_lab_received) {
         alert("Please upload a valid excel file");
@@ -212,12 +214,12 @@ export default {
           },
         })
         .then(function (res) {
-          this.isUploading = false;
+          self.isUploading = false;
           alert(res.data.message);
           $("#bulk_file_lab_received").val(null);
         })
         .catch(function (err) {
-          this.isUploading = false;
+          self.isUploading = false;
           let errorMsg;
           if (err.response.status === 500) {
             errorMsg =
@@ -250,6 +252,7 @@ export default {
         });
     },
     submitBulkLabReceivedResultFile(type) {
+      let self = this;
       let formData = new FormData();
       if (!this.bulk_file_lab_received_result) {
         alert("Please upload a valid excel file");
@@ -266,12 +269,12 @@ export default {
           },
         })
         .then(function (res) {
-          this.isUploading = false;
+          self.isUploading = false;
           alert(res.data.message);
           $("#bulk_file_lab_received_result").val(null);
         })
         .catch(function (err) {
-          this.isUploading = false;
+          self.isUploading = false;
           let errorMsg;
           if (err.response.status === 500) {
             errorMsg =
@@ -304,6 +307,7 @@ export default {
         });
     },
     submitBulkRegistrationSampleCollectionFile(type) {
+      let self = this;
       let formData = new FormData();
       if (!this.bulk_file_registration_sample_collection) {
         alert("Please upload a valid excel file");
@@ -320,12 +324,12 @@ export default {
           },
         })
         .then(function (res) {
-          this.isUploading = false;
+          self.isUploading = false;
           alert(res.data.message);
           $("#bulk_file_registration_sample_collection").val(null);
         })
         .catch(function (err) {
-          this.isUploading = false;
+          self.isUploading = false;
           let errorMsg;
           if (err.response.status === 500) {
             errorMsg =
@@ -358,6 +362,7 @@ export default {
         });
     },
     submitBulkRegistrationSampleCollectionLabTestFile(type) {
+      let self = this;
       let formData = new FormData();
       if (!this.bulk_file_registration_sample_collection_lab_test) {
         alert("Please upload a valid excel file");
@@ -378,12 +383,12 @@ export default {
           }
         )
         .then(function (res) {
-          this.isUploading = false;
+          self.isUploading = false;
           alert(res.data.message);
           $("#bulk_file_registration_sample_collection_lab_test").val(null);
         })
         .catch(function (err) {
-          this.isUploading = false;
+          self.isUploading = false;
           let errorMsg;
           if (err.response.status === 500) {
             errorMsg =

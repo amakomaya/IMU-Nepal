@@ -5,6 +5,7 @@ namespace App\Imports;
 use Carbon\Carbon;
 use App\Models\LabTest;
 use App\Models\SampleCollection;
+use App\Models\OrganizationMember;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -90,7 +91,12 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
     }
     
     private function getLabTestByPatientLabId ($patientLabId) {
-      $labTests = LabTest::where('token', $this->userToken.'-'.$patientLabId);
+      $organiation_member_tokens = OrganizationMember::where('hp_code', $this->hpCode)->pluck('token');
+      $labTokens = [];
+      foreach ($organiation_member_tokens as $item) {
+          array_push($labTokens, $item."-".$patientLabId);
+      }
+      $labTests = LabTest::whereIn('token', $labTokens);
       if($labTests->count() > 0){
         return $labTests;
       }

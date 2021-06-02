@@ -105,7 +105,9 @@ class ExtCaseController extends Controller
                     'created_at' => $value['registered_at'],
                     'status' => 1,
                     'hp_code' => $healthworker->hp_code,
-                    'created_by' => $healthworker->token
+                    'checked_by' => $healthworker->token,
+                    'checked_by_name' => $healthworker->name,
+                    'registered_device' => 'api'
                 ];
                 $id = OrganizationMember::where('token', $user->token)->first()->id;
                 $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
@@ -114,23 +116,28 @@ class ExtCaseController extends Controller
                     'woman_token' => $case_token,
                     'service_for' => $value['service_for'],
                     'service_type' => $value['service_type'],
-                    'sample_type' => '['.$value['sample_type'].']',
+                    'sample_type' => (strpos($value['sample_type'], '[') !== false)?$value['sample_type']:'['.$value['sample_type'].']',
                     'created_at' => $value['sample_collected_date'],
-                    'infection_type' => $value['infection_type'],
-                    'result' => $value['lab_result'],
+                    'infection_type' => strval($value['infection_type']),
+                    'result' => strval($value['lab_result']),
                     'hp_code' => $healthworker->hp_code,
-                    'status' => 1
+                    'checked_by' => $healthworker->token,
+                    'checked_by_name' => $healthworker->name,
+                    'status' => 1,
+                    'regdev' => 'api'
                 ];
                 $lab_test = [
-                    'token' => md5(microtime(true) . mt_Rand()),
+                    'token' => $user->token.'-'.md5(microtime(true) . mt_Rand()),
                     'sample_token' => $swab_id,
                     'sample_recv_date' => $this->ad2bs($value['lab_received_date']),
                     'sample_test_date' => $this->ad2bs($value['lab_test_date']),
                     'sample_test_time' => $value['lab_test_time'],
-                    'sample_test_result' => $value['lab_result'],
+                    'sample_test_result' => strval($value['lab_result']),
                     'hp_code' => $healthworker->hp_code,
                     'checked_by' => $healthworker->token,
-                    'status' => 1
+                    'checked_by_name' => $healthworker->name,
+                    'status' => 1,
+                    'regdev' => 'api'
                 ];
                 try {
                     SuspectedCase::create($case);
