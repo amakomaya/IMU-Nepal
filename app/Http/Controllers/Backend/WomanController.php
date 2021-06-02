@@ -322,7 +322,7 @@ class WomanController extends Controller
         if ($request->swab_collection_conformation == '1') {
             return $this->sampleCollectionCreate($row['token']);
         }
-        return redirect()->route('woman.index');
+        return redirect()->back();
     }
 
     public function sampleCollectionCreate($token)
@@ -370,7 +370,7 @@ class WomanController extends Controller
             $row['sample_type'] = "[" . implode(', ', $row['sample_type']) . "]";
         SampleCollection::create($row);
         $request->session()->flash('message', 'Data Inserted successfully');
-        return redirect()->route('woman.index');
+        return redirect()->route('woman.create');
     }
 
     public function show($id)
