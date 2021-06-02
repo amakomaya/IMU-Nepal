@@ -390,6 +390,153 @@ class CasesPaymentController extends Controller
 
     }
 
+    public function situationReport(Request $request){
+        $response = FilterRequest::filter($request);
+        foreach ($response as $key => $value) {
+            $$key = $value;
+        }
+
+
+        $filter_date = $this->dataFromAndTo($request);
+        $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']);
+
+        if ($response['province_id'] == null ||
+            $response['municipality_id'] == null ||
+            $response['district_id'] == null
+        ){
+            $final_data = [];
+            $request->session()->flash('message', 'Please select all the above filters to view the data within the selected date range.');
+            return view('backend.cases.reports.situation-report', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+        }
+
+        $data = \DB::table('payment_cases');
+
+        if ($response['province_id'] !== null){
+            $data = $data->where('healthposts.province_id', $response['province_id']);
+        }
+
+        if ($response['district_id'] !== null){
+            $data = $data->where('healthposts.district_id', $response['district_id']);
+        }
+
+        if ($response['municipality_id'] !== null){
+            $data = $data->where('healthposts.municipality_id', $response['municipality_id']);
+        }
+
+        // if ($response['hospital_type'] !== null){
+        //     $data = $data->where('healthposts.hospital_type', $response['hospital_type']);
+        // }
+
+        $running_period_cases = $data
+            ->join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
+            ->where(function($query) use ($filter_date) {
+                return $query
+                    ->whereDate('payment_cases.register_date_en', '>', $filter_date['from_date']->toDateString())
+                    ->where('payment_cases.date_of_outcome_en', '>', $filter_date['from_date']->toDateString())
+                    ->orWhere('payment_cases.date_of_outcome_en', null);
+            })->select([
+                'payment_cases.health_condition',
+                'payment_cases.is_death',
+                'payment_cases.health_condition_update',
+                'payment_cases.register_date_en',
+                'payment_cases.register_date_np',
+                'payment_cases.date_of_outcome_en',
+                'payment_cases.date_of_outcome',
+
+                'healthposts.name as healthpost_name',
+                'healthposts.id as healthpost_id',
+                'healthposts.province_id',
+                'healthposts.district_id',
+                'healthposts.municipality_id',
+                'healthposts.no_of_beds',
+                'healthposts.no_of_hdu',
+                'healthposts.no_of_icu',
+                'healthposts.no_of_ventilators',
+            ])
+            ->get();
+
+
+        $mapped_data = $running_period_cases->map(function ($item) use ($filter_date) {
+            $return = [];
+            $return['healthpost_name'] = $item->healthpost_name;
+            $return['healthpost_id'] = $item->healthpost_id;
+            $return['province_id'] = $item->province_id;
+            $return['district_id'] = $item->district_id;
+            $return['municipality_id'] = $item->municipality_id;
+            $return['no_of_beds'] = $item->no_of_beds;
+            $return['no_of_hdu'] = $item->no_of_hdu;
+            $return['no_of_icu'] = $item->no_of_icu;
+            $return['no_of_ventilators'] = $item->no_of_ventilators;
+
+            $return['total_general'] = $return['total_hdu'] = $return['total_icu'] = $return['total_ventilator'] = $return['death'] = $return['discharge'] = 0;
+            if($item->is_death) {
+                if (Carbon::parse($item->date_of_outcome_en)->lessThan($filter_date['from_date']->toDateString())){}
+                else {
+                    if($item->is_death == '1') {
+                        $return['death'] = 1;
+                    }elseif($item->is_death == '2') {
+                        $return['discharge'] = 1;
+                    }
+                }
+            } else {
+                $arr_initial_health_condition = array([
+                    'id' => $item->health_condition,
+                    'date' => $item->register_date_en
+                ]);
+                $array_health_condition = json_decode($item->health_condition_update, true) ?? [];
+                $array_all_condition = array_merge($arr_initial_health_condition,$array_health_condition);
+                
+                $latest_data = end($array_all_condition);
+                if (Carbon::parse($latest_data['date'])->lessThan($filter_date['from_date']->toDateString())){}
+                else {
+                    if($latest_data['id'] == '2') {
+                        $return['total_general'] = 1;
+                    }
+                    elseif($latest_data['id'] == '3') {
+                        $return['total_hdu'] = 1;
+                    }
+                    elseif($latest_data['id'] == '4') {
+                        $return['total_icu'] = 1;
+                    }
+                    elseif($latest_data['id'] == '5') {
+                        $return['total_ventilator'] = 1;
+                    }
+                }
+            }
+            return $return;
+        })->toArray();
+        $all_data = $mapped_data;
+
+        foreach ($all_data as $element) {
+            $result[$element['healthpost_id']][] = $element;
+        }
+        
+        foreach($result as $keyn => $result_solo_aray) {
+            $final_data[$keyn]['general_count'] = $final_data[$keyn]['hdu_count'] = $final_data[$keyn]['icu_count'] = $final_data[$keyn]['ventilator_count'] = $final_data[$keyn]['death_count'] = $final_data[$keyn]['discharge_count'] = 0;
+            $final_data[$keyn]['healthpost_name'] = $result_solo_aray[0]['healthpost_name'];
+            $final_data[$keyn]['healthpost_id'] = $result_solo_aray[0]['healthpost_id'];
+            $final_data[$keyn]['province_id'] = $result_solo_aray[0]['province_id'];
+            $final_data[$keyn]['district_id'] = $result_solo_aray[0]['district_id'];
+            $final_data[$keyn]['municipality_id'] = $result_solo_aray[0]['municipality_id'];
+            $final_data[$keyn]['no_of_beds'] = $result_solo_aray[0]['no_of_beds'];
+            $final_data[$keyn]['no_of_hdu'] = $result_solo_aray[0]['no_of_hdu'];
+            $final_data[$keyn]['no_of_icu'] = $result_solo_aray[0]['no_of_icu'];
+            $final_data[$keyn]['no_of_ventilators'] = $result_solo_aray[0]['no_of_ventilators'];
+
+            foreach($result_solo_aray as $keym => $res) {
+                $final_data[$keyn]['general_count'] +=  $res['total_general'];
+                $final_data[$keyn]['hdu_count'] +=  $res['total_hdu'];
+                $final_data[$keyn]['icu_count'] +=  $res['total_icu'];
+                $final_data[$keyn]['ventilator_count'] +=  $res['total_ventilator'];
+                $final_data[$keyn]['death_count'] +=  $res['death'];
+                $final_data[$keyn]['discharge_count'] +=  $res['discharge'];
+            }
+        }
+
+        return view('backend.cases.reports.situation-report', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+
+    }
+
     private function dataFromAndTo(Request $request)
     {
         if (!empty($request['from_date'])) {

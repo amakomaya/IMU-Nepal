@@ -1,5 +1,6 @@
 <li @if(Request::segment(3) == 'monthly-line-listing' || Request::segment(3) == 'overview' || 
-    Request::segment(3) == 'daily-listing'|| Request::segment(2) == 'cases-patient-detail') class="active" @endif>
+    Request::segment(3) == 'daily-listing'|| Request::segment(3) == 'situation-report'|| 
+    Request::segment(2) == 'cases-patient-detail') class="active" @endif>
     <a href="#">
         <i class="fa fa-money" aria-hidden="true"></i>
 
@@ -90,6 +91,13 @@
                             <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                             Line Listing
                             <span class="label label-info pull-right"> Monthly </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('report.case-payment-situation-report') }}">
+                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                            Situation Report
+                            <span class="label label-info pull-right"> SR </span>
                         </a>
                     </li>
                     @if(auth()->user()->role === 'healthpost')
