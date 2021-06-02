@@ -117,7 +117,7 @@
 
                                     @foreach ($list as $key => $value )
                                         @if($key == 3 || $key == 5 || $key == 6)
-                                        <option value="{{ $key }}">
+                                        <option value="{{ $key }}" @if(request()->get('hospital_type') == $key) selected @endif>
                                             {{ $value }}
                                         </option>
                                         @endif

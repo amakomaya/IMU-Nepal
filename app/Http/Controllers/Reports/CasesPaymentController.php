@@ -396,8 +396,7 @@ class CasesPaymentController extends Controller
             $$key = $value;
         }
 
-        // dd($response);
-
+        $response['hospital_type'] = $request->hospital_type;
 
         $filter_date = $this->dataFromAndTo($request);
         $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']);
@@ -425,9 +424,9 @@ class CasesPaymentController extends Controller
             $data = $data->where('healthposts.municipality_id', $response['municipality_id']);
         }
 
-        // if ($response['hospital_type'] !== null){
-        //     $data = $data->where('healthposts.hospital_type', $response['hospital_type']);
-        // }
+        if ($response['hospital_type'] !== null){
+            $data = $data->where('healthposts.hospital_type', $response['hospital_type']);
+        }
 
         $running_period_cases = $data
             ->join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
@@ -515,31 +514,35 @@ class CasesPaymentController extends Controller
         })->toArray();
         $all_data = $mapped_data;
 
-        foreach ($all_data as $element) {
-            $result[$element['healthpost_id']][] = $element;
-        }
-        
-        foreach($result as $keyn => $result_solo_aray) {
-            $final_data[$keyn]['general_count'] = $final_data[$keyn]['hdu_count'] = $final_data[$keyn]['icu_count'] = $final_data[$keyn]['ventilator_count'] = $final_data[$keyn]['death_count'] = $final_data[$keyn]['discharge_count'] = 0;
-            $final_data[$keyn]['healthpost_name'] = $result_solo_aray[0]['healthpost_name'];
-            $final_data[$keyn]['healthpost_id'] = $result_solo_aray[0]['healthpost_id'];
-            $final_data[$keyn]['province_id'] = $result_solo_aray[0]['province_id'];
-            $final_data[$keyn]['district_id'] = $result_solo_aray[0]['district_id'];
-            $final_data[$keyn]['municipality_id'] = $result_solo_aray[0]['municipality_id'];
-            $final_data[$keyn]['no_of_beds'] = $result_solo_aray[0]['no_of_beds'];
-            $final_data[$keyn]['no_of_hdu'] = $result_solo_aray[0]['no_of_hdu'];
-            $final_data[$keyn]['no_of_icu'] = $result_solo_aray[0]['no_of_icu'];
-            $final_data[$keyn]['no_of_ventilators'] = $result_solo_aray[0]['no_of_ventilators'];
-
-            foreach($result_solo_aray as $keym => $res) {
-                $final_data[$keyn]['general_count'] +=  $res['total_general'];
-                $final_data[$keyn]['hdu_count'] +=  $res['total_hdu'];
-                $final_data[$keyn]['icu_count'] +=  $res['total_icu'];
-                $final_data[$keyn]['ventilator_count'] +=  $res['total_ventilator'];
-                $final_data[$keyn]['death_count'] +=  $res['death'];
-                $final_data[$keyn]['discharge_count'] +=  $res['discharge'];
+        if(!empty($all_data)) {
+            foreach ($all_data as $element) {
+                $result[$element['healthpost_id']][] = $element;
+            }
+            
+            foreach($result as $keyn => $result_solo_aray) {
+                $final_data[$keyn]['general_count'] = $final_data[$keyn]['hdu_count'] = $final_data[$keyn]['icu_count'] = $final_data[$keyn]['ventilator_count'] = $final_data[$keyn]['death_count'] = $final_data[$keyn]['discharge_count'] = 0;
+                $final_data[$keyn]['healthpost_name'] = $result_solo_aray[0]['healthpost_name'];
+                $final_data[$keyn]['healthpost_id'] = $result_solo_aray[0]['healthpost_id'];
+                $final_data[$keyn]['province_id'] = $result_solo_aray[0]['province_id'];
+                $final_data[$keyn]['district_id'] = $result_solo_aray[0]['district_id'];
+                $final_data[$keyn]['municipality_id'] = $result_solo_aray[0]['municipality_id'];
+                $final_data[$keyn]['no_of_beds'] = $result_solo_aray[0]['no_of_beds'];
+                $final_data[$keyn]['no_of_hdu'] = $result_solo_aray[0]['no_of_hdu'];
+                $final_data[$keyn]['no_of_icu'] = $result_solo_aray[0]['no_of_icu'];
+                $final_data[$keyn]['no_of_ventilators'] = $result_solo_aray[0]['no_of_ventilators'];
+    
+                foreach($result_solo_aray as $keym => $res) {
+                    $final_data[$keyn]['general_count'] +=  $res['total_general'];
+                    $final_data[$keyn]['hdu_count'] +=  $res['total_hdu'];
+                    $final_data[$keyn]['icu_count'] +=  $res['total_icu'];
+                    $final_data[$keyn]['ventilator_count'] +=  $res['total_ventilator'];
+                    $final_data[$keyn]['death_count'] +=  $res['death'];
+                    $final_data[$keyn]['discharge_count'] +=  $res['discharge'];
+                }
             }
         }
+
+        $final_data = [];
 
         return view('backend.cases.reports.situation-report', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
 
