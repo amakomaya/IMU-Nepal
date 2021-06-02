@@ -57,7 +57,7 @@ class ExtLabTestController extends Controller
                         LabTest::create($value);
                         SampleCollection::where('token', $value['sample_token'])->update(['result' => '9']);
                     } else {
-                        SampleCollection::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
+                        SampleCollection::where('token', $value['sample_token'])->update(['result' => strval($value['sample_test_result'])]);
                         $find_test = LabTest::where('token', $user->token.'-'.$value['token']); //check all the token for users
                         if ($find_test) {
                             $find_test->update([
