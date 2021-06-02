@@ -248,9 +248,9 @@ class CasesPaymentController extends Controller
             $response['municipality_id'] == null ||
             $response['district_id'] == null
         ){
-            $final_data = [];
+            $final_data = $grandsum = [];
             $request->session()->flash('message', 'Please select all the above filters to view the data within the selected date range.');
-            return view('backend.cases.reports.daily-listing', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+            return view('backend.cases.reports.daily-listing', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days', 'grandsum'));
         }
 
         $data = \DB::table('payment_cases')->whereIn('healthposts.hospital_type', [3,5,6]);

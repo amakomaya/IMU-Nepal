@@ -176,11 +176,11 @@
                                 <tfoot>
                                     <tr>
                                         <td><b>Grand Total</b></td>
-                                        <td><b>{{ $grandsum['total_general'] }}</b> </td>
-                                        <td><b>{{ $grandsum['total_hdu'] }}</b> </td>
-                                        <td><b>{{ $grandsum['total_icu'] }}</b> </td>
-                                        <td><b>{{ $grandsum['total_ventilator'] }}</b> </td>
-                                        <td><b>{{ $grandsum['grand_total_cost'] }}</b> </td>
+                                        <td><b>{{ $grandsum['total_general'] ?? 0 }}</b> </td>
+                                        <td><b>{{ $grandsum['total_hdu'] ?? 0 }}</b> </td>
+                                        <td><b>{{ $grandsum['total_icu'] ?? 0 }}</b> </td>
+                                        <td><b>{{ $grandsum['total_ventilator'] ?? 0 }}</b> </td>
+                                        <td><b>{{ $grandsum['grand_total_cost'] ?? 0 }}</b> </td>
                                     </tr>
                                 </tfoot>
                             </table>
