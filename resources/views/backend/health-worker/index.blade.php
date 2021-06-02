@@ -123,7 +123,9 @@
                                             <a class="btn btn-xs btn-primary"  href="{{route('user-manager.change-paswword', \App\User::getUserId($healthWorker->token) ) }}">
                                                 Change Password
                                             </a>
-                                            @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
+                                            @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main'
+                                                || \App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Province'
+                                                )
                                                 <button class="btn btn-xs btn-primary" name="submit" >Login As</i></button>
                                             @endif
                                         </div>
