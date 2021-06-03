@@ -17,3 +17,5 @@ Route::get('case-payment/overview' , 'Reports\CasesPaymentController@overview')-
 Route::get('case-payment/monthly-line-listing' , 'Reports\CasesPaymentController@monthlyLineListing')->name('report.case-payment-monthly-line-listing');
 Route::get('case-payment/daily-listing' , 'Reports\CasesPaymentController@dailyListing')->name('report.case-payment-daily-listing');
 Route::get('case-payment/situation-report' , 'Reports\CasesPaymentController@situationReport')->name('report.case-payment-situation-report');
+
+Route::get('cases-report/report' , 'Reports\SuspectedCaseReportController@casesReport')->name('report.cases-report-report');
