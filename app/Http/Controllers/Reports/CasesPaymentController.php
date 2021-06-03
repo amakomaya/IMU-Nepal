@@ -164,9 +164,9 @@ class CasesPaymentController extends Controller
 
         if ($response['province_id'] == null)
         {
-            $data = [];
+            $final_data = [];
             $request->session()->flash('message', 'Please select the above filters to view the data within the selected date range.');
-            return view('backend.cases.reports.overview', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+            return view('backend.cases.reports.overview', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
         }
 
         $data = \DB::table('payment_cases')->whereIn('healthposts.hospital_type', [3,5,6]);
@@ -194,6 +194,7 @@ class CasesPaymentController extends Controller
             ->join('municipalities', 'healthposts.municipality_id', '=', 'municipalities.id')
             ->select([
                 'healthposts.name as name',
+                'healthposts.id as healthpost_id',
                 'provinces.province_name',
                 'districts.district_name',
                 'municipalities.municipality_name',
@@ -212,27 +213,79 @@ class CasesPaymentController extends Controller
         $filter_date = $this->dataFromAndTo($request);
 
 
-        $mapped_data = [];
-        $mapped_data_second = collect($mapped_data)->map(function ($value){
+        $mapped_data_second = $data->map(function ($item) use ($filter_date){
             $return = [];
-            $value = collect($value);
-            $return['name'] = $value[0]['name'];
-            $return['province_name'] = $value[0]['province_name'];
-            $return['district_name'] = $value[0]['district_name'];
-            $return['municipality_name'] = $value[0]['municipality_name'];
-            $return['phone'] = $value[0]['phone'];
+            $return['name'] = $item->name;
+            $return['healthpost_id'] = $item->healthpost_id;
+            $return['province_name'] = $item->province_name;
+            $return['district_name'] = $item->district_name;
+            $return['municipality_name'] = $item->municipality_name;
 
-            $return['used_general'] = collect($value)->sum('used_general');
-            $return['used_hdu'] = collect($value)->sum('used_hdu');
-            $return['used_icu'] = collect($value)->sum('used_icu');
-            $return['used_ventilators'] = collect($value)->sum('used_ventilators');
+            $return['total_general'] = $return['total_hdu'] = $return['total_icu'] = $return['total_ventilator'] = 0;
+
+            if($item->is_death != null) {
+                $arr_initial_health_condition = array([
+                    'id' => $item->health_condition,
+                    'date' => $item->register_date_en
+                ]);
+                $array_health_condition = json_decode($item->health_condition_update, true) ?? [];
+                $array_all_condition = array_merge($arr_initial_health_condition,$array_health_condition);
+                
+                $latest_data = end($array_all_condition);
+                if (Carbon::parse($latest_data['date'])->lessThan($filter_date['from_date']->toDateString())){}
+                else {
+                    if($latest_data['id'] == '2') {
+                        $return['total_general'] = 1;
+                    }
+                    elseif($latest_data['id'] == '3') {
+                        $return['total_hdu'] = 1;
+                    }
+                    elseif($latest_data['id'] == '4') {
+                        $return['total_icu'] = 1;
+                    }
+                    elseif($latest_data['id'] == '5') {
+                        $return['total_ventilator'] = 1;
+                    }
+                }
+            }
 
             return $return;
-        })->values();
+        })->toArray();
 
-        $data = $mapped_data_second;
 
-        return view('backend.cases.reports.overview', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+        $all_data = $mapped_data_second;
+
+        if(!empty($all_data)) {
+            foreach ($all_data as $element) {
+                $result[$element['healthpost_id']][] = $element;
+            }
+            
+            foreach($result as $keyn => $result_solo_aray) {
+                $final_data[$keyn]['general_count'] = $final_data[$keyn]['hdu_count'] = $final_data[$keyn]['icu_count'] = $final_data[$keyn]['ventilator_count'] = $final_data[$keyn]['death_count'] = $final_data[$keyn]['discharge_count'] = 0;
+                $final_data[$keyn]['name'] = $result_solo_aray[0]['name'];
+                $final_data[$keyn]['healthpost_id'] = $result_solo_aray[0]['healthpost_id'];
+                $final_data[$keyn]['province_name'] = $result_solo_aray[0]['province_name'];
+                $final_data[$keyn]['district_name'] = $result_solo_aray[0]['district_name'];
+                $final_data[$keyn]['municipality_name'] = $result_solo_aray[0]['municipality_name'];
+    
+                foreach($result_solo_aray as $keym => $res) {
+                    $final_data[$keyn]['general_count'] +=  $res['total_general'];
+                    $final_data[$keyn]['hdu_count'] +=  $res['total_hdu'];
+                    $final_data[$keyn]['icu_count'] +=  $res['total_icu'];
+                    $final_data[$keyn]['ventilator_count'] +=  $res['total_ventilator'];
+                }
+
+                $final_data[$keyn]['total_cost'] = ($final_data[$keyn]['general_count'] * 100) +
+                                                ($final_data[$keyn]['hdu_count'] * 100) +
+                                                ($final_data[$keyn]['icu_count'] * 100) +
+                                                ($final_data[$keyn]['ventilator_count'] * 100);
+            }
+        } else {
+            $final_data = [];
+        }
+
+
+        return view('backend.cases.reports.overview', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
     }
 
     public function dailyListing(Request $request){
@@ -540,9 +593,9 @@ class CasesPaymentController extends Controller
                     $final_data[$keyn]['discharge_count'] +=  $res['discharge'];
                 }
             }
+        } else {
+            $final_data = [];
         }
-
-        $final_data = [];
 
         return view('backend.cases.reports.situation-report', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
 
