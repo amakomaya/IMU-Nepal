@@ -210,9 +210,6 @@ class CasesPaymentController extends Controller
             ->orderBy('healthposts.name', 'asc')
             ->get();
 
-        $filter_date = $this->dataFromAndTo($request);
-
-
         $mapped_data_second = $data->map(function ($item) use ($filter_date){
             $return = [];
             $return['name'] = $item->name;
