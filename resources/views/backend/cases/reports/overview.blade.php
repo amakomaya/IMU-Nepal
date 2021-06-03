@@ -129,7 +129,7 @@
                         <hr>
 
                         <div class="dataTable_wrapper">
-                            <table class="table table-striped table-bordered table-hover" id="dataTable">
+                            <table class="table table-striped table-bordered table-hover" id="dataTable" style="width: 100%;">
                                 <thead>
                                 <tr>
                                     <th rowspan="2">S.N</th>
@@ -163,9 +163,6 @@
                                 </tbody>
                             </table>
                         </div>
-
-
-
                     </div>
                     <!-- /.panel-body -->
                 </div>
@@ -196,7 +193,6 @@
     $(document).ready(function() {
         $('#dataTable').DataTable({
             responsive: true,
-            scrollX: true,
             pageLength: 50,
             dom : 'Bfrtip',
             buttons: [
