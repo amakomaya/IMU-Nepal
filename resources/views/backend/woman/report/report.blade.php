@@ -156,10 +156,11 @@
                                 <thead>
                                     <tr>
                                         <th>S.N</th>
+                                        <th>Date</th>
                                         <th>Name</th>
-                                        <th>Province</th>
+                                        {{-- <th>Province</th>
                                         <th>District</th>
-                                        <th>Municipality</th>
+                                        <th>Municipality</th> --}}
                                         <th>Age</th>
                                         <th>Sex</th>
                                         <th>Phone No.</th>
@@ -187,13 +188,16 @@
                                         default: $sex = 'Other';
                                         break;
                                     }
+                                    $date_en_array = explode("-", $case->updated_at);
+                                    $date_np = Yagiten\Nepalicalendar\Calendar::eng_to_nep((int)$date_en_array[0], (int)$date_en_array[1], (int)$date_en_array[2])->getYearMonthDay();
                                     ?>
                                     <tr>
                                         <td>{{ $key+1 }}</td>
+                                        <td>{{ $date_np }}</td>
                                         <td>{{ $case->name }}</td>
-                                        <td>{{ $case->province_name }}</td>
+                                        {{-- <td>{{ $case->province_name }}</td>
                                         <td>{{ $case->district_name }}</td>
-                                        <td>{{ $case->municipality_name }}</td>
+                                        <td>{{ $case->municipality_name }}</td> --}}
                                         <td>{{ $case->age }}</td>
                                         <td>{{ $sex }}</td>
                                         <td>{{ $case->emergency_contact_one }}</td>
