@@ -3,7 +3,7 @@
 @section('content')
     <div id="page-wrapper">
             <!-- /.row -->
-            <div class="row">
+         <div class="row">
                 <div class="col-lg-12">
                     @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
                         <div class="form-group">
