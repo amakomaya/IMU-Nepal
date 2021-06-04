@@ -183,7 +183,7 @@
                                         <td>{{ $case['ventilator_count'] }}</td>
                                         <td>{{ $case['death_count'] }} </td>
                                         <td>{{ $case['discharge_count'] }} </td>
-                                        <td>{{ $case['general_count'] + $case['hdu_count'] + $case['icu_count'] + $case['ventilator_count'] + $case['death_count'] + $case['discharge_count'] }} </td>
+                                        <td>{{ $case['no_of_registration'] }} </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
