@@ -128,7 +128,7 @@
                             </div>
                             <div class="form-group  col-sm-3" id="service_for">
                                 <select name="service_for" class="form-control"  >
-                                    <option value="">All Services</option>
+                                    <option value="">Test Type</option>
                                     <option value="2" @if(request()->get('service_for') == '2') selected @endif>Antigen</option>
                                     <option value="1" @if(request()->get('service_for') == '1') selected @endif>PCR </option>
                                 </select>
@@ -160,6 +160,9 @@
                                         <th>Province</th>
                                         <th>District</th>
                                         <th>Municipality</th>
+                                        <th>Age</th>
+                                        <th>Sex</th>
+                                        <th>Phone No.</th>
                                         <th>Result</th>
                                     </tr>
                                 </thead>
@@ -176,6 +179,14 @@
                                         default: $res = "Don't Know";
                                         break;
                                     }
+                                    switch($case->sex){
+                                        case 1: $sex = 'Male';
+                                        break;
+                                        case 2: $sex = 'Female';
+                                        break;
+                                        default: $sex = 'Other';
+                                        break;
+                                    }
                                     ?>
                                     <tr>
                                         <td>{{ $key+1 }}</td>
@@ -183,6 +194,9 @@
                                         <td>{{ $case->province_name }}</td>
                                         <td>{{ $case->district_name }}</td>
                                         <td>{{ $case->municipality_name }}</td>
+                                        <td>{{ $case->age }}</td>
+                                        <td>{{ $sex }}</td>
+                                        <td>{{ $case->emergency_contact_one }}</td>
                                         <td>{{ $res }} </td>
                                     </tr>
                                 @endforeach

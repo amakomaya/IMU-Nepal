@@ -66,7 +66,11 @@ class SuspectedCaseReportController extends Controller
                 'municipalities.municipality_name',
 
                 'women.name',
-                'ancs.result'
+                'women.age',
+                'women.sex',
+                'women.emergency_contact_one',
+                'ancs.result',
+                'ancs.updated_at'
             )
             ->get();
         
