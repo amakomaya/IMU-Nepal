@@ -57,7 +57,15 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
+
+        $response['old_new_data'] = $request->old_new_data;
+        if($response['old_new_data'] == '2') {
+            $woman = \DB::connection('mysqldump')->table('women')->where('status', 1);
+        } else {
+            $woman = SuspectedCase::active();
+        }
+
+        $woman->whereIn('hp_code', $hpCodes)
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
                     $q->where('service_for', '!=' ,"2")->whereIn('result', [0,2]);
@@ -75,7 +83,15 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
+        
+        $response['old_new_data'] = $request->old_new_data;
+        if($response['old_new_data'] == '2') {
+            $woman = \DB::connection('mysqldump')->table('women')->where('status', 1);
+        } else {
+            $woman = SuspectedCase::active();
+        }
+
+        $woman->whereIn('hp_code', $hpCodes)
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
                     $q->where('service_for', "2")->whereIn('result', [0,2]);
@@ -98,13 +114,22 @@ class WomenController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
 //        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->pluck('woman_token');
 //        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->whereHas('ancs', function($q){
-            $q->where('service_for', '!=' , "2")->where('result', '=', 4);
-        })
-        ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
-            'healthpost' => function($q) {
-                $q->select('name', 'hp_code');
-            }]);
+
+        $response['old_new_data'] = $request->old_new_data;
+        if($response['old_new_data'] == '2') {
+            $woman = \DB::connection('mysqldump')->table('women')->where('status', 1);
+        } else {
+            $woman = SuspectedCase::active();
+        }
+
+        $woman->whereIn('hp_code', $hpCodes)
+            ->whereHas('ancs', function($q){
+                $q->where('service_for', '!=' , "2")->where('result', '=', 4);
+            })
+            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+                'healthpost' => function($q) {
+                    $q->select('name', 'hp_code');
+                }]);
 
         return response()->json([
             'collection' => $woman->advancedFilter()
@@ -115,14 +140,21 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
-        ->whereHas('ancs', function($q){
-            $q->where('service_for', "2")->where('result', '=', 4);
-        })
-        ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
-            'healthpost' => function($q) {
-                $q->select('name', 'hp_code');
-            }]);
+        
+        $response['old_new_data'] = $request->old_new_data;
+        if($response['old_new_data'] == '2') {
+            $woman = \DB::connection('mysqldump')->table('women')->where('status', 1);
+        } else {
+            $woman = SuspectedCase::active();
+        }
+        $woman->whereIn('hp_code', $hpCodes)
+            ->whereHas('ancs', function($q){
+                $q->where('service_for', "2")->where('result', '=', 4);
+            })
+            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+                'healthpost' => function($q) {
+                    $q->select('name', 'hp_code');
+                }]);
 
         return response()->json([
             'collection' => $woman->advancedFilter()
@@ -134,7 +166,15 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 //        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->pluck('woman_token');
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->whereHas('ancs', function($q){
+
+        $response['old_new_data'] = $request->old_new_data;
+        if($response['old_new_data'] == '2') {
+            $woman = \DB::connection('mysqldump')->table('women')->where('status', 1);
+        } else {
+            $woman = SuspectedCase::active();
+        }
+        $woman = SuspectedCase::active()
+            ->whereIn('hp_code', $hpCodes)->whereHas('ancs', function($q){
                 $q->where('service_for', '!=' , "2")->where('result', '=', 3);
             })->with(['ancs','healthpost' => function($q) {
                 $q->select('name', 'hp_code');
@@ -149,7 +189,13 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
+        $response['old_new_data'] = $request->old_new_data;
+        if($response['old_new_data'] == '2') {
+            $woman = \DB::connection('mysqldump')->table('women')->where('status', 1);
+        } else {
+            $woman = SuspectedCase::active();
+        }
+        $woman->whereIn('hp_code', $hpCodes)
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
                     $q->where('service_for', "2")->where('result', 3);
@@ -182,7 +228,15 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
+
+        $response['old_new_data'] = $request->old_new_data;
+        if($response['old_new_data'] == '2') {
+            $woman = \DB::connection('mysqldump')->table('women')->where('status', 1);
+        } else {
+            $woman = SuspectedCase::active();
+        }
+
+        $woman->whereIn('hp_code', $hpCodes)
             ->whereHas('ancs', function($q){
                 $q->where('service_for', '!=' , "2")->where('result', '=', 9);
             })->with(['ancs','healthpost' => function($q) {
@@ -199,7 +253,14 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()
+
+        $response['old_new_data'] = $request->old_new_data;
+        if($response['old_new_data'] == '2') {
+            $woman = \DB::connection('mysqldump')->table('women')->where('status', 1);
+        } else {
+            $woman = SuspectedCase::active();
+        }
+        $woman->whereIn('hp_code', $hpCodes)
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
                     $q->where('service_for', "2")->where('result', 9);

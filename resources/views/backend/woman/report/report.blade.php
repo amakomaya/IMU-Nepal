@@ -128,12 +128,18 @@
                             </div>
                             <div class="form-group  col-sm-3" id="service_for">
                                 <select name="service_for" class="form-control"  >
-                                    <option value="">All Services</option>
+                                    <option value="">Test Type</option>
                                     <option value="2" @if(request()->get('service_for') == '2') selected @endif>Antigen</option>
                                     <option value="1" @if(request()->get('service_for') == '1') selected @endif>PCR </option>
                                 </select>
                             </div>
                             <div id ="from_to"></div>
+                            <div class="form-group  col-sm-3" id="old_new_data">
+                                <select name="old_new_data" class="form-control"  >
+                                    <option value="1">Latest Data</option>
+                                    <option value="2" @if(request()->get('old_new_data') == '2') selected @endif>Older than 15 days </option>
+                                </select>
+                            </div>
                             <div class="form-group col-sm-3">
                                 <button type="submit" class="btn btn-success">Submit</button>
                             </div>
@@ -156,10 +162,14 @@
                                 <thead>
                                     <tr>
                                         <th>S.N</th>
+                                        <th>Date</th>
                                         <th>Name</th>
-                                        <th>Province</th>
+                                        {{-- <th>Province</th>
                                         <th>District</th>
-                                        <th>Municipality</th>
+                                        <th>Municipality</th> --}}
+                                        <th>Age</th>
+                                        <th>Sex</th>
+                                        <th>Phone No.</th>
                                         <th>Result</th>
                                     </tr>
                                 </thead>
@@ -176,13 +186,27 @@
                                         default: $res = "Don't Know";
                                         break;
                                     }
+                                    switch($case->sex){
+                                        case 1: $sex = 'Male';
+                                        break;
+                                        case 2: $sex = 'Female';
+                                        break;
+                                        default: $sex = 'Other';
+                                        break;
+                                    }
+                                    $date_en_array = explode("-", $case->updated_at);
+                                    $date_np = Yagiten\Nepalicalendar\Calendar::eng_to_nep((int)$date_en_array[0], (int)$date_en_array[1], (int)$date_en_array[2])->getYearMonthDay();
                                     ?>
                                     <tr>
                                         <td>{{ $key+1 }}</td>
+                                        <td>{{ $date_np }}</td>
                                         <td>{{ $case->name }}</td>
-                                        <td>{{ $case->province_name }}</td>
+                                        {{-- <td>{{ $case->province_name }}</td>
                                         <td>{{ $case->district_name }}</td>
-                                        <td>{{ $case->municipality_name }}</td>
+                                        <td>{{ $case->municipality_name }}</td> --}}
+                                        <td>{{ $case->age }}</td>
+                                        <td>{{ $sex }}</td>
+                                        <td>{{ $case->emergency_contact_one }}</td>
                                         <td>{{ $res }} </td>
                                     </tr>
                                 @endforeach

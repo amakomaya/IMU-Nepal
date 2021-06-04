@@ -226,7 +226,7 @@ class CasesPaymentController extends Controller
 
             $return['total_general'] = $return['total_hdu'] = $return['total_icu'] = $return['total_ventilator'] = 0;
 
-            if($item->is_death != null) {
+            // if($item->is_death == null) {
                 $arr_initial_health_condition = array([
                     'id' => $item->health_condition,
                     'date' => $item->register_date_en
@@ -268,7 +268,7 @@ class CasesPaymentController extends Controller
                         }
                     }
                 }
-            }
+            // }
 
             return $return;
         })->toArray();
@@ -550,7 +550,7 @@ class CasesPaymentController extends Controller
             $return['no_of_ventilators'] = $item->no_of_ventilators;
 
             $return['total_general'] = $return['total_hdu'] = $return['total_icu'] = $return['total_ventilator'] = $return['death'] = $return['discharge'] = 0;
-            if($item->is_death) {
+            if($item->is_death != null) {
                 if (Carbon::parse($item->date_of_outcome_en)->lessThan($filter_date['from_date']->toDateString())){}
                 else {
                     if($item->is_death == '1') {
@@ -559,45 +559,44 @@ class CasesPaymentController extends Controller
                         $return['discharge'] = 1;
                     }
                 }
-            } else {
-                $arr_initial_health_condition = array([
-                    'id' => $item->health_condition,
-                    'date' => $item->register_date_en
-                ]);
-                $array_health_condition = json_decode($item->health_condition_update, true) ?? [];
-                $array_all_condition = array_merge($arr_initial_health_condition,$array_health_condition);
+            }
+            $arr_initial_health_condition = array([
+                'id' => $item->health_condition,
+                'date' => $item->register_date_en
+            ]);
+            $array_health_condition = json_decode($item->health_condition_update, true) ?? [];
+            $array_all_condition = array_merge($arr_initial_health_condition,$array_health_condition);
 
-                if(!empty($item->date_of_outcome_en)) {
-                    $end_case_date = Carbon::parse($item->date_of_outcome_en);
-                } else {
-                    $end_case_date = Carbon::now();
+            if(!empty($item->date_of_outcome_en)) {
+                $end_case_date = Carbon::parse($item->date_of_outcome_en);
+            } else {
+                $end_case_date = Carbon::now();
+            }
+
+            foreach ($array_all_condition as $i => $value){
+                $next_date = array_key_exists($i + 1, $array_all_condition) ? Carbon::parse($array_all_condition[$i + 1]['date']) : $end_case_date;
+                if (Carbon::parse($next_date)->lessThan($filter_date['from_date']->toDateString())){
+                    $next_date = $filter_date['from_date']->toDateString();
                 }
 
-                foreach ($array_all_condition as $i => $value){
-                    $next_date = array_key_exists($i + 1, $array_all_condition) ? Carbon::parse($array_all_condition[$i + 1]['date']) : $end_case_date;
-                    if (Carbon::parse($next_date)->lessThan($filter_date['from_date']->toDateString())){
-                        $next_date = $filter_date['from_date']->toDateString();
+                if (Carbon::parse($value['date'])->lessThan($filter_date['from_date']->toDateString())){
+                    $value['date'] = $filter_date['from_date']->toDateString();
+                }
+
+                $diff_days = Carbon::parse($value['date'])->diffInDays($next_date);
+                $difference_days = array_key_exists($i + 1, $array_all_condition) ? $diff_days : $diff_days +1;
+                if($difference_days > 0){
+                    if($value['id'] == '2') {
+                        $return['total_general'] += 1;
                     }
-    
-                    if (Carbon::parse($value['date'])->lessThan($filter_date['from_date']->toDateString())){
-                        $value['date'] = $filter_date['from_date']->toDateString();
+                    elseif($value['id'] == '3') {
+                        $return['total_hdu'] += 1;
                     }
-    
-                    $diff_days = Carbon::parse($value['date'])->diffInDays($next_date);
-                    $difference_days = array_key_exists($i + 1, $array_all_condition) ? $diff_days : $diff_days +1;
-                    if($difference_days > 0){
-                        if($value['id'] == '2') {
-                            $return['total_general'] += 1;
-                        }
-                        elseif($value['id'] == '3') {
-                            $return['total_hdu'] += 1;
-                        }
-                        elseif($value['id'] == '4') {
-                            $return['total_icu'] += 1;
-                        }
-                        elseif($value['id'] == '5') {
-                            $return['total_ventilator'] += 1;
-                        }
+                    elseif($value['id'] == '4') {
+                        $return['total_icu'] += 1;
+                    }
+                    elseif($value['id'] == '5') {
+                        $return['total_ventilator'] += 1;
                     }
                 }
             }

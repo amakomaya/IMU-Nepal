@@ -19,6 +19,7 @@ class SuspectedCaseReportController extends Controller
             $$key = $value;
         }
         $response['service_for'] = $request->service_for;
+        $response['old_new_data'] = $request->old_new_data;
         
         $filter_date = $this->dataFromAndTo($request);
         $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']);
@@ -31,8 +32,13 @@ class SuspectedCaseReportController extends Controller
             
             return view('backend.woman.report.report', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
         }
+
+        if($response['old_new_data'] == '2') {
+            $data = \DB::connection('mysqldump')->table('women');
+        } else {
+            $data = \DB::table('women');
+        }
         
-        $data = \DB::table('women');
 
         if ($response['province_id'] !== null){
             $data = $data->where('women.province_id', $response['province_id']);
@@ -66,7 +72,11 @@ class SuspectedCaseReportController extends Controller
                 'municipalities.municipality_name',
 
                 'women.name',
-                'ancs.result'
+                'women.age',
+                'women.sex',
+                'women.emergency_contact_one',
+                'ancs.result',
+                'ancs.updated_at'
             )
             ->get();
         
