@@ -192,6 +192,12 @@ class CasesPaymentController extends Controller
             ->join('districts', 'healthposts.district_id', '=', 'districts.id')
             ->join('provinces', 'healthposts.province_id', '=', 'provinces.id')
             ->join('municipalities', 'healthposts.municipality_id', '=', 'municipalities.id')
+            ->where(function($query) use ($filter_date) {
+                return $query
+                    ->whereDate('payment_cases.register_date_en', '>', $filter_date['from_date']->toDateString())
+                    ->where('payment_cases.date_of_outcome_en', '>', $filter_date['from_date']->toDateString())
+                    ->orWhere('payment_cases.date_of_outcome_en', null);
+            })
             ->select([
                 'healthposts.name as name',
                 'healthposts.id as healthpost_id',
@@ -227,21 +233,39 @@ class CasesPaymentController extends Controller
                 ]);
                 $array_health_condition = json_decode($item->health_condition_update, true) ?? [];
                 $array_all_condition = array_merge($arr_initial_health_condition,$array_health_condition);
-                
-                $latest_data = end($array_all_condition);
-                if (Carbon::parse($latest_data['date'])->lessThan($filter_date['from_date']->toDateString())){}
-                else {
-                    if($latest_data['id'] == '2') {
-                        $return['total_general'] = 1;
+
+                if(!empty($item->date_of_outcome_en)) {
+                    $end_case_date = Carbon::parse($item->date_of_outcome_en);
+                } else {
+                    $end_case_date = Carbon::now();
+                }
+
+                foreach ($array_all_condition as $i => $value){
+                    $next_date = array_key_exists($i + 1, $array_all_condition) ? Carbon::parse($array_all_condition[$i + 1]['date']) : $end_case_date;
+                    if (Carbon::parse($next_date)->lessThan($filter_date['from_date']->toDateString())){
+                        $next_date = $filter_date['from_date']->toDateString();
                     }
-                    elseif($latest_data['id'] == '3') {
-                        $return['total_hdu'] = 1;
+
+
+                    if (Carbon::parse($value['date'])->lessThan($filter_date['from_date']->toDateString())){
+                        $value['date'] = $filter_date['from_date']->toDateString();
                     }
-                    elseif($latest_data['id'] == '4') {
-                        $return['total_icu'] = 1;
-                    }
-                    elseif($latest_data['id'] == '5') {
-                        $return['total_ventilator'] = 1;
+
+                    $diff_days = Carbon::parse($value['date'])->diffInDays($next_date);
+                    $difference_days = array_key_exists($i + 1, $array_all_condition) ? $diff_days : $diff_days +1;
+                    if($difference_days > 0){
+                        if($value['id'] == '2') {
+                            $return['total_general'] += 1;
+                        }
+                        elseif($value['id'] == '3') {
+                            $return['total_hdu'] += 1;
+                        }
+                        elseif($value['id'] == '4') {
+                            $return['total_icu'] += 1;
+                        }
+                        elseif($value['id'] == '5') {
+                            $return['total_ventilator'] += 1;
+                        }
                     }
                 }
             }
@@ -542,21 +566,38 @@ class CasesPaymentController extends Controller
                 ]);
                 $array_health_condition = json_decode($item->health_condition_update, true) ?? [];
                 $array_all_condition = array_merge($arr_initial_health_condition,$array_health_condition);
-                
-                $latest_data = end($array_all_condition);
-                if (Carbon::parse($latest_data['date'])->lessThan($filter_date['from_date']->toDateString())){}
-                else {
-                    if($latest_data['id'] == '2') {
-                        $return['total_general'] = 1;
+
+                if(!empty($item->date_of_outcome_en)) {
+                    $end_case_date = Carbon::parse($item->date_of_outcome_en);
+                } else {
+                    $end_case_date = Carbon::now();
+                }
+
+                foreach ($array_all_condition as $i => $value){
+                    $next_date = array_key_exists($i + 1, $array_all_condition) ? Carbon::parse($array_all_condition[$i + 1]['date']) : $end_case_date;
+                    if (Carbon::parse($next_date)->lessThan($filter_date['from_date']->toDateString())){
+                        $next_date = $filter_date['from_date']->toDateString();
                     }
-                    elseif($latest_data['id'] == '3') {
-                        $return['total_hdu'] = 1;
+    
+                    if (Carbon::parse($value['date'])->lessThan($filter_date['from_date']->toDateString())){
+                        $value['date'] = $filter_date['from_date']->toDateString();
                     }
-                    elseif($latest_data['id'] == '4') {
-                        $return['total_icu'] = 1;
-                    }
-                    elseif($latest_data['id'] == '5') {
-                        $return['total_ventilator'] = 1;
+    
+                    $diff_days = Carbon::parse($value['date'])->diffInDays($next_date);
+                    $difference_days = array_key_exists($i + 1, $array_all_condition) ? $diff_days : $diff_days +1;
+                    if($difference_days > 0){
+                        if($value['id'] == '2') {
+                            $return['total_general'] += 1;
+                        }
+                        elseif($value['id'] == '3') {
+                            $return['total_hdu'] += 1;
+                        }
+                        elseif($value['id'] == '4') {
+                            $return['total_icu'] += 1;
+                        }
+                        elseif($value['id'] == '5') {
+                            $return['total_ventilator'] += 1;
+                        }
                     }
                 }
             }
@@ -580,6 +621,7 @@ class CasesPaymentController extends Controller
                 $final_data[$keyn]['no_of_hdu'] = $result_solo_aray[0]['no_of_hdu'];
                 $final_data[$keyn]['no_of_icu'] = $result_solo_aray[0]['no_of_icu'];
                 $final_data[$keyn]['no_of_ventilators'] = $result_solo_aray[0]['no_of_ventilators'];
+                $final_data[$keyn]['no_of_registration'] = count($result_solo_aray);
     
                 foreach($result_solo_aray as $keym => $res) {
                     $final_data[$keyn]['general_count'] +=  $res['total_general'];

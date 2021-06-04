@@ -17,13 +17,12 @@
             });
         }
 
-        // function municipalityOnchange(id){
-        //     $("#organization").text("Loading...").fadeIn("slow");
-        //     $.get( "{{route("admin.organization-select")}}?id="+id,function(data){
-        //         $("#organization").html(data);
-        //     });
-        // }
-
+        function municipalityOnchange(id){
+            $("#organization").text("Loading...").fadeIn("slow");
+            $.get( "{{route("admin.organization-select")}}?id="+id,function(data){
+                $("#organization").html(data);
+            });
+        }
 
         $(document).ready(function(){
             $.get( "{{route("admin.select-from-to")}}?from_date={{$from_date}}&to_date={{$to_date}}",function(data){
@@ -59,7 +58,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Monthly Line Listing
+                        Cases Report
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -96,7 +95,7 @@
                                 </select>
                             </div>
                             <div class="form-group  col-sm-3" id="municipality">
-                                <select name="municipality_id" class="form-control" id="municipality_id">
+                                <select name="municipality_id" class="form-control" onchange="municipalityOnchange($(this).val())" id="municipality_id">
                                     @if(Auth::user()->role!="municipality" && Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
                                         <option value="">Select All Municipalities</option>
                                     @endif
@@ -111,17 +110,27 @@
                                 </select>
                             </div>
                             <div class="form-group  col-sm-3" id="organization">
-                                <select class="form-control" name="hospital_type" >
-                                    <option value="" >Organization Type</option>
-                                    @php($list = (new \App\Models\Organization())->array_organization_type)
-
-                                    @foreach ($list as $key => $value )
-                                        @if($key == 3 || $key == 5 || $key == 6)
-                                        <option value="{{ $key }}" @if(request()->get('hospital_type') == $key) selected @endif>
-                                            {{ $value }}
-                                        </option>
-                                        @endif
-                                    @endforeach
+                                <select name="hp_code" class="form-control"  >
+                                    @if(Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
+                                        <option value="">All Organization</option>
+                                        @foreach($healthposts as $healthpost)
+                                            @if($healthpost->hospital_type == 3 || $healthpost->hospital_type == 5 || $healthpost->hospital_type == 6)
+                                            @if($hp_code==$healthpost->hp_code)
+                                                @php($selectedHealthpost = "selected")
+                                            @else
+                                                @php($selectedHealthpost = "")
+                                            @endif
+                                            <option value="{{$healthpost->hp_code}}" {{$selectedHealthpost}}>{{$healthpost->name}}</option>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                            <div class="form-group  col-sm-3" id="service_for">
+                                <select name="service_for" class="form-control"  >
+                                    <option value="">All Services</option>
+                                    <option value="2" @if(request()->get('service_for') == '2') selected @endif>Antigen</option>
+                                    <option value="1" @if(request()->get('service_for') == '1') selected @endif>PCR </option>
                                 </select>
                             </div>
                             <div id ="from_to"></div>
@@ -143,47 +152,38 @@
                         <hr>
 
                         <div class="dataTable_wrapper">
-                            <table class="table table-striped table-bordered table-hover display dataTable" id="dataTable">
+                            <table class="table table-striped table-bordered table-hover display dataTable" id="dataTable" style="width: 100%";>
                                 <thead>
-                                <tr>
-                                    <th>S.N</th>
-                                    <th>Name of the Hospital</th>
-                                    <th>Province</th>
-                                    <th>District</th>
-                                    <th>Municipality</th>
-                                    <th>No of General Beds</th>
-                                    <th>No of General Beds Occupied</th>
-                                    <th>No of HDU Beds</th>
-                                    <th>No of HDU Beds Occupied</th>
-                                    <th>No of ICU Beds</th>
-                                    <th>No of ICU Beds Occupied</th>
-                                    <th>No of Ventilators</th>
-                                    <th>No of Ventilators Occupied</th>
-                                    <th>No of Discharge</th>
-                                    <th>No of Deaths</th>
-                                    <th>No of Registration</th>
-                                </tr>
+                                    <tr>
+                                        <th>S.N</th>
+                                        <th>Name</th>
+                                        <th>Province</th>
+                                        <th>District</th>
+                                        <th>Municipality</th>
+                                        <th>Result</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                @php ($count = 0)
                                 @foreach($final_data as $key => $case)
+                                    <?php
+                                    switch($case->result){
+                                        case 9: $res = 'Received';
+                                        break;
+                                        case 3: $res = 'Positive';
+                                        break;
+                                        case 4: $res = 'Negative';
+                                        break;
+                                        default: $res = "Don't Know";
+                                        break;
+                                    }
+                                    ?>
                                     <tr>
-                                        <td>{{ ++$count }}</td>
-                                        <td >{{ $case['healthpost_name'] }} </td>
-                                        <td>{{ $case['province_id'] }} </td>
-                                        <td>{{ $case['district_id'] }} </td>
-                                        <td>{{ $case['municipality_id'] }} </td>
-                                        <td>{{ $case['no_of_beds'] }} </td>
-                                        <td>{{ $case['general_count'] }}</td>
-                                        <td>{{ $case['no_of_hdu'] }} </td>
-                                        <td>{{ $case['hdu_count'] }}</td>
-                                        <td>{{ $case['no_of_icu'] }} </td>
-                                        <td>{{ $case['icu_count'] }}</td>
-                                        <td>{{ $case['no_of_ventilators'] }} </td>
-                                        <td>{{ $case['ventilator_count'] }}</td>
-                                        <td>{{ $case['death_count'] }} </td>
-                                        <td>{{ $case['discharge_count'] }} </td>
-                                        <td>{{ $case['no_of_registration'] }} </td>
+                                        <td>{{ $key+1 }}</td>
+                                        <td>{{ $case->name }}</td>
+                                        <td>{{ $case->province_name }}</td>
+                                        <td>{{ $case->district_name }}</td>
+                                        <td>{{ $case->municipality_name }}</td>
+                                        <td>{{ $res }} </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -218,7 +218,6 @@
     $(document).ready(function() {
         $('#dataTable').DataTable({
             responsive: true,
-            scrollX: true,
             pageLength: 50,
             dom : 'Bfrtip',
             buttons: [
