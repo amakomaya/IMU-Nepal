@@ -15,4 +15,8 @@ class LabReportController extends Controller
     public function index(){
         return view('backend.lab.report');
     }
+
+    public function indexOld(){
+        return view('backend.lab.report-old');
+    }
 }

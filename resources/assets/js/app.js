@@ -38,6 +38,7 @@ import LabNegativeCases from "./components/LabNegativeCases";
 import LabPositiveCases from "./components/LabPositiveCases";
 import CaseDetail from "./components/viewCaseDetailReport"
 import LabCaseReport from "./components/LabCaseReport.vue"
+import LabCaseReportOld from "./components/LabCaseReportOld.vue"
 import CasesInOtherOrganization from "./components/CasesInOtherOrganization";
 import MapIndex from "./components/MapIndex";
 import AnalysisAntigen from "./components/analysis/Antigen";
@@ -114,6 +115,7 @@ Vue.component('vaccination-chart');
 Vue.component('admin-dashboard', AdminDashboard)
 Vue.component('select-year-month', SelectYearMonth)
 Vue.component('lab-case-report', LabCaseReport)
+Vue.component('lab-case-report-old', LabCaseReportOld)
 Vue.component('map-index', MapIndex)
 
 Vue.component('cases-in-other-organization', CasesInOtherOrganization)

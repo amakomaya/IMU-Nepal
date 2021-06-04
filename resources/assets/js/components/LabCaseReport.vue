@@ -6,6 +6,7 @@
           <div class="form-group">
             <h3>Search case by SID or LAB ID :</h3>
               <div class="row">
+                <div class="col-md-12"><button class="btn btn-success" style="float:right"  @click="newLink()">Click for data older than 15 days</button></div>
                 <div class="container">
                   <div class="input-group" :class="{ 'has-error': $v.token.$error }">
                     <input v-model="token" type="text" @keyup.enter="searchResult(token)" class="form-control" placeholder="Enter SID or LAB ID"/>
@@ -164,6 +165,10 @@ export default {
     }
   },
   methods: {
+    newLink() {
+      window.location.href = window.location.protocol + '/admin/lab-case-report-old';
+    },
+
     searchResult(token){
       this.$v.$touch()
       if (this.$v.$invalid) {

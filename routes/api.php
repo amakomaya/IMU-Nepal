@@ -89,6 +89,12 @@ Route::get('/api/v1/check-by-sid-or-lab-id', function () {
     return response()->json($healthpost);
 });
 
+Route::get('/api/v1/check-by-sid-or-lab-id-old', function () {
+    $healthpost = \DB::connection('mysqldump')->table('healthposts')
+        ->with(['province', 'municipality', 'district'])->get();
+    return response()->json($healthpost);
+});
+
 
 Route::post('/v1/client', function (Request $request) {
     $data = $request->json()->all();
@@ -599,6 +605,65 @@ Route::get('/v1/check-by-sid-or-lab-id', function (Request $request) {
     }
 
     $case = SuspectedCase::where('token', $sample_detail->woman_token)
+        ->with(['healthworker' ,'healthpost', 'district', 'municipality'])
+        ->first();
+
+    $case = [
+        'organization_name' => ($lab_details) ? $lab_details->name : $case->healthpost->name,
+        'organization_address_province_district' =>($lab_details) ? '' : $case->healthpost->province->province_name .', '.$case->healthpost->district->district_name,
+        'organization_address_municipality_ward' => ($lab_details) ? '' : $case->healthpost->municipality->municipality_name .' - '.$case->healthpost->ward_no,
+        'organization_address' => ($lab_details) ? $lab_details->tole : $case->healthpost->office_address ?? '',
+        'organization_phone' => ($lab_details) ? $lab_details->phone : $case->healthpost->phone ?? '',
+        'organization_email' => ($lab_details) ? '' : $case->healthpost->email ?? '',
+        'current_date' => \Carbon\Carbon::now()->format('Y-m-d H:i'),
+
+        'name' => $case->name,
+        'formatted_age' => $case->age.' / '.$case->formated_age_unit,
+        'gender' => $case->formated_gender,
+        'address' => $case->district->district_name.', '.$case->municipality->municipality_name.' - '.$case->ward.', '.$case->tole,
+        'phone_no' => $case->emergency_contact_one.' / '.$case->emergency_contact_two,
+
+        'patient_no' => '',
+        'sample_no' => $sample_detail->token,
+        'sample_collected_date' => $sample_detail->created_at->format('Y-m-d H:i'),
+        'lab_no' => ($sample_detail->labreport !== null) ? $sample_detail->labreport->formated_token : '',
+        'sample_received_date' => ($sample_detail->labreport !== null) ? $sample_detail->labreport->sample_recv_date : '',
+        'date_and_time_of_analysis' => ($sample_detail->labreport !== null) ? $sample_detail->labreport->sample_test_date.' '.$sample_detail->labreport->sample_test_time : '',
+        'sample_tested_by' => ($sample_detail->labreport !== null) ? $sample_detail->labreport->checked_by_name : '',
+
+        'test_type' => ($sample_detail->service_for == "2") ? 'Rapid Antigen Test' : 'SARS-CoV-2 RNA Test',
+        'test_result' => $sample_detail->formatted_result
+    ];
+
+
+    return response()->json($case);
+});
+
+Route::get('/v1/check-by-sid-or-lab-id-old', function (Request $request) {
+    $token = $request->token;
+    $lab_details = [];
+    if (strlen($token) !== 17){
+        $lab_result = \DB::connection('mysqldump')->table('lab_tests')
+            ->where('token', auth()->user()->token.'-'.$token)->first();
+        if ($lab_result){
+            $lab_details = \DB::connection('mysqldump')->table('health_workers')
+                ->where('hp_code', $lab_result->hp_code)->first();
+        }
+        if (!$lab_result){
+            return response()->json();
+        }
+        $token = $lab_result->sample_token;
+    }
+
+    $sample_detail = \DB::connection('mysqldump')->table('ancs')
+        ->where('token', $token)->first();
+
+    if (!$sample_detail){
+        return response()->json();
+    }
+
+    $case = \DB::connection('mysqldump')->table('women')
+        ->where('token', $sample_detail->woman_token)
         ->with(['healthworker' ,'healthpost', 'district', 'municipality'])
         ->first();
 
