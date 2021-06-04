@@ -136,7 +136,7 @@
                             <div id ="from_to"></div>
                             <div class="form-group  col-sm-3" id="old_new_data">
                                 <select name="old_new_data" class="form-control"  >
-                                    <option value="1">New Data</option>
+                                    <option value="1">Latest Data</option>
                                     <option value="2" @if(request()->get('old_new_data') == '2') selected @endif>Older than 15 days </option>
                                 </select>
                             </div>

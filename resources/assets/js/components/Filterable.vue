@@ -16,7 +16,7 @@
           <div class="row">
             <div class="filter-item col-md-3">
               <select class="form-control" name="old_new_data">
-                <option value="1">New Data</option>
+                <option value="1">Latest Data</option>
                 <option value="2">Older than 15 days </option>
               </select>
             </div>
