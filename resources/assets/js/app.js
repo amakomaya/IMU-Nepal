@@ -88,6 +88,7 @@ Vue.prototype.$userSessionToken = document.querySelector("meta[name='user-sessio
 Vue.prototype.$userRoleSessionToken = document.querySelector("meta[name='user-role-token']").getAttribute('content');
 Vue.prototype.$csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute('content');
 Vue.prototype.$provincePermissionId = document.querySelector("meta[name='province-permission-id']").getAttribute('content');
+Vue.prototype.$pcrAllowedOrganizationType = ['2', '3'];
 
 Vue.use(Vuelidate)
 Vue.use(StatusIndicator);

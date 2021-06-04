@@ -160,7 +160,7 @@ class AdminController extends Controller
     }
 
     public function sidSearch(Request $request) {
-        if(Auth::user()->role == 'main' || Auth::user()->role == 'province') {
+        if(Auth::user()->role == 'main') {
             if($request->sid) {
                 // $response = FilterRequest::filter($request);
                 // $hpCodes = GetHealthpostCodes::filter($response);
@@ -234,6 +234,9 @@ class AdminController extends Controller
                 ]);
                 
                 if($request->sample_recv_date != null && $request->remaining_token != null) {
+                    SampleCollection::where('token', $request->sid)->first()->update([
+                      'result' => $request->sample_test_result
+                    ]);
                     $lab_id = LabTest::where('sample_token', $request->sid)->first()->id;
                     LabTest::where('id', $lab_id)->update([
                         'sample_recv_date' => $request->sample_recv_date,

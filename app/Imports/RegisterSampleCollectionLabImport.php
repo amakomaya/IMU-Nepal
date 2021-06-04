@@ -55,6 +55,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
         $this->importedBy = $importedBy;
         $this->userToken =  $userToken;
         $this->hpCode = $hpCode;
+        $this->organizationType = \App\Models\Organization::where('hp_code', $hpCode)->first()->hospital_type;
         $this->healthWorker = $healthWorker;
         $this->enums = array(
           'test_type'=> array( 'PCR Swab Collection' => '1', 'Antigen Test' => '2' ),
@@ -119,10 +120,13 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'regdev' => 'excel',
           'woman_token' => $suspectedCase->token,
           'infection_type' => $row['infection_type'],
-
         ];
         $id = $this->healthWorker->id;
-        $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber)->format('H:i:s'));
+        $swabId = $row['test_type'] == '1' ?
+          str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber)->format('H:i:s'))
+          :
+          Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber)->format('H:i:s'))
+          ;
         $sampleCollectionData['token'] = $swabId;
         if ($sampleCollectionData['service_for'] === '1')
             $sampleCollectionData['sample_type'] = $row['sample_type'];
@@ -251,6 +255,15 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
             'emergency_contact_one' => function($attribute, $value, $onFailure) {
               if(!preg_match('/(?:\+977[- ])?\d{2}-?\d{7,8}/i', $value)) {
                 $onFailure('Invalid Mobile Number.');
+              }
+            },
+            'test_type' => function($attribute, $value, $onFailure) {
+              $pcrAllowedOrganizationType = ['2', '3'];
+              if($value == '1' && !in_array($this->organizationType, $pcrAllowedOrganizationType)) {
+                $onFailure('Your organization is not eligible for PCR Lab Result. Please contact IMU support to update your organization type.');
+              }
+              if ($value === '' || $value === null) {
+                   $onFailure('Invalid Test Type');
               }
             },
             'service_type' => function($attribute, $value, $onFailure) {

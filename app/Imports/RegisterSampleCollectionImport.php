@@ -121,7 +121,11 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
           'infection_type' => $row['infection_type'],
         ];
         $id = $this->healthWorker->id;
-        $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber)->format('H:i:s'));
+        $swabId = $row['test_type'] == '1' ?
+        str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber)->format('H:i:s'))
+        :
+        Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber)->format('H:i:s'))
+        ;
         $sampleCollectionData['token'] = $swabId;
         if ($sampleCollectionData['service_for'] === '1')
             $sampleCollectionData['sample_type'] = $row['sample_type'];
@@ -200,6 +204,11 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
             'municipality' => function($attribute, $value, $onFailure) {
               if ($value === '' || $value === null) {
                    $onFailure('Invalid Municipality');
+              }
+            },
+            'test_type' => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Invalid Test Type');
               }
             },
             // 'tole' => function($attribute, $value, $onFailure) {

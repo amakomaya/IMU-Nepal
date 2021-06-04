@@ -42,7 +42,9 @@
         $metaRole = auth()->user()->role;
         $metaPermission = implode(",", auth()->user()->getPermissionNames()->toArray());
         if (auth()->user()->role == 'healthworker'){
-            $metaRole = \App\Models\OrganizationMember::where('token', Auth::user()->token)->first()->role;
+            $healthWorker = \App\Models\OrganizationMember::where('token', Auth::user()->token)->first();
+            $metaRole = $healthWorker->role;
+            $h_type = \App\Models\Organization::where('hp_code', $healthWorker->hp_code)->first()->hospital_type;
         }
         if (auth()->user()->role == 'healthpost'){
             $h_type = \App\Models\Organization::where('token', Auth::user()->token)->first()->hospital_type;

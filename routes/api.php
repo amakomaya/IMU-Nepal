@@ -419,6 +419,44 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
     }
 });
 
+Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
+  $user = auth()->user();
+  $value = $request->all();
+  try {
+      $value['token'] = $user->token . '-' . $value['token'];
+      $find_test = LabTest::where('token', $value['token'])->where('sample_token',$value['sample_token'])->first();
+      if ($find_test) {
+          $sample_collection = SampleCollection::where('token', $find_test->sample_token)->get()->first();
+          $sample_collection->update(['result' => $value['sample_test_result']]);
+          $find_test->update([
+              'sample_test_date' => $value['sample_test_date'],
+              'sample_test_time' => $value['sample_test_time'],
+              'sample_test_result' => $value['sample_test_result'],
+          ]);
+      } else {
+          $sample_collection = SampleCollection::where('token', $value['sample_token'])->get()->first();
+          $sample_collection->update(['result' => $value['sample_test_result']]);
+            $healthWorker = OrganizationMember::where('token', $user->token)->first();
+            LabTest::create([
+              'token' => $value['token'],
+              'hp_code' => $healthWorker->hp_code,
+              'status' => 1,
+              'sample_recv_date' => $value['sample_test_date'],
+              'sample_test_date' => $value['sample_test_date'],
+              'sample_test_time' => $value['sample_test_time'],
+              'sample_test_result' => $value['sample_test_result'],
+              'checked_by' => $user->token,
+              'checked_by' => $healthWorker->name,
+              'sample_token' => $sample_collection->token,
+              'regdev' => 'web'
+            ]);
+      }
+      return response()->json('success');
+  } catch (\Exception $e) {
+      return response()->json(['error'=> $e->getMessage()]);
+  }
+});
+
 
 // New update
 Route::get('/v1/contact-tracing', function (Request $request) {
@@ -866,7 +904,7 @@ Route::post('/v1/cases-search-by-lab-and-id', function (Request $request) {
         ->leftJoin('ancs', 'lab_tests.sample_token', '=', 'ancs.token')
         ->leftJoin('women', 'ancs.woman_token', '=', 'women.token')
         ->leftJoin('municipalities', 'women.municipality_id', '=', 'municipalities.id')
-        ->select('women.name', 'women.age', 'women.emergency_contact_one', 'women.sex', 'municipalities.municipality_name', 'women.tole', 'women.ward')->first();
+        ->select('ancs.service_for', \DB::raw('DATE(ancs.updated_at) AS date_of_positive'), 'women.name', 'women.age', 'women.age_unit', 'women.province_id', 'women.district_id', 'women.municipality_id', 'women.emergency_contact_one', 'women.sex', 'municipalities.municipality_name', 'women.tole', 'women.ward')->first();
 
     if(count($response_data) == 0){
         return response()->json(['message' => 'error']);

@@ -18,7 +18,7 @@
               <th width="10%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
             </tr>
             </thead>
-            <tr slot-scope="{item}">
+            <tr slot-scope="{item, removeItemOnSuccess}">
                 <td>
                     <div v-if="item.parent_case_id !== null" title="Parent Case ID">PC ID : {{ item.parent_case_id }}</div>
                 </td>
@@ -56,8 +56,8 @@
                   <button v-if="item.ancs.length === 0 && checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
                      <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
-                  <button v-if="checkPermission('lab-received') && checkAddReceivedView(item.latest_anc)" v-on:click="addReceivedInLab(item.latest_anc.token)" title="Lab Received ( PCR / Antigen )">
-                    <i class="fa fa-flask" aria-hidden="true"></i> |
+                  <button v-if="checkPermission('antigen-result') && checkAddReceivedView(item.latest_anc)" v-on:click="addAntigenResultInLab(item, removeItemOnSuccess)" title="Add Antigen Result">
+                    <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
                   <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
                         <i class="fa fa-hospital-o"></i> |
@@ -91,7 +91,7 @@ import ViewLabResultReportModel from './ViewLabResultReportModel.vue'
 import SendPatientDataModel from './SendPatientDataModel.vue'
 import viewConfirmReportFormModel from './viewConfirmReportFormModel.vue'
 import fab from 'vue-fab'
-import  AddRecievedInLabModal from "./AddRecievedInLabModal";
+import AddAntigenRecievedTestModal from "./AddAntigenRecievedTestModal";
 
 export default {
   components: {Filterable, fab},
@@ -345,12 +345,14 @@ export default {
     checkAddReceivedView(data){
       return data;
     },
-    addReceivedInLab(item){
-      this.$dlg.modal(AddRecievedInLabModal, {
-        title: 'Received  Cases in Lab',
+    addAntigenResultInLab(item, removeItemOnSuccess){
+      let self = this;
+      this.$dlg.modal(AddAntigenRecievedTestModal, {
+        title: 'Add Antigen Result.',
         width : 700,
         params: {
           item : item,
+          onSuccessCallback: removeItemOnSuccess
         },
       })
     },

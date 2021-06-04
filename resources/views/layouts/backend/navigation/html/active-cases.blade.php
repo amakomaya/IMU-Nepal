@@ -7,7 +7,7 @@
     <a href="#">
         <i class="fa fa-users" aria-hidden="true"></i>
         
-        ACTIVE CASES <span class="fa arrow"></span>
+        CASES OVERVIEW<span class="fa arrow"></span>
     </a>
 
     <ul class="nav nav-second-level">

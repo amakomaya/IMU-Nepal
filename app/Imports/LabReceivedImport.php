@@ -34,6 +34,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
         $this->userToken =  $userToken;
         $this->hpCode = $hpCode;
         $this->healthWorker = $healthWorker;
+        $this->organizationType = \App\Models\Organization::where('hp_code', $hpCode)->first()->hospital_type;
     }
     
     public function registerEvents(): array
@@ -63,6 +64,16 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
               $failures
           );
         } else {
+          $pcrAllowedOrganizationType = ['2', '3'];
+          if($ancs->service_for == '1' && !in_array($this->organizationType, $pcrAllowedOrganizationType)) {
+            $error = ['sid' => 'Your organization is not eligible for PCR Lab Received. Please contact IMU support to update your organization type.'];
+            $failures[] = new Failure($currentRowNumber, 'sid', $error, $row);
+            throw new ValidationException(
+                \Illuminate\Validation\ValidationException::withMessages($error),
+                $failures
+            );
+            return;
+          }
           try {
             LabTest::create([
               'token' => $this->userToken.'-'.$labId,

@@ -12,8 +12,8 @@
       </thead>
       <tbody>
         <tr>
-          <td>Lab Received</td>
-          <td>Create Lab Received by entering SID (15 digit IMU genereted code) & Patient Lab ID(Unique ID for your patient for external/own reference.) </td>
+          <td>Lab Received(PCR/Antigen)</td>
+          <td>Create Lab Received(PCR/Antigen) by entering SID (15 digit IMU genereted code) & Patient Lab ID(Unique ID for your patient for external/own reference.) </td>
           <td><a href="/downloads/excel/lab_received_template.xlsx" onclick="return confirm('Are you sure, do you want to download import format ! ')" title="Do you have template ? If not, please download first and fill data than import.">Download Latest Template</a></td>
           <td>
             <div v-if="checkPermission('lab-received')">
@@ -26,7 +26,7 @@
           </td>
         </tr>
         <tr>
-          <td>PCR/Antigen Results</td>
+          <td>Lab Results (PCR/Antigen)</td>
           <td>Update Lab Results of existing "Lab Received" by entering Patient Lab ID (Unique ID for your patient for external/own reference) & Result (Positive/Negative)</td>
           <td><a href="/downloads/excel/lab_result_template.xlsx" onclick="return confirm('Are you sure, do you want to download import format ! ')" title="Do you have template ? If not, please download first and fill data than import.">Download Latest Template</a></td>
           <td>
@@ -41,10 +41,10 @@
         </tr>
         <tr>
           <td>Lab Received & Results</td>
-          <td>Create new "Lab Received" & update "Lab Results".</td>
+          <td>Create new "Lab Received"(PCR/Antigen) & update "Lab Results"(PCR/Antigen).</td>
           <td><a href="/downloads/excel/lab_received_result_template.xlsx" onclick="return confirm('Are you sure, do you want to download import format ! ')" title="Do you have template ? If not, please download first and fill data than import.">Download Latest Template</a></td>
           <td>
-            <div v-if="checkPermission('lab-result') && checkPermission('lab-received')">
+            <div v-if="(checkPermission('antigen-result') || checkPermission('lab-result')) && checkPermission('lab-received')">
             <label for="bulk_file_lab_received_result" class="btn btn-primary">Bulk Upload
               <i class="fa fa-upload" aria-hidden="true"></i>
             </label>
@@ -68,11 +68,11 @@
           </td>
         </tr>
         <tr>
-          <td>Registration, Sample Collection & Lab Received/Results</td>
-          <td>Register new "New Case"(Case Type will vary according to the Lab Received), create "Sample Collection" ,create "Lab Received" & update "Lab Results".</td>
+          <td>Registration, Sample Collection & Lab Received/Results(PCR/Antigen)</td>
+          <td>Register new "New Case"(Case Type will vary according to the Lab Received), create "Sample Collection" ,create "Lab Received"(PCR/Antigen) & update "Lab Results"(PCR/Antigen).</td>
           <td><a href="/downloads/excel/registration_sample_collection_lab_tests_template.xlsx" onclick="return confirm('Are you sure, do you want to download import format ! ')" title="Do you have template ? If not, please download first and fill data than import.">Download Latest Template</a></td>
           <td>
-            <div v-if="checkPermission('lab-result') && checkPermission('lab-received') && checkPermission('sample-collection') && checkPermission('cases-registration')">
+            <div v-if="(checkPermission('antigen-result') || checkPermission('lab-result')) && checkPermission('lab-received') && checkPermission('sample-collection') && checkPermission('cases-registration')">
               <label for="bulk_file_registration_sample_collection_lab_test" class="btn btn-primary">Bulk Upload
                 <i class="fa fa-upload" aria-hidden="true"></i>
               </label>
@@ -83,7 +83,7 @@
         </tr>
       </tbody>
     </table>
-    <div v-show="isUploading==true" class="modal" tabindex="-1" role="dialog">
+    <div id="uploading-modal" class="modal" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -114,6 +114,12 @@ export default {
       bulk_file_registration_sample_collection_lab_test: "",
       isUploading: false,
     };
+  },
+  action: {
+    isUploading(showModal) {
+      let modalAction = showModal?"show":"hide";
+      $('#uploading-modal').modal(modalAction);
+    }
   },
   methods: {
     checkPermission(value) {

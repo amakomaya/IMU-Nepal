@@ -158,8 +158,8 @@
           <slot name="thead"></slot>
           <tbody>
             <slot v-if="collection.data && collection.data.length"
-                v-for="item in collection.data"
-                :item="item"
+                v-for="(item, index) in collection.data"
+                :item="item" :removeItemOnSuccess="removeItemOnSuccess"
             >
             </slot>
           </tbody>
@@ -285,6 +285,17 @@ export default {
 
       return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
 
+    },
+    removeItemOnSuccess(item) {
+      let removeIndex = [];
+      this.collection.data.find((d, index)=>{
+        if (d.id == item.id){
+          removeIndex.push(index);
+        }
+      });
+      removeIndex.map(index => {
+        this.collection.data.splice(index, 1);
+      });
     },
     updateOrderDirection() {
       if(this.query.order_direction === 'desc') {

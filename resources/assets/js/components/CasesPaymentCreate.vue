@@ -75,7 +75,6 @@
         <label class="control-label" for="age_months">Months</label> &nbsp; &nbsp;
         <input type="radio" id="age_days" v-model.trim="data.age_unit" value="2">
         <label class="control-label" for="age_days">Days</label> &nbsp; &nbsp;
-
         <input type="text" placeholder="Enter age" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" v-model.trim="data.age" id="age"/>
       </div>
       <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.gender.$error }">
@@ -92,6 +91,51 @@
         <input type="text" placeholder="Enter mobile number" class="form-control" v-model.trim="data.phone" id="phone"/>
       </div>
     </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <label class="control-label">Permanent Address *</label>
+      </div>
+      <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.province_id.$error }">
+        <label class="control-label" for="province">Province *</label>
+        <select class="form-control show-arrow" v-model.trim="data.province_id" id="province" @change="onProvinceChange(data.province_id)">
+          <option value="" selected hidden>Select Province</option>
+          <option :value="province.id"  v-for="province in allProvinceList" >
+            {{province.province_name}}
+          </option>
+        
+        </select>
+      </div>
+      <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.district_id.$error }">
+        <label class="control-label" for="district">District *</label>
+        <select class="form-control show-arrow" v-model.trim="data.district_id" id="district" @change="onDistrictChange(data.district_id)">
+          <option value="" selected hidden>Select District</option>
+          <option :value="district.id"  v-for="district in filteredDistrictList" >
+
+            {{district.district_name}}
+
+          </option>
+        
+        </select>
+      </div>
+      <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.municipality_id.$error }">
+        <label class="control-label" for="municipality">Municipality *</label>
+        <select class="form-control show-arrow" v-model.trim="data.municipality_id" id="municipality" @change="onMunicipalityChange(data.municipality_id)">>
+          <option value="" selected hidden>Select Municipality</option>
+          <option :value="municipality.id"  v-for="municipality in filteredMunicipalityList" >
+            {{municipality.municipality_name}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group col-lg-4 " :class="{ 'has-error': $v.data.ward.$error }">
+        <label class="control-label" for="ward">Ward No *</label>
+        <input type="text" placeholder="Ward No" class="form-control" v-model.trim="data.ward" id="ward" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"/>
+      </div>
+      <div class="form-group col-lg-4 " :class="{ 'has-error': $v.data.tole.$error }">
+        <label class="control-label" for="tole">Tole *</label>
+        <input type="text" placeholder="Tole" class="form-control" v-model.trim="data.tole" id="tole" />
+      </div>
+    </div>
+    
     <div class="form-group" :class="{ 'has-error': $v.data.address.$error }">
       <label class="control-label" for="name">Current Address *</label>
       <input type="text" placeholder="Enter Current Address ( e.g Lazimpat-2, Kathmandu )" class="form-control" v-model.trim="data.address" id="address" />
@@ -182,7 +226,7 @@
           <div class="input-group">
               <input type="text" class="form-control" v-model.trim="data.other_comorbidity" id="other_comorbidity" />
           </div>
-      </div>
+    </div>
     <div class="row">
       <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.method_of_diagnosis.$error }">
         <label class="control-label">Method of Diagnosis</label><br>
@@ -198,17 +242,37 @@
     </div>
     <div class="row">
       <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.complete_vaccination.$error }">
-        <label class="control-label">Completed vaccination (2nd Dose)*</label><br>
-        <input type="radio" id="v_yes" v-model.trim="data.complete_vaccination"  value="1">
-        <label class="control-label" for="v_yes">Yes</label> &nbsp; &nbsp;
+        <label class="control-label">COVID 19 vaccination*</label><br>
         <input type="radio" id="v_no" v-model.trim="data.complete_vaccination" value="0">
-        <label class="control-label" for="v_no">No</label> &nbsp; &nbsp;
+        <label class="control-label" for="v_no">None</label> &nbsp; &nbsp;
+        <input type="radio" id="v_first" v-model.trim="data.complete_vaccination"  value="1">
+        <label class="control-label" for="v_first">1st Dose</label> &nbsp; &nbsp;
+        <input type="radio" id="v_second" v-model.trim="data.complete_vaccination"  value="2">
+        <label class="control-label" for="v_second">2nd Dose</label> &nbsp; &nbsp;
+      </div>
+      <div v-if="data.complete_vaccination=='1' || data.complete_vaccination=='2'" class="form-group col-lg-6" :class="{ 'has-error': $v.data.vaccine_type.$error }">
+        <label class="control-label" for="vaccine_type">Vaccine Type *</label>
+        <select class="form-control show-arrow" v-model.trim="data.vaccine_type" id="vaccine_type">
+          <option value="" selected="selected">Please Select Vaccine</option>
+          <option value="1">Verocell (Sinopharm)</option>
+          <option value="2">Covishield (The Serum Institute of India)</option>
+          <option value="3">Pfizer</option>
+          <option value="4">Moderna</option>
+          <option value="5">AstraZeneca</option>
+          <option value="10">Other</option>
+        </select>
+      </div>
+      <div v-if="data.vaccine_type=='10'" class="form-group col-lg-6" :class="{ 'has-error': $v.data.other_vaccine_type.$error }">
+        <label for="other_vaccine_type">Specify other type of vaccine *</label>
+          <div class="input-group">
+              <input type="text" class="form-control" v-model.trim="data.other_vaccine_type" id="other_vaccine_type" />
+          </div>
       </div>
     </div>
     <div class="row">
       <div v-if="!is_to_update" class="form-group col-lg-4" :class="{ 'has-error': $v.data.health_condition.$error }">
         <label class="control-label" for="health_condition">Health Condition *</label>
-        <select class="form-control" v-model.trim="data.health_condition" id="health_condition">
+        <select class="form-control show-arrow" v-model.trim="data.health_condition" id="health_condition">
           <option value="0" selected hidden>Please Select Medical Condition</option>
           <option :value="entry_health_condition.id"  v-for="entry_health_condition in entry_health_conditions" >
 
@@ -241,11 +305,11 @@
         <div v-if="!isHealthConditionAddHidden" class="form-group col-lg-10">
 
           <div class="form-group col-lg-6">
-            <select class="form-control" v-model.trim="health_condition_details_health_condition" id="health_condition_details_health_condition">
+            <select class="form-control show-arrow" v-model.trim="health_condition_details_health_condition" id="health_condition_details_health_condition">
               <option value="" selected="selected">Please Select Medical Condition</option>
               <option value="1">No Symptoms</option>
               <option value="2">Mild</option>
-              <option value="3">Moderate &  HDU</option>
+              <option value="3">Moderate & HDU</option>
               <option value="4">Severe - ICU</option>
               <option value="5">Severe - Ventilator</option>
             </select>
@@ -278,7 +342,7 @@
     <p v-if="health_condition_details_validation !== ''" class="text-danger">{{ health_condition_details_validation }}</p>
 
     <hr>
-    <div class="form-group">
+    <div class="form-group" :class="{ 'has-error': $v.data.guardian_name.$error }">
       <label for="guardian_name">Parent/Guardian Name</label>
       <input type="text" class="form-control" v-model.trim="data.guardian_name" id="guardian_name" />
     </div>
@@ -354,7 +418,7 @@
 
 <script type="text/javascript">
 import axios from "axios";
-import {required, minValue} from "vuelidate/lib/validators";
+import {required, minValue, helpers} from "vuelidate/lib/validators";
 import DataConverter from "ad-bs-converter";
 
 export default {
@@ -375,7 +439,14 @@ export default {
         date_of_positive: '',
         date_of_positive_np: '',
         cause_of_death: null,
-        other_death_cause: null
+        other_death_cause: null,
+        province_id: null,
+        district_id: null,
+        municipality_id: null,
+        ward: null,
+        vaccine_type: null,
+        other_vaccine_type: null,
+        tole: null,
       },
       lab_id : '',
       options: [],
@@ -390,10 +461,16 @@ export default {
       entry_health_conditions: [],
       isSubmitting: false,
       bulk_file: '',
+      allProvinceList: [],
+      allDistrictList: [],
+      filteredDistrictList: [],
+      allMunicipalityList: [],
+      filteredMunicipalityList: [],
     }
   },
   mounted () {
     this.setEntryHealthCondition();
+    this.getFederalDropdown();
     this.getTodayDate();
   },
   validations() {
@@ -403,11 +480,19 @@ export default {
     let otherComorbidityVdn = this.data.comorbidity && (this.data.comorbidity.includes('10')||this.data.comorbidity.includes(10))?{ required }:{};
     let dateofOutcomeVdn = this.data.is_death && this.data.is_death !== '' ?{ required }:{};
     let timeOfDeathVdn = this.data.is_death && this.data.is_death.toString()==='2'?{ required }:{};
+    let vacccineTypeVdn = this.data.complete_vaccination && this.data.complete_vaccination.toString()!='0'?{ required }:{};
+    let otherVaccineTypeVdn = this.data.vaccine_type && this.data.vaccine_type.toString() === '10'?{ required }:{};
     let validationRules = {
       data: {
         name: { required },
         age : { required },
-        phone : { required },
+        phone : { 
+          required,
+          isPhoneValid(phone) {
+            const regex = /(?:\+977[- ])?\d{2}-?\d{7,8}/i;
+            return regex.test(phone);
+          }
+        },
         hospital_register_id : { required },
         register_date_np : { required },
         method_of_diagnosis : { required },
@@ -423,7 +508,15 @@ export default {
         date_of_positive_np: { required },
         other_comorbidity: otherComorbidityVdn,
         date_of_outcome: dateofOutcomeVdn,
-        time_of_death: timeOfDeathVdn
+        time_of_death: timeOfDeathVdn,
+        province_id: { required },
+        district_id: { required } ,
+        municipality_id: {required},
+        ward: {required},
+        vaccine_type: vacccineTypeVdn,
+        other_vaccine_type: otherVaccineTypeVdn,
+        tole: {required},
+        guardian_name: {required}
       },
       labSelected : { required }
     }
@@ -437,6 +530,57 @@ export default {
         });
         arrObj.splice(filterIndex,1);
         return arrObj;
+    },
+    getFederalDropdown() {
+      let self = this;
+      axios.get('/api/province')
+        .then((response) => {
+          self.allProvinceList = response.data;
+      });
+      axios.get('/api/district')
+        .then((response) => {
+          self.allDistrictList = response.data;
+          self.filteredDistrictList = response.data;
+      });
+      axios.get('/api/municipality')
+        .then((response) => {
+          self.allMunicipalityList = response.data;
+          self.filteredMunicipalityList = response.data;
+      });
+    },
+    filterMunicipalityByProvince(selectedProvinceId) {
+      let filteredMunicipalityList = this.allMunicipalityList.filter(municipality => (municipality.province_id == selectedProvinceId));
+      this.filteredMunicipalityList = filteredMunicipalityList;
+      this.data.municipality_id = null;
+    },
+    filterMunicipalityByDistrict(selectedDistrictId) {
+      let selectedDistrict = this.allDistrictList.filter(district => (district.id == selectedDistrictId))[0];
+      let filteredMunicipalityList = this.allMunicipalityList.filter(municipality => (municipality.district_id == selectedDistrictId));
+      this.filteredMunicipalityList = filteredMunicipalityList;
+      this.data.province_id = selectedDistrict.province_id;
+      this.data.municipality_id = null;
+    },
+    filterDistrictByProvince(provinceId) {
+      this.filterMunicipalityByProvince(provinceId);
+      let filteredDistrictList = this.allDistrictList.filter(district=>district.province_id==provinceId);
+      this.filteredDistrictList = filteredDistrictList;
+    },
+    onProvinceChange(provinceId) {
+      if(provinceId) {
+        this.filterDistrictByProvince(provinceId);
+      }
+    },
+    onDistrictChange(selectedDistrictId) {
+      if(selectedDistrictId) {
+        this.filterMunicipalityByDistrict(selectedDistrictId);
+      }
+    },
+    onMunicipalityChange(municipalityId) {
+      if(municipalityId){
+        let selectedMunicipality = this.allMunicipalityList.filter(municipality => (municipality.id == municipalityId))[0];
+        this.data.province_id = selectedMunicipality.province_id;
+        this.data.district_id = selectedMunicipality.district_id;
+      }
     },
     getTodayDate() {
       axios.get('/api/v1/server-date')
@@ -578,15 +722,22 @@ export default {
                 showConfirmButton: false,
                 timer: 3000
               });
-              console.log(resonse.data.data);
               this.data.name = response.data.data.name;
-                this.data.age = response.data.data.age;
-                this.data.gender = response.data.data.sex;
-                this.data.address =  response.data.data.tole + '-' + response.data.data.ward + ',' + response.data.data.municipality_name;
-                this.data.phone = response.data.data.emergency_contact_one;
-                this.data.health_condition = 0;
-                this.data.is_death = '';
-                this.data.lab_id = id;
+              this.data.age = response.data.data.age;
+              this.data.gender = response.data.data.sex;
+              this.data.address =  response.data.data.tole + '-' + response.data.data.ward + ',' + response.data.data.municipality_name;
+              this.data.phone = response.data.data.emergency_contact_one;
+              this.data.health_condition = 0;
+              this.data.is_death = '';
+              this.data.lab_id = id;
+              this.data.date_of_positive = response.data.data.date_of_positive;
+              this.data.date_of_positive_np = this.ad2bs(response.data.data.date_of_positive);
+              this.data.method_of_diagnosis = response.data.data.service_for||null;
+              this.data.province_id = response.data.data.province_id;
+              this.data.district_id = response.data.data.district_id;
+              this.data.municipality_id = response.data.data.municipality_id;
+              this.data.tole = response.data.data.tole;
+              this.data.ward = response.data.data.ward;
               if (this.item){
                 this.$dlg.closeAll(function(){
                   // do something after all dialog closed
@@ -702,7 +853,14 @@ export default {
                   date_of_positive: '',
                   date_of_positive_np: '',
                   cause_of_death: null,
-                  other_death_cause: null
+                  other_death_cause: null,
+                  province_id: null,
+                  district_id: null,
+                  municipality_id: null,
+                  ward: null,
+                  vaccine_type: null,
+                  other_vaccine_type: null,
+                  guardian_name: null,
                 }
               }
               this.isSubmitting = false;
@@ -850,6 +1008,12 @@ export default {
               if(response.data.health_condition_update !== null){
                    this.health_condition_update_lists =  JSON.parse(response.data.health_condition_update);
               }
+              this.data.province_id = response.data.province_id;
+              this.data.district_id = response.data.district_id;
+              this.data.municipality_id = response.data.municipality_id;
+              this.data.ward = response.data.ward;
+              this.data.vaccine_type = response.data.vaccine_type;
+              this.data.other_vaccine_type = response.data.other_vaccine_type;
             }
           })
           .catch((error) => {
