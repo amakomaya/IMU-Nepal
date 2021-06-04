@@ -9,9 +9,10 @@ use App\Models\SampleCollection;
 use App\Models\SuspectedCase;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Yagiten\Nepalicalendar\Calendar;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class ExtCaseController extends Controller
 {
@@ -81,11 +82,23 @@ class ExtCaseController extends Controller
         $secret = request()->getPassword();
 
         $user = User::where([['username', $key], ['password', md5($secret)], ['role', 'healthworker']])->get()->first();
-
         if (!empty($user)) {
             $healthworker = OrganizationMember::where('token', $user->token)->get()->first();
+            $latest_test = LabTest::where('checked_by', $user->token)->latest()->first();
+            $randomLabId = '';
+            if($latest_test) {
+              $token = $latest_test->token;
+              $tokenArray = explode('-', $token);
+              if(count($tokenArray)>2) {
+                $randomLabId = $tokenArray[1];
+              }
+            }
+            if($randomLabId == '') {
+              $randomLabId = '000000';
+            }
             $data = json_decode($request->getContent(), true);
-            foreach ($data as $value) {
+            DB::beginTransaction();
+            foreach ($data as $index=>$value) {
                 $case_token = 'a-' . md5(microtime(true) . mt_Rand());
                 $case = [
                     'token' => $case_token,
@@ -111,6 +124,21 @@ class ExtCaseController extends Controller
                 ];
                 $id = OrganizationMember::where('token', $user->token)->first()->id;
                 $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
+                
+                $update = false;
+                $existingSampleCollection = $existingSuspectedCase = $existingLabTest = '';
+                if(array_key_exists('imu_swab_id', $value) && $value['imu_swab_id']) {
+                  $existingSampleCollection = SampleCollection::where('checked_by', $user->token)->where('token', $value['imu_swab_id'])->first();
+                  if($existingSampleCollection) {
+                    $existingSuspectedCase = SuspectedCase::where('token', $existingSampleCollection->woman_token)->first();
+                    $existingLabTest = LabTest::where('sample_token', $value['imu_swab_id'])->first();
+                    $update = true;
+                    $swab_id = $value['imu_swab_id'];
+                  } else {
+                    DB::rollback();
+                    return response()->json(['message' => 'The data couldnot be uploaded due to following errors: This IMU Swab ID was not found in IMU System. Please enter valid swab ID to update record or leave it blank to create new record' ]);
+                  }
+                }
                 $sample = [
                     'token' => $swab_id,
                     'woman_token' => $case_token,
@@ -126,8 +154,11 @@ class ExtCaseController extends Controller
                     'status' => 1,
                     'regdev' => 'api'
                 ];
+                $randomLetter = substr(str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, 2);
+                $singleRandomLabId = (int)$randomLabId+$index+1;
+                $lab_id = array_key_exists('lab_id', $value) && $value['lab_id']?$value['lab_id']:str_pad($singleRandomLabId, 6, '0', STR_PAD_LEFT).'-'.$randomLetter;
                 $lab_test = [
-                    'token' => $user->token.'-'.md5(microtime(true) . mt_Rand()),
+                    'token' => $user->token.'-'.$lab_id,
                     'sample_token' => $swab_id,
                     'sample_recv_date' => $this->ad2bs($value['lab_received_date']),
                     'sample_test_date' => $this->ad2bs($value['lab_test_date']),
@@ -139,14 +170,31 @@ class ExtCaseController extends Controller
                     'status' => 1,
                     'regdev' => 'api'
                 ];
+                
+                
                 try {
-                    SuspectedCase::create($case);
-                    SampleCollection::create($sample);
-                    LabTest::create($lab_test);
+                    if(!$update) {
+                      SuspectedCase::create($case);
+                      SampleCollection::create($sample);
+                      LabTest::create($lab_test);
+                    } else {
+                      unset($case['token']);
+                      unset($sample['woman_token']);
+                      $existingSuspectedCase->update($case);
+                      $existingSampleCollection->update($sample);
+                      if($existingLabTest) {
+                        unset($lab_test['token']);
+                        $existingLabTest->update($lab_test);
+                      } else {
+                        LabTest::create($lab_test);
+                      }
+                    }
                 } catch (\Exception $e) {
-                    return response()->json(['message' => 'Something went wrong, Please try again.']);
+                    DB::rollback();
+                    return response()->json(['message' => 'The data couldnot be uploaded due to following errors: \n '. $e->getMessage()]);
                 }
             }
+            DB::commit();
             return response()->json(['message' => 'Data Successfully Sync']);
         }
         return ['message' => 'Authentication Failed'];

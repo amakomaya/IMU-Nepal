@@ -7,7 +7,7 @@ use App\User;
 
 class provinceInfo extends Model
 {
-    protected $fillable = ['province_id','token','phone','office_address','office_longitude','office_lattitude','status','updated_at'];
+    protected $fillable = ['permission_id','province_id','token','phone','office_address','office_longitude','office_lattitude','status','updated_at'];
 
 	public function province()
     {
@@ -20,4 +20,15 @@ class provinceInfo extends Model
     		return $user->id;
 		}
 	}
+
+
+	// permission_id
+    public function getPermissionToString($id){
+	    switch ($id){
+            case 1:
+                return "all";
+            default:
+                return "view-only";
+        }
+    }
 }

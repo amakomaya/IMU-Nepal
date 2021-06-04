@@ -112,7 +112,7 @@ export default {
       console.log(item);
     },
     checkEditButton(){
-      return this.$userRole === 'healthpost' || this.$userRole === 'main';
+      return this.$userRole === 'healthpost' || this.$userRole === 'main' || this.$provincePermissionId === '1';
     }
 
   }
