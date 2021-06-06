@@ -5,11 +5,12 @@
       <tr>
         <th width="6%">ID</th>
         <th width="10%">Name</th>
-        <th width="7%">Age</th>
+        <th width="4%">Age</th>
         <th width="6%" title="Gender">G</th>
-        <th width="10%" title="Emergency Contact Number">Phone</th>
+        <th width="7%" title="Emergency Contact Number">Phone</th>
         <!-- <th>District</th> -->
         <th width="10%" title="Municipality">Municipality</th>
+        <th width="4%" title="Ward No">Ward</th>
         <th width="15%">Case</th>
         <th width="10%" title="Case Created Date">Date</th>
         <th width="10%" title="Sample Collection Details">Sample</th>
@@ -29,8 +30,9 @@
           Two : {{ roleVisibility(item.emergency_contact_two) }}
         </td>
         <td>{{ checkMunicipality(item.municipality_id) }}</td>
+        <td>{{ item.ward }}</td>
         <td>
-          Place : {{ item.healthpost.name }} <br>
+          Place : {{ getHealthPostName(item.healthpost) }} <br>
           Type : {{ checkCaseType(item.cases) }} <br>
           Management : {{ checkCaseManagement(item.cases, item.case_where) }}
         </td>
@@ -137,6 +139,12 @@ export default {
   },
   methods: {
 
+    getHealthPostName: function(item) {
+      if(item === null) {
+        return ''
+      }
+      return item.name
+    },
     sendPatientData: function (item) {
       this.$dlg.modal(SendPatientDataModel, {
         title: 'Do you want to send ' + item.name + ' \'s patients data ?',

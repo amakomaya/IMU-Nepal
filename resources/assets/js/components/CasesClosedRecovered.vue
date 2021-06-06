@@ -9,6 +9,7 @@
         <th>Emergency Contact</th>
         <th>District</th>
         <th>Municipality</th>
+        <th title="Ward No">Ward</th>
         <th>Total Collection</th>
         <th>Latest Lab Result</th>
         <th>Action</th>
@@ -25,6 +26,7 @@
         </td>
         <td>{{ checkDistrict(item.district_id) }}</td>
         <td>{{ checkMunicipality(item.municipality_id) }}</td>
+        <td>{{ item.ward }}</td>
         <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
         <td><div v-html="latestLabResult(item.latest_anc)">
         </div>

@@ -5,11 +5,13 @@
             <tr>
               <th width="7%">ID</th>
               <th width="15%">Name</th>
-              <th width="10%">Age</th>
+              <th width="6%">Age</th>
               <th width="7%" title="Gender">G</th>
               <th width="10%" title="Emergency Contact Number">Phone</th>
               <th>District</th>
               <th width="10%" title="Municipality">Municipality</th>
+              <th width="4%" title="Ward No">Ward</th>
+
 <!--              <th width="15%">Case</th>-->
               <th width="10%" title="Case Created Date">Date</th>
               <th width="10%" title="Sample Collection Details">Sample</th>
@@ -27,6 +29,7 @@
                 </td>
                 <td>{{ checkDistrict(item.district_id) }}</td>
                 <td>{{ checkMunicipality(item.municipality_id) }}</td>
+                <td>{{ item.ward }}</td>
                 <td>{{ ad2bs(item.created_at) }}</td>
 
               <td><span class="label label-info"> {{ item.ancs.length }}</span>
