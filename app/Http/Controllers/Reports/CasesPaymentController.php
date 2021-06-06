@@ -475,10 +475,7 @@ class CasesPaymentController extends Controller
         $filter_date = $this->dataFromAndTo($request);
         $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']);
 
-        if ($response['province_id'] == null ||
-            $response['municipality_id'] == null ||
-            $response['district_id'] == null
-        ){
+        if ($response['province_id'] == null){
             $final_data = [];
             $request->session()->flash('message', 'Please select all the above filters to view the data within the selected date range.');
             return view('backend.cases.reports.situation-report', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
