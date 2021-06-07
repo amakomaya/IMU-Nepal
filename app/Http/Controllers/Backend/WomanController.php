@@ -61,9 +61,23 @@ class WomanController extends Controller
         return redirect('/admin');
     }
 
+    public function pendingIndexOld(){
+        if($this->roleViewCheck()){
+            return view('backend.woman.pending-index-old');
+        };
+        return redirect('/admin');
+    }
+
     public function antigenPendingIndex(){
         if($this->roleViewCheck()){
             return view('backend.woman.antigen-pending-index');
+        };
+        return redirect('/admin');
+    }
+
+    public function antigenPendingIndexOld(){
+        if($this->roleViewCheck()){
+            return view('backend.woman.antigen-pending-index-old');
         };
         return redirect('/admin');
     }

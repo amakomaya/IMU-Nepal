@@ -4,7 +4,9 @@
 Route::resource('api/women', 'Data\Api\WomenController');
 Route::get('api/active-patient', 'Data\Api\WomenController@activeIndex');
 Route::get('api/active-pending-patient', 'Data\Api\WomenController@activePendingIndex');
+Route::get('api/active-pending-patient-old', 'Data\Api\WomenController@activePendingIndexOld');
 Route::get('api/active-antigen-pending-patient', 'Data\Api\WomenController@activeAntigenPendingIndex');
+Route::get('api/active-antigen-pending-patient-old', 'Data\Api\WomenController@activeAntigenPendingIndexOld');
 Route::get('api/passive-patient', 'Data\Api\WomenController@passiveIndex');
 Route::get('api/passive-patient-old', 'Data\Api\WomenController@passiveIndexOld');
 Route::get('api/passive-patient-antigen', 'Data\Api\WomenController@passiveAntigenIndex');

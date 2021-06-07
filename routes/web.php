@@ -104,7 +104,9 @@ Route::resource('admin/health-worker', 'Backend\HealthWorkerController');
 //Bakend Patients
 Route::resource('admin/patients', 'Backend\WomanController', ['names' => 'woman']);
 Route::get('admin/patients-pending', 'Backend\WomanController@pendingIndex')->name('woman.pending-index');
+Route::get('admin/patients-pending-old', 'Backend\WomanController@pendingIndexOld')->name('woman.pending-index-index');
 Route::get('admin/antigen-patients-pending', 'Backend\WomanController@antigenPendingIndex')->name('woman.antigen-pending-index');
+Route::get('admin/antigen-patients-pending-old', 'Backend\WomanController@antigenPendingIndexOld')->name('woman.antigen-pending-index-old');
 
 Route::get('admin/add-multiple-sample', 'Backend\WomanController@addSampleCollection')->name('patient.multiple-sample.create');
 Route::get('admin/negative-patients', 'Backend\WomanController@negativeIndex')->name('patients.negative.index');

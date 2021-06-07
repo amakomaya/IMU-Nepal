@@ -24,7 +24,9 @@ Vue.use(VueProgress, {
 
 import WomenList from './components/CasesRegistered.vue'
 import CasePendingList from './components/CasesPending.vue'
+import CasePendingListOld from './components/CasesPendingOld.vue'
 import AntigenCasePendingList from './components/AntigenCasesPending.vue'
+import AntigenCasePendingListOld from './components/AntigenCasesPendingOld.vue'
 import WomanListNegative from './components/CasesNegative'
 import WomanListNegativeOld from './components/CasesNegativeOld'
 import WomanListNegativeAntigen from './components/CasesNegativeAntigen'
@@ -102,7 +104,9 @@ Vue.component('v-select', vSelect)
 
 Vue.component('women-list', WomenList);
 Vue.component('pending-case-list', CasePendingList);
+Vue.component('pending-case-list-old', CasePendingListOld);
 Vue.component('antigen-pending-case-list', AntigenCasePendingList);
+Vue.component('antigen-pending-case-list-old', AntigenCasePendingListOld);
 
 Vue.component('women-list-negative-antigen', WomanListNegativeAntigen);
 Vue.component('women-list-negative-antigen-old', WomanListNegativeAntigenOld);
