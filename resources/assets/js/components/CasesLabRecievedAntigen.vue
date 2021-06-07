@@ -34,7 +34,7 @@
         <td>{{ checkMunicipality(item.municipality_id) }}</td>
         <td>{{ item.ward }}</td>
         <td>
-          Place : {{ item.healthpost.name }} <br>
+          Place : {{ getHealthPostName(item.healthpost) }} <br>
           Type : {{ checkCaseType(item.cases) }} <br>
           Management : {{ checkCaseManagement(item.cases, item.case_where) }}
         </td>
@@ -144,6 +144,12 @@ export default {
   methods: {
     newLink() {
       window.location.href = window.location.protocol + '/admin/lab-received-patients-antigen-old';
+    },
+    getHealthPostName: function(item) {
+      if(item === null) {
+        return ''
+      }
+      return item.name
     },
     sendPatientData: function (item) {
       this.$dlg.modal(SendPatientDataModel, {

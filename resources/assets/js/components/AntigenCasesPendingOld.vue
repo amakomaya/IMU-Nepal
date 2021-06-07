@@ -39,14 +39,14 @@
                     Management : {{ checkCaseManagement(item.cases, item.case_where) }}
                 </td>
               <td>{{ ad2bs(item.created_at) }}</td>
-                <td><span class="label label-info"> 0</span>
+                <td><span class="label label-info">{{ item.ancs_count }}</span>
                     <div v-if="item.ancs_token" title="Swab ID">
                       SID : <strong>{{ item.ancs_token }}</strong> <br>
                       Type : {{ checkSampleType(item.ancs_service_for) }}
                     </div>
                 </td>
                 <td>
-                    <div v-if="item.ancs.length > 0"><span class="label label-primary"> Pending </span></div>
+                    <div v-if="item.ancs_token"><span class="label label-primary"> Pending </span></div>
                     <div v-else><span class="label label-primary"> Registered </span></div>
                 </td>
                 <td>

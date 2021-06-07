@@ -39,7 +39,7 @@
           Management : {{ checkCaseManagement(item.cases, item.case_where) }}
         </td>
         <td>{{ ad2bs(item.created_at) }}</td>
-        <td><span class="label label-info"> 0</span>
+        <td><span class="label label-info"> {{ item.ancs_count }}</span>
           <div v-if="item.ancs_token" title="Swab ID">SID : <strong>{{ item.ancs_token }}</strong></div>
         </td>
         <td>
