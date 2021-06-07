@@ -484,15 +484,20 @@ export default {
 
       return f
     },
+    switchValue() {
+      console.log(this.refs.switch.checked)
+      return 1;
+    },
     fetch() {
       this.loading = true
       const filters = this.getFilters()
+      var switchVal = this.switchValue()
 
       const params = {
         ...filters,
         ...this.query
       }
-      axios.get(this.url, {params: params})
+      axios.get(this.url, {params: {...params, old_new_data: switchVal}})
           .then((res) => {
             Vue.set(this.$data, 'collection', res.data.collection)
             this.query.page = res.data.collection.current_page

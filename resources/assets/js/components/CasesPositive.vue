@@ -1,5 +1,9 @@
 <template>
   <div>
+    <label class="switch" style="float:right" ref="switch" @click="switchValue()">
+      <input type="checkbox">
+      <span class="slider round"></span>
+    </label>
     <filterable v-bind="filterable">
       <thead slot="thead">
       <tr>

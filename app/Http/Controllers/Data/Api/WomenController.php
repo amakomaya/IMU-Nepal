@@ -192,22 +192,45 @@ class WomenController extends Controller
         $response['old_new_data'] = $request->old_new_data;
         if($response['old_new_data'] == '2') {
             $woman = \DB::connection('mysqldump')->table('women')->where('status', 1);
+            $woman->whereIn('women.hp_code', $hpCodes)
+                ->where('ancs.service_for', "2")->whereIn('ancs.result', [0,2])
+                ->leftjoin('provinces', 'women.province_id', '=', 'provinces.id')
+                ->leftjoin('municipalities', 'women.municipality_id', '=', 'municipalities.id')
+                ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
+                ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
+                ->leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
+                ->select(
+                    'women.*',
+                    'ancs.token',
+                    'ancs.result',
+                    'lab_tests.sample_token',
+                    'provinces.province_name',
+                    'municipalities.district_name',
+                    'municipalities.municipality_name',
+                    'healthposts.name as healthpost_name',
+                )
+                ->process($query, request()->all())
+                ->orderBy(
+                    request('order_column', 'created_at'),
+                    request('order_direction', 'desc')
+                )
+                ->paginate(request('limit', 100));
         } else {
             $woman = SuspectedCase::active();
+            $woman->whereIn('hp_code', $hpCodes)
+                ->where(function ($query){
+                    $query->whereHas('ancs', function($q){
+                        $q->where('service_for', "2")->where('result', 3);
+                    });
+                })
+                ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+                    'healthpost' => function($q) {
+                        $q->select('name', 'hp_code');
+                    }]);
+            return response()->json([
+                'collection' => $woman->advancedFilter()
+            ]);
         }
-        $woman->whereIn('hp_code', $hpCodes)
-            ->where(function ($query){
-                $query->whereHas('ancs', function($q){
-                    $q->where('service_for', "2")->where('result', 3);
-                });
-            })
-            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
-                'healthpost' => function($q) {
-                    $q->select('name', 'hp_code');
-                }]);
-        return response()->json([
-            'collection' => $woman->advancedFilter()
-        ]);
     }
 
     public function tracingIndex(Request $request)
