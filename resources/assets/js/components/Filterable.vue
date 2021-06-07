@@ -13,6 +13,11 @@
       </div>
       <div class="panel-body">
         <div class="filter">
+          <div class="switch" style="padding-bottom: 15px;">Data before 15 Days
+            <input type="checkbox" @click="switchValue($event)">
+            <span class="slider round"></span>
+          </div>
+
           <div class="filter-item" v-for="(f, i) in filterCandidates">
             <div class="filter-column">
               <div class="form-group">
@@ -212,6 +217,7 @@ export default {
   },
   data() {
     return {
+      initialApiParam: '',
       loading: true,
       apiresponce : false,
       appliedFilters: [],
@@ -268,6 +274,8 @@ export default {
     this.addFilter()
   },
   methods: {
+
+
     ad2bs: function () {
       var dateObject = new Date();
 
@@ -484,20 +492,23 @@ export default {
 
       return f
     },
-    switchValue() {
-      console.log(this.refs.switch.checked)
-      return 1;
+    switchValue(event){
+      if(event.target.checked === true) {
+        this.initialApiParam = {'old_new_data': ''}
+      } else {
+        this.initialApiParam = {'old_new_data': '2'}
+      }
     },
     fetch() {
       this.loading = true
       const filters = this.getFilters()
-      var switchVal = this.switchValue()
 
       const params = {
         ...filters,
-        ...this.query
+        ...this.query,
+        ...this.initialApiParam
       }
-      axios.get(this.url, {params: {...params, old_new_data: switchVal}})
+      axios.get(this.url, {params: {...params}})
           .then((res) => {
             Vue.set(this.$data, 'collection', res.data.collection)
             this.query.page = res.data.collection.current_page
