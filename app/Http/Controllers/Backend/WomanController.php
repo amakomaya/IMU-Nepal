@@ -166,10 +166,26 @@ class WomanController extends Controller
         return redirect('/admin');
     }
 
+    public function labReceivedIndexOld()
+    {
+        if($this->roleViewCheck()){
+            return view('backend.woman.index-lab-received-old');
+        };
+        return redirect('/admin');
+    }
+
     public function labReceivedAntigenIndex()
     {
         if($this->roleViewCheck()){
             return view('backend.woman.index-lab-received-antigen');
+        };
+        return redirect('/admin');
+    }
+
+    public function labReceivedAntigenIndexOld()
+    {
+        if($this->roleViewCheck()){
+            return view('backend.woman.index-lab-received-antigen-old');
         };
         return redirect('/admin');
     }

@@ -119,7 +119,9 @@ Route::get('admin/positive-patients-antigen', 'Backend\WomanController@positiveA
 Route::get('admin/positive-patients-antigen-old', 'Backend\WomanController@positiveAntigenIndexOld')->name('patients.positive-antigen.index.old');
 Route::get('admin/tracing-patients', 'Backend\WomanController@tracingIndex')->name('patients.tracing.index');
 Route::get('admin/lab-received-patients', 'Backend\WomanController@labReceivedIndex')->name('patients.lab-received.index');
+Route::get('admin/lab-received-patients-old', 'Backend\WomanController@labReceivedIndexOld')->name('patients.lab-received.index.old');
 Route::get('admin/lab-received-patients-antigen', 'Backend\WomanController@labReceivedAntigenIndex')->name('patients.lab-received-antigen.index');
+Route::get('admin/lab-received-patients-antigen-old', 'Backend\WomanController@labReceivedAntigenIndexOld')->name('patients.lab-received-antigen.index.old');
 Route::get('admin/cases-recovered', 'Backend\WomanController@casesRecoveredIndex')->name('cases.recovered.index');
 Route::get('admin/cases-payment', 'Backend\WomanController@casesPaymentIndex')->name('cases.payment.index');
 Route::get('admin/cases-discharge-payment', 'Backend\WomanController@casesPaymentDischargeIndex')->name('cases.payment.index-discharge');

@@ -437,6 +437,39 @@ class WomenController extends Controller
         ]);
     }
 
+    public function labReceivedIndexOld(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+
+        $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
+            ->whereIn('women.hp_code', $hpCodes)
+            ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
+            ->where('ancs.service_for', '!=', '2')
+            ->where('ancs.result', 9)
+            ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
+            ->leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
+            ->select(
+                'women.*',
+                'ancs.token as ancs_token',
+                'ancs.created_at as ancs_created_at',
+                'ancs.updated_at as ancs_updated_at',
+                'ancs.result as ancs_result',
+                'lab_tests.token as lab_tests_token',
+                'lab_tests.sample_token as lab_tests_sample_token',
+                'healthposts.name as healthpost_name',
+            )
+            ->groupBy('women.id')
+            ->orderBy(
+                request('order_column', 'created_at'),
+                request('order_direction', 'desc')
+            )
+            ->paginate(request('limit', 100));
+        return response()->json([
+            'collection' => $woman
+        ]);
+    }
+
     public function labReceivedAntigenIndex(Request $request)
     {
         $response = FilterRequest::filter($request);
@@ -460,6 +493,39 @@ class WomenController extends Controller
                 }]);
         return response()->json([
             'collection' => $woman->advancedFilter()
+        ]);
+    }
+
+    public function labReceivedAntigenIndexOld(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+
+        $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
+            ->whereIn('women.hp_code', $hpCodes)
+            ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
+            ->where('ancs.service_for', '2')
+            ->where('ancs.result', 9)
+            ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
+            ->leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
+            ->select(
+                'women.*',
+                'ancs.token as ancs_token',
+                'ancs.created_at as ancs_created_at',
+                'ancs.updated_at as ancs_updated_at',
+                'ancs.result as ancs_result',
+                'lab_tests.token as lab_tests_token',
+                'lab_tests.sample_token as lab_tests_sample_token',
+                'healthposts.name as healthpost_name',
+            )
+            ->groupBy('women.id')
+            ->orderBy(
+                request('order_column', 'created_at'),
+                request('order_direction', 'desc')
+            )
+            ->paginate(request('limit', 100));
+        return response()->json([
+            'collection' => $woman
         ]);
     }
 

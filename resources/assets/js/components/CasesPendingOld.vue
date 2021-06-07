@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="col-md-12">
-        <button class="btn btn-success" style="float:right"  @click="newLink()">Click for Latest Data</button>
+            <button class="btn btn-success" style="float:right"  @click="newLink()">Click for Latest Data</button>
         </div>
       <filterable v-bind="filterable">
             <thead slot="thead">
