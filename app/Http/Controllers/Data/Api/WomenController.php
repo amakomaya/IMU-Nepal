@@ -89,8 +89,7 @@ class WomenController extends Controller
             ->select(
                 'women.*',
                 \DB::raw("count(ancs.id) as ancs_count"),
-                'ancs.id as ancs_id',
-                'ancs.token as ancs_token',
+                \DB::raw('(select ancs.token as ancs_token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
                 'ancs.created_at as ancs_created_at',
                 'ancs.updated_at as ancs_updated_at',
                 'ancs.result as ancs_result',
@@ -146,7 +145,7 @@ class WomenController extends Controller
             ->select(
                 'women.*',
                 \DB::raw("count(ancs.id) as ancs_count"),
-                'ancs.token as ancs_token',
+                \DB::raw('(select ancs.token as ancs_token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
                 'ancs.created_at as ancs_created_at',
                 'ancs.updated_at as ancs_updated_at',
                 'ancs.result as ancs_result',
@@ -205,7 +204,7 @@ class WomenController extends Controller
             ->select(
                 'women.*',
                 \DB::raw("count(ancs.id) as ancs_count"),
-                'ancs.token as ancs_token',
+                \DB::raw('(select ancs.token as ancs_token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
                 'ancs.created_at as ancs_created_at',
                 'ancs.updated_at as ancs_updated_at',
                 'ancs.result as ancs_result',
@@ -259,7 +258,7 @@ class WomenController extends Controller
             ->select(
                 'women.*',
                 \DB::raw("count(ancs.id) as ancs_count"),
-                'ancs.token as ancs_token',
+                \DB::raw('(select ancs.token as ancs_token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
                 'ancs.created_at as ancs_created_at',
                 'ancs.updated_at as ancs_updated_at',
                 'ancs.result as ancs_result',
@@ -312,7 +311,7 @@ class WomenController extends Controller
             ->select(
                 'women.*',
                 \DB::raw("count(ancs.id) as ancs_count"),
-                'ancs.token as ancs_token',
+                \DB::raw('(select ancs.token as ancs_token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
                 'ancs.created_at as ancs_created_at',
                 'ancs.updated_at as ancs_updated_at',
                 'ancs.result as ancs_result',
@@ -367,7 +366,7 @@ class WomenController extends Controller
             ->select(
                 'women.*',
                 \DB::raw("count(ancs.id) as ancs_count"),
-                'ancs.token as ancs_token',
+                \DB::raw('(select ancs.token as ancs_token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
                 'ancs.created_at as ancs_created_at',
                 'ancs.updated_at as ancs_updated_at',
                 'ancs.result as ancs_result',
@@ -434,7 +433,7 @@ class WomenController extends Controller
             ->select(
                 'women.*',
                 \DB::raw("count(ancs.id) as ancs_count"),
-                'ancs.token as ancs_token',
+                \DB::raw('(select ancs.token as ancs_token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
                 'ancs.created_at as ancs_created_at',
                 'ancs.updated_at as ancs_updated_at',
                 'ancs.result as ancs_result',
@@ -489,7 +488,7 @@ class WomenController extends Controller
             ->select(
                 'women.*',
                 \DB::raw("count(ancs.id) as ancs_count"),
-                'ancs.token as ancs_token',
+                \DB::raw('(select ancs.token as ancs_token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
                 'ancs.created_at as ancs_created_at',
                 'ancs.updated_at as ancs_updated_at',
                 'ancs.result as ancs_result',
