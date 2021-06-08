@@ -53,7 +53,7 @@
           <div>{{ labToken(item.lab_tests_token) }}</div>
         </td>
         <td>
-          <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
+          <!-- <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
             <i class="fa fa-file" aria-hidden="true"></i> |
           </button>
           <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)"
@@ -62,7 +62,7 @@
           </button>
           <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
             <i class="fa fa-hospital-o"></i>
-          </button>
+          </button> -->
         </td>
       </tr>
     </filterable>
