@@ -137,8 +137,8 @@
     </div>
     
     <div class="form-group" :class="{ 'has-error': $v.data.address.$error }">
-      <label class="control-label" for="name">Current Address *</label>
-      <input type="text" placeholder="Enter Current Address ( e.g Lazimpat-2, Kathmandu )" class="form-control" v-model.trim="data.address" id="address" />
+      <label class="control-label" for="name">Tole *</label>
+      <input type="text" placeholder="Enter Tole ( e.g Lazimpat-2, Kathmandu )" class="form-control" v-model.trim="data.address" id="address" />
     </div>
      <div class="row">
         <div v-show="data.gender=='2'" class="form-group col-lg-4" :class="{ 'has-error': $v.data.pregnant_status.$error }">
