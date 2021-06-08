@@ -704,7 +704,7 @@ Route::get('/v1/check-by-sid-or-lab-id-old', function (Request $request) {
             'lab_tests.token as lab_token',
             'lab_tests.sample_recv_date',
             'lab_tests.sample_test_date',
-            'lab_tests.sample_test_time',
+            'lab_tests.sample_test_time'
         )
         ->where('ancs.token', $token)->first();
 
@@ -732,7 +732,7 @@ Route::get('/v1/check-by-sid-or-lab-id-old', function (Request $request) {
             'm2.municipality_name as m2_municipality_name',
             'healthposts.name as healthpost_name',
             'healthposts.ward_no as healthpost_ward_no',
-            'healthposts.phone as healthpost_phone',
+            'healthposts.phone as healthpost_phone'
         )
         // ->with(['healthworker' ,'healthpost', 'district', 'municipality'])
         ->first();
