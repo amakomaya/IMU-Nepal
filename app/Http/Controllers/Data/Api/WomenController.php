@@ -156,7 +156,7 @@ class WomenController extends Controller
                 'ancs.result as ancs_result',
                 'lab_tests.token as lab_tests_token',
                 'lab_tests.sample_token as lab_tests_sample_token',
-                'healthposts.name as healthpost_name',
+                'healthposts.name as healthpost_name'
             )
             ->groupBy('women.id')
             ->orderBy(
@@ -210,7 +210,7 @@ class WomenController extends Controller
                 'ancs.result as ancs_result',
                 'lab_tests.token as lab_tests_token',
                 'lab_tests.sample_token as lab_tests_sample_token',
-                'healthposts.name as healthpost_name',
+                'healthposts.name as healthpost_name'
             )
             ->groupBy('women.id')
             ->orderBy(
@@ -244,7 +244,7 @@ class WomenController extends Controller
                 'ancs.result as ancs_result',
                 'lab_tests.token as lab_tests_token',
                 'lab_tests.sample_token as lab_tests_sample_token',
-                'healthposts.name as healthpost_name',
+                'healthposts.name as healthpost_name'
             )
             ->groupBy('women.id')
             ->orderBy(
@@ -295,7 +295,7 @@ class WomenController extends Controller
                 'ancs.result as ancs_result',
                 'lab_tests.token as lab_tests_token',
                 'lab_tests.sample_token as lab_tests_sample_token',
-                'healthposts.name as healthpost_name',
+                'healthposts.name as healthpost_name'
             )
             ->groupBy('women.id')
             ->orderBy(
