@@ -19,3 +19,5 @@ Route::get('case-payment/daily-listing' , 'Reports\CasesPaymentController@dailyL
 Route::get('case-payment/situation-report' , 'Reports\CasesPaymentController@situationReport')->name('report.case-payment-situation-report');
 
 Route::get('cases-report/report' , 'Reports\SuspectedCaseReportController@casesReport')->name('report.cases-report-report');
+
+Route::get('sample-report' , 'Reports\AncDetailController@sampleReport')->name('report.sample-report');
