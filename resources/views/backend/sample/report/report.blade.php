@@ -59,7 +59,11 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Sample Report
+                        @if(request()->segment(3) == 'ancs-report')
+                        Organization Report
+                        @else
+                        Lab Report
+                        @endif
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
