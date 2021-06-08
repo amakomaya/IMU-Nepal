@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Reports;
 
 use App\Models\SampleCollection;
+use App\Models\Organization;
+use App\Models\District;
+use App\Models\LabTest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Auth;
 use App\Helpers\GetHealthpostCodes;
 use App\Reports\FilterRequest;
-
+use Yagiten\Nepalicalendar\Calendar;
 use Carbon\Carbon;
 
 class AncDetailController extends Controller
@@ -124,26 +127,63 @@ class AncDetailController extends Controller
 
         if(Auth::user()->role == 'dho') {
             $reports = SampleCollection::with('labreport')
-                ->whereIn('hp_code', $hpCodes);
+                ->leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
+                ->whereIn('ancs.hp_code', $hpCodes)
+                ->where('ancs.service_for', '2')
+                ->whereBetween(\DB::raw('DATE(ancs.updated_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
 
             if ($response['municipality_id'] !== null){
                 $reports->where('healthposts.municipality_id', $response['municipality_id']);
             }
-    
-            if ($response['hp_code'] !== null){
-                $reports->where('healthposts.hp_code', $response['hp_code']);
-            }
 
+            $reports = $reports->get()
+                ->groupBy('hp_code');
+
+            
+            $data = [];
+            foreach($reports as $key => $report) {
+                $district_name = District::where('id', $report[0]->district_id)->pluck('district_name')[0];
+                $healthpost_name = $report[0]->name;
+                $data[$key]['healthpost_name'] = $healthpost_name;
+                $data[$key]['district_name'] = $district_name;
+                $data[$key]['total_test'] = $report->count();
+                $data[$key]['postive_cases_count'] = 0;
+                foreach($report as $solo) {
+                    if($solo->result == 9){
+                        $data[$key]['postive_cases_count'] += 1;
+                    }
+                }
+            }
+        }
+        else {
+            $user = auth()->user();
+            $reports = LabTest::leftjoin('healthposts', 'lab_tests.hp_code', '=', 'healthposts.hp_code')
+                ->where(function($q) use ($hpCodes, $user) {
+                    $q->where('lab_tests.checked_by', $user->token)
+                        ->orWhereIn('lab_tests.hp_code', $hpCodes);
+                })
+                ->whereBetween(\DB::raw('DATE(lab_tests.updated_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
 
             $reports = $reports->get()
                 ->groupBy('hp_code');
             
-            // $data = 
-
-            dd($reports);
-            
-            return view('backend.sample.report.report', compact('reports','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+            $data = [];
+            foreach($reports as $key => $report) {
+                $district_name = District::where('id', $report[0]->district_id)->pluck('district_name')[0];
+                $healthpost_name = $report[0]->name;
+                $data[$key]['healthpost_name'] = $healthpost_name;
+                $data[$key]['district_name'] = $district_name;
+                $data[$key]['total_test'] = $report->count();
+                $data[$key]['postive_cases_count'] = 0;
+                foreach($report as $solo) {
+                    if($solo->sample_test_result == 9){
+                        $data[$key]['postive_cases_count'] += 1;
+                    }
+                }
+            }
         }
+            
+        return view('backend.sample.report.report', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
     }
 
     private function dataFromAndTo(Request $request)
