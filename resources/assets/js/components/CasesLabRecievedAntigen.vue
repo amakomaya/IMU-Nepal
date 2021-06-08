@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div class="col-md-12">
+      <h3>Latest Data</h3>
+      <button class="btn btn-success" style="float:right"  @click="newLink()">Click for data older than 15 days</button>
+    </div>
     <filterable v-bind="filterable">
       <thead slot="thead">
       <tr>
@@ -31,7 +35,7 @@
         <td>{{ checkMunicipality(item.municipality_id) }}</td>
         <td>{{ item.ward }}</td>
         <td>
-          Place : {{ item.healthpost.name }} <br>
+          Place : {{ getHealthPostName(item.healthpost) }} <br>
           Type : {{ checkCaseType(item.cases) }} <br>
           Management : {{ checkCaseManagement(item.cases, item.case_where) }}
         </td>
@@ -139,6 +143,15 @@ export default {
     this.fetch()
   },
   methods: {
+    newLink() {
+      window.location.href = window.location.protocol + '/admin/lab-received-patients-antigen-old';
+    },
+    getHealthPostName: function(item) {
+      if(item === null) {
+        return ''
+      }
+      return item.name
+    },
     sendPatientData: function (item) {
       this.$dlg.modal(SendPatientDataModel, {
         title: 'Do you want to send '+item.name+' \'s patients data ?',
