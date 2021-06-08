@@ -59,7 +59,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Organization Report
+                        Lab Report
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -132,17 +132,11 @@
                             <table class="table table-striped table-bordered table-hover" id="dataTable" style="width: 100%;">
                                 <thead>
                                 <tr>
-                                    <th rowspan="2">S.N</th>
-                                    <th rowspan="2">District</th>
-                                    <th rowspan="2">Organization Name</th>
-                                    <th colspan="2">Total PCR</th>
-                                    <th colspan="2">Total Antigen</th>
-                                </tr>
-                                <tr>
-                                    <th>Positive</th>
-                                    <th>Negative</th>
-                                    <th>Positive</th>
-                                    <th>Negative</th>
+                                    <th>S.N</th>
+                                    <th>District</th>
+                                    <th>Organization Name</th>
+                                    <th>Total Negative</th>
+                                    <th>Total Positive</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -151,10 +145,8 @@
                                         <td> {{ $loop->iteration }}</td>
                                         <td> {{ $datum['district_name'] }}</td>
                                         <td> {{ $datum['healthpost_name'] }}</td>
-                                        <td> {{ $datum['pcr_postive_cases_count'] }}</td>
-                                        <td> {{ $datum['pcr_negative_cases_count'] }}</td>
-                                        <td> {{ $datum['antigen_postive_cases_count'] }}</td>
-                                        <td> {{ $datum['antigen_negative_cases_count'] }}</td>
+                                        <td> {{ $datum['postive_cases_count'] }}</td>
+                                        <td> {{ $datum['negative_cases_count'] }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
