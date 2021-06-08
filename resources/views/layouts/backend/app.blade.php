@@ -44,7 +44,8 @@
         if (auth()->user()->role == 'healthworker'){
             $healthWorker = \App\Models\OrganizationMember::where('token', Auth::user()->token)->first();
             $metaRole = $healthWorker->role;
-            $h_type = \App\Models\Organization::where('hp_code', $healthWorker->hp_code)->first()->hospital_type;
+            $h_type = \App\Models\Organization::where('hp_code', $healthWorker->hp_code)->first();
+            if($h_type) $h_type = $h_type->hospital_type;
         }
         if (auth()->user()->role == 'healthpost'){
             $h_type = \App\Models\Organization::where('token', Auth::user()->token)->first()->hospital_type;
