@@ -1,7 +1,8 @@
 <li @if(Request::segment(2) == 'patients' || Request::segment(2) == 'antigen-patients-pending' || 
     Request::segment(2) == 'lab-received-patients-antigen' || Request::segment(2) == 'lab-received-patients' ||
     Request::segment(2) == 'positive-patients-antigen' || Request::segment(2) == 'positive-patients' ||
-    Request::segment(2) == 'negative-patients-antigen' || Request::segment(2) == 'negative-patients')
+    Request::segment(2) == 'negative-patients-antigen' || Request::segment(2) == 'negative-patients' ||
+    Request::segment(2) == 'situation-report')
     class="active" @endif>
     <a href="#">
         <i class="fa fa-users" aria-hidden="true"></i>
@@ -121,6 +122,28 @@
                 <span class="label label-primary pull-right">Tracing</span>
 
             </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class="fa fa-file-pdf-o" aria-hidden="true" style="color: green;"></i> 
+                Situation Reports <span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-third-level">
+                <li>
+                    <a href="{{ route('report.sample-report.ancs') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Organization
+                        <span class="label label-success pull-right" title="Organization"> Org </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('report.sample-report.lab') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Lab
+                        <span class="label label-info pull-right" title="Lab"> Lab </span>
+                    </a>
+                </li>
+            </ul>
         </li>
     </ul>
 </li>

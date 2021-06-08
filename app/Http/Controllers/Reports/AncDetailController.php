@@ -115,7 +115,7 @@ class AncDetailController extends Controller
         //
     }
 
-    public function sampleReport(Request $request) {
+    public function sampleAncsReport(Request $request) {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $filter_date = $this->dataFromAndTo($request);
@@ -125,15 +125,22 @@ class AncDetailController extends Controller
             $$key = $value;
         }
 
-        if(Auth::user()->role == 'dho') {
-            $reports = SampleCollection::with('labreport')
-                ->leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
+        // if(Auth::user()->role == 'dho' || Auth::user()->role == 'province') {
+            $reports = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
                 ->whereIn('ancs.hp_code', $hpCodes)
                 ->where('ancs.service_for', '2')
+                ->whereIn('result', [9, 4])
                 ->whereBetween(\DB::raw('DATE(ancs.updated_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
 
-            if ($response['municipality_id'] !== null){
-                $reports->where('healthposts.municipality_id', $response['municipality_id']);
+            if ($response['province_id'] !== null){
+                $reports = $reports->where('healthposts.province_id', $response['province_id']);
+            }
+
+            if($response['district_id'] !== null){
+                $reports = $reports->where('healthposts.district_id', $response['district_id']);
+            }
+            if($response['municipality_id'] !== null){
+                $reports = $reports->where('healthposts.municipality_id', $response['municipality_id']);
             }
 
             $reports = $reports->get()
@@ -154,36 +161,64 @@ class AncDetailController extends Controller
                     }
                 }
             }
-        }
-        elseif(Auth::user()->role == 'healthworker') {
-            $user = auth()->user();
-            $reports = LabTest::leftjoin('healthposts', 'lab_tests.hp_code', '=', 'healthposts.hp_code')
-                ->where(function($q) use ($hpCodes, $user) {
-                    $q->where('lab_tests.checked_by', $user->token)
-                        ->orWhereIn('lab_tests.hp_code', $hpCodes);
-                })
-                ->whereBetween(\DB::raw('DATE(lab_tests.updated_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
-
-            $reports = $reports->get()
-                ->groupBy('hp_code');
+        // }
+        // else {
+        //     return redirect('/admin');
+        // }
             
-            $data = [];
-            foreach($reports as $key => $report) {
-                $district_name = District::where('id', $report[0]->district_id)->pluck('district_name')[0];
-                $healthpost_name = $report[0]->name;
-                $data[$key]['healthpost_name'] = $healthpost_name;
-                $data[$key]['district_name'] = $district_name;
-                $data[$key]['total_test'] = $report->count();
-                $data[$key]['postive_cases_count'] = 0;
-                foreach($report as $solo) {
-                    if($solo->sample_test_result == 9){
-                        $data[$key]['postive_cases_count'] += 1;
-                    }
+        return view('backend.sample.report.report', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+    }
+
+
+
+    public function sampleLabReport(Request $request) {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $filter_date = $this->dataFromAndTo($request);
+        $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']);
+
+        foreach ($response as $key => $value) {
+            $$key = $value;
+        }
+
+        $user = auth()->user();
+        $reports = LabTest::leftjoin('healthposts', 'lab_tests.hp_code', '=', 'healthposts.hp_code')
+            ->whereIn('lab_tests.hp_code', $hpCodes)
+            // ->where(function($q) use ($hpCodes, $user) {
+            //     $q->where('lab_tests.checked_by', $user->token)
+            //         ->orWhereIn('lab_tests.hp_code', $hpCodes);
+            // })
+            ->whereIn('lab_tests.sample_test_result', [9, 4])
+            ->whereBetween(\DB::raw('DATE(lab_tests.updated_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
+
+
+        if ($response['province_id'] !== null){
+            $reports = $reports->where('healthposts.province_id', $response['province_id']);
+        }
+
+        if($response['district_id'] !== null){
+            $reports = $reports->where('healthposts.district_id', $response['district_id']);
+        }
+        if($response['municipality_id'] !== null){
+            $reports = $reports->where('healthposts.municipality_id', $response['municipality_id']);
+        }
+
+        $reports = $reports->get()
+            ->groupBy('hp_code');
+        
+        $data = [];
+        foreach($reports as $key => $report) {
+            $district_name = District::where('id', $report[0]->district_id)->pluck('district_name')[0];
+            $healthpost_name = $report[0]->name;
+            $data[$key]['healthpost_name'] = $healthpost_name;
+            $data[$key]['district_name'] = $district_name;
+            $data[$key]['total_test'] = $report->count();
+            $data[$key]['postive_cases_count'] = 0;
+            foreach($report as $solo) {
+                if($solo->sample_test_result == 9){
+                    $data[$key]['postive_cases_count'] += 1;
                 }
             }
-        }
-        else {
-            return redirect('/admin');
         }
             
         return view('backend.sample.report.report', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));

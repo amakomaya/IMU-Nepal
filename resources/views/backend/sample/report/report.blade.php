@@ -59,7 +59,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Cases Payment Report Overview
+                        Sample Report
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
