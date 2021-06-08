@@ -155,7 +155,7 @@ class AncDetailController extends Controller
                 }
             }
         }
-        else {
+        elseif(Auth::user()->role == 'healthworker') {
             $user = auth()->user();
             $reports = LabTest::leftjoin('healthposts', 'lab_tests.hp_code', '=', 'healthposts.hp_code')
                 ->where(function($q) use ($hpCodes, $user) {
@@ -181,6 +181,9 @@ class AncDetailController extends Controller
                     }
                 }
             }
+        }
+        else {
+            return redirect('/admin');
         }
             
         return view('backend.sample.report.report', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));

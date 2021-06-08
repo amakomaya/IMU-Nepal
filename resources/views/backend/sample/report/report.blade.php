@@ -185,12 +185,7 @@
             pageLength: 50,
             dom : 'Bfrtip',
             buttons: [
-                'csv', 'excel',
-                {
-                    extend: 'pdfHtml5',
-                    orientation: 'landscape',
-                    pageSize: 'LEGAL'
-                }
+                'csv', 'excel', 'pdf'
             ]
         });
     });
