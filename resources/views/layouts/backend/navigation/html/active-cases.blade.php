@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-<li @if(Request::segment(2) == 'patients' || Request::segment(2) == 'antigen-patients-pending' || 
-    Request::segment(2) == 'lab-received-patients-antigen' || Request::segment(2) == 'lab-received-patients' ||
-    Request::segment(2) == 'positive-patients-antigen' || Request::segment(2) == 'positive-patients' ||
-    Request::segment(2) == 'negative-patients-antigen' || Request::segment(2) == 'negative-patients' ||
-    Request::segment(2) == 'situation-report')
-=======
 <li @if(Request::segment(2) == 'patients' || 
     Request::segment(2) == 'antigen-patients-pending' || Request::segment(2) == 'antigen-patients-pending-old' || 
     Request::segment(2) == 'lab-received-patients-antigen' || Request::segment(2) == 'lab-received-patients-antigen-old' || 
@@ -12,8 +5,8 @@
     Request::segment(2) == 'positive-patients-antigen' || Request::segment(2) == 'positive-patients-antigen-old' || 
     Request::segment(2) == 'positive-patients' || Request::segment(2) == 'positive-patients-old' ||
     Request::segment(2) == 'negative-patients-antigen' || Request::segment(2) == 'negative-patients-antigen-old' ||
-    Request::segment(2) == 'negative-patients' || Request::segment(2) == 'negative-patients-old')
->>>>>>> origin/monthly-report
+    Request::segment(2) == 'negative-patients' || Request::segment(2) == 'negative-patients-old' ||
+    Request::segment(2) == 'situation-report')
     class="active" @endif>
     <a href="#">
         <i class="fa fa-users" aria-hidden="true"></i>
