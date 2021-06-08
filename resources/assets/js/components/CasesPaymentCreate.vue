@@ -93,7 +93,7 @@
     </div>
     <div class="row">
       <div class="col-lg-12">
-        <label class="control-label">Permanent Address *</label>
+        <label class="control-label">Current Address *</label>
       </div>
       <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.province_id.$error }">
         <label class="control-label" for="province">Province *</label>
@@ -130,10 +130,10 @@
         <label class="control-label" for="ward">Ward No *</label>
         <input type="text" placeholder="Ward No" class="form-control" v-model.trim="data.ward" id="ward" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"/>
       </div>
-      <div class="form-group col-lg-4 " :class="{ 'has-error': $v.data.tole.$error }">
+      <!-- <div class="form-group col-lg-4 " :class="{ 'has-error': $v.data.tole.$error }">
         <label class="control-label" for="tole">Tole *</label>
         <input type="text" placeholder="Tole" class="form-control" v-model.trim="data.tole" id="tole" />
-      </div>
+      </div> -->
     </div>
     
     <div class="form-group" :class="{ 'has-error': $v.data.address.$error }">
@@ -164,7 +164,7 @@
     <div class="row">
       <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.comorbidity.$error }">
         <label class="control-label">
-          Comorbidity
+          Co-morbidity
         </label><br>
         <label class="control-label">
           <input type="checkbox" @change="toggleHealthy(data)" v-model.trim="data.comorbidity" value="21">
@@ -343,7 +343,7 @@
 
     <hr>
     <div class="form-group" :class="{ 'has-error': $v.data.guardian_name.$error }">
-      <label for="guardian_name">Parent/Guardian Name</label>
+      <label for="guardian_name">Parent/Guardian Name *</label>
       <input type="text" class="form-control" v-model.trim="data.guardian_name" id="guardian_name" />
     </div>
     <div class="row">
@@ -447,6 +447,8 @@ export default {
         vaccine_type: null,
         other_vaccine_type: null,
         tole: null,
+        guardian_name: null,
+        phone: null
       },
       lab_id : '',
       options: [],
@@ -515,7 +517,7 @@ export default {
         ward: {required},
         vaccine_type: vacccineTypeVdn,
         other_vaccine_type: otherVaccineTypeVdn,
-        tole: {required},
+        // tole: {required},
         guardian_name: {required}
       },
       labSelected : { required }
