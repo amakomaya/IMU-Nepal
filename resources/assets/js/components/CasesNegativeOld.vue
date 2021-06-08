@@ -42,12 +42,12 @@
                   <div>{{ labToken(item.lab_tests_token) }}</div>
                 </td>
                 <td>
-                  <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
+                  <!-- <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
                     <i class="fa fa-file" aria-hidden="true"></i> |
                   </button>
                   <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
                     <i class="fa fa-medkit" aria-hidden="true"></i> |
-                  </button>
+                  </button> -->
                 </td>  
                 <!-- </div>             -->
             </tr>

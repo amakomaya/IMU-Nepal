@@ -51,7 +51,7 @@
                     <div v-else><span class="label label-primary"> Registered </span></div>
                 </td>
                 <td>
-                  <button v-on:click="viewCaseDetails(item.token)" target="_blank" title="Case Details Report">
+                  <!-- <button v-on:click="viewCaseDetails(item.token)" target="_blank" title="Case Details Report">
                     <i class="fa fa-file" aria-hidden="true"></i> |
                   </button>
                     <button v-if="role === 'healthworker' || role === 'healthpost' || role === 'municipality'" v-on:click="editCaseDetails(item.token)" title="Edit Case Detail">
@@ -65,7 +65,7 @@
                   </button>
                   <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
                         <i class="fa fa-hospital-o"></i> |
-                  </button>
+                  </button> -->
                 </td>
                 <!-- </div>             -->
             </tr>
