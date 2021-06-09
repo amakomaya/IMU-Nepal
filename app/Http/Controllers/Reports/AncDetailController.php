@@ -153,7 +153,7 @@ class AncDetailController extends Controller
             $data[$key]['healthpost_name'] = $healthpost_name;
             $data[$key]['district_name'] = $district_name;
             $data[$key]['total_test'] = $report->count();
-            $data[$key]['postive_cases_count'] = $data[$key]['negative_cases_count'] = $data[$key]['pcr_postive_cases_count'] = $data[$key]['pcr_negative_cases_count'] = $data[$key]['antigen_postive_cases_count'] = $data[$key]['antigen_negative_cases_count'] = 0;
+            $data[$key]['pcr_count'] = $data[$key]['antigen_count'] = $data[$key]['pcr_postive_cases_count'] = $data[$key]['pcr_negative_cases_count'] = $data[$key]['antigen_postive_cases_count'] = $data[$key]['antigen_negative_cases_count'] = 0;
             foreach($report as $solo) {
                 if($solo->service_type == '1'){
                     $data[$key]['pcr_count'] += 1;
