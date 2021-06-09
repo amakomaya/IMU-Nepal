@@ -61,7 +61,7 @@ class DashboardController extends Controller
             });
 
             $in_lab_received_positive_in_24_hrs = Cache::remember('in_lab_received_positive_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return LabTest::whereIn('hp_code', $hpCodes)->whereDate('sample_test_result', '3')->where('updated_at', Carbon::today())->get()->count();
+                return LabTest::whereIn('hp_code', $hpCodes)->where('sample_test_result', '3')->whereDate('updated_at', Carbon::today())->get()->count();
             });
 
             $in_lab_received_negative = Cache::remember('in_lab_received_negative-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
@@ -71,7 +71,7 @@ class DashboardController extends Controller
             });
 
             $in_lab_received_negative_in_24_hrs = Cache::remember('in_lab_received_negative_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return LabTest::whereIn('hp_code', $hpCodes)->whereDate('sample_test_result', '4')->where('updated_at', Carbon::today())->get()->count();
+                return LabTest::whereIn('hp_code', $hpCodes)->where('sample_test_result', '4')->whereDate('updated_at', Carbon::today())->get()->count();
             });
         }
 

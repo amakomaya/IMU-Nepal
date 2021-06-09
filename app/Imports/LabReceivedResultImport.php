@@ -5,6 +5,7 @@ namespace App\Imports;
 use Carbon\Carbon;
 use App\Models\LabTest;
 use App\Models\SampleCollection;
+use App\Models\OrganizationMember;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -34,8 +35,9 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
         $this->healthWorker = $healthWorker;
         $this->userToken =  $userToken;
         $this->hpCode = $hpCode;
+        $this->organizationType = \App\Models\Organization::where('hp_code', $hpCode)->first()->hospital_type;
         $this->enums = [
-          'result' => array('Positive' => '3', 'Negative' => '4')
+          'result' => array('positive' => '3', 'negative' => '4')
         ];
     }
     
@@ -130,12 +132,25 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
       }
       return $data;
     }
+
+    private function getLabTestByPatientLabId ($patientLabId) {
+      $organiation_member_tokens = OrganizationMember::where('hp_code', $this->hpCode)->pluck('token');
+      $labTokens = [];
+      foreach ($organiation_member_tokens as $item) {
+          array_push($labTokens, $item."-".$patientLabId);
+      }
+      $labTests = LabTest::whereIn('token', $labTokens);
+      if($labTests->count() > 0){
+        return $labTests;
+      }
+      return false;
+    }
   
     public function prepareForValidation($data, $index)
     {
         $data = $this->filterEmptyRow($data);
         if(array_filter($data)) {
-          $data['result'] = $this->enums['result'][$data['result']]?? null;
+          $data['result'] = $this->enums['result'][strtolower(trim($data['result']))]?? null;
         }
         return $data;
     }
