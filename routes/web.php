@@ -195,6 +195,7 @@ Route::resource('/password-reset', 'ForgetPasswordController', ['names' => 'pass
 Route::POST('/password-reset-user', 'ForgetPasswordController@updateUserPassword')->name('password-reset-user.update');
 
 Route::get('/admin/patient', 'Reports\CaseDetailController@getCaseDetail');
+Route::get('/admin/patient-old', 'Reports\CaseDetailController@getCaseDetailOld');
 Route::get('admin/cict-patient-detail', 'Reports\CaseDetailController@cictDetail');
 
 Route::get('/admin/patient/{token}/edit', 'Reports\CaseDetailController@edit');

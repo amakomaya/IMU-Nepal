@@ -135,8 +135,8 @@
                                     <th rowspan="2">S.N</th>
                                     <th rowspan="2">District</th>
                                     <th rowspan="2">Organization Name</th>
-                                    <th colspan="2">Total PCR</th>
-                                    <th colspan="2">Total Antigen</th>
+                                    <th colspan="2">PCR Test</th>
+                                    <th colspan="2">Antigen Test</th>
                                 </tr>
                                 <tr>
                                     <th>Positive</th>
