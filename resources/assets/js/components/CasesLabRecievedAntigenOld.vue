@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="col-md-12">
-      <h3>Latest Data</h3>
-      <button class="btn btn-success" style="float:right"  @click="newLink()">Click for data older than 15 days</button>
+        <h3>Data older than 15 days</h3>
+        <button class="btn btn-success" style="float:right"  @click="newLink()">Click for Latest Data</button>
     </div>
     <filterable v-bind="filterable">
       <thead slot="thead">
@@ -35,25 +35,25 @@
         <td>{{ checkMunicipality(item.municipality_id) }}</td>
         <td>{{ item.ward }}</td>
         <td>
-          Place : {{ getHealthPostName(item.healthpost) }} <br>
+          Place : {{ item.healthpost_name }} <br>
           Type : {{ checkCaseType(item.cases) }} <br>
           Management : {{ checkCaseManagement(item.cases, item.case_where) }}
         </td>
         <td>{{ ad2bs(item.created_at) }}</td>
-        <td><span class="label label-info"> {{ item.ancs.length }}</span>
-          <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
+        <td><span class="label label-info"> {{ item.ancs_count }}</span>
+          <div v-if="item.ancs_token" title="Swab ID">SID : <strong>{{ item.ancs_token }}</strong></div>
         </td>
         <td>
           <span class="label label-warning"> Received </span>
-          <div>{{ labToken(item.latest_anc.labreport) }}</div>
+          <div>{{ labToken(item.ancs_token) }}</div>
         </td>
         <td>
-          <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
+          <!-- <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
             <i class="fa fa-file" aria-hidden="true"></i> |
           </button>
           <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
             <i class="fa fa-hospital-o"></i>
-          </button>
+          </button> -->
         </td>
         <!-- </div>             -->
       </tr>
@@ -90,7 +90,7 @@ export default {
     return {
       role : this.$userRole,
       filterable: {
-        url: '/data/api/lab-received-antigen',
+        url: '/data/api/lab-received-antigen-old',
         orderables: [
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},
@@ -144,13 +144,7 @@ export default {
   },
   methods: {
     newLink() {
-      window.location.href = window.location.protocol + '/admin/lab-received-patients-antigen-old';
-    },
-    getHealthPostName: function(item) {
-      if(item === null) {
-        return ''
-      }
-      return item.name
+      window.location.href = window.location.protocol + '/admin/lab-received-patients-antigen';
     },
     sendPatientData: function (item) {
       this.$dlg.modal(SendPatientDataModel, {
@@ -239,7 +233,7 @@ export default {
     },
     labToken(data){
       if (data !== null){
-        return data.token.split('-').splice(1).join('-');
+        return data.split('-').splice(1).join('-');
       }
     },
     checkDistrict : function(value){
