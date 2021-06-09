@@ -75,7 +75,7 @@ class DashboardController extends Controller
             });
         }
 
-        $date_five_days = Carbon::now()->subDays(5);
+        $date_five_days = Carbon::now()->subDays(5)->toDateString();
 
         $inside_data_all = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
             ->whereIn('ancs.hp_code', $hpCodes)
@@ -85,7 +85,7 @@ class DashboardController extends Controller
             //     $q->on('ancs.token', '=', 'lab_tests.sample_token');
             //     $q->on('ancs.hp_code', '=', 'lab_tests.hp_code');
             // })
-            ->whereBetween(\DB::raw('DATE(ancs.updated_at)'), [$date_five_days, $date_to])
+            ->whereBetween(\DB::raw('DATE(ancs.updated_at)'), [$date_five_days, $date_to->toDateString()])
             ->select('ancs.*', DB::Raw('DATE(ancs.updated_at) as updated_at_date'))
             ->orderBy('updated_at_date', 'desc')
             ->get()
@@ -122,7 +122,7 @@ class DashboardController extends Controller
             ->leftjoin('ancs', 'lab_tests.sample_token', '=', 'ancs.token')
             ->whereIn('lab_tests.hp_code', $hpCodes)
             ->whereIn('lab_tests.sample_test_result', [9, 4])
-            ->whereBetween(\DB::raw('DATE(ancs.updated_at)'), [$date_five_days, $date_to])
+            ->whereBetween(\DB::raw('DATE(ancs.updated_at)'), [$date_five_days, $date_to->toDateString()])
             ->select('lab_tests.*', 'ancs.service_type as ancs_service_type', DB::Raw('DATE(lab_tests.updated_at) as updated_at_date'))
             ->orderBy('updated_at_date', 'desc')
             ->get()
@@ -130,10 +130,9 @@ class DashboardController extends Controller
 
         $outside_data = [];
         foreach($outside_data_all as $key => $report) {
-            $outside_data[$key]['outside_pcr_postive_cases_count'] = $outside_data[$key]['outside_pcr_negative_cases_count'] = $outside_data[$key]['outside_antigen_postive_cases_count'] = $outside_data[$key]['outside_antigen_negative_cases_count'] = $outside_data[$key]['outside_pcr_count'] = $outside_data[$key]['outside_antigen_count'] = 0;
+            $outside_data[$key]['outside_pcr_postive_cases_count'] = $outside_data[$key]['outside_pcr_negative_cases_count'] = $outside_data[$key]['outside_antigen_postive_cases_count'] = $outside_data[$key]['outside_antigen_negative_cases_count'] =  0;
             foreach($report as $solo) {
                 if($solo->ancs_service_type == '1'){
-                    $outside_data[$key]['outside_pcr_count'] += 1;
                     if($solo->sample_test_result == 3){
                         $outside_data[$key]['outside_pcr_postive_cases_count'] += 1;
                     }
@@ -142,7 +141,6 @@ class DashboardController extends Controller
                     }
                 }
                 if($solo->ancs_service_type == '2'){
-                    $outside_data[$key]['outside_antigen_count'] += 1;
                     if($solo->sample_test_result == 3){
                         $outside_data[$key]['outside_antigen_postive_cases_count'] += 1;
                     }
@@ -272,7 +270,7 @@ class DashboardController extends Controller
             'vaccinated' => $vaccinated ?? 0,
 
             // time expiration in UMT add 5:45 to nepali time, sub 1 hrs to get updated at => 285
-            'cache_created_at' => Carbon::parse(\DB::table('cache')->where('key', 'laravelregistered-'.auth()->user()->token)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s'),
+            // 'cache_created_at' => Carbon::parse(\DB::table('cache')->where('key', 'laravelregistered-'.auth()->user()->token)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s'),
             'user_token' => auth()->user()->token,
 //            'immunization_registered' => HealthProfessional::whereIn('checked_by', auth()->user()->token)
 //                ->whereNull('vaccinated_status')->count(),
