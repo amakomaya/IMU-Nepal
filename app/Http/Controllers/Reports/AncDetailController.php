@@ -127,7 +127,7 @@ class AncDetailController extends Controller
 
         $reports = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
             ->whereIn('ancs.hp_code', $hpCodes)
-            ->whereIn('ancs.result', [9, 4])
+            ->whereIn('ancs.result', [3, 4])
             ->whereIn('healthposts.hospital_type', [2, 3])
             ->whereBetween(\DB::raw('DATE(ancs.updated_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
 
@@ -199,7 +199,7 @@ class AncDetailController extends Controller
             //     $q->where('lab_tests.checked_by', $user->token)
             //         ->orWhereIn('lab_tests.hp_code', $hpCodes);
             // })
-            ->whereIn('lab_tests.sample_test_result', [9, 4])
+            ->whereIn('lab_tests.sample_test_result', [3, 4])
             ->whereBetween(\DB::raw('DATE(lab_tests.updated_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
 
 

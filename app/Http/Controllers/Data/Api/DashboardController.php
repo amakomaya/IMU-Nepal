@@ -79,7 +79,7 @@ class DashboardController extends Controller
 
         $inside_data_all = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
             ->whereIn('ancs.hp_code', $hpCodes)
-            ->whereIn('ancs.result', [9, 4])
+            ->whereIn('ancs.result', [3, 4])
             ->whereIn('healthposts.hospital_type', [2, 3])
             // ->leftjoin('lab_tests', function($q) {
             //     $q->on('ancs.token', '=', 'lab_tests.sample_token');
@@ -121,7 +121,7 @@ class DashboardController extends Controller
         $outside_data_all = LabTest::leftjoin('healthposts', 'lab_tests.hp_code', '=', 'healthposts.hp_code')
             ->leftjoin('ancs', 'lab_tests.sample_token', '=', 'ancs.token')
             ->whereIn('lab_tests.hp_code', $hpCodes)
-            ->whereIn('lab_tests.sample_test_result', [9, 4])
+            ->whereIn('lab_tests.sample_test_result', [3, 4])
             ->whereBetween(\DB::raw('DATE(ancs.updated_at)'), [$date_five_days, $date_to->toDateString()])
             ->select('lab_tests.*', 'ancs.service_type as ancs_service_type', DB::Raw('DATE(lab_tests.updated_at) as updated_at_date'))
             ->orderBy('updated_at_date', 'desc')
