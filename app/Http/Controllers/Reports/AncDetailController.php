@@ -153,7 +153,7 @@ class AncDetailController extends Controller
             $data[$key]['healthpost_name'] = $healthpost_name;
             $data[$key]['district_name'] = $district_name;
             $data[$key]['total_test'] = $report->count();
-            $data[$key]['postive_cases_count'] = $data[$key]['negative_cases_count'] = $data[$key]['pcr_postive_cases_count'] = $data[$key]['pcr_negative_cases_count'] = $data[$key]['antigen_postive_cases_count'] = $data[$key]['antigen_negative_cases_count'] = 0;
+            $data[$key]['pcr_count'] = $data[$key]['antigen_count'] = $data[$key]['pcr_postive_cases_count'] = $data[$key]['pcr_negative_cases_count'] = $data[$key]['antigen_postive_cases_count'] = $data[$key]['antigen_negative_cases_count'] = 0;
             foreach($report as $solo) {
                 if($solo->service_type == '1'){
                     $data[$key]['pcr_count'] += 1;
@@ -237,75 +237,6 @@ class AncDetailController extends Controller
             
         return view('backend.sample.report.lab-report', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
     }
-
-    // public function insideOrgReport(Request $request) {
-    //     $response = FilterRequest::filter($request);
-    //     $hpCodes = GetHealthpostCodes::filter($response);
-    //     $filter_date = $this->dataFromAndTo($request);
-    //     $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']);
-
-    //     foreach ($response as $key => $value) {
-    //         $$key = $value;
-    //     }
-
-    //     $reports = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
-    //         ->leftjoin('lab_tests', function($q) {
-    //             $q->on('ancs.token', '=', 'lab_tests.sample_token')
-    //             $q->on('ancs.hp_code', '=', 'lab_tests.hp_code')
-    //         })
-    //         ->whereIn('ancs.hp_code', $hpCodes)
-    //         ->whereIn('ancs.result', [9, 4])
-    //         ->whereIn('healthposts.hospital_type', [2, 3])
-    //         ->whereBetween(\DB::raw('DATE(ancs.updated_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
-
-    //     if ($response['province_id'] !== null){
-    //         $reports = $reports->where('healthposts.province_id', $response['province_id']);
-    //     }
-
-    //     if($response['district_id'] !== null){
-    //         $reports = $reports->where('healthposts.district_id', $response['district_id']);
-    //     }
-    //     if($response['municipality_id'] !== null){
-    //         $reports = $reports->where('healthposts.municipality_id', $response['municipality_id']);
-    //     }
-
-    //     $reports = $reports->get()
-    //         ->groupBy('hp_code');
-
-        
-    //     $data = [];
-    //     foreach($reports as $key => $report) {
-    //         $district_name = District::where('id', $report[0]->district_id)->pluck('district_name')[0];
-    //         $healthpost_name = $report[0]->name;
-    //         $data[$key]['healthpost_name'] = $healthpost_name;
-    //         $data[$key]['district_name'] = $district_name;
-    //         $data[$key]['total_test'] = $report->count();
-    //         $data[$key]['postive_cases_count'] = $data[$key]['negative_cases_count'] = $data[$key]['pcr_postive_cases_count'] = $data[$key]['pcr_negative_cases_count'] = $data[$key]['antigen_postive_cases_count'] = $data[$key]['antigen_negative_cases_count'] = 0;
-    //         foreach($report as $solo) {
-    //             if($solo->service_type == '1'){
-    //                 $data[$key]['pcr_count'] += 1;
-    //                 if($solo->result == 3){
-    //                     $data[$key]['pcr_postive_cases_count'] += 1;
-    //                 }
-    //                 if($solo->result == 4){
-    //                     $data[$key]['pcr_negative_cases_count'] += 1;
-    //                 }
-    //             }
-    //             if($solo->service_type == '2'){
-    //                 $data[$key]['antigen_count'] += 1;
-    //                 if($solo->result == 3){
-    //                     $data[$key]['antigen_postive_cases_count'] += 1;
-    //                 }
-    //                 if($solo->result == 4){
-    //                     $data[$key]['antigen_negative_cases_count'] += 1;
-    //                 }
-    //             }
-                
-    //         }
-    //     }
-            
-    //     return view('backend.sample.report.report', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
-    // }
 
     private function dataFromAndTo(Request $request)
     {
