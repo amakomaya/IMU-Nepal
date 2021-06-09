@@ -74,6 +74,27 @@ class DashboardController extends Controller
                 return LabTest::whereIn('hp_code', $hpCodes)->whereDate('sample_test_result', '4')->where('updated_at', Carbon::today())->get()->count();
             });
         }
+
+        $date_five_days = Carbon::now()->subDays(5);
+
+        $inside_data = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
+            ->whereIn('ancs.hp_code', $hpCodes)
+            ->whereIn('ancs.result', [9, 4])
+            ->whereIn('healthposts.hospital_type', [2, 3])
+            ->leftjoin('lab_tests', function($q) {
+                $q->on('ancs.token', '=', 'lab_tests.sample_token');
+                $q->on('ancs.hp_code', '=', 'lab_tests.hp_code');
+            })
+            // ->whereBetween(\DB::raw('DATE(ancs.updated_at)'), [$date_five_days, $date_to])
+            // ->get()
+            ->select('ancs.*')
+            ->get()
+            ->groupBy('updated_at');
+        
+        dd($inside_data);
+
+
+
         $data = [
             'registered' => Cache::remember('registered-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
                 $current_data = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->count();
@@ -190,7 +211,7 @@ class DashboardController extends Controller
             'vaccinated' => $vaccinated ?? 0,
 
             // time expiration in UMT add 5:45 to nepali time, sub 1 hrs to get updated at => 285
-            'cache_created_at' => Carbon::parse(\DB::table('cache')->where('key', 'laravelregistered-'.auth()->user()->token)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s'),
+            // 'cache_created_at' => Carbon::parse(\DB::table('cache')->where('key', 'laravelregistered-'.auth()->user()->token)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s'),
             'user_token' => auth()->user()->token,
 //            'immunization_registered' => HealthProfessional::whereIn('checked_by', auth()->user()->token)
 //                ->whereNull('vaccinated_status')->count(),
