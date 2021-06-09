@@ -48,10 +48,10 @@
           <div>{{ labToken(item.ancs_token) }}</div>
         </td>
         <td>
-          <!-- <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
+          <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
             <i class="fa fa-file" aria-hidden="true"></i> |
           </button>
-          <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
+          <!-- <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
             <i class="fa fa-hospital-o"></i>
           </button> -->
         </td>
@@ -328,7 +328,7 @@ export default {
     },
     viewCaseDetails(token){
       window.open(
-          '/admin/patient?token=' + token,
+          '/admin/patient-old?token=' + token,
           '_blank'
       );
     }
