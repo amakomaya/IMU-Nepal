@@ -65,7 +65,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
           );
         } else {
           $pcrAllowedOrganizationType = ['2', '3'];
-          if($ancs->service_for == '1' && !in_array($this->organizationType, $pcrAllowedOrganizationType)) {
+          if($ancs->first()->service_for == '1' && !in_array($this->organizationType, $pcrAllowedOrganizationType)) {
             $error = ['sid' => 'Your organization is not eligible for PCR Lab Received. Please contact IMU support to update your organization type.'];
             $failures[] = new Failure($currentRowNumber, 'sid', $error, $row);
             throw new ValidationException(
