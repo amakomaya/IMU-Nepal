@@ -34,6 +34,7 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
         $this->healthWorker = $healthWorker;
         $this->userToken =  $userToken;
         $this->hpCode = $hpCode;
+        $this->organizationType = \App\Models\Organization::where('hp_code', $hpCode)->first()->hospital_type;
         $this->enums = [
           'result' => array('Positive' => '3', 'Negative' => '4')
         ];
