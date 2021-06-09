@@ -477,7 +477,7 @@
             <th style="text-align: center; background-color: #dff0d8;">Negative</th>
           </tr>
           </thead>
-          <tbody v-if="report.all_data.length">
+          <tbody v-if="report.all_data">
           <tr v-for="(inside, key) in report.all_data">
             <td style="text-align: center; background-color: #fcf8e3;">{{ key }}</td>
             <td style="text-align: center; background-color: #fcf8e3;">{{ inside.inside_pcr_count ? inside.inside_pcr_count : 0 }}</td>

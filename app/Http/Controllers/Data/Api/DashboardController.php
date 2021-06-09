@@ -81,10 +81,10 @@ class DashboardController extends Controller
             ->whereIn('ancs.hp_code', $hpCodes)
             ->whereIn('ancs.result', [9, 4])
             ->whereIn('healthposts.hospital_type', [2, 3])
-            ->leftjoin('lab_tests', function($q) {
-                $q->on('ancs.token', '=', 'lab_tests.sample_token');
-                $q->on('ancs.hp_code', '=', 'lab_tests.hp_code');
-            })
+            // ->leftjoin('lab_tests', function($q) {
+            //     $q->on('ancs.token', '=', 'lab_tests.sample_token');
+            //     $q->on('ancs.hp_code', '=', 'lab_tests.hp_code');
+            // })
             ->whereBetween(\DB::raw('DATE(ancs.updated_at)'), [$date_five_days, $date_to])
             ->select('ancs.*', DB::Raw('DATE(ancs.updated_at) as updated_at_date'))
             ->orderBy('updated_at_date', 'desc')
