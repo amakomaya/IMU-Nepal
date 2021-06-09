@@ -4,6 +4,9 @@ namespace App\Imports;
 
 use Carbon\Carbon;
 use App\Models\PaymentCase;
+use App\Models\Province;
+use App\Models\District;
+use App\Models\Municipality;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -23,23 +26,41 @@ use App\User;
 class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
 {
     use Importable, RemembersRowNumber;
-
-    public $enums = array(
-      'gender'=> array( 'Male' => 1, 'Female' => 2, 'Other' => 3 ),
-      'health_condition' => array ('No Symptoms'=> 1, 'Mild' => 2, 'Moderate &  HDU' => 3, 'Severe - ICU' => 4, 'Severe - Ventilator' => 5),
-      'paid_free' => array ('Paid' => "1", 'Free' => "2"),
-      'method_of_diagnosis' => array ('PCR' => 1, 'Antigen' => 2, 'Clinical Diagnosis' => 3, 'Others' => 10),
-      'age_unit' => array ('Year' => 0, 'Month' => 1, 'Day' => 2),
-    );
   
     public function __construct(User $importedBy, $bed_status)
     {
+        $provinceList = Province::select(['id', 'province_name'])->get();
+        $districtList = District::select(['id', 'district_name'])->get();
+        $municipalityList = Municipality::select(['id', 'municipality_name'])->get();
+        $provinces = $districts = $municipalities = [];
+        $provinceList->map(function ($province) use (&$provinces) {
+          $provinces[strtolower(trim($province->province_name))] = $province->id;
+          return;
+        });
+        $districtList->map(function ($district) use (&$districts) {
+          $districts[strtolower(trim($district->district_name))] = $district->id;
+          return;
+        });
+        $municipalityList->map(function ($municipality) use (&$municipalities) {
+          $municipalities[strtolower(trim($municipality->municipality_name))] = $municipality->id;
+          return;
+        });
         $hpCode = '';
         if($importedBy->role === 'healthworker') {
           $hpCode = \App\Models\OrganizationMember::where('token', $importedBy->token)->first()->hp_code;
         } else {
           $hpCode = \App\Models\Organization::where('token', auth()->user()->token)->first()->hp_code;
         }
+        $this->enums = array(
+          'gender'=> array( 'male' => 1, 'female' => 2, 'other' => 3 ),
+          'health_condition' => array ('no symptoms'=> 1, 'mild' => 2, 'moderate &  hdu' => 3, 'severe - icu' => 4, 'severe - ventilator' => 5),
+          'paid_free' => array ('paid' => "1", 'free' => "2"),
+          'method_of_diagnosis' => array ('pcr' => 1, 'antigen' => 2, 'clinical diagnosis' => 3, 'others' => 10),
+          'age_unit' => array ('year' => 0, 'month' => 1, 'day' => 2),
+          'province' => $provinces,
+          'district' => $districts,
+          'municipality' => $municipalities
+        );
         $this->importedBy = $importedBy;
         $this->bed_status = $bed_status;
         $this->totalHduCases = 0;
@@ -120,8 +141,8 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             'age_unit' => $row['age_unit'],
             'gender' => $row['gender'],
             'phone' => $row['mobile_number'],
-            'address' => $row['current_address_of_patient'],
-            'guardian_name' => $row['parentguardian_name'],
+            'address' => $row['tole'],
+            'guardian_name' => null,
             'complete_vaccination' => null,
             'health_condition' => $row['health_condition'],
             'self_free' =>$row['paid_free'],
@@ -130,7 +151,10 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             'is_in_imu' => 0,
             'method_of_diagnosis' => $row['method_of_diagnosis'],
             'hp_code' => $this->hpCode,
-            'reg_dev' => 'excel'
+            'reg_dev' => 'excel',
+            'province_id' => $row['province'],
+            'district_id' => $row['district'],
+            'municipality_id' => $row['municipality']
         ]);
     }
 
@@ -153,11 +177,14 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
     {
         $data = $this->filterEmptyRow($data);
         if(array_filter($data)) {
-          $data['paid_free'] = $this->enums['paid_free'][$data['paid_free']]??null;
-          $data['gender'] = $this->enums['gender'][$data['gender']]??null;
-          $data['age_unit'] = $this->enums['age_unit'][$data['age_unit']] ?? 0;
-          $data['health_condition'] = $this->enums['health_condition'][$data['health_condition']] ?? null;
-          $data['method_of_diagnosis'] = $this->enums['method_of_diagnosis'][$data['method_of_diagnosis']] ?? null;
+          $data['paid_free'] = $this->enums['paid_free'][strtolower(trim($data['paid_free']))]??null;
+          $data['gender'] = $this->enums['gender'][strtolower(trim($data['gender']))]??null;
+          $data['age_unit'] = $this->enums['age_unit'][strtolower(trim($data['age_unit']))] ?? 0;
+          $data['health_condition'] = $this->enums['health_condition'][strtolower(trim($data['health_condition']))] ?? null;
+          $data['method_of_diagnosis'] = $this->enums['method_of_diagnosis'][strtolower(trim($data['method_of_diagnosis']))] ?? null;
+          $data['province'] = $this->enums['province'][strtolower(trim($data['province']))] ?? null;
+          $data['district'] = $this->enums['district'][strtolower(trim($data['district']))] ?? null;
+          $data['municipality'] = $this->enums['municipality'][strtolower(trim($data['municipality']))] ?? null;
         }
         return $data;
     }
@@ -199,7 +226,22 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
               if(!preg_match('/(?:\+977[- ])?\d{2}-?\d{7,8}/i', $value)) {
                 $onFailure('Invalid Mobile Number.');
               }
-            }
+            },
+            'province' => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Invalid Province');
+              }
+            },
+            'district' => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Invalid District');
+              }
+            },
+            'municipality' => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Invalid Municipality');
+              }
+            },
         ];
     }
 
