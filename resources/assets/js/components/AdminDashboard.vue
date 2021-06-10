@@ -477,8 +477,8 @@
             <th style="text-align: center; background-color: #dff0d8;">Negative</th>
           </tr>
           </thead>
-          <tbody v-if="report.all_data">
-          <tr v-for="(inside, key) in report.all_data">
+          <tbody v-if="report.sample_5_trends">
+          <tr v-for="(inside, key) in report.sample_5_trends">
             <td style="text-align: center; background-color: #fcf8e3;">{{ key }}</td>
             <td style="text-align: center; background-color: #fcf8e3;">{{ inside.inside_pcr_count ? inside.inside_pcr_count : 0 }}</td>
             <td style="text-align: center; background-color: #fcf8e3;">{{ inside.inside_pcr_postive_cases_count ? inside.inside_pcr_postive_cases_count : 0 }}</td>

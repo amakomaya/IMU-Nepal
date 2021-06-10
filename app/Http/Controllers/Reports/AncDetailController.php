@@ -153,28 +153,12 @@ class AncDetailController extends Controller
             $data[$key]['healthpost_name'] = $healthpost_name;
             $data[$key]['district_name'] = $district_name;
             $data[$key]['total_test'] = $report->count();
-            $data[$key]['pcr_count'] = $data[$key]['antigen_count'] = $data[$key]['pcr_postive_cases_count'] = $data[$key]['pcr_negative_cases_count'] = $data[$key]['antigen_postive_cases_count'] = $data[$key]['antigen_negative_cases_count'] = 0;
-            foreach($report as $solo) {
-                if($solo->service_type == '1'){
-                    $data[$key]['pcr_count'] += 1;
-                    if($solo->result == 3){
-                        $data[$key]['pcr_postive_cases_count'] += 1;
-                    }
-                    if($solo->result == 4){
-                        $data[$key]['pcr_negative_cases_count'] += 1;
-                    }
-                }
-                if($solo->service_type == '2'){
-                    $data[$key]['antigen_count'] += 1;
-                    if($solo->result == 3){
-                        $data[$key]['antigen_postive_cases_count'] += 1;
-                    }
-                    if($solo->result == 4){
-                        $data[$key]['antigen_negative_cases_count'] += 1;
-                    }
-                }
-                
-            }
+            $data[$key]['pcr_count'] = $report->where('service_for', '1')->count();
+            $data[$key]['antigen_count'] = $report->where('service_for', '2')->count();
+            $data[$key]['pcr_postive_cases_count'] = $report->where('service_for', '1')->where('result', 3)->count();
+            $data[$key]['pcr_negative_cases_count'] = $report->where('service_for', '1')->where('result', 4)->count();
+            $data[$key]['antigen_postive_cases_count'] = $report->where('service_for', '2')->where('result', 3)->count();
+            $data[$key]['antigen_negative_cases_count'] = $report->where('service_for', '2')->where('result', 4)->count();
         }
             
         return view('backend.sample.report.report', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
@@ -199,7 +183,7 @@ class AncDetailController extends Controller
             //     $q->where('lab_tests.checked_by', $user->token)
             //         ->orWhereIn('lab_tests.hp_code', $hpCodes);
             // })
-            ->whereIn('lab_tests.sample_test_result', [3, 4])
+            ->whereIn('lab_tests.sample_test_result', ['3', '4'])
             ->whereBetween(\DB::raw('DATE(lab_tests.updated_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
 
 
@@ -224,15 +208,8 @@ class AncDetailController extends Controller
             $data[$key]['healthpost_name'] = $healthpost_name;
             $data[$key]['district_name'] = $district_name;
             $data[$key]['total_test'] = $report->count();
-            $data[$key]['postive_cases_count'] = $data[$key]['negative_cases_count'] = 0;
-            foreach($report as $solo) {
-                if($solo->sample_test_result == 3){
-                    $data[$key]['postive_cases_count'] += 1;
-                }
-                if($solo->sample_test_result == 4){
-                    $data[$key]['negative_cases_count'] += 1;
-                }
-            }
+            $data[$key]['postive_cases_count'] = $report->where('sample_test_result', '3')->count();
+            $data[$key]['negative_cases_count'] = $report->where('sample_test_result', '4')->count();
         }
             
         return view('backend.sample.report.lab-report', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));

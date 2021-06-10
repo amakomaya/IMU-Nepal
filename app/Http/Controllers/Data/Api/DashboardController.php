@@ -75,84 +75,6 @@ class DashboardController extends Controller
             });
         }
 
-        $date_five_days = Carbon::now()->subDays(5)->toDateString();
-
-        $inside_data_all = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
-            ->whereIn('ancs.hp_code', $hpCodes)
-            ->whereIn('ancs.result', [3, 4])
-            ->whereIn('healthposts.hospital_type', [2, 3])
-            // ->leftjoin('lab_tests', function($q) {
-            //     $q->on('ancs.token', '=', 'lab_tests.sample_token');
-            //     $q->on('ancs.hp_code', '=', 'lab_tests.hp_code');
-            // })
-            ->whereBetween(\DB::raw('DATE(ancs.updated_at)'), [$date_five_days, $date_to->toDateString()])
-            ->select('ancs.*', DB::Raw('DATE(ancs.updated_at) as updated_at_date'))
-            ->orderBy('updated_at_date', 'desc')
-            ->get()
-            ->groupBy('updated_at_date');
-
-        $inside_data = [];
-        foreach($inside_data_all as $key => $inside_datum) {
-            $healthpost_name = $inside_datum[0]->name;
-            $inside_data[$key]['inside_pcr_count'] = $inside_data[$key]['inside_antigen_count'] = $inside_data[$key]['inside_pcr_postive_cases_count'] = $inside_data[$key]['inside_pcr_negative_cases_count'] = $inside_data[$key]['inside_antigen_postive_cases_count'] = $inside_data[$key]['inside_antigen_negative_cases_count'] = 0;
-            foreach($inside_datum as $solo) {
-                if($solo->service_type == '1'){
-                    $inside_data[$key]['inside_pcr_count'] += 1;
-                    if($solo->result == 3){
-                        $inside_data[$key]['inside_pcr_postive_cases_count'] += 1;
-                    }
-                    if($solo->result == 4){
-                        $inside_data[$key]['inside_pcr_negative_cases_count'] += 1;
-                    }
-                }
-                if($solo->service_type == '2'){
-                    $inside_data[$key]['inside_antigen_count'] += 1;
-                    if($solo->result == 3){
-                        $inside_data[$key]['inside_antigen_postive_cases_count'] += 1;
-                    }
-                    if($solo->result == 4){
-                        $inside_data[$key]['inside_antigen_negative_cases_count'] += 1;
-                    }
-                }
-                
-            }
-        }
-
-        $outside_data_all = LabTest::leftjoin('healthposts', 'lab_tests.hp_code', '=', 'healthposts.hp_code')
-            ->leftjoin('ancs', 'lab_tests.sample_token', '=', 'ancs.token')
-            ->whereIn('lab_tests.hp_code', $hpCodes)
-            ->whereIn('lab_tests.sample_test_result', [3, 4])
-            ->whereBetween(\DB::raw('DATE(ancs.updated_at)'), [$date_five_days, $date_to->toDateString()])
-            ->select('lab_tests.*', 'ancs.service_type as ancs_service_type', DB::Raw('DATE(lab_tests.updated_at) as updated_at_date'))
-            ->orderBy('updated_at_date', 'desc')
-            ->get()
-            ->groupBy('updated_at_date');
-
-        $outside_data = [];
-        foreach($outside_data_all as $key => $report) {
-            $outside_data[$key]['outside_pcr_postive_cases_count'] = $outside_data[$key]['outside_pcr_negative_cases_count'] = $outside_data[$key]['outside_antigen_postive_cases_count'] = $outside_data[$key]['outside_antigen_negative_cases_count'] =  0;
-            foreach($report as $solo) {
-                if($solo->ancs_service_type == '1'){
-                    if($solo->sample_test_result == 3){
-                        $outside_data[$key]['outside_pcr_postive_cases_count'] += 1;
-                    }
-                    if($solo->sample_test_result == 4){
-                        $outside_data[$key]['outside_pcr_negative_cases_count'] += 1;
-                    }
-                }
-                if($solo->ancs_service_type == '2'){
-                    if($solo->sample_test_result == 3){
-                        $outside_data[$key]['outside_antigen_postive_cases_count'] += 1;
-                    }
-                    if($solo->sample_test_result == 4){
-                        $outside_data[$key]['outside_antigen_negative_cases_count'] += 1;
-                    }
-                }
-            }
-        }
-
-        $all_data = array_merge_recursive($inside_data,$outside_data);
-        krsort($all_data);
 
         $data = [
             'registered' => Cache::remember('registered-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
@@ -171,6 +93,51 @@ class DashboardController extends Controller
                 $dump_data = DB::connection('mysqldump')->table('ancs')->whereIn('hp_code', $hpCodes)->where('status', 1)->count();
                 return $current_data + $dump_data;
             }),
+
+            'sample_5_trends' => Cache::remember('sample_5_trends-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
+                $sample_collection_data = SampleCollection::whereIn('hp_code', $hpCodes)->active()
+                    ->whereIn('service_for', ['1', '2'])
+                    ->whereIn('result', [3,4])
+                    ->whereDate('updated_at', '>', Carbon::now()->subDays(5)->startOfDay())
+                    ->get()
+                    ->groupBy(function($d) {
+                        return Carbon::parse($d->updated_at)->format('Y-m-d');
+                    });
+                    
+                $inside_data = [];
+                foreach($sample_collection_data as $key => $sample_data) {
+                    $inside_data[$key]['inside_pcr_count'] = $sample_data->where('service_for', '1')->count();
+                    $inside_data[$key]['inside_antigen_count'] = $sample_data->where('service_for', '2')->count();
+                    
+                    $inside_data[$key]['inside_pcr_postive_cases_count'] = $sample_data->where('service_for', '1')->where('result', 3)->count();
+                    $inside_data[$key]['inside_pcr_negative_cases_count'] = $sample_data->where('service_for', '1')->where('result', 4)->count();
+                    $inside_data[$key]['inside_antigen_postive_cases_count'] = $sample_data->where('service_for', '2')->where('result', 3)->count();
+                    $inside_data[$key]['inside_antigen_negative_cases_count'] = $sample_data->where('service_for', '2')->where('result', 4)->count();
+                }
+
+                $outside_data_all = LabTest::leftjoin('ancs', 'lab_tests.sample_token', '=', 'ancs.token')
+                    ->whereIn('lab_tests.hp_code', $hpCodes)
+                    ->whereIn('lab_tests.sample_test_result', ['3','4'])
+                    ->whereIn('ancs.service_for', ['1', '2'])
+                    ->whereDate('lab_tests.updated_at', '>', Carbon::now()->subDays(5)->startOfDay())
+                    ->get()
+                    ->groupBy(function($d) {
+                        return Carbon::parse($d->updated_at)->format('Y-m-d');
+                    });
+
+                $outside_data = [];
+                foreach($outside_data_all as $key => $sample_data) {
+                    $outside_data[$key]['outside_pcr_postive_cases_count'] = $sample_data->where('service_for', '1')->where('sample_test_result', '3')->count();
+                    $outside_data[$key]['outside_pcr_negative_cases_count'] = $sample_data->where('service_for', '1')->where('sample_test_result', '4')->count();
+                    $outside_data[$key]['outside_antigen_postive_cases_count'] = $sample_data->where('service_for', '2')->where('sample_test_result', '3')->count();
+                    $outside_data[$key]['outside_antigen_negative_cases_count'] =  $sample_data->where('service_for', '2')->where('sample_test_result', '4')->count();
+                }
+
+                $all_data = array_merge_recursive($inside_data,$outside_data);
+                krsort($all_data);
+                return $all_data;
+            }),
+            
             'sample_collection_antigen' => Cache::remember('sample_collection_antigen-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
                 $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '2')->active()->count();
                 $dump_data = DB::connection('mysqldump')->table('ancs')->whereIn('hp_code', $hpCodes)->where('service_for', '2')->where('status', 1)->count();
@@ -270,13 +237,13 @@ class DashboardController extends Controller
             'vaccinated' => $vaccinated ?? 0,
 
             // time expiration in UMT add 5:45 to nepali time, sub 1 hrs to get updated at => 285
-            // 'cache_created_at' => Carbon::parse(\DB::table('cache')->where('key', 'laravelregistered-'.auth()->user()->token)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s'),
+            'cache_created_at' => Carbon::parse(\DB::table('cache')->where('key', 'laravelregistered-'.auth()->user()->token)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s'),
             'user_token' => auth()->user()->token,
 //            'immunization_registered' => HealthProfessional::whereIn('checked_by', auth()->user()->token)
 //                ->whereNull('vaccinated_status')->count(),
 //            'immunized' => HealthProfessional::whereIn('checked_by', auth()->user()->token)
 //                ->where('vaccinated_status', '1')->count(),
-            'all_data' => $all_data,
+            // 'all_data' => $all_data,
         ];
 
         return response()->json($data);
