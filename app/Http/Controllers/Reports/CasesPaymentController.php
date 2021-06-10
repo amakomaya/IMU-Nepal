@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yagiten\Nepalicalendar\Calendar;
 
+use App\Models\District;
+use App\Models\Municipality;
+
 class CasesPaymentController extends Controller
 {
     public function monthlyLineListing(Request $request){
@@ -20,7 +23,6 @@ class CasesPaymentController extends Controller
         $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']);
 
         if ($response['province_id'] == null ||
-            $response['municipality_id'] == null ||
             $response['district_id'] == null
         ){
             $data = [];
@@ -28,6 +30,7 @@ class CasesPaymentController extends Controller
             return view('backend.cases.reports.monthly-line-listing', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
         }
 
+        // $municipality = Mun
         $data = \DB::table('payment_cases')->whereIn('healthposts.hospital_type', [3,5,6]);
 
         if ($response['province_id'] !== null){
@@ -45,6 +48,8 @@ class CasesPaymentController extends Controller
         if ($response['hp_code'] !== null){
             $data = $data->where('healthposts.hp_code', $response['hp_code']);
         }
+
+        $district_name = District::where('id', $response['district_id'])->first()->district_name;
 
         $running_period_cases = $data
             ->join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
@@ -68,6 +73,9 @@ class CasesPaymentController extends Controller
                 'payment_cases.register_date_np',
                 'payment_cases.date_of_outcome_en',
                 'payment_cases.date_of_outcome',
+
+                'healthposts.name as healthpost_name',
+                'healthposts.municipality_id as municipality_id'
             ])
             ->orderBy('healthposts.name', 'asc')
             ->get();
@@ -80,6 +88,8 @@ class CasesPaymentController extends Controller
             $return['guardian_name'] = $item->guardian_name;
             $return['phone'] = $item->phone;
             $return['paid_free'] = $this->selfFreeParse($item->self_free);
+            $return['healthpost_name'] = $item->healthpost_name;
+            $return['municipality_name'] = Municipality::where('id', $item->municipality_id)->first()->municipality_name;
 
             $arr_initial_health_condition = array([
                 'id' => $item->health_condition,
@@ -148,7 +158,7 @@ class CasesPaymentController extends Controller
             return $return;
         })->values();
         $data = $mapped_data;
-        return view('backend.cases.reports.monthly-line-listing', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+        return view('backend.cases.reports.monthly-line-listing', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days', 'district_name'));
 
     }
 

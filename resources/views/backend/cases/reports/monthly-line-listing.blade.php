@@ -150,6 +150,9 @@
                                 <thead>
                                 <tr>
                                     <th>S.N</th>
+                                    <th>District</th>
+                                    <th>Municipality</th>
+                                    <th>Organization</th>
                                     <th>Name</th>
                                     <th>Age</th>
                                     <th>gender</th>
@@ -170,6 +173,9 @@
                                 @foreach($data as $key => $case)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
+                                        <td >{{$district_name }}</td>
+                                        <td >{{ $case['municipality_name'] }}</td>
+                                        <td >{{ $case['healthpost_name'] }} </td>
                                         <td >{{ $case['name'] }} </td>
                                         <td>{{ $case['age'] }} </td>
                                         <td>{{ $case['gender'] }} </td>
