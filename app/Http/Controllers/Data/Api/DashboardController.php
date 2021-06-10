@@ -237,22 +237,12 @@ class DashboardController extends Controller
             'vaccinated' => $vaccinated ?? 0,
 
             // time expiration in UMT add 5:45 to nepali time, sub 1 hrs to get updated at => 285
-<<<<<<< HEAD
-            'cache_created_at' => Carbon::parse(\DB::table('cache')->where('key', 'laravelregistered-'.auth()->user()->token)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s'),
-            'user_token' => auth()->user()->token,
-=======
             // 'cache_created_at' => Carbon::parse(\DB::table('cache')->where('key', 'laravelregistered-'.auth()->user()->token)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s'),
             'user_token' => auth()->user()->token
->>>>>>> 72d1f2f0ec614048dd16b7a62b477fcbfd7058e5
 //            'immunization_registered' => HealthProfessional::whereIn('checked_by', auth()->user()->token)
 //                ->whereNull('vaccinated_status')->count(),
 //            'immunized' => HealthProfessional::whereIn('checked_by', auth()->user()->token)
 //                ->where('vaccinated_status', '1')->count(),
-<<<<<<< HEAD
-            // 'all_data' => $all_data,
-=======
-//            'all_data' => $all_data,
->>>>>>> 72d1f2f0ec614048dd16b7a62b477fcbfd7058e5
         ];
 
         return response()->json($data);
