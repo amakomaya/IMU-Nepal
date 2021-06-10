@@ -127,7 +127,7 @@ class ExtCaseController extends Controller
                 
                 $update = false;
                 $existingSampleCollection = $existingSuspectedCase = $existingLabTest = '';
-                if(in_array(strval($value['lab_result']), ['3', '4'])) {
+                if(!in_array(strval($value['lab_result']), ['3', '4'])) {
                   DB::rollback();
                   return response()->json(['message' => 'The data couldnot be uploaded due to following errors: Invalid Lab Result. Need value 3 For Positive, 4 For Negative' ]);
                 }
