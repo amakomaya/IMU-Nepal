@@ -202,7 +202,7 @@ export default {
     deletePatientData: function (item, removeItemOnSuccess) {
       this.$swal({
         title: "Are you sure?",
-        text: "You don\'t able to to retrieve this data.",
+        text: "You won\'t able to to retrieve this data.",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
@@ -223,7 +223,6 @@ export default {
                     position: 'top-end',
                     showConfirmButton: false,
                     timer: 3000,
-                    // onSuccessCallback: removeItemOnSuccess
                   })
                   this.healthpostSelected = null;
                   

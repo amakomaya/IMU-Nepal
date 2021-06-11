@@ -66,6 +66,9 @@
                   <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
                         <i class="fa fa-hospital-o"></i> |
                   </button>
+                  <button v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Delete Patient Data">
+                    <i class="fa fa-trash"></i>
+                  </button>
                 </td>
                 <!-- </div>             -->
             </tr>
@@ -191,6 +194,50 @@ export default {
           districts: this.districts,
           municipalities: this.municipalities
         },
+      })
+    },
+
+    deletePatientData: function (item, removeItemOnSuccess) {
+      this.$swal({
+        title: "Are you sure?",
+        text: "You won\'t able to to retrieve this data.",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel please!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      }).then((result) => {
+        if (result.value) {
+          axios.post('/api/v1/suspected-case-delete/' + item.token)
+              .then((response) => {
+                if (response.data.message === 'success') {
+                  removeItemOnSuccess(item);
+                  this.$swal({
+                    title: 'Record Deleted',
+                    type: 'success',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                  })
+                  this.healthpostSelected = null;
+                  
+                } else {
+                  this.$swal({
+                    title: 'Oops. No record found.',
+                    type: 'error',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                  })
+                }
+              })
+        } else {
+          this.$swal("Cancelled", "Data not deleted :)", "error");
+        }
       })
     },
 

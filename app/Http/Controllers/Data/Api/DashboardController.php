@@ -75,7 +75,6 @@ class DashboardController extends Controller
             });
         }
 
-
         $data = [
             'registered' => Cache::remember('registered-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
                 $current_data = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->count();
@@ -97,13 +96,13 @@ class DashboardController extends Controller
             'sample_5_trends' => Cache::remember('sample_5_trends-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
                 $sample_collection_data = SampleCollection::whereIn('hp_code', $hpCodes)->active()
                     ->whereIn('service_for', ['1', '2'])
-                    ->whereIn('result', [3,4])
-                    ->whereDate('updated_at', '>', Carbon::now()->subDays(5)->startOfDay())
+                    // ->whereIn('result', [3,4])
+                    ->whereBetween('created_at',[Carbon::now()->subDays(5)->startOfDay()->toDateTimeString(), Carbon::now()->subDays(1)->endOfDay()->toDateTimeString()])
                     ->get()
                     ->groupBy(function($d) {
-                        return Carbon::parse($d->updated_at)->format('Y-m-d');
+                        return Carbon::parse($d->created_at)->format('Y-m-d');
                     });
-                    
+
                 $inside_data = [];
                 foreach($sample_collection_data as $key => $sample_data) {
                     $inside_data[$key]['inside_pcr_count'] = $sample_data->where('service_for', '1')->count();
@@ -119,7 +118,8 @@ class DashboardController extends Controller
                     ->whereIn('lab_tests.hp_code', $hpCodes)
                     ->whereIn('lab_tests.sample_test_result', ['3','4'])
                     ->whereIn('ancs.service_for', ['1', '2'])
-                    ->whereDate('lab_tests.updated_at', '>', Carbon::now()->subDays(5)->startOfDay())
+                    ->whereBetween('lab_tests.updated_at',[Carbon::now()->subDays(5)->startOfDay()->toDateTimeString(), Carbon::now()->subDays(1)->endOfDay()->toDateTimeString()])
+                    ->select('lab_tests.*', 'ancs.service_for')
                     ->get()
                     ->groupBy(function($d) {
                         return Carbon::parse($d->updated_at)->format('Y-m-d');
