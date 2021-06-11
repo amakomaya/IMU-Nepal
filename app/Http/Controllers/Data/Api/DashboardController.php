@@ -94,10 +94,10 @@ class DashboardController extends Controller
                 return $current_data + $dump_data;
             }),
 
-            'sample_5_trends' => Cache::remember('sample_5_trends-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
+            'sample_5_trends' => Cache::remember('sample_5_tresnds-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
                 $sample_collection_data = SampleCollection::whereIn('hp_code', $hpCodes)->active()
                     ->whereIn('service_for', ['1', '2'])
-                    ->whereIn('result', [3,4])
+                    // ->whereIn('result', [3,4])
                     ->whereDate('updated_at', '>', Carbon::now()->subDays(5)->startOfDay())
                     ->get()
                     ->groupBy(function($d) {
@@ -120,6 +120,7 @@ class DashboardController extends Controller
                     ->whereIn('lab_tests.sample_test_result', ['3','4'])
                     ->whereIn('ancs.service_for', ['1', '2'])
                     ->whereDate('lab_tests.updated_at', '>', Carbon::now()->subDays(5)->startOfDay())
+                    ->select('lab_tests.*', 'ancs.service_for')
                     ->get()
                     ->groupBy(function($d) {
                         return Carbon::parse($d->updated_at)->format('Y-m-d');
