@@ -111,7 +111,7 @@ export default {
       );
     },
     checkEditButton(){
-      return this.$userRole === 'healthpost' || this.$userRole === 'main' || this.$provincePermissionId === '1';
+      return this.$userRole === 'healthpost' || this.$userRole === 'main' || this.$permissionId === '1';
     }
   }
 }

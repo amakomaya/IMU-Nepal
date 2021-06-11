@@ -70,6 +70,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'municipality' => $municipalities,
           'result' => array('positive' => '3', 'negative' => '4')
         );
+        $this->importedRowCount = 0;
     }
     
     public function registerEvents(): array
@@ -84,6 +85,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
     public function model(array $row)
     {
         if(!array_filter($row)) { return null;} //Ignore empty rows.
+        $this->importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
         $suspectedCase = SuspectedCase::create([
           'name' => $row['person_name'],
@@ -283,6 +285,10 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
               }
             },
         ];
+    }
+
+    public function getImportedRowCount() {
+      return $this->importedRowCount;
     }
 
     public function chunkSize(): int

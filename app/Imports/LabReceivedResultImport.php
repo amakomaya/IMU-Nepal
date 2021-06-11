@@ -39,6 +39,7 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
         $this->enums = [
           'result' => array('positive' => '3', 'negative' => '4')
         ];
+        $this->importedRowCount = 0;
     }
     
     public function registerEvents(): array
@@ -53,6 +54,7 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
     public function model(array $row)
     {
         if(!array_filter($row)) { return null;} //Ignore empty rows.
+        $this->importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
         $date_en = Carbon::now();
         $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
@@ -79,6 +81,7 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
             );
             return;
           }
+          //check if sid exists
           try {
             LabTest::create([
               'token' => $this->userToken.'-'.$labId,
@@ -174,6 +177,10 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
               }
             }
          ];
+    }
+
+    public function getImportedRowCount() {
+      return $this->importedRowCount;
     }
 
     public function chunkSize(): int
