@@ -67,6 +67,7 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
           'district' => $districts,
           'municipality' => $municipalities,
         );
+        $this->importedRowCount = 0;
     }
     
     public function registerEvents(): array
@@ -81,9 +82,11 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
     public function model(array $row)
     {
         if(!array_filter($row)) { return null;} //Ignore empty rows.
+        $this->importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
         $date_en = Carbon::now();
         $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
+
         $suspectedCase = SuspectedCase::create([
           'name' => $row['person_name'],
           'age' => $row['age'],
@@ -236,8 +239,12 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
               if ($value === '' || $value === null) {
                    $onFailure('Invalid Infection Type');
               }
-            },
+            }
         ];
+    }
+
+    public function getImportedRowCount() {
+      return $this->importedRowCount;
     }
 
     public function chunkSize(): int

@@ -23,7 +23,16 @@ class BulkUploadController extends Controller
       if ($request->hasFile('bulk_file_lab_received')) {
         $bulk_file = $request->file('bulk_file_lab_received');
         try {
-          Excel::queueImport(new LabReceivedImport(auth()->user()), $bulk_file);
+          $import = new LabReceivedImport(auth()->user());
+          Excel::queueImport($import, $bulk_file);
+          $importedRowCount = $import->getImportedRowCount();
+          if($importedRowCount == 0) {
+            return response()->json([
+              'status' => 'fail',
+              'message' => [['row' => 0, 'column' => '-', 'error' => ['No data was inserted. Please check if the template is valid or if your excel file has data.'] ]] 
+              ], 422
+            );
+          }
           return response()->json(['message' => 'success',
             'message' => 'Lab Received Data uploaded successfully',
           ]);
@@ -59,7 +68,16 @@ class BulkUploadController extends Controller
       if ($request->hasFile('bulk_file_lab_result')) {
         $bulk_file = $request->file('bulk_file_lab_result');
         try {
-          Excel::queueImport(new LabResultImport(auth()->user()), $bulk_file);
+          $import = new LabResultImport(auth()->user());
+          Excel::queueImport($import, $bulk_file);
+          $importedRowCount = $import->getImportedRowCount();
+          if($importedRowCount == 0) {
+            return response()->json([
+              'status' => 'fail',
+              'message' => [['row' => 0, 'column' => '-', 'error' => ['No data was inserted. Please check if the template is valid or if your excel file has data.'] ]] 
+              ], 422
+            );
+          }
           return response()->json(['message' => 'success',
             'message' => 'Lab Results Data updated successfully',
           ]);
@@ -92,6 +110,14 @@ class BulkUploadController extends Controller
         $bulk_file = $request->file('bulk_file_lab_received_result');
         try {
           Excel::queueImport(new LabReceivedResultImport(auth()->user()), $bulk_file);
+          $importedRowCount = $import->getImportedRowCount();
+          if($importedRowCount == 0) {
+            return response()->json([
+              'status' => 'fail',
+              'message' => [['row' => 0, 'column' => '-', 'error' => ['No data was inserted. Please check if the template is valid or if your excel file has data.'] ]] 
+              ], 422
+            );
+          }
           return response()->json(['message' => 'success',
             'message' => 'Lab Received & Results Data created successfully',
           ]);
@@ -124,7 +150,16 @@ class BulkUploadController extends Controller
       if ($request->hasFile('bulk_file_registration_sample_collection')) {
         $bulk_file = $request->file('bulk_file_registration_sample_collection');
         try {
-          Excel::queueImport(new RegisterSampleCollectionImport(auth()->user()), $bulk_file);
+          $import = new RegisterSampleCollectionImport(auth()->user());
+          Excel::queueImport($import, $bulk_file);
+          $importedRowCount = $import->getImportedRowCount();
+          if($importedRowCount == 0) {
+            return response()->json([
+              'status' => 'fail',
+              'message' => [['row' => 0, 'column' => '-', 'error' => ['No data was inserted. Please check if the template is valid or if your excel file has data.'] ]] 
+              ], 422
+            );
+          }
           return response()->json(['message' => 'success',
             'message' => 'Sample Collection Data created successfully',
           ]);
@@ -156,7 +191,16 @@ class BulkUploadController extends Controller
       if ($request->hasFile('bulk_file_registration_sample_collection_lab_test')) {
         $bulk_file = $request->file('bulk_file_registration_sample_collection_lab_test');
         try {
-          Excel::queueImport(new RegisterSampleCollectionLabImport(auth()->user()), $bulk_file);
+          $import = new RegisterSampleCollectionLabImport(auth()->user());
+          Excel::queueImport($import, $bulk_file);
+          $importedRowCount = $import->getImportedRowCount();
+          if($importedRowCount == 0) {
+            return response()->json([
+              'status' => 'fail',
+              'message' => [['row' => 0, 'column' => '-', 'error' => ['No data was inserted. Please check if the template is valid or if your excel file has data.'] ]] 
+              ], 422
+            );
+          }
           return response()->json(['message' => 'success',
             'message' => 'Sample Collection Data created successfully',
           ]);
