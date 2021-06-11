@@ -288,7 +288,7 @@
                 <h4 class="modal-title">Hospital & Isolation</h4>
               </div>
               <div class="modal-body">
-              <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+              <table class="table table-striped table-bordered table-hover" id="dataTables-public">
                   <thead>
                   <tr>
                       <th>S.N</th>                                      
@@ -320,7 +320,7 @@
                 <h4 class="modal-title">General</h4>
               </div>
               <div class="modal-body">
-              <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+              <table class="table table-striped table-bordered table-hover" id="dataTables-public">
                   <thead>
                   <tr>
                       <th>S.N</th>                                      
@@ -351,7 +351,7 @@
                 <h4 class="modal-title">HDU</h4>
               </div>
               <div class="modal-body">
-              <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+              <table class="table table-striped table-bordered table-hover" id="dataTables-public">
                   <thead>
                   <tr>
                       <th>S.N</th>                                      
@@ -382,7 +382,7 @@
                 <h4 class="modal-title">ICU</h4>
               </div>
               <div class="modal-body">
-              <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+              <table class="table table-striped table-bordered table-hover" id="dataTables-public">
                   <thead>
                   <tr>
                       <th>S.N</th>                                      
@@ -413,7 +413,7 @@
                 <h4 class="modal-title">Ventilators</h4>
               </div>
               <div class="modal-body">
-              <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+              <table class="table table-striped table-bordered table-hover" id="dataTables-public">
                   <thead>
                   <tr>
                       <th>S.N</th>                                      
@@ -444,7 +444,7 @@
                 <h4 class="modal-title">Oxygen Facility</h4>
               </div>
               <div class="modal-body">
-              <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+              <table class="table table-striped table-bordered table-hover" id="dataTables-public">
                   <thead>
                   <tr>
                       <th>S.N</th>                                      
@@ -478,7 +478,7 @@
                 <h4 class="modal-title">Discharge</h4>
               </div>
               <div class="modal-body">
-              <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+              <table class="table table-striped table-bordered table-hover" id="dataTables-public">
                   <thead>
                   <tr>
                       <th>S.N</th>                                      
@@ -512,7 +512,7 @@
                 <h4 class="modal-title">Admission</h4>
               </div>
               <div class="modal-body">
-              <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+              <table class="table table-striped table-bordered table-hover" id="dataTables-public">
                   <thead>
                   <tr>
                       <th>S.N</th>                                      
@@ -546,7 +546,7 @@
                 <h4 class="modal-title">Death </h4>
               </div>
               <div class="modal-body">
-              <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+              <table class="table table-striped table-bordered table-hover" id="dataTables-public">
                   <thead>
                   <tr>
                       <th>S.N</th>                                      
@@ -569,7 +569,7 @@
             </div>
           </div>
         </div>
-        
+
       </div>
     </div>
   </div>
@@ -634,6 +634,11 @@
     $.get("api/status"+params, function(data) {
      mainData = data;
      renderData();
+     $('[id^="dataTables-public"]').DataTable({
+        responsive: true,
+        pageLength: 50,
+        "dom" : '<"top"f>rt<"button"lp><"clear">'
+      });
     });
   }
 
@@ -956,6 +961,7 @@
     addDropdownOnChangeListners();
     fetchData();
 
-  })
+  });
+
 </script>
 @endsection
