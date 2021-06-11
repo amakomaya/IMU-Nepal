@@ -159,11 +159,11 @@ export default {
     },
     checkEditButton(){
       var arr = this.$userPermissions.split(',');
-      return this.$userRole === 'healthpost' || this.$userRole === 'main'|| this.$provincePermissionId === '1' ||  arr.includes('cases-payment');
+      return this.$userRole === 'healthpost' || this.$userRole === 'main'|| this.$provincePermissionId == '1' ||  arr.includes('cases-payment');
     },
     checkDeleteButton() {
       // main super admin token
-      return this.$userSessionToken === '5a4425' || this.$provincePermissionId === '1';
+      return this.$userSessionToken === '5a4425' || this.$provincePermissionId == '1';
     }
   }
 }

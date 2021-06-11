@@ -91,7 +91,7 @@ Vue.prototype.$hospitalType = document.querySelector("meta[name='hospital-type']
 Vue.prototype.$userSessionToken = document.querySelector("meta[name='user-session-token']").getAttribute('content');
 Vue.prototype.$userRoleSessionToken = document.querySelector("meta[name='user-role-token']").getAttribute('content');
 Vue.prototype.$csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute('content');
-Vue.prototype.$provincePermissionId = document.querySelector("meta[name='province-permission-id']").getAttribute('content');
+Vue.prototype.$provincePermissionId = permission_id;
 Vue.prototype.$pcrAllowedOrganizationType = ['2', '3'];
 
 Vue.use(Vuelidate)

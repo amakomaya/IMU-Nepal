@@ -156,6 +156,7 @@
                             <li>
                                 <a href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
+                                   eraseCookie('permission_id');
                          document.getElementById('logout-form').submit();">
                                     <i class="fa fa-sign-out" aria-hidden="true"></i>
 
@@ -190,8 +191,42 @@
     <!-- /#wrapper -->
 
     <!-- Scripts -->
-{{--    <script src="{{ asset('js/app.js') }}"></script>--}}
+    @if(auth()->user()->role == 'province')  
+    <script>
+        function setCookie(name,value,days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days*24*60*60*1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+        }
+        setCookie('permission_id',document.querySelector("meta[name='province-permission-id']").getAttribute('content'),1);
 
+
+        
+
+    </script>
+    
+    @endif
+    <script>
+    function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+        function eraseCookie(name) {   
+            document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        }
+        permission_id = getCookie('permission_id');
+    </script>
+    {{--    <script src="{{ asset('js/app.js') }}"></script>--}}
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
@@ -209,7 +244,7 @@
     <script src="{{ asset('dist/js/sb-admin-2.js') }}"></script>
 
     <script src="{{ asset('js/custom.js') }}"></script>
-
+    
 @yield('script')
 </body>
 </html>
