@@ -118,7 +118,7 @@ class DashboardController extends Controller
                     ->whereIn('lab_tests.hp_code', $hpCodes)
                     ->whereIn('lab_tests.sample_test_result', ['3','4'])
                     ->whereIn('ancs.service_for', ['1', '2'])
-                    ->whereBetween('lab_tests.created_at',[Carbon::now()->subDays(5)->startOfDay()->toDateTimeString(), Carbon::now()->subDays(1)->endOfDay()->toDateTimeString()])
+                    ->whereBetween('lab_tests.updated_at',[Carbon::now()->subDays(5)->startOfDay()->toDateTimeString(), Carbon::now()->subDays(1)->endOfDay()->toDateTimeString()])
                     ->select('lab_tests.*', 'ancs.service_for')
                     ->get()
                     ->groupBy(function($d) {

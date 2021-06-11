@@ -447,10 +447,10 @@
           </a>
         </div>
       </div>
-      <div class="col-lg-12" v-show="false">
+      <div class="col-lg-12">
         <h3>5 Days Trend Data</h3>
       </div>
-      <div class="col-lg-12" v-show="false">
+      <div class="col-lg-12">
         <table class="table table-bordered ">
           <thead>
           <tr>
