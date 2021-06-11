@@ -98,10 +98,10 @@ class DashboardController extends Controller
                 $sample_collection_data = SampleCollection::whereIn('hp_code', $hpCodes)->active()
                     ->whereIn('service_for', ['1', '2'])
                     // ->whereIn('result', [3,4])
-                    ->whereDate('updated_at', '>', Carbon::now()->subDays(5)->startOfDay())
+                    ->whereDate('created_at', '>', Carbon::now()->subDays(6)->startOfDay())
                     ->get()
                     ->groupBy(function($d) {
-                        return Carbon::parse($d->updated_at)->format('Y-m-d');
+                        return Carbon::parse($d->created_at)->format('Y-m-d');
                     });
                     
                 $inside_data = [];
