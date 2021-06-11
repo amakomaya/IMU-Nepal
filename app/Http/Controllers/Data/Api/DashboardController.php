@@ -97,12 +97,12 @@ class DashboardController extends Controller
                 $sample_collection_data = SampleCollection::whereIn('hp_code', $hpCodes)->active()
                     ->whereIn('service_for', ['1', '2'])
                     // ->whereIn('result', [3,4])
-                    ->whereBetween('created_at',[Carbon::now()->subDays(1)->startOfDay(), Carbon::now()->subDays(6)->startOfDay()])
+                    ->whereBetween('created_at',[Carbon::now()->subDays(6)->startOfDay(), Carbon::now()->subDays(1)->startOfDay()])
                     ->get()
                     ->groupBy(function($d) {
                         return Carbon::parse($d->created_at)->format('Y-m-d');
                     });
-                    
+
                 $inside_data = [];
                 foreach($sample_collection_data as $key => $sample_data) {
                     $inside_data[$key]['inside_pcr_count'] = $sample_data->where('service_for', '1')->count();
@@ -118,7 +118,7 @@ class DashboardController extends Controller
                     ->whereIn('lab_tests.hp_code', $hpCodes)
                     ->whereIn('lab_tests.sample_test_result', ['3','4'])
                     ->whereIn('ancs.service_for', ['1', '2'])
-                    ->whereBetween('lab_tests.updated_at',[Carbon::now()->subDays(1)->startOfDay(), Carbon::now()->subDays(6)->startOfDay()])
+                    ->whereBetween('lab_tests.updated_at',[Carbon::now()->subDays(6)->startOfDay(), Carbon::now()->subDays(1)->startOfDay()])
                     ->select('lab_tests.*', 'ancs.service_for')
                     ->get()
                     ->groupBy(function($d) {
