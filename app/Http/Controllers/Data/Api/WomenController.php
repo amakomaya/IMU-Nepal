@@ -706,4 +706,22 @@ class WomenController extends Controller
         $data = PaymentCase::whereIn('hp_code', $hpCodes)->where('is_death', 2)->latest()->advancedFilter();
         return response()->json(['collection' => $data]);
     }
+
+    public function deleteSuspectedCase($id){
+        try{
+            $patients = SuspectedCase::where('token', $id)->first();
+            $ancs = SampleCollection::where('woman_token', $id)->get();
+            
+            foreach($ancs as $anc) {
+                LabTest::where('sample_token', $anc->token)->delete();
+                $anc->delete();
+            }
+            $patients->delete();
+
+            return response()->json(['message' => 'success']);
+        }
+        catch (\Exception $e){
+            return response()->json(['message' => 'error']);
+        }
+    }
 }

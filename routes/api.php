@@ -937,3 +937,5 @@ Route::post('/v1/bulk-upload/lab-received-result', 'Backend\BulkUploadController
 Route::post('/v1/bulk-upload/registration-sample-collection', 'Backend\BulkUploadController@registrationSampleCollection')->name('bulk.upload.register.sample-collection');
 Route::post('/v1/bulk-upload/registration-sample-collection-lab-test', 'Backend\BulkUploadController@registrationSampleCollectionLabTest')->name('bulk.upload.register.sample.lab');
 Route::get('/v1/server-date', 'Data\Api\DateController@index');
+
+Route::post('/v1/suspected-case-delete/{id}', 'Data\Api\WomenController@deleteSuspectedCase');

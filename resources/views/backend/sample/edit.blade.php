@@ -59,7 +59,7 @@
                                                class="form-text text-danger">{{ $errors->first('token') }}</small>
                                     @endif
                                 </div>
-                                <div class="form-group {{ $errors->has('woman_token') ? 'has-error' : '' }}">
+                                {{-- <div class="form-group {{ $errors->has('woman_token') ? 'has-error' : '' }}">
                                     <label for="woman_token">Woman Token</label>
                                     <input type="text" id="woman_token" class="form-control" name="woman_token"
                                            aria-describedby="help" placeholder="Enter Woman Token"
@@ -69,7 +69,7 @@
                                         <small id="help"
                                                class="form-text text-danger">{{ $errors->first('woman_token') }}</small>
                                     @endif
-                                </div>
+                                </div> --}}
                                 <div class="form-group">
                                     <label class="control-label">Test Type</label>
                                     <div class="control-group">

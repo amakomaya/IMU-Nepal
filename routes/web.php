@@ -202,6 +202,7 @@ Route::get('/admin/patient/{token}/edit', 'Reports\CaseDetailController@edit');
 Route::put('/admin/patient/{token}', 'Reports\CaseDetailController@update')->name('patient.update');
 Route::get('/admin/sample/{token}/edit', 'Reports\AncDetailController@edit');
 Route::put('/admin/sample/{token}', 'Reports\AncDetailController@update')->name('sample.update');
+Route::get('/admin/sample/remove/{token}', 'Reports\AncDetailController@delete')->name('sample.remove');
 
 //Route::resource('/observation-cases', 'Backend\ObservationCasesController');
 Route::resource('/admin/cases-payment-observation', 'Backend\ObservationCasesController', ['names' => 'observation-cases']);

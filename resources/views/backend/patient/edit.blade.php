@@ -495,7 +495,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if(auth()->user()->role === 'main')
+                                                    {{-- @if(auth()->user()->role === 'main') --}}
                                                         {{--                                                        <button title="Edit Sample Detail" {{ url("admin/sample/$sample->token/edit") }}'">--}}
                                                         {{--                                                            <i class="fa fa-edit"></i>--}}
                                                         {{--                                                        </button>--}}
@@ -503,7 +503,11 @@
                                                            href="{{ url('admin/sample/'.$sample->token.'/edit') }}">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
-                                                    @endif
+                                                        <a title="Delete Sample Detail" class="btn btn-danger"
+                                                           href="{{ url('admin/sample/remove/'.$sample->token) }}" onclick="return confirm('Are you sure?')">
+                                                            <i class="fa fa-trash"></i>
+                                                        </a>
+                                                    {{-- @endif --}}
                                                 </td>
                                             </tr>
                                         @endforeach

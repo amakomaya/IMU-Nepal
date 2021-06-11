@@ -82,12 +82,12 @@ class AncDetailController extends Controller
     {
         $request->validate([
             'token' => 'required',
-            'woman_token' => 'required',
             'service_for' => 'required',
             'infection_type' => 'required',
             'service_type' => 'required',
             'result' => 'required',
         ]);
+        
 
         $sample = SampleCollection::find($id);
         $sample->token = $request->get('token');
@@ -100,8 +100,19 @@ class AncDetailController extends Controller
         $sample->result = $request->get('result');
 
         $sample->save();
+        $request->session()->flash('message', 'Data Updated successfully');
 
-        return view('backend.woman.index');
+        // return view('backend.woman.index');
+        return redirect()->back();
+    }
+
+    public function delete(Request $request, $id) {
+
+        SampleCollection::where('token', $id)->delete();
+        LabTest::where('sample_token',$id)->delete();
+        $request->session()->flash('message', 'Data Deleted successfully');
+
+        return redirect()->back();
     }
 
     /**
