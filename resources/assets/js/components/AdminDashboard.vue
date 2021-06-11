@@ -447,6 +447,59 @@
           </a>
         </div>
       </div>
+      <div class="col-lg-12">
+        <h3>5 Days Trend Data</h3>
+      </div>
+      <div class="col-lg-12">
+        <table class="table table-bordered ">
+          <thead>
+          <tr>
+            <th rowspan="3" style="text-align: center; background-color: #dff0d8;">Date</th>
+
+              <th v-if="checkHospitalTypeForLabFeature()" colspan="6" style="text-align: center; background-color: #d9edf7;">Inside Organization</th>
+              <th v-if="checkHospitalTypeForLabFeature()" colspan="4" style="text-align: center; background-color: #d9edf7;">Outside Organization</th>
+          </tr>
+          <tr>
+            <th colspan="3" style="text-align: center; background-color: #f2dede;">PCR</th>
+            <th colspan="3" style="text-align: center; background-color: #f2dede;">Antigen</th>
+            <th colspan="2" style="text-align: center; background-color: #f2dede;" v-if="checkHospitalTypeForLabFeature()">PCR</th>
+            <th colspan="2" style="text-align: center; background-color: #f2dede;" v-if="checkHospitalTypeForLabFeature()">Antigen</th>
+          </tr>
+          <tr>
+            <th style="text-align: center; background-color: #dff0d8;">Swab Collection</th>
+            <th style="text-align: center; background-color: #dff0d8;">Positive</th>
+            <th style="text-align: center; background-color: #dff0d8;">Negative</th>
+            <th style="text-align: center; background-color: #dff0d8;">Swab Collection</th>
+            <th style="text-align: center; background-color: #dff0d8;">Positive</th>
+            <th style="text-align: center; background-color: #dff0d8;">Negative</th>
+            <th style="text-align: center; background-color: #dff0d8;" v-if="checkHospitalTypeForLabFeature()">Positive</th>
+            <th style="text-align: center; background-color: #dff0d8;" v-if="checkHospitalTypeForLabFeature()">Negative</th>
+            <th style="text-align: center; background-color: #dff0d8;" v-if="checkHospitalTypeForLabFeature()">Positive</th>
+            <th style="text-align: center; background-color: #dff0d8;" v-if="checkHospitalTypeForLabFeature()">Negative</th>
+          </tr>
+          </thead>
+          <tbody v-if="report.sample_5_trends">
+          <tr v-for="(inside, key) in report.sample_5_trends">
+            <td style="text-align: center; background-color: #fcf8e3;">{{ key }}</td>
+            <td style="text-align: center; background-color: #fcf8e3;">{{ inside.inside_pcr_count ? inside.inside_pcr_count : 0 }}</td>
+            <td style="text-align: center; background-color: #fcf8e3;">{{ inside.inside_pcr_postive_cases_count ? inside.inside_pcr_postive_cases_count : 0 }}</td>
+            <td style="text-align: center; background-color: #fcf8e3;">{{ inside.inside_pcr_negative_cases_count ? inside.inside_pcr_negative_cases_count : 0 }}</td>
+            <td style="text-align: center; background-color: #fcf8e3;">{{ inside.inside_antigen_count ? inside.inside_antigen_count : 0 }}</td>
+            <td style="text-align: center; background-color: #fcf8e3;">{{ inside.inside_antigen_postive_cases_count ? inside.inside_antigen_postive_cases_count : 0 }}</td>
+            <td style="text-align: center; background-color: #fcf8e3;">{{ inside.inside_antigen_negative_cases_count ? inside.inside_antigen_negative_cases_count : 0 }}</td>
+            <td style="text-align: center; background-color: #fcf8e3;" v-if="checkHospitalTypeForLabFeature()">{{ inside.outside_pcr_postive_cases_count ? inside.outside_pcr_postive_cases_count : 0 }}</td>
+            <td style="text-align: center; background-color: #fcf8e3;" v-if="checkHospitalTypeForLabFeature()">{{ inside.outside_pcr_negative_cases_count ? inside.outside_pcr_negative_cases_count : 0 }}</td>
+            <td style="text-align: center; background-color: #fcf8e3;" v-if="checkHospitalTypeForLabFeature()">{{ inside.outside_antigen_postive_cases_count ? inside.outside_antigen_postive_cases_count : 0 }}</td>
+            <td style="text-align: center; background-color: #fcf8e3;" v-if="checkHospitalTypeForLabFeature()">{{ inside.outside_antigen_negative_cases_count ? inside.outside_antigen_negative_cases_count : 0 }}</td>
+          </tr>
+          </tbody>
+          <tbody v-else>
+              <tr>
+                  <td colspan="11">No data found.</td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>

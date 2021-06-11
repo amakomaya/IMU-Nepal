@@ -160,23 +160,16 @@ class AdminController extends Controller
     }
 
     public function sidSearch(Request $request) {
-        if(Auth::user()->role == 'main') {
+        if(Auth::user()->role == 'main' || Auth::user()->role == 'province') {
             if($request->sid) {
-                // $response = FilterRequest::filter($request);
-                // $hpCodes = GetHealthpostCodes::filter($response);
+                $response = FilterRequest::filter($request);
+                $hpCodes = GetHealthpostCodes::filter($response);
 
                 $ancs = SampleCollection::with('woman', 'labreport')
+                    ->whereIn('hp_code', $hpCodes)
                     ->where('token', $request->sid)
                     ->first();
 
-                // $ancs = SampleCollection::leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
-                //     ->leftjoin('women', 'ancs.woman_token', '=', 'women.token')
-                //     ->where('ancs.token', $request->sid)
-                //     ->where('lab_tests.sample_token', $request->sid)
-                //     ->select('women.*', 'ancs.token as ancs_token', 'lab_tests.token as lab_tests_token', 'lab_tests.sample_recv_date', 'lab_tests.sample_test_date', 'lab_tests.sample_test_time', 'lab_tests.sample_test_result')
-                //     ->first();
-
-                // dd($ancs);
             } else {
                 $ancs = [1];
             }

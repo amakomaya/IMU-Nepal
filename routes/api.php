@@ -704,7 +704,7 @@ Route::get('/v1/check-by-sid-or-lab-id-old', function (Request $request) {
             'lab_tests.token as lab_token',
             'lab_tests.sample_recv_date',
             'lab_tests.sample_test_date',
-            'lab_tests.sample_test_time',
+            'lab_tests.sample_test_time'
         )
         ->where('ancs.token', $token)->first();
 
@@ -732,7 +732,7 @@ Route::get('/v1/check-by-sid-or-lab-id-old', function (Request $request) {
             'm2.municipality_name as m2_municipality_name',
             'healthposts.name as healthpost_name',
             'healthposts.ward_no as healthpost_ward_no',
-            'healthposts.phone as healthpost_phone',
+            'healthposts.phone as healthpost_phone'
         )
         // ->with(['healthworker' ,'healthpost', 'district', 'municipality'])
         ->first();
@@ -937,3 +937,5 @@ Route::post('/v1/bulk-upload/lab-received-result', 'Backend\BulkUploadController
 Route::post('/v1/bulk-upload/registration-sample-collection', 'Backend\BulkUploadController@registrationSampleCollection')->name('bulk.upload.register.sample-collection');
 Route::post('/v1/bulk-upload/registration-sample-collection-lab-test', 'Backend\BulkUploadController@registrationSampleCollectionLabTest')->name('bulk.upload.register.sample.lab');
 Route::get('/v1/server-date', 'Data\Api\DateController@index');
+
+Route::post('/v1/suspected-case-delete/{id}', 'Data\Api\WomenController@deleteSuspectedCase');

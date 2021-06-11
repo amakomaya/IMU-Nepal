@@ -1,7 +1,11 @@
-<li @if(Request::segment(2) == 'patients' || Request::segment(2) == 'antigen-patients-pending' || 
-    Request::segment(2) == 'lab-received-patients-antigen' || Request::segment(2) == 'lab-received-patients' ||
-    Request::segment(2) == 'positive-patients-antigen' || Request::segment(2) == 'positive-patients' ||
-    Request::segment(2) == 'negative-patients-antigen' || Request::segment(2) == 'negative-patients' ||
+<li @if(Request::segment(2) == 'patients' || 
+    Request::segment(2) == 'antigen-patients-pending' || Request::segment(2) == 'antigen-patients-pending-old' || 
+    Request::segment(2) == 'lab-received-patients-antigen' || Request::segment(2) == 'lab-received-patients-antigen-old' || 
+    Request::segment(2) == 'lab-received-patients' || Request::segment(2) == 'lab-received-patients-old' ||
+    Request::segment(2) == 'positive-patients-antigen' || Request::segment(2) == 'positive-patients-antigen-old' || 
+    Request::segment(2) == 'positive-patients' || Request::segment(2) == 'positive-patients-old' ||
+    Request::segment(2) == 'negative-patients-antigen' || Request::segment(2) == 'negative-patients-antigen-old' ||
+    Request::segment(2) == 'negative-patients' || Request::segment(2) == 'negative-patients-old' ||
     Request::segment(2) == 'situation-report')
     class="active" @endif>
     <a href="#">
@@ -55,13 +59,13 @@
                 Lab Received <span class="fa arrow"></span>
             </a>
             <ul class="nav nav-third-level">
-                <li>
+                {{-- <li>
                     <a href="{{ route('patients.lab-received-antigen.index') }}">
                         <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                         Antigen
                         <span class="label label-success pull-right" title="Rapid Antigen Test"> RAT </span>
                     </a>
-                </li>
+                </li> --}}
                 <li>
                     <a href="{{ route('patients.lab-received.index') }}">
                         <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>

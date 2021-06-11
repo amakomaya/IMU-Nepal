@@ -24,7 +24,9 @@ Vue.use(VueProgress, {
 
 import WomenList from './components/CasesRegistered.vue'
 import CasePendingList from './components/CasesPending.vue'
+import CasePendingListOld from './components/CasesPendingOld.vue'
 import AntigenCasePendingList from './components/AntigenCasesPending.vue'
+import AntigenCasePendingListOld from './components/AntigenCasesPendingOld.vue'
 import WomanListNegative from './components/CasesNegative'
 import WomanListNegativeOld from './components/CasesNegativeOld'
 import WomanListNegativeAntigen from './components/CasesNegativeAntigen'
@@ -34,7 +36,9 @@ import WomanListPositiveOld from "./components/CasesPositiveOld";
 import WomanListPositiveAntigen from "./components/CasesPositiveAntigen";
 import WomanListPositiveAntigenOld from "./components/CasesPositiveAntigenOld";
 import PatientListLabReceived from './components/CasesLabRecieved'
+import PatientListLabReceivedOld from './components/CasesLabRecievedOld'
 import PatientListLabReceivedAntigen from './components/CasesLabRecievedAntigen.vue'
+import PatientListLabReceivedAntigenOld from './components/CasesLabRecievedAntigenOld.vue'
 import CasesClosedRecovered from './components/CasesClosedRecovered'
 import CasesClosedDeath from './components/CasesClosedDeath'
 import LabPatientList from './components/LabCases'
@@ -87,7 +91,7 @@ Vue.prototype.$hospitalType = document.querySelector("meta[name='hospital-type']
 Vue.prototype.$userSessionToken = document.querySelector("meta[name='user-session-token']").getAttribute('content');
 Vue.prototype.$userRoleSessionToken = document.querySelector("meta[name='user-role-token']").getAttribute('content');
 Vue.prototype.$csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute('content');
-Vue.prototype.$provincePermissionId = document.querySelector("meta[name='province-permission-id']").getAttribute('content');
+Vue.prototype.$permissionId = document.querySelector("meta[name='permission-id']").getAttribute('content');
 Vue.prototype.$pcrAllowedOrganizationType = ['2', '3'];
 
 Vue.use(Vuelidate)
@@ -103,7 +107,9 @@ Vue.component('v-select', vSelect)
 
 Vue.component('women-list', WomenList);
 Vue.component('pending-case-list', CasePendingList);
+Vue.component('pending-case-list-old', CasePendingListOld);
 Vue.component('antigen-pending-case-list', AntigenCasePendingList);
+Vue.component('antigen-pending-case-list-old', AntigenCasePendingListOld);
 
 Vue.component('women-list-negative-antigen', WomanListNegativeAntigen);
 Vue.component('women-list-negative-antigen-old', WomanListNegativeAntigenOld);
@@ -116,7 +122,9 @@ Vue.component('women-list-positive-old', WomanListPositiveOld);
 Vue.component('women-list-tracing', CasesTracing);
 Vue.component('lab-patient-list', LabPatientList);
 Vue.component('women-list-lab-received', PatientListLabReceived)
+Vue.component('women-list-lab-received-old', PatientListLabReceivedOld)
 Vue.component('women-list-lab-received-antigen', PatientListLabReceivedAntigen);
+Vue.component('women-list-lab-received-antigen-old', PatientListLabReceivedAntigenOld);
 Vue.component('cases-closed-recovered', CasesClosedRecovered)
 Vue.component('cases-closed-death', CasesClosedDeath)
 Vue.component('lab-negative-patient-list', LabNegativeCases)

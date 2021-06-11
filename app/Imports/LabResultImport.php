@@ -36,8 +36,9 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
         $this->healthWorker =  $healthWorker;
         $this->hpCode = $hpCode;
         $this->enums = [
-          'result' => array('Positive' => '3', 'Negative' => '4')
+          'result' => array('positive' => '3', 'negative' => '4')
         ];
+        $this->importedRowCount = 0;
     }
     
     public function registerEvents(): array
@@ -52,6 +53,7 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
     public function model(array $row)
     {
         if(!array_filter($row)) { return null;} //Ignore empty rows.
+        $this->importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
         $date_en = Carbon::now();
         $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
@@ -69,11 +71,17 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
         } else {
             $sId = $labTests->get()->first()->sample_token;
             if($sId) {
-              $labTests->update([
-                'sample_test_date' => $date_np,
-                'sample_test_time' => $sampleTestTime,
-                'sample_test_result' => $labResult
-              ]);
+              if($labTests->sample_test_date){
+                $labTests->update([
+                  'sample_test_result' => $labResult
+                ]);
+              } else {
+                $labTests->update([
+                  'sample_test_date' => $date_np,
+                  'sample_test_time' => $sampleTestTime,
+                  'sample_test_result' => $labResult
+                ]);
+              }
               $ancs = SampleCollection::where('token', $sId);
               $ancs->update([
                 'result' => $labResult
@@ -125,7 +133,7 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
     {
         $data = $this->filterEmptyRow($data);
         if(array_filter($data)) {
-          $data['result'] = $this->enums['result'][$data['result']]?? null;
+          $data['result'] = $this->enums['result'][strtolower(trim($data['result']))]?? null;
         }
         return $data;
     }
@@ -144,6 +152,10 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
               }
             },
         ];
+    }
+
+    public function getImportedRowCount() {
+      return $this->importedRowCount;
     }
 
     public function chunkSize(): int

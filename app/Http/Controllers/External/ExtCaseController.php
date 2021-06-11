@@ -127,6 +127,10 @@ class ExtCaseController extends Controller
                 
                 $update = false;
                 $existingSampleCollection = $existingSuspectedCase = $existingLabTest = '';
+                if(!in_array(strval($value['lab_result']), ['3', '4'])) {
+                  DB::rollback();
+                  return response()->json(['message' => 'The data couldnot be uploaded due to following errors: Invalid Lab Result. Need value 3 For Positive, 4 For Negative' ]);
+                }
                 if(array_key_exists('imu_swab_id', $value) && $value['imu_swab_id']) {
                   $existingSampleCollection = SampleCollection::where('checked_by', $user->token)->where('token', $value['imu_swab_id'])->first();
                   if($existingSampleCollection) {
@@ -139,12 +143,17 @@ class ExtCaseController extends Controller
                     return response()->json(['message' => 'The data couldnot be uploaded due to following errors: This IMU Swab ID was not found in IMU System. Please enter valid swab ID to update record or leave it blank to create new record' ]);
                   }
                 }
+                if(!$value['sample_type']) {
+                  $sample_type = $value['sample_type'];
+                } else {
+                  $sample_type = (strpos($value['sample_type'], '[') !== false)?$value['sample_type']:'['.$value['sample_type'].']';
+                }
                 $sample = [
                     'token' => $swab_id,
                     'woman_token' => $case_token,
                     'service_for' => $value['service_for'],
                     'service_type' => $value['service_type'],
-                    'sample_type' => (strpos($value['sample_type'], '[') !== false)?$value['sample_type']:'['.$value['sample_type'].']',
+                    'sample_type' => $sample_type,
                     'created_at' => $value['sample_collected_date'],
                     'infection_type' => strval($value['infection_type']),
                     'result' => strval($value['lab_result']),
@@ -170,8 +179,6 @@ class ExtCaseController extends Controller
                     'status' => 1,
                     'regdev' => 'api'
                 ];
-                
-                
                 try {
                     if(!$update) {
                       SuspectedCase::create($case);

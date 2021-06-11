@@ -36,15 +36,15 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
         $municipalityList = Municipality::select(['id', 'municipality_name'])->get();
         $provinces = $districts = $municipalities = [];
         $provinceList->map(function ($province) use (&$provinces) {
-          $provinces[$province->province_name] = $province->id;
+          $provinces[strtolower(trim($province->province_name))] = $province->id;
           return;
         });
         $districtList->map(function ($district) use (&$districts) {
-          $districts[$district->district_name] = $district->id;
+          $districts[strtolower(trim($district->district_name))] = $district->id;
           return;
         });
         $municipalityList->map(function ($municipality) use (&$municipalities) {
-          $municipalities[$municipality->municipality_name] = $municipality->id;
+          $municipalities[strtolower(trim($municipality->municipality_name))] = $municipality->id;
           return;
         });
         $userToken = auth()->user()->token;
@@ -56,17 +56,18 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
         $this->hpCode = $hpCode;
         $this->healthWorker = $healthWorker;
         $this->enums = array(
-          'test_type'=> array( 'PCR Swab Collection' => '1', 'Antigen Test' => '2' ),
-          'sample_type' => array ('Nasopharyngeal'=> '[1]', 'Oropharyngeal' => '[2]', 'Both' => '[1, 2]' ),
-          'service_type' => array ('Paid Service' => "1", 'Free of Cost Service' => "2"),
-          'infection_type' => array ('Symptomatic' => '1', 'Asymptomatic' => '2'),
-          'age_unit' => array ('Year' => '0', 'Month' => '1', 'Day' => '2'),
-          'gender'=> array( 'Male' => '1', 'Female' => '2', 'Other' => '3' ),
-          'ethnicity' => array( "Don't Know"=> 6, 'Dalit'=> 0, 'Janajati'=> 1, 'Madheshi'=> 2, 'Muslim'=> 3, 'Brahmin'=> 4, 'Other'=> 5),
+          'test_type'=> array( 'pcr swab collection' => '1', 'antigen test' => '2' ),
+          'sample_type' => array ('nasopharyngeal'=> '[1]', 'oropharyngeal' => '[2]', 'both' => '[1, 2]' ),
+          'service_type' => array ('paid service' => "1", 'free of cost service' => "2"),
+          'infection_type' => array ('symptomatic' => '1', 'asymptomatic' => '2'),
+          'age_unit' => array ('year' => '0', 'month' => '1', 'day' => '2'),
+          'gender'=> array( 'male' => '1', 'female' => '2', 'other' => '3' ),
+          'ethnicity' => array( "don't know"=> 6, 'dalit'=> 0, 'janajati'=> 1, 'madheshi'=> 2, 'muslim'=> 3, 'brahmin'=> 4, 'other'=> 5),
           'province' => $provinces,
           'district' => $districts,
           'municipality' => $municipalities,
         );
+        $this->importedRowCount = 0;
     }
     
     public function registerEvents(): array
@@ -81,9 +82,11 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
     public function model(array $row)
     {
         if(!array_filter($row)) { return null;} //Ignore empty rows.
+        $this->importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
         $date_en = Carbon::now();
         $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
+
         $suspectedCase = SuspectedCase::create([
           'name' => $row['person_name'],
           'age' => $row['age'],
@@ -121,11 +124,7 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
           'infection_type' => $row['infection_type'],
         ];
         $id = $this->healthWorker->id;
-        $swabId = $row['test_type'] == '1' ?
-        str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber)->format('H:i:s'))
-        :
-        Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber)->format('H:i:s'))
-        ;
+        $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber)->format('H:i:s'));
         $sampleCollectionData['token'] = $swabId;
         if ($sampleCollectionData['service_for'] === '1')
             $sampleCollectionData['sample_type'] = $row['sample_type'];
@@ -158,16 +157,16 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
     {
       $data = $this->filterEmptyRow($data);
       if(array_filter($data)) {
-        $data['test_type'] = $this->enums['test_type'][$data['test_type']] ?? null;
-        $data['sample_type'] = $this->enums['sample_type'][$data['sample_type']] ?? null;
-        $data['age_unit'] = $this->enums['age_unit'][$data['age_unit']] ?? 0;
-        $data['gender'] = $this->enums['gender'][$data['gender']] ?? null;
-        $data['ethnicity'] = $this->enums['ethnicity'][$data['ethnicity']] ?? null;
-        $data['province'] = $this->enums['province'][$data['province']] ?? null;
-        $data['district'] = $this->enums['district'][$data['district']] ?? null;
-        $data['municipality'] = $this->enums['municipality'][$data['municipality']] ?? null;
-        $data['service_type'] = $this->enums['service_type'][$data['service_type']] ?? null;
-        $data['infection_type'] = $this->enums['infection_type'][$data['infection_type']] ?? null;
+        $data['test_type'] = $this->enums['test_type'][strtolower(trim($data['test_type']))] ?? null;
+        $data['sample_type'] = $this->enums['sample_type'][strtolower(trim($data['sample_type']))] ?? null;
+        $data['age_unit'] = $this->enums['age_unit'][strtolower(trim($data['age_unit']))] ?? 0;
+        $data['gender'] = $this->enums['gender'][strtolower(trim($data['gender']))] ?? null;
+        $data['ethnicity'] = $this->enums['ethnicity'][strtolower(trim($data['ethnicity']))] ?? null;
+        $data['province'] = $this->enums['province'][strtolower(trim($data['province']))] ?? null;
+        $data['district'] = $this->enums['district'][strtolower(trim($data['district']))] ?? null;
+        $data['municipality'] = $this->enums['municipality'][strtolower(trim($data['municipality']))] ?? null;
+        $data['service_type'] = $this->enums['service_type'][strtolower(trim($data['service_type']))] ?? null;
+        $data['infection_type'] = $this->enums['infection_type'][strtolower(trim($data['infection_type']))] ?? null;
       }
       return $data;
     }
@@ -240,8 +239,12 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
               if ($value === '' || $value === null) {
                    $onFailure('Invalid Infection Type');
               }
-            },
+            }
         ];
+    }
+
+    public function getImportedRowCount() {
+      return $this->importedRowCount;
     }
 
     public function chunkSize(): int

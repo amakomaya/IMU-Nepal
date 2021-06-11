@@ -4,7 +4,9 @@
 Route::resource('api/women', 'Data\Api\WomenController');
 Route::get('api/active-patient', 'Data\Api\WomenController@activeIndex');
 Route::get('api/active-pending-patient', 'Data\Api\WomenController@activePendingIndex');
+Route::get('api/active-pending-patient-old', 'Data\Api\WomenController@activePendingIndexOld');
 Route::get('api/active-antigen-pending-patient', 'Data\Api\WomenController@activeAntigenPendingIndex');
+Route::get('api/active-antigen-pending-patient-old', 'Data\Api\WomenController@activeAntigenPendingIndexOld');
 Route::get('api/passive-patient', 'Data\Api\WomenController@passiveIndex');
 Route::get('api/passive-patient-old', 'Data\Api\WomenController@passiveIndexOld');
 Route::get('api/passive-patient-antigen', 'Data\Api\WomenController@passiveAntigenIndex');
@@ -15,7 +17,9 @@ Route::get('api/positive-patient-antigen', 'Data\Api\WomenController@positiveAnt
 Route::get('api/positive-patient-antigen-old', 'Data\Api\WomenController@positiveAntigenIndexOld');
 Route::get('api/tracing-patient', 'Data\Api\WomenController@tracingIndex');
 Route::get('api/lab-received', 'Data\Api\WomenController@labReceivedIndex');
+Route::get('api/lab-received-old', 'Data\Api\WomenController@labReceivedIndexOld');
 Route::get('api/lab-received-antigen', 'Data\Api\WomenController@labReceivedAntigenIndex');
+Route::get('api/lab-received-antigen-old', 'Data\Api\WomenController@labReceivedAntigenIndexOld');
 Route::get('api/cases-recovered', 'Data\Api\WomenController@casesRecoveredIndex');
 Route::get('api/cases-death', 'Data\Api\WomenController@casesDeathIndex');
 Route::get('api/cases-in-other-organization', 'Data\Api\WomenController@casesInOtherOrganization');

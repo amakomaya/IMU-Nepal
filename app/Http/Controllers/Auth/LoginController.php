@@ -7,6 +7,10 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Models\ProvinceInfo;
+use App\Models\DistrictInfo;
+use App\Models\MunicipalityInfo;
+use App\Models\Center;
 use Carbon\Carbon;
 
 class LoginController extends Controller
@@ -67,6 +71,27 @@ class LoginController extends Controller
         if(count($user)>0){
             $request->session()->put('user_token', $user->token);
             $request->session()->put('user_show', false);
+            switch($user->role) {
+              case 'center':
+                $permission_id = Center::where('token', $user->token)->first()->permission_id;
+                $request->session()->put('permission_id', $permission_id);
+                break;
+              case 'province':
+                $permission_id = ProvinceInfo::where('token', $user->token)->first()->permission_id;
+                $request->session()->put('permission_id', $permission_id);
+                break;
+              case 'district':
+                $permission_id = DistrictInfo::where('token', $user->token)->first()->permission_id;
+                $request->session()->put('permission_id', $permission_id);
+                break;
+              case 'municipality':
+                $permission_id = MunicipalityInfo::where('token', $user->token)->first()->permission_id;
+                $request->session()->put('permission_id', $permission_id);
+                break;
+              default:
+                $request->session()->put('permission_id', '');
+                break;
+            }
             Auth::login($user);
             activity('login')
                 ->causedBy($user)

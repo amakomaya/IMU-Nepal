@@ -104,7 +104,9 @@ Route::resource('admin/health-worker', 'Backend\HealthWorkerController');
 //Bakend Patients
 Route::resource('admin/patients', 'Backend\WomanController', ['names' => 'woman']);
 Route::get('admin/patients-pending', 'Backend\WomanController@pendingIndex')->name('woman.pending-index');
+Route::get('admin/patients-pending-old', 'Backend\WomanController@pendingIndexOld')->name('woman.pending-index-index');
 Route::get('admin/antigen-patients-pending', 'Backend\WomanController@antigenPendingIndex')->name('woman.antigen-pending-index');
+Route::get('admin/antigen-patients-pending-old', 'Backend\WomanController@antigenPendingIndexOld')->name('woman.antigen-pending-index-old');
 
 Route::get('admin/add-multiple-sample', 'Backend\WomanController@addSampleCollection')->name('patient.multiple-sample.create');
 Route::get('admin/negative-patients', 'Backend\WomanController@negativeIndex')->name('patients.negative.index');
@@ -117,7 +119,9 @@ Route::get('admin/positive-patients-antigen', 'Backend\WomanController@positiveA
 Route::get('admin/positive-patients-antigen-old', 'Backend\WomanController@positiveAntigenIndexOld')->name('patients.positive-antigen.index.old');
 Route::get('admin/tracing-patients', 'Backend\WomanController@tracingIndex')->name('patients.tracing.index');
 Route::get('admin/lab-received-patients', 'Backend\WomanController@labReceivedIndex')->name('patients.lab-received.index');
+Route::get('admin/lab-received-patients-old', 'Backend\WomanController@labReceivedIndexOld')->name('patients.lab-received.index.old');
 Route::get('admin/lab-received-patients-antigen', 'Backend\WomanController@labReceivedAntigenIndex')->name('patients.lab-received-antigen.index');
+Route::get('admin/lab-received-patients-antigen-old', 'Backend\WomanController@labReceivedAntigenIndexOld')->name('patients.lab-received-antigen.index.old');
 Route::get('admin/cases-recovered', 'Backend\WomanController@casesRecoveredIndex')->name('cases.recovered.index');
 Route::get('admin/cases-payment', 'Backend\WomanController@casesPaymentIndex')->name('cases.payment.index');
 Route::get('admin/cases-discharge-payment', 'Backend\WomanController@casesPaymentDischargeIndex')->name('cases.payment.index-discharge');
@@ -191,12 +195,14 @@ Route::resource('/password-reset', 'ForgetPasswordController', ['names' => 'pass
 Route::POST('/password-reset-user', 'ForgetPasswordController@updateUserPassword')->name('password-reset-user.update');
 
 Route::get('/admin/patient', 'Reports\CaseDetailController@getCaseDetail');
+Route::get('/admin/patient-old', 'Reports\CaseDetailController@getCaseDetailOld');
 Route::get('admin/cict-patient-detail', 'Reports\CaseDetailController@cictDetail');
 
 Route::get('/admin/patient/{token}/edit', 'Reports\CaseDetailController@edit');
 Route::put('/admin/patient/{token}', 'Reports\CaseDetailController@update')->name('patient.update');
 Route::get('/admin/sample/{token}/edit', 'Reports\AncDetailController@edit');
 Route::put('/admin/sample/{token}', 'Reports\AncDetailController@update')->name('sample.update');
+Route::get('/admin/sample/remove/{token}', 'Reports\AncDetailController@delete')->name('sample.remove');
 
 //Route::resource('/observation-cases', 'Backend\ObservationCasesController');
 Route::resource('/admin/cases-payment-observation', 'Backend\ObservationCasesController', ['names' => 'observation-cases']);

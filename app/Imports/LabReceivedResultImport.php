@@ -5,6 +5,7 @@ namespace App\Imports;
 use Carbon\Carbon;
 use App\Models\LabTest;
 use App\Models\SampleCollection;
+use App\Models\OrganizationMember;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -34,9 +35,11 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
         $this->healthWorker = $healthWorker;
         $this->userToken =  $userToken;
         $this->hpCode = $hpCode;
+        $this->organizationType = \App\Models\Organization::where('hp_code', $hpCode)->first()->hospital_type;
         $this->enums = [
-          'result' => array('Positive' => '3', 'Negative' => '4')
+          'result' => array('positive' => '3', 'negative' => '4')
         ];
+        $this->importedRowCount = 0;
     }
     
     public function registerEvents(): array
@@ -51,6 +54,7 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
     public function model(array $row)
     {
         if(!array_filter($row)) { return null;} //Ignore empty rows.
+        $this->importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
         $date_en = Carbon::now();
         $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
@@ -68,7 +72,7 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
           );
         } else {
           $pcrAllowedOrganizationType = ['2', '3'];
-          if($ancs->service_for == '1' && !in_array($this->organizationType, $pcrAllowedOrganizationType)) {
+          if($ancs->first()->service_for == '1' && !in_array($this->organizationType, $pcrAllowedOrganizationType)) {
             $error = ['sid' => 'Your organization is not eligible for PCR Lab Test. Please contact IMU support to update your organization type.'];
             $failures[] = new Failure($currentRowNumber, 'sid', $error, $row);
             throw new ValidationException(
@@ -77,6 +81,7 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
             );
             return;
           }
+          //check if sid exists
           try {
             LabTest::create([
               'token' => $this->userToken.'-'.$labId,
@@ -130,12 +135,25 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
       }
       return $data;
     }
+
+    private function getLabTestByPatientLabId ($patientLabId) {
+      $organiation_member_tokens = OrganizationMember::where('hp_code', $this->hpCode)->pluck('token');
+      $labTokens = [];
+      foreach ($organiation_member_tokens as $item) {
+          array_push($labTokens, $item."-".$patientLabId);
+      }
+      $labTests = LabTest::whereIn('token', $labTokens);
+      if($labTests->count() > 0){
+        return $labTests;
+      }
+      return false;
+    }
   
     public function prepareForValidation($data, $index)
     {
         $data = $this->filterEmptyRow($data);
         if(array_filter($data)) {
-          $data['result'] = $this->enums['result'][$data['result']]?? null;
+          $data['result'] = $this->enums['result'][strtolower(trim($data['result']))]?? null;
         }
         return $data;
     }
@@ -159,6 +177,10 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
               }
             }
          ];
+    }
+
+    public function getImportedRowCount() {
+      return $this->importedRowCount;
     }
 
     public function chunkSize(): int

@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="col-md-12">
+      <h3>Data older than 15 days</h3>
       <button class="btn btn-success" style="float:right"  @click="newLink()">Click for Latest Data</button>
     </div>
     <filterable v-bind="filterable">
@@ -41,7 +42,7 @@
         </td>
         <td>{{ ad2bs(item.created_at) }}</td>
         <td><span class="label label-info"> 
-            <!-- {{ item.ancs.length }} -->0
+            {{ item.ancs_count }}
             </span>
           <div v-if="item.ancs_token" title="Swab ID">SID : <strong>{{ item.ancs_token }}</strong></div>
         </td>
@@ -55,13 +56,13 @@
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
             <i class="fa fa-file" aria-hidden="true"></i> |
           </button>
-          <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)"
+          <!-- <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)"
                   title="Add Sample Collection / Swab Collection Report">
             <i class="fa fa-medkit" aria-hidden="true"></i> |
           </button>
           <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
             <i class="fa fa-hospital-o"></i>
-          </button>
+          </button> -->
         </td>
       </tr>
     </filterable>
@@ -341,7 +342,7 @@ export default {
     },
     viewCaseDetails(token) {
       window.open(
-      '/admin/patient?token=' + token,
+      '/admin/patient-old?token=' + token,
           '_blank'
       );
     },

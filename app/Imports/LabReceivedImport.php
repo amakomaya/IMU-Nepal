@@ -35,6 +35,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
         $this->hpCode = $hpCode;
         $this->healthWorker = $healthWorker;
         $this->organizationType = \App\Models\Organization::where('hp_code', $hpCode)->first()->hospital_type;
+        $this->importedRowCount = 0;
     }
     
     public function registerEvents(): array
@@ -49,6 +50,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
     public function model(array $row)
     {
         if(!array_filter($row)) { return null;} //Ignore empty rows.
+        $this->importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
         $date_en = Carbon::now();
         $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
@@ -65,7 +67,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
           );
         } else {
           $pcrAllowedOrganizationType = ['2', '3'];
-          if($ancs->service_for == '1' && !in_array($this->organizationType, $pcrAllowedOrganizationType)) {
+          if($ancs->first()->service_for == '1' && !in_array($this->organizationType, $pcrAllowedOrganizationType)) {
             $error = ['sid' => 'Your organization is not eligible for PCR Lab Received. Please contact IMU support to update your organization type.'];
             $failures[] = new Failure($currentRowNumber, 'sid', $error, $row);
             throw new ValidationException(
@@ -148,6 +150,10 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
         return $data;
     }
   
+    public function getImportedRowCount() {
+      return $this->importedRowCount;
+    }
+
     public function chunkSize(): int
     {
         return 2000;
