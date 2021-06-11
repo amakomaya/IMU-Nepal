@@ -68,7 +68,7 @@
                                 <td>
                                     <form method="post" action="{{route('fchv.destroy', $healthWorker->id)}}" onsubmit="return confirm('Are you sure?')">
                                         <div class="icon">
-                                                @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main' || auth()->role == 'province')
+                                                @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main' || auth()->user()->role == 'province')
                                                 {{csrf_field()}}
                                                 {{method_field('DELETE')}}
                                                 <button name="submit" class="pull-right" style="border: 0; background: transparent;" title="Delete"><i class="fa fa-trash-o"></i></button>
