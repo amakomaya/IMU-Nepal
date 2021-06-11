@@ -68,6 +68,7 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
         $this->totalVentilatorCases = 0;
         $this->totalGeneralCases = 0;
         $this->hpCode = $hpCode;
+        $this->importedRowCount = 0;
     }
     
     public function registerEvents(): array
@@ -82,6 +83,7 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
     public function model(array $row)
     {
         if(!array_filter($row)) { return null;} //Ignore empty rows.
+        $this->importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
         $date_en = Carbon::now();
         $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
@@ -243,6 +245,10 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
               }
             },
         ];
+    }
+
+    public function getImportedRowCount() {
+      return $this->importedRowCount;
     }
 
     public function chunkSize(): int

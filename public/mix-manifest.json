@@ -1,4 +1,9 @@
 {
+<<<<<<< HEAD
     "/js/app.js": "/js/app.js?id=4d0c21ab0da77c084716",
     "/css/app.css": "/css/app.css?id=06b421708d61f0a2f599"
+=======
+    "/js/app.js": "/js/app.js?id=33075c092948f0af07de",
+    "/css/app.css": "/css/app.css?id=c5d264d7421bab5a6494"
+>>>>>>> Fixed bulk, added permission table, permission table in session
 }

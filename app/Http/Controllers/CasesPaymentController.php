@@ -634,7 +634,17 @@ class CasesPaymentController extends Controller
       if ($request->hasFile('bulk_file')) {
         $bulk_file = $request->file('bulk_file');
         try {
-          Excel::queueImport(new CasesPaymentImport(auth()->user(), $bed_status), $bulk_file);
+          $import = new CasesPaymentImport(auth()->user(), $bed_status);
+          Excel::queueImport($import, $bulk_file);
+          $importedRowCount = $import->getImportedRowCount();
+          if($importedRowCount == 0) {
+            return response()->json([
+              'status' => 'fail',
+              'message' => [['row' => 0, 'column' => '-', 'error' => ['No data was inserted. Please check if the template is valid or if your excel file has data.'] ]] 
+              ], 422
+            );
+          }
+          
           return response()->json(['message' => 'success',
             'message' => 'Case Payment Data uploaded successfully',
           ]);
