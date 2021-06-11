@@ -75,7 +75,6 @@ class DashboardController extends Controller
             });
         }
 
-
         $data = [
             'registered' => Cache::remember('registered-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
                 $current_data = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->count();
@@ -94,11 +93,11 @@ class DashboardController extends Controller
                 return $current_data + $dump_data;
             }),
 
-            'sample_5_trends' => Cache::remember('sample_5_tresnds-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
+            'sample_5_trends' => Cache::remember('sample_5_trends-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
                 $sample_collection_data = SampleCollection::whereIn('hp_code', $hpCodes)->active()
                     ->whereIn('service_for', ['1', '2'])
                     // ->whereIn('result', [3,4])
-                    ->whereDate('created_at', '>', Carbon::now()->subDays(6)->startOfDay())
+                    ->whereDateBetween('created_at',[Carbon::now()->subDays(1)->startOfDay(), Carbon::now()->subDays(6)->startOfDay()])
                     ->get()
                     ->groupBy(function($d) {
                         return Carbon::parse($d->created_at)->format('Y-m-d');
@@ -119,7 +118,7 @@ class DashboardController extends Controller
                     ->whereIn('lab_tests.hp_code', $hpCodes)
                     ->whereIn('lab_tests.sample_test_result', ['3','4'])
                     ->whereIn('ancs.service_for', ['1', '2'])
-                    ->whereDate('lab_tests.updated_at', '>', Carbon::now()->subDays(5)->startOfDay())
+                    ->whereDateBetween('lab_tests.updated_at',[Carbon::now()->subDays(1)->startOfDay(), Carbon::now()->subDays(6)->startOfDay()])
                     ->select('lab_tests.*', 'ancs.service_for')
                     ->get()
                     ->groupBy(function($d) {
@@ -238,7 +237,7 @@ class DashboardController extends Controller
             'vaccinated' => $vaccinated ?? 0,
 
             // time expiration in UMT add 5:45 to nepali time, sub 1 hrs to get updated at => 285
-            'cache_created_at' => Carbon::parse(\DB::table('cache')->where('key', 'laravelregistered-'.auth()->user()->token)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s'),
+            // 'cache_created_at' => Carbon::parse(\DB::table('cache')->where('key', 'laravelregistered-'.auth()->user()->token)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s'),
             'user_token' => auth()->user()->token
 //            'immunization_registered' => HealthProfessional::whereIn('checked_by', auth()->user()->token)
 //                ->whereNull('vaccinated_status')->count(),
