@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\User;
 
-class provinceInfo extends Model
+class ProvinceInfo extends Model
 {
     protected $fillable = ['permission_id','province_id','token','phone','office_address','office_longitude','office_lattitude','status','updated_at'];
 
