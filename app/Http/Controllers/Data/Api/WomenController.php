@@ -82,6 +82,7 @@ class WomenController extends Controller
         $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
             ->whereIn('women.hp_code', $hpCodes)
             ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
+            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
             ->where('ancs.service_for', '!=', '2')
             ->whereIn('ancs.result', [0,2])
             ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
@@ -95,8 +96,9 @@ class WomenController extends Controller
                 'ancs.result as ancs_result',
                 'ancs.service_for as ancs_service_for',
                 'lab_tests.token as lab_tests_token',
-                'lab_tests.sample_token as lab_tests_sample_token',
-                'healthposts.name as healthpost_name'
+                'healthposts.name as healthpost_name',
+                'municipalities.municipality_name as municipality_name',
+                'municipalities.district_name as district_name'
             )
             ->groupBy('women.id')
             ->orderBy(
@@ -138,6 +140,7 @@ class WomenController extends Controller
         $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
             ->whereIn('women.hp_code', $hpCodes)
             ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
+            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
             ->where('ancs.service_for', '2')
             ->whereIn('ancs.result', [0,2])
             ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
@@ -151,8 +154,9 @@ class WomenController extends Controller
                 'ancs.result as ancs_result',
                 'ancs.service_for as ancs_service_for',
                 'lab_tests.token as lab_tests_token',
-                'lab_tests.sample_token as lab_tests_sample_token',
-                'healthposts.name as healthpost_name'
+                'healthposts.name as healthpost_name',
+                'municipalities.municipality_name as municipality_name',
+                'municipalities.district_name as district_name'
             )
             ->groupBy('women.id')
             ->orderBy(
@@ -197,6 +201,7 @@ class WomenController extends Controller
         $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
             ->whereIn('women.hp_code', $hpCodes)
             ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
+            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
             ->where('ancs.service_for', '!=', '2')
             ->where('ancs.result', 4)
             ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
@@ -209,8 +214,9 @@ class WomenController extends Controller
                 'ancs.updated_at as ancs_updated_at',
                 'ancs.result as ancs_result',
                 'lab_tests.token as lab_tests_token',
-                'lab_tests.sample_token as lab_tests_sample_token',
-                'healthposts.name as healthpost_name'
+                'healthposts.name as healthpost_name',
+                'municipalities.municipality_name as municipality_name',
+                'municipalities.district_name as district_name'
             )
             ->groupBy('women.id')
             ->orderBy(
@@ -251,6 +257,7 @@ class WomenController extends Controller
         $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
             ->whereIn('women.hp_code', $hpCodes)
             ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
+            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
             ->where('ancs.service_for', '2')
             ->where('ancs.result', 4)
             ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
@@ -263,8 +270,9 @@ class WomenController extends Controller
                 'ancs.updated_at as ancs_updated_at',
                 'ancs.result as ancs_result',
                 'lab_tests.token as lab_tests_token',
-                'lab_tests.sample_token as lab_tests_sample_token',
-                'healthposts.name as healthpost_name'
+                'healthposts.name as healthpost_name',
+                'municipalities.municipality_name as municipality_name',
+                'municipalities.district_name as district_name'
             )
             ->groupBy('women.id')
             ->orderBy(
@@ -304,6 +312,7 @@ class WomenController extends Controller
         $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
             ->whereIn('women.hp_code', $hpCodes)
             ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
+            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
             ->where('ancs.service_for', '!=', '2')
             ->where('ancs.result', 3)
             ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
@@ -316,8 +325,9 @@ class WomenController extends Controller
                 'ancs.updated_at as ancs_updated_at',
                 'ancs.result as ancs_result',
                 'lab_tests.token as lab_tests_token',
-                'lab_tests.sample_token as lab_tests_sample_token',
-                'healthposts.name as healthpost_name'
+                'healthposts.name as healthpost_name',
+                'municipalities.municipality_name as municipality_name',
+                'municipalities.district_name as district_name'
             )
             ->groupBy('women.id')
             ->orderBy(
@@ -359,6 +369,7 @@ class WomenController extends Controller
         $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
             ->whereIn('women.hp_code', $hpCodes)
             ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
+            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
             ->where('ancs.service_for', '2')
             ->where('ancs.result', 3)
             ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
@@ -371,8 +382,9 @@ class WomenController extends Controller
                 'ancs.updated_at as ancs_updated_at',
                 'ancs.result as ancs_result',
                 'lab_tests.token as lab_tests_token',
-                'lab_tests.sample_token as lab_tests_sample_token',
-                'healthposts.name as healthpost_name'
+                'healthposts.name as healthpost_name',
+                'municipalities.municipality_name as municipality_name',
+                'municipalities.district_name as district_name'
             )
             ->groupBy('women.id')
             ->orderBy(
@@ -426,6 +438,7 @@ class WomenController extends Controller
         $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
             ->whereIn('women.hp_code', $hpCodes)
             ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
+            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
             ->where('ancs.service_for', '!=', '2')
             ->where('ancs.result', 9)
             ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
@@ -438,8 +451,9 @@ class WomenController extends Controller
                 'ancs.updated_at as ancs_updated_at',
                 'ancs.result as ancs_result',
                 'lab_tests.token as lab_tests_token',
-                'lab_tests.sample_token as lab_tests_sample_token',
-                'healthposts.name as healthpost_name'
+                'healthposts.name as healthpost_name',
+                'municipalities.municipality_name as municipality_name',
+                'municipalities.district_name as district_name'
             )
             ->groupBy('women.id')
             ->orderBy(
@@ -481,6 +495,7 @@ class WomenController extends Controller
         $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
             ->whereIn('women.hp_code', $hpCodes)
             ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
+            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
             ->where('ancs.service_for', '2')
             ->where('ancs.result', 9)
             ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
@@ -493,8 +508,9 @@ class WomenController extends Controller
                 'ancs.updated_at as ancs_updated_at',
                 'ancs.result as ancs_result',
                 'lab_tests.token as lab_tests_token',
-                'lab_tests.sample_token as lab_tests_sample_token',
-                'healthposts.name as healthpost_name'
+                'healthposts.name as healthpost_name',
+                'municipalities.municipality_name as municipality_name',
+                'municipalities.district_name as district_name'
             )
             ->groupBy('women.id')
             ->orderBy(
