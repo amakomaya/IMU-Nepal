@@ -4,7 +4,8 @@ margin-left: 15px;
 padding:10px;
 background-color: white;
 width:200px;
-border: 2px solid black">
+border: 2px solid black;
+z-index:1;">
 <li><b>Your permissions:</b></li>
 
 <?php
