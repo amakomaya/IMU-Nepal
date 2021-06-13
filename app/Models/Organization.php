@@ -36,7 +36,8 @@ class Organization extends Model
         5=>'Institutional Isolation',
         2=>'PCR Lab Test Only',
         3=>'PCR Lab & Treatment',
-        6=>'Hospital Without PCR Lab'
+        6=>'Hospital Without PCR Lab',
+		7=>'Point of Entry (POE)'
     ];
 
     public function province()

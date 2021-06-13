@@ -15,7 +15,7 @@
                                 <div class="control-group">
                                     <label class="radio-inline">
                                         <input type="radio" name="service_for" value="1" onclick="toggleLayout(true)"
-                                               checked>PCR Swab Collection
+                                               >PCR Swab Collection
                                     </label>
                                     <label class="radio-inline">
                                         <input type="radio" name="service_for" value="2" onclick="toggleLayout(false)">Antigen
