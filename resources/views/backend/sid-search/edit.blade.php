@@ -344,7 +344,7 @@
                         <div class="form-group">
                             <label for="name">Sample Received Date</label>
                             <input type="text" id="sample_recv_date" class="form-control" value="{{ isset($ancs->labreport) ? $ancs->labreport->sample_recv_date : '' }}" name="sample_recv_date"
-                                   aria-describedby="help" placeholder="Enter Full Name">
+                                   aria-describedby="help" placeholder="Enter Sample Received Date">
                             @if ($errors->has('sample_recv_date'))
                                 <small id="help" class="form-text text-danger">{{ $errors->first('sample_recv_date') }}</small>
                             @endif
@@ -352,7 +352,7 @@
                         <div class="form-group">
                             <label for="name">Sample Test Date</label>
                             <input type="text" id="sample_test_date" class="form-control" value="{{ isset($ancs->labreport) ? $ancs->labreport->sample_test_date : '' }}" name="sample_test_date"
-                                   aria-describedby="help" placeholder="Enter Full Name">
+                                   aria-describedby="help" placeholder="Enter Sample Test Date">
                             @if ($errors->has('sample_test_date'))
                                 <small id="help" class="form-text text-danger">{{ $errors->first('sample_test_date') }}</small>
                             @endif
@@ -360,7 +360,7 @@
                         <div class="form-group">
                             <label for="name">Sample Test Time</label>
                             <input type="text" id="sample_test_time" class="form-control" value="{{ isset($ancs->labreport) ? $ancs->labreport->sample_test_time : '' }}" name="sample_test_time"
-                                   aria-describedby="help" placeholder="Enter Full Name">
+                                   aria-describedby="help" placeholder="Enter Sample Test Time">
                             @if ($errors->has('sample_test_time'))
                                 <small id="help" class="form-text text-danger">{{ $errors->first('sample_test_time') }}</small>
                             @endif
@@ -400,9 +400,9 @@
                         <div class="form-group">
                             <label for="name">Sample Token</label> 
                             <div>
-                                {{ $initial_token }}-
+                                {{-- {{ $initial_token }}- --}}
                                 <input type="text" id="remaining_token" class="form-control" value="{{ $remaining_token }}" name="remaining_token"
-                                       aria-describedby="help" placeholder="Enter Full Name">
+                                       aria-describedby="help" placeholder="Enter Sample Token">
                             </div>
                         </div>
 
