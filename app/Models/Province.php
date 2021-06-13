@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\User;
 
-class province extends Model
+class Province extends Model
 {  
 	public static function modelProvinceInfo($token){
 		$model = ProvinceInfo::where('token', $token)->get()->first();

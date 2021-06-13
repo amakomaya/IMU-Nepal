@@ -66,7 +66,7 @@
                   <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
                         <i class="fa fa-hospital-o"></i> |
                   </button>
-                  <button v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Delete Patient Data">
+                  <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Delete Patient Data">
                     <i class="fa fa-trash"></i>
                   </button>
                 </td>
@@ -107,6 +107,7 @@ export default {
       pcrAllowedOrganizationType: this.$pcrAllowedOrganizationType,
       role: this.$userRole,
       hospitalType: this.$hospitalType,
+      permission: this.$permissionId,
       filterable: {
         url: '/data/api/active-pending-patient',
         orderables: [

@@ -14,7 +14,7 @@ use App\Models\OrganizationMember;
 use App\User;
 use Auth;
 
-class HealthpostController extends Controller
+class HealthPostController extends Controller
 {
 
     public function __construct()

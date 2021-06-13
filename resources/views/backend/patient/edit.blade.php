@@ -495,7 +495,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    {{-- @if(auth()->user()->role === 'main') --}}
+                                                    @if(auth()->user()->role === 'main' || auth()->user()->role == 'province' && session()->get('permission_id') == 1)
                                                         {{--                                                        <button title="Edit Sample Detail" {{ url("admin/sample/$sample->token/edit") }}'">--}}
                                                         {{--                                                            <i class="fa fa-edit"></i>--}}
                                                         {{--                                                        </button>--}}
@@ -507,7 +507,7 @@
                                                            href="{{ url('admin/sample/remove/'.$sample->token) }}" onclick="return confirm('Are you sure?')">
                                                             <i class="fa fa-trash"></i>
                                                         </a>
-                                                    {{-- @endif --}}
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
