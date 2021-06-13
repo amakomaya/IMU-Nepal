@@ -495,7 +495,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if(auth()->user()->role === 'main' || auth()->user()->role == 'province' && session()->get('permission_id') == 1)
+                                                    @if(auth()->user()->role === 'main' || auth()->user()->role == 'province' || session()->get('permission_id') == 1)
                                                         {{--                                                        <button title="Edit Sample Detail" {{ url("admin/sample/$sample->token/edit") }}'">--}}
                                                         {{--                                                            <i class="fa fa-edit"></i>--}}
                                                         {{--                                                        </button>--}}

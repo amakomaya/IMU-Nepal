@@ -80,7 +80,7 @@ class LoginController extends Controller
                 $permission_id = ProvinceInfo::where('token', $user->token)->first()->permission_id;
                 $request->session()->put('permission_id', $permission_id);
                 break;
-              case 'district':
+              case 'dho':
                 $permission_id = DistrictInfo::where('token', $user->token)->first()->permission_id;
                 $request->session()->put('permission_id', $permission_id);
                 break;

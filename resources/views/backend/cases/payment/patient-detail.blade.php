@@ -94,7 +94,7 @@
                                         <td>{{ $key+1 }}</td>
                                         <td>{{ $cases->name }}</td>
                                         <td>{{ $cases->hospital_register_id }}</td>
-                                        <td>{{ date("Y-m-d", strtotime($cases->register_date_np)) }}</td>
+                                        <td>{{ $cases->register_date_np }}</td>
                                         <td>
                                             @foreach ($conditions[$key] as $key1 => $item)
                                             @php
