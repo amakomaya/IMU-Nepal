@@ -49,33 +49,12 @@
                 @endif
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="text-center">
-                            @if(auth()->user()->can('antigen-result'))
-                            Antigen Registration Form
-                            @else
-                            PCR Registration Form
-                            @endif
-                        </h3>
+                       <h3 class="text-center"> POE Registration Form</h3>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         {!! rcForm::open('POST', route('woman.store'), ['name' => 'createCase']) !!}
                         <div class="panel-body">
-                            {{-- <div class="form-group">
-                                <label class="control-label">Is this a new case or an old case ?</label>
-                                <div class="control-group">
-                                    <label class="radio-inline">
-                                        <input type="radio"
-                                               {{ old('case_type') == "1" ? 'checked' : '' }} name="case_type" value="1"
-                                               checked>New Case
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio"
-                                               {{ old('case_type') == "2" ? 'checked' : '' }} name="case_type"
-                                               value="2">Old Case
-                                    </label>
-                                </div>
-                            </div> --}}
                             <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
                                 <label for="name">Full Name</label>
                                 <input type="text" id="name" class="form-control" value="{{ old('name') }}" name="name"
@@ -127,7 +106,71 @@
                                 @endif
                             </div>
                             <div class="form-group">
-                                <label class="control-label" for="company">Current Address</label>
+                                <label class="control-label" for="occupation">Occupation</label>
+                                <select name="occupation" class="form-control">
+                                    <option {{ old('occupation') == '' ? "selected" : "" }} value="">Select Occupation
+                                    </option>
+                                    <option {{ old('occupation') == '1' ? "selected" : "" }} value="1">Front Line Health
+                                        Worker
+                                    </option>
+                                    <option {{ old('occupation') == '2' ? "selected" : "" }} value="2">Doctor</option>
+                                    <option {{ old('occupation') == '3' ? "selected" : "" }} value="3">Nurse</option>
+                                    <option {{ old('occupation') == '4' ? "selected" : "" }} value="4">Police/Army
+                                    </option>
+                                    <option {{ old('occupation') == '5' ? "selected" : "" }} value="5">
+                                        Business/Industry
+                                    </option>
+                                    <option {{ old('occupation') == '6' ? "selected" : "" }} value="6">
+                                        Teacher/Student/Education
+                                    </option>
+                                    <option {{ old('occupation') == '7' ? "selected" : "" }} value="7">Journalist
+                                    </option>
+                                    <option {{ old('occupation') == '8' ? "selected" : "" }} value="8">Agriculture
+                                    </option>
+                                    <option {{ old('occupation') == '9' ? "selected" : "" }} value="9">
+                                        Transport/Delivery
+                                    </option>
+                                    <option {{ old('occupation') == '10' ? "selected" : "" }} value="10">Other</option>
+                                </select>
+                                @if ($errors->has('occupation'))
+                                    <small id="help"
+                                           class="form-text text-danger">{{ $errors->first('occupation') }}</small>
+                                @endif
+                            </div>
+                            <div class="form-group {{ $errors->has('nationality') ? 'has-error' : '' }}">
+                                <label for="nationality">Nationality</label>
+                                <input type="text" id="nationality" class="form-control" value="{{ old('nationality') }}" name="nationality"
+                                       aria-describedby="help" placeholder="Enter Nationality">
+                                @if ($errors->has('nationality'))
+                                    <small id="help" class="form-text text-danger">{{ $errors->first('nationality') }}</small>
+                                @endif
+                            </div>
+                            <div class="form-group {{ $errors->has('id_card_detail') ? 'has-error' : '' }}">
+                                <label for="id_card_detail">Passport/Nationality No</label>
+                                <input type="text" id="id_card_detail" class="form-control" value="{{ old('id_card_detail') }}" name="id_card_detail"
+                                       aria-describedby="help" placeholder="Enter Passport/Nationality No">
+                                @if ($errors->has('id_card_detail'))
+                                    <small id="help" class="form-text text-danger">{{ $errors->first('id_card_detail') }}</small>
+                                @endif
+                            </div>
+                            <div class="form-group {{ $errors->has('travelled_where') ? 'has-error' : '' }}">
+                                <label for="travelled_where">Travel From</label>
+                                <input type="text" id="travelled_where" class="form-control" value="{{ old('travelled_where') }}" name="travelled_where"
+                                       aria-describedby="help" placeholder="Enter Travel From">
+                                @if ($errors->has('travelled_where'))
+                                    <small id="help" class="form-text text-danger">{{ $errors->first('travelled_where') }}</small>
+                                @endif
+                            </div>
+                            <div class="form-group {{ $errors->has('travelled_date') ? 'has-error' : '' }}">
+                                <label for="travelled_date">Travel Date</label>
+                                <input type="text" id="travelled_date" class="form-control" value="{{ old('travelled_date') }}" name="travelled_date"
+                                       aria-describedby="help" placeholder="Enter Travel Date">
+                                @if ($errors->has('travelled_date'))
+                                    <small id="help" class="form-text text-danger">{{ $errors->first('travelled_date') }}</small>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="company">Destination in Nepal</label>
                                 <div class="row">
                                     <div class="form-group col-sm-3" id="province">
                                         <select name="province_id" class="form-control"
@@ -193,7 +236,7 @@
                                 </div>
                             </div>
                             <div class="form-group {{ $errors->has('ward') ? 'has-error' : '' }}">
-                                <label for="ward">Ward No</label>
+                                <label for="ward">Destination in Nepal (Ward No)</label>
                                 <input type="text" class="form-control" value="{{ old('ward') }}" name="ward"
                                        aria-describedby="help" placeholder="Enter Ward No"
                                 >
@@ -202,7 +245,7 @@
                                 @endif
                             </div>
                             <div class="form-group {{ $errors->has('tole') ? 'has-error' : '' }}">
-                                <label for="tole">Tole</label>
+                                <label for="tole">Destination in Nepal (Tole)</label>
                                 <input type="text" class="form-control" value="{{ old('tole') }}" name="tole"
                                        aria-describedby="help" placeholder="Enter Tole"
                                 >
@@ -211,24 +254,35 @@
                                 @endif
                             </div>
                             <div class="form-group {{ $errors->has('emergency_contact_one') ? 'has-error' : '' }}">
-                                <label for="name">Emergency Contact One</label>
+                                <label for="name">Contact phone number in Nepal</label>
                                 <input type="text" class="form-control" value="{{ old('emergency_contact_one') }}"
                                        name="emergency_contact_one" aria-describedby="help"
-                                       placeholder="Enter Emergency Contact One"
+                                       placeholder="Contact phone number in Nepal"
                                 >
                                 @if ($errors->has('emergency_contact_one'))
                                     <small id="help"
                                            class="form-text text-danger">{{ $errors->first('emergency_contact_one') }}</small>
                                 @endif
                             </div>
+                            <div class="form-group {{ $errors->has('nearest_contact') ? 'has-error' : '' }}">
+                                <label for="name">Nearest Contact person in Nepal</label>
+                                <input type="text" class="form-control" value="{{ old('nearest_contact') }}"
+                                       name="nearest_contact" aria-describedby="help"
+                                       placeholder="Nearest Contact person in Nepal"
+                                >
+                                @if ($errors->has('nearest_contact'))
+                                    <small id="help"
+                                           class="form-text text-danger">{{ $errors->first('nearest_contact') }}</small>
+                                @endif
+                            </div>
                             <div class="form-group {{ $errors->has('emergency_contact_two') ? 'has-error' : '' }}">
-                                <label for="name">Emergency Contact Two</label>
+                                <label for="name">Nearest Contact person Phone</label>
                                 <input type="text" class="form-control" value="{{ old('emergency_contact_two') }}"
                                        name="emergency_contact_two" aria-describedby="help"
-                                       placeholder="Enter Emergency Contact Two">
-                                @if ($errors->has('emergency_contact_one'))
+                                       placeholder="Enter Nearest Contact person Phone">
+                                @if ($errors->has('emergency_contact_two'))
                                     <small id="help"
-                                           class="form-text text-danger">{{ $errors->first('emergency_contact_one') }}</small>
+                                           class="form-text text-danger">{{ $errors->first('emergency_contact_two') }}</small>
                                 @endif
                             </div>
                             <div class="form-group">
@@ -245,6 +299,16 @@
                                                value="1" data-rel="earning" onclick="toggleDateOnset(false)">Yes
                                     </label>
                                 </div>
+                            </div>
+                            <div class="form-group {{ $errors->has('temperature') ? 'has-error' : '' }}">
+                                <label for="name">Body Temperature</label>
+                                <input type="number" class="form-control" value="{{ old('temperature') }}"
+                                       name="temperature" aria-describedby="help"
+                                       placeholder="Enter Body Temperature">
+                                @if ($errors->has('temperature'))
+                                    <small id="help"
+                                           class="form-text text-danger">{{ $errors->first('temperature') }}</small>
+                                @endif
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Have any symptoms of Covid-19 seen anytime during the past 2 weeks?</label>
@@ -353,38 +417,6 @@
                                         <small id="help" class="form-text text-danger">{{ $errors->first('symptoms_comorbidity_specific') }}</small>
                                     @endif
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="caste">Occupation</label>
-                                <select name="occupation" class="form-control">
-                                    <option {{ old('occupation') == '' ? "selected" : "" }} value="">Select Occupation
-                                    </option>
-                                    <option {{ old('occupation') == '1' ? "selected" : "" }} value="1">Front Line Health
-                                        Worker
-                                    </option>
-                                    <option {{ old('occupation') == '2' ? "selected" : "" }} value="2">Doctor</option>
-                                    <option {{ old('occupation') == '3' ? "selected" : "" }} value="3">Nurse</option>
-                                    <option {{ old('occupation') == '4' ? "selected" : "" }} value="4">Police/Army
-                                    </option>
-                                    <option {{ old('occupation') == '5' ? "selected" : "" }} value="5">
-                                        Business/Industry
-                                    </option>
-                                    <option {{ old('occupation') == '6' ? "selected" : "" }} value="6">
-                                        Teacher/Student/Education
-                                    </option>
-                                    <option {{ old('occupation') == '7' ? "selected" : "" }} value="7">Journalist
-                                    </option>
-                                    <option {{ old('occupation') == '8' ? "selected" : "" }} value="8">Agriculture
-                                    </option>
-                                    <option {{ old('occupation') == '9' ? "selected" : "" }} value="9">
-                                        Transport/Delivery
-                                    </option>
-                                    <option {{ old('occupation') == '10' ? "selected" : "" }} value="10">Other</option>
-                                </select>
-                                @if ($errors->has('occupation'))
-                                    <small id="help"
-                                           class="form-text text-danger">{{ $errors->first('occupation') }}</small>
-                                @endif
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Is Detected From Contract Tracing ?</label>

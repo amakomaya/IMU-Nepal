@@ -325,7 +325,11 @@ class WomanController extends Controller
         foreach ($response as $key => $value) {
             $$key = $value;
         }
-        return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id'));
+        if(Auth::user()->can('poe-registration')){
+            return view('backend.patient.create-poe', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id'));
+        } else {
+            return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id'));
+        }
     }
 
     public function store(Request $request)
@@ -371,7 +375,7 @@ class WomanController extends Controller
             $row['symptoms_comorbidity'] = "[]";
             $row['symptoms_comorbidity_specific'] = "";
         }
-        $row['travelled_where'] = "[]";
+        $row['travelled_where'] = "[" . $request->travelled_where ."]";
         $row['hp_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
         $row['cases'] = '0';
         $row['case_where'] = '0';
