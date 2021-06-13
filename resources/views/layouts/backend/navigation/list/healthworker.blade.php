@@ -21,3 +21,5 @@
 
 @include('layouts.backend.navigation.html.bulk-upload')
 
+@include('layouts.backend.navigation.html.permission-list')
+
