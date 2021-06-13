@@ -53,15 +53,21 @@
         <input type="text" placeholder="Enter Patient ID in your Hospital" class="form-control" v-model.trim="data.hospital_register_id" id="hospital_register_id"/>
       </div>
 
-
-      <div class="form-group col-lg-6" :class="{ 'has-error': $v.data.register_date_np.$error }">
+      <div v-if="checkEditPermission()" class="form-group col-lg-4" :class="{ 'has-error': $v.data.register_date_np.$error }">
+          <label class="control-label" for="register_date_np">Register Date * </label><br />
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+              <input id="register_date_np" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.register_date_np" value="" name="register_date_np" class="form-control date-picker-register_date_np" />
+            </div>
+      </div>
+      <div v-else class="form-group col-lg-6" :class="{ 'has-error': $v.data.register_date_np.$error }">
         <label class="control-label" for="register_date">Register Date * &nbsp;<span class="label label-info pull-right">{{ data.register_date_np }}</span></label>
         <div class="input-group">
           <span >{{data.register_date_np}}</span>
         </div>
       </div>
-
     </div>
+    
     <div class="form-group" :class="{ 'has-error': $v.data.name.$error }">
         <label class="control-label" for="name">Name *</label>
         <input type="text" placeholder="Enter Full Name with space between first, middle and last name" class="form-control" v-model.trim="data.name" id="name"/>
@@ -962,6 +968,17 @@ export default {
             self.data.date_of_outcome = $('#date_of_outcome').val()
         }
       });
+      $('.date-picker-register_date_np').nepaliDatePicker({
+        language: 'english',
+        onChange: function() {
+            self.data.register_date_np = $('#register_date_np').val()
+        }
+      });
+    },
+    checkEditPermission(){
+      //TODO fix by setting from controller
+      return this.$userSessionToken === '5a4425' || this.$permissionId === '1';
+      
     }
   },
   created(){
