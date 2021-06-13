@@ -17,7 +17,7 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                			<form class="form-horizontal" role="form" method="POST" action="@yield('action')" enctype="multipart/form-data">
+                			<form class="form-horizontal" id="hw-form" role="form" method="POST" action="@yield('action')" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 @yield('methodField')
 
@@ -292,22 +292,114 @@
                                 <hr>
                                 <div class="form-group">
                                     <strong class="col-md-3 control-label">Assign Permissions</strong>
+                                    <?php
+                                      $antiRegTestPermission = ["cases-registration", "sample-collection", "cases-list", "lab-received", "antigen-result"];
+                                      sort($antiRegTestPermission);
+                                      $pcrRegPermission = [ "cases-registration", "sample-collection", "cases-list" ];
+                                      sort($pcrRegPermission);
+                                      $pcrRegTestPermission = ["cases-registration", "sample-collection", "cases-list", "lab-received", "lab-result"];
+                                      sort($pcrRegTestPermission);
+                                      $pcrLabTestPermission = ["lab-received" , "lab-result"];
+                                      sort($pcrLabTestPermission);
+                                      $poeAntigenPermission = ["cases-registration", "sample-collection", "cases-list", "lab-received", "antigen-result", "poe-registration"];
+                                      sort($poeAntigenPermission);
+                                      $hasAntiRegTestPermission = $hasPcrRegPermission = $hasPcrRegTestPermission = $hasPcrLabTestPermission = $hasPoeAntigenPermission = false;
+                                      if(isset($data)){
+                                        $allBundeledPermission = ["cases-registration", "sample-collection", "cases-list", "lab-received", "antigen-result", "poe-registration", "lab-result"];
+                                        sort($allBundeledPermission);
+                                        $allPermissions = $data->user->getAllPermissions()->pluck('name')->toArray();
+                                        $userBundeledPermission = [];
+                                        foreach($allPermissions as $permission) {
+                                          if(in_array($permission, $allBundeledPermission)){
+                                            array_push($userBundeledPermission, $permission);
+                                          }
+                                        }
+                                        sort($userBundeledPermission);
+                                        $userBundledPermissionSearilized = json_encode($userBundeledPermission);
+                                        if($userBundledPermissionSearilized == json_encode($antiRegTestPermission)){
+                                          $hasAntiRegTestPermission = true;
+                                        }
+                                        if($userBundledPermissionSearilized == json_encode($pcrRegPermission)){
+                                          $hasPcrRegPermission = true;
+                                        }
+                                        if($userBundledPermissionSearilized == json_encode($pcrRegTestPermission)){
+                                          $hasPcrRegTestPermission = true;
+                                        }
+                                        if($userBundledPermissionSearilized == json_encode($pcrLabTestPermission)){
+                                          $hasPcrLabTestPermission = true;
+                                        }
+                                        if($userBundledPermissionSearilized == json_encode($poeAntigenPermission)){
+                                          $hasPoeAntigenPermission = true;
+                                        }
+                                      }
+                                      echo($hasAntiRegTestPermission);
+                                      echo($hasPcrRegPermission);
+                                      echo($hasPcrRegTestPermission);
+                                      echo($hasPcrLabTestPermission);
+                                      echo($hasPoeAntigenPermission);
+                                   ?>
                                     <div class="col-md-7 checkbox">
-                                        @foreach($permissions as $permission)
-                                            <div class="col-lg-4">
-                                                <label title="{{ $permission->name }}">
-                                                    <input type="checkbox" name="permissions[]"
-                                                           value="{{ $permission->name }}"
-                                                           @if(isset($data))
-                                                           @if(in_array($permission->name ,$data->user->getAllPermissions()->pluck('name')->toArray()))
-                                                           checked
-                                                            @endif
-                                                            @endif
-                                                    >{!!$permission->name!!}
-                                                </label>
-                                                <hr>
-                                            </div>
-                                        @endforeach
+                                      <div class="row">
+                                        <div class="col-lg-12">
+                                          <input type="radio" name="permission_bundle" id="anti-reg-test" value = <?php echo json_encode($antiRegTestPermission) ?>
+                                            @if($hasAntiRegTestPermission)
+                                              checked
+                                            @endif
+                                          />
+                                          <label for="anti-reg-test">Antigen Registration & Test</label>
+                                        </div>
+                                        <div class="col-lg-12">
+                                          <input type="radio" name="permission_bundle" id="pcr-reg" value= <?php echo json_encode($pcrRegPermission); ?>
+                                            @if($hasPcrRegPermission)
+                                              checked
+                                            @endif
+                                          />
+                                          <label for="pcr-reg">PCR Registration</label>
+                                        </div>
+                                        <div class="col-lg-12">
+                                          <input type="radio" name="permission_bundle" id="pcr-lab" value=<?php echo json_encode($pcrLabTestPermission); ?>
+                                            @if($hasPcrRegTestPermission)
+                                              checked
+                                            @endif
+                                          />
+                                          <label for="pcr-lab">PCR Lab Received & Result</label>
+                                        </div>
+                                        <div class="col-lg-12">
+                                          <input type="radio" name="permission_bundle" id="pcr-reg-test" value=<?php echo json_encode($pcrRegTestPermission); ?>
+                                            @if($hasPcrLabTestPermission)
+                                              checked
+                                            @endif
+                                          />
+                                          <label for="pcr-reg-test">PCR Registration & Lab Result</label>
+                                        </div>
+                                        <div class="col-lg-12">
+                                          
+                                          <input type="radio" name="permission_bundle" id="poe-reg-test" value=<?php echo json_encode($poeAntigenPermission); ?>
+                                            @if($hasPoeAntigenPermission)
+                                              checked
+                                            @endif
+                                          />
+                                          <label for="poe-reg-test">POE Antigen</label>
+                                        </div>
+                                        <div class="col-lg-12">
+                                          <hr />
+                                        </div>
+                                          @foreach($permissions as $permission)
+                                              <div class="col-lg-4">
+                                                  <label title="{{ $permission->name }}">
+                                                      <input type="checkbox" name="permissions[]"
+                                                            value="{{ $permission->name }}"
+                                                            @if(isset($data))
+                                                            @if(in_array($permission->name , $allPermissions))
+                                                            checked
+                                                              @endif
+                                                              @endif
+                                                      >{!!$permission->name!!}
+                                                  </label>
+                                                  <hr>
+                                              </div>
+                                          @endforeach
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -328,5 +420,21 @@
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->
+@endsection
+
+@section('script')
+<!-- <script>
+  $('#hw-form').submit(function(event) {
+    event.preventDefault(); //this will prevent the default submit
+    var permissionBundle = $('input[name="permission_bundle"]:checked').val() || '[]';
+    
+    var individualPermission = $("input[name='permissions[]']:checkbox:checked").map(function(){
+      return $(this).val();
+    }).get();
+    var allPermission = JSON.parse(permissionBundle).concat(individualPermission);
+    
+    // $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+  });
+</script> -->
 @endsection
                               
