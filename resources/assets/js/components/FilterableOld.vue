@@ -322,11 +322,11 @@ export default {
         let exportableData = {};
         var gender = '';
         if(data.sex == '1') {
-            gender = 'M';
+            gender = 'Male';
         }else if(data.sex == '2') {
-            gender = 'F';
+            gender = 'Female';
         }else{
-            gender = 'O';
+            gender = 'Others';
         }
 
           exportableData.name = data.name;
