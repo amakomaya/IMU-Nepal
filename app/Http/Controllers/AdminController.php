@@ -160,7 +160,7 @@ class AdminController extends Controller
     }
 
     public function sidSearch(Request $request) {
-        if(Auth::user()->role == 'main' || Auth::user()->role == 'province') {
+        if((Auth::user()->role == 'main' || Auth::user()->role == 'province' || Auth::user()->role == 'municipality' || Auth::user()->role == 'healthpost') && session()->get('permission_id') == 1) {
             if($request->sid) {
                 $response = FilterRequest::filter($request);
                 $hpCodes = GetHealthpostCodes::filter($response);
@@ -182,7 +182,7 @@ class AdminController extends Controller
     }
 
     public function sidUpdate(Request $request) {
-        if(Auth::user()->role == 'main' || Auth::user()->role == 'province') {
+        // if(Auth::user()->role == 'main' || Auth::user()->role == 'province') {
             $reson_for_testing = $request->reson_for_testing ? "[" . implode(', ', $request->reson_for_testing) . "]" : '[]';
             if($request->symptoms_recent == 1) {
                 $request->symptoms_comorbidity = $request->symptoms_comorbidity ?? [];
@@ -246,8 +246,9 @@ class AdminController extends Controller
             }
 
             return redirect()->back();
-        } else {
-            return redirect('/admin');
-        }
+        // }
+        // else {
+        //     return redirect('/admin');
+        // }
     }
 }
