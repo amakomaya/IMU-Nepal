@@ -3,6 +3,7 @@
 use App\Imports\CasesPaymentImport;
 use App\Models\Organization;
 use App\Models\SampleCollection;
+use App\Models\SampleCollectionOld;
 use App\Models\CaseManagement;
 use App\Models\ContactDetail;
 use App\Models\ContactFollowUp;
@@ -10,7 +11,9 @@ use App\Models\ContactTracing;
 use App\Models\OrganizationMember;
 use App\Models\LaboratoryParameter;
 use App\Models\LabTest;
+use App\Models\LabTestOld;
 use App\Models\SuspectedCase;
+use App\Models\SuspectedCaseOld;
 use App\Models\ProvinceInfo;
 use App\Models\MunicipalityInfo;
 use App\Models\PaymentCase;
@@ -627,6 +630,9 @@ Route::get('/v1/check-by-sid-or-lab-id', function (Request $request) {
     $lab_details = [];
     if (strlen($token) !== 17){
         $lab_result = LabTest::where('token', auth()->user()->token.'-'.$token)->first();
+        if(empty($lab_result)){
+            $lab_result = LabTestOld::where('token', auth()->user()->token.'-'.$token)->first();
+        }
         if ($lab_result){
             $lab_details = OrganizationMember::where('hp_code', $lab_result->hp_code)->first();
         }
@@ -637,6 +643,9 @@ Route::get('/v1/check-by-sid-or-lab-id', function (Request $request) {
     }
 
     $sample_detail = SampleCollection::where('token', $token)->first();
+    if(empty($sample_detail)){
+        $sample_detail = SampleCollectionOld::where('token', $token)->first();
+    }
 
     if (!$sample_detail){
         return response()->json();
@@ -645,6 +654,11 @@ Route::get('/v1/check-by-sid-or-lab-id', function (Request $request) {
     $case = SuspectedCase::where('token', $sample_detail->woman_token)
         ->with(['healthworker' ,'healthpost', 'district', 'municipality'])
         ->first();
+    if(empty($case)){
+        $case = SuspectedCaseOld::where('token', $sample_detail->woman_token)
+        ->with(['healthworker' ,'healthpost', 'district', 'municipality'])
+        ->first();
+    }
         
     $case = [
         'organization_name' => ($lab_details) ? $lab_details->name : $case->healthpost->name,
@@ -685,7 +699,7 @@ Route::get('/v1/check-by-sid-or-lab-id-old', function (Request $request) {
             ->where('token', auth()->user()->token.'-'.$token)->first();
             // dd($lab_result);
         if ($lab_result){
-            $lab_details = \DB::connection('mysqldump')->table('health_workers')
+            $lab_details = \DB::table('health_workers')
                 ->where('hp_code', $lab_result->hp_code)->first();
         }
         if (!$lab_result){

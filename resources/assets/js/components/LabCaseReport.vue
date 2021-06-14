@@ -4,11 +4,11 @@
       <div class="panel-heading">
         <div class="panel-title">
           <div class="form-group">
-            <h3>Search latest case by SID or LAB ID :</h3>
+            <h3>Search case by SID or LAB ID :</h3>
               <div class="row">
-                <div class="col-md-12" style="padding-bottom: 40px;">
+                <!-- <div class="col-md-12" style="padding-bottom: 40px;">
                   <button class="btn btn-success" style="float:right"  @click="newLink()">Click for data older than 15 days</button>
-                </div>
+                </div> -->
                 <div class="container">
                   <div class="input-group" :class="{ 'has-error': $v.token.$error }">
                     <input v-model="token" type="text" @keyup.enter="searchResult(token)" class="form-control" placeholder="Enter SID or LAB ID"/>

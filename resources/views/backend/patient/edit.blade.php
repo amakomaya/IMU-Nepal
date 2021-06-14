@@ -279,36 +279,39 @@
                                         @endif
                                     </div>
                                     <div class="form-group" id="symptomatic-patient">
+                                        <?php
+                                            $symptoms = json_decode($data->symptoms ?? []);
+                                        ?>
                                         <label class="control-label" for="symptoms">Symptomatic patient with:</label><br>
-                                        <input type="checkbox" name="symptoms[]" value="1" @if(in_array(1, $data->symptoms)) checked @endif>Pneumonia<br>
-                                        <input type="checkbox" name="symptoms[]" value="2" @if(in_array(2, $data->symptoms)) checked @endif>ARDS<br>
-                                        <input type="checkbox" name="symptoms[]" value="3" @if(in_array(3, $data->symptoms)) checked @endif>Influenza-like illness<br>
-                                        <input type="checkbox" name="symptoms[]" value="4" @if(in_array(4, $data->symptoms)) checked @endif>History of fever/chills<br>
-                                        <input type="checkbox" name="symptoms[]" value="5" @if(in_array(5, $data->symptoms)) checked @endif>General weakness<br>
-                                        <input type="checkbox" name="symptoms[]" value="6" @if(in_array(6, $data->symptoms)) checked @endif>Cough<br>
-                                        <input type="checkbox" name="symptoms[]" value="7" @if(in_array(7, $data->symptoms)) checked @endif>Sore Throat<br>
-                                        <input type="checkbox" name="symptoms[]" value="8" @if(in_array(8, $data->symptoms)) checked @endif>Running nose<br>
-                                        <input type="checkbox" name="symptoms[]" value="9" @if(in_array(9, $data->symptoms)) checked @endif>Shortness of breath<br>
-                                        <input type="checkbox" name="symptoms[]" value="10" @if(in_array(10, $data->symptoms)) checked @endif>Irritability/Confusion<br>
-                                        <input type="checkbox" name="symptoms[]" value="11" @if(in_array(11, $data->symptoms)) checked @endif>Loss of taste<br>
-                                        <input type="checkbox" name="symptoms[]" value="12" @if(in_array(12, $data->symptoms)) checked @endif>Loss of smell<br>
+                                        <input type="checkbox" name="symptoms[]" value="1" @if(in_array(1, $symptoms)) checked @endif>Pneumonia<br>
+                                        <input type="checkbox" name="symptoms[]" value="2" @if(in_array(2, $symptoms)) checked @endif>ARDS<br>
+                                        <input type="checkbox" name="symptoms[]" value="3" @if(in_array(3, $symptoms)) checked @endif>Influenza-like illness<br>
+                                        <input type="checkbox" name="symptoms[]" value="4" @if(in_array(4, $symptoms)) checked @endif>History of fever/chills<br>
+                                        <input type="checkbox" name="symptoms[]" value="5" @if(in_array(5, $symptoms)) checked @endif>General weakness<br>
+                                        <input type="checkbox" name="symptoms[]" value="6" @if(in_array(6, $symptoms)) checked @endif>Cough<br>
+                                        <input type="checkbox" name="symptoms[]" value="7" @if(in_array(7, $symptoms)) checked @endif>Sore Throat<br>
+                                        <input type="checkbox" name="symptoms[]" value="8" @if(in_array(8, $symptoms)) checked @endif>Running nose<br>
+                                        <input type="checkbox" name="symptoms[]" value="9" @if(in_array(9, $symptoms)) checked @endif>Shortness of breath<br>
+                                        <input type="checkbox" name="symptoms[]" value="10" @if(in_array(10, $symptoms)) checked @endif>Irritability/Confusion<br>
+                                        <input type="checkbox" name="symptoms[]" value="11" @if(in_array(11, $symptoms)) checked @endif>Loss of taste<br>
+                                        <input type="checkbox" name="symptoms[]" value="12" @if(in_array(12, $symptoms)) checked @endif>Loss of smell<br>
                                         <div style="padding: 10px;">
                                             <label>Pain</label><br>
-                                            <input type="checkbox" name="symptoms[]" value="13" @if(in_array(13, $data->symptoms)) checked @endif>Muscular<br>
-                                            <input type="checkbox" name="symptoms[]" value="14" @if(in_array(14, $data->symptoms)) checked @endif>Chest<br>
-                                            <input type="checkbox" name="symptoms[]" value="15" @if(in_array(15, $data->symptoms)) checked @endif>Abdominal<br>
-                                            <input type="checkbox" name="symptoms[]" value="16" @if(in_array(16, $data->symptoms)) checked @endif>Joint<br>
+                                            <input type="checkbox" name="symptoms[]" value="13" @if(in_array(13, $symptoms)) checked @endif>Muscular<br>
+                                            <input type="checkbox" name="symptoms[]" value="14" @if(in_array(14, $symptoms)) checked @endif>Chest<br>
+                                            <input type="checkbox" name="symptoms[]" value="15" @if(in_array(15, $symptoms)) checked @endif>Abdominal<br>
+                                            <input type="checkbox" name="symptoms[]" value="16" @if(in_array(16, $symptoms)) checked @endif>Joint<br>
                                         </div>
-                                        <input type="checkbox" name="symptoms[]" value="17" @if(in_array(17, $data->symptoms)) checked @endif>Diarrhea<br>
-                                        <input type="checkbox" name="symptoms[]" value="18" @if(in_array(18, $data->symptoms)) checked @endif>Nausea/vomiting<br>
-                                        <input type="checkbox" name="symptoms[]" value="19" @if(in_array(19, $data->symptoms)) checked @endif>Headache<br>
-                                        <input type="checkbox" name="symptoms[]" value="20" @if(in_array(20, $data->symptoms)) checked @endif>Pharyngeal exudate<br>
-                                        <input type="checkbox" name="symptoms[]" value="21" @if(in_array(21, $data->symptoms)) checked @endif>Conjunctival injection(eye)<br>
-                                        <input type="checkbox" name="symptoms[]" value="22" @if(in_array(22, $data->symptoms)) checked @endif>Seizure<br>
-                                        <input type="checkbox" name="symptoms[]" value="23" @if(in_array(23, $data->symptoms)) checked @endif>Coma<br>
-                                        <input type="checkbox" name="symptoms[]" value="24" @if(in_array(24, $data->symptoms)) checked @endif>Dyspnea/tachynea(DB/Fast breathing)<br>
-                                        <input type="checkbox" name="symptoms[]" value="25" @if(in_array(25, $data->symptoms)) checked @endif>Abnormal lung auscultation<br>
-                                        <input type="checkbox" name="symptoms[]" value="26" @if(in_array(26, $data->symptoms)) checked @endif>Abnormal lung x-ray/CT scan findings<br>
+                                        <input type="checkbox" name="symptoms[]" value="17" @if(in_array(17, $symptoms)) checked @endif>Diarrhea<br>
+                                        <input type="checkbox" name="symptoms[]" value="18" @if(in_array(18, $symptoms)) checked @endif>Nausea/vomiting<br>
+                                        <input type="checkbox" name="symptoms[]" value="19" @if(in_array(19, $symptoms)) checked @endif>Headache<br>
+                                        <input type="checkbox" name="symptoms[]" value="20" @if(in_array(20, $symptoms)) checked @endif>Pharyngeal exudate<br>
+                                        <input type="checkbox" name="symptoms[]" value="21" @if(in_array(21, $symptoms)) checked @endif>Conjunctival injection(eye)<br>
+                                        <input type="checkbox" name="symptoms[]" value="22" @if(in_array(22, $symptoms)) checked @endif>Seizure<br>
+                                        <input type="checkbox" name="symptoms[]" value="23" @if(in_array(23, $symptoms)) checked @endif>Coma<br>
+                                        <input type="checkbox" name="symptoms[]" value="24" @if(in_array(24, $symptoms)) checked @endif>Dyspnea/tachynea(DB/Fast breathing)<br>
+                                        <input type="checkbox" name="symptoms[]" value="25" @if(in_array(25, $symptoms)) checked @endif>Abnormal lung auscultation<br>
+                                        <input type="checkbox" name="symptoms[]" value="26" @if(in_array(26, $symptoms)) checked @endif>Abnormal lung x-ray/CT scan findings<br>
                                         @if ($errors->has('symptoms'))
                                             <small id="help"
                                                 class="form-text text-danger">{{ $errors->first('symptoms') }}</small>
@@ -324,28 +327,31 @@
                                         @endif
                                     </div>
                                     <div class="form-group" id="symptoms_comorbidity">
+                                        <?php
+                                            $symptoms_comorbidity = json_decode($data->symptoms_comorbidity ?? []);
+                                        ?>
                                         <label class="control-label" for="symptoms_comorbidity">Symptomatic patient with comorbidity</label><br>
-                                        <input type="checkbox" name="symptoms_comorbidity[]" value="1" @if(in_array(1, $data->symptoms_comorbidity)) checked @endif>Diabetes<br>
-                                        <input type="checkbox" name="symptoms_comorbidity[]" value="2" @if(in_array(2, $data->symptoms_comorbidity)) checked @endif>HTN<br>
-                                        <input type="checkbox" name="symptoms_comorbidity[]" value="3" @if(in_array(3, $data->symptoms_comorbidity)) checked @endif>Hermodialysis<br>
-                                        <input type="checkbox" name="symptoms_comorbidity[]" value="4" @if(in_array(4, $data->symptoms_comorbidity)) checked @endif>Immunocompromised<br>
+                                        <input type="checkbox" name="symptoms_comorbidity[]" value="1" @if(in_array(1, $symptoms_comorbidity)) checked @endif>Diabetes<br>
+                                        <input type="checkbox" name="symptoms_comorbidity[]" value="2" @if(in_array(2, $symptoms_comorbidity)) checked @endif>HTN<br>
+                                        <input type="checkbox" name="symptoms_comorbidity[]" value="3" @if(in_array(3, $symptoms_comorbidity)) checked @endif>Hermodialysis<br>
+                                        <input type="checkbox" name="symptoms_comorbidity[]" value="4" @if(in_array(4, $symptoms_comorbidity)) checked @endif>Immunocompromised<br>
                                         <div style="padding: 10px;">
                                             <label>Pregnancy(Trimester)</label><br>
-                                            <input type="radio" name="symptoms_comorbidity_trimester" value="5" @if(in_array(5, $data->symptoms_comorbidity)) checked @endif>First<br>
-                                            <input type="radio" name="symptoms_comorbidity_trimester" value="16" @if(in_array(16, $data->symptoms_comorbidity)) checked @endif>Second<br>
-                                            <input type="radio" name="symptoms_comorbidity_trimester" value="17" @if(in_array(17, $data->symptoms_comorbidity)) checked @endif>Third<br>
-                                            <input type="radio" name="symptoms_comorbidity_trimester" value="" @if(!array_intersect([5,16,17], $data->symptoms_comorbidity)) checked @endif>No<br>
+                                            <input type="radio" name="symptoms_comorbidity_trimester" value="5" @if(in_array(5, $symptoms_comorbidity)) checked @endif>First<br>
+                                            <input type="radio" name="symptoms_comorbidity_trimester" value="16" @if(in_array(16, $symptoms_comorbidity)) checked @endif>Second<br>
+                                            <input type="radio" name="symptoms_comorbidity_trimester" value="17" @if(in_array(17, $symptoms_comorbidity)) checked @endif>Third<br>
+                                            <input type="radio" name="symptoms_comorbidity_trimester" value="" @if(!array_intersect([5,16,17], $symptoms_comorbidity)) checked @endif>No<br>
                                         </div>
-                                        <input type="checkbox" name="symptoms_comorbidity[]" value="6" @if(in_array(6, $data->symptoms_comorbidity)) checked @endif>Maternity<br>
-                                        <input type="checkbox" name="symptoms_comorbidity[]" value="7" @if(in_array(7, $data->symptoms_comorbidity)) checked @endif>Heart disease, including hypertension<br>
-                                        <input type="checkbox" name="symptoms_comorbidity[]" value="8" @if(in_array(8, $data->symptoms_comorbidity)) checked @endif>Liver disease<br>
-                                        <input type="checkbox" name="symptoms_comorbidity[]" value="9" @if(in_array(9, $data->symptoms_comorbidity)) checked @endif>Nerve related diseases<br>
-                                        <input type="checkbox" name="symptoms_comorbidity[]" value="10" @if(in_array(10, $data->symptoms_comorbidity)) checked @endif>Kidney diseases<br>
-                                        <input type="checkbox" name="symptoms_comorbidity[]" value="11" @if(in_array(11, $data->symptoms_comorbidity)) checked @endif>Malnutrition<br>
-                                        <input type="checkbox" name="symptoms_comorbidity[]" value="12" @if(in_array(12, $data->symptoms_comorbidity)) checked @endif>Autoimmune diseases<br>
-                                        <input type="checkbox" name="symptoms_comorbidity[]" value="13" @if(in_array(13, $data->symptoms_comorbidity)) checked @endif>Immunodeficiency, including HIV<br>
-                                        <input type="checkbox" name="symptoms_comorbidity[]" value="14" @if(in_array(14, $data->symptoms_comorbidity)) checked @endif>Malignancy<br>
-                                        <input type="checkbox" name="symptoms_comorbidity[]" value="15" @if(in_array(15, $data->symptoms_comorbidity)) checked @endif>Chric lung disesase/asthma/artery<br>
+                                        <input type="checkbox" name="symptoms_comorbidity[]" value="6" @if(in_array(6, $symptoms_comorbidity)) checked @endif>Maternity<br>
+                                        <input type="checkbox" name="symptoms_comorbidity[]" value="7" @if(in_array(7, $symptoms_comorbidity)) checked @endif>Heart disease, including hypertension<br>
+                                        <input type="checkbox" name="symptoms_comorbidity[]" value="8" @if(in_array(8, $symptoms_comorbidity)) checked @endif>Liver disease<br>
+                                        <input type="checkbox" name="symptoms_comorbidity[]" value="9" @if(in_array(9, $symptoms_comorbidity)) checked @endif>Nerve related diseases<br>
+                                        <input type="checkbox" name="symptoms_comorbidity[]" value="10" @if(in_array(10, $symptoms_comorbidity)) checked @endif>Kidney diseases<br>
+                                        <input type="checkbox" name="symptoms_comorbidity[]" value="11" @if(in_array(11, $symptoms_comorbidity)) checked @endif>Malnutrition<br>
+                                        <input type="checkbox" name="symptoms_comorbidity[]" value="12" @if(in_array(12, $symptoms_comorbidity)) checked @endif>Autoimmune diseases<br>
+                                        <input type="checkbox" name="symptoms_comorbidity[]" value="13" @if(in_array(13, $symptoms_comorbidity)) checked @endif>Immunodeficiency, including HIV<br>
+                                        <input type="checkbox" name="symptoms_comorbidity[]" value="14" @if(in_array(14, $symptoms_comorbidity)) checked @endif>Malignancy<br>
+                                        <input type="checkbox" name="symptoms_comorbidity[]" value="15" @if(in_array(15, $symptoms_comorbidity)) checked @endif>Chric lung disesase/asthma/artery<br>
                                         @if ($errors->has('symptoms_comorbidity'))
                                             <small id="help"
                                                    class="form-text text-danger">{{ $errors->first('symptoms_comorbidity') }}</small>

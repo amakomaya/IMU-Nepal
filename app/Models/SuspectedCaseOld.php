@@ -6,6 +6,9 @@ use App\Support\Dataviewer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Province;
+use App\Models\District;
+use App\Models\Municipality;
 
 class SuspectedCaseOld extends Model
 {
@@ -78,22 +81,22 @@ class SuspectedCaseOld extends Model
 
     public function province()
     {
-        return $this->belongsTo(Province::class);
+        return $this->setConnection('mysql')->belongsTo('App\Models\Province', 'province_id', 'id');
     }
 
     public function district()
     {
-        return $this->belongsTo(District::class);
+        return $this->setConnection('mysql')->belongsTo('App\Models\District', 'district_id', 'id');
     }
 
     public function municipality()
     {
-        return $this->belongsTo(Municipality::class);
+        return $this->setConnection('mysql')->belongsTo('App\Models\Municipality', 'municipality_id', 'id');
     }
 
     public function registerBy()
     {
-        return $this->hasOne('App\Models\OrganizationMember', 'token', 'created_by');
+        return $this->setConnection('mysql')->hasOne('App\Models\OrganizationMember', 'token', 'created_by');
     }
 
 
@@ -109,12 +112,12 @@ class SuspectedCaseOld extends Model
 
     public function healthpost()
     {
-        return $this->hasOne('App\Models\OrganizationOld', 'hp_code', 'hp_code');
+        return $this->setConnection('mysql')->hasOne('App\Models\Organization', 'hp_code', 'hp_code');
     }
 
     public function healthworker()
     {
-        return $this->hasOne('App\Models\OrganizationMember', 'token', 'created_by');
+        return $this->setConnection('mysql')->hasOne('App\Models\OrganizationMember', 'token', 'created_by');
     }
 
     public function latestAnc()

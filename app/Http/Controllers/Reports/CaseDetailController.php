@@ -98,17 +98,10 @@ class CaseDetailController extends Controller
     function edit($token)
     {
         $data = SuspectedCase::withAll()->where('token', $token)->first();
-
-        $data['symptoms'] = json_decode($data->symptoms ?: []);
-        $data['symptoms_comorbidity'] = json_decode($data->symptoms_comorbidity ?: []);
-
-        // @php $reasons = json_decode(isset($ancs) ? $ancs->reson_for_testing : [] ); @endphp
-
+        if(empty($data)) {
+            $data = SuspectedCaseOld::withAll()->where('token', $token)->first();
+        }
         $samples = SampleCollection::where('status', '1')->where('woman_token', $token)->get();
-//
-//        $provinces = province::all();
-//        foreach ($provinces as $province)
-//            dd($province->id);
 
         return view('backend.patient.edit', compact('data','samples'));
     }
@@ -116,14 +109,21 @@ class CaseDetailController extends Controller
     public function update(Request $request, $id)
     {
         $woman = SuspectedCase::find($id);
+        if(empty($woman)) {
+            $woman = SuspectedCaseOld::find($id);
+        }
         $row = $request->all();
         $row['reson_for_testing'] = $row['reson_for_testing'] ? "[".implode(', ', $row['reson_for_testing'])."]" : '[]';
         if($request->symptoms_recent == 1) {
+            $request->symptoms_comorbidity = $request->symptoms_comorbidity ?? [];
             if($request->symptoms_comorbidity_trimester) {
-                array_push($row['symptoms_comorbidity'], $request->symptoms_comorbidity_trimester);
+                array_push($request->symptoms_comorbidity, $request->symptoms_comorbidity_trimester);
             }
-            $row['symptoms'] = isset($row['symptoms']) ? "[" . implode(', ', $row['symptoms']) . "]" : "[]";
-            $row['symptoms_comorbidity'] = isset($row['symptoms_comorbidity']) ? "[" . implode(', ', $row['symptoms_comorbidity']) . "]" : "[]";
+            $row['symptoms'] = isset($request->symptoms) ? "[" . implode(', ', $request->symptoms) . "]" : "[]";
+            $row['symptoms_comorbidity'] = isset($request->symptoms_comorbidity) ? "[" . implode(', ', $request->symptoms_comorbidity) . "]" : "[]";
+            $row['symptoms_specific'] = $request->symptoms_specific;
+            $row['symptoms_comorbidity_specific'] = $request->symptoms_comorbidity_specific;
+            $row['date_of_onset_of_first_symptom'] = $request->date_of_onset_of_first_symptom;
         } else {
             $row['symptoms'] = "[]";
             $row['symptoms_specific'] = "";
@@ -131,6 +131,7 @@ class CaseDetailController extends Controller
             $row['symptoms_comorbidity_specific'] = "";
             $row['date_of_onset_of_first_symptom'] = "";
         }
+        // dd($row);
         unset($row['symptoms_comorbidity_trimester']);
         $woman->update($row);
         $request->session()->flash('message', 'Data Updated successfully');

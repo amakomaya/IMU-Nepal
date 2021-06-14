@@ -22,7 +22,7 @@
               <th width="10%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
             </tr>
             </thead>
-            <tr slot-scope="{item}">
+            <tr slot-scope="{item, removeItemOnSuccess}">
                 <td></td>
                 <td>{{item.name}}</td>
                 <td>{{item.age}}</td>
@@ -48,6 +48,9 @@
                   <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
                     <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
+                  <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Delete Patient Data">
+                    <i class="fa fa-trash"></i>
+                  </button>
                 </td>  
                 <!-- </div>             -->
             </tr>
@@ -68,6 +71,7 @@
         components: {Filterable},
         data() {
             return {
+                permission: this.$permissionId,
                 filterable: {
                     url: '/data/api/passive-patient',
                     orderables: [
@@ -153,6 +157,50 @@
                         municipalities : this.municipalities
                     },
                 })
+            },
+
+            deletePatientData: function (item, removeItemOnSuccess) {
+              this.$swal({
+                title: "Are you sure?",
+                text: "You won\'t able to to retrieve this data.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel please!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+              }).then((result) => {
+                if (result.value) {
+                  axios.post('/api/v1/suspected-case-delete/' + item.token)
+                      .then((response) => {
+                        if (response.data.message === 'success') {
+                          removeItemOnSuccess(item);
+                          this.$swal({
+                            title: 'Record Deleted',
+                            type: 'success',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                          })
+                          this.healthpostSelected = null;
+                          
+                        } else {
+                          this.$swal({
+                            title: 'Oops. No record found.',
+                            type: 'error',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                          })
+                        }
+                      })
+                } else {
+                  this.$swal("Cancelled", "Data not deleted :)", "error");
+                }
+              })
             },
 
             fetch() {
