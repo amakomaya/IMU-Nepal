@@ -11,6 +11,7 @@ use App\Models\PaymentCase;
 use App\Models\SampleCollection;
 use App\Models\LabTest;
 use App\Models\SuspectedCase;
+use App\Models\SuspectedCaseOld;
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -58,8 +59,12 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        $woman = SuspectedCase::active()
-            ->whereIn('hp_code', $hpCodes)
+        if($request->db_switch == '2') {
+            $woman = SuspectedCaseOld::active();
+        } else{
+            $woman = SuspectedCase::active();
+        }
+        $woman = $woman->whereIn('hp_code', $hpCodes)
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
                     $q->where('service_for', '!=' ,"2")->whereIn('result', [0,2]);

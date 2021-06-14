@@ -12,12 +12,12 @@
         </div>
       </div>
       <div class="panel-body">
+        <div class="checkbox-slider">
+          <input type="checkbox" id="checkbox" @click="switchValue($event)">
+          <label for="checkbox" class="slider"></label>
+          <label for="checkbox"></label>
+        </div>
         <div class="filter">
-          <!-- <div class="switch" style="padding-bottom: 15px;">Data before 15 Days
-            <input type="checkbox" @click="switchValue($event)">
-            <span class="slider round"></span>
-          </div> -->
-
           <div class="filter-item" v-for="(f, i) in filterCandidates">
             <div class="filter-column">
               <div class="form-group">
@@ -217,7 +217,7 @@ export default {
   },
   data() {
     return {
-      // initialApiParam: '',
+      initialApiParam: '',
       loading: true,
       apiresponce : false,
       appliedFilters: [],
@@ -503,13 +503,15 @@ export default {
 
       return f
     },
-    // switchValue(event){
-    //   if(event.target.checked === true) {
-    //     this.initialApiParam = {'old_new_data': '2'}
-    //   } else {
-    //     this.initialApiParam = {}
-    //   }
-    // },
+    switchValue(event){
+      if(event.target.checked === true) {
+        this.initialApiParam = {'db_switch': '2'}
+      } else {
+        this.initialApiParam = {}
+      }
+      this.fetch()
+
+    },
     fetch() {
       this.loading = true
       const filters = this.getFilters()
@@ -517,7 +519,7 @@ export default {
       const params = {
         ...filters,
         ...this.query,
-        // ...this.initialApiParam
+        ...this.initialApiParam
       }
       axios.get(this.url, {params: params})
           .then((res) => {
