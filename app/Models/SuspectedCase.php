@@ -35,8 +35,9 @@ class SuspectedCase extends Model
         'temperature', 'date_of_onset_of_first_symptom', 'reson_for_testing', 'case_type',
 
         'nationality','id_card_detail', 'id_card_issue', 'name_of_poe','covid_vaccination_details',
-        'nearest_contact'
+        'nearest_contact' ,
 
+        'register_date_en' , 'register_date_np'
     ];
     protected $dates = ['deleted_at'];
     protected $allowedFilters = [
