@@ -280,7 +280,7 @@
                                     </div>
                                     <div class="form-group" id="symptomatic-patient">
                                         <?php
-                                            $symptoms = json_decode($data->symptoms ?? []);
+                                            $symptoms = json_decode($data->symptoms ?? '[]');
                                         ?>
                                         <label class="control-label" for="symptoms">Symptomatic patient with:</label><br>
                                         <input type="checkbox" name="symptoms[]" value="1" @if(in_array(1, $symptoms)) checked @endif>Pneumonia<br>
@@ -328,7 +328,7 @@
                                     </div>
                                     <div class="form-group" id="symptoms_comorbidity">
                                         <?php
-                                            $symptoms_comorbidity = json_decode($data->symptoms_comorbidity ?? []);
+                                            $symptoms_comorbidity = json_decode($data->symptoms_comorbidity ?? '[]');
                                         ?>
                                         <label class="control-label" for="symptoms_comorbidity">Symptomatic patient with comorbidity</label><br>
                                         <input type="checkbox" name="symptoms_comorbidity[]" value="1" @if(in_array(1, $symptoms_comorbidity)) checked @endif>Diabetes<br>
