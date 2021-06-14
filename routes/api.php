@@ -394,7 +394,15 @@ Route::post('/v1/received-in-lab', function (Request $request) {
         if ($sample->count() < 1) {
             return response()->json('error');
         }
-        $sample->update(['result' => 9]);
+        $updateData = [
+            'result' => '9',
+            'received_by' => $data['checked_by'],
+            'received_by_hp_code' => $data['hp_code'],
+            'received_date_en' => Carbon::now()->toDateString(),
+            'received_date_np' => $data['sample_recv_date'],
+            'lab_token' => $data['token']
+        ];
+        $sample->update($updateData);
         LabTest::create($data);
         return response()->json('success');
     } catch (\Exception $e) {
@@ -408,7 +416,16 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
     try {
         $value['token'] = auth()->user()->token . '-' . $value['token'];
         $find_test = LabTest::where('token', $value['token'])->first();
-        SampleCollection::where('token', $find_test->sample_token)->update(['result' => $value['sample_test_result']]);
+        $sample_test_date_np_array = explode("-", $value['sample_test_date'];
+        $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDay();
+
+        SampleCollection::where('token', $find_test->sample_token)
+            ->update([
+                'result' => $value['sample_test_result'],
+                'sample_test_date_en' => $sample_test_date_en,
+                'sample_test_date_np' => $value['sample_test_date'],
+                'sample_test_time' => $value['sample_test_time']
+            ]);
         if ($find_test) {
             $find_test->update([
                 'sample_test_date' => $value['sample_test_date'],
@@ -449,7 +466,7 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
               'sample_test_time' => $value['sample_test_time'],
               'sample_test_result' => $value['sample_test_result'],
               'checked_by' => $user->token,
-              'checked_by' => $healthWorker->name,
+              'checked_by_name' => $healthWorker->name,
               'sample_token' => $sample_collection->token,
               'regdev' => 'web'
             ]);
