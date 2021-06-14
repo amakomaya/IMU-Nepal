@@ -324,7 +324,7 @@
                         </div>
                         <div class="form-group" id="case_reason">
                             @php
-                                $reasons = json_decode($ancs->woman->reson_for_testing ?? []);
+                                $reasons = json_decode($ancs->woman->reson_for_testing ?? '[]');
                             @endphp
                             <label class="control-label" for="reson_for_testing">Reason for testing:</label><br>
                             <input type="checkbox" name="reson_for_testing[]" value="1" @if(in_array(1, $reasons)) checked @endif>Planned travel<br>
