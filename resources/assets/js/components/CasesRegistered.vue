@@ -50,7 +50,7 @@
                   <button v-on:click="viewCaseDetails(item.token)" target="_blank" title="Case Details Report">
                     <i class="fa fa-file" aria-hidden="true"></i> |
                   </button>
-                    <button v-if="role === 'healthworker' || role === 'healthpost' || role === 'municipality'" v-on:click="editCaseDetails(item.token)" title="Edit Case Detail">
+                    <button v-if="role === 'healthworker' || role === 'healthpost' || role === 'municipality' && permission == 1" v-on:click="editCaseDetails(item.token)" title="Edit Case Detail">
                       <i class="fa fa-edit" aria-hidden="true"></i> |
                     </button>
                   <button v-if="item.ancs.length === 0 && checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
