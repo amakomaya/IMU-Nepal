@@ -416,7 +416,7 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
     try {
         $value['token'] = auth()->user()->token . '-' . $value['token'];
         $find_test = LabTest::where('token', $value['token'])->first();
-        $sample_test_date_np_array = explode("-", $value['sample_test_date'];
+        $sample_test_date_np_array = explode("-", $value['sample_test_date']);
         $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDay();
 
         SampleCollection::where('token', $find_test->sample_token)
