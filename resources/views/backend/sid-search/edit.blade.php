@@ -187,7 +187,7 @@
                             </div>
                             <div class="form-group" id="symptomatic-patient">
                                 @php
-                                    $symptoms = json_decode($ancs->woman->symptoms ?? '[]');
+                                    $symptoms = json_decode($ancs->woman->symptoms ?? []);
                                 @endphp
                                 <label class="control-label" for="symptoms">Symptomatic patient with:</label><br>
                                 <input type="checkbox" name="symptoms[]" value="1" @if(in_array(1, $symptoms)) checked @endif>Pneumonia<br>
@@ -235,7 +235,7 @@
                             </div>
                             <div class="form-group" id="symptoms_comorbidity">
                                 @php
-                                    $symptoms_comorbidity = json_decode($ancs->woman->symptoms_comorbidity ?? '[]');
+                                    $symptoms_comorbidity = json_decode($ancs->woman->symptoms_comorbidity ?? []);
                                 @endphp
                                 <label class="control-label" for="symptoms_comorbidity">Symptomatic patient with comorbidity</label><br>
                                 <input type="checkbox" name="symptoms_comorbidity[]" value="1" @if(in_array(1, $symptoms_comorbidity)) checked @endif>Diabetes<br>
@@ -324,7 +324,7 @@
                         </div>
                         <div class="form-group" id="case_reason">
                             @php
-                                $reasons = json_decode($ancs->woman->reson_for_testing ?? []);
+                                $reasons = json_decode($ancs->woman->reson_for_testing ?? '[]');
                             @endphp
                             <label class="control-label" for="reson_for_testing">Reason for testing:</label><br>
                             <input type="checkbox" name="reson_for_testing[]" value="1" @if(in_array(1, $reasons)) checked @endif>Planned travel<br>
