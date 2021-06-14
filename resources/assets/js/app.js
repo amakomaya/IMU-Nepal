@@ -24,21 +24,13 @@ Vue.use(VueProgress, {
 
 import WomenList from './components/CasesRegistered.vue'
 import CasePendingList from './components/CasesPending.vue'
-import CasePendingListOld from './components/CasesPendingOld.vue'
 import AntigenCasePendingList from './components/AntigenCasesPending.vue'
-import AntigenCasePendingListOld from './components/AntigenCasesPendingOld.vue'
 import WomanListNegative from './components/CasesNegative'
-import WomanListNegativeOld from './components/CasesNegativeOld'
 import WomanListNegativeAntigen from './components/CasesNegativeAntigen'
-import WomanListNegativeAntigenOld from './components/CasesNegativeAntigenOld'
 import WomanListPositive from "./components/CasesPositive";
-import WomanListPositiveOld from "./components/CasesPositiveOld";
 import WomanListPositiveAntigen from "./components/CasesPositiveAntigen";
-import WomanListPositiveAntigenOld from "./components/CasesPositiveAntigenOld";
 import PatientListLabReceived from './components/CasesLabRecieved'
-import PatientListLabReceivedOld from './components/CasesLabRecievedOld'
 import PatientListLabReceivedAntigen from './components/CasesLabRecievedAntigen.vue'
-import PatientListLabReceivedAntigenOld from './components/CasesLabRecievedAntigenOld.vue'
 import CasesClosedRecovered from './components/CasesClosedRecovered'
 import CasesClosedDeath from './components/CasesClosedDeath'
 import LabPatientList from './components/LabCases'
@@ -46,7 +38,6 @@ import LabNegativeCases from "./components/LabNegativeCases";
 import LabPositiveCases from "./components/LabPositiveCases";
 import CaseDetail from "./components/viewCaseDetailReport"
 import LabCaseReport from "./components/LabCaseReport.vue"
-import LabCaseReportOld from "./components/LabCaseReportOld.vue"
 import CasesInOtherOrganization from "./components/CasesInOtherOrganization";
 import MapIndex from "./components/MapIndex";
 import AnalysisAntigen from "./components/analysis/Antigen";
@@ -107,24 +98,16 @@ Vue.component('v-select', vSelect)
 
 Vue.component('women-list', WomenList);
 Vue.component('pending-case-list', CasePendingList);
-Vue.component('pending-case-list-old', CasePendingListOld);
 Vue.component('antigen-pending-case-list', AntigenCasePendingList);
-Vue.component('antigen-pending-case-list-old', AntigenCasePendingListOld);
 
 Vue.component('women-list-negative-antigen', WomanListNegativeAntigen);
-Vue.component('women-list-negative-antigen-old', WomanListNegativeAntigenOld);
 Vue.component('women-list-negative', WomanListNegative);
-Vue.component('women-list-negative-old', WomanListNegativeOld);
 Vue.component('women-list-positive-antigen', WomanListPositiveAntigen);
-Vue.component('women-list-positive-antigen-old', WomanListPositiveAntigenOld);
 Vue.component('women-list-positive', WomanListPositive);
-Vue.component('women-list-positive-old', WomanListPositiveOld);
 Vue.component('women-list-tracing', CasesTracing);
 Vue.component('lab-patient-list', LabPatientList);
 Vue.component('women-list-lab-received', PatientListLabReceived)
-Vue.component('women-list-lab-received-old', PatientListLabReceivedOld)
 Vue.component('women-list-lab-received-antigen', PatientListLabReceivedAntigen);
-Vue.component('women-list-lab-received-antigen-old', PatientListLabReceivedAntigenOld);
 Vue.component('cases-closed-recovered', CasesClosedRecovered)
 Vue.component('cases-closed-death', CasesClosedDeath)
 Vue.component('lab-negative-patient-list', LabNegativeCases)
@@ -133,7 +116,6 @@ Vue.component('vaccination-chart');
 Vue.component('admin-dashboard', AdminDashboard)
 Vue.component('select-year-month', SelectYearMonth)
 Vue.component('lab-case-report', LabCaseReport)
-Vue.component('lab-case-report-old', LabCaseReportOld)
 Vue.component('map-index', MapIndex)
 
 Vue.component('cases-in-other-organization', CasesInOtherOrganization)
