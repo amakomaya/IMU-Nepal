@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ContactDetailOld extends Model
 {
+    protected $connection = 'mysqldump';
+
     protected $table='contact_detail';
     protected $fillable = [
         'token', 'contact_tracing_token', 'name', 'age', 'age_unit', 'caste',

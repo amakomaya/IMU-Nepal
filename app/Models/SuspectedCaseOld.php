@@ -107,7 +107,7 @@ class SuspectedCaseOld extends Model
 
     public function user()
     {
-        return $this->hasOne('App\User', 'token', 'token');
+        return $this->setConnection('mysql')->hasOne('App\User', 'token', 'token');
     }
 
     public function healthpost()
