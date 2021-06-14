@@ -1,9 +1,9 @@
 <template>
     <div>
-      <div class="col-md-12">
+      <!-- <div class="col-md-12">
         <h3>Latest Data</h3>
         <button class="btn btn-success" style="float:right"  @click="newLink()">Click for data older than 15 days</button>
-      </div>
+      </div> -->
       <filterable v-bind="filterable">
             <thead slot="thead">
             <tr>

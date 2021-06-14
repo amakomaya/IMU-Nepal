@@ -109,7 +109,7 @@ class SuspectedCaseOld extends Model
 
     public function healthpost()
     {
-        return $this->hasOne('App\Models\Organization', 'hp_code', 'hp_code');
+        return $this->hasOne('App\Models\OrganizationOld', 'hp_code', 'hp_code');
     }
 
     public function healthworker()

@@ -15,7 +15,7 @@
         <div class="checkbox-slider">
           <input type="checkbox" id="checkbox" @click="switchValue($event)">
           <label for="checkbox" class="slider"></label>
-          <label for="checkbox"></label>
+          <label for="checkbox">{{ title_of_switch }}</label>
         </div>
         <div class="filter">
           <div class="filter-item" v-for="(f, i) in filterCandidates">
@@ -222,6 +222,7 @@ export default {
       apiresponce : false,
       appliedFilters: [],
       filterCandidates: [],
+      title_of_switch: 'Click for data older than 15 days',
       query: {
         order_column: 'created_at',
         order_direction: 'desc',
@@ -506,8 +507,11 @@ export default {
     switchValue(event){
       if(event.target.checked === true) {
         this.initialApiParam = {'db_switch': '2'}
+        this.title_of_switch = 'Click for latest data'
       } else {
-        this.initialApiParam = {}
+        this.initialApiParam = {},
+        this.title_of_switch = 'Click for data older than 15 days'
+
       }
       this.fetch()
 

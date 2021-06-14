@@ -8,6 +8,7 @@ use App\Models\SampleCollection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\SuspectedCase;
+use App\Models\SuspectedCaseOld;
 use Illuminate\Support\Str;
 
 
@@ -26,6 +27,14 @@ class CaseDetailController extends Controller
             'contactFollowUp', 'contactTracing' , 'laboratoryParameter', 'registerBy', 'symptomsRelation'
         ])
         ->where('token', $token)->first();
+
+        if(empty($data)) {
+            $data = SuspectedCaseOld::with(['ancs', 'healthworker', 'healthpost', 'district',
+            'municipality', 'caseManagement', 'clinicalParameter', 'contactDetail',
+            'contactFollowUp', 'contactTracing' , 'laboratoryParameter', 'registerBy', 'symptomsRelation'
+            ])
+            ->where('token', $token)->first();
+        }
 
         return view('backend.patient.detail', compact('data'));
     }
@@ -89,6 +98,7 @@ class CaseDetailController extends Controller
     function edit($token)
     {
         $data = SuspectedCase::withAll()->where('token', $token)->first();
+
         $data['symptoms'] = json_decode($data->symptoms ?: []);
         $data['symptoms_comorbidity'] = json_decode($data->symptoms_comorbidity ?: []);
 
