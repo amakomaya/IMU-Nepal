@@ -158,6 +158,7 @@ export default {
       token : '',
       data : [],
       reportData : [],
+      serverdate: ''
     }
   },
   validations: {
@@ -230,13 +231,21 @@ export default {
       if(date === undefined){
         return '';
       }
-      var dateObject = new Date(date);
+
+      let url = window.location.protocol + '/api/v1/server-date';
+      axios.get(url)
+          .then((response) => {
+            this.serverdate = response.data.date;
+          });
+
+      var dateObject = new Date(this.serverdate);
 
       var dateFormat = dateObject.getFullYear()  + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getDate();
 
       let dateConverter = DataConverter.ad2bs(dateFormat);
 
       return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
+
 
     },
     print() {

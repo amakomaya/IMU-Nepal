@@ -325,7 +325,11 @@ class WomanController extends Controller
         foreach ($response as $key => $value) {
             $$key = $value;
         }
-        return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id'));
+        if(Auth::user()->can('poe-registration')){
+            return view('backend.patient.create-poe', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id'));
+        } else {
+            return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id'));
+        }
     }
 
     public function store(Request $request)
@@ -350,7 +354,11 @@ class WomanController extends Controller
             $$key = $value;
         }
         $row = $request->all();
-        $row['case_type'] = '1';
+        if(Auth::user()->can('poe-registration')){
+            $row['case_type'] = '3';
+        } else{
+            $row['case_type'] = '1';
+        }
         $row['token'] = md5(microtime(true) . mt_Rand());
         $row['status'] = 1;
         $row['created_by'] = auth()->user()->token;
@@ -367,7 +375,7 @@ class WomanController extends Controller
             $row['symptoms_comorbidity'] = "[]";
             $row['symptoms_comorbidity_specific'] = "";
         }
-        $row['travelled_where'] = "[]";
+        $row['travelled_where'] = "[" . $request->travelled_where ."]";
         $row['hp_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
         $row['cases'] = '0';
         $row['case_where'] = '0';
@@ -375,7 +383,7 @@ class WomanController extends Controller
         $row['payment'] = '0';
         $row['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id . '-' . bin2hex(random_bytes(3));
         $row['registered_device'] = 'web';
-        $row['reson_for_testing'] = "[" . implode(', ', $row['reson_for_testing']) . "]";
+        $row['reson_for_testing'] = isset($row['reson_for_testing']) ? "[" . implode(', ', $row['reson_for_testing']) . "]" : "[]";
         unset($row['symptoms_comorbidity_trimester']);
 
         SuspectedCase::create($row);

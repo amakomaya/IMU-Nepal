@@ -68,7 +68,6 @@ class HealthWorkerController extends Controller
         if(User::checkAuthForCreateUpdateDelHealthworker()===false){
             return redirect('/admin');
         }
-
         $token = Auth::user()->token;
         $healthpost = Organization::where('token', $token)->get()->first();
         $provinces = Province::where('id', $healthpost->province_id)->get();
@@ -78,7 +77,8 @@ class HealthWorkerController extends Controller
         $wards = [];
         $healthposts = Organization::where('id', $healthpost->id)->get();
         $role = "healthworker";
-        $permissions = Permission::all();
+        $permissions = Permission::whereNotIn('id', [1, 2, 3, 4, 5, 15, 17])->get();
+
         return view('backend.health-worker.create',compact('provinces','districts','municipalities','healthposts','role', 'permissions'));
     }
 
@@ -132,7 +132,11 @@ class HealthWorkerController extends Controller
             'password'               => md5($request->get('password')),
             'role'               => "healthworker",
         ]);
-        $user->givePermissionTo($request->get('permissions'));
+        $permissionBundle = $request->get('permission_bundle')?json_decode($request->get('permission_bundle')):[];
+        $permissions = $request->get('permissions')??[];
+        $allPermissions = array_merge($permissionBundle, $permissions);
+
+        $user->givePermissionTo($request->get($allPermissions));
 
         $request->session()->flash('message', 'Data Inserted successfully');
 
@@ -182,7 +186,7 @@ class HealthWorkerController extends Controller
         $healthposts = Organization::where('id', $healthpost->id)->get();
         $user = $this->findModelUser($data->token);
         $role = "healthworker";
-        $permissions = Permission::all();
+        $permissions = Permission::whereNotIn('id', [1, 2, 3, 4, 5, 15, 17])->get();
         return view('backend.health-worker.edit', compact('data','provinces','districts','municipalities','healthposts','user','role', 'permissions'));
     }
 
@@ -242,7 +246,10 @@ class HealthWorkerController extends Controller
             'email'               => $request->get('email'),
             'imei'               => $request->get('imei'),
         ]);
-        $user->syncPermissions($request->get('permissions'));
+        $permissionBundle = $request->get('permission_bundle')?json_decode($request->get('permission_bundle')):[];
+        $permissions = $request->get('permissions')??[];
+        $allPermissions = array_merge($permissionBundle, $permissions);
+        $user->syncPermissions($allPermissions);
 
         $request->session()->flash('message', 'Data Updated successfully');
 

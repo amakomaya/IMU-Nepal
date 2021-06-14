@@ -3,6 +3,10 @@
     @include('layouts.backend.navigation.html.close-cases')
 @endcan
 
+@can('poe-registration')
+    @include('layouts.backend.navigation.html.active-cases')
+@endcan
+    
 @can('lab-received')
     @include('layouts.backend.navigation.html.active-cases-in-lab')
 @endcan
@@ -16,4 +20,6 @@
 @endcan
 
 @include('layouts.backend.navigation.html.bulk-upload')
+
+@include('layouts.backend.navigation.html.permission-list')
 

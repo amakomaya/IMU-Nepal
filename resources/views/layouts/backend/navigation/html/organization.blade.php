@@ -36,10 +36,13 @@
             <a href="{{ route('organization.overview.labtest') }}" title="PCR Lab Test Only">PCR Lab Test Only</a>
         </li>
         <li>
-            <a href="{{ route('organization.overview.both') }}" title="PCR Lab & Treatment( Hospital )">PCR Lab & Treatment( Hospital )</a>
+            <a href="{{ route('organization.overview.both') }}" title="PCR Lab & Treatment( Hospital )">PCR L&T( Hospital )</a>
         </li>
         <li>
             <a href="{{ route('organization.overview.hospitalnopcr') }}" title="Hospital without PCR Lab">Hospital without PCR Lab</a>
+        </li>
+        <li>
+            <a href="{{ route('organization.overview.poe') }}" title="Point of Entry (POE)">POE</a>
         </li>
         @endif
     </ul>

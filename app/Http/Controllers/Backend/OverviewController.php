@@ -58,6 +58,11 @@ class OverviewController extends Controller
         return $this->filter(6);
     }
 
+    public function poe()
+    {
+        return $this->filter(7);
+    }
+
     public function search(){
         return view('backend.overview.search');
     }

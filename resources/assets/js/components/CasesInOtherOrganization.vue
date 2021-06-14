@@ -31,7 +31,7 @@
         <td>{{ checkMunicipality(item.municipality_id) }}</td>
         <td>{{ item.ward }}</td>
         <td>
-          Place : {{ item.healthpost.name }} <br>
+          Place : {{ item.healthpost ? item.healthpost.name : '' }} <br>
           Type : {{ checkCaseType(item.cases) }} <br>
           Management : {{ checkCaseManagement(item.cases, item.case_where) }}
         </td>
@@ -49,7 +49,7 @@
           <button v-on:click="viewCaseDetails(item.token)" target="_blank" title="Case Details Report">
             <i class="fa fa-file" aria-hidden="true"></i> |
           </button>
-          <span v-if="item.latest_anc.result === 3">
+          <span v-if="item.latest_anc">
             <button v-on:click="receivePatientData(item)" title="Receive Patient from other Hospital">
               <i class="fa fa-hospital-o"></i>
             </button>

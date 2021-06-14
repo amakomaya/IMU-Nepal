@@ -49,7 +49,13 @@
                 @endif
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Create
+                        <h3 class="text-center">
+                            @if(auth()->user()->can('antigen-result'))
+                            Antigen Registration Form
+                            @else
+                            PCR Registration Form
+                            @endif
+                        </h3>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
