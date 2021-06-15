@@ -7,7 +7,7 @@
 
         form {
             background: #ecf5fc;
-            padding: 40px 50px 45px;
+            padding: 20px 50px 45px;
         }
 
         .form-control:focus {
