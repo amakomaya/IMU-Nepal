@@ -69,7 +69,8 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
               $failures
           );
         } else {
-            $sId = $labTests->get()->first()->sample_token;
+            $labTests = $labTests->get()->first();
+            $sId = $labTests->sample_token;
             if($sId) {
               if($labTests->sample_test_date){
                 $labTests->update([
