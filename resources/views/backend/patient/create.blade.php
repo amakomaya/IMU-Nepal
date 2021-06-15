@@ -440,7 +440,7 @@
                             </div>
 
                             <div class="swab-data">
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label class="control-label">Test Type</label>
                                     <div class="control-group">
                                         <label class="radio-inline">
@@ -456,7 +456,10 @@
                                         <small id="help"
                                                 class="form-text text-danger">{{ $errors->first('service_for') }}</small>
                                     @endif
-                                </div>
+                                </div> --}}
+                                @if(auth()->user()->can('antigen-result'))
+                                <input type="hidden" name="service_for" value="2">
+                                @else
                                 <div id="sample">
                                     <div class="form-group">
                                         <label class="control-label">Sample Collection Type</label>
@@ -476,7 +479,10 @@
                                                     class="form-text text-danger">{{ $errors->first('sample_type_specific') }}</small>
                                         @endif
                                     </div>
+                                    <input type="hidden" name="service_for" value="1">
+
                                 </div>
+                                @endif
                                 <div class="form-group">
                                     <label class="control-label">Infection Type</label>
                                     <div class="control-group">
@@ -510,9 +516,15 @@
                                 </div>
                                 <div class="panel panel-danger">
                                     <div class="panel-heading"><strong>Auto Generated Sample ID is :</strong></div>
-                                    {{-- <div class="panel-body text-center"><h3>{{ $swab_id }}</h3></div> --}}
+                                    <?php
+                                        $id = App\Models\OrganizationMember::where('token', auth()->user()->token)->first()->id;
+                                        $time = explode(':', Carbon\Carbon::now()->format('H:i:s'));
+                                        $converted_time = ($time[0] * 3600) + ($time[1] * 60) + $time[2];
+                                        $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon\Carbon::now()->format('ymd') . '-' . $converted_time;
+                                    ?>
+                                    <div class="panel-body text-center"><h3>{{ $swab_id }}</h3></div>
                                 </div>
-                                {{-- <input type="text" name="token" value="{{$swab_id}}" hidden> --}}
+                                <input type="text" name="token" value="{{$swab_id}}" hidden>
                                 {{-- <input type="text" name="woman_token" value="{{$token}}" hidden> --}}
                             </div>
 
@@ -585,16 +597,16 @@
         }
 
         swabFormShow();
-        console.log('ss');
         $('.swab_collection_conformation').on('change', function() {
+        console.log('ss');
             swabFormShow();
         });
         function swabFormShow() {
             if($('.swab_collection_conformation:checked').val() == '1'){
-                $('.awareness-medium-part').show();
+                $('.swab-data').show();
             }
             else {
-                $('.awareness-medium-part').hide();
+                $('.swab-data').hide();
             }
         }
         
