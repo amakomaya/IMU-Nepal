@@ -436,12 +436,12 @@ class WomanController extends Controller
         return redirect()->back();
     }
 
-    // public function sampleCollectionCreate($token)
-    // {
-    //     $id = OrganizationMember::where('token', auth()->user()->token)->first()->id;
-    //     $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
-    //     return view('backend.patient.sample-create', compact('token', 'swab_id'));
-    // }
+     public function sampleCollectionCreate($token)
+     {
+         $id = OrganizationMember::where('token', auth()->user()->token)->first()->id;
+         $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
+         return view('backend.patient.sample-create', compact('token', 'swab_id'));
+     }
 
     private function convertTimeToSecond(string $time): int
     {
