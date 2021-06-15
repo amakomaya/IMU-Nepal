@@ -161,7 +161,13 @@ class ExtCaseController extends Controller
                     'checked_by' => $healthworker->token,
                     'checked_by_name' => $healthworker->name,
                     'status' => 1,
-                    'regdev' => 'api'
+                    'regdev' => 'api',
+                    'lab_token' => $user->token.'-'.$lab_id,
+                    'received_date_en' => $value['lab_received_date'],
+                    'received_date_np' => $this->ad2bs($value['lab_received_date']),
+                    'sample_test_date_en' => $value['lab_test_date'],
+                    'sample_test_date_np' => $this->ad2bs($value['lab_test_date']),
+                    'sample_test_time' => $value['lab_test_time'],
                 ];
                 $randomLetter = substr(str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, 2);
                 $singleRandomLabId = (int)$randomLabId+$index+1;

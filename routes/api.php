@@ -92,12 +92,6 @@ Route::get('/api/v1/check-by-sid-or-lab-id', function () {
     return response()->json($healthpost);
 });
 
-Route::get('/api/v1/check-by-sid-or-lab-id-old', function () {
-    $healthpost = \DB::connection('mysqldump')->table('healthposts')
-        ->with(['province', 'municipality', 'district'])->get();
-    return response()->json($healthpost);
-});
-
 
 Route::post('/v1/client', function (Request $request) {
     $data = $request->json()->all();
@@ -272,13 +266,38 @@ Route::get('/v1/lab-test', function (Request $request) {
 Route::post('/v1/lab-test', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
+
+        $sample_test_date_np_array = explode("-", $value['sample_test_date']);
+        $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDay();
+
+        $received_date_np = Calendar::eng_to_nep(Carbon::parse($value['created_at'])->format('Y'), Carbon::parse($value['created_at'])->format('m'), Carbon::parse($value['created_at'])->format('d'))->getYearMonthDay();
+
         try {
             if ($value['sample_test_date'] == '') {
                 $value['sample_test_result'] = 9;
                 LabTest::create($value);
-                SampleCollection::where('token', $value['sample_token'])->update(['result' => '9']);
+
+                SampleCollection::where('token', $value['sample_token'])->update([
+                    'result' => '9',        
+                    'sample_test_date_en' => $sample_test_date_en,
+                    'sample_test_date_np' => $value['sample_test_date'],
+                    'sample_test_time' => $value['sample_test_time'],
+                    'received_by' => $value['checked_by'],
+                    'received_by_hp_code' => $value['hp_code'],
+                    'received_date_en' => $value['created_at'],
+                    'received_date_np' => $received_date_np
+                ]);
             } else {
-                SampleCollection::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
+                SampleCollection::where('token', $value['sample_token'])->update([
+                    'result' => $value['sample_test_result'],        
+                    'sample_test_date_en' => $sample_test_date_en,
+                    'sample_test_date_np' => $value['sample_test_date'],
+                    'sample_test_time' => $value['sample_test_time'],
+                    'received_by' => $value['checked_by'],
+                    'received_by_hp_code' => $value['hp_code'],
+                    'received_date_en' => $value['created_at'],
+                    'received_date_np' => $received_date_np
+                ]);
                 $find_test = LabTest::where('token', $value['token'])->first();
                 if ($find_test) {
                     $find_test->update([
@@ -296,7 +315,7 @@ Route::post('/v1/lab-test', function (Request $request) {
                 }
             }
         } catch (\Exception $e) {
-
+            return response()->json(['message' => $e]);
         }
     }
     return response()->json(['message' => 'Data Successfully Sync']);
@@ -445,18 +464,39 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
   try {
       $value['token'] = $user->token . '-' . $value['token'];
       $find_test = LabTest::where('token', $value['token'])->where('sample_token',$value['sample_token'])->first();
+      $sample_collection = SampleCollection::where('token', $find_test->sample_token)->get()->first();
+
+      $sample_test_date_np_array = explode("-", $value['sample_test_date']);
+      $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDay();
+
       if ($find_test) {
-          $sample_collection = SampleCollection::where('token', $find_test->sample_token)->get()->first();
-          $sample_collection->update(['result' => $value['sample_test_result']]);
+          $sample_collection->update([
+              'result' => $value['sample_test_result'],
+              'sample_test_date_np' => $value['sample_test_date'],
+              'sample_test_date_en' => $sample_test_date_en,
+              'sample_test_time' => $value['sample_test_time']
+            ]);
           $find_test->update([
               'sample_test_date' => $value['sample_test_date'],
               'sample_test_time' => $value['sample_test_time'],
               'sample_test_result' => $value['sample_test_result'],
           ]);
       } else {
-          $sample_collection = SampleCollection::where('token', $value['sample_token'])->get()->first();
-          $sample_collection->update(['result' => $value['sample_test_result']]);
+            $sample_collection = SampleCollection::where('token', $value['sample_token'])->get()->first();
+            $sample_collection->update([
+                'result' => $value['sample_test_result'],
+                'sample_test_date_en' => $sample_test_date_en,
+                'sample_test_date_np' => $value['sample_test_date'],
+                'sample_test_time' => $value['sample_test_time'],
+                'received_by' => $user->token,
+                'received_by_hp_code' => $healthWorker->hp_code,
+                'received_date_en' => $sample_test_date_en,
+                'received_date_np' => $value['sample_test_date'],
+                'lab_token' => $value['token']
+
+            ]);
             $healthWorker = OrganizationMember::where('token', $user->token)->first();
+
             LabTest::create([
               'token' => $value['token'],
               'hp_code' => $healthWorker->hp_code,
@@ -702,128 +742,6 @@ Route::get('/v1/check-by-sid-or-lab-id', function (Request $request) {
 
         'test_type' => ($sample_detail->service_for == "2") ? 'Rapid Antigen Test' : 'SARS-CoV-2 RNA Test',
         'test_result' => $sample_detail->formatted_result
-    ];
-
-
-    return response()->json($case);
-});
-
-Route::get('/v1/check-by-sid-or-lab-id-old', function (Request $request) {
-    $token = $request->token;
-    $lab_details = [];
-    if (strlen($token) !== 17){
-        $lab_result = \DB::connection('mysqldump')->table('lab_tests')
-            ->where('token', auth()->user()->token.'-'.$token)->first();
-            // dd($lab_result);
-        if ($lab_result){
-            $lab_details = \DB::table('health_workers')
-                ->where('hp_code', $lab_result->hp_code)->first();
-        }
-        if (!$lab_result){
-            return response()->json();
-        }
-        $token = $lab_result->sample_token;
-    }
-
-    // dd($lab_details);
-
-
-    $sample_detail = \DB::connection('mysqldump')->table('ancs')
-        ->join('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
-        ->select(
-            'ancs.*',
-            'lab_tests.token as lab_token',
-            'lab_tests.sample_recv_date',
-            'lab_tests.sample_test_date',
-            'lab_tests.sample_test_time'
-        )
-        ->where('ancs.token', $token)->first();
-
-        // dd($sample_detail);
-
-    if (!$sample_detail){
-        return response()->json();
-    }
-
-    $case = \DB::connection('mysqldump')->table('women')
-        ->where('women.token', $sample_detail->woman_token)
-        ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
-        ->leftjoin('provinces as p1', 'women.province_id', '=', 'p1.id', 'AND' , 'p1.id', '=', 'healthposts.province_id')
-        ->leftjoin('municipalities as m1', 'women.municipality_id', '=', 'm1.id', 'AND' , 'm1.id', '=', 'healthposts.municipality_id')
-        ->leftjoin('provinces as p2', 'healthposts.province_id', '=', 'p2.id')
-        ->leftjoin('municipalities as m2', 'healthposts.municipality_id', '=', 'm2.id')
-        ->leftjoin('health_workers', 'women.hp_code', '=', 'health_workers.hp_code')
-        ->select(
-            'women.*',
-            'p1.province_name as p1_province_name',
-            'm1.district_name as m1_district_name',
-            'm1.municipality_name as m1_municipality_name',
-            'p2.province_name as p2_province_name',
-            'm2.district_name as m2_district_name',
-            'm2.municipality_name as m2_municipality_name',
-            'healthposts.name as healthpost_name',
-            'healthposts.ward_no as healthpost_ward_no',
-            'healthposts.phone as healthpost_phone'
-        )
-        // ->with(['healthworker' ,'healthpost', 'district', 'municipality'])
-        ->first();
-    // dd($case->healthpost->name);
-    if($case->sex == '1'){ $sex = 'Male'; }
-    elseif($case->sex =='2'){ $sex = 'Female'; }
-    else { $sex = 'Don\'t Know'; }
-
-    if($case->age_unit == '1'){ $age_unit = 'Months'; }
-    elseif($case->age_unit =='2'){ $age_unit = 'Days'; }
-    else { $age_unit = 'Years'; }
-
-
-    if($sample_detail->result == 2) {
-        $result =  'Pending';
-    }
-    elseif($sample_detail->result == 3){
-        $result =  'Positive';
-    }
-    elseif($sample_detail->result == 4){
-        $result =  'Negative';
-    }
-    elseif($sample_detail->result == 9){
-        $result =  'Received';
-    }
-    else {
-        $result =  'Don\'t Know';
-    }
-
-    if(isset($sample_detail->lab_token)){
-        $lab_token = explode('-', $sample_detail->lab_token,2)[1] ?? $sample_detail->lab_token;
-    } else {
-        $lab_token = '';
-    }
-
-    $case = [
-        'organization_name' => ($lab_details) ? $lab_details->name : $case->healthpost_name,
-        'organization_address_province_district' =>($lab_details) ? '' : $case->p2_province_name .', '.$case->m2_district_name,
-        'organization_address_municipality_ward' => ($lab_details) ? '' : $case->m2_municipality_name .' - '.$case->healthpost_ward_no,
-        'organization_address' => ($lab_details) ? $lab_details->tole : $case->office_address ?? '',
-        'organization_phone' => ($lab_details) ? $lab_details->phone : $case->healthpost_phone ?? '',
-        'organization_email' => ($lab_details) ? '' : $case->healthpost->email ?? '',
-        'current_date' => \Carbon\Carbon::now()->format('Y-m-d H:i'),
-
-        'name' => $case->name,
-        'formatted_age' => $case->age.' / '.$age_unit,
-        'gender' => $sex ,
-        'address' => $case->m1_district_name.', '.$case->m1_municipality_name.' - '.$case->ward.', '.$case->tole,
-        'phone_no' => $case->emergency_contact_one.' / '.$case->emergency_contact_two,
-
-        'patient_no' => '',
-        'sample_no' => $sample_detail->token,
-        'sample_collected_date' => $sample_detail->created_at,
-        'lab_no' => $lab_token,
-        'sample_received_date' => ($sample_detail->sample_recv_date) ? $sample_detail->sample_recv_date : '',
-        'date_and_time_of_analysis' => ($sample_detail->sample_test_date) ? $sample_detail->sample_test_date.' '.$sample_detail->sample_test_time : '',
-        'sample_tested_by' => ($sample_detail->checked_by_name) ? $sample_detail->checked_by_name : '',
-
-        'test_type' => ($sample_detail->service_for == "2") ? 'Rapid Antigen Test' : 'SARS-CoV-2 RNA Test',
-        'test_result' => $result
     ];
 
 

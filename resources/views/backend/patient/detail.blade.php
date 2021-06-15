@@ -117,7 +117,11 @@
 
                         <div class="titleSide">
                             <p>Phone: {{  $data->healthpost->phone }}</p>
-                            <p class="date">Date: {{  $data->healthpost->created_at }}</p>
+                            <?php
+                                $date_en = explode("-", Carbon\Carbon::now()->format('Y-m-d'));
+                                $date_np = Yagiten\Nepalicalendar\Calendar::eng_to_nep($date_en[0], $date_en[1], $date_en[2])->getYearMonthDay();
+                            ?>
+                            <p class="date">Date: {{ $date_np }}</p>
                         </div>
                     </div>
                     <br>
@@ -229,7 +233,11 @@
                         </tr>
                         <tr>
                             <td>Created At :</td>
-                            <td>{{ $data->created_at->format('Y-m-d') }} </td>
+                            <?php
+                                $created_en = explode("-", $data->created_at->format('Y-m-d'));
+                                $created_np = Yagiten\Nepalicalendar\Calendar::eng_to_nep($created_en[0], $created_en[1], $created_en[2])->getYearMonthDay();
+                            ?>
+                            <td>{{ $created_np }} </td>
                         </tr>
                         </tbody>
                     </table>
