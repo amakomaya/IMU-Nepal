@@ -170,7 +170,7 @@
     <div class="row">
       <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.comorbidity.$error }">
         <label class="control-label">
-          Co-morbidity
+          Co-morbidity *
         </label><br>
         <label class="control-label">
           <input type="checkbox" @change="toggleHealthy(data)" v-model.trim="data.comorbidity" value="21">
@@ -235,7 +235,7 @@
     </div>
     <div class="row">
       <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.method_of_diagnosis.$error }">
-        <label class="control-label">Method of Diagnosis</label><br>
+        <label class="control-label">Method of Diagnosis *</label><br>
         <input type="radio" id="pcr" v-model.trim="data.method_of_diagnosis"  value="1">
         <label class="control-label" for="pcr">PCR</label> &nbsp; &nbsp;
         <input type="radio" id="antigen" v-model.trim="data.method_of_diagnosis" value="2">
@@ -248,7 +248,7 @@
     </div>
     <div class="row">
       <div class="form-group col-lg-12" :class="{ 'has-error': $v.data.complete_vaccination.$error }">
-        <label class="control-label">COVID 19 vaccination*</label><br>
+        <label class="control-label">COVID 19 vaccination *</label><br>
         <input type="radio" id="v_no" v-model.trim="data.complete_vaccination" value="0">
         <label class="control-label" for="v_no">None</label> &nbsp; &nbsp;
         <input type="radio" id="v_first" v-model.trim="data.complete_vaccination"  value="1">
@@ -313,11 +313,9 @@
           <div class="form-group col-lg-6">
             <select class="form-control show-arrow" v-model.trim="health_condition_details_health_condition" id="health_condition_details_health_condition">
               <option value="" selected="selected">Please Select Medical Condition</option>
-              <option value="1">No Symptoms</option>
-              <option value="2">Mild</option>
-              <option value="3">Moderate & HDU</option>
-              <option value="4">Severe - ICU</option>
-              <option value="5">Severe - Ventilator</option>
+              <option :value="entry_health_condition.id"  v-for="entry_health_condition in entry_health_conditions" >
+                {{entry_health_condition.name}}
+              </option>
             </select>
           </div>
           <div class="form-group col-lg-4">
@@ -364,7 +362,7 @@
       </div>
 
       <div v-show="data.is_death !== ''" class="form-group col-lg-4" :class="{ 'has-error': $v.data.date_of_outcome.$error }">
-        <label for="date_of_outcome">Date of Outcome &nbsp;<span class="label label-info pull-right">{{ data.date_of_outcome }}</span></label>
+        <label for="date_of_outcome">Date of Outcome * &nbsp;<span class="label label-info pull-right">{{ data.date_of_outcome }}</span></label>
           <div class="input-group"><span class="input-group-addon"><i
               class="fa fa-calendar"></i></span>
               <input id="date_of_outcome" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.date_of_outcome" value="" name="date" class="form-control date-picker-date_of_outcome" />
@@ -374,7 +372,7 @@
           </div>
       </div>
       <div v-show="data.is_death === '2'" class="form-group col-lg-4" :class="{ 'has-error': $v.data.time_of_death.$error }">
-        <label for="time_of_death">Time of Death &nbsp;<span class="label label-info pull-right">02:20 pm</span></label>
+        <label for="time_of_death">Time of Death * &nbsp;</label>
           <div class="input-group"><span class="input-group-addon"><i
               class="fa fa-calendar"></i></span>
               <vue-timepicker id="time_of_death" classValue="form-control" format="hh:mm a" v-model.trim="data.time_of_death"></vue-timepicker>
@@ -387,7 +385,7 @@
 
 
       <div  v-show="data.is_death === '2'" class="form-group col-lg-12" :class="{ 'has-error': $v.data.cause_of_death.$error }">
-        <label class="control-label">Cause of Death</label><br>
+        <label class="control-label">Cause of Death *</label><br>
         <input type="radio" id="d-covid" v-model.trim="data.cause_of_death"  value="1">
         <label class="control-label" for="d-covid">COVID-19</label> &nbsp; &nbsp;
         <input type="radio" id="d-cov-pne" v-model.trim="data.cause_of_death" value="2">
@@ -403,7 +401,7 @@
         <label class="control-label" for="d-other">Others</label>
       </div>
       <div v-show="data.is_death === '2' && data.cause_of_death=='10'" class="form-group col-lg-4" :class="{ 'has-error': $v.data.other_death_cause.$error }">
-        <label for="other_death_cause">Specify Other Cause of Death</label>
+        <label for="other_death_cause">Specify Other Cause of Death*</label>
           <div class="input-group">
               <input type="text" class="form-control" v-model.trim="data.other_death_cause" id="other_death_cause" />
           </div>
@@ -413,7 +411,7 @@
         <label for="remark">Remarks</label>
         <textarea class="form-control" v-model.trim="data.remark" id="remark" rows="5"></textarea>
       </div>
-      <div v-if="$v.invalid" class="alert alert-danger">
+      <div v-if="$v.$invalid" class="alert alert-danger">
         * Please fill the all required fields
       </div>
       <button type="submit" :disabled="isSubmitting" @click="submitData(data)" class="btn btn-primary btn-lg btn-block">Save</button>
@@ -435,7 +433,7 @@ export default {
         health_condition : 0,
         is_death : '',
         age_unit : 0,
-        method_of_diagnosis : 0,
+        method_of_diagnosis : undefined,
         gender: undefined,
         complete_vaccination: undefined,
         time_of_death: null,
@@ -446,15 +444,15 @@ export default {
         date_of_positive_np: '',
         cause_of_death: null,
         other_death_cause: null,
-        province_id: null,
-        district_id: null,
-        municipality_id: null,
+        province_id: this.$federalInfo.province_id,
+        district_id: this.$federalInfo.district_id,
+        municipality_id: this.$federalInfo.municipality_id,
         ward: null,
         vaccine_type: null,
         other_vaccine_type: null,
         tole: null,
         guardian_name: null,
-        phone: null
+        phone: null,
       },
       lab_id : '',
       options: [],
@@ -481,6 +479,21 @@ export default {
     this.getFederalDropdown();
     this.getTodayDate();
   },
+  computed: {
+    isDeath() {
+      return this.data.is_death;
+    }
+  },
+  watch: {
+    isDeath(val){
+      if(val=='2' && !this.data.time_of_death) {
+        this.data.time_of_death = this.getCurrentTime();
+      }
+      if(val=='1' || val=='2') {
+        this.data.date_of_outcome = this.date_today_np;
+      }
+    }
+  },
   validations() {
     let causeOfDeathVdn = this.data.is_death && this.data.is_death.toString()==='2'?{ required }:{};
     let otherDeathCauseVdn = (this.data.is_death && this.data.cause_of_death && this.data.is_death.toString()==='2' && this.data.cause_of_death.toString() === '10')?{ required }:{};
@@ -499,11 +512,10 @@ export default {
           isPhoneValid(phone) {
             const regex = /(?:\+977[- ])?\d{2}-?\d{7,8}/i;
             return regex.test(phone);
-          }
+          },
         },
         hospital_register_id : { required },
         register_date_np : { required },
-        method_of_diagnosis : { required },
         gender : { required },
         self_free : { required },
         health_condition : { required, minValue: minValue(1) },
@@ -524,9 +536,11 @@ export default {
         vaccine_type: vacccineTypeVdn,
         other_vaccine_type: otherVaccineTypeVdn,
         // tole: {required},
-        guardian_name: {required}
+        guardian_name: {required},
+        method_of_diagnosis : { required },
       },
-      labSelected : { required }
+      labSelected : { required },
+
     }
     return validationRules;
   },
@@ -770,8 +784,21 @@ export default {
         self.data[key] = '';
       });
     },
+    getCurrentTime() {
+      var date = new Date();
+      var hours = date.getHours();
+      var minutes = date.getMinutes();
+      var ampm = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      hours = hours < 10 ? '0'+hours : hours;
+      minutes = minutes < 10 ? '0'+minutes : minutes;
+      var strTime = hours + ':' + minutes + ' '+ ampm;
+      return strTime;
+    },
     submitData(data){
-      this.$v.$touch()
+      this.$v.$touch();
+      console.log(this.$v.$invalid);
       this.isSubmitting = true;
       if (this.$v.$invalid) {
         this.isSubmitting = false;

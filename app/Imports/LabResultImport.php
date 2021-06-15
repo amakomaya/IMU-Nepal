@@ -26,6 +26,7 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
 {
     use Importable, RemembersRowNumber;
 
+    public static $importedRowCount = 0;
     public function __construct(User $importedBy)
     {
         $userToken = auth()->user()->token;
@@ -38,7 +39,6 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
         $this->enums = [
           'result' => array('positive' => '3', 'negative' => '4')
         ];
-        $this->importedRowCount = 0;
     }
     
     public function registerEvents(): array
@@ -53,7 +53,7 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
     public function model(array $row)
     {
         if(!array_filter($row)) { return null;} //Ignore empty rows.
-        $this->importedRowCount++;
+        self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
         $date_en = Carbon::now();
         $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
@@ -155,7 +155,7 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
     }
 
     public function getImportedRowCount() {
-      return $this->importedRowCount;
+      return self::$importedRowCount;
     }
 
     public function chunkSize(): int
