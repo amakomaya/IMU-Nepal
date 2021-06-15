@@ -61,21 +61,6 @@
                     <div class="panel-body">
                         {!! rcForm::open('POST', route('woman.store'), ['name' => 'createCase']) !!}
                         <div class="panel-body">
-                            {{-- <div class="form-group">
-                                <label class="control-label">Is this a new case or an old case ?</label>
-                                <div class="control-group">
-                                    <label class="radio-inline">
-                                        <input type="radio"
-                                               {{ old('case_type') == "1" ? 'checked' : '' }} name="case_type" value="1"
-                                               checked>New Case
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio"
-                                               {{ old('case_type') == "2" ? 'checked' : '' }} name="case_type"
-                                               value="2">Old Case
-                                    </label>
-                                </div>
-                            </div> --}}
                             <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
                                 <label for="name">Full Name</label>
                                 <input type="text" id="name" class="form-control" value="{{ old('name') }}" name="name"
@@ -443,15 +428,92 @@
                                     <label class="radio-inline">
                                         <input type="radio"
                                                {{ old('swab_collection_conformation') == "0" ? 'checked' : '' }} name="swab_collection_conformation"
-                                               value="0">No
+                                               value="0" checked class="swab_collection_conformation">No
                                     </label>
                                     <label class="radio-inline">
                                         <input type="radio"
                                                {{ old('swab_collection_conformation') == "1" ? 'checked' : '' }} name="swab_collection_conformation"
-                                               value="1" checked>Yes
+                                               value="1" class="swab_collection_conformation">Yes
                                     </label>
 
                                 </div>
+                            </div>
+
+                            <div class="swab-data">
+                                <div class="form-group">
+                                    <label class="control-label">Test Type</label>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="service_for" value="1" onclick="toggleLayout(true)"
+                                                    >PCR Swab Collection
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="service_for" value="2" onclick="toggleLayout(false)">Antigen
+                                            Test
+                                        </label>
+                                    </div>
+                                    @if ($errors->has('service_for'))
+                                        <small id="help"
+                                                class="form-text text-danger">{{ $errors->first('service_for') }}</small>
+                                    @endif
+                                </div>
+                                <div id="sample">
+                                    <div class="form-group">
+                                        <label class="control-label">Sample Collection Type</label>
+                                        <div class="control-group">
+                                            <input type="checkbox" name="sample_type[]" value="1"> Nasopharyngeal<br>
+                                            <input type="checkbox" name="sample_type[]" value="2"> Oropharyngeal
+                                        </div>
+                                    </div>
+                                    <div class="form-group {{ $errors->has('sample_type_specific') ? 'has-error' : '' }} ">
+                                        <label for="sample_type_specific">If other specify sample collected type</label>
+                                        <input type="text" class="form-control" name="sample_type_specific"
+                                                aria-describedby="help"
+                                                placeholder="Enter if other specify sample collected type"
+                                        >
+                                        @if ($errors->has('sample_type_specific'))
+                                            <small id="help"
+                                                    class="form-text text-danger">{{ $errors->first('sample_type_specific') }}</small>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Infection Type</label>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="infection_type" value="1">Symptomatic
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="infection_type" value="2">Asymptomatic
+                                        </label>
+                                    </div>
+                                    @if ($errors->has('infection_type'))
+                                        <small id="help"
+                                                class="form-text text-danger">{{ $errors->first('infection_type') }}</small>
+                                    @endif
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">Service Type</label>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="service_type" value="1">Paid Service
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="service_type" value="2">Free of cost service
+                                        </label>
+                                    </div>
+                                    @if ($errors->has('service_type'))
+                                        <small id="help"
+                                                class="form-text text-danger">{{ $errors->first('service_type') }}</small>
+                                    @endif
+                                </div>
+                                <div class="panel panel-danger">
+                                    <div class="panel-heading"><strong>Auto Generated Sample ID is :</strong></div>
+                                    {{-- <div class="panel-body text-center"><h3>{{ $swab_id }}</h3></div> --}}
+                                </div>
+                                {{-- <input type="text" name="token" value="{{$swab_id}}" hidden> --}}
+                                {{-- <input type="text" name="woman_token" value="{{$token}}" hidden> --}}
                             </div>
 
                             {!! rcForm::close('post') !!}
@@ -469,6 +531,7 @@
 @endsection
 @section('script')
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+    
     <script type="text/javascript">
         $(':radio[data-rel]').change(function () {
             var rel = $("." + $(this).data('rel'));
@@ -510,6 +573,29 @@
             } else {
                 $('.is-symptomatic').show();
             }            
+        }
+
+        function toggleLayout(sample) {
+            x = document.getElementById("sample");
+            if (sample) {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+
+        swabFormShow();
+        console.log('ss');
+        $('.swab_collection_conformation').on('change', function() {
+            swabFormShow();
+        });
+        function swabFormShow() {
+            if($('.swab_collection_conformation:checked').val() == '1'){
+                $('.awareness-medium-part').show();
+            }
+            else {
+                $('.awareness-medium-part').hide();
+            }
         }
         
 
