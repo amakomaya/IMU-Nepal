@@ -23,6 +23,7 @@ class AddFieldsToAncsTable extends Migration
             $table->string('sample_test_date_np', 10)->nullable();
             $table->string('sample_test_time', 10)->nullable();
             $table->string('lab_token', 50)->nullable();
+            $table->string('received_by_hp_code', 64)->nullable();
         });
     }
 

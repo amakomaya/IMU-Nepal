@@ -26,7 +26,7 @@ use App\User;
 class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
 {
     use Importable, RemembersRowNumber;
-  
+    public static $importedRowCount = 0;
     public function __construct(User $importedBy, $bed_status)
     {
         $provinceList = Province::select(['id', 'province_name'])->get();
@@ -68,7 +68,6 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
         $this->totalVentilatorCases = 0;
         $this->totalGeneralCases = 0;
         $this->hpCode = $hpCode;
-        $this->importedRowCount = 0;
     }
     
     public function registerEvents(): array
@@ -83,7 +82,7 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
     public function model(array $row)
     {
         if(!array_filter($row)) { return null;} //Ignore empty rows.
-        $this->importedRowCount++;
+        self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
         $date_en = Carbon::now();
         $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
@@ -248,7 +247,8 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
     }
 
     public function getImportedRowCount() {
-      return $this->importedRowCount;
+
+      return self::$importedRowCount;
     }
 
     public function chunkSize(): int

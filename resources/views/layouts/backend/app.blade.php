@@ -44,11 +44,18 @@
         if (auth()->user()->role == 'healthworker'){
             $healthWorker = \App\Models\OrganizationMember::where('token', Auth::user()->token)->first();
             $metaRole = $healthWorker->role;
-            $h_type = \App\Models\Organization::where('hp_code', $healthWorker->hp_code)->first();
-            if($h_type) $h_type = $h_type->hospital_type;
+            $hospital = \App\Models\Organization::where('hp_code', $healthWorker->hp_code)->first();
+            if($hospital) {
+              $federalInfo= json_encode(["province_id" => $hospital->province_id, "district_id" => $hospital->district_id, "municipality_id" => $hospital->municipality_id]);
+              $province=$hospital->province_id;
+              $h_type = $hospital->hospital_type;
+            }
+
         }
         if (auth()->user()->role == 'healthpost'){
-            $h_type = \App\Models\Organization::where('token', Auth::user()->token)->first()->hospital_type;
+            $hospital = \App\Models\Organization::where('token', Auth::user()->token)->first();
+            $federalInfo= json_encode(["province_id" => $hospital->province_id, "district_id" => $hospital->district_id, "municipality_id" => $hospital->municipality_id]);
+            $h_type = $hospital->hospital_type;
         }
         $permission_id = session()->get('permission_id');
         
@@ -57,6 +64,7 @@
     <meta name="hospital-type" content="{{ $h_type ?? '' }}">
     <meta name="user-permission" content="{{  $metaPermission }}">
     <meta name="permission-id" content="{{  $permission_id ?? '' }}">
+    <meta name="federal-info" content="{{  $federalInfo ?? json_encode(['province_id' => '', 'district_id' => '', 'municipality_id' => '']) }}">
     <meta name="user-session-token" content="{{  Request::session()->get('user_token') }}">
     <meta name="user-role-token" content="{{ \App\User::getFirstLoggedInRole(Request::session()->get('user_token')) }}">
     <script src="{{ asset('js/sortable.js') }}"></script>
