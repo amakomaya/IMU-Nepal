@@ -157,7 +157,7 @@
                 <option value="">Select</option>
                   <option value="6">Hospital without PCR Lab</option>
                   <option value="5"> Institutional Isolation</option>
-                <option value="3" selected>Lab & Treatment( Hospital )</option>
+                <option value="3">Lab & Treatment( Hospital )</option>
               </select>
             </div>
           </div>
@@ -617,9 +617,9 @@
 
   function fetchData() {
     let params = '?';
-    if (activeOrganization === undefined){
-        activeOrganization = {name: "Lab & Treatment( Hospital )", id: "3"};
-    }
+    // if (activeOrganization === undefined){
+    //     activeOrganization = {name: "Lab & Treatment( Hospital )", id: "3"};
+    // }
 
     if(activeMunicipality) {
       params += 'municipality_id='+activeMunicipality.id;
