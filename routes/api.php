@@ -266,19 +266,38 @@ Route::get('/v1/lab-test', function (Request $request) {
 Route::post('/v1/lab-test', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
+
+        $sample_test_date_np_array = explode("-", $value['sample_test_date']);
+        $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDay();
+
+        $received_date_np = Calendar::eng_to_nep(Carbon::parse($value['created_at'])->format('Y'), Carbon::parse($value['created_at'])->format('m'), Carbon::parse($value['created_at'])->format('d'))->getYearMonthDay();
+
         try {
             if ($value['sample_test_date'] == '') {
                 $value['sample_test_result'] = 9;
                 LabTest::create($value);
+
                 SampleCollection::where('token', $value['sample_token'])->update([
-                    'result' => '9',
-                    'sample_test_date_en' => $value['sample_test_date'],
+                    'result' => '9',        
+                    'sample_test_date_en' => $sample_test_date_en,
+                    'sample_test_date_np' => $value['sample_test_date'],
                     'sample_test_time' => $value['sample_test_time'],
                     'received_by' => $value['checked_by'],
                     'received_by_hp_code' => $value['hp_code'],
+                    'received_date_en' => $value['created_at'],
+                    'received_date_np' => $received_date_np
                 ]);
             } else {
-                SampleCollection::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
+                SampleCollection::where('token', $value['sample_token'])->update([
+                    'result' => $value['sample_test_result'],        
+                    'sample_test_date_en' => $sample_test_date_en,
+                    'sample_test_date_np' => $value['sample_test_date'],
+                    'sample_test_time' => $value['sample_test_time'],
+                    'received_by' => $value['checked_by'],
+                    'received_by_hp_code' => $value['hp_code'],
+                    'received_date_en' => $value['created_at'],
+                    'received_date_np' => $received_date_np
+                ]);
                 $find_test = LabTest::where('token', $value['token'])->first();
                 if ($find_test) {
                     $find_test->update([
@@ -296,7 +315,7 @@ Route::post('/v1/lab-test', function (Request $request) {
                 }
             }
         } catch (\Exception $e) {
-
+            return response()->json(['message' => $e]);
         }
     }
     return response()->json(['message' => 'Data Successfully Sync']);
@@ -445,18 +464,39 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
   try {
       $value['token'] = $user->token . '-' . $value['token'];
       $find_test = LabTest::where('token', $value['token'])->where('sample_token',$value['sample_token'])->first();
+      $sample_collection = SampleCollection::where('token', $find_test->sample_token)->get()->first();
+
+      $sample_test_date_np_array = explode("-", $value['sample_test_date']);
+      $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDay();
+
       if ($find_test) {
-          $sample_collection = SampleCollection::where('token', $find_test->sample_token)->get()->first();
-          $sample_collection->update(['result' => $value['sample_test_result']]);
+          $sample_collection->update([
+              'result' => $value['sample_test_result'],
+              'sample_test_date_np' => $value['sample_test_date'],
+              'sample_test_date_en' => $sample_test_date_en,
+              'sample_test_time' => $value['sample_test_time']
+            ]);
           $find_test->update([
               'sample_test_date' => $value['sample_test_date'],
               'sample_test_time' => $value['sample_test_time'],
               'sample_test_result' => $value['sample_test_result'],
           ]);
       } else {
-          $sample_collection = SampleCollection::where('token', $value['sample_token'])->get()->first();
-          $sample_collection->update(['result' => $value['sample_test_result']]);
+            $sample_collection = SampleCollection::where('token', $value['sample_token'])->get()->first();
+            $sample_collection->update([
+                'result' => $value['sample_test_result'],
+                'sample_test_date_en' => $sample_test_date_en,
+                'sample_test_date_np' => $value['sample_test_date'],
+                'sample_test_time' => $value['sample_test_time'],
+                'received_by' => $user->token,
+                'received_by_hp_code' => $healthWorker->hp_code,
+                'received_date_en' => $sample_test_date_en,
+                'received_date_np' => $value['sample_test_date'],
+                'lab_token' => $value['token']
+
+            ]);
             $healthWorker = OrganizationMember::where('token', $user->token)->first();
+
             LabTest::create([
               'token' => $value['token'],
               'hp_code' => $healthWorker->hp_code,
