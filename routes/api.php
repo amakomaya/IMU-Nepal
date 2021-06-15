@@ -276,7 +276,13 @@ Route::post('/v1/lab-test', function (Request $request) {
             if ($value['sample_test_date'] == '') {
                 $value['sample_test_result'] = 9;
                 LabTest::create($value);
-                SampleCollection::where('token', $value['sample_token'])->update(['result' => '9']);
+                SampleCollection::where('token', $value['sample_token'])->update([
+                    'result' => '9',
+                    'sample_test_date_en' => $value['sample_test_date'],
+                    'sample_test_time' => $value['sample_test_time'],
+                    'received_by' => $value['checked_by'],
+                    'received_by_hp_code' => $value['hp_code'],
+                ]);
             } else {
                 SampleCollection::where('token', $value['sample_token'])->update(['result' => $value['sample_test_result']]);
                 $find_test = LabTest::where('token', $value['token'])->first();
