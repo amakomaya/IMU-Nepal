@@ -74,6 +74,7 @@ class LoginController extends Controller
             switch($user->role) {
               case 'main':
                 $request->session()->put('permission_id', 1);
+                break;
               case 'center':
                 $permission_id = Center::where('token', $user->token)->first()->permission_id;
                 $request->session()->put('permission_id', $permission_id);
@@ -103,7 +104,7 @@ class LoginController extends Controller
 
             $update_profile_expiration = Carbon::parse($user->updated_at)->addMonth();
 
-            if (auth()->user()->role != 'main' && $update_profile_expiration < Carbon::now() ) {
+            if (auth()->user()->role != 'main' && $update_profile_expiration < Carbon::now()) {
                 $request->session()->flash('message', 'Update your account\'s information ! <a href="/admin/profile">Edit Profile</a>');
                 return redirect('/admin');
             }
