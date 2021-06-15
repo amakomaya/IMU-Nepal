@@ -55,10 +55,10 @@
 
       <div v-if="checkEditPermission()" class="form-group col-lg-4" :class="{ 'has-error': $v.data.register_date_np.$error }">
           <label class="control-label" for="register_date_np">Register Date * </label><br />
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-              <input id="register_date_np" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.register_date_np" value="" name="register_date_np" class="form-control date-picker-register_date_np" />
-            </div>
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input id="register_date_np" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.register_date_np" value="" name="register_date_np" class="form-control date-picker-register_date_np" />
+          </div>
       </div>
       <div v-else class="form-group col-lg-6" :class="{ 'has-error': $v.data.register_date_np.$error }">
         <label class="control-label" for="register_date">Register Date * &nbsp;<span class="label label-info pull-right">{{ data.register_date_np }}</span></label>
@@ -348,7 +348,7 @@
     <hr>
     <div class="form-group" :class="{ 'has-error': $v.data.guardian_name.$error }">
       <label for="guardian_name">Parent/Guardian Name *</label>
-      <input type="text" class="form-control" v-model.trim="data.guardian_name" id="guardian_name" />
+      <input type="text" placeholder="Parent/Guardian Name" class="form-control" v-model.trim="data.guardian_name" id="guardian_name" />
     </div>
     <div class="row">
       <div class="form-group col-lg-4">
@@ -403,7 +403,7 @@
       <div v-show="data.is_death === '2' && data.cause_of_death=='10'" class="form-group col-lg-4" :class="{ 'has-error': $v.data.other_death_cause.$error }">
         <label for="other_death_cause">Specify Other Cause of Death*</label>
           <div class="input-group">
-              <input type="text" class="form-control" v-model.trim="data.other_death_cause" id="other_death_cause" />
+              <input type="text" placeholder="Specify Other Cause of Death" class="form-control" v-model.trim="data.other_death_cause" id="other_death_cause" />
           </div>
       </div>
     </div>
@@ -429,6 +429,7 @@ export default {
   data() {
     return {
       data : {
+        name: null,
         register_date_np: null,
         health_condition : 0,
         is_death : '',
