@@ -49,12 +49,29 @@
                 @endif
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                       <h3 class="text-center"> POE Registration Form</h3>
+                       <h3 class="text-center"><span id="form_title"></span> Registration Form</h3>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         {!! rcForm::open('POST', route('woman.store'), ['name' => 'createCase']) !!}
                         <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label"><h3>Test Type</h3></label>
+                                <div class="control-group">
+                                    <label class="radio-inline" style="padding-right: 60px;">
+                                        <input type="radio" name="service_for" value="1" onclick="toggleLayout(true)" style="margin-top: 12px;">
+                                        <h4>PCR Swab Collection</h4>
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="service_for" value="2" onclick="toggleLayout(false)" style="margin-top: 12px;">
+                                        <h4>Antigen Test</h4>
+                                    </label>
+                                </div>
+                                @if ($errors->has('service_for'))
+                                    <small id="help"
+                                           class="form-text text-danger">{{ $errors->first('service_for') }}</small>
+                                @endif
+                            </div>
                             <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
                                 <label for="name">Full Name</label>
                                 <input type="text" id="name" class="form-control" value="{{ old('name') }}" name="name"
@@ -475,35 +492,19 @@
                                     <label class="radio-inline">
                                         <input type="radio"
                                                {{ old('swab_collection_conformation') == "0" ? 'checked' : '' }} name="swab_collection_conformation"
-                                               value="0" checked class="swab_collection_conformation">No
+                                               value="0" class="swab_collection_conformation">No
                                     </label>
                                     <label class="radio-inline">
                                         <input type="radio"
                                                {{ old('swab_collection_conformation') == "1" ? 'checked' : '' }} name="swab_collection_conformation"
-                                               value="1" class="swab_collection_conformation">Yes
+                                               value="1" checked class="swab_collection_conformation">Yes
                                     </label>
 
                                 </div>
                             </div>
 
                             <div class="swab-data">
-                                <div class="form-group">
-                                    <label class="control-label">Test Type</label>
-                                    <div class="control-group">
-                                        <label class="radio-inline">
-                                            <input type="radio" name="service_for" value="1" onclick="toggleLayout(true)"
-                                                   >PCR Swab Collection
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="service_for" value="2" onclick="toggleLayout(false)">Antigen
-                                            Test
-                                        </label>
-                                    </div>
-                                    @if ($errors->has('service_for'))
-                                        <small id="help"
-                                               class="form-text text-danger">{{ $errors->first('service_for') }}</small>
-                                    @endif
-                                </div>
+                            
                                 <div id="sample">
                                     <div class="form-group">
                                         <label class="control-label">Sample Collection Type</label>
@@ -631,8 +632,10 @@
             x = document.getElementById("sample");
             if (sample) {
                 x.style.display = "block";
+                $('#form_title').html('PCR');
             } else {
                 x.style.display = "none";
+                $('#form_title').html('Antigen');
             }
         }
 
