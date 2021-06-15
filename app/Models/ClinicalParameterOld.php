@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClinicalParameterOld extends Model
 {
+    protected $connection = 'mysqldump';
     
 	protected $table = 'clinical_parameters';
 

@@ -24,8 +24,8 @@ class SampleCollection extends Model
         'service_type', 'result','infection_type', 'regdev',
         'created_at', 'updated_at', 'situation',
 
-        'received_by', 'received_by_hp_code' ,'received_date_en', 'received_date_np', 'collection_date_en', 'collection_date_np',
-        'sample_test_date_en', 'sample_test_date_np','sample_test_time', 'lab_token'
+        'received_by', 'received_date_en', 'received_date_np', 'collection_date_en', 'collection_date_np',
+        'sample_test_date_en', 'sample_test_date_np','sample_test_time', 'lab_token', 'received_by_hp_code'
 
         ];
 
