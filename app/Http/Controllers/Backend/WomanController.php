@@ -411,12 +411,16 @@ class WomanController extends Controller
                 case 'healthpost':
                     $healthpost = Organization::where('token', auth()->user()->token)->first();
                     $sample_row['hp_code'] = $healthpost->hp_code;
-                    $sample_row['created_by_name'] = $healthpost->name;
+                    $sample_row['checked_by_name'] = $healthpost->name;
+                    $sample_row['checked_by'] = $healthpost->token;
+                    // $sample_row['received_by_hp_code'] = $healthpost->hp_code;
     
                 case 'healthworker':
                     $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
                     $sample_row['hp_code'] = $healthworker->hp_code;
-                    $sample_row['created_by_name'] = $healthworker->name;
+                    $sample_row['checked_by_name'] = $healthworker->name;
+                    $sample_row['checked_by'] = $healthworker->token;
+                    // $sample_row['received_by_hp_code'] = $healthworker->hp_code;
     
             }
             if ($request->service_for === '1')
