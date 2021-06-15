@@ -72,6 +72,8 @@ class LoginController extends Controller
             $request->session()->put('user_token', $user->token);
             $request->session()->put('user_show', false);
             switch($user->role) {
+              case 'main':
+                $request->session()->put('permission_id', 1);
               case 'center':
                 $permission_id = Center::where('token', $user->token)->first()->permission_id;
                 $request->session()->put('permission_id', $permission_id);
