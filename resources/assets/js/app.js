@@ -83,6 +83,8 @@ Vue.prototype.$userSessionToken = document.querySelector("meta[name='user-sessio
 Vue.prototype.$userRoleSessionToken = document.querySelector("meta[name='user-role-token']").getAttribute('content');
 Vue.prototype.$csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute('content');
 Vue.prototype.$permissionId = document.querySelector("meta[name='permission-id']").getAttribute('content');
+Vue.prototype.$federalInfo = JSON.parse(document.querySelector("meta[name='federal-info']").getAttribute('content'));
+
 Vue.prototype.$pcrAllowedOrganizationType = ['2', '3'];
 
 Vue.use(Vuelidate)
