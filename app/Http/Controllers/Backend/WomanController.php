@@ -347,12 +347,16 @@ class WomanController extends Controller
             'municipality_id' => 'required',
             'tole' => 'required',
             'emergency_contact_one' => 'required',
-            'occupation' => 'required'
+            'occupation' => 'required',
+            'service_for' => 'required',
+            // 'infection_type' => 'required',
+            // 'service_type' => 'required'
         ], $customMessages);
         $response = FilterRequest::filter($request);
         foreach ($response as $key => $value) {
             $$key = $value;
         }
+
         $row = $request->all();
         if(Auth::user()->can('poe-registration')){
             $row['case_type'] = '3';
@@ -388,19 +392,52 @@ class WomanController extends Controller
 
         SuspectedCase::create($row);
 
-        $request->session()->flash('message', 'Data Inserted successfully');
-        if ($request->swab_collection_conformation == '1') {
-            return $this->sampleCollectionCreate($row['token']);
+        if($request->swab_collection_conformation == 1) {
+            $sample_row['token'] = $request->token;
+            $sample_row['woman_token'] = $row['token'];
+            $sample_row['created_by'] = auth()->user()->token;
+            $sample_row['status'] = 1;
+            $sample_row['result'] = 2;
+            $sample_row['service_type'] = $request->service_type;
+            $sample_row['service_for'] = $request->service_for;
+            $sample_row['infection_type'] = $request->infection_type;
+            $sample_row['sample_type_specific'] = $request->sample_type_specific ?? '';
+            $sample_row['sample_identification_type'] = 'unique_id';
+            $sample_row['received_date_en'] = Carbon::now()->format('Y-m-d');
+            $nep_date_array = explode("-", Carbon::now()->format('Y-m-d'));
+            $sample_row['received_date_np'] = Calendar::eng_to_nep($nep_date_array[0], $nep_date_array[1], $nep_date_array[2])->getYearMonthDay();
+
+            switch (auth()->user()->role) {
+                case 'healthpost':
+                    $healthpost = Organization::where('token', auth()->user()->token)->first();
+                    $sample_row['hp_code'] = $healthpost->hp_code;
+                    $sample_row['created_by_name'] = $healthpost->name;
+    
+                case 'healthworker':
+                    $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
+                    $sample_row['hp_code'] = $healthworker->hp_code;
+                    $sample_row['created_by_name'] = $healthworker->name;
+    
+            }
+            if ($request->service_for === '1')
+                $sample_row['sample_type'] = "[" . implode(', ', $request->sample_type) . "]";
+
+            SampleCollection::create($sample_row);
         }
+
+        $request->session()->flash('message', 'Data Inserted successfully');
+        // if ($request->swab_collection_conformation == '1') {
+        //     return $this->sampleCollectionCreate($row['token']);
+        // }
         return redirect()->back();
     }
 
-    public function sampleCollectionCreate($token)
-    {
-        $id = OrganizationMember::where('token', auth()->user()->token)->first()->id;
-        $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->format('H:i:s'));;
-        return view('backend.patient.sample-create', compact('token', 'swab_id'));
-    }
+    // public function sampleCollectionCreate($token)
+    // {
+    //     $id = OrganizationMember::where('token', auth()->user()->token)->first()->id;
+    //     $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
+    //     return view('backend.patient.sample-create', compact('token', 'swab_id'));
+    // }
 
     private function convertTimeToSecond(string $time): int
     {
