@@ -61,12 +61,12 @@
                                 <label class="control-label"><h3>Test Type</h3></label>
                                 <div class="control-group">
                                     <label class="radio-inline" style="padding-right: 60px;">
-                                        <input type="radio" name="service_for" value="1" onclick="toggleLayout(true)" style="margin-top: 12px;">
                                         <h4>PCR Swab Collection</h4>
+                                        <input type="radio" name="service_for" value="1" onclick="toggleLayout(true)" required style="top: 7px;">
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="service_for" value="2" onclick="toggleLayout(false)" style="margin-top: 12px;">
                                         <h4>Antigen Test</h4>
+                                        <input type="radio" name="service_for" value="2" onclick="toggleLayout(false)" style="top: 7px;">
                                     </label>
                                 </div>
                                 @if ($errors->has('service_for'))

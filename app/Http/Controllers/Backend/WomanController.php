@@ -348,7 +348,7 @@ class WomanController extends Controller
             'tole' => 'required',
             'emergency_contact_one' => 'required',
             'occupation' => 'required',
-            'service_for' => 'required',
+            // 'service_for' => 'required',
             // 'infection_type' => 'required',
             // 'service_type' => 'required'
         ], $customMessages);
