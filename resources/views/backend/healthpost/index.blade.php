@@ -85,10 +85,10 @@
                                                     <a href="{{route('healthpost.edit', $healthpost->id) }}">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
-                                                    @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
-                                                    {{csrf_field()}}
-                                                    {{method_field('DELETE')}}
-                                                    <button name="submit" class="pull-right" title="Delete" style="border: 0; background: transparent;"><i class="fa fa-trash-o"></i></button>
+                                                    @if(Request::session()->get('permission_id') == 1)
+                                                      {{csrf_field()}}
+                                                      {{method_field('DELETE')}}
+                                                      <button name="submit" class="pull-right" title="Delete" style="border: 0; background: transparent;"><i class="fa fa-trash-o"></i></button>
                                                     @endif
                                                     </span>
                                                 @endif
