@@ -109,6 +109,7 @@ export default {
       if (this.$v.$invalid) {
         return false;
       }
+
       axios.post('/api/v1/antigen-result-in-lab-from-web', data)
           .then((response) => {
             if (response.data === 'success') {
