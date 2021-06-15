@@ -50,17 +50,30 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="text-center">
-                            @if(auth()->user()->can('antigen-result'))
-                            Antigen Registration Form
-                            @else
-                            PCR Registration Form
-                            @endif
+                            <span id="form_title"></span> Registration Form
                         </h3>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         {!! rcForm::open('POST', route('woman.store'), ['name' => 'createCase']) !!}
                         <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label"><h3>Test Type</h3></label>
+                                <div class="control-group">
+                                    <label class="radio-inline" style="padding-right: 60px;">
+                                        <input type="radio" name="service_for" value="1" onclick="toggleLayout(true)" style="margin-top: 12px;">
+                                        <h4>PCR Swab Collection</h4>
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="service_for" value="2" onclick="toggleLayout(false)" style="margin-top: 12px;">
+                                        <h4>Antigen Test</h4>
+                                    </label>
+                                </div>
+                                @if ($errors->has('service_for'))
+                                    <small id="help"
+                                           class="form-text text-danger">{{ $errors->first('service_for') }}</small>
+                                @endif
+                            </div>
                             <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
                                 <label for="name">Full Name</label>
                                 <input type="text" id="name" class="form-control" value="{{ old('name') }}" name="name"
@@ -428,38 +441,18 @@
                                     <label class="radio-inline">
                                         <input type="radio"
                                                {{ old('swab_collection_conformation') == "0" ? 'checked' : '' }} name="swab_collection_conformation"
-                                               value="0" checked class="swab_collection_conformation">No
+                                               value="0" class="swab_collection_conformation">No
                                     </label>
                                     <label class="radio-inline">
                                         <input type="radio"
                                                {{ old('swab_collection_conformation') == "1" ? 'checked' : '' }} name="swab_collection_conformation"
-                                               value="1" class="swab_collection_conformation">Yes
+                                               value="1" checked class="swab_collection_conformation">Yes
                                     </label>
 
                                 </div>
                             </div>
 
                             <div class="swab-data">
-                                {{-- <div class="form-group">
-                                    <label class="control-label">Test Type</label>
-                                    <div class="control-group">
-                                        <label class="radio-inline">
-                                            <input type="radio" name="service_for" value="1" onclick="toggleLayout(true)"
-                                                    >PCR Swab Collection
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="service_for" value="2" onclick="toggleLayout(false)">Antigen
-                                            Test
-                                        </label>
-                                    </div>
-                                    @if ($errors->has('service_for'))
-                                        <small id="help"
-                                                class="form-text text-danger">{{ $errors->first('service_for') }}</small>
-                                    @endif
-                                </div> --}}
-                                @if(auth()->user()->can('antigen-result'))
-                                <input type="hidden" name="service_for" value="2">
-                                @else
                                 <div id="sample">
                                     <div class="form-group">
                                         <label class="control-label">Sample Collection Type</label>
@@ -471,18 +464,15 @@
                                     <div class="form-group {{ $errors->has('sample_type_specific') ? 'has-error' : '' }} ">
                                         <label for="sample_type_specific">If other specify sample collected type</label>
                                         <input type="text" class="form-control" name="sample_type_specific"
-                                                aria-describedby="help"
-                                                placeholder="Enter if other specify sample collected type"
+                                               aria-describedby="help"
+                                               placeholder="Enter if other specify sample collected type"
                                         >
                                         @if ($errors->has('sample_type_specific'))
                                             <small id="help"
-                                                    class="form-text text-danger">{{ $errors->first('sample_type_specific') }}</small>
+                                                   class="form-text text-danger">{{ $errors->first('sample_type_specific') }}</small>
                                         @endif
                                     </div>
-                                    <input type="hidden" name="service_for" value="1">
-
                                 </div>
-                                @endif
                                 <div class="form-group">
                                     <label class="control-label">Infection Type</label>
                                     <div class="control-group">
@@ -495,10 +485,10 @@
                                     </div>
                                     @if ($errors->has('infection_type'))
                                         <small id="help"
-                                                class="form-text text-danger">{{ $errors->first('infection_type') }}</small>
+                                               class="form-text text-danger">{{ $errors->first('infection_type') }}</small>
                                     @endif
                                 </div>
-
+    
                                 <div class="form-group">
                                     <label class="control-label">Service Type</label>
                                     <div class="control-group">
@@ -511,7 +501,7 @@
                                     </div>
                                     @if ($errors->has('service_type'))
                                         <small id="help"
-                                                class="form-text text-danger">{{ $errors->first('service_type') }}</small>
+                                               class="form-text text-danger">{{ $errors->first('service_type') }}</small>
                                     @endif
                                 </div>
                                 <div class="panel panel-danger">
@@ -591,8 +581,10 @@
             x = document.getElementById("sample");
             if (sample) {
                 x.style.display = "block";
+                $('#form_title').html('PCR');
             } else {
                 x.style.display = "none";
+                $('#form_title').html('Antigen');
             }
         }
 
