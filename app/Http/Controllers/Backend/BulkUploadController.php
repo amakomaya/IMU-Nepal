@@ -109,7 +109,8 @@ class BulkUploadController extends Controller
       if ($request->hasFile('bulk_file_lab_received_result')) {
         $bulk_file = $request->file('bulk_file_lab_received_result');
         try {
-          Excel::queueImport(new LabReceivedResultImport(auth()->user()), $bulk_file);
+          $import = new LabReceivedResultImport(auth()->user());
+          Excel::queueImport($import, $bulk_file);
           $importedRowCount = $import->getImportedRowCount();
           if($importedRowCount == 0) {
             return response()->json([
