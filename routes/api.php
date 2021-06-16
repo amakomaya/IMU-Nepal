@@ -112,102 +112,90 @@ Route::post('/v1/client', function (Request $request) {
 
 Route::get('/v1/client', function (Request $request) {
     $hp_code = $request->hp_code;
-    // $record = \DB::table('women')
-    //     ->leftJoin('ancs', 'ancs.woman_token', '=', 'women.token')
-    //     ->where('women.hp_code', $hp_code)
-    //     ->where('women.end_case', '0')
-    //     ->select('women.*', 'ancs.result as sample_result')
-    //     ->where('women.created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
-    //     ->where(function ($query) {
-    //         $query->where('ancs.result', '!=', '4')
-    //             ->orWhere('women.created_at', '>=', Carbon::now()->subDays(2)->toDateTimeString());
-    //     })
-    //     ->get();
 
-        $record = SuspectedCase::with('ancs')
-            ->where('hp_code', $hp_code)
-            ->whereHas('ancs', function($q){
-                $q->where('result', '!=', 4);
-            })
-            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
-                'healthpost' => function($q) {
-                    $q->select('name', 'hp_code');
-                }]);
+    $record = SuspectedCase::with('ancs')
+        ->where('hp_code', $hp_code)
+        ->where('end_case', '0')
+        ->where('created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
+        ->whereHas('ancs', function($q){
+            $q->where('result', '!=', 4)
+                ->orWhere('women.created_at', '>=', Carbon::now()->subDays(2)->toDateTimeString());
+        })
+        ->get();
 
-    // $data = collect($record)->map(function ($row) {
+    $data = collect($record)->map(function ($row) {
 
-    //     $response = [];
+        $response = [];
 
-    //     $response['token'] = $row->token;
-    //     $response['name'] = $row->name ?? '';
-    //     $response['age'] = $row->age ?? '';
-    //     $response['sex'] = $row->sex ?? '';
-    //     $response['caste'] = $row->caste ?? '';
-    //     $response['province_id'] = $row->province_id ?? '';
-    //     $response['district_id'] = $row->district_id ?? '';
-    //     $response['municipality_id'] = $row->municipality_id ?? '';
-    //     $response['ward'] = $row->ward ?? '';
-    //     $response['tole'] = $row->tole ?? '';
-    //     $response['chronic_illness'] = $row->chronic_illness ?? '';
-    //     $response['symptoms'] = $row->symptoms ?? '';
-    //     $response['travelled'] = $row->travelled ?? '';
-    //     $response['travelled_date'] = $row->travelled_date ?? '';
-    //     $response['travel_medium'] = $row->travel_medium ?? '';
-    //     $response['travel_detail'] = $row->travel_detail ?? '';
-    //     $response['travelled_where'] = $row->travelled_where ?? '';
+        $response['token'] = $row->token;
+        $response['name'] = $row->name ?? '';
+        $response['age'] = $row->age ?? '';
+        $response['sex'] = $row->sex ?? '';
+        $response['caste'] = $row->caste ?? '';
+        $response['province_id'] = $row->province_id ?? '';
+        $response['district_id'] = $row->district_id ?? '';
+        $response['municipality_id'] = $row->municipality_id ?? '';
+        $response['ward'] = $row->ward ?? '';
+        $response['tole'] = $row->tole ?? '';
+        $response['chronic_illness'] = $row->chronic_illness ?? '';
+        $response['symptoms'] = $row->symptoms ?? '';
+        $response['travelled'] = $row->travelled ?? '';
+        $response['travelled_date'] = $row->travelled_date ?? '';
+        $response['travel_medium'] = $row->travel_medium ?? '';
+        $response['travel_detail'] = $row->travel_detail ?? '';
+        $response['travelled_where'] = $row->travelled_where ?? '';
 
-    //     $response['hp_code'] = $row->hp_code ?? '';
-    //     $response['registered_device'] = $row->registered_device ?? '';
-    //     $response['created_by'] = $row->created_by ?? '';
-    //     $response['longitude'] = $row->longitude ?? '';
-    //     $response['latitude'] = $row->latitude ?? '';
-    //     $response['status'] = $row->status ?? '';
-    //     $response['created_at'] = $row->created_at ?? '';
-    //     $response['updated_at'] = $row->updated_at ?? '';
+        $response['hp_code'] = $row->hp_code ?? '';
+        $response['registered_device'] = $row->registered_device ?? '';
+        $response['created_by'] = $row->created_by ?? '';
+        $response['longitude'] = $row->longitude ?? '';
+        $response['latitude'] = $row->latitude ?? '';
+        $response['status'] = $row->status ?? '';
+        $response['created_at'] = $row->created_at ?? '';
+        $response['updated_at'] = $row->updated_at ?? '';
 
-    //     $response['age_unit'] = $row->age_unit ?? 0;
-    //     $response['occupation'] = $row->occupation ?? '';
+        $response['age_unit'] = $row->age_unit ?? 0;
+        $response['occupation'] = $row->occupation ?? '';
 
-    //     $response['symptoms_specific'] = $row->symptoms_specific ?? '';
-    //     $response['symptoms_comorbidity'] = $row->symptoms_comorbidity ?? '';
-    //     $response['symptoms_comorbidity_specific'] = $row->symptoms_comorbidity_specific ?? '';
-    //     $response['screening'] = $row->screening ?? '';
-    //     $response['screening_specific'] = $row->screening_specific ?? '';
-    //     $response['emergency_contact_one'] = $row->emergency_contact_one ?? '';
-    //     $response['emergency_contact_two'] = $row->emergency_contact_two ?? '';
-    //     $response['cases'] = $row->cases ?? '';
-    //     $response['case_where'] = $row->case_where ?? '';
-    //     $response['end_case'] = $row->end_case ?? '';
-    //     $response['payment'] = $row->payment ?? '';
-    //     $response['result'] = $row->sample_result ?? '';
+        $response['symptoms_specific'] = $row->symptoms_specific ?? '';
+        $response['symptoms_comorbidity'] = $row->symptoms_comorbidity ?? '';
+        $response['symptoms_comorbidity_specific'] = $row->symptoms_comorbidity_specific ?? '';
+        $response['screening'] = $row->screening ?? '';
+        $response['screening_specific'] = $row->screening_specific ?? '';
+        $response['emergency_contact_one'] = $row->emergency_contact_one ?? '';
+        $response['emergency_contact_two'] = $row->emergency_contact_two ?? '';
+        $response['cases'] = $row->cases ?? '';
+        $response['case_where'] = $row->case_where ?? '';
+        $response['end_case'] = $row->end_case ?? '';
+        $response['payment'] = $row->payment ?? '';
+        $response['result'] = $row->ancs ? $row->ancs[0]->result : '';
 
-    //     $response['nationality'] = $row->nationality ?? '';
-    //     $response['id_card_detail'] = $row->id_card_detail ?? '';
-    //     $response['id_card_issue'] = $row->id_card_issue ?? '';
-    //     $response['name_of_poe'] = $row->name_of_poe ?? '';
-    //     $response['covid_vaccination_details'] = $row->covid_vaccination_details ?? '';
-    //     $response['nearest_contact'] = $row->nearest_contact ?? '';
+        $response['nationality'] = $row->nationality ?? '';
+        $response['id_card_detail'] = $row->id_card_detail ?? '';
+        $response['id_card_issue'] = $row->id_card_issue ?? '';
+        $response['name_of_poe'] = $row->name_of_poe ?? '';
+        $response['covid_vaccination_details'] = $row->covid_vaccination_details ?? '';
+        $response['nearest_contact'] = $row->nearest_contact ?? '';
 
-    //     if ($response['result'] == '3') {
-    //         $response['case_id'] = $row->case_id ?? '';
-    //     } else {
-    //         $response['case_id'] = '';
-    //     }
+        if ($response['result'] == '3') {
+            $response['case_id'] = $row->case_id ?? '';
+        } else {
+            $response['case_id'] = '';
+        }
 
-    //     $response['parent_case_id'] = $row->parent_case_id ?? '';
+        $response['parent_case_id'] = $row->parent_case_id ?? '';
 
-    //     $response['symptoms_recent'] = $row->symptoms_recent ?? '';
-    //     $response['symptoms_within_four_week'] = $row->symptoms_within_four_week ?? '';
-    //     $response['symptoms_date'] = $row->symptoms_date ?? '';
-    //     $response['case_reason'] = $row->case_reason ?? '';
-    //     $response['temperature'] = $row->temperature ?? '';
-    //     $response['date_of_onset_of_first_symptom'] = $row->date_of_onset_of_first_symptom ?? '';
-    //     $response['reson_for_testing'] = $row->reson_for_testing ?? '';
-    //     $response['case_type'] = $row->case_type ?? 1;
+        $response['symptoms_recent'] = $row->symptoms_recent ?? '';
+        $response['symptoms_within_four_week'] = $row->symptoms_within_four_week ?? '';
+        $response['symptoms_date'] = $row->symptoms_date ?? '';
+        $response['case_reason'] = $row->case_reason ?? '';
+        $response['temperature'] = $row->temperature ?? '';
+        $response['date_of_onset_of_first_symptom'] = $row->date_of_onset_of_first_symptom ?? '';
+        $response['reson_for_testing'] = $row->reson_for_testing ?? '';
+        $response['case_type'] = $row->case_type ?? 1;
 
-    //     return $response;
-    // })->values();
-
+        return $response;
+    })->values();
 
     return response()->json($data);
 });
