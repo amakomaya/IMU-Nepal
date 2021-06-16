@@ -148,6 +148,10 @@ class ExtCaseController extends Controller
                 } else {
                   $sample_type = (strpos($value['sample_type'], '[') !== false)?$value['sample_type']:'['.$value['sample_type'].']';
                 }
+                $randomLetter = substr(str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, 2);
+                $singleRandomLabId = (int)$randomLabId+$index+1;
+                $lab_id = array_key_exists('lab_id', $value) && $value['lab_id']?$value['lab_id']:str_pad($singleRandomLabId, 6, '0', STR_PAD_LEFT).'-'.$randomLetter;
+
                 $sample = [
                     'token' => $swab_id,
                     'woman_token' => $case_token,
@@ -169,9 +173,6 @@ class ExtCaseController extends Controller
                     'sample_test_date_np' => $this->ad2bs($value['lab_test_date']),
                     'sample_test_time' => $value['lab_test_time'],
                 ];
-                $randomLetter = substr(str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, 2);
-                $singleRandomLabId = (int)$randomLabId+$index+1;
-                $lab_id = array_key_exists('lab_id', $value) && $value['lab_id']?$value['lab_id']:str_pad($singleRandomLabId, 6, '0', STR_PAD_LEFT).'-'.$randomLetter;
                 $lab_test = [
                     'token' => $user->token.'-'.$lab_id,
                     'sample_token' => $swab_id,
