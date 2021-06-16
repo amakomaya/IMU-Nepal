@@ -439,7 +439,13 @@ class WomenController extends Controller
 
         $tracing_tokens = ContactTracing::whereIn('hp_code', $hpCodes)->pluck('woman_token');
 
-        $woman = SuspectedCase::whereIn('token', $tracing_tokens)->active()->withAll();
+        if($request->db_switch == '2') {
+            $woman = SuspectedCaseOld::active();
+        } else{
+            $woman = SuspectedCase::active();
+        }
+
+        $woman = $woman->whereIn('token', $tracing_tokens)->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -625,7 +631,14 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->casesRecoveredList()
+
+        if($request->db_switch == '2') {
+            $woman = SuspectedCaseOld::active();
+        } else{
+            $woman = SuspectedCase::active();
+        }
+
+        $woman = $woman->whereIn('hp_code', $hpCodes)->casesRecoveredList()
         ->with(['ancs','healthpost' => function($q) {
             $q->select('name', 'hp_code');
         }, 'latestAnc', 'district', 'municipality']);
@@ -638,9 +651,18 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->casesDeathList()->with(['ancs','healthpost' => function($q) {
-            $q->select('name', 'hp_code');
-        }, 'latestAnc', 'district', 'municipality']);
+
+        if($request->db_switch == '2') {
+            $woman = SuspectedCaseOld::active();
+        } else{
+            $woman = SuspectedCase::active();
+        }
+        
+        $woman = $woman->whereIn('hp_code', $hpCodes)
+            ->casesDeathList()
+            ->with(['ancs','healthpost' => function($q) {
+                $q->select('name', 'hp_code');
+            }, 'latestAnc', 'district', 'municipality']);
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
