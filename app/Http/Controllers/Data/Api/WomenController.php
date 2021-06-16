@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Data\Api;
 use App\Helpers\GetHealthpostCodes;
 use App\Http\Controllers\Controller;
 use App\Models\ContactTracing;
+use App\Models\ContactTracingOld;
 use App\Models\Organization;
 use App\Models\PaymentCase;
 use App\Models\SampleCollection;
