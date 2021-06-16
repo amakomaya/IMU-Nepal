@@ -44,7 +44,16 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->doesnthave('ancs')->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+
+        if($request->db_switch == '2') {
+            $woman = SuspectedCaseOld::active();
+        } else{
+            $woman = SuspectedCase::active();
+        }
+
+        $woman = $woman->whereIn('hp_code', $hpCodes)
+            ->doesnthave('ancs')
+            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
                 'healthpost' => function($q) {
                     $q->select('name', 'hp_code');
                 }]);
