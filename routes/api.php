@@ -112,14 +112,25 @@ Route::post('/v1/client', function (Request $request) {
 
 Route::get('/v1/client', function (Request $request) {
     $hp_code = $request->hp_code;
-    $record = \DB::table('women')
-        ->leftJoin('ancs', 'ancs.woman_token', '=', 'women.token')
-        ->where('women.hp_code', $hp_code)
-        ->where('women.end_case', '0')
-        ->select('women.*', 'ancs.result as sample_result')
-        ->where('women.created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
-        ->where(function ($query) {
-            $query->where('ancs.result', '!=', '4')
+
+    // $record = \DB::table('women')
+    //     ->leftJoin('ancs', 'ancs.woman_token', '=', 'women.token')
+    //     ->where('women.hp_code', $hp_code)
+    //     ->where('women.end_case', '0')
+    //     ->select('women.*', 'ancs.result as sample_result')
+    //     ->where('women.created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
+    //     ->where(function ($query) {
+    //         $query->where('ancs.result', '!=', '4')
+    //             ->orWhere('women.created_at', '>=', Carbon::now()->subDays(2)->toDateTimeString());
+    //     })
+    //     ->get();
+        
+    $record = SuspectedCase::with('ancs')
+        ->where('hp_code', $hp_code)
+        ->where('end_case', '0')
+        ->where('created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
+        ->whereHas('ancs', function($q){
+            $q->where('result', '!=', 4)
                 ->orWhere('women.created_at', '>=', Carbon::now()->subDays(2)->toDateTimeString());
         })
         ->get();
@@ -169,7 +180,7 @@ Route::get('/v1/client', function (Request $request) {
         $response['case_where'] = $row->case_where ?? '';
         $response['end_case'] = $row->end_case ?? '';
         $response['payment'] = $row->payment ?? '';
-        $response['result'] = $row->sample_result ?? '';
+        $response['result'] = $row->ancs ? $row->ancs[0]->result : '';
 
         $response['nationality'] = $row->nationality ?? '';
         $response['id_card_detail'] = $row->id_card_detail ?? '';
@@ -197,7 +208,6 @@ Route::get('/v1/client', function (Request $request) {
 
         return $response;
     })->values();
-
 
     return response()->json($data);
 });
