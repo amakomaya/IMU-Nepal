@@ -104,40 +104,41 @@ class HealthWorkerController extends Controller
             $filename="";
         }
 
-        $healthWorker = OrganizationMember::create([
-            'token'               => uniqid().time(),
-            'name'               => $request->get('name'),
-            'province_id'               => $request->get('province_id'),
-            'district_id'               => $request->get('district_id'),
-            'municipality_id'               => $request->get('municipality_id'),
-            'hp_code'               => $request->get('hp_code'),
-            'image'               => $filename,
-            'phone'               => $request->get('phone'),
-            'post'               => $request->get('post'),
-            'tole'               => $request->get('tole'),
-            'registered_device'               => "web",
-            'role'               => "healthworker",
-            'longitude'               => $request->get('longitude'),
-            'latitude'               => $request->get('latitude'),
-            'status'               => $request->get('status'),
-            'ward'               => $request->get('ward'),
-        ]);
+        // $healthWorker = OrganizationMember::create([
+        //     'token'               => uniqid().time(),
+        //     'name'               => $request->get('name'),
+        //     'province_id'               => $request->get('province_id'),
+        //     'district_id'               => $request->get('district_id'),
+        //     'municipality_id'               => $request->get('municipality_id'),
+        //     'hp_code'               => $request->get('hp_code'),
+        //     'image'               => $filename,
+        //     'phone'               => $request->get('phone'),
+        //     'post'               => $request->get('post'),
+        //     'tole'               => $request->get('tole'),
+        //     'registered_device'               => "web",
+        //     'role'               => "healthworker",
+        //     'longitude'               => $request->get('longitude'),
+        //     'latitude'               => $request->get('latitude'),
+        //     'status'               => $request->get('status'),
+        //     'ward'               => $request->get('ward'),
+        // ]);
 
 
-         $user = User::create([
-            'token'               => $healthWorker->token,
-            'username'               => $request->get('username'),
-            'email'               => $request->get('email'),
-            'imei'               => $request->get('imei'),
-            'password'               => md5($request->get('password')),
-            'role'               => "healthworker",
-        ]);
+        //  $user = User::create([
+        //     'token'               => $healthWorker->token,
+        //     'username'               => $request->get('username'),
+        //     'email'               => $request->get('email'),
+        //     'imei'               => $request->get('imei'),
+        //     'password'               => md5($request->get('password')),
+        //     'role'               => "healthworker",
+        // ]);
         $permissionBundle = $request->get('permission_bundle')?json_decode($request->get('permission_bundle')):[];
         $permissions = $request->get('permissions')??[];
         $allPermissions = array_merge($permissionBundle, $permissions);
 
-        $user->givePermissionTo($allPermissions);
-
+        // $user->givePermissionTo($allPermissions);
+            
+        dd($allPermissions);    
         $request->session()->flash('message', 'Data Inserted successfully');
 
         return redirect()->route('health-worker.index');
