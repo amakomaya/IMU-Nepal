@@ -17,17 +17,16 @@
                     }
                 }
             </script>
-            @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
                 @if (Request::session()->has('message'))
-                    <div class="alert alert-block alert-success">
-                        <button type="button" class="close" data-dismiss="alert">
-                            <i class="ace-icon fa fa-times"></i>
-                        </button>
-                        {!! Request::session()->get('message') !!}
-
-                    </div>
+                <div class="alert alert-block alert-success">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="ace-icon fa fa-times"></i>
+                    </button>
+                    {!! Request::session()->get('message') !!}
+                </div>
                 @endif
                 
+            @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
                 <div class="form-group">
                     @if($role=="healthworker")
                         <a class="btn btn-success" href="{{route('health-worker.create') }}">Create</a>
