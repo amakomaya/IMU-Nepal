@@ -526,8 +526,30 @@ export default {
           console.error(error)
         })
         .finally(() => {
+        });
+        this.$swal({
+          title: 'सूचना || सूचना',
+          text: '२० जुन, २०२१ (६ जेठ २०७८) सम्म IMU-System मा Data-Management को कार्य भइरहेको हुँदा Dashboard र Cases-Overview मा देखिने Data नमिल्न सक्ने जानकारी गराउँदछौ र साथै यस कारण आइपर्ने त्रुटी र समस्याको लागि हामी क्षमा प्राथी छौं |',
+          position: 'top',
+          showClass: {
+            popup: `
+          animate__animated
+          animate__fadeInDown
+          animate__faster
+        `
+          },
+          hideClass: {
+            popup: `
+          animate__animated
+          animate__fadeOutUp
+          animate__faster
+        `
+          },
+          grow: 'row',
+          showConfirmButton: false,
+          showCloseButton: true
         })
-  },
+    },
   methods: {
     recordUpdatedAt: function () {
       var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];

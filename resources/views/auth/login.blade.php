@@ -351,8 +351,8 @@
     </div>
     <script type="text/javascript">
         $(window).on('load', function () {
-            $('#myModal').modal('show');
-            $('#myModal2').modal('show');
+            $('#myModal').modal('hide');
+            $('#myModal2').modal('hide');
         });
     </script>
 </div>
