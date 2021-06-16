@@ -435,13 +435,13 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-//        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->pluck('woman_token');
 
-        $tracing_tokens = ContactTracing::whereIn('hp_code', $hpCodes)->pluck('woman_token');
-
+        
         if($request->db_switch == '2') {
+            $tracing_tokens = ContactTracingOld::whereIn('hp_code', $hpCodes)->pluck('woman_token');
             $woman = SuspectedCaseOld::active();
         } else{
+            $tracing_tokens = ContactTracing::whereIn('hp_code', $hpCodes)->pluck('woman_token');
             $woman = SuspectedCase::active();
         }
 

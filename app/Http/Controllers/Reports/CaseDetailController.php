@@ -87,10 +87,11 @@ class CaseDetailController extends Controller
     public function cictDetail(Request $request){
         $token = $request->token;
         $data = SuspectedCase::with(['ancs', 'healthworker', 'healthpost', 'district',
-            'municipality', 'caseManagement', 'clinicalParameter', 'contactDetail',
-            'contactFollowUp', 'contactTracing' , 'laboratoryParameter', 'registerBy', 'symptomsRelation'
-        ])
-            ->where('token', $token)->first();
+                'municipality', 'caseManagement', 'clinicalParameter', 'contactDetail',
+                'contactFollowUp', 'contactTracing' , 'laboratoryParameter', 'registerBy', 'symptomsRelation'
+            ])
+            ->where('token', $token)
+            ->first();
         return view('backend.patient.cict_detail', compact('data'));
     }
 
