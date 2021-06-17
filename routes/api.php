@@ -435,7 +435,7 @@ Route::post('/v1/received-in-lab', function (Request $request) {
         LabTest::create($data);
         return response()->json('success');
     } catch (\Exception $e) {
-        return response()->json('error');
+      return response()->json(['message'=>$e->getMessage()]);
     }
 });
 
