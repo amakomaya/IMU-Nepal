@@ -11,6 +11,7 @@ use App\Models\Organization;
 use App\Models\PaymentCase;
 use App\Models\SampleCollection;
 use App\Models\LabTest;
+use App\Models\LabTestOld;
 use App\Models\SuspectedCase;
 use App\Models\SuspectedCaseOld;
 use App\Reports\FilterRequest;
@@ -536,56 +537,30 @@ class WomenController extends Controller
         ]);
     }
 
-    public function labReceivedAntigenIndexOld(Request $request)
-    {
-        $response = FilterRequest::filter($request);
-        $hpCodes = GetHealthpostCodes::filter($response);
-
-        $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
-            ->whereIn('women.hp_code', $hpCodes)
-            ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
-            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
-            ->where('ancs.service_for', '2')
-            ->where('ancs.result', 9)
-            ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
-            ->leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
-            ->select(
-                'women.*',
-                \DB::raw("count(ancs.id) as ancs_count"),
-                \DB::raw('(select ancs.token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
-                'ancs.created_at as ancs_created_at',
-                'ancs.updated_at as ancs_updated_at',
-                'ancs.result as ancs_result',
-                'lab_tests.token as lab_tests_token',
-                'healthposts.name as healthpost_name',
-                'municipalities.municipality_name as municipality_name',
-                'municipalities.district_name as district_name'
-            )
-            ->groupBy('women.id')
-            ->orderBy(
-                request('order_column', 'created_at'),
-                request('order_direction', 'desc')
-            )
-            ->paginate(request('limit', 100));
-        return response()->json([
-            'collection' => $woman
-        ]);
-    }
-
     public function labAddReceivedIndex(Request $request)
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
-        $sample_token = LabTest::where(function($q) use ($hpCodes, $user) {
+
+        if($request->db_switch == '2') {
+            $sample_token = LabTestOld::where('sample_test_result', '9');
+            $data = SuspectedCaseOld::active();
+        } else{
+
+            $sample_token = LabTest::where('sample_test_result', '9');
+            $data = SuspectedCase::active();
+        }
+
+        $sample_token = $sample_token->where(function($q) use ($hpCodes, $user) {
                 $q->where('checked_by', $user->token)
                     ->orWhereIn('hp_code', $hpCodes);
-            })->
-            where('sample_test_result', '9')->pluck('sample_token');
+            })
+            ->pluck('sample_token');
 
-        $data = SuspectedCase::active()->whereHas('ancs', function($q) use ($sample_token) {
-            $q->whereIn('token', $sample_token);
-        })->withAll();
+        $data = $data->whereHas('ancs', function($q) use ($sample_token) {
+                $q->whereIn('token', $sample_token);
+            })->withAll();
 
 //        $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
 //        $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
@@ -599,13 +574,22 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
-        $sample_token = LabTest::where(function($q) use ($hpCodes, $user) {
-        $q->where('checked_by', $user->token)
-            ->orWhereIn('hp_code', $hpCodes);
-        })->where('sample_test_result', '3')->pluck('sample_token');
-        $data = SuspectedCase::active()->whereHas('ancs', function($q) use ($sample_token) {
-            $q->whereIn('token', $sample_token);
-        })->withAll();
+
+        if($request->db_switch == '2') {
+            $sample_token = LabTestOld::where('sample_test_result', '3');
+            $data = SuspectedCaseOld::active();
+        } else{
+            $sample_token = LabTest::where('sample_test_result', '3');
+            $data = SuspectedCase::active();
+        }
+
+        $sample_token = $sample_token->where(function($q) use ($hpCodes, $user) {
+            $q->where('checked_by', $user->token)
+                ->orWhereIn('hp_code', $hpCodes);
+            })->pluck('sample_token');
+        $data = $data->whereHas('ancs', function($q) use ($sample_token) {
+                $q->whereIn('token', $sample_token);
+            })->withAll();
         return response()->json([
             'collection' => $data->advancedFilter()
         ]);
@@ -616,11 +600,21 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
-        $sample_token = LabTest::where(function($q) use ($hpCodes, $user) {
+
+        if($request->db_switch == '2') {
+            $sample_token = LabTestOld::where('sample_test_result', '4');
+            $data = SuspectedCaseOld::active();
+        } else{
+
+            $sample_token = LabTest::where('sample_test_result', '4');
+            $data = SuspectedCase::active();
+        }
+
+        $sample_token = $sample_token->where(function($q) use ($hpCodes, $user) {
             $q->where('checked_by', $user->token)
                 ->orWhereIn('hp_code', $hpCodes);
-        })->where('sample_test_result', '4')->pluck('sample_token');
-        $data = SuspectedCase::active()->whereHas('ancs', function($q) use ($sample_token) {
+            })->pluck('sample_token');
+        $data = $data->whereHas('ancs', function($q) use ($sample_token) {
             $q->whereIn('token', $sample_token);
         })->withAll();
         return response()->json([
