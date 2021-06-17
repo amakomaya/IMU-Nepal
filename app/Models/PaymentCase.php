@@ -32,4 +32,9 @@ class PaymentCase extends Model
         'register_date_en',
         'phone'
     ];
+
+    public function organization()
+    {
+        return $this->hasOne('App\Models\Organization', 'hp_code', 'hp_code');
+    }
 }
