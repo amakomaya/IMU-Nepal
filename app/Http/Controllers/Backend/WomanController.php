@@ -400,14 +400,15 @@ class WomanController extends Controller
             $sample_row['created_by'] = auth()->user()->token;
             $sample_row['status'] = 1;
             $sample_row['result'] = 2;
+            $sample_row['regdev'] = 'web';
             $sample_row['service_type'] = $request->service_type;
             $sample_row['service_for'] = $request->service_for;
             $sample_row['infection_type'] = $request->infection_type;
             $sample_row['sample_type_specific'] = $request->sample_type_specific ?? '';
             $sample_row['sample_identification_type'] = 'unique_id';
-            $sample_row['received_date_en'] = Carbon::now()->format('Y-m-d');
+            $sample_row['collection_date_en'] = Carbon::now()->format('Y-m-d');
             $nep_date_array = explode("-", Carbon::now()->format('Y-m-d'));
-            $sample_row['received_date_np'] = Calendar::eng_to_nep($nep_date_array[0], $nep_date_array[1], $nep_date_array[2])->getYearMonthDay();
+            $sample_row['collection_date_np'] = Calendar::eng_to_nep($nep_date_array[0], $nep_date_array[1], $nep_date_array[2])->getYearMonthDay();
 
             switch (auth()->user()->role) {
                 case 'healthpost':
