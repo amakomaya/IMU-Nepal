@@ -100,6 +100,9 @@ class ExtCaseController extends Controller
             DB::beginTransaction();
             foreach ($data as $index=>$value) {
                 $case_token = 'a-' . md5(microtime(true) . mt_Rand());
+                if(empty($value['registered_at'])){
+                    $value['registered_at'] = $value['sample_collected_date'];
+                }
                 $case = [
                     'token' => $case_token,
                     'name' => $value['name'],
@@ -115,12 +118,13 @@ class ExtCaseController extends Controller
                     'emergency_contact_one' => $value['emergency_contact_one'],
                     'travelled' => $value['travelled'],
                     'occupation' => $value['occupation'],
-                    'created_at' => $value['registered_at'],
                     'status' => 1,
                     'hp_code' => $healthworker->hp_code,
-                    'checked_by' => $healthworker->token,
+                    'created_by' => $healthworker->token,
                     'checked_by_name' => $healthworker->name,
-                    'registered_device' => 'api'
+                    'registered_device' => 'api',
+                    'register_date_en' => $value['registered_at'],
+                    'register_date_np' => $this->ad2bs($value['registered_at'])
                 ];
                 $id = OrganizationMember::where('token', $user->token)->first()->id;
                 $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
@@ -156,9 +160,10 @@ class ExtCaseController extends Controller
                     'token' => $swab_id,
                     'woman_token' => $case_token,
                     'service_for' => $value['service_for'],
+                    'collection_date_en' => $value['sample_collected_date'],
+                    'collection_date_np' => $this->ad2bs($value['sample_collected_date']),
                     'service_type' => $value['service_type'],
                     'sample_type' => $sample_type,
-                    'created_at' => $value['sample_collected_date'],
                     'infection_type' => strval($value['infection_type']),
                     'result' => strval($value['lab_result']),
                     'hp_code' => $healthworker->hp_code,
@@ -172,6 +177,8 @@ class ExtCaseController extends Controller
                     'sample_test_date_en' => $value['lab_test_date'],
                     'sample_test_date_np' => $this->ad2bs($value['lab_test_date']),
                     'sample_test_time' => $value['lab_test_time'],
+                    'received_by' => $healthworker->token,
+                    'received_by_hp_code' => $healthworker->hp_code
                 ];
                 $lab_test = [
                     'token' => $user->token.'-'.$lab_id,
@@ -192,8 +199,19 @@ class ExtCaseController extends Controller
                       SampleCollection::create($sample);
                       LabTest::create($lab_test);
                     } else {
-                      unset($case['token']);
+                        unset($case['token']);
+                        unset($case['hp_code']);
+                        unset($case['created_by']);
+                        unset($case['checked_by_name']);
+                        unset($case['registered_device']);
+                        unset($case['register_date_en']);
+                        unset($case['register_date_np']);
+
                       unset($sample['woman_token']);
+                      unset($sample['collection_date_en']);
+                      unset($sample['collection_date_np']);
+                      unset($sample['regdev']);
+
                       $existingSuspectedCase->update($case);
                       $existingSampleCollection->update($sample);
                       if($existingLabTest) {
