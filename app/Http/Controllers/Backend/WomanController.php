@@ -397,7 +397,7 @@ class WomanController extends Controller
         if($request->swab_collection_conformation == 1) {
             $sample_row['token'] = $request->token;
             $sample_row['woman_token'] = $row['token'];
-            $sample_row['created_by'] = auth()->user()->token;
+            $sample_row['checked_by'] = auth()->user()->token;
             $sample_row['status'] = 1;
             $sample_row['result'] = 2;
             $sample_row['regdev'] = 'web';
