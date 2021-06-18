@@ -29,12 +29,13 @@
                             </form>
                         </div>
                         <div class="dataTable_wrapper">
-                            <table class="table table-striped table-bordered table-hover table-responsive" id="dataTable" style="width:100%;">
+                            <table class="table table-striped table-bordered table-hover table-responsive" id="dataTable"  style="width:100%;">
                                 <thead>
                                 <tr>
                                     <th rowspan="2" width="10px"></th>
                                     <th rowspan="2">Name</th>
-                                    <th rowspan="2">Hospital ID</th>
+                                    <th rowspan="2">Contact No</th>
+                                    <th rowspan="2" width="30%">Case Management</th>
                                     <th rowspan="2">Register Date</th>
                                     <th colspan="4" class="text-center">Health Condition</th>
                                 </tr>
@@ -93,7 +94,11 @@
                                     <tr>
                                         <td>{{ $key+1 }}</td>
                                         <td>{{ $cases->name }}</td>
-                                        <td>{{ $cases->hospital_register_id }}</td>
+                                        <td>{{ $cases->phone }}</td>
+                                        <td>
+                                            <strong title="Organization / Hospital Name || Patient ID in Hospital">Org. Name || ID :</strong> {{ $cases->organization->name }} || {{ $cases->hospital_id }}<br>
+                                            <strong title="Covid Test From Lab Name || Patient ID in Lab">Lab Test From || ID :</strong> {{ $cases->lab_name }} || {{ $cases->lab_id }}
+                                        </td>
                                         <td>{{ $cases->register_date_np }}</td>
                                         <td>
                                             @foreach ($conditions[$key] as $key1 => $item)
@@ -151,6 +156,9 @@
                                 @endforeach
                                 </tbody>
                             </table>
+                            <div class="row text-center">
+                                {{ $payment_cases->links() }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -175,7 +183,8 @@
     $(document).ready(function() {
         $('#dataTable').DataTable({
             responsive: true,
-            pageLength: 50,
+            "paging":   false,
+            "info":     false,
             dom : 'Bfrtip',
             buttons: [
                 'csv', 'excel', 'pdf', 'print'

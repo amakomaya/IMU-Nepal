@@ -136,7 +136,7 @@ class HealthWorkerController extends Controller
         $permissions = $request->get('permissions')??[];
         $allPermissions = array_merge($permissionBundle, $permissions);
 
-        $user->givePermissionTo($request->get($allPermissions));
+        $user->givePermissionTo($allPermissions);
 
         $request->session()->flash('message', 'Data Inserted successfully');
 

@@ -100,7 +100,6 @@
                             <span class="label label-info pull-right"> SR </span>
                         </a>
                     </li>
-                    @if(auth()->user()->role === 'healthpost')
                     <li>
                         <a href="{{ route('cases.patient.detail') }}">
                             <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
@@ -108,7 +107,6 @@
                             <span class="label label-primary pull-right">Detail</span>
                         </a>
                     </li>
-                    @endif
                 </ul>
             </li>
 @if(auth()->user()->role === 'main' || auth()->user()->role === 'province' || auth()->user()->role === 'municipality' || auth()->user()->role === 'dho')

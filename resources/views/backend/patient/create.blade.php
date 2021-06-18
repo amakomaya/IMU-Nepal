@@ -62,11 +62,11 @@
                                 <div class="control-group">
                                     <label class="radio-inline" style="padding-right: 60px;">
                                         <h4>PCR Swab Collection</h4>
-                                        <input type="radio" name="service_for" value="1" onclick="toggleLayout(true)" required style="top: 7px;">
+                                        <input type="radio" name="service_for" value="1" class="service_for" onclick="toggleLayout(true)" required style="top: 7px;">
                                     </label>
                                     <label class="radio-inline">
                                         <h4>Antigen Test</h4>
-                                        <input type="radio" name="service_for" value="2" onclick="toggleLayout(false)" style="top: 7px;">
+                                        <input type="radio" name="service_for" value="2" class="service_for" onclick="toggleLayout(false)" style="top: 7px;">
                                     </label>
                                 </div>
                                 @if ($errors->has('service_for'))
@@ -457,8 +457,12 @@
                                     <div class="form-group">
                                         <label class="control-label">Sample Collection Type</label>
                                         <div class="control-group">
-                                            <input type="checkbox" name="sample_type[]" value="1"> Nasopharyngeal<br>
-                                            <input type="checkbox" name="sample_type[]" value="2"> Oropharyngeal
+                                            Nasopharyngeal
+                                            <input type="checkbox" name="sample_type[]" value="1" class="sample_type" style="float: left">
+                                        </div>
+                                        <div class="control-group">
+                                            Oropharyngeal
+                                            <input type="checkbox" name="sample_type[]" value="2" class="sample_type" style="float: left">
                                         </div>
                                     </div>
                                     <div class="form-group {{ $errors->has('sample_type_specific') ? 'has-error' : '' }} ">
@@ -477,10 +481,12 @@
                                     <label class="control-label">Infection Type</label>
                                     <div class="control-group">
                                         <label class="radio-inline">
-                                            <input type="radio" name="infection_type" value="1">Symptomatic
+                                            <h5>Symptomatic</h5>
+                                            <input type="radio" name="infection_type" value="1" id="infection_type" style="bottom: 12px;">
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio" name="infection_type" value="2">Asymptomatic
+                                            <h5>Asymptomatic</h5>
+                                            <input type="radio" name="infection_type" value="2" style="bottom: 12px;">
                                         </label>
                                     </div>
                                     @if ($errors->has('infection_type'))
@@ -493,10 +499,12 @@
                                     <label class="control-label">Service Type</label>
                                     <div class="control-group">
                                         <label class="radio-inline">
-                                            <input type="radio" name="service_type" value="1">Paid Service
+                                            <h5>Paid Service</h5>
+                                            <input type="radio" name="service_type" value="1" id="service_type" style="bottom: 12px;">
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio" name="service_type" value="2">Free of cost service
+                                            <h5>Free of cost service</h5>
+                                            <input type="radio" name="service_type" value="2" class="service_type" style="bottom: 12px;">
                                         </label>
                                     </div>
                                     @if ($errors->has('service_type'))
@@ -590,15 +598,24 @@
 
         swabFormShow();
         $('.swab_collection_conformation').on('change', function() {
-        console.log('ss');
             swabFormShow();
         });
         function swabFormShow() {
             if($('.swab_collection_conformation:checked').val() == '1'){
                 $('.swab-data').show();
+                $("#service_type").prop('required',true);
+                $("#infection_type").prop('required',true);
+                if($('.service_for:checked').val() == '1') {
+                    $(".sample_type").prop('required',true);
+                } else {
+                    $(".sample_type").prop('required',true);
+                }
             }
             else {
                 $('.swab-data').hide();
+                $("input").prop('required',false);
+                $("#infection_type").prop('required',false);
+                $(".sample_type").prop('required',false);
             }
         }
         

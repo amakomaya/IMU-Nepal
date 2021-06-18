@@ -107,3 +107,9 @@ body {
     color: #fff;
     background-color: #cc2929 !important;
 }
+
+.swal2-container.swal2-grow-row>.swal2-modal {
+  flex: unset !important;
+  font-size: 18px !important;
+  width: 60%;
+}
