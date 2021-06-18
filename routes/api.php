@@ -180,7 +180,7 @@ Route::get('/v1/client', function (Request $request) {
         $response['case_where'] = $row->case_where ?? '';
         $response['end_case'] = $row->end_case ?? '';
         $response['payment'] = $row->payment ?? '';
-        $response['result'] = $row->ancs ? $row->ancs[0]->result : '';
+        $response['result'] = $row->ancs ? $row->ancs->first()->result : '';
 
         $response['nationality'] = $row->nationality ?? '';
         $response['id_card_detail'] = $row->id_card_detail ?? '';
