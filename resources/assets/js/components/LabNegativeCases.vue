@@ -42,7 +42,7 @@
         </td>
         <td>
           <div><span class="label label-success"> Negative </span></div>
-          <div>{{ labToken(item.latest_anc.labreport) }}</div>
+          <div>{{ labToken(item.latest_anc.lab_token) }}</div>
         </td>
         <td>
           <button v-if="item.latest_anc.result === '9'" v-on:click="addResultInLab(item)" title="Add Result">
@@ -376,7 +376,7 @@ export default {
     },
     labToken(data){
       if (data !== null){
-        return data.token.split('-').splice(1).join('-');
+        return data.split('-').splice(1).join('-');
       }
     },
     gender(type){

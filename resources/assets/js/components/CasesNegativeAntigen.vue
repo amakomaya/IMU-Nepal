@@ -40,7 +40,7 @@
                 <div title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
               </td>
                 <td><span class="label label-success"> Negative</span>
-                  <div>{{ labToken(item.latest_anc.labreport) }}</div>
+                  <div>{{ labToken(item.latest_anc.lab_token) }}</div>
                 </td>
                 <td>
                   <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
@@ -249,7 +249,7 @@
             },
             labToken(data){
               if (data !== null){
-                return data.token.split('-').splice(1).join('-');
+                return data.split('-').splice(1).join('-');
               }
             },
             checkDistrict : function(value){
