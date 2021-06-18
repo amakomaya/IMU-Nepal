@@ -454,6 +454,7 @@ export default {
         tole: null,
         guardian_name: null,
         phone: null,
+        date_of_outcome: '',
       },
       lab_id : '',
       options: [],
@@ -487,11 +488,15 @@ export default {
   },
   watch: {
     isDeath(val){
-      if(val=='2' && !this.data.time_of_death) {
+      if((val=='2' && !this.data.time_of_death) && !this.data.time_of_death) {
         this.data.time_of_death = this.getCurrentTime();
       }
-      if(val=='1' || val=='2') {
+      if((val=='1' || val=='2') && !this.data.date_of_outcome) {
         this.data.date_of_outcome = this.date_today_np;
+      }
+      if(val=='0') {
+        this.data.date_of_outcome = '';
+        this.data.time_of_death = null;
       }
     }
   },
@@ -799,7 +804,6 @@ export default {
     },
     submitData(data){
       this.$v.$touch();
-      console.log(this.$v.$invalid);
       this.isSubmitting = true;
       if (this.$v.$invalid) {
         this.isSubmitting = false;
@@ -897,6 +901,7 @@ export default {
                   vaccine_type: null,
                   other_vaccine_type: null,
                   guardian_name: null,
+                  date_of_outcome: ''
                 }
               }
               this.isSubmitting = false;
@@ -1055,9 +1060,9 @@ export default {
               if(response.data.health_condition_update !== null){
                    this.health_condition_update_lists =  JSON.parse(response.data.health_condition_update);
               }
-              this.data.province_id = response.data.province_id;
-              this.data.district_id = response.data.district_id;
-              this.data.municipality_id = response.data.municipality_id;
+              this.data.province_id = response.data.province_id || this.$federalInfo.province_id;
+              this.data.district_id = response.data.district_id || this.$federalInfo.district_id;
+              this.data.municipality_id = response.data.municipality_id || this.$federalInfo.municipality_id;
               this.data.ward = response.data.ward;
               this.data.vaccine_type = response.data.vaccine_type;
               this.data.other_vaccine_type = response.data.other_vaccine_type;

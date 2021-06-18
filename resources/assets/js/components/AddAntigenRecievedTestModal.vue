@@ -98,8 +98,8 @@ export default {
   methods: {
     getLabIdInitial() {
       let today = new Date();
-      let month = ('0'+today.getMonth() + 1).toString().slice(-2),
-        day = '0'+today.getDate().toString().slice(-2),
+      let month = ('0'+today.getMonth().toString()).slice(-2),
+        day = ('0'+today.getDate().toString()).slice(-2),
         year = today.getFullYear().toString().substr(-2);
       return year+month+day+'-';
     },
