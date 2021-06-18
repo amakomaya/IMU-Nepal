@@ -302,20 +302,20 @@
                                     <td>Result :</td>
                                     <td>{{ $anc->formatted_result }}</td>
                                 </tr>
-                                @if($anc->labreport)
+                                {{-- @if($anc->labreport) --}}
                                     <tr>
                                         <td>Tested By :</td>
-                                        <td>{{ $anc->labreport->checked_by_name }}</td>
+                                        <td>{{ $anc->checked_by_name }}</td>
                                     </tr>
                                     <tr>
                                         <td>Sample received date by lab :</td>
-                                        <td>{{ $anc->labreport->sample_recv_date }}</td>
+                                        <td>{{ $anc->received_date_np }}</td>
                                     </tr>
                                     <tr>
                                         <td>Sample test date and time by lab :</td>
-                                        <td>{{ $anc->labreport->sample_test_date }} {{ $anc->labreport->sample_test_time }}</td>
+                                        <td>{{ $anc->sample_test_date_np }} {{ $anc->sample_test_time }}</td>
                                     </tr>
-                                @endif
+                                {{-- @endif --}}
                                 </tbody>
                             </table>
                         @endforeach

@@ -54,7 +54,7 @@
           <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
             <i class="fa fa-hospital-o"></i> |
           </button>
-          <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Delete Patient Data">
+          <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Move Patient Data">
             <i class="fa fa-trash"></i>
           </button>
         </td>
@@ -195,11 +195,11 @@ export default {
     deletePatientData: function (item, removeItemOnSuccess) {
       this.$swal({
         title: "Are you sure?",
-        text: "You won\'t able to to retrieve this data.",
+        text: "Your data will be moved to Pending List.",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Yes, move it!",
         cancelButtonText: "No, cancel please!",
         closeOnConfirm: false,
         closeOnCancel: false
@@ -210,7 +210,7 @@ export default {
                 if (response.data.message === 'success') {
                   removeItemOnSuccess(item);
                   this.$swal({
-                    title: 'Record Deleted',
+                    title: 'Record Moved',
                     type: 'success',
                     toast: true,
                     position: 'top-end',
@@ -231,7 +231,7 @@ export default {
                 }
               })
         } else {
-          this.$swal("Cancelled", "Data not deleted :)", "error");
+          this.$swal("Cancelled", "Data not moved :)", "error");
         }
       })
     },

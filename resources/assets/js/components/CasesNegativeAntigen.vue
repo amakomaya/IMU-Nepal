@@ -40,7 +40,7 @@
                 <div title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
               </td>
                 <td><span class="label label-success"> Negative</span>
-                  <div>{{ labToken(item.latest_anc.labreport) }}</div>
+                  <div>{{ labToken(item.latest_anc.lab_token) }}</div>
                 </td>
                 <td>
                   <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
@@ -49,7 +49,7 @@
                   <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
                     <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
-                  <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Delete Patient Data">
+                  <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Move Patient Data">
                     <i class="fa fa-trash"></i>
                   </button>
                 </td>  
@@ -163,11 +163,11 @@
             deletePatientData: function (item, removeItemOnSuccess) {
               this.$swal({
                 title: "Are you sure?",
-                text: "You won\'t able to to retrieve this data.",
+                text: "Your data will be moved to Pending List.",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, delete it!",
+                confirmButtonText: "Yes, move it!",
                 cancelButtonText: "No, cancel please!",
                 closeOnConfirm: false,
                 closeOnCancel: false
@@ -178,7 +178,7 @@
                         if (response.data.message === 'success') {
                           removeItemOnSuccess(item);
                           this.$swal({
-                            title: 'Record Deleted',
+                            title: 'Record Moved',
                             type: 'success',
                             toast: true,
                             position: 'top-end',
@@ -199,7 +199,7 @@
                         }
                       })
                 } else {
-                  this.$swal("Cancelled", "Data not deleted :)", "error");
+                  this.$swal("Cancelled", "Data not moved :)", "error");
                 }
               })
             },
@@ -249,7 +249,7 @@
             },
             labToken(data){
               if (data !== null){
-                return data.token.split('-').splice(1).join('-');
+                return data.split('-').splice(1).join('-');
               }
             },
             checkDistrict : function(value){
