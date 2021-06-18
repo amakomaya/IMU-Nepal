@@ -452,24 +452,24 @@ Route::get('/calc-data', function(){
 //        $item->update();
 //    });
 
-    \App\Models\SampleCollection::where('service_for', '')->update(['service_for' => '1']);
-    \App\Models\SampleCollection::where('infection_type', '')->update(['infection_type' => '2']);
-    \App\Models\SampleCollection::whereNull('infection_type')->update(['infection_type' => '2']);
-    \App\Models\SampleCollection::whereNull('sample_type')->update(['sample_type' => '[]']);
-    \App\Models\SampleCollection::where('sample_type', '')->update(['sample_type' => '[]']);
+//    \App\Models\SampleCollection::where('service_for', '')->update(['service_for' => '1']);
+//    \App\Models\SampleCollection::where('infection_type', '')->update(['infection_type' => '2']);
+//    \App\Models\SampleCollection::whereNull('infection_type')->update(['infection_type' => '2']);
+//    \App\Models\SampleCollection::whereNull('sample_type')->update(['sample_type' => '[]']);
+//    \App\Models\SampleCollection::where('sample_type', '')->update(['sample_type' => '[]']);
 //
-//    \App\Models\SampleCollection::whereNull('checked_by')->get()->groupBy('hp_code')
-//        ->map(function ($item, $key){
-//            $org_mem = \App\Models\OrganizationMember::where('hp_code', $key)->first();
-//            if($org_mem){
-//                $ids = $item->pluck('id');
-//                \App\Models\SampleCollection::whereIn('id', $ids)->update([
-//                    'checked_by' => $org_mem->token,
-//                    'checked_by_name' => $org_mem->name
-//                ]);
-//            }
-//    });
-//
+    \App\Models\SampleCollection::whereNull('checked_by')->get()->groupBy('hp_code')
+        ->map(function ($item, $key){
+            $org_mem = \App\Models\OrganizationMember::where('hp_code', $key)->first();
+            if($org_mem){
+                $ids = $item->pluck('id');
+                \App\Models\SampleCollection::whereIn('id', $ids)->update([
+                    'checked_by' => $org_mem->token,
+                    'checked_by_name' => $org_mem->name
+                ]);
+            }
+    });
+
 //    \App\Models\SampleCollection::whereNull('collection_date_en')->get()
 //        ->map(function ($item){
 //                    $item->collection_date_en = $item->created_at->toDateString();
