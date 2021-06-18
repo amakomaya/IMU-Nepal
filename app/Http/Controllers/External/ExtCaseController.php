@@ -127,7 +127,7 @@ class ExtCaseController extends Controller
                     'register_date_np' => $this->ad2bs($value['registered_at'])
                 ];
                 $id = OrganizationMember::where('token', $user->token)->first()->id;
-                $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
+                $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($index)->format('H:i:s'));
                 
                 $update = false;
                 $existingSampleCollection = $existingSuspectedCase = $existingLabTest = '';
