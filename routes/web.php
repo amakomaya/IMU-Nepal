@@ -481,11 +481,21 @@ Route::get('/calc-data', function(){
     \App\Models\SampleCollection::whereNotNull('lab_token')->get()->map(function ($item){
        $lab_token = \App\Models\LabTest::where('sample_token', $item->token)->first();
        if($lab_token){
+
+           $received_date_np = explode("-", $item->received_date_np);
+           $received_date_en = Calendar::nep_to_eng($received_date_np[0], $received_date_np[1], $received_date_np[2])->getYearMonthDay();
+
+
+           if (!empty($item->sample_test_date_np)){
+               $sample_test_date_np = explode("-", $item->sample_test_date_np);
+               $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDay();
+           }
+
            $item->received_by = $lab_token->checked_by;
            $item->received_by_hp_code = $lab_token->hp_code;
-           $item->received_date_en = $lab_token->sample_recv_date;
+           $item->received_date_en = $received_date_en;
            $item->received_date_np = $lab_token->sample_recv_date;
-           $item->sample_test_date_en = $lab_token->sample_test_date;
+           $item->sample_test_date_en = $sample_test_date_en ?? null;
            $item->sample_test_date_np = $lab_token->sample_test_date;
            $item->sample_test_time = $lab_token->sample_test_time;
            $item->lab_token = $lab_token->token;
