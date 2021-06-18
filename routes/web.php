@@ -6,9 +6,11 @@ use App\Models\HealthProfessional;
 use App\Models\Municipality;
 use App\Models\SuspectedCase;
 use App\Reports\FilterRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Yagiten\Nepalicalendar\Calendar;
 
 Route::get('locale/{locale}', function ($locale) {
     \Session::put('locale', $locale);
@@ -413,3 +415,70 @@ Route::get('admin/get-org-rep', function (Request $request){
 });
 
 Route::get('/admin/bulk-upload', 'Backend\BulkUploadController@list')->name('bulk.upload');
+
+
+
+Route::get('/calc-data', function(){
+   SuspectedCase::whereDate('created_at', '<', Carbon::parse('2019-01-01'))->get()
+        ->map(function ($item){
+            $item->created_at = $item->updated_at;
+            $item->register_date_en = $item->updated_at->toDateString();
+            $date_np_array = explode("-", Carbon::parse($item->updated_at)->toDateString());
+            $item->register_date_np = Calendar::nep_to_eng($date_np_array[0], $date_np_array[1], $date_np_array[2])->getYearMonthDay();
+            $item->update();
+        });
+
+    SuspectedCase::whereNull('register_date_en')->get()
+        ->map(function ($item){
+            $item->register_date_en = $item->created_at->toDateString();
+            $date_np_array = explode("-", Carbon::parse($item->created_at)->toDateString());
+            $item->register_date_np = Calendar::nep_to_eng($date_np_array[0], $date_np_array[1], $date_np_array[2])->getYearMonthDay();
+            $item->update();
+    });
+
+    SuspectedCase::whereDate('register_date_en', '>=', Carbon::now())->get()
+        ->map(function ($item){
+            $item->register_date_en = $item->created_at->toDateString();
+            $date_np_array = explode("-", Carbon::parse($item->created_at)->toDateString());
+            $item->register_date_np = Calendar::nep_to_eng($date_np_array[0], $date_np_array[1], $date_np_array[2])->getYearMonthDay();
+            $item->update();
+        });
+
+    SuspectedCase::whereNull('register_date_np')->get()->map(function ($item){
+        $date_np_array = explode("-", Carbon::parse($item->register_date_en)->toDateString());
+        $item->register_date_np = Calendar::nep_to_eng($date_np_array[0], $date_np_array[1], $date_np_array[2])->getYearMonthDay();
+        $item->update();
+    });
+
+    \App\Models\SampleCollection::where('service_for', '')->update(['service_for' => '1']);
+    \App\Models\SampleCollection::where('infection_type', '')->update(['infection_type' => '2']);
+    \App\Models\SampleCollection::whereNull('sample_type')->update(['sample_type' => '[1]']);
+
+    \App\Models\SampleCollection::whereNull('checked_by')->get()->groupBy('hp_code')
+        ->map(function ($item, $key){
+            $org_mem = \App\Models\OrganizationMember::where('hp_code', $key)->first();
+            if($org_mem){
+                $ids = $item->pluck('id');
+                \App\Models\SampleCollection::whereIn('id', $ids)->update([
+                    'checked_by' => $org_mem->token,
+                    'checked_by_name' => $org_mem->name
+                ]);
+            }
+    });
+
+    \App\Models\SampleCollection::whereNotNull('lab_token')->get()->map(function ($item){
+       $lab_token = \App\Models\LabTest::where('sample_token', $item->token)->first();
+       if($lab_token){
+           $item->received_by = $lab_token->checked_by;
+           $item->received_by_hp_code = $lab_token->hp_code;
+           $item->received_date_en = $lab_token->sample_recv_date;
+           $item->received_date_np = $lab_token->sample_recv_date;
+           $item->sample_test_date_en = $lab_token->sample_test_date;
+           $item->sample_test_date_np = $lab_token->sample_test_date;
+           $item->sample_test_time = $lab_token->sample_test_time;
+           $item->lab_token = $lab_token->token;
+           $item->save();
+       }
+    });
+    return 'success';
+});
