@@ -499,15 +499,49 @@ class WomenController extends Controller
 
     public function deleteSuspectedCase($id){
         try{
-            $patients = SuspectedCase::where('token', $id)->first();
-            $ancs = SampleCollection::where('woman_token', $id)->get();
-            
-            foreach($ancs as $anc) {
-                LabTest::where('sample_token', $anc->token)->delete();
-                $anc->delete();
+            $patients = SuspectedCase::with('ancs', 'latestAnc')->where('token', $id)->first();
+            dd($patients->latestAnc);
+            $anc_count = $patients->ancs->count();
+            if($anc_count == 0) {
+                $patients->delete();
+            }else {
+                $ancs = SampleCollection::where('woman_token', $id)->get();
+                foreach($ancs as $anc) {
+                    if($anc->result == '3' || $anc->result == '4') {
+                        if($anc->service_for == '2') {
+                            $anc->update([
+                                'result' => '2'
+                                // 'collection_date_en' => '',
+                                // 'collection_date_np' => '',
+                                // 'sample_test_date_en' => '',
+                                // 'sample_test_date_np' => '',
+                                // 'sample_test_time' => '',
+                                // 'lab_token' => ''
+                            ]);
+                            LabTest::where('sample_token', $anc->token)->update(['sample_test_result' => '2']);
+                        } else {
+                            $anc->update(['result' => '9']);
+                            LabTest::where('sample_token', $anc->token)->update(['sample_test_result' => '9']);
+                        }
+                    }
+                    elseif($anc->result == '9') {
+                        $anc->update([
+                            'result' => '2'
+                            // 'collection_date_en' => '',
+                            // 'collection_date_np' => '',
+                            // 'sample_test_date_en' => '',
+                            // 'sample_test_date_np' => '',
+                            // 'sample_test_time' => '',
+                            // 'lab_token' => ''
+                        ]);
+                        LabTest::where('sample_token', $anc->token)->update(['sample_test_result' => '2']);
+                    }else {
+                        $anc->delete();
+                        // $patients->delete();
+                    }
+                }
             }
-            $patients->delete();
-
+            
             return response()->json(['message' => 'success']);
         }
         catch (\Exception $e){
