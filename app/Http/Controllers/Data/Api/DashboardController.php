@@ -29,19 +29,6 @@ class DashboardController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        // check at 13:300pm
-//        $check_at_1330 = Carbon::parse('today 1:30pm');
-//
-//        if($check_at_1330 < Carbon::now()){
-//            // 1 pm today + current
-//            $date_from = Carbon::parse('today 1:30pm');
-//            $date_to = Carbon::now();
-//        }else{
-//            // 1pm yesterday + current
-//            $date_from = Carbon::parse('yesterday 1:30pm');
-//            $date_to = Carbon::now();
-//        }
-
         $date_from = Carbon::today()->startOfDay();
         $date_to = Carbon::now();
         if (auth()->user()->role == 'healthworker' || auth()->user()->role == 'healthpost') {
@@ -53,7 +40,7 @@ class DashboardController extends Controller
             });
 
             $in_lab_received_in_24_hrs = Cache::remember('in_lab_received_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->whereDate('created_at', Carbon::today())->get()->count();
+                return SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->whereDate('received_date_en', Carbon::today())->get()->count();
             });
 
             $in_lab_received_positive = Cache::remember('in_lab_received_positive-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
@@ -64,7 +51,7 @@ class DashboardController extends Controller
             });
 
             $in_lab_received_positive_in_24_hrs = Cache::remember('in_lab_received_positive_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->where('result', '3')->whereDate('updated_at', Carbon::today())->get()->count();
+                return SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->where('result', '3')->whereDate('sample_test_date_en', Carbon::today())->get()->count();
             });
 
             $in_lab_received_negative = Cache::remember('in_lab_received_negative-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
@@ -75,7 +62,7 @@ class DashboardController extends Controller
             });
 
             $in_lab_received_negative_in_24_hrs = Cache::remember('in_lab_received_negative_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->where('result', '4')->whereDate('updated_at', Carbon::today())->get()->count();
+                return SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->where('result', '4')->whereDate('sample_test_date_en', Carbon::today())->get()->count();
             });
         }
 
@@ -88,7 +75,7 @@ class DashboardController extends Controller
             'registered_in_24_hrs' => Cache::remember('registered_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($date_to, $date_from, $hpCodes) {
                 return SuspectedCase::whereIn('hp_code', $hpCodes)->active()
 //                    ->whereDate('created_at', Carbon::today())
-                      ->whereBetween('created_at', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
+                      ->whereBetween('register_date_en', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
                     ->count();
             }),
             'sample_collection' => Cache::remember('sample_collection-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
@@ -97,60 +84,6 @@ class DashboardController extends Controller
                 return $current_data + $dump_data;
             }),
 
-            'sample_5_trends' => Cache::remember('sample_5_trends-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                $sample_collection_data = SampleCollection::whereIn('hp_code', $hpCodes)->active()
-                    ->whereIn('service_for', ['1', '2'])
-                    // ->whereIn('result', [3,4])
-                    ->whereBetween('created_at',[Carbon::now()->subDays(5)->startOfDay()->toDateTimeString(), Carbon::now()->subDays(1)->endOfDay()->toDateTimeString()])
-                    ->get()
-                    ->groupBy(function($d) {
-                        return Carbon::parse($d->created_at)->format('Y-m-d');
-                    });
-
-                $inside_data = [];
-                foreach($sample_collection_data as $key => $sample_data) {
-                    $inside_data[$key]['inside_pcr_count'] = $sample_data->where('service_for', '1')->count();
-                    $inside_data[$key]['inside_antigen_count'] = $sample_data->where('service_for', '2')->count();
-                    
-                    $inside_data[$key]['inside_pcr_postive_cases_count'] = $sample_data->where('service_for', '1')->where('result', 3)->count();
-                    $inside_data[$key]['inside_pcr_negative_cases_count'] = $sample_data->where('service_for', '1')->where('result', 4)->count();
-                    $inside_data[$key]['inside_antigen_postive_cases_count'] = $sample_data->where('service_for', '2')->where('result', 3)->count();
-                    $inside_data[$key]['inside_antigen_negative_cases_count'] = $sample_data->where('service_for', '2')->where('result', 4)->count();
-                }
-
-                $outside_data_all = SampleCollection::whereIn('hp_code', $hpCodes)
-                    ->whereIn('result', ['3','4'])
-                    ->whereIn('service_for', ['1', '2'])
-                    ->whereBetween('updated_at',[Carbon::now()->subDays(5)->startOfDay()->toDateTimeString(), Carbon::now()->subDays(1)->endOfDay()->toDateTimeString()])
-                    ->get()
-                    ->groupBy(function($d) {
-                        return Carbon::parse($d->updated_at)->format('Y-m-d');
-                    });
-
-                // $outside_data_all = LabTest::leftjoin('ancs', 'lab_tests.sample_token', '=', 'ancs.token')
-                //     ->whereIn('lab_tests.hp_code', $hpCodes)
-                //     ->whereIn('lab_tests.sample_test_result', ['3','4'])
-                //     ->whereIn('ancs.service_for', ['1', '2'])
-                //     ->whereBetween('lab_tests.updated_at',[Carbon::now()->subDays(5)->startOfDay()->toDateTimeString(), Carbon::now()->subDays(1)->endOfDay()->toDateTimeString()])
-                //     ->select('lab_tests.*', 'ancs.service_for')
-                //     ->get()
-                //     ->groupBy(function($d) {
-                //         return Carbon::parse($d->updated_at)->format('Y-m-d');
-                //     });
-
-                $outside_data = [];
-                foreach($outside_data_all as $key => $sample_data) {
-                    $outside_data[$key]['outside_pcr_postive_cases_count'] = $sample_data->where('service_for', '1')->where('result', '3')->count();
-                    $outside_data[$key]['outside_pcr_negative_cases_count'] = $sample_data->where('service_for', '1')->where('result', '4')->count();
-                    $outside_data[$key]['outside_antigen_postive_cases_count'] = $sample_data->where('service_for', '2')->where('result', '3')->count();
-                    $outside_data[$key]['outside_antigen_negative_cases_count'] =  $sample_data->where('service_for', '2')->where('result', '4')->count();
-                }
-
-                $all_data = array_merge_recursive($inside_data,$outside_data);
-                krsort($all_data);
-                return $all_data;
-            }),
-            
             'sample_collection_antigen' => Cache::remember('sample_collection_antigen-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
                 $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '2')->active()->count();
                 $dump_data = DB::connection('mysqldump')->table('ancs')->whereIn('hp_code', $hpCodes)->where('service_for', '2')->where('status', 1)->count();
@@ -159,36 +92,37 @@ class DashboardController extends Controller
             'sample_collection_in_24_hrs' => Cache::remember('sample_collection_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($date_to, $date_from, $hpCodes) {
                 return SampleCollection::whereIn('hp_code', $hpCodes)->active()
 //                    ->whereDate('created_at', Carbon::today())
-                    ->whereBetween('created_at', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
+                    ->whereBetween('collection_date_en', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
                     ->count();
             }),
             'sample_collection_in_24_hrs_antigen' => Cache::remember('sample_collection_in_24_hrs_antigen-' . auth()->user()->token, 60 * 60, function () use ($date_to, $date_from, $hpCodes) {
                 return SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '2')->active()
 //                    ->whereDate('created_at', Carbon::today())
-                    ->whereBetween('created_at', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
+                    ->whereBetween('collection_date_en', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
                     ->count();
             }),
+
             'sample_received_in_lab' => Cache::remember('sample_received_in_lab-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->whereIn('result', [9, 3, 4, 5])->active()->count();
-                $dump_data = DB::connection('mysqldump')->table('ancs')->whereIn('hp_code', $hpCodes)->whereIn('result', [9, 3, 4, 5])->where('status', 1)->count();
+                $current_data = SampleCollection::whereIn('received_by_hp_code', $hpCodes)->whereIn('result', [9, 3, 4, 5])->active()->count();
+                $dump_data = DB::connection('mysqldump')->table('ancs')->whereIn('received_by_hp_code', $hpCodes)->whereIn('result', [9, 3, 4, 5])->where('status', 1)->count();
                 return $current_data + $dump_data;
             }),
             'sample_received_in_lab_antigen' => Cache::remember('sample_received_in_lab_antigen-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '2')->whereIn('result', [9, 3, 4, 5])->active()->count();
+                $current_data = SampleCollection::whereIn('received_by_hp_code', $hpCodes)->where('service_for', '2')->whereIn('result', [9, 3, 4, 5])->active()->count();
                 $dump_data = DB::connection('mysqldump')->table('ancs')->whereIn('hp_code', $hpCodes)->where('service_for', '2')->whereIn('result', [9, 3, 4, 5])->where('status', 1)->count();
                 return $current_data + $dump_data;
             }),
             'sample_received_in_lab_in_24_hrs' => Cache::remember('sample_received_in_lab_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($date_to, $date_from, $hpCodes) {
-                return SampleCollection::whereIn('hp_code', $hpCodes)->whereIn('result', [9, 3, 4, 5])
+                return SampleCollection::whereIn('received_by_hp_code', $hpCodes)->whereIn('result', [9, 3, 4, 5])
 //                    ->whereDate('updated_at', Carbon::today())
-                    ->whereBetween('created_at', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
+                    ->whereBetween('received_date_en', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
                     ->active()->count();
             }),
             'sample_received_in_lab_in_24_hrs_antigen' => Cache::remember('sample_received_in_lab_in_24_hrs_antigen-' . auth()->user()->token, 60 * 60, function () use ($date_to, $date_from, $hpCodes) {
-                return SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '2')
+                return SampleCollection::whereIn('received_by_hp_code', $hpCodes)->where('service_for', '2')
                     ->whereIn('result', [9, 3, 4, 5])
 //                    ->whereDate('updated_at', Carbon::today())
-                    ->whereBetween('created_at', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
+                    ->whereBetween('received_date_en', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
                     ->active()->count();
             }),
             'lab_result_positive' => Cache::remember('lab_result_positive-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
@@ -204,14 +138,14 @@ class DashboardController extends Controller
             'lab_result_positive_in_24_hrs' => Cache::remember('lab_result_positive_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($date_to, $date_from, $hpCodes) {
                 return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)
 //                    ->whereDate('updated_at', Carbon::today())
-                    ->whereBetween('updated_at', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
+                    ->whereBetween('sample_test_date_en', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
                     ->active()->count();
             }),
             'lab_result_positive_in_24_hrs_antigen' => Cache::remember('lab_result_positive_in_24_hrs_antigen-' . auth()->user()->token, 60 * 60, function () use ($date_to, $date_from, $hpCodes) {
                 return SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '2')
                     ->where('result', 3)
 //                    ->whereDate('updated_at', Carbon::today())
-                    ->whereBetween('updated_at', array($date_from->toDateTimeString(), $date_to->toDateTimeString()))
+                    ->whereBetween('sample_test_date_en', array($date_from->toDateTimeString(), $date_to->toDateTimeString()))
                     ->active()->count();
             }),
             'lab_result_negative' => Cache::remember('lab_result_negative-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
@@ -227,14 +161,14 @@ class DashboardController extends Controller
             'lab_result_negative_in_24_hrs' => Cache::remember('lab_result_negative_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($date_to, $date_from, $hpCodes) {
                 return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)
 //                    ->whereDate('updated_at', Carbon::today())
-                    ->whereBetween('updated_at', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
+                    ->whereBetween('sample_test_date_en', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
                     ->active()->count();
             }),
             'lab_result_negative_in_24_hrs_antigen' => Cache::remember('lab_result_negative_in_24_hrs_antigen-' . auth()->user()->token, 60 * 60, function () use ($date_to, $date_from, $hpCodes) {
                 return SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '2')
                     ->where('result', 4)
 //                    ->whereDate('updated_at', Carbon::today())
-                    ->whereBetween('updated_at', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
+                    ->whereBetween('sample_test_date_en', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
                     ->active()->count();
             }),
 
