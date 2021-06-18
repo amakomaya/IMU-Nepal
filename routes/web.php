@@ -470,29 +470,29 @@ Route::get('/calc-data', function(){
 //            }
 //    });
 
-    \App\Models\SampleCollection::whereNull('collection_date_en')->get()
-        ->map(function ($item){
-                    $item->collection_date_en = $item->created_at->toDateString();
-                    $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
-                    $item->collection_date_en = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-                    $item->update();
-        });
+//    \App\Models\SampleCollection::whereNull('collection_date_en')->get()
+//        ->map(function ($item){
+//                    $item->collection_date_en = $item->created_at->toDateString();
+//                    $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
+//                    $item->collection_date_en = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
+//                    $item->update();
+//        });
 //
-//    \App\Models\SampleCollection::whereNotNull('lab_token')->get()->map(function ($item){
-//       $lab_token = \App\Models\LabTest::where('sample_token', $item->token)->first();
-//       if($lab_token){
-//           $item->received_by = $lab_token->checked_by;
-//           $item->received_by_hp_code = $lab_token->hp_code;
-//           $item->received_date_en = $lab_token->sample_recv_date;
-//           $item->received_date_np = $lab_token->sample_recv_date;
-//           $item->sample_test_date_en = $lab_token->sample_test_date;
-//           $item->sample_test_date_np = $lab_token->sample_test_date;
-//           $item->sample_test_time = $lab_token->sample_test_time;
-//           $item->lab_token = $lab_token->token;
-//           $item->save();
-//       }
-//    });
-//
+    \App\Models\SampleCollection::whereNotNull('lab_token')->get()->map(function ($item){
+       $lab_token = \App\Models\LabTest::where('sample_token', $item->token)->first();
+       if($lab_token){
+           $item->received_by = $lab_token->checked_by;
+           $item->received_by_hp_code = $lab_token->hp_code;
+           $item->received_date_en = $lab_token->sample_recv_date;
+           $item->received_date_np = $lab_token->sample_recv_date;
+           $item->sample_test_date_en = $lab_token->sample_test_date;
+           $item->sample_test_date_np = $lab_token->sample_test_date;
+           $item->sample_test_time = $lab_token->sample_test_time;
+           $item->lab_token = $lab_token->token;
+           $item->save();
+       }
+    });
+
 //    \App\Models\SuspectedCaseOld::whereDate('created_at', '<', Carbon::parse('2019-01-01'))->get()
 //        ->map(function ($item){
 //            $item->created_at = $item->updated_at;
