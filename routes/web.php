@@ -6,6 +6,7 @@ use App\Models\HealthProfessional;
 use App\Models\Municipality;
 use App\Models\SuspectedCase;
 use App\Reports\FilterRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -413,3 +414,29 @@ Route::get('admin/get-org-rep', function (Request $request){
 });
 
 Route::get('/admin/bulk-upload', 'Backend\BulkUploadController@list')->name('bulk.upload');
+
+
+
+Route::get('/calc-data', function(){
+   SuspectedCase::whereDate('created_at', '<', Carbon::parse('2019-01-01'))->get()
+        ->map(function ($item){
+            $item->created_at = $item->updated_at;
+            $item->register_date_en = $item->updated_at->toDateString();
+            $item->update();
+        });
+
+    SuspectedCase::whereNull('register_date_en')->get()
+        ->map(function ($item){
+        $item->register_date_en = $item->created_at->toDateString();
+        $item->update();
+    });
+
+    SuspectedCase::whereDate('register_date_en', '>=', Carbon::now())->get()
+        ->map(function ($item){
+            $item->register_date_en = $item->created_at->toDateString();
+            $item->update();
+        });
+
+
+    return 'success';
+});
