@@ -307,7 +307,8 @@ class ExtCaseController extends Controller
 
     private function ad2bs($date){
         try{
-            $date_en_array = explode("-", $date);
+            $parse_date = Carbon::parse($date)->toDateString();
+            $date_en_array = explode("-", $parse_date);
             return Calendar::eng_to_nep($date_en_array[0], $date_en_array[1], $date_en_array[2])->getYearMonthDay();
         }catch (\Exception $e){
             return '';
