@@ -19,4 +19,9 @@ class ContactTracing extends Model
     {
         return $this->hasOne('App\Models\ContactDetail', 'contact_tracing_token', 'token');
     }
+
+    public function contactFollowUp()
+    {
+        return $this->hasOne('App\Models\ContactFollowUp', 'contact_token', 'token');
+    }
 }
