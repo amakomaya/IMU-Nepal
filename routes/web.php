@@ -419,22 +419,24 @@ Route::get('/admin/bulk-upload', 'Backend\BulkUploadController@list')->name('bul
 
 
 Route::get('/calc-data', function(){
-   SuspectedCase::whereDate('created_at', '<', Carbon::parse('2019-01-01'))->get()
-        ->map(function ($item){
-            $item->created_at = $item->updated_at;
-            $item->register_date_en = $item->updated_at->toDateString();
-            $collection_date_en = explode("-", Carbon::parse($item->updated_at)->toDateString());
-            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-            $item->update();
-        });
-
-//    SuspectedCase::whereNull('register_date_en')->get()
+//   SuspectedCase::whereDate('created_at', '<', Carbon::parse('2019-01-01'))->get()
 //        ->map(function ($item){
-//            $item->register_date_en = $item->created_at->toDateString();
-//            $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
+//            $item->created_at = $item->updated_at;
+//            $item->register_date_en = $item->updated_at->toDateString();
+//            $collection_date_en = explode("-", Carbon::parse($item->updated_at)->toDateString());
 //            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
 //            $item->update();
-//    });
+//        });
+
+    \App\Models\SuspectedCase::where('age_unit', '')->update(['age_unit' => '0']);
+
+    SuspectedCase::whereNull('register_date_en')->get()
+        ->map(function ($item){
+            $item->register_date_en = $item->created_at->toDateString();
+            $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
+            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
+            $item->update();
+    });
 //
 //    SuspectedCase::whereDate('register_date_en', '>=', Carbon::now())->get()
 //        ->map(function ($item){
@@ -498,6 +500,7 @@ Route::get('/calc-data', function(){
 //            $item->update();
 //        });
 //
+//    \App\Models\SuspectedCaseOld::where('age_unit', '')->update(['age_unit' => '0']);
 //
 //    \App\Models\SuspectedCaseOld::whereNull('register_date_en')->get()
 //        ->map(function ($item){
