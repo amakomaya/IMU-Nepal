@@ -88,43 +88,6 @@ class WomenController extends Controller
         ]);
     }
 
-    public function activePendingIndexOld(Request $request)
-    {
-        $response = FilterRequest::filter($request);
-        $hpCodes = GetHealthpostCodes::filter($response);
-
-        $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
-            ->whereIn('women.hp_code', $hpCodes)
-            ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
-            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
-            ->where('ancs.service_for', '!=', '2')
-            ->whereIn('ancs.result', [0,2])
-            ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
-            ->leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
-            ->select(
-                'women.*',
-                \DB::raw("count(ancs.id) as ancs_count"),
-                \DB::raw('(select ancs.token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
-                'ancs.created_at as ancs_created_at',
-                'ancs.updated_at as ancs_updated_at',
-                'ancs.result as ancs_result',
-                'ancs.service_for as ancs_service_for',
-                'lab_tests.token as lab_tests_token',
-                'healthposts.name as healthpost_name',
-                'municipalities.municipality_name as municipality_name',
-                'municipalities.district_name as district_name'
-            )
-            ->groupBy('women.id')
-            ->orderBy(
-                request('order_column', 'created_at'),
-                request('order_direction', 'desc')
-            )
-            ->paginate(request('limit', 100));
-        return response()->json([
-            'collection' => $woman
-        ]);
-    }
-
     public function activeAntigenPendingIndex(Request $request)
     {
         $response = FilterRequest::filter($request);
@@ -147,43 +110,6 @@ class WomenController extends Controller
                 }]);
         return response()->json([
             'collection' => $woman->advancedFilter()
-        ]);
-    }
-
-    public function activeAntigenPendingIndexOld(Request $request)
-    {
-        $response = FilterRequest::filter($request);
-        $hpCodes = GetHealthpostCodes::filter($response);
-
-        $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
-            ->whereIn('women.hp_code', $hpCodes)
-            ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
-            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
-            ->where('ancs.service_for', '2')
-            ->whereIn('ancs.result', [0,2])
-            ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
-            ->leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
-            ->select(
-                'women.*',
-                \DB::raw("count(ancs.id) as ancs_count"),
-                \DB::raw('(select ancs.token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
-                'ancs.created_at as ancs_created_at',
-                'ancs.updated_at as ancs_updated_at',
-                'ancs.result as ancs_result',
-                'ancs.service_for as ancs_service_for',
-                'lab_tests.token as lab_tests_token',
-                'healthposts.name as healthpost_name',
-                'municipalities.municipality_name as municipality_name',
-                'municipalities.district_name as district_name'
-            )
-            ->groupBy('women.id')
-            ->orderBy(
-                request('order_column', 'created_at'),
-                request('order_direction', 'desc')
-            )
-            ->paginate(request('limit', 100));
-        return response()->json([
-            'collection' => $woman
         ]);
     }
 
@@ -215,42 +141,6 @@ class WomenController extends Controller
         ]);
     }
 
-    public function passiveIndexOld(Request $request)
-    {
-        $response = FilterRequest::filter($request);
-        $hpCodes = GetHealthpostCodes::filter($response);
-
-        $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
-            ->whereIn('women.hp_code', $hpCodes)
-            ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
-            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
-            ->where('ancs.service_for', '!=', '2')
-            ->where('ancs.result', 4)
-            ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
-            ->leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
-            ->select(
-                'women.*',
-                \DB::raw("count(ancs.id) as ancs_count"),
-                \DB::raw('(select ancs.token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
-                'ancs.created_at as ancs_created_at',
-                'ancs.updated_at as ancs_updated_at',
-                'ancs.result as ancs_result',
-                'lab_tests.token as lab_tests_token',
-                'healthposts.name as healthpost_name',
-                'municipalities.municipality_name as municipality_name',
-                'municipalities.district_name as district_name'
-            )
-            ->groupBy('women.id')
-            ->orderBy(
-                request('order_column', 'created_at'),
-                request('order_direction', 'desc')
-            )
-            ->paginate(request('limit', 100));
-        return response()->json([
-            'collection' => $woman
-        ]);
-    }
-
     public function passiveAntigenIndex(Request $request)
     {
         $response = FilterRequest::filter($request);
@@ -274,43 +164,7 @@ class WomenController extends Controller
             'collection' => $woman->advancedFilter()
         ]);
     }
-
-    public function passiveAntigenIndexOld(Request $request)
-    {
-        $response = FilterRequest::filter($request);
-        $hpCodes = GetHealthpostCodes::filter($response);
-
-        $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
-            ->whereIn('women.hp_code', $hpCodes)
-            ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
-            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
-            ->where('ancs.service_for', '2')
-            ->where('ancs.result', 4)
-            ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
-            ->leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
-            ->select(
-                'women.*',
-                \DB::raw("count(ancs.id) as ancs_count"),
-                \DB::raw('(select ancs.token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
-                'ancs.created_at as ancs_created_at',
-                'ancs.updated_at as ancs_updated_at',
-                'ancs.result as ancs_result',
-                'lab_tests.token as lab_tests_token',
-                'healthposts.name as healthpost_name',
-                'municipalities.municipality_name as municipality_name',
-                'municipalities.district_name as district_name'
-            )
-            ->groupBy('women.id')
-            ->orderBy(
-                request('order_column', 'created_at'),
-                request('order_direction', 'desc')
-            )
-            ->paginate(request('limit', 100));
-        return response()->json([
-            'collection' => $woman
-        ]);
-    }
-
+    
     public function positiveIndex(Request $request)
     {
         $response = FilterRequest::filter($request);
@@ -331,43 +185,6 @@ class WomenController extends Controller
                 'collection' => $woman->advancedFilter()
             ]);
         
-    }
-
-    public function positiveIndexOld(Request $request)
-    {
-        $response = FilterRequest::filter($request);
-        $hpCodes = GetHealthpostCodes::filter($response);
-//        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->pluck('woman_token');
-
-        $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
-            ->whereIn('women.hp_code', $hpCodes)
-            ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
-            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
-            ->where('ancs.service_for', '!=', '2')
-            ->where('ancs.result', 3)
-            ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
-            ->leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
-            ->select(
-                'women.*',
-                \DB::raw("count(ancs.id) as ancs_count"),
-                \DB::raw('(select ancs.token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
-                'ancs.created_at as ancs_created_at',
-                'ancs.updated_at as ancs_updated_at',
-                'ancs.result as ancs_result',
-                'lab_tests.token as lab_tests_token',
-                'healthposts.name as healthpost_name',
-                'municipalities.municipality_name as municipality_name',
-                'municipalities.district_name as district_name'
-            )
-            ->groupBy('women.id')
-            ->orderBy(
-                request('order_column', 'created_at'),
-                request('order_direction', 'desc')
-            )
-            ->paginate(request('limit', 100));
-        return response()->json([
-            'collection' => $woman
-        ]);
     }
 
     public function positiveAntigenIndex(Request $request)
@@ -392,42 +209,6 @@ class WomenController extends Controller
                 }]);
         return response()->json([
             'collection' => $woman->advancedFilter()
-        ]);
-    }
-
-    public function positiveAntigenIndexOld(Request $request)
-    {
-        $response = FilterRequest::filter($request);
-        $hpCodes = GetHealthpostCodes::filter($response);
-
-        $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
-            ->whereIn('women.hp_code', $hpCodes)
-            ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
-            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
-            ->where('ancs.service_for', '2')
-            ->where('ancs.result', 3)
-            ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
-            ->leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
-            ->select(
-                'women.*',
-                \DB::raw("count(ancs.id) as ancs_count"),
-                \DB::raw('(select ancs.token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
-                'ancs.created_at as ancs_created_at',
-                'ancs.updated_at as ancs_updated_at',
-                'ancs.result as ancs_result',
-                'lab_tests.token as lab_tests_token',
-                'healthposts.name as healthpost_name',
-                'municipalities.municipality_name as municipality_name',
-                'municipalities.district_name as district_name'
-            )
-            ->groupBy('women.id')
-            ->orderBy(
-                request('order_column', 'created_at'),
-                request('order_direction', 'desc')
-            )
-            ->paginate(request('limit', 100));
-        return response()->json([
-            'collection' => $woman
         ]);
     }
 
@@ -474,42 +255,6 @@ class WomenController extends Controller
         ]);
     }
 
-    public function labReceivedIndexOld(Request $request)
-    {
-        $response = FilterRequest::filter($request);
-        $hpCodes = GetHealthpostCodes::filter($response);
-
-        $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
-            ->whereIn('women.hp_code', $hpCodes)
-            ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
-            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
-            ->where('ancs.service_for', '!=', '2')
-            ->where('ancs.result', 9)
-            ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
-            ->leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
-            ->select(
-                'women.*',
-                \DB::raw("count(ancs.id) as ancs_count"),
-                \DB::raw('(select ancs.token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
-                'ancs.created_at as ancs_created_at',
-                'ancs.updated_at as ancs_updated_at',
-                'ancs.result as ancs_result',
-                'lab_tests.token as lab_tests_token',
-                'healthposts.name as healthpost_name',
-                'municipalities.municipality_name as municipality_name',
-                'municipalities.district_name as district_name'
-            )
-            ->groupBy('women.id')
-            ->orderBy(
-                request('order_column', 'created_at'),
-                request('order_direction', 'desc')
-            )
-            ->paginate(request('limit', 100));
-        return response()->json([
-            'collection' => $woman
-        ]);
-    }
-
     public function labReceivedAntigenIndex(Request $request)
     {
         $response = FilterRequest::filter($request);
@@ -535,52 +280,16 @@ class WomenController extends Controller
         ]);
     }
 
-    public function labReceivedAntigenIndexOld(Request $request)
-    {
-        $response = FilterRequest::filter($request);
-        $hpCodes = GetHealthpostCodes::filter($response);
-
-        $woman = \DB::connection('mysqldump')->table('women')->where('women.status', 1)
-            ->whereIn('women.hp_code', $hpCodes)
-            ->leftjoin('ancs', 'women.token', '=', 'ancs.woman_token')
-            ->leftjoin('municipalities', 'women.municipality_id', 'municipalities.id')
-            ->where('ancs.service_for', '2')
-            ->where('ancs.result', 9)
-            ->leftjoin('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
-            ->leftjoin('lab_tests', 'ancs.token', '=', 'lab_tests.sample_token')
-            ->select(
-                'women.*',
-                \DB::raw("count(ancs.id) as ancs_count"),
-                \DB::raw('(select ancs.token from ancs where women.token = ancs.woman_token order by ancs.id desc limit 1) as ancs_token'),
-                'ancs.created_at as ancs_created_at',
-                'ancs.updated_at as ancs_updated_at',
-                'ancs.result as ancs_result',
-                'lab_tests.token as lab_tests_token',
-                'healthposts.name as healthpost_name',
-                'municipalities.municipality_name as municipality_name',
-                'municipalities.district_name as district_name'
-            )
-            ->groupBy('women.id')
-            ->orderBy(
-                request('order_column', 'created_at'),
-                request('order_direction', 'desc')
-            )
-            ->paginate(request('limit', 100));
-        return response()->json([
-            'collection' => $woman
-        ]);
-    }
-
     public function labAddReceivedIndex(Request $request)
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
-        $sample_token = LabTest::where(function($q) use ($hpCodes, $user) {
+        $sample_token = SampleCollection::where(function($q) use ($hpCodes, $user) {
                 $q->where('checked_by', $user->token)
                     ->orWhereIn('hp_code', $hpCodes);
-            })->
-            where('sample_test_result', '9')->pluck('sample_token');
+            })
+            ->where('result', '9')->pluck('token');
 
         $data = SuspectedCase::active()->whereHas('ancs', function($q) use ($sample_token) {
             $q->whereIn('token', $sample_token);
@@ -598,10 +307,11 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
-        $sample_token = LabTest::where(function($q) use ($hpCodes, $user) {
-        $q->where('checked_by', $user->token)
-            ->orWhereIn('hp_code', $hpCodes);
-        })->where('sample_test_result', '3')->pluck('sample_token');
+        $sample_token = SampleCollection::where(function($q) use ($hpCodes, $user) {
+            $q->where('checked_by', $user->token)
+                ->orWhereIn('hp_code', $hpCodes);
+            })
+            ->where('result', '3')->pluck('token');
         $data = SuspectedCase::active()->whereHas('ancs', function($q) use ($sample_token) {
             $q->whereIn('token', $sample_token);
         })->withAll();
@@ -615,10 +325,10 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
-        $sample_token = LabTest::where(function($q) use ($hpCodes, $user) {
+        $sample_token = SuspectedCase::where(function($q) use ($hpCodes, $user) {
             $q->where('checked_by', $user->token)
                 ->orWhereIn('hp_code', $hpCodes);
-        })->where('sample_test_result', '4')->pluck('sample_token');
+            })->where('result', '4')->pluck('token');
         $data = SuspectedCase::active()->whereHas('ancs', function($q) use ($sample_token) {
             $q->whereIn('token', $sample_token);
         })->withAll();
