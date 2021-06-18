@@ -149,7 +149,7 @@ By Organization <span class="fa arrow"></span>
 </ul>
 </li>
 @endif
-@if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Province' || auth()->user()->role === 'province' || auth()->user()->role === 'dho' || auth()->user()->role === 'municipality' || auth()->user()->role === 'main')
+@if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Province' || auth()->user()->role === 'province' || auth()->user()->role === 'dho' || auth()->user()->role === 'municipality' || auth()->user()->role === 'main' || auth()->user()->role === 'healthpost')
 <li>
 <a href="#">
 <i class="fa fa-medkit" aria-hidden="true"></i>

@@ -24,6 +24,7 @@ use DB;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Yagiten\Nepalicalendar\Calendar;
 
 class AdminController extends Controller
 {
@@ -202,6 +203,16 @@ class AdminController extends Controller
                 $symptoms_comorbidity_specific = "";
                 $date_of_onset_of_first_symptom = "";
             }
+            $sample_recv_date_en = '';
+            if($request->sample_recv_date) {
+                $sample_recv_date_np_array = explode("-", $request->sample_recv_date);
+                $sample_recv_date_en = Calendar::nep_to_eng($sample_recv_date_np_array[0], $sample_recv_date_np_array[1], $sample_recv_date_np_array[2])->getYearMonthDay();
+            }
+            $sample_test_date_en = '';
+            if($request->sample_test_date) {
+                $sample_test_date_np_array = explode("-", $request->sample_test_date);
+                $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDay();
+            }
             try{
                 $woman_id = SuspectedCase::where('token', $request->woman_token)->first()->id;
                 SuspectedCase::where('id', $woman_id)->update([
@@ -223,12 +234,17 @@ class AdminController extends Controller
                     'symptoms' => $symptoms,
                     'symptoms_specific' => $symptoms_specific,
                     'symptoms_comorbidity' => $symptoms_comorbidity,
-                    'symptoms_comorbidity_specific' => $symptoms_comorbidity_specific,
+                    'symptoms_comorbidity_specific' => $symptoms_comorbidity_specific
                 ]);
                 
                 if($request->sample_recv_date != null && $request->remaining_token != null) {
                     SampleCollection::where('token', $request->sid)->first()->update([
-                      'result' => $request->sample_test_result
+                      'result' => $request->sample_test_result,
+                      'received_date_np' => $request->sample_recv_date,
+                      'received_date_en' => $sample_recv_date_en,
+                      'sample_test_date_np' => $request->sample_test_date,
+                      'sample_test_date_en' => $sample_test_date_en,
+                      'lab_token' => $request->lab_tests_token
                     ]);
                     $lab_id = LabTest::where('sample_token', $request->sid)->first()->id;
                     LabTest::where('id', $lab_id)->update([
@@ -236,7 +252,7 @@ class AdminController extends Controller
                         'sample_test_date' => $request->sample_test_date,
                         'sample_test_time' => $request->sample_test_time,
                         'sample_test_result' => $request->sample_test_result,
-                        'token' => $request->lab_tests_token,
+                        'token' => $request->lab_tests_token
                     ]);
                 }
 

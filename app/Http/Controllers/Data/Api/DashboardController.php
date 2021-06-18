@@ -7,6 +7,7 @@ use App\Helpers\GetHealthpostCodes;
 use App\Models\HealthProfessional;
 use App\Models\LabTest;
 use App\Models\SampleCollection;
+use App\Models\SampleCollectionOld;
 use App\Models\SuspectedCase;
 use App\Models\VaccinationRecord;
 use App\Reports\FilterRequest;
@@ -45,33 +46,36 @@ class DashboardController extends Controller
         $date_to = Carbon::now();
         if (auth()->user()->role == 'healthworker' || auth()->user()->role == 'healthpost') {
             $in_lab_received = Cache::remember('in_lab_received-' . auth()->user()->token, 60 * 60, function() use ($hpCodes) {
-                $current_data = LabTest::whereIn('hp_code', $hpCodes)->get()->count();
-                $dump_data = DB::connection('mysqldump')->table('lab_tests')->whereIn('hp_code', $hpCodes)->get()->count();
+                $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->get()->count();
+                $dump_data = SampleCollectionOld::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->get()->count();
+                // $dump_data = DB::connection('mysqldump')->table('lab_tests')->whereIn('hp_code', $hpCodes)->get()->count();
                 return $current_data + $dump_data;
             });
 
             $in_lab_received_in_24_hrs = Cache::remember('in_lab_received_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return LabTest::whereIn('hp_code', $hpCodes)->whereDate('created_at', Carbon::today())->get()->count();
+                return SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->whereDate('created_at', Carbon::today())->get()->count();
             });
 
             $in_lab_received_positive = Cache::remember('in_lab_received_positive-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                $current_data = LabTest::whereIn('hp_code', $hpCodes)->where('sample_test_result', '3')->get()->count();
-                $dump_data = DB::connection('mysqldump')->table('lab_tests')->whereIn('hp_code', $hpCodes)->where('sample_test_result', '3')->get()->count();
+                $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->where('result', '3')->get()->count();
+                $dump_data = SampleCollectionOld::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->where('result', '3')->get()->count();
+                // $dump_data = DB::connection('mysqldump')->table('lab_tests')->whereIn('hp_code', $hpCodes)->where('sample_test_result', '3')->get()->count();
                 return $current_data + $dump_data;
             });
 
             $in_lab_received_positive_in_24_hrs = Cache::remember('in_lab_received_positive_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return LabTest::whereIn('hp_code', $hpCodes)->where('sample_test_result', '3')->whereDate('updated_at', Carbon::today())->get()->count();
+                return SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->where('result', '3')->whereDate('updated_at', Carbon::today())->get()->count();
             });
 
             $in_lab_received_negative = Cache::remember('in_lab_received_negative-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                $current_data = LabTest::whereIn('hp_code', $hpCodes)->where('sample_test_result', '4')->get()->count();
-                $dump_data = DB::connection('mysqldump')->table('lab_tests')->whereIn('hp_code', $hpCodes)->where('sample_test_result', '4')->get()->count();
+                $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->where('result', '4')->get()->count();
+                $dump_data = SampleCollectionOld::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->where('result', '4')->get()->count();
+                // $dump_data = DB::connection('mysqldump')->table('lab_tests')->whereIn('hp_code', $hpCodes)->where('sample_test_result', '4')->get()->count();
                 return $current_data + $dump_data;
             });
 
             $in_lab_received_negative_in_24_hrs = Cache::remember('in_lab_received_negative_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return LabTest::whereIn('hp_code', $hpCodes)->where('sample_test_result', '4')->whereDate('updated_at', Carbon::today())->get()->count();
+                return SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->where('result', '4')->whereDate('updated_at', Carbon::today())->get()->count();
             });
         }
 
@@ -114,23 +118,32 @@ class DashboardController extends Controller
                     $inside_data[$key]['inside_antigen_negative_cases_count'] = $sample_data->where('service_for', '2')->where('result', 4)->count();
                 }
 
-                $outside_data_all = LabTest::leftjoin('ancs', 'lab_tests.sample_token', '=', 'ancs.token')
-                    ->whereIn('lab_tests.hp_code', $hpCodes)
-                    ->whereIn('lab_tests.sample_test_result', ['3','4'])
-                    ->whereIn('ancs.service_for', ['1', '2'])
-                    ->whereBetween('lab_tests.updated_at',[Carbon::now()->subDays(5)->startOfDay()->toDateTimeString(), Carbon::now()->subDays(1)->endOfDay()->toDateTimeString()])
-                    ->select('lab_tests.*', 'ancs.service_for')
+                $outside_data_all = SampleCollection::whereIn('hp_code', $hpCodes)
+                    ->whereIn('result', ['3','4'])
+                    ->whereIn('service_for', ['1', '2'])
+                    ->whereBetween('updated_at',[Carbon::now()->subDays(5)->startOfDay()->toDateTimeString(), Carbon::now()->subDays(1)->endOfDay()->toDateTimeString()])
                     ->get()
                     ->groupBy(function($d) {
                         return Carbon::parse($d->updated_at)->format('Y-m-d');
                     });
 
+                // $outside_data_all = LabTest::leftjoin('ancs', 'lab_tests.sample_token', '=', 'ancs.token')
+                //     ->whereIn('lab_tests.hp_code', $hpCodes)
+                //     ->whereIn('lab_tests.sample_test_result', ['3','4'])
+                //     ->whereIn('ancs.service_for', ['1', '2'])
+                //     ->whereBetween('lab_tests.updated_at',[Carbon::now()->subDays(5)->startOfDay()->toDateTimeString(), Carbon::now()->subDays(1)->endOfDay()->toDateTimeString()])
+                //     ->select('lab_tests.*', 'ancs.service_for')
+                //     ->get()
+                //     ->groupBy(function($d) {
+                //         return Carbon::parse($d->updated_at)->format('Y-m-d');
+                //     });
+
                 $outside_data = [];
                 foreach($outside_data_all as $key => $sample_data) {
-                    $outside_data[$key]['outside_pcr_postive_cases_count'] = $sample_data->where('service_for', '1')->where('sample_test_result', '3')->count();
-                    $outside_data[$key]['outside_pcr_negative_cases_count'] = $sample_data->where('service_for', '1')->where('sample_test_result', '4')->count();
-                    $outside_data[$key]['outside_antigen_postive_cases_count'] = $sample_data->where('service_for', '2')->where('sample_test_result', '3')->count();
-                    $outside_data[$key]['outside_antigen_negative_cases_count'] =  $sample_data->where('service_for', '2')->where('sample_test_result', '4')->count();
+                    $outside_data[$key]['outside_pcr_postive_cases_count'] = $sample_data->where('service_for', '1')->where('result', '3')->count();
+                    $outside_data[$key]['outside_pcr_negative_cases_count'] = $sample_data->where('service_for', '1')->where('result', '4')->count();
+                    $outside_data[$key]['outside_antigen_postive_cases_count'] = $sample_data->where('service_for', '2')->where('result', '3')->count();
+                    $outside_data[$key]['outside_antigen_negative_cases_count'] =  $sample_data->where('service_for', '2')->where('result', '4')->count();
                 }
 
                 $all_data = array_merge_recursive($inside_data,$outside_data);

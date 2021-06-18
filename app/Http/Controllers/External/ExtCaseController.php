@@ -127,7 +127,7 @@ class ExtCaseController extends Controller
                     'register_date_np' => $this->ad2bs($value['registered_at'])
                 ];
                 $id = OrganizationMember::where('token', $user->token)->first()->id;
-                $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
+                $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($index)->format('H:i:s'));
                 
                 $update = false;
                 $existingSampleCollection = $existingSuspectedCase = $existingLabTest = '';
@@ -307,7 +307,8 @@ class ExtCaseController extends Controller
 
     private function ad2bs($date){
         try{
-            $date_en_array = explode("-", $date);
+            $parse_date = Carbon::parse($date)->toDateString();
+            $date_en_array = explode("-", $parse_date);
             return Calendar::eng_to_nep($date_en_array[0], $date_en_array[1], $date_en_array[2])->getYearMonthDay();
         }catch (\Exception $e){
             return '';
