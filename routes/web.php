@@ -458,25 +458,25 @@ Route::get('/calc-data', function(){
 //    \App\Models\SampleCollection::whereNull('sample_type')->update(['sample_type' => '[]']);
 //    \App\Models\SampleCollection::where('sample_type', '')->update(['sample_type' => '[]']);
 //
-    \App\Models\SampleCollection::whereNull('checked_by')->get()->groupBy('hp_code')
-        ->map(function ($item, $key){
-            $org_mem = \App\Models\OrganizationMember::where('hp_code', $key)->first();
-            if($org_mem){
-                $ids = $item->pluck('id');
-                \App\Models\SampleCollection::whereIn('id', $ids)->update([
-                    'checked_by' => $org_mem->token,
-                    'checked_by_name' => $org_mem->name
-                ]);
-            }
-    });
+//    \App\Models\SampleCollection::whereNull('checked_by')->get()->groupBy('hp_code')
+//        ->map(function ($item, $key){
+//            $org_mem = \App\Models\OrganizationMember::where('hp_code', $key)->first();
+//            if($org_mem){
+//                $ids = $item->pluck('id');
+//                \App\Models\SampleCollection::whereIn('id', $ids)->update([
+//                    'checked_by' => $org_mem->token,
+//                    'checked_by_name' => $org_mem->name
+//                ]);
+//            }
+//    });
 
-//    \App\Models\SampleCollection::whereNull('collection_date_en')->get()
-//        ->map(function ($item){
-//                    $item->collection_date_en = $item->created_at->toDateString();
-//                    $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
-//                    $item->collection_date_en = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-//                    $item->update();
-//        });
+    \App\Models\SampleCollection::whereNull('collection_date_en')->get()
+        ->map(function ($item){
+                    $item->collection_date_en = $item->created_at->toDateString();
+                    $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
+                    $item->collection_date_en = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
+                    $item->update();
+        });
 //
 //    \App\Models\SampleCollection::whereNotNull('lab_token')->get()->map(function ($item){
 //       $lab_token = \App\Models\LabTest::where('sample_token', $item->token)->first();
