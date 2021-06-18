@@ -503,78 +503,16 @@ Route::get('/calc-data', function(){
        }
     });
 
-//    \App\Models\SuspectedCaseOld::whereDate('created_at', '<', Carbon::parse('2019-01-01'))->get()
-//        ->map(function ($item){
-//            $item->created_at = $item->updated_at;
-//            $item->register_date_en = $item->updated_at->toDateString();
-//            $collection_date_en = explode("-", Carbon::parse($item->updated_at)->toDateString());
-//            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-//            $item->update();
-//        });
-//
-//    \App\Models\SuspectedCaseOld::where('age_unit', '')->update(['age_unit' => '0']);
-//
-//    \App\Models\SuspectedCaseOld::whereNull('register_date_en')->get()
-//        ->map(function ($item){
-//            $item->register_date_en = $item->created_at->toDateString();
-//            $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
-//            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-//            $item->update();
-//        });
-//
-//    \App\Models\SuspectedCaseOld::whereDate('register_date_en', '>=', Carbon::now())->get()
-//        ->map(function ($item){
-//            $item->register_date_en = $item->created_at->toDateString();
-//            $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
-//            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-//            $item->update();
-//        });
-//
-//    \App\Models\SuspectedCaseOld::whereNull('register_date_np')->get()->map(function ($item){
-//        $collection_date_en = explode("-", Carbon::parse($item->register_date_en)->toDateString());
-//        $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-//        $item->update();
-//    });
-//
-//    \App\Models\SampleCollectionOld::where('service_for', '')->update(['service_for' => '1']);
-//    \App\Models\SampleCollectionOld::where('infection_type', '')->update(['infection_type' => '2']);
-//    \App\Models\SampleCollectionOld::whereNull('infection_type')->update(['infection_type' => '2']);
-//    \App\Models\SampleCollectionOld::whereNull('sample_type')->update(['sample_type' => '[]']);
-//    \App\Models\SampleCollectionOld::where('sample_type', '')->update(['sample_type' => '[]']);
+    \App\Models\SampleCollection::where('sample_test_date_en' ,'>=', Carbon::now()->addYear())
+        ->get()
+        ->map(function ($item){
+            if (!empty($item->sample_test_date_np)){
+                $sample_test_date_np = explode("-", $item->sample_test_date_np);
+                $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDay();
+            }
+            $item->sample_test_date_en = $sample_test_date_en ?? null;
+            $item->update();
+        });
 
-//    \App\Models\SampleCollectionOld::whereNull('collection_date_en')->get()
-//        ->map(function ($item){
-//            $item->collection_date_en = $item->created_at->toDateString();
-//            $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
-//            $item->collection_date_en = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-//            $item->update();
-//        });
-//
-//    \App\Models\SampleCollectionOld::whereNull('checked_by')->get()->groupBy('hp_code')
-//        ->map(function ($item, $key){
-//            $org_mem = \App\Models\OrganizationMember::where('hp_code', $key)->first();
-//            if($org_mem){
-//                $ids = $item->pluck('id');
-//                \App\Models\SampleCollectionOld::whereIn('id', $ids)->update([
-//                    'checked_by' => $org_mem->token,
-//                    'checked_by_name' => $org_mem->name
-//                ]);
-//            }
-//        });
-//
-//    \App\Models\SampleCollectionOld::whereNull('lab_token')->get()->map(function ($item){
-//        $lab_token = \App\Models\LabTestOld::where('sample_token', $item->token)->first();
-//        if($lab_token){
-//            $item->received_by = $lab_token->checked_by;
-//            $item->received_by_hp_code = $lab_token->hp_code;
-//            $item->received_date_en = $lab_token->sample_recv_date;
-//            $item->received_date_np = $lab_token->sample_recv_date;
-//            $item->sample_test_date_en = $lab_token->sample_test_date;
-//            $item->sample_test_date_np = $lab_token->sample_test_date;
-//            $item->sample_test_time = $lab_token->sample_test_time;
-//            $item->lab_token = $lab_token->token;
-//            $item->save();
-//        }
-//    });
     return 'success';
 });
