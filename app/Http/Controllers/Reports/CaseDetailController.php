@@ -92,6 +92,8 @@ class CaseDetailController extends Controller
             ])
             ->where('token', $token)
             ->first();
+
+            // dd($data->contactTracing);
         return view('backend.patient.cict_detail', compact('data'));
     }
 

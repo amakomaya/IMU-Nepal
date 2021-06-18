@@ -8,12 +8,9 @@
 @php 
     $symptoms = json_decode($data->symptoms ?? '[]');
     $symptoms = $symptoms ?? [];
-    $symptomscontactdetail= json_decode(isset($data->contactDetail) ? $data->contactDetail->symptoms : '[]', true);
-    $symptomscontactdetail = $symptomscontactdetail ?? [];
+    
     $symptomsComorbidity = json_decode(isset($data->symptoms_comorbidity) ? $data->symptoms_comorbidity : '[]', true);
     $symptomsComorbidity = $symptomsComorbidity ?? [];
-    $symptomsComorbidityContactDetail = json_decode(isset($data->contactDetail) ? $data->contactDetail->symptoms_comorbidity : '[]' , true);
-    $symptomsComorbidityContactDetail = $symptomsComorbidityContactDetail ?? [];
     $travelled_from = json_decode($data->travelled_where ?? '', true);
     $vaccineDosefirst = json_decode(isset($data->caseManagement) ? $data->caseManagement->first_source_info : '[]', true);
     $vaccineDosefirst = $vaccineDosefirst ?? [];
@@ -42,16 +39,36 @@
                 <label for="probable-case"> Probable case</label>
             </div>
             <div style="padding-left: 0.5em;">
-                <input style="padding-left: 0.5em;" type="checkbox" id="confirmed-case*" name="confirmed-case*" value="" />
+                <input style="padding-left: 0.5em;" type="checkbox" id="confirmed-case*" name="confirmed-case*" value="" checked/>
                 <label for="confirmed-case*"> Confirmed case*</label>
             </div>
 
             <p style="padding-left: 0.5em;">(*Please see Page 4 for Case Definitions)</p>
         </form>
         <div class="info">
-            <p>Date of case received by health authority [dd/mm/yyyy]: <u></u></p>
-            <p>Date of CICT initiated [dd/mm/yyyy]: <u></u></p>
-            <p>Name and Address of the reporting Institution: <u></u></p>
+            <?php
+                $case_received_date = '';
+                $cict_initiated_date = '';
+                $reporting_institution_name = '';
+                if($data->ancs) {
+                    $date_eng_array = explode("-", Carbon\Carbon::parse($data->ancs[0]->created_at)->format('Y-m-d'));
+                    $data_nep= Yagiten\Nepalicalendar\Calendar::eng_to_nep($date_eng_array[0], $date_eng_array[1], $date_eng_array[2])->getYearMonthDay();
+                    $date_nep_array = explode("-", $data_nep);
+                    $case_received_date = $date_nep_array[2] . '/'. $date_nep_array[1] . '/' . $date_nep_array[0];
+                }
+                
+                if($data->caseManagement) {
+                    $date_eng_array = explode("-", Carbon\Carbon::parse($data->caseManagement->created_at)->format('Y-m-d'));
+                    $data_nep= Yagiten\Nepalicalendar\Calendar::eng_to_nep($date_eng_array[0], $date_eng_array[1], $date_eng_array[2])->getYearMonthDay();
+                    $date_nep_array = explode("-", $data_nep);
+                    $cict_initiated_date = $date_nep_array[2] . '/'. $date_nep_array[1] . '/' . $date_nep_array[0];
+
+                    $reporting_institution_name = App\Models\Organization::where('hp_code', $data->caseManagement->hp_code)->first()->name;
+                }
+            ?>
+            <p>Date of case received by health authority: <u>{{ $case_received_date }}</u></p>
+            <p>Date of CICT initiated: <u>{{ $cict_initiated_date }}</u></p>
+            <p>Name and Address of the reporting Institution: <u>{{ $reporting_institution_name }}</u></p>
         </div>
         <section class="section-1">
             <h5>Section 1: Personal Information</h5>
@@ -61,8 +78,20 @@
                     <p>Father/mother’s name: <u></u></p>
                     <div class="date">
                         <p style="padding-right: 2em !important;">Age: <u>{{$data->age}}</u></p>
-                        <p style="padding-right: 2em !important;">years: <u></u></p>
-                        <p>months: <u></u></p>
+                        <p style="padding-right: 2em !important;">
+                            <div style="padding-left: 1em;">
+                                <input style="padding-left: 0.5em;" type="checkbox" name="age_unit" value="" @if($data->getFormatedAgeUnitAttribute() == 0) checked readonly @else disabled @endif>
+                                <label for="Years"> Years</label>
+                            </div>
+                            <div style="padding-left: 1em;">
+                                <input style="padding-left: 0.5em;" type="checkbox" name="age_unit" value="" @if($data->getFormatedAgeUnitAttribute() == 1) checked readonly @else disabled @endif>
+                                <label for="Months"> Months</label>
+                            </div>
+                            <div style="padding-left: 1em;">
+                                <input style="padding-left: 0.5em;" type="checkbox" name="age_unit" value="" @if($data->getFormatedAgeUnitAttribute() == 2) checked readonly @else disabled @endif>
+                                <label for="Unknown"> Days</label>
+                            </div>
+                        </p>
                     </div>
                     <p>Contact number: <u>{{$data->emergency_contact_one}}</u></p>
                 </div>
@@ -71,19 +100,19 @@
                     <div style="display: flex; flex-direction: row;">
                             <p>Sex:</p>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="Male" name="Male" value="" @if(isset($data->contactDetail) && $data->contactDetail->sex == 2) checked readonly @else disabled @endif>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="Male" name="Male" value="" @if($data->sex == 1) checked readonly @else disabled @endif>
                                 <label for="Male"> Male</label>
                             </div>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="Female" name="Female" value="" @if(isset($data->contactDetail) && $data->contactDetail->sex == 1) checked readonly @else disabled @endif>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="Female" name="Female" value="" @if($data->sex == 2  ) checked readonly @else disabled @endif>
                                 <label for="Female"> Female</label>
                             </div>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="Unknown" name="Unknown" value="" @if(isset($data->contactDetail) && $data->contactDetail->sex == 3) checked readonly @else disabled @endif>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="Unknown" name="Unknown" value="" @if($data->sex == 3) checked readonly @else disabled @endif>
                                 <label for="Unknown"> Unknown</label>
                             </div> 
                         </div>
-                    <p>Nationality: <u></u></p>
+                    <p>Nationality: <u>{{ $data->nationality }}</u></p>
                     <p>Alternate contact number: <u>{{$data->emergency_contact_two}}</u></p>
                 </div>
             </div>
@@ -91,7 +120,7 @@
                 <h5>Current Address</h5>
                 <table>
                     <tr>
-                        <td>Province: <u>{{$data->municipality->province_id}}</u></td>
+                        <td>Province: <u>{{$data->province->province_name}}</u></td>
                         <td colspan="2">District: <u>{{$data->municipality->district_name}}</u></td>
                     </tr>
                     <tr>
@@ -105,7 +134,7 @@
                             <p>Relationship: <u></u></p>
                         </td>
                         <td>
-                            <p>Tole/Landmark: {{$data-> tole}}</p>
+                            <p>Tole/Landmark: {{$data->tole}}</p>
                             <p>Contact no: {{$data->emergency_contact_one}}</p>
                         </td>
                     </tr>
@@ -160,79 +189,142 @@
                     <label for="no"> No <u></u></label>
                 </p>
                 <p>
-                    If answer to 2.1 or 2.2 is Yes, Date of Onset of First set of Symptoms [dd/mm/yyyy]  <u style="padding: 0 0.7em !important;">{{$data->date_of_onset_of_first_symptom}}</u> and check any and all applicable symptoms listed below:
+                    If answer to 2.1 or 2.2 is Yes, Date of Onset of First set of Symptoms  <u style="padding: 0 0.7em !important;">{{$data->date_of_onset_of_first_symptom}}</u> and check any and all applicable symptoms listed below:
                 </p>
                 <div class="list-symptoms">
-
-                    <div class="symptoms-1 col-md-4">
-                        <div>
-                            <input type="checkbox" id="Fever" name="Fever" value="t" @if(in_array(4, $symptoms)) checked @endif readonly/>
-                            <label for="Fever">Fever</label>                                           
+                    <div class="row col-md-12">
+                        <div class="symptoms-1 col-md-3">
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="1" @if(in_array(1, $symptoms)) checked @endif readonly>
+                                <label for="Pneumonia">Pneumonia</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="2" @if(in_array(2, $symptoms)) checked @endif readonly>
+                                <label for= "ARDS">ARDS</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="3" @if(in_array(3, $symptoms)) checked @endif readonly>
+                                <label for= "Influenza-like illness">Influenza-like illness</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="4" @if(in_array(4, $symptoms)) checked @endif readonly>
+                                <label for= "History of fever/chills">History of fever/chills</label>
+                            </div>
                         </div>
-                        <div>
-                            <input type="checkbox" id="muscles" name="muscles" value="" @if(in_array(13, $symptoms)) checked @endif readonly/>
-                            <label for="muscles">Pain in the muscles</label>
+                        <div class="symptoms-3 col-md-3">
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="9" @if(in_array(9, $symptoms)) checked @endif readonly>
+                                <label for= "Shortness of breath">Shortness of breath</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="10" @if(in_array(10, $symptoms)) checked @endif readonly>
+                                <label for= "Irritability/Confusion">Irritability/Confusion</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="11" @if(in_array(11, $symptoms)) checked @endif readonly>
+                                <label for= "Loss of taste">Loss of taste</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="12" @if(in_array(12, $symptoms)) checked @endif readonly>
+                                <label for= "Loss of smell">Loss of smell</label>
+                            </div>
                         </div>
-                        <div>
-                            <input type="checkbox" id="" name="" value="" readonly @if(in_array(13, $symptoms)) checked @endif readonly/>
-                            <label for="">Nausea / Vomiting / Loss of appetite </label>
+                        <div class="symptoms-5 col-md-3">
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="17" @if(in_array(17, $symptoms)) checked @endif readonly>
+                                <label for= "Diarrhea">Diarrhea</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="18" @if(in_array(18, $symptoms)) checked @endif readonly>
+                                <label for= "Nausea/vomiting">Nausea/vomiting</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="19" @if(in_array(19, $symptoms)) checked @endif readonly>
+                                <label for= "Headache">Headache</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="20" @if(in_array(20, $symptoms)) checked @endif readonly>
+                                <label for= "Pharyngeal exudate">Pharyngeal exudate</label>
+                            </div>
                         </div>
-                        <div>
-                            <input type="checkbox" id="lossoftaste" name="lossoftaste" value="" @if(in_array(11, $symptoms)) checked @endif readonly/>
-                            <label for="lossoftaste"> Recent loss of taste</label>
+                        <div class="symptoms-6 col-md-3">
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="21" @if(in_array(21, $symptoms)) checked @endif readonly>
+                                <label for= "Conjunctival injection(eye)">Conjunctival injection(eye)</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="22" @if(in_array(22, $symptoms)) checked @endif readonly>
+                                <label for= "Seizure">Seizure</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="23" @if(in_array(23, $symptoms)) checked @endif readonly>
+                                <label for= "Coma">Coma</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="24" @if(in_array(24, $symptoms)) checked @endif readonly>
+                                <label for= "Dyspnea/tachynea(DB/Fast breathing)">Dyspnea/tachynea(DB/Fast breathing)</label>
+                            </div>
                         </div>
                     </div>
-                    <div class="symptoms-2 col-md-2">
-                        <div>
-                            <input type="checkbox" id="Cough" name="Cough" value="" @if(in_array(6, $symptoms)) checked @endif readonly/>
-                            <label for="Cough"> Cough</label>
+                </div>
+                <div class="list-symptoms">
+                    <div class="row col-md-12">
+                        <div class="symptoms-2 col-md-3">
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="5" @if(in_array(5, $symptoms)) checked @endif readonly>
+                                <label for= "General weaknes">General weakness</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="6" @if(in_array(6, $symptoms)) checked @endif readonly>
+                                <label for= "Cough">Cough</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="7" @if(in_array(7, $symptoms)) checked @endif readonly>
+                                <label for= "Sore Throat">Sore Throat</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="8" @if(in_array(8, $symptoms)) checked @endif readonly>
+                                <label for= "Running nose">Running nose</label>
+                            </div>
                         </div>
-                        <div>
-                            <input type="checkbox" id="Sorethroat" name="Sorethroat" value="" @if(in_array(7, $symptoms)) checked @endif readonly/>
-                            <label for="Sorethroat"> Sore throat</label>
+                        <div class="symptoms-4 col-md-3">
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="13" @if(in_array(13, $symptoms)) checked @endif readonly>
+                                <label for= "Muscular Pain">Muscular Pain</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="14" @if(in_array(14, $symptoms)) checked @endif readonly>
+                                <label for= "Chest Pain">Chest Pain</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="15" @if(in_array(15, $symptoms)) checked @endif readonly>
+                                <label for= "Abdominal Pai">Abdominal Pain</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="16" @if(in_array(16, $symptoms)) checked @endif readonly>
+                                <label for= "Joint Pain">Joint Pain</label>
+                            </div>
                         </div>
-                        <div>
-                            <input type="checkbox" id="Diarrhoea" name="Diarrhoea" value="" @if(in_array(17, $symptoms)) checked @endif readonly/>
-                            <label for="Diarrhoea"> Diarrhoea</label>
-                        </div>
-                    </div>
-                    <div class="symptoms-3 col-md-3">
-                        <div>
-                            <input type="checkbox" id="Tiredness" name="Tiredness" value="" @if(in_array(5, $symptoms)) checked @endif readonly/>
-                            <label for="Tiredness"> General weakness/Tiredness</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="runnynose" name="runnynose" value="" @if(in_array(8, $symptoms)) checked @endif readonly/>
-                            <label for="runnynose"> Runny nose </label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="Irritability/Confusion" name="Irritability/Confusion" value="" @if(in_array(10, $symptoms)) checked @endif readonly/>
-                            <label for="Irritability/Confusion"> Irritability/Confusion</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="specify" name="specify" value="" @if(!is_null($data->symptoms_specific)) checked @endif readonly/>
-                            <label for="specify"> Others, specify: <span style="font-weight: 500 !important;">{{$data->symptoms_specific}}</span></label>
-                        </div>
-                    </div>
-                    <div class="symptoms-4 col-md-3">
-                        <div>
-                            <input type="checkbox" id="Headache" name="Headache" value="" @if(in_array(19, $symptoms)) checked @endif readonly/>
-                            <label for="Headache"> Headache</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="shortbreath" name="shortbreath" value="" @if(in_array(9, $symptoms)) checked @endif readonly/>
-                            <label for="shortbreath"> Shortness of breath</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="recent-loss-of-smell" name="recent-loss-of-smell" value="" @if(in_array(12, $symptoms)) checked @endif readonly/>
-                            <label for="recent-loss-of-smell"> Recent loss of smell</label>
+                        <div class="symptoms-7 col-md-3">
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="25" @if(in_array(25, $symptoms)) checked @endif readonly>
+                                <label for= "Abnormal lung auscultation">Abnormal lung auscultation</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="symptoms[]" value="26" @if(in_array(26, $symptoms)) checked @endif readonly>
+                                <label for= "Abnormal lung x-ray/CT scan findings">Abnormal lung x-ray/CT scan findings</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="specify" name="specify" value="" @if(!is_null($data->symptoms_specific)) checked @endif readonly/>
+                                <label for="specify"> Others, specify: <span style="font-weight: 500 !important;">{{$data->symptoms_specific}}</span></label>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <p>II. Underlying medical conditions or disease / comorbidity (check all that apply):</p>
-            <div class="comorbidity">
-            <div class="comorbidity1 col-md-6">
+            <div class="comorbidity"> 
+                <div class="comorbidity1 col-md-6">
                     <div>
                         <input type="checkbox" id="recent-loss-of-smell" name="recent-loss-of-smell" value="" @if(in_array(5, $symptomsComorbidity) || in_array(16, $symptomsComorbidity) || in_array(17, $symptomsComorbidity)) checked @endif readonly/>
                         @if(in_array(5, $symptomsComorbidity))
@@ -284,7 +376,6 @@
                 </div>
                 <div class="col-md-12">
                     <div>
-                    
                         <input type="checkbox" id="health-care" name="health-care" value="" @if(isset($data->caseManagement) && $data->caseManagement->high_exposure == 1) checked readonly @else disabled @endif/>
                         <label for="health-care"> Health Care Work (any type, level & facility, including cleaning staff)</label>
                     </div>
@@ -491,24 +582,40 @@
                                 <th>Age(Yrs)</th>
                                 <th>Sex</th>
                                 <th>Phone no.</th>
-                                <th>S.No</th>
-                                <th>Name</th>
-                                <th>Age(Yrs)</th>
-                                <th>Sex</th>
-                                <th>Ph.no</th>
                             </tr>
+                            @if(isset($data->contactTracing))
+                            <?php $householdMembers = $data->contactTracing->where('case_meet', 1); $count = 1;?>
+
+                            @foreach ($householdMembers as $key => $member)
+                            <?php
+                                if($member->gender == 1){
+                                    $gender = 'Male';
+                                }elseif($member->gender == 2){
+                                    $gender = 'Female';
+                                }elseif($member->gender == 3){
+                                    $gender = 'Other';
+                                }else{
+                                    $gender = 'N/A';
+                                }
+                            ?>
+                            <tr>
+                                <td>{{ $count++ }}</td>
+                                <td>{{ $member->name }}</td>
+                                <td>{{ $member->age }}</td>
+                                <td>{{ $gender }}</td>
+                                <td>{{ $member->emergency_contact_one }}</td>
+                            </tr>
+                            @endforeach
+                            @else
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
                             </tr>
+                            @endif
+                            
                         </table>
                     </div>
                     <div class="box-body">
@@ -541,24 +648,40 @@
                                 <th>Age(Yrs)</th>
                                 <th>Sex</th>
                                 <th>Phone no.</th>
-                                <th>S.No</th>
-                                <th>Name</th>
-                                <th>Age(Yrs)</th>
-                                <th>Sex</th>
-                                <th>Ph.no</th>
                             </tr>
+                            
+                            @if(isset($data->contactTracing))
+                            <?php $householdMembers = $data->contactTracing->where('case_meet', 2); $count = 1;?>
+
+                            @foreach ($householdMembers as $key => $member)
+                            <?php
+                                if($member->gender == 1){
+                                    $gender = 'Male';
+                                }elseif($member->gender == 2){
+                                    $gender = 'Female';
+                                }elseif($member->gender == 3){
+                                    $gender = 'Other';
+                                }else{
+                                    $gender = 'N/A';
+                                }
+                            ?>
+                            <tr>
+                                <td>{{ $count++ }}</td>
+                                <td>{{ $member->name }}</td>
+                                <td>{{ $member->age }}</td>
+                                <td>{{ $gender }}</td>
+                                <td>{{ $member->emergency_contact_one }}</td>
+                            </tr>
+                            @endforeach
+                            @else
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
                             </tr>
+                            @endif
                         </table>
                     </div>
                     <div class="box-body">
@@ -591,24 +714,41 @@
                                 <th>Age(Yrs)</th>
                                 <th>Sex</th>
                                 <th>Phone no.</th>
-                                <th>S.No</th>
-                                <th>Name</th>
-                                <th>Age(Yrs)</th>
-                                <th>Sex</th>
-                                <th>Ph.no</th>
                             </tr>
+                            
+                            @if(isset($data->contactTracing))
+                            <?php $householdMembers = $data->contactTracing->where('case_meet', 3); $count = 1;?>
+
+
+                            @foreach ($householdMembers as $key => $member)
+                            <?php
+                                if($member->gender == 1){
+                                    $gender = 'Male';
+                                }elseif($member->gender == 2){
+                                    $gender = 'Female';
+                                }elseif($member->gender == 3){
+                                    $gender = 'Other';
+                                }else{
+                                    $gender = 'N/A';
+                                }
+                            ?>
+                            <tr>
+                                <td>{{ $count++ }}</td>
+                                <td>{{ $member->name }}</td>
+                                <td>{{ $member->age }}</td>
+                                <td>{{ $gender }}</td>
+                                <td>{{ $member->emergency_contact_one }}</td>
+                            </tr>
+                            @endforeach
+                            @else
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
                             </tr>
+                            @endif
                         </table>
                     </div>
                     <div class="box-body">
@@ -825,6 +965,44 @@
                                 <th>Health / COVID Test Status</th>
                                 <th>Contact Number</th>
                             </tr>
+                            @if(isset($data->contactTracing))
+                            <?php $householdMembers = $data->contactTracing->where('case_meet', 1); $count = 1;?>
+
+                            @foreach ($householdMembers as $key => $member)
+                            <?php
+                                if($member->gender == 1){
+                                    $gender = 'Male';
+                                }elseif($member->gender == 2){
+                                    $gender = 'Female';
+                                }elseif($member->gender == 3){
+                                    $gender = 'Other';
+                                }else{
+                                    $gender = 'N/A';
+                                }
+
+                                if($member->case_relation == 1){
+                                    $relation = 'Family';
+                                }elseif($member->case_relation == 2){
+                                    $relation = 'Friend';
+                                }elseif($member->case_relation == 3){
+                                    $relation = 'Neighbour';
+                                }elseif($member->case_relation == 4){
+                                    $relation = 'Relative';
+                                }else{
+                                    $relation = 'N/A';
+                                }
+                            ?>
+                            <tr>
+                                <td>{{ $count++ }}</td>
+                                <td>{{ $member->name }}</td>
+                                <td>{{ $member->age }}</td>
+                                <td>{{ $gender }}</td>
+                                <td>{{ $relation }}</td>
+                                <td>{{ $member->contactDetail ? $member->contactDetail->test_result : '' }}</td>
+                                <td>{{ $member->emergency_contact_one }}</td>
+                            </tr>
+                            @endforeach
+                            @else
                             <tr>
                                 <td></td>
                                 <td></td>
@@ -834,6 +1012,7 @@
                                 <td></td>
                                 <td></td>
                             </tr>
+                            @endif
                         </table>
                         <b style="margin: 0.5em 0 !important;">Did the case under investigation travelled in public/ private vehicle in the reference period?</b>
                         <div>
@@ -866,6 +1045,44 @@
                                 <th>Health / COVID Test Status</th>
                                 <th>Contact Number</th>
                             </tr>
+                            @if(isset($data->contactTracing))
+                            <?php $householdMembers = $data->contactTracing->where('case_meet', 2); $count = 1;?>
+
+                            @foreach ($householdMembers as $key => $member)
+                            <?php
+                                if($member->gender == 1){
+                                    $gender = 'Male';
+                                }elseif($member->gender == 2){
+                                    $gender = 'Female';
+                                }elseif($member->gender == 3){
+                                    $gender = 'Other';
+                                }else{
+                                    $gender = 'N/A';
+                                }
+
+                                if($member->case_relation == 1){
+                                    $relation = 'Family';
+                                }elseif($member->case_relation == 2){
+                                    $relation = 'Friend';
+                                }elseif($member->case_relation == 3){
+                                    $relation = 'Neighbour';
+                                }elseif($member->case_relation == 4){
+                                    $relation = 'Relative';
+                                }else{
+                                    $relation = 'N/A';
+                                }
+                            ?>
+                            <tr>
+                                <td>{{ $count++ }}</td>
+                                <td>{{ $member->name }}</td>
+                                <td>{{ $member->age }}</td>
+                                <td>{{ $gender }}</td>
+                                <td>{{ $relation }}</td>
+                                <td>{{ $member->contactDetail ? $member->contactDetail->test_result : '' }}</td>
+                                <td>{{ $member->emergency_contact_one }}</td>
+                            </tr>
+                            @endforeach
+                            @else
                             <tr>
                                 <td></td>
                                 <td></td>
@@ -875,6 +1092,7 @@
                                 <td></td>
                                 <td></td>
                             </tr>
+                            @endif
                         </table>
                         <b style="margin: 0.5em 0 !important;">Did the case under investigation provide direct care to anyone other than household contacts above in the reference period?</b>
                         <div>
@@ -907,6 +1125,44 @@
                                 <th>Health / COVID Test Status</th>
                                 <th>Contact Number</th>
                             </tr>
+                            @if(isset($data->contactTracing))
+                            <?php $householdMembers = $data->contactTracing->where('case_meet', 3); $count = 1;?>
+
+                            @foreach ($householdMembers as $key => $member)
+                            <?php
+                                if($member->gender == 1){
+                                    $gender = 'Male';
+                                }elseif($member->gender == 2){
+                                    $gender = 'Female';
+                                }elseif($member->gender == 3){
+                                    $gender = 'Other';
+                                }else{
+                                    $gender = 'N/A';
+                                }
+
+                                if($member->case_relation == 1){
+                                    $relation = 'Family';
+                                }elseif($member->case_relation == 2){
+                                    $relation = 'Friend';
+                                }elseif($member->case_relation == 3){
+                                    $relation = 'Neighbour';
+                                }elseif($member->case_relation == 4){
+                                    $relation = 'Relative';
+                                }else{
+                                    $relation = 'N/A';
+                                }
+                            ?>
+                            <tr>
+                                <td>{{ $count++ }}</td>
+                                <td>{{ $member->name }}</td>
+                                <td>{{ $member->age }}</td>
+                                <td>{{ $gender }}</td>
+                                <td>{{ $relation }}</td>
+                                <td>{{ $member->contactDetail ? $member->contactDetail->test_result : '' }}</td>
+                                <td>{{ $member->emergency_contact_one }}</td>
+                            </tr>
+                            @endforeach
+                            @else
                             <tr>
                                 <td></td>
                                 <td></td>
@@ -916,6 +1172,7 @@
                                 <td></td>
                                 <td></td>
                             </tr>
+                            @endif
                         </table>
                         <b style="margin: 0.5em 0 !important;">Did the case travel or attend school/workplace/hospitals/health care institutions/social gathering(s) during the reference period?</b>
                         <div>
@@ -1028,15 +1285,18 @@
                 </tr>
             </table>
         </section>
+
+        @if($data->contactTracing)
+        @foreach($data->contactTracing as $keyy => $tracing)
         <div class="form-b1">
-            <h4>Form B1 - Contact Interview Form</h4>
+            <h4>Form B1 - Contact Interview Form {{ ++$keyy }}</h4>
             <table>
                 <tr>
                     <th style="background-color:#8eaadb" colspan="2">1. Case Information</th>
                 </tr>
                 <tr>
                     <td class="col-md-6">
-                        <b>Name of the Case: <u>{{ isset($data->contactDetail) ? $data->contactDetail->name : '' }}</u></b>
+                        <b>Name of the Case: <u>{{ $tracing->name }}</u></b>
                     </td>
                     <td class="col-md-6">
                         <b>EPID ID</b>
@@ -1047,23 +1307,23 @@
                 </tr>
                 <tr>
                     <td>EPID ID no</td>
-                    <td>Name: {{ isset($data->contactDetail) ? $data->contactDetail->name : ''}}</td>
+                    <td>Name: {{ $tracing->name }}</td>
                 </tr>
                 <tr>
-                    <td>Date of birth (dd/mm/yyyy)/Age <u>{{ isset($data->contactDetail) ? $data->contactDetail->age : ''}}</u></td>
+                    <td>Date of birth (dd/mm/yyyy)/Age <u>{{ $tracing->age }}</u></td>
                     <td>
                         <div style="display: flex; flex-direction: row;">
                             <p>Sex:</p>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="Male" name="Male" value="" @if(isset($data->contactDetail) && $data->contactDetail->sex == 1) checked readonly @else disabled @endif>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="Male" name="Male" value="" @if($tracing->gender == 1) checked readonly @else disabled @endif>
                                 <label for="Male"> Male</label>
                             </div>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="Female" name="Female" value="" @if($data->sex == 2) checked readonly @else disabled @endif>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="Female" name="Female" value="" @if($tracing->gender == 2) checked readonly @else disabled @endif>
                                 <label for="Female"> Female</label>
                             </div>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="Unknown" name="Unknown" value="" @if($data->sex == 3) checked readonly @else disabled @endif>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="Unknown" name="Unknown" value="" @if($tracing->gender == 3) checked readonly @else disabled @endif>
                                 <label for="Unknown"> Unknown</label>
                             </div> 
                         </div>
@@ -1074,20 +1334,20 @@
                         <b>Nationality <u></u></b>
                     </td>
                     <td class="col-md-6">
-                        <b>Relation to the case:</b>
+                        <b>Relation to the case: <u> {{ $tracing->case_relation }}</u></b>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2">
                         <div class="col-md-6">
                             <p>Current Address: </p>
-                            <p>Province: {{ isset($data->contactDetail) ? $data->contactDetail->province_id : ''}}</p>
-                            <p>Municipality: {{ isset($data->contactDetail) ? $data->contactDetail->municipality_id : ''}}</p>
-                            <p>Tole/Landmark:{{ isset($data->contactDetail) ? $data->contactDetail->tole : ''}}</p>
+                            <p>Province: {{ $tracing->contactDetail ? $tracing->contactDetail->province_id : '' }}</p>
+                            <p>Municipality: {{ $tracing->contactDetail ? $tracing->contactDetail->municipality_id : ''}}</p>
+                            <p>Tole/Landmark:{{ $tracing->contactDetail ? $tracing->contactDetail->tole : '' }}</p>
                         </div>
                         <div class="col-md-6">
-                            <p>District: {{ isset($data->contactDetail) ? $data->contactDetail->district_id : ''}}</p>
-                            <p>Ward: {{ isset($data->contactDetail) ? $data->contactDetail->ward : ''}}</p>
+                            <p>District: {{ $tracing->contactDetail ? $tracing->contactDetail->district_id : '' }}</p>
+                            <p>Ward: {{ $tracing->contactDetail ? $tracing->contactDetail->ward : '' }}</p>
                         </div>
                     </td>
                 </tr>
@@ -1097,11 +1357,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Telephone (mobile) number: {{ isset($data->contactDetail) ? $data->contactDetail->emergency_contact_one : ''}}</td>
+                    <td>Telephone (mobile) number: {{ $tracing->contactDetail ? $tracing->contactDetail->emergency_contact_one : '' }}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td>Alternative Contact number: {{ isset($data->contactDetail) ? $data->contactDetail->emergency_contact_two : ''}}</td>
+                    <td>Alternative Contact number: {{ $tracing->contactDetail ? $tracing->contactDetail->emergency_contact_two : '' }}</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -1130,11 +1390,11 @@
                             
                                 
                                 <div style="padding-left: 1em;">
-                                    <input type="checkbox" id="yes" name="yes" value=""  @if(isset($data->contactDetail) && $data->contactDetail->symptoms_recent == 1) checked readonly @else disabled @endif/>
+                                    <input type="checkbox" id="yes" name="yes" value=""  @if(isset($tracing->contactDetail) && $tracing->contactDetail->symptoms_recent == 1) checked readonly @else disabled @endif/>
                                     <label for="yes"> Yes</label>
                                 </div>
                                 <div style="padding-left: 1em;">
-                                    <input type="checkbox" id="no" name="no" value="" @if( isset($data->contactDetail) && $data->contactDetail->symptoms_recent != 1) checked readonly @else disabled @endif/>
+                                    <input type="checkbox" id="no" name="no" value="" @if(isset($tracing->contactDetail) && $tracing->contactDetail->symptoms_recent != 1) checked readonly @else disabled @endif/>
                                     <label for="no"> No</label>  
                                 </div>
                             </div>
@@ -1161,9 +1421,16 @@
                 <tr>
                     <td colspan="2">
                         <b>If answer to 3.1 or 3.2 is Yes,</b><br>
-                        <b>Date of Onset of First set of Symptoms [dd/mm/yyyy]: {{ isset($data->contactDetail) ? $data->contactDetail->symptoms_date : ''}}</b><br>
+                        <b>Date of Onset of First set of Symptoms [dd/mm/yyyy]: {{ $tracing->contactDetail ? $tracing->contactDetail->symptoms_date : '' }}</b><br>
                         <b>Check any and all applicable symptoms listed below</b>
                         <div>
+                        <?php
+                            $symptomscontactdetail = [];
+                            if($tracing->contactDetail){
+                                $symptomscontactdetail= json_decode($tracing->contactDetail->symptoms ?? '[]', true);
+                                $symptomscontactdetail = $symptomscontactdetail ?? [];    
+                            }
+                        ?>
                         <div class=" col-md-4">
                             <div>
                                 <input type="checkbox" id="Fever" name="Fever" value="t" @if(in_array(4, $symptomscontactdetail)) checked @endif readonly/>
@@ -1210,8 +1477,8 @@
                                     <label for="Irritability/Confusion"> Irritability/Confusion</label>
                                 </div>
                                 <div>
-                                    <input type="checkbox" id="specify" name="specify" value="" @if(isset($data->contactDetail) && !is_null($data->contactDetail->symptoms_specific)) checked @endif readonly/>
-                                    <label for="specify"> Others, specify: <span style="font-weight: 500 !important;">{{ isset($data->contactDetail) ? $data->contactDetail->symptoms_specific : ''}}</span></label>
+                                    <input type="checkbox" id="specify" name="specify" value="" @if(isset($tracing->contactDetail) && !is_null($tracing->contactDetail->symptoms_specific)) checked @endif readonly/>
+                                    <label for="specify"> Others, specify: <span style="font-weight: 500 !important;">{{ isset($tracing->contactDetail) ? $tracing->contactDetail->symptoms_specific : ''}}</span></label>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -1239,6 +1506,13 @@
                 <tr>
                     <td>
                         <div class="col-md-6">
+                            <?php
+                                $symptomsComorbidityContactDetail = [];
+                                if($tracing->contactDetail) {
+                                    $symptomsComorbidityContactDetail = json_decode($tracing->contactDetail->symptoms_comorbidity ?? '[]' , true);
+                                    $symptomsComorbidityContactDetail = $symptomsComorbidityContactDetail ?? [];    
+                                }
+                            ?>
                             <div style="padding-left: 1em;">
                                 <input  style="padding-left: 0.5em;" id="recent-loss-of-smell" type="checkbox" name="recent-loss-of-smell" value="" @if(in_array(5, $symptomsComorbidityContactDetail) || in_array(16, $symptomsComorbidityContactDetail) || in_array(17, $symptomsComorbidityContactDetail)) checked @endif readonly/>
                                 @if(in_array(5, $symptomsComorbidityContactDetail))
@@ -1278,8 +1552,8 @@
                             <label for="Chronic-Kidney-Diseases"> Chronic Kidney Diseases</label>
                         </div>
                         <div style="padding-left: 1em;">
-                            <input style="padding-left: 0.5em;" id="malignancy" name="malignancy" type="checkbox" value="" @if(isset($data->contactDetail) && !is_null($data->contactDetail->symptoms_comorbidity_specific)) checked @endif readonly/>
-                            <label for="malignancy"> Others, specify: <span style="font-weight: 500 !important;">{{ isset($data->contactDetail) ? $data->contactDetail->symptoms_comorbidity_specific : ''}}</span></label>
+                            <input style="padding-left: 0.5em;" id="malignancy" name="malignancy" type="checkbox" value="" @if(isset($tracing->contactDetail) && !is_null($tracing->contactDetail->symptoms_comorbidity_specific)) checked @endif readonly/>
+                            <label for="malignancy"> Others, specify: <span style="font-weight: 500 !important;">{{ $tracing->contactDetail ? $tracing->contactDetail->symptoms_comorbidity_specific : '' }}</span></label>
                         </div>
                         </div>
                     </td>
@@ -1293,40 +1567,44 @@
                     <td>
                         <div >
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="health-worker" name="health-worker" value="">
-                                <label for="health-worker"> Health worker</label>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="health-worker" name="health-worker" value="" @if(isset($tracing->contactDetail) && $tracing->contactDetail->occupation == '1') checked @endif>
+                                <label for="health-worker"> Front Line Health Worker</label>
                             </div>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="working-with-animals" name="working-with-animals" value="">
-                                <label for="working-with-animals"> Working with animals</label>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="working-with-animals" name="working-with-animals" value="" @if(isset($tracing->contactDetail) && $tracing->contactDetail->occupation == '2') checked @endif>
+                                <label for="working-with-animals"> Doctor</label>
                             </div>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="health-lab-worker" name="health-lab-worker" value="">
-                                <label for="health-lab-worker"> Health laboratory worker</label>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="health-lab-worker" name="health-lab-worker" value="" @if(isset($tracing->contactDetail) && $tracing->contactDetail->occupation == '3') checked @endif>
+                                <label for="health-lab-worker"> Nurse</label>
                             </div>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="student-teacher" name="student-teacher" value="">
-                                <label for="student-teacher"> Student/Teacher</label>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="student-teacher" name="student-teacher" value="" @if(isset($tracing->contactDetail) && $tracing->contactDetail->occupation == '4') checked @endif>
+                                <label for="student-teacher"> Police/Army</label>
                             </div>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="security-personnel" name="security-personnel" value="">
-                                <label for="security-personnel"> Security Personnel</label>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="security-personnel" name="security-personnel" value="" @if(isset($tracing->contactDetail) && $tracing->contactDetail->occupation == '5') checked @endif>
+                                <label for="security-personnel"> Business/Industry</label>
                             </div>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="waste-management-worker" name="waste-management-worker" value="">
-                                <label for="waste-management-worker"> Waste Management Worker</label>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="waste-management-worker" name="waste-management-worker" value="" @if(isset($tracing->contactDetail) && $tracing->contactDetail->occupation == '6') checked @endif>
+                                <label for="waste-management-worker"> Teacher/Student/Education</label>
                             </div>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="hotel-resturant" name="hotel-resturant" value="">
-                                <label for="hotel-resturant"> Hotel/Restaurant/Bars</label>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="hotel-resturant" name="hotel-resturant" value="" @if(isset($tracing->contactDetail) && $tracing->contactDetail->occupation == '7') checked @endif>
+                                <label for="hotel-resturant"> Journalist</label>
                             </div>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="other-specify" name="other-specify" value="">
-                                <label for="other-specify"> Other, specify:</label>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="other-specify" name="other-specify" value="" @if(isset($tracing->contactDetail) && $tracing->contactDetail->occupation == '8') checked @endif>
+                                <label for="other-specify"> Agriculture</label>
                             </div>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="security-personnel" name="security-personnel" value="">
-                                <label for="security-personnel"> Security Personnel</label>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="security-personnel" name="security-personnel" value="" @if(isset($tracing->contactDetail) && $tracing->contactDetail->occupation == '9') checked @endif>
+                                <label for="security-personnel"> Transport/Delivery</label>
+                            </div>
+                            <div style="padding-left: 1em;">
+                                <input style="padding-left: 0.5em;" type="checkbox" id="security-personnel" name="security-personnel" value="" @if(isset($tracing->contactDetail) && $tracing->contactDetail->occupation == '10') checked @endif>
+                                <label for="security-personnel"> Other</label>
                             </div>
                             <div style="padding-left: 1em;">
                                 <p>For each occupation, please specify location or facility:  <u>___</u> </p>
@@ -1344,20 +1622,34 @@
                     <td width="50%">
                         <div>
                             <div class="col-md-2" style="padding-left: 0.5;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="yes" name="yes" value="">
+                                <input style="padding-left: 0.5em;" type="checkbox" id="yes" name="yes" value="" @if(isset($tracing->contactDetail) && $tracing->contactDetail->travelled == '0') checked @endif>
                                 <label for="yes"> Yes</label>
                             </div>
                             <div class="col-md-2" style="padding-left: 0.5;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="no" name="no" value="">
+                                <input style="padding-left: 0.5em;" type="checkbox" id="no" name="no" value="" @if(isset($tracing->contactDetail) && $tracing->contactDetail->travelled == '1') checked @endif>
                                 <label for="no"> No</label>
                             </div>
                             <div class="col-md-8" style="padding-left: 0.5;">
                                 <input style="padding-left: 0.5em;" type="checkbox" id="unknown" name="unknown" value="">
                                 <label for="unknown"> Unknown</label>
                             </div>
-                            <p>If Yes, dates of travel (dd/mm/yyyy): ___/___/___ to ___/___/___</p>
-                            <p>Mode of travel: Flight/ Public vehicle/Privatevehicle</p>
-                            <p>Place visited: <u>___</u> </p>
+                            <p>If Yes, dates of travel (dd/mm/yyyy): {{ $tracing->contactDetail ? $tracing->contactDetail->travelled_date : '' }}</p>
+                            <?php
+                                $meansOfTravelTrace = [];
+                                if($tracing->contactDetail) {
+                                    $meansOfTravelTrace = json_decode($tracing->contactDetail->travel_medium ?? '[]', true);
+                                    $meansOfTravelTrace = $meansOfTravelTrace ?? [];
+                                }
+                            ?>
+                            <p>Mode of travel: 
+                                {{-- Flight/ Public vehicle/Privatevehicle --}}
+                                @if(in_array(1, $meansOfTravelTrace))Air, @endif
+                                @if(in_array(2, $meansOfTravelTrace))Taxi, @endif
+                                @if(in_array(3, $meansOfTravelTrace))Bus/Micro, @endif
+                                @if(in_array(4, $meansOfTravelTrace))Truck, @endif
+                                @if(in_array(5, $meansOfTravelTrace))Other @endif
+                            </p>
+                            <p>Place visited: <u>{{ $tracing->contactDetail ? $tracing->contactDetail->travelled_where : '' }}</u> </p>
                         </div>
                         <div>
 
@@ -1372,18 +1664,18 @@
                     <td width="50%">
                         <div>
                             <div class="col-md-2" style="padding-left: 0.5;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="yes" name="yes" value="">
+                                <input style="padding-left: 0.5em;" type="checkbox" id="yes" name="yes" value="" @if(isset($tracing->contactDetail) && $tracing->contactDetail->event == '1') checked @endif>
                                 <label for="yes"> Yes</label>
                             </div>
                             <div class="col-md-2" style="padding-left: 0.5;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="no" name="no" value="">
+                                <input style="padding-left: 0.5em;" type="checkbox" id="no" name="no" value="" @if(isset($tracing->contactDetail) && $tracing->contactDetail->event == '2') checked @endif>
                                 <label for="no"> No</label>
                             </div>
                             <div class="col-md-8" style="padding-left: 0.5;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="unknown" name="unknown" value="">
+                                <input style="padding-left: 0.5em;" type="checkbox" id="unknown" name="unknown" value="" @if(isset($tracing->contactDetail) && $tracing->contactDetail->event == '3') checked @endif>
                                 <label for="unknown"> Unknown</label>
                             </div>
-                            <p>If Yes, dates of travel (dd/mm/yyyy): ___/___/___ to ___/___/___</p>
+                            <p>If Yes, dates of travel (dd/mm/yyyy):{{ $tracing->contactDetail ? $tracing->contactDetail->event_date : '' }}</p>
                         </div>
                     </td>
                 </tr>
@@ -1395,18 +1687,18 @@
                     <td width="50%">
                         <div>
                             <div class="col-md-2" style="padding-left: 0.5;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="yes" name="yes" value="">
+                                <input style="padding-left: 0.5em;" type="checkbox" id="yes" name="yes" value="" @if($tracing->contactDetail && $tracing->contactDetail->event == '1') checked @endif>
                                 <label for="yes"> Yes</label>
                             </div>
                             <div class="col-md-2" style="padding-left: 0.5;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="no" name="no" value="">
+                                <input style="padding-left: 0.5em;" type="checkbox" id="no" name="no" value="" @if($tracing->contactDetail && $tracing->contactDetail->event == '2') checked @endif>
                                 <label for="no"> No</label>
                             </div>
                             <div class="col-md-8" style="padding-left: 0.5;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="unknown" name="unknown" value="">
+                                <input style="padding-left: 0.5em;" type="checkbox" id="unknown" name="unknown" value="" @if($tracing->contactDetail && $tracing->contactDetail->event != '1' && $tracing->contactDetail->event != '2') checked @endif>
                                 <label for="unknown"> Unknown</label>
                             </div>
-                            <p>If Yes, dates of travel (dd/mm/yyyy): ___/___/___ to ___/___/___</p>
+                            <p>If Yes, dates of travel (dd/mm/yyyy):{{ $tracing->contactDetail ? $tracing->contactDetail->event_date : '' }}</p>
                         </div>
                     </td>
                 </tr>
@@ -1448,30 +1740,34 @@
                                 <label for="unknown"> If No, Specify <u>___</u> </label>
                             </div>
                         </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date of first contact (dd/mm/yy):</td>
+                    <td>Date of last contact (dd/mm/yy)</td>
+                </tr>
+                <tr>
+                    <td colspan="2">Any relevant narrative:</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <p class="col-md-6">Based on the exposure history, classification of the contact: </p>
+                        <div class="col-md-1" style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Close" name="Close" value="">
+                            <label for="Close"> Close</label>
+                        </div>
+                        <div class="col-md-1" style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Casual" name="Casual" value="">
+                            <label for="Casual"> Casual</label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
-        </td>
-        </tr>
-        <tr>
-            <td>Date of first contact (dd/mm/yy):</td>
-            <td>Date of last contact (dd/mm/yy)</td>
-        </tr>
-        <tr>
-            <td colspan="2">Any relevant narrative:</td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <p class="col-md-6">Based on the exposure history, classification of the contact: </p>
-                <div class="col-md-1" style="padding-left: 0.5em;">
-                    <input style="padding-left: 0.5em;" type="checkbox" id="Close" name="Close" value="">
-                    <label for="Close"> Close</label>
-                </div>
-                <div class="col-md-1" style="padding-left: 0.5em;">
-                    <input style="padding-left: 0.5em;" type="checkbox" id="Casual" name="Casual" value="">
-                    <label for="Casual"> Casual</label>
-                </div>
-            </td>
-        </tr>
-        </table>
+        @endforeach
+        @endif
+
+        
         <table style="margin-top: 1em;">
             <tbody>
             <tr>
@@ -1737,7 +2033,7 @@
                 <th colspan="2" style="background-color:#8eaadb">1. Case Information</th>
             </tr>
             <tr>
-                <td>Name of the case _____</td>
+                <td>Name of the case: <u>{{ $data->name }}</u></td>
                 <td>EPID ID ______</td>
             </tr>
         </table>
@@ -1766,6 +2062,71 @@
                 <th>Shortness of breath</th>
                 <th>Other symptoms: specify</th>
             </tr>
+            {{-- <tr>
+                <td style="text-align: center;">{{ $data->contactFollowUp ? $data->contact_with_case_day : '' }}</td>
+                <td style="text-align: center;">
+                    <p>{{ $data->contactFollowUp ? $data->follow_up_day : '' }}</p>
+                    <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
+                </td>
+                <td>{{ $data->contactFollowUp ? $data->follow_up_date : '' }}</td>
+                <td>
+                    <div style="padding-left: 0.5em;">
+                        <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
+                        <label for="none"> None</label>
+                    </div>
+                </td>
+                <td>
+                    <div style="padding-left: 0.5em;">
+                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                        <label for="Yes"> Yes</label>
+                    </div>
+                    <div style="padding-left: 0.5em;">
+                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                        <label for="No"> No</label>
+                    </div>
+                </td>
+                <td>
+                    <div style="padding-left: 0.5em;">
+                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                        <label for="Yes"> Yes</label>
+                    </div>
+                    <div style="padding-left: 0.5em;">
+                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                        <label for="No"> No</label>
+                    </div>
+                </td>
+                <td width="7%">
+                    <div style="padding-left: 0.5em;">
+                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                        <label for="Yes"> Yes</label>
+                    </div>
+                    <div style="padding-left: 0.5em;">
+                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                        <label for="No"> No</label>
+                    </div>
+                </td>
+                <td>
+                    <div style="padding-left: 0.5em;">
+                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                        <label for="Yes"> Yes</label>
+                    </div>
+                    <div style="padding-left: 0.5em;">
+                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                        <label for="No"> No</label>
+                    </div>
+                </td>
+                <td>
+                    <div style="padding-left: 0.5em;">
+                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                        <label for="Yes"> Yes</label>
+                    </div>
+                    <div style="padding-left: 0.5em;">
+                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                        <label for="No"> No</label>
+                    </div>
+                </td>
+                <td></td>
+            </tr> --}}
             <tr>
                 <td style="text-align: center;">0</td>
                 <td style="text-align: center;">

@@ -14,4 +14,9 @@ class ContactTracing extends Model
         'address', 'phone', 'checked_by', 'hp_code', 'regdev', 'status', 
         'created_at', 'updated_at', 'checked_by_name'
     ];
+
+    public function contactDetail()
+    {
+        return $this->hasOne('App\Models\ContactDetail', 'contact_tracing_token', 'token');
+    }
 }
