@@ -428,15 +428,15 @@ Route::get('/calc-data', function(){
 //            $item->update();
 //        });
 
-    \App\Models\SuspectedCase::where('age_unit', '')->update(['age_unit' => '0']);
-
-    SuspectedCase::whereNull('register_date_en')->get()
-        ->map(function ($item){
-            $item->register_date_en = $item->created_at->toDateString();
-            $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
-            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-            $item->update();
-    });
+//    \App\Models\SuspectedCase::where('age_unit', '')->update(['age_unit' => '0']);
+//
+//    SuspectedCase::whereNull('register_date_en')->get()
+//        ->map(function ($item){
+//            $item->register_date_en = $item->created_at->toDateString();
+//            $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
+//            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
+//            $item->update();
+//    });
 //
 //    SuspectedCase::whereDate('register_date_en', '>=', Carbon::now())->get()
 //        ->map(function ($item){
@@ -451,10 +451,12 @@ Route::get('/calc-data', function(){
 //        $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
 //        $item->update();
 //    });
-//
-//    \App\Models\SampleCollection::where('service_for', '')->update(['service_for' => '1']);
-//    \App\Models\SampleCollection::where('infection_type', '')->update(['infection_type' => '2']);
-//    \App\Models\SampleCollection::whereNull('sample_type')->update(['sample_type' => '[1]']);
+
+    \App\Models\SampleCollection::where('service_for', '')->update(['service_for' => '1']);
+    \App\Models\SampleCollection::where('infection_type', '')->update(['infection_type' => '2']);
+    \App\Models\SampleCollection::whereNull('infection_type')->update(['infection_type' => '2']);
+    \App\Models\SampleCollection::whereNull('sample_type')->update(['sample_type' => '[]']);
+    \App\Models\SampleCollection::where('sample_type', '')->update(['sample_type' => '[]']);
 //
 //    \App\Models\SampleCollection::whereNull('checked_by')->get()->groupBy('hp_code')
 //        ->map(function ($item, $key){
@@ -526,8 +528,10 @@ Route::get('/calc-data', function(){
 //
 //    \App\Models\SampleCollectionOld::where('service_for', '')->update(['service_for' => '1']);
 //    \App\Models\SampleCollectionOld::where('infection_type', '')->update(['infection_type' => '2']);
-//    \App\Models\SampleCollectionOld::whereNull('sample_type')->update(['sample_type' => '[1]']);
-//
+//    \App\Models\SampleCollectionOld::whereNull('infection_type')->update(['infection_type' => '2']);
+//    \App\Models\SampleCollectionOld::whereNull('sample_type')->update(['sample_type' => '[]']);
+//    \App\Models\SampleCollectionOld::where('sample_type', '')->update(['sample_type' => '[]']);
+
 //    \App\Models\SampleCollectionOld::whereNull('collection_date_en')->get()
 //        ->map(function ($item){
 //            $item->collection_date_en = $item->created_at->toDateString();
