@@ -226,16 +226,25 @@ Route::post('/v1/client-update', function (Request $request) {
 
 Route::post('/v1/client-tests', function (Request $request) {
     $data = $request->json()->all();
-        try {
-            SampleCollection::insert($data);
-        } catch (\Exception $e) {
+        // try {
+        //     SampleCollection::insert($data);
+        // } catch (\Exception $e) {
             foreach ($data as $value) {
                 try {
+                    $value['collection_date_en'] = Carbon::parse($value['created_at'])->format('Y-m-d');
+
+                    $collection_date_en = explode("-", Carbon::parse($value['created_at'])->format('Y-m-d'));
+                    $collection_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
+
+                    $value['collection_date_np'] = $collection_date_np;
+                    unset($value['created_at']);
+                    unset($value['updated_at']);
+
                     SampleCollection::create($value);
                 } catch (\Exception $e) {
-//                    return response()->json(['message' => 'Something went wrong, Please try again.']);
+                //    return response()->json(['message' => 'Something went wrong, Please try again.']);
                 }
-            }
+            // }
         }
     return response()->json(['message' => 'Data Successfully Sync']);
 });
@@ -280,11 +289,12 @@ Route::post('/v1/lab-test', function (Request $request) {
         $sample_test_date_np_array = explode("-", $value['sample_test_date']);
         $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDay();
 
-        $received_date_np = Calendar::eng_to_nep(Carbon::parse($value['created_at'])->format('Y'), Carbon::parse($value['created_at'])->format('m'), Carbon::parse($value['created_at'])->format('d'))->getYearMonthDay();
+        $received_date_en = explode("-", Carbon::parse($value['created_at'])->format('Y-m-d'));
+        $received_date_np = Calendar::eng_to_nep($received_date_en[0], $received_date_en[1], $received_date_en[2])->getYearMonthDay();
 
         try {
             if ($value['sample_test_date'] == '') {
-                $value['sample_test_result'] = 9;
+                $value['sample_test_result'] = '9';
                 LabTest::create($value);
 
                 SampleCollection::where('token', $value['sample_token'])->update([
@@ -294,8 +304,9 @@ Route::post('/v1/lab-test', function (Request $request) {
                     'sample_test_time' => $value['sample_test_time'],
                     'received_by' => $value['checked_by'],
                     'received_by_hp_code' => $value['hp_code'],
-                    'received_date_en' => $value['created_at'],
-                    'received_date_np' => $received_date_np
+                    'received_date_en' => Carbon::parse($value['created_at'])->format('Y-m-d'),
+                    'received_date_np' => $received_date_np,
+                    'lab_token' => $value['token']
                 ]);
             } else {
                 SampleCollection::where('token', $value['sample_token'])->update([
@@ -305,8 +316,9 @@ Route::post('/v1/lab-test', function (Request $request) {
                     'sample_test_time' => $value['sample_test_time'],
                     'received_by' => $value['checked_by'],
                     'received_by_hp_code' => $value['hp_code'],
-                    'received_date_en' => $value['created_at'],
-                    'received_date_np' => $received_date_np
+                    'received_date_en' => Carbon::parse($value['created_at'])->format('Y-m-d'),
+                    'received_date_np' => $received_date_np,
+                    'lab_token' => $value['token']
                 ]);
                 $find_test = LabTest::where('token', $value['token'])->first();
                 if ($find_test) {
