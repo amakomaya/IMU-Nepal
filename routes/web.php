@@ -478,49 +478,54 @@ Route::get('/calc-data', function(){
 //                    $item->update();
 //        });
 //
-    \App\Models\SampleCollection::whereNotNull('lab_token')->get()->map(function ($item){
-       $lab_token = \App\Models\LabTest::where('sample_token', $item->token)->first();
-       if($lab_token){
 
-           try{
-               $received_date_np = explode("-", $item->received_date_np);
-               $received_date_en = Calendar::nep_to_eng($received_date_np[0], $received_date_np[1], $received_date_np[2])->getYearMonthDay();
+    \App\Models\LabTest::whereNull('sample_recv_date')->get()->map(function ($item){
+        $item->sample_recv_date = $item->sample_test_date;
+        $item->update();
 
-
-               if (!empty($item->sample_test_date_np)){
-                   $sample_test_date_np = explode("-", $item->sample_test_date_np);
-                   $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDay();
-               }
-
-               $item->received_by = $lab_token->checked_by;
-               $item->received_by_hp_code = $lab_token->hp_code;
-               $item->received_date_en = $received_date_en;
-               $item->received_date_np = $lab_token->sample_recv_date;
-               $item->sample_test_date_en = $sample_test_date_en ?? null;
-               $item->sample_test_date_np = $lab_token->sample_test_date;
-               $item->sample_test_time = $lab_token->sample_test_time;
-               $item->lab_token = $lab_token->token;
-               $item->save();
-           }catch (\Exception $e){
-
-           }
-
-       }
     });
 
-    \App\Models\SampleCollection::where('sample_test_date_en' ,'>=', Carbon::now()->addYear())
-        ->get()
-        ->map(function ($item){
-            try{
-                if (!empty($item->sample_test_date_np)){
-                    $sample_test_date_np = explode("-", $item->sample_test_date_np);
-                    $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDay();
-                }
-                $item->sample_test_date_en = $sample_test_date_en ?? null;
-                $item->update();
-            }catch (\Exception $e){}
+//    \App\Models\SampleCollection::whereNotNull('lab_token')->get()->map(function ($item){
+//       $lab_token = \App\Models\LabTest::where('sample_token', $item->token)->first();
+//       if($lab_token){
+//
+//           try{
+//               $received_date_np = explode("-", $item->received_date_np);
+//               $received_date_en = Calendar::nep_to_eng($received_date_np[0], $received_date_np[1], $received_date_np[2])->getYearMonthDay();
+//
+//
+//               if (!empty($item->sample_test_date_np)){
+//                   $sample_test_date_np = explode("-", $item->sample_test_date_np);
+//                   $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDay();
+//               }
+//
+//               $item->received_by = $lab_token->checked_by;
+//               $item->received_by_hp_code = $lab_token->hp_code;
+//               $item->received_date_en = $received_date_en;
+//               $item->received_date_np = $lab_token->sample_recv_date;
+//               $item->sample_test_date_en = $sample_test_date_en ?? null;
+//               $item->sample_test_date_np = $lab_token->sample_test_date;
+//               $item->sample_test_time = $lab_token->sample_test_time;
+//               $item->lab_token = $lab_token->token;
+//               $item->save();
+//           }catch (\Exception $e){
+//
+//           }
+//
+//       }
+//    });
 
-        });
-
-    return 'success';
+//    \App\Models\SampleCollection::where('sample_test_date_en' ,'>=', Carbon::now()->addYear())
+//        ->get()
+//        ->map(function ($item){
+//            try{
+//                if (!empty($item->sample_test_date_np)){
+//                    $sample_test_date_np = explode("-", $item->sample_test_date_np);
+//                    $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDay();
+//                }
+//                $item->sample_test_date_en = $sample_test_date_en ?? null;
+//                $item->update();
+//            }catch (\Exception $e){}
+//
+//        });
 });
