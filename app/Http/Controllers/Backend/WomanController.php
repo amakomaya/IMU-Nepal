@@ -391,8 +391,8 @@ class WomanController extends Controller
         $row['registered_device'] = 'web';
         $row['register_date_en'] = Carbon::now()->format('Y-m-d');
 
-        $nep_date_array = explode("-", $row['register_date_en']);
-        $sample_row['register_date_np'] = Calendar::eng_to_nep($nep_date_array[0], $nep_date_array[1], $nep_date_array[2])->getYearMonthDay();
+        $nep_date_array = explode("-", Carbon::now()->format('Y-m-d'));
+        $row['register_date_np'] = Calendar::eng_to_nep($nep_date_array[0], $nep_date_array[1], $nep_date_array[2])->getYearMonthDay();
 
         $row['reson_for_testing'] = isset($row['reson_for_testing']) ? "[" . implode(', ', $row['reson_for_testing']) . "]" : "[]";
         unset($row['symptoms_comorbidity_trimester']);
