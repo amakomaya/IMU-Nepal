@@ -446,6 +446,14 @@ Route::get('/calc-data', function(){
 //                    $item->update();
 //        });
 //
+    \App\Models\SampleCollection::where('collection_date_en', '0000-00-00')->get()
+        ->map(function ($item){
+                    $item->collection_date_en = $item->created_at->toDateString();
+                    $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
+                    $item->collection_date_en = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
+                    $item->update();
+        });
+
 
 //        \App\Models\SampleCollection::whereDate('collection_date_en', '>=', Carbon::now()->addYear())->get()
 //        ->map(function ($item){
@@ -509,15 +517,15 @@ Route::get('/calc-data', function(){
 //            }catch (\Exception $e){}
 //        });
 
-    SuspectedCase::whereNull('register_date_en')->get()->map(function ($item){
-
-            $item->register_date_en = $item->created_at;
-            $collection_date_en = explode("-", $item->created_at->toDateString());
-            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-
-
-        $item->update();
-    });
+//    SuspectedCase::whereNull('register_date_en')->get()->map(function ($item){
+//
+//            $item->register_date_en = $item->created_at;
+//            $collection_date_en = explode("-", $item->created_at->toDateString());
+//            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
+//
+//
+//        $item->update();
+//    });
 
     return 'Success';
 
