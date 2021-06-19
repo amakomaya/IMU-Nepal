@@ -151,7 +151,6 @@ class Kernel extends ConsoleKernel
         })->dailyAt('02:00');
 //        })->everyMinute();
 
-
         $schedule->call(function (){
             SuspectedCase::where('age_unit', '')->update(['age_unit' => '0']);
             SuspectedCase::whereNull('register_date_en')->get()
@@ -161,13 +160,17 @@ class Kernel extends ConsoleKernel
                     $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
                     $item->update();
             });
+        })->everyTenMinutes();
 
+        $schedule->call(function (){
             SampleCollection::where('service_for', '')->update(['service_for' => '1']);
             SampleCollection::where('infection_type', '')->update(['infection_type' => '2']);
             SampleCollection::whereNull('infection_type')->update(['infection_type' => '2']);
             SampleCollection::whereNull('sample_type')->update(['sample_type' => '[]']);
             SampleCollection::where('sample_type', '')->update(['sample_type' => '[]']);
+        })->everyTenMinutes();
 
+        $schedule->call(function (){
             SampleCollection::whereNull('checked_by')->get()->groupBy('hp_code')
                 ->map(function ($item, $key){
                     $org_mem = \App\Models\OrganizationMember::where('hp_code', $key)->first();
@@ -179,6 +182,9 @@ class Kernel extends ConsoleKernel
                         ]);
                     }
                 });
+        })->everyThirtyMinutes();
+
+        $schedule->call(function (){
 
             SampleCollection::whereNull('collection_date_en')->get()
                 ->map(function ($item){
@@ -187,6 +193,9 @@ class Kernel extends ConsoleKernel
                     $item->collection_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
                     $item->update();
                 });
+        })->everyFifteenMinutes();
+
+        $schedule->call(function (){
 
             LabTest::whereNull('sample_recv_date')->get()->map(function ($item){
                 $item->sample_recv_date = $item->sample_test_date;
@@ -203,8 +212,11 @@ class Kernel extends ConsoleKernel
             });
 
             LabTest::where('sample_test_result', '')->update(['sample_test_result' => '9']);
+        })->everyTenMinutes();
 
-            SampleCollection::whereNull('lab_token')->get()->map(function ($item){
+            $schedule->call(function (){
+
+                SampleCollection::whereNull('lab_token')->get()->map(function ($item){
                 $lab_token = LabTest::where('sample_token', $item->token)->first();
                 if($lab_token){
 
@@ -232,9 +244,9 @@ class Kernel extends ConsoleKernel
                 }
             });
 
+            })->everyThirtyMinutes();
 
-        })->everyTenMinutes();
-    }
+        }
 
     /**
      * Register the commands for the application.
