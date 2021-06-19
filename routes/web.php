@@ -447,7 +447,7 @@ Route::get('/calc-data', function(){
 //        });
 //
 
-        SuspectedCase::whereDate('collection_date_en', '>=', Carbon::now()->addYear())->get()
+        \App\Models\SampleCollection::whereDate('collection_date_en', '>=', Carbon::now()->addYear())->get()
         ->map(function ($item){
             $item->register_date_en = $item->created_at->toDateString();
             $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
