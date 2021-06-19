@@ -214,7 +214,7 @@ class Kernel extends ConsoleKernel
             LabTest::where('sample_test_result', '')->update(['sample_test_result' => '9']);
         })->everyTenMinutes();
 
-            $schedule->call(function (){
+        $schedule->call(function (){
 
                 SampleCollection::whereNull('lab_token')->get()->map(function ($item){
                 $lab_token = LabTest::where('sample_token', $item->token)->first();
@@ -223,7 +223,6 @@ class Kernel extends ConsoleKernel
                     try{
                         $received_date_np = explode("-", $lab_token->sample_recv_date);
                         $received_date_en = Calendar::nep_to_eng($received_date_np[0], $received_date_np[1], $received_date_np[2])->getYearMonthDay();
-
 
                         if (!empty($lab_token->sample_test_date)){
                             $sample_test_date_np = explode("-", $lab_token->sample_test_date);
