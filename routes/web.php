@@ -447,13 +447,13 @@ Route::get('/calc-data', function(){
 //        });
 //
 
-        \App\Models\SampleCollection::whereDate('collection_date_en', '>=', Carbon::now()->addYear())->get()
-        ->map(function ($item){
-            $item->register_date_en = $item->created_at->toDateString();
-            $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
-            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-            $item->update();
-        });
+//        \App\Models\SampleCollection::whereDate('collection_date_en', '>=', Carbon::now()->addYear())->get()
+//        ->map(function ($item){
+//            $item->register_date_en = $item->created_at->toDateString();
+//            $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
+//            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
+//            $item->update();
+//        });
 
 //    \App\Models\LabTest::whereNull('sample_recv_date')->get()->map(function ($item){
 //        $item->sample_recv_date = $item->sample_test_date;
@@ -461,7 +461,7 @@ Route::get('/calc-data', function(){
 //
 //    });
 
-        \App\Models\LabTest::where('sample_test_result', '')->update(['sample_test_result' => '9']);
+//        \App\Models\LabTest::where('sample_test_result', '')->update(['sample_test_result' => '9']);
 
 // =================================================================================================
 //    \App\Models\SampleCollection::whereNotNull('lab_token')->get()->map(function ($item){
@@ -496,18 +496,48 @@ Route::get('/calc-data', function(){
 
     /////========================================================================================
 
-    \App\Models\SampleCollection::where('sample_test_date_en' ,'>=', Carbon::now()->addYear())
-        ->get()
-        ->map(function ($item){
-            try{
-                if (!empty($item->sample_test_date_np)){
-                    $sample_test_date_np = explode("-", $item->sample_test_date_np);
-                    $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDay();
-                }
-                $item->sample_test_date_en = $sample_test_date_en ?? null;
-                $item->update();
-            }catch (\Exception $e){}
-        });
+//    \App\Models\SampleCollection::where('sample_test_date_en' ,'>=', Carbon::now()->addYear())
+//        ->get()
+//        ->map(function ($item){
+//            try{
+//                if (!empty($item->sample_test_date_np)){
+//                    $sample_test_date_np = explode("-", $item->sample_test_date_np);
+//                    $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDay();
+//                }
+//                $item->sample_test_date_en = $sample_test_date_en ?? null;
+//                $item->update();
+//            }catch (\Exception $e){}
+//        });
+
+
+    SuspectedCase::whereNull('register_date_np')->get()->map(function ($item){
+        if(!empty($item->register_date_en)){
+            $collection_date_en = explode("-", Carbon::parse($item->register_date_en)->toDateString());
+            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
+        }
+        else{
+            $item->register_date_en = $item->created_at;
+            $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
+            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
+        }
+
+        $item->update();
+    });
+
+    SuspectedCase::where('register_date_np', '')->get()->map(function ($item){
+        if(!empty($item->register_date_en)){
+            $collection_date_en = explode("-", Carbon::parse($item->register_date_en)->toDateString());
+            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
+        }
+        else{
+            $item->register_date_en = $item->created_at;
+            $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
+            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
+        }
+    });
 
     return 'Success';
+
+
+
 });
