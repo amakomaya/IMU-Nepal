@@ -85,7 +85,10 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
               }
               $ancs = SampleCollection::where('token', $sId);
               $ancs->update([
-                'result' => $labResult
+                'result' => $labResult,
+                  'sample_test_date_en' => $date_en->toDateString(),
+                  'sample_test_date_np' => $date_np,
+                  'sample_test_time' => $sampleTestTime
               ]);
             } else {
               $error = ['patient_lab_id' => 'The patient with the given Patient Lab ID doesnot have Sample Collection record. Please create the data of the patient & try again.'];

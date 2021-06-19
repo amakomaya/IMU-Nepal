@@ -40,6 +40,9 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
         $this->enums = [
           'result' => array('positive' => '3', 'negative' => '4')
         ];
+        $this->sample_recv_date_en = Carbon::now()->format('Y-m-d');
+        $to_date_array = explode("-", Carbon::now()->format('Y-m-d'));
+        $this->sample_recv_date_np = Calendar::eng_to_nep($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay();
     }
     
     public function registerEvents(): array
@@ -106,7 +109,15 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
             return;
           }
           $ancs->update([
-            'result' => $labResult
+              'result' => $labResult,
+              'sample_test_date_en' => $date_en->toDateString(),
+              'sample_test_date_np' => $date_np,
+              'sample_test_time' => $sampleTestTime,
+              'received_by' => $this->userToken,
+              'received_by_hp_code' => $this->hpCode,
+              'received_date_en' => $this->sample_recv_date_en,
+              'received_date_np' => $this->sample_recv_date_np,
+              'lab_token' => $this->userToken.'-'.$labId
           ]);
         }
         return;

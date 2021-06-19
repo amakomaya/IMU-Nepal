@@ -36,6 +36,9 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
         $this->hpCode = $hpCode;
         $this->healthWorker = $healthWorker;
         $this->organizationType = \App\Models\Organization::where('hp_code', $hpCode)->first()->hospital_type;
+        $this->sample_recv_date_en = Carbon::now()->format('Y-m-d');
+        $to_date_array = explode("-", Carbon::now()->format('Y-m-d'));
+        $this->sample_recv_date_np = Calendar::eng_to_nep($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay();
     }
     
     public function registerEvents(): array
@@ -98,8 +101,14 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
             );
             return;
           }
-          $ancs->update([
-            'result' => 9
+
+            $ancs->update([
+            'result' => '9',
+              'received_by' => $this->userToken,
+              'received_by_hp_code' => $this->hpCode,
+              'received_date_en' => $this->sample_recv_date_en,
+              'received_date_np' => $this->sample_recv_date_np,
+              'lab_token' => $this->userToken.'-'.$labId
           ]);
         }
         return;

@@ -473,6 +473,10 @@ class WomanController extends Controller
         $row['status'] = 1;
         $row['result'] = 2;
         $row['sample_identification_type'] = 'unique_id';
+        $row['collection_date_en'] = Carbon::now()->format('Y-m-d');
+        $nep_date_array = explode("-", Carbon::now()->format('Y-m-d'));
+        $row['collection_date_np'] = Calendar::eng_to_nep($nep_date_array[0], $nep_date_array[1], $nep_date_array[2])->getYearMonthDay();
+
         switch (auth()->user()->role) {
             case 'healthpost':
                 $healthpost = Organization::where('token', auth()->user()->token)->first();
