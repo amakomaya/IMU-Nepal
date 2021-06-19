@@ -438,19 +438,11 @@ Route::get('/calc-data', function(){
 //            }
 //    });
 
-//    \App\Models\SampleCollection::whereNull('collection_date_en')->get()
-//        ->map(function ($item){
-//                    $item->collection_date_en = $item->created_at->toDateString();
-//                    $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
-//                    $item->collection_date_en = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-//                    $item->update();
-//        });
-//
-    \App\Models\SampleCollection::where('collection_date_en', '0000-00-00')->get()
+    \App\Models\SampleCollection::whereNull('collection_date_en')->get()
         ->map(function ($item){
                     $item->collection_date_en = $item->created_at->toDateString();
                     $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
-                    $item->collection_date_en = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
+                    $item->collection_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
                     $item->update();
         });
 
