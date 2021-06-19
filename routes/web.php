@@ -419,38 +419,6 @@ Route::get('/admin/bulk-upload', 'Backend\BulkUploadController@list')->name('bul
 
 
 Route::get('/calc-data', function(){
-//   SuspectedCase::whereDate('created_at', '<', Carbon::parse('2019-01-01'))->get()
-//        ->map(function ($item){
-//            $item->created_at = $item->updated_at;
-//            $item->register_date_en = $item->updated_at->toDateString();
-//            $collection_date_en = explode("-", Carbon::parse($item->updated_at)->toDateString());
-//            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-//            $item->update();
-//        });
-
-//    \App\Models\SuspectedCase::where('age_unit', '')->update(['age_unit' => '0']);
-//
-//    SuspectedCase::whereNull('register_date_en')->get()
-//        ->map(function ($item){
-//            $item->register_date_en = $item->created_at->toDateString();
-//            $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
-//            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-//            $item->update();
-//    });
-//
-//    SuspectedCase::whereDate('register_date_en', '>=', Carbon::now())->get()
-//        ->map(function ($item){
-//            $item->register_date_en = $item->created_at->toDateString();
-//            $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
-//            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-//            $item->update();
-//        });
-//
-//    SuspectedCase::whereNull('register_date_np')->get()->map(function ($item){
-//        $collection_date_en = explode("-", Carbon::parse($item->register_date_en)->toDateString());
-//        $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-//        $item->update();
-//    });
 
 //    \App\Models\SampleCollection::where('service_for', '')->update(['service_for' => '1']);
 //    \App\Models\SampleCollection::where('infection_type', '')->update(['infection_type' => '2']);
@@ -479,6 +447,14 @@ Route::get('/calc-data', function(){
 //        });
 //
 
+        SuspectedCase::whereDate('collection_date_en', '>=', Carbon::now()->addYear())->get()
+        ->map(function ($item){
+            $item->register_date_en = $item->created_at->toDateString();
+            $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
+            $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
+            $item->update();
+        });
+
 //    \App\Models\LabTest::whereNull('sample_recv_date')->get()->map(function ($item){
 //        $item->sample_recv_date = $item->sample_test_date;
 //        $item->update();
@@ -487,50 +463,51 @@ Route::get('/calc-data', function(){
 
         \App\Models\LabTest::where('sample_test_result', '')->update(['sample_test_result' => '9']);
 
-
-    \App\Models\SampleCollection::whereNotNull('lab_token')->get()->map(function ($item){
-       $lab_token = \App\Models\LabTest::where('sample_token', $item->token)->first();
-       if($lab_token){
-
-           try{
-               $received_date_np = explode("-", $lab_token->sample_recv_date);
-               $received_date_en = Calendar::nep_to_eng($received_date_np[0], $received_date_np[1], $received_date_np[2])->getYearMonthDay();
-
-
-               if (!empty($lab_token->sample_test_date)){
-                   $sample_test_date_np = explode("-", $lab_token->sample_test_date);
-                   $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDay();
-               }
-
-               $item->received_by = $lab_token->checked_by;
-               $item->received_by_hp_code = $lab_token->hp_code;
-               $item->received_date_en = $received_date_en;
-               $item->received_date_np = $lab_token->sample_recv_date;
-               $item->sample_test_date_en = $sample_test_date_en ?? null;
-               $item->sample_test_date_np = $lab_token->sample_test_date;
-               $item->sample_test_time = $lab_token->sample_test_time;
-               $item->lab_token = $lab_token->token;
-               $item->save();
-           }catch (\Exception $e){
-
-           }
-
-       }
-    });
-
-    return 'success';
-
-//    \App\Models\SampleCollection::where('sample_test_date_en' ,'>=', Carbon::now()->addYear())
-//        ->get()
-//        ->map(function ($item){
-//            try{
-//                if (!empty($item->sample_test_date_np)){
-//                    $sample_test_date_np = explode("-", $item->sample_test_date_np);
-//                    $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDay();
-//                }
-//                $item->sample_test_date_en = $sample_test_date_en ?? null;
-//                $item->update();
-//            }catch (\Exception $e){}
+// =================================================================================================
+//    \App\Models\SampleCollection::whereNotNull('lab_token')->get()->map(function ($item){
+//       $lab_token = \App\Models\LabTest::where('sample_token', $item->token)->first();
+//       if($lab_token){
 //
-//        });
+//           try{
+//               $received_date_np = explode("-", $lab_token->sample_recv_date);
+//               $received_date_en = Calendar::nep_to_eng($received_date_np[0], $received_date_np[1], $received_date_np[2])->getYearMonthDay();
+//
+//
+//               if (!empty($lab_token->sample_test_date)){
+//                   $sample_test_date_np = explode("-", $lab_token->sample_test_date);
+//                   $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDay();
+//               }
+//
+//               $item->received_by = $lab_token->checked_by;
+//               $item->received_by_hp_code = $lab_token->hp_code;
+//               $item->received_date_en = $received_date_en;
+//               $item->received_date_np = $lab_token->sample_recv_date;
+//               $item->sample_test_date_en = $sample_test_date_en ?? null;
+//               $item->sample_test_date_np = $lab_token->sample_test_date;
+//               $item->sample_test_time = $lab_token->sample_test_time;
+//               $item->lab_token = $lab_token->token;
+//               $item->save();
+//           }catch (\Exception $e){
+//
+//           }
+//
+//       }
+//    });
+
+    /////========================================================================================
+
+    \App\Models\SampleCollection::where('sample_test_date_en' ,'>=', Carbon::now()->addYear())
+        ->get()
+        ->map(function ($item){
+            try{
+                if (!empty($item->sample_test_date_np)){
+                    $sample_test_date_np = explode("-", $item->sample_test_date_np);
+                    $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDay();
+                }
+                $item->sample_test_date_en = $sample_test_date_en ?? null;
+                $item->update();
+            }catch (\Exception $e){}
+        });
+
+    return 'Success';
 });
