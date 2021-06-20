@@ -40,9 +40,8 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
         $this->enums = [
           'result' => array('positive' => '3', 'negative' => '4')
         ];
-        $this->sample_recv_date_en = Carbon::now()->format('Y-m-d');
-        $to_date_array = explode("-", Carbon::now()->format('Y-m-d'));
-        $this->sample_recv_date_np = Calendar::eng_to_nep($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay();
+        $this->todayDateEn = Carbon::now();
+        $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();
     }
     
     public function registerEvents(): array
@@ -59,12 +58,10 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
         if(!array_filter($row)) { return null;} //Ignore empty rows.
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
-        $date_en = Carbon::now();
-        $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
         $sId = $row['sid'];
         $labId = $row['patient_lab_id'];
         $labResult = $row['result'];
-        $sampleTestTime = $date_en->format('g : i A');
+        $sampleTestTime = $this->todayDateEn->format('g : i A');
         $ancs = $this->getAncsBySid($sId);
         if(!$ancs) {
           $error = ['sid' => 'The patient with the given Sample ID couldnot be found. Please create the data of the patient & try again.'];
@@ -90,8 +87,8 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
               'token' => $this->userToken.'-'.$labId,
               'hp_code' => $this->hpCode,
               'status' => 1,
-              'sample_recv_date' =>  $date_np,
-              'sample_test_date' => $date_np,
+              'sample_recv_date' =>  $this->todayDateNp,
+              'sample_test_date' => $this->todayDateNp,
               'sample_test_time' => $sampleTestTime,
               'sample_test_result' => $labResult,
               'checked_by' => $this->userToken,
@@ -110,13 +107,13 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
           }
           $ancs->update([
               'result' => $labResult,
-              'sample_test_date_en' => $date_en->toDateString(),
-              'sample_test_date_np' => $date_np,
+              'sample_test_date_en' => $this->todayDateEn,
+              'sample_test_date_np' => $this->todayDateNp,
               'sample_test_time' => $sampleTestTime,
               'received_by' => $this->userToken,
               'received_by_hp_code' => $this->hpCode,
-              'received_date_en' => $this->sample_recv_date_en,
-              'received_date_np' => $this->sample_recv_date_np,
+              'received_date_en' => $this->todayDateEn,
+              'received_date_np' => $this->todayDateNp,
               'lab_token' => $this->userToken.'-'.$labId
           ]);
         }

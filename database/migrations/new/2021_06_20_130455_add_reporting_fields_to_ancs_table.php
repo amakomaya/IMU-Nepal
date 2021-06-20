@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddRegisterDateToWomenTable extends Migration
+class AddReportingFieldsToAncsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AddRegisterDateToWomenTable extends Migration
      */
     public function up()
     {
-        Schema::table('women', function (Blueprint $table) {
-            $table->dateTime('register_date_en')->nullable();
-            $table->string('register_date_np')->nullable();
+        Schema::table('ancs', function (Blueprint $table) {
+            $table->date('reporting_date_en')->nullable();
+            $table->string('reporting_date_np', 10)->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddRegisterDateToWomenTable extends Migration
      */
     public function down()
     {
-        Schema::table('women', function (Blueprint $table) {
+        Schema::table('ancs', function (Blueprint $table) {
             //
         });
     }
