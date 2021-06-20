@@ -14,7 +14,7 @@ class AddReportingFieldsToAncsTable extends Migration
     public function up()
     {
         Schema::table('ancs', function (Blueprint $table) {
-            $table->date('reporting_date_en')->nullable();
+            $table->dateTime('reporting_date_en')->nullable();
             $table->string('reporting_date_np', 10)->nullable();
         });
     }
