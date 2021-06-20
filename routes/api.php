@@ -466,12 +466,17 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
         $sample_test_date_np_array = explode("-", $value['sample_test_date']);
         $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDay();
 
+        $reporting_date_en = explode("-", Carbon::now()->toDateString());
+        $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
+
         SampleCollection::where('token', $find_test->sample_token)
             ->update([
                 'result' => $value['sample_test_result'],
                 'sample_test_date_en' => $sample_test_date_en,
                 'sample_test_date_np' => $value['sample_test_date'],
-                'sample_test_time' => $value['sample_test_time']
+                'sample_test_time' => $value['sample_test_time'],
+                'reporting_date_en' => Carbon::now()->toDateTimeString(),
+                'reporting_date_np' => $reporting_date_np
             ]);
         if ($find_test) {
             $find_test->update([
@@ -497,6 +502,9 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
       $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDay();
       $healthWorker = OrganizationMember::where('token', $user->token)->first();
 
+      $reporting_date_en = explode("-", Carbon::now()->toDateString());
+      $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
+
       $sample_collection->update([
            'result' => $value['sample_test_result'],
            'sample_test_date_en' => $sample_test_date_en,
@@ -506,7 +514,9 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
            'received_by_hp_code' => $healthWorker->hp_code,
            'received_date_en' => $sample_test_date_en,
            'received_date_np' => $value['sample_test_date'],
-           'lab_token' => $value['token']
+           'lab_token' => $value['token'],
+          'reporting_date_en' => Carbon::now()->toDateTimeString(),
+          'reporting_date_np' => $reporting_date_np
       ]);
 
             LabTest::create([
