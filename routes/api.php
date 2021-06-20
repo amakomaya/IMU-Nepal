@@ -294,10 +294,10 @@ Route::post('/v1/lab-test', function (Request $request) {
     foreach ($data as $value) {
 
         $sample_test_date_np_array = explode("-", $value['sample_test_date']);
-        $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDay();
+        $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDayNepToEng();
 
         $received_date_en = explode("-", Carbon::parse($value['created_at'])->format('Y-m-d'));
-        $received_date_np = Calendar::eng_to_nep($received_date_en[0], $received_date_en[1], $received_date_en[2])->getYearMonthDay();
+        $received_date_np = Calendar::eng_to_nep($received_date_en[0], $received_date_en[1], $received_date_en[2])->getYearMonthDayEngToNep();
 
         $reporting_date_en = explode("-", Carbon::now()->toDateString());
         $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
