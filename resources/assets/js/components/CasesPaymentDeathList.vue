@@ -55,7 +55,7 @@ export default {
           {title: 'Age', name: 'age'},
           {title: 'Register Date', name: 'register_date_en'},
           {title: 'Date of Outcome', name: 'date_of_outcome_en'},
-          {title: 'Created At', name: 'created_at'},
+          {title: 'Created At', name: 'register_date_en'},
         ],
         filterGroups: [
           {
@@ -66,7 +66,7 @@ export default {
               {title: 'Phone Number', name: 'phone', type: 'string'},
               {title: 'Register Date', name: 'register_date_en', type: 'datetime'},
               {title: 'Date of Outcome', name: 'date_of_outcome_en', type: 'datetime'},
-              {title: 'Created Date', name: 'created_at', type: 'datetime'},
+              {title: 'Created Date', name: 'register_date_en', type: 'datetime'},
             ]
           }
         ]
