@@ -140,7 +140,7 @@ class AncDetailController extends Controller
             ->whereIn('ancs.hp_code', $hpCodes)
             ->whereIn('ancs.result', [3, 4])
             ->whereIn('healthposts.hospital_type', [2, 3])
-            ->whereBetween(\DB::raw('DATE(ancs.updated_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
+            ->whereBetween(\DB::raw('DATE(ancs.sample_test_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
 
         if ($response['province_id'] !== null){
             $reports = $reports->where('healthposts.province_id', $response['province_id']);
@@ -195,7 +195,7 @@ class AncDetailController extends Controller
             //         ->orWhereIn('lab_tests.hp_code', $hpCodes);
             // })
             ->whereIn('lab_tests.sample_test_result', ['3', '4'])
-            ->whereBetween(\DB::raw('DATE(lab_tests.updated_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
+            ->whereBetween(\DB::raw('DATE(lab_tests.sample_test_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
 
 
         if ($response['province_id'] !== null){
