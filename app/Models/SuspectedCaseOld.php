@@ -54,10 +54,13 @@ class SuspectedCaseOld extends Model
         // nested
         'ancs.service_for',
         'ancs.created_at', 'ancs.token' , 'ancs.updated_at',
+        'ancs.collection_date_en',
+        'ancs.received_date_en',
+        'ancs.sample_test_date_en'
     ];
     protected $appends = ['formated_age_unit', 'formated_gender'];
     // protected $appends = ['anc_with_protocol', 'anc_visits'];
-    protected $orderable = ['name', 'age', 'lmp_date_en', 'created_at'];
+    protected $orderable = ['name', 'age', 'lmp_date_en', 'created_at', 'register_date_en'];
 
     protected $supportedRelations = ['ancs', 'latestAnc', 'healthworker' ,'healthpost', 'district', 'municipality'];
 

@@ -36,9 +36,8 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
         $this->hpCode = $hpCode;
         $this->healthWorker = $healthWorker;
         $this->organizationType = \App\Models\Organization::where('hp_code', $hpCode)->first()->hospital_type;
-        $this->sample_recv_date_en = Carbon::now()->format('Y-m-d');
-        $to_date_array = explode("-", Carbon::now()->format('Y-m-d'));
-        $this->sample_recv_date_np = Calendar::eng_to_nep($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay();
+        $this->todayDateEn = Carbon::now();
+        $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();
     }
     
     public function registerEvents(): array
@@ -55,11 +54,8 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
         if(!array_filter($row)) { return null;} //Ignore empty rows.
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
-        $date_en = Carbon::now();
-        $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
         $sId = $row['sid'];
         $labId = $row['patient_lab_id'];
-        $sampleTestTime = $date_en->format('g : i A');
         $ancs = $this->getAncsBySid($sId);
         if(!$ancs) {
           $error = ['sid' => 'The patient with the given Sample ID couldnot be found. Please create the data of the patient & try again.'];
@@ -84,7 +80,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
               'token' => $this->userToken.'-'.$labId,
               'hp_code' => $this->hpCode,
               'status' => 1,
-              'sample_recv_date' =>  $date_np,
+              'sample_recv_date' =>  $this->todayDateNp,
               'sample_test_result' => '9',
               'checked_by' => $this->userToken,
               'checked_by_name' => $this->healthWorker->name,
@@ -103,11 +99,11 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
           }
 
             $ancs->update([
-            'result' => '9',
+              'result' => '9',
               'received_by' => $this->userToken,
               'received_by_hp_code' => $this->hpCode,
-              'received_date_en' => $this->sample_recv_date_en,
-              'received_date_np' => $this->sample_recv_date_np,
+              'received_date_en' => $this->todayDateEn,
+              'received_date_np' => $this->todayDateNp,
               'lab_token' => $this->userToken.'-'.$labId
           ]);
         }

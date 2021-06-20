@@ -325,7 +325,7 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
-        $sample_token = SuspectedCase::where(function($q) use ($hpCodes, $user) {
+        $sample_token = SampleCollection::where(function($q) use ($hpCodes, $user) {
             $q->where('checked_by', $user->token)
                 ->orWhereIn('hp_code', $hpCodes);
             })->where('result', '4')->pluck('token');
