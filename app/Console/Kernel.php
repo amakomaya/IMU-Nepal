@@ -16,6 +16,7 @@ use App\Models\Symptoms;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Spatie\Activitylog\Models\Activity;
+use Yagiten\Nepalicalendar\Calendar;
 
 class Kernel extends ConsoleKernel
 {
@@ -190,7 +191,7 @@ class Kernel extends ConsoleKernel
                 ->map(function ($item){
                     $item->collection_date_en = $item->created_at->toDateString();
                     $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
-                    $item->collection_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
+                    $item->collection_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDayEngToNep();
                     $item->update();
                 });
         })->everyFifteenMinutes();
@@ -200,7 +201,6 @@ class Kernel extends ConsoleKernel
             LabTest::whereNull('sample_recv_date')->get()->map(function ($item){
                 $item->sample_recv_date = $item->sample_test_date;
                 $item->update();
-
             });
 
             LabTest::where('sample_test_result', '')->update(['sample_test_result' => '9']);
@@ -208,27 +208,22 @@ class Kernel extends ConsoleKernel
             LabTest::whereNull('sample_recv_date')->get()->map(function ($item){
                 $item->sample_recv_date = $item->sample_test_date;
                 $item->update();
-
             });
 
             LabTest::where('sample_test_result', '')->update(['sample_test_result' => '9']);
         })->everyTenMinutes();
 
         $schedule->call(function (){
-
                 SampleCollection::whereNull('lab_token')->get()->map(function ($item){
                 $lab_token = LabTest::where('sample_token', $item->token)->first();
                 if($lab_token){
-
                     try{
                         $received_date_np = explode("-", $lab_token->sample_recv_date);
-                        $received_date_en = Calendar::nep_to_eng($received_date_np[0], $received_date_np[1], $received_date_np[2])->getYearMonthDay();
-
+                        $received_date_en = Calendar::nep_to_eng($received_date_np[0], $received_date_np[1], $received_date_np[2])->getYearMonthDayNepToEng();
                         if (!empty($lab_token->sample_test_date)){
                             $sample_test_date_np = explode("-", $lab_token->sample_test_date);
-                            $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDay();
+                            $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDayNepToEng();
                         }
-
                         $item->received_by = $lab_token->checked_by;
                         $item->received_by_hp_code = $lab_token->hp_code;
                         $item->received_date_en = $received_date_en;
@@ -242,11 +237,8 @@ class Kernel extends ConsoleKernel
                     }
                 }
             });
-
             })->everyThirtyMinutes();
-
         }
-
     /**
      * Register the commands for the application.
      *
