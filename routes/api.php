@@ -95,18 +95,24 @@ Route::get('/api/v1/check-by-sid-or-lab-id', function () {
 
 Route::post('/v1/client', function (Request $request) {
     $data = $request->json()->all();
-     try {
-            SuspectedCase::insert($data);
-        } catch (\Exception $e) {
-         foreach ($data as $value) {
-             try {
+    //  try {
+    //         SuspectedCase::insert($data);
+    //     } catch (\Exception $e) {
+        foreach ($data as $value) {
+            try {
 //                 $value['case_id'] = bin2hex(random_bytes(3));
-                 SuspectedCase::create($value);
-             } catch (\Exception $e) {
-//                 return response()->json(['message' => 'Something went wrong, Please try again.']);
-             }
-         }
-        }
+                    $value['register_date_en'] = Carbon::parse($value['created_at'])->format('Y-m-d');
+                    
+                    $register_date_en = explode("-", $value['register_date_en']);
+                    $register_date_np = Calendar::eng_to_nep($register_date_en[0], $register_date_en[1], $register_date_en[2])->getYearMonthDay();
+                    
+                    $value['register_date_np'] = $register_date_np;
+                    SuspectedCase::create($value);
+                } catch (\Exception $e) {
+                //                 return response()->json(['message' => 'Something went wrong, Please try again.']);
+                }
+            }
+        // }
     return response()->json(['message' => 'Data Successfully Sync']);
 });
 
