@@ -33,7 +33,7 @@
                 <td>{{ checkDistrict(item.district_id) }}</td>
                 <td>{{ checkMunicipality(item.municipality_id) }}</td>
                 <td>{{ item.ward }}</td>
-                <td>{{ ad2bs(item.created_at) }}</td>
+                <td>{{ ad2bs(item.latest_anc.sample_test_date_en) }}</td>
 
               <td><span class="label label-info"> {{ item.ancs.length }}</span>
                 <div title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
@@ -77,7 +77,7 @@
                     orderables: [
                         {title: 'Name', name: 'name'},
                         {title: 'Age', name: 'age'},
-                        {title: 'Case Created At', name: 'created_at'}
+                        {title: 'Case Created At', name: 'register_date_en'}
                     ],
                   filterGroups: [
                     {
@@ -86,20 +86,20 @@
                         {title: 'Name', name: 'name', type: 'string'},
                         {title: 'Age', name: 'age', type: 'numeric'},
                         {title: 'Phone Number', name: 'emergency_contact_one', type: 'text'},
-                        {title: 'Case Created At', name: 'created_at', type: 'datetime'},
+                        {title: 'Case Created At', name: 'register_date_en', type: 'datetime'},
                       ]
                     },
                     {
                       name: 'Swab Collection',
                       filters: [
                         {title: 'Swab ID ', name: 'ancs.token', type: 'string'},
-                        {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
+                        {title: 'Swab Created At', name: 'ancs.collection_date_en', type: 'datetime'}
                       ]
                     },
                     {
                       name: 'Lab Result',
                       filters: [
-                        {title: 'Lab Result Created At', name: 'ancs.updated_at', type: 'datetime'}
+                        {title: 'Lab Result Created At', name: 'ancs.sample_test_date_en', type: 'datetime'}
                       ]
                     }
                   ],
