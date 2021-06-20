@@ -114,7 +114,9 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
               'received_by_hp_code' => $this->hpCode,
               'received_date_en' => $this->todayDateEn,
               'received_date_np' => $this->todayDateNp,
-              'lab_token' => $this->userToken.'-'.$labId
+              'lab_token' => $this->userToken.'-'.$labId,
+              'reporting_date_en' => $this->todayDateEn,
+              'reporting_date_np' => $this->todayDateNp
           ]);
         }
         return;

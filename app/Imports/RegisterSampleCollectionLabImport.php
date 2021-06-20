@@ -143,7 +143,9 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'received_date_np' => $this->todayDateNp,
           'lab_token' => $this->userToken.'-'.$patientLabId,
           'collection_date_en' => $this->todayDateEn,
-          'collection_date_np' => $this->todayDateNp
+          'collection_date_np' => $this->todayDateNp,
+          'reporting_date_en' => $this->todayDateEn,
+          'reporting_date_np' => $this->todayDateNp
         ];
         $id = $this->healthWorker->id;
         $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber+1)->format('H:i:s'));
