@@ -135,9 +135,11 @@ Route::get('/v1/client', function (Request $request) {
         ->where('hp_code', $hp_code)
         ->where('end_case', '0')
         ->where('created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
-        ->whereHas('ancs', function($q){
-            $q->where('result', '!=', 4)
-                ->orWhere('women.created_at', '>=', Carbon::now()->subDays(2)->toDateTimeString());
+        ->where(function ($query) {
+            $query->whereHas('ancs', function($q){
+                $q->where('result', '!=', 4)
+                    ->orWhere('women.created_at', '>=', Carbon::now()->subDays(2)->toDateTimeString());
+            })->orDoesntHave('ancs');
         })
         ->get();
 
@@ -186,7 +188,7 @@ Route::get('/v1/client', function (Request $request) {
         $response['case_where'] = $row->case_where ?? '';
         $response['end_case'] = $row->end_case ?? '';
         $response['payment'] = $row->payment ?? '';
-        $response['result'] = $row->ancs ? $row->ancs->first()->result : '';
+        $response['result'] = $row->ancs->first() ? $row->ancs->first()->result : '';
 
         $response['nationality'] = $row->nationality ?? '';
         $response['id_card_detail'] = $row->id_card_detail ?? '';
@@ -238,11 +240,10 @@ Route::post('/v1/client-tests', function (Request $request) {
             foreach ($data as $value) {
                 try {
                     $value['collection_date_en'] = Carbon::parse($value['created_at'])->format('Y-m-d');
-
                     $collection_date_en = explode("-", Carbon::parse($value['created_at'])->format('Y-m-d'));
                     $collection_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-
                     $value['collection_date_np'] = $collection_date_np;
+
                     unset($value['created_at']);
                     unset($value['updated_at']);
 
@@ -298,6 +299,9 @@ Route::post('/v1/lab-test', function (Request $request) {
         $received_date_en = explode("-", Carbon::parse($value['created_at'])->format('Y-m-d'));
         $received_date_np = Calendar::eng_to_nep($received_date_en[0], $received_date_en[1], $received_date_en[2])->getYearMonthDay();
 
+        $reporting_date_en = explode("-", Carbon::now()->toDateString());
+        $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
+
         try {
             if ($value['sample_test_date'] == '') {
                 $value['sample_test_result'] = '9';
@@ -324,7 +328,9 @@ Route::post('/v1/lab-test', function (Request $request) {
                     'received_by_hp_code' => $value['hp_code'],
                     'received_date_en' => Carbon::parse($value['created_at'])->format('Y-m-d'),
                     'received_date_np' => $received_date_np,
-                    'lab_token' => $value['token']
+                    'lab_token' => $value['token'],
+                    'reporting_date_en' => Carbon::now()->toDateTimeString(),
+                    'reporting_date_np' => $reporting_date_np
                 ]);
                 $find_test = LabTest::where('token', $value['token'])->first();
                 if ($find_test) {

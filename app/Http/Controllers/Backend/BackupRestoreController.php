@@ -88,26 +88,20 @@ class BackupRestoreController extends Controller
                         
                         if ($samp_collect !== null) {
                             if($lab_data) {
-                                $data['collection_date_en'] = Carbon::parse($lab_data->created_at)->format('Y-m-d');
-    
-                                $collection_date_en = explode("-", $data['collection_date_en']);
-                                $collection_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDayEngToNep();
-    
-                                $data['collection_date_np'] = $collection_date_np;
+                                $data['received_date_en'] = Carbon::parse($data['created_at'])->format('Y-m-d');
+                                $received_date_en = explode("-", $data['received_date_en']);
+                                $received_date_np = Calendar::eng_to_nep($received_date_en[0], $received_date_en[1], $received_date_en[2])->getYearMonthDayEngToNep();
+                                $data['received_date_np'] = $received_date_np;
                             }
                             $samp_collect->update($data);
                         } else {
                             if($lab_data) {
-                                $data['register_date_en'] = Carbon::parse($data['created_at'])->format('Y-m-d');
-    
-                                $register_date_en = explode("-", $data['register_date_en']);
-                                $register_date_np = Calendar::eng_to_nep($register_date_en[0], $register_date_en[1], $register_date_en[2])->getYearMonthDayEngToNep();
-    
-                                $data['register_date_np'] = $register_date_np;
+                                $data['collection_date_en'] = Carbon::parse($lab_data->created_at)->format('Y-m-d');
+                                $collection_date_en = explode("-", $data['collection_date_en']);
+                                $collection_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDayEngToNep();
+                                $data['collection_date_np'] = $collection_date_np;
                             }
                             
-                            $value['register_date_np'] = $register_date_np;
-
                             SampleCollection::create($data);
                         }
 
