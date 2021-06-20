@@ -299,7 +299,7 @@ class ExtCaseController extends Controller
     private function bs2ad($date){
         try{
             $date_np_array = explode("-", $date);
-            return Calendar::nep_to_eng($date_np_array[0], $date_np_array[1], $date_np_array[2])->getYearMonthDay();
+            return Calendar::nep_to_eng($date_np_array[0], $date_np_array[1], $date_np_array[2])->getYearMonthDayNepToEng();
         }catch (\Exception $e){
             return '';
         }
@@ -309,7 +309,7 @@ class ExtCaseController extends Controller
         try{
             $parse_date = Carbon::parse($date)->toDateString();
             $date_en_array = explode("-", $parse_date);
-            return Calendar::eng_to_nep($date_en_array[0], $date_en_array[1], $date_en_array[2])->getYearMonthDay();
+            return Calendar::eng_to_nep($date_en_array[0], $date_en_array[1], $date_en_array[2])->getYearMonthDayEngToNep();
         }catch (\Exception $e){
             return '';
         }
