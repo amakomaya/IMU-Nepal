@@ -23,11 +23,10 @@ class SampleCollection extends Model
         'sample_case_specific', 'sample_identification_type',
         'service_type', 'result','infection_type', 'regdev',
         'created_at', 'updated_at', 'situation',
-
         'received_by', 'received_date_en', 'received_date_np', 'collection_date_en', 'collection_date_np',
         'sample_test_date_en', 'sample_test_date_np','sample_test_time', 'lab_token', 'received_by_hp_code',
-        'reporting_date_en', 'reporting_date_np'
 
+        'reporting_date_np', 'reporting_date_en'
         ];
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
