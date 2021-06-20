@@ -24,22 +24,12 @@ class DownloadablePositiveList implements FromCollection, WithHeadings
             $response = FilterRequest::filter($this->request);
             $hpCodes = GetHealthpostCodes::filter($response);
 
-//            $check_at_1330 = Carbon::parse('today 1:30pm');
-//
-//            if($check_at_1330 < Carbon::now()){
-//                // 1 pm today + current
-//                $date_from = Carbon::parse('today 1:30pm');
-//                $date_to = Carbon::now();
-//            }else{
-//                // 1pm yesterday + current
-//                $date_from = Carbon::parse('yesterday 1:30pm');
-//                $date_to = Carbon::now();
-//            }
-
             $date_from = Carbon::today()->startOfDay();
             $date_to = Carbon::now();
 
-            $tokens = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)
+            $tokens = SampleCollection::whereIn('hp_code', $hpCodes)->where(function ($q) {
+                    $q->where('result', 3)->orWhere('result', '3');
+                })
 //                ->whereDate('updated_at', Carbon::today())
                 ->whereBetween('updated_at', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
                 ->active()
