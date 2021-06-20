@@ -28,10 +28,10 @@ class DownloadablePositiveList implements FromCollection, WithHeadings
             $date_to = Carbon::now();
 
             $tokens = SampleCollection::whereIn('hp_code', $hpCodes)->where(function ($q) {
-                    $q->where('result', 3)->orWhere('result', '3');
+                    $q->where('result', 3)->orWhere('result', '0');
                 })
 //                ->whereDate('updated_at', Carbon::today())
-                ->whereBetween('updated_at', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
+                ->whereBetween('sample_test_date_en', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
                 ->active()
                 ->pluck('woman_token');
 
