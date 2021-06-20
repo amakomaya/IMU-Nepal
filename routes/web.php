@@ -445,16 +445,12 @@ Route::get('/calc-data', function(){
 
                     try{
                         $received_date_np = explode("-", $lab_token->sample_recv_date);
-
                         $received_date_en_lab = Calendar::nep_to_eng($received_date_np[0], $received_date_np[1], $received_date_np[2])->getYearMonthDayNepToEng();
-
                         $sample_test_date_en = null;
-
                         if (!empty($lab_token->sample_test_date)){
                             $sample_test_date_np = explode("-", $lab_token->sample_test_date);
                             $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDayNepToEng();
                         }
-
                         $item->received_by = $lab_token->checked_by;
                         $item->received_by_hp_code = $lab_token->hp_code;
 
@@ -463,7 +459,6 @@ Route::get('/calc-data', function(){
                         $item->received_date_np = $lab_token->sample_recv_date;
                         $item->sample_test_date_en = $sample_test_date_en;
                         $item->sample_test_date_np = $lab_token->sample_test_date;
-
 
                         $item->sample_test_time = $lab_token->sample_test_time;
                         $item->lab_token = $lab_token->token;
