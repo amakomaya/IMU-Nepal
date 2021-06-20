@@ -211,6 +211,9 @@ class ExtCaseController extends Controller
                 $singleRandomLabId = (int)$randomLabId+$index+1;
                 $lab_id = array_key_exists('lab_id', $value) && $value['lab_id']?$value['lab_id']:str_pad($singleRandomLabId, 6, '0', STR_PAD_LEFT).'-'.$randomLetter;
 
+                $reporting_date_en = explode("-", Carbon::now()->toDateString());
+                $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
+
                 $sample = [
                     'token' => $swab_id,
                     'woman_token' => $case_token,
@@ -234,8 +237,8 @@ class ExtCaseController extends Controller
                     'sample_test_time' => $value['lab_test_time'],
                     'received_by' => $healthworker->token,
                     'received_by_hp_code' => $healthworker->hp_code,
-                    'reporting_date_en' => $value['lab_test_date'],
-                    'reporting_date_np' => $this->ad2bs($value['lab_test_date'])
+                    'reporting_date_en' => Carbon::now()->toDateTimeString(),
+                    'reporting_date_np' => $reporting_date_np
                 ];
                 $lab_test = [
                     'token' => $user->token.'-'.$lab_id,
@@ -268,8 +271,8 @@ class ExtCaseController extends Controller
                       unset($sample['collection_date_en']);
                       unset($sample['collection_date_np']);
                       unset($sample['regdev']);
-                      unset($sample['reporting_date_en']);
-                      unset($sample['reporting_date_np']);
+//                      unset($sample['reporting_date_en']);
+//                      unset($sample['reporting_date_np']);
                       $existingSuspectedCase->update($case);
                       $existingSampleCollection->update($sample);
                       if($existingLabTest) {
