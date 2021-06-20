@@ -67,6 +67,8 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
           'district' => $districts,
           'municipality' => $municipalities,
         );
+        $this->todayDateEn = Carbon::now();
+        $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();
     }
     
     public function registerEvents(): array
@@ -83,8 +85,6 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
         if(!array_filter($row)) { return null;} //Ignore empty rows.
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
-        $date_en = Carbon::now();
-        $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
 
         $suspectedCase = SuspectedCase::create([
           'name' => $row['person_name'],
@@ -107,7 +107,9 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
           'swab_collection_conformation' => '1',
           'cases' => '0',
           'case_type' => '1',
-          'case_id' => $this->healthWorker->id . '-' . bin2hex(random_bytes(3))
+          'case_id' => $this->healthWorker->id . '-' . bin2hex(random_bytes(3)),
+          'register_date_en' => $this->todayDateEn,
+          'register_date_np' => $this->todayDateNp
         ]);
         $sampleCollectionData = [
           'service_for' => $row['test_type'],
@@ -121,6 +123,8 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
           'regdev' => 'excel',
           'woman_token' => $suspectedCase->token,
           'infection_type' => $row['infection_type'],
+          'collection_date_en' => $this->todayDateEn,
+          'collection_date_np' => $this->todayDateNp
         ];
         $id = $this->healthWorker->id;
         $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber)->format('H:i:s'));

@@ -70,6 +70,9 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'municipality' => $municipalities,
           'result' => array('positive' => '3', 'negative' => '4')
         );
+        $this->todayDateEn = Carbon::now();
+        $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();
+    
     }
     
     public function registerEvents(): array
@@ -86,7 +89,10 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
         if(!array_filter($row)) { return null;} //Ignore empty rows.
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
-
+        $labResult = $row['result'];
+        $patientLabId = $row['patient_lab_id'];
+        $sampleTestTime = $this->todayDateEn->format('g : i A');
+        
         $suspectedCase = SuspectedCase::create([
           'name' => $row['person_name'],
           'age' => $row['age'],
@@ -109,7 +115,11 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'cases' => '0',
           'case_type' => '1',
           'case_id' => $this->healthWorker->id . '-' . bin2hex(random_bytes(3)),
+          'register_date_en' => $this->todayDateEn,
+          'register_date_np' => $this->todayDateNp
         ]);
+
+
         $sampleCollectionData = [
           'service_for' => $row['test_type'],
           'checked_by' => $this->userToken,
@@ -122,6 +132,18 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'regdev' => 'excel',
           'woman_token' => $suspectedCase->token,
           'infection_type' => $row['infection_type'],
+          'sample_test_date_en' => $this->todayDateEn,
+          'sample_test_date_np' => $this->todayDateNp,
+          'sample_test_time' => $sampleTestTime,
+          'received_by' => $this->userToken,
+          'received_by_hp_code' => $this->hpCode,
+          'received_by' => $this->userToken,
+          'received_by_hp_code' => $this->hpCode,
+          'received_date_en' => $this->todayDateEn,
+          'received_date_np' => $this->todayDateNp,
+          'lab_token' => $this->userToken.'-'.$patientLabId,
+          'collection_date_en' => $this->todayDateEn,
+          'collection_date_np' => $this->todayDateNp
         ];
         $id = $this->healthWorker->id;
         $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber+1)->format('H:i:s'));
@@ -131,18 +153,14 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
 
         $sampleCollection = SampleCollection::create($sampleCollectionData);
         
-        $date_en = Carbon::now();
-        $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
-        $labResult = $row['result'];
-        $patientLabId = $row['patient_lab_id'];
-        $sampleTestTime = $date_en->format('g : i A');
+       
         try {
           LabTest::create([
             'token' => $this->userToken.'-'.$patientLabId,
             'hp_code' => $this->hpCode,
             'status' => 1,
-            'sample_recv_date' =>  $date_np,
-            'sample_test_date' => $date_np,
+            'sample_recv_date' =>  $this->todayDateNp,
+            'sample_test_date' => $this->todayDateNp,
             'sample_test_time' => $sampleTestTime,
             'sample_test_result' => $labResult,
             'checked_by' => $this->userToken,
