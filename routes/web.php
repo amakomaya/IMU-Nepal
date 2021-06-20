@@ -438,7 +438,6 @@ Route::get('/calc-data', function(){
                     $case->register_date_en = $parse_date->toDateString();
                     $case->save();
                 }
-
                 $sample_token = $item->token;
                 $lab_token = \App\Models\LabTestOld::where('sample_token', $sample_token)->first();
                 if($lab_token){
@@ -465,8 +464,10 @@ Route::get('/calc-data', function(){
                         $item->result = $lab_token->sample_test_result;
                     }catch (\Exception $e){
                     }
-                    $item->save();
                 }
+
+                $item->save();
+
             }catch (\Exception $e){}
 
         });
