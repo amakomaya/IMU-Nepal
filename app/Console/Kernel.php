@@ -10,9 +10,11 @@ use App\Models\ContactTracing;
 use App\Models\LaboratoryParameter;
 use App\Models\LabTest;
 use App\Models\Message;
+use App\Models\OrganizationMember;
 use App\Models\SampleCollection;
 use App\Models\SuspectedCase;
 use App\Models\Symptoms;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Spatie\Activitylog\Models\Activity;
@@ -158,7 +160,7 @@ class Kernel extends ConsoleKernel
                 ->map(function ($item){
                     $item->register_date_en = $item->created_at->toDateString();
                     $collection_date_en = explode("-", Carbon::parse($item->created_at)->toDateString());
-                    $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
+                    $item->register_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDayEngToNep();
                     $item->update();
             });
         })->everyTenMinutes();
@@ -174,7 +176,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function (){
             SampleCollection::whereNull('checked_by')->get()->groupBy('hp_code')
                 ->map(function ($item, $key){
-                    $org_mem = \App\Models\OrganizationMember::where('hp_code', $key)->first();
+                    $org_mem = OrganizationMember::where('hp_code', $key)->first();
                     if($org_mem){
                         $ids = $item->pluck('id');
                         SampleCollection::whereIn('id', $ids)->update([
