@@ -158,9 +158,9 @@
                                 <label for="nationality">Nationality</label>
                                 <select name="nationality" class="form-control">
                                     <option {{ old('nationality') == '' ? "selected" : "" }} value="">Select Nationality</option>
-                                    <option {{ old('nationality') == '1' ? "selected" : "" }} value="168">Nepal</option>
-                                    <option {{ old('nationality') == '2' ? "selected" : "" }} value="105">India</option>
-                                    <option {{ old('nationality') == '3' ? "selected" : "" }} value="48">China</option>
+                                    <option {{ old('nationality') == '1' ? "selected" : "" }} value="167">Nepal</option>
+                                    <option {{ old('nationality') == '2' ? "selected" : "" }} value="104">India</option>
+                                    <option {{ old('nationality') == '3' ? "selected" : "" }} value="47">China</option>
                                     <option {{ old('nationality') == '4' ? "selected" : "" }} value="300">Other</option>
                                 </select>
                                 @if ($errors->has('nationality'))
@@ -179,9 +179,9 @@
                                 <label for="travelled_where">Travelled From (Country)</label>
                                 <select name="travelled_where" class="form-control">
                                     <option {{ old('travelled_where') == '' ? "selected" : "" }} value="">Select Travelled From (Country)</option>
-                                    <option {{ old('travelled_where') == '1' ? "selected" : "" }} value="168">Nepal</option>
-                                    <option {{ old('travelled_where') == '2' ? "selected" : "" }} value="105">India</option>
-                                    <option {{ old('travelled_where') == '3' ? "selected" : "" }} value="48">China</option>
+                                    <option {{ old('travelled_where') == '1' ? "selected" : "" }} value="167">Nepal</option>
+                                    <option {{ old('travelled_where') == '2' ? "selected" : "" }} value="104">India</option>
+                                    <option {{ old('travelled_where') == '3' ? "selected" : "" }} value="47">China</option>
                                     <option {{ old('travelled_where') == '4' ? "selected" : "" }} value="300">Other</option>
                                 </select>
                                 @if ($errors->has('travelled_where'))
