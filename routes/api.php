@@ -907,11 +907,7 @@ Route::post('/v1/cases-payment/delete', function(Request $request){
 });
 Route::post('/v1/bulk-case-payment', 'CasesPaymentController@bulkUpload')->name('cases.payment.bulk.upload');
 
-Route::post('/v1/bulk-upload/lab-received', 'Backend\BulkUploadController@labReceived')->name('bulk.upload.lab-received');
-Route::post('/v1/bulk-upload/lab-result', 'Backend\BulkUploadController@labResult')->name('bulk.upload.lab-result');
-Route::post('/v1/bulk-upload/lab-received-result', 'Backend\BulkUploadController@labReceivedResult')->name('bulk.upload.lab-received.lab-result');
-Route::post('/v1/bulk-upload/registration-sample-collection', 'Backend\BulkUploadController@registrationSampleCollection')->name('bulk.upload.register.sample-collection');
-Route::post('/v1/bulk-upload/registration-sample-collection-lab-test', 'Backend\BulkUploadController@registrationSampleCollectionLabTest')->name('bulk.upload.register.sample.lab');
+Route::post('/v1/bulk-upload/submit', 'Backend\BulkUploadController@bulkFileHandle')->name('bulk.upload.submit');
 Route::get('/v1/server-date', 'Data\Api\DateController@index');
 
 Route::post('/v1/suspected-case-delete/{id}', 'Data\Api\WomenController@deleteSuspectedCase');
