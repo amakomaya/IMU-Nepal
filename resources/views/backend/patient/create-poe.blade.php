@@ -49,7 +49,7 @@
                 @endif
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                       <h3 class="text-center"><span id="form_title"></span> Registration Form</h3>
+                       <h3 class="text-center"><span id="form_title"></span>POE Registration Form</h3>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
