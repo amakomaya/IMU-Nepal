@@ -17,9 +17,10 @@
               <th width="4%" title="Ward No">Ward</th>
 
 <!--              <th width="15%">Case</th>-->
-              <th width="10%" title="Case Created Date">Date</th>
-              <th width="10%" title="Sample Collection Details">Sample</th>
+              <th width="8%" title="Case Created Date">Date</th>
+              <th width="8%" title="Sample Collection Details">Sample</th>
               <th width="10%" title="Latest Lab Result">Result</th>
+              <th width="4%" title="Infection Type">Type</th>
               <th width="10%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
             </tr>
             </thead>
@@ -41,6 +42,9 @@
               </td>
                 <td><span class="label label-success"> Negative</span>
                   <div>{{ labToken(item.latest_anc.lab_token) }}</div>
+                </td>
+                <td>
+                  {{ checkInfectionType(item.symptoms_recent) }}
                 </td>
                 <td>
                   <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
@@ -292,6 +296,16 @@
                 return  'F';
               default:
                 return 'O';
+            }
+          },
+          checkInfectionType(value) {
+            switch (value) {
+              case '0':
+                return 'Asymptomatic';
+              case '1':
+                return 'Symptomatic';
+              default:
+                return "N/A";
             }
           },
           addSampleCollection(token) {
