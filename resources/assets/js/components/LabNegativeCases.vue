@@ -87,6 +87,7 @@ export default {
   components: {Filterable, fab},
   data() {
     return {
+      permission: this.$permissionId,
       filterable: {
         url: '/data/api/lab/add-result-negative',
         orderables: [
@@ -230,7 +231,7 @@ export default {
     deletePatientData: function (item, removeItemOnSuccess) {
       this.$swal({
         title: "Are you sure?",
-        text: "Your data will be moved to Pending List.",
+        text: "Your data will be moved to Lab Received List.",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
@@ -240,7 +241,7 @@ export default {
         closeOnCancel: false
       }).then((result) => {
         if (result.value) {
-          axios.post('/api/v1/suspected-case-delete/' + item.token)
+          axios.post('/api/v1/lab-suspected-case-delete/' + item.token)
               .then((response) => {
                 if (response.data.message === 'success') {
                   removeItemOnSuccess(item);

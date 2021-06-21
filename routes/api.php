@@ -911,3 +911,4 @@ Route::post('/v1/bulk-upload/submit', 'Backend\BulkUploadController@bulkFileHand
 Route::get('/v1/server-date', 'Data\Api\DateController@index');
 
 Route::post('/v1/suspected-case-delete/{id}', 'Data\Api\WomenController@deleteSuspectedCase');
+Route::post('/v1/lab-suspected-case-delete/{id}', 'Data\Api\WomenController@deleteLabSuspectedCase');

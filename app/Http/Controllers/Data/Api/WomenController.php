@@ -556,18 +556,73 @@ class WomenController extends Controller
                             'result' => '2',
                             'received_by' => '',
                             'received_by_hp_code' => '',
-                            'received_date_en' => '',
+                            'received_date_en' => null,
                             'received_date_np' => '',
-                            'sample_test_date_en' => '',
+                            'sample_test_date_en' => null,
                             'sample_test_date_np' => '',
                             'sample_test_time' => '',
                             'lab_token' => ''
                         ]);
                         LabTest::where('sample_token', $patients->latestAnc->token)->update(['sample_test_result' => '2']);
                     } else {
-                        SampleCollection::where('token', $patients->latestAnc->token)->update(['result' => '9']);
-                        LabTest::where('sample_token', $patients->latestAnc->token)->update(['sample_test_result' => '9']);
+                        SampleCollection::where('token', $patients->latestAnc->token)->update([
+                            'result' => '9',
+                            'sample_test_date_en' => null,
+                            'sample_test_date_np' => '',
+                            'sample_test_time' => ''
+                        ]);
+                        LabTest::where('sample_token', $patients->latestAnc->token)->update([
+                            'sample_test_result' => '9',
+                            'sample_test_date' => '',
+                            'sample_test_time' => '',
+                        ]);
                     }
+                }
+                elseif($patients->latestAnc->result == '9') {
+                    SampleCollection::where('token', $patients->latestAnc->token)->update([
+                        'result' => '2',
+                        'received_by' => '',
+                        'received_by_hp_code' => '',
+                        'received_date_en' => null,
+                        'received_date_np' => '',
+                        'sample_test_date_en' => null,
+                        'sample_test_date_np' => '',
+                        'sample_test_time' => '',
+                        'lab_token' => ''
+                    ]);
+                    LabTest::where('sample_token', $patients->latestAnc->token)->update(['sample_test_result' => '2']);
+                }else {
+                    LabTest::where('sample_token', $patients->latestAnc->token)->delete();
+                    SampleCollection::where('woman_token', $patients->token)->delete();
+                    $patients->delete();
+                }
+            } else {
+                $patients->delete();
+            }
+            
+            return response()->json(['message' => 'success']);
+        }
+        catch (\Exception $e){
+            return response()->json(['message' => 'error']);
+        }
+    }
+
+    public function deleteLabSuspectedCase($id){
+        try{
+            $patients = SuspectedCase::with('ancs', 'latestAnc')->where('token', $id)->first();
+            if($patients->latestAnc){
+                if($patients->latestAnc->result == '3' || $patients->latestAnc->result == '4') {
+                    SampleCollection::where('token', $patients->latestAnc->token)->update([
+                        'result' => '9',
+                        'sample_test_date_en' => null,
+                        'sample_test_date_np' => '',
+                        'sample_test_time' => ''
+                    ]);
+                    LabTest::where('sample_token', $patients->latestAnc->token)->update([
+                        'sample_test_result' => '9',
+                        'sample_test_date' => '',
+                        'sample_test_time' => '',
+                    ]);
                 }
                 elseif($patients->latestAnc->result == '9') {
                     SampleCollection::where('token', $patients->latestAnc->token)->update([
@@ -576,7 +631,7 @@ class WomenController extends Controller
                         'received_by_hp_code' => '',
                         'received_date_en' => '',
                         'received_date_np' => '',
-                        'sample_test_date_en' => '',
+                        'sample_test_date_en' => null,
                         'sample_test_date_np' => '',
                         'sample_test_time' => '',
                         'lab_token' => ''
