@@ -15,6 +15,8 @@ use App\Imports\BackDate\BackdateLabResultImport;
 use App\Imports\BackDate\BackdateLabReceivedResultImport;
 use App\Imports\BackDate\BackdateRegisterSampleCollectionImport;
 use App\Imports\BackDate\BackdateRegisterSampleCollectionLabImport;
+use App\Imports\AsymptomaticPoeImport;
+use App\Imports\SymptomaticPoeImport;
 
 
 class BulkUploadController extends Controller
@@ -50,6 +52,15 @@ class BulkUploadController extends Controller
               $import = new RegisterSampleCollectionLabImport(auth()->user());
               $successMessage = "Sample Collection Data with Lab Test created successfully";
               break;
+            case 'bulk_file_asymptomtic_poe':
+              $import = new AsymptomaticPoeImport(auth()->user());
+              $successMessage = "Asymptomatic POE data registered successfully";
+              break;
+            case 'bulk_file_symptomtic_poe':
+              $import = new SymptomaticPoeImport(auth()->user());
+              $successMessage = "Symptomatic POE data registered successfully";
+              break;
+              
           }
           
           Excel::queueImport($import, $bulk_file);

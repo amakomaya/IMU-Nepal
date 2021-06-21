@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div v-show="permissionId==1" class="checkbox-slider">
+    <!-- <div v-show="permissionId==1" class="checkbox-slider">
       <input type="checkbox" id="checkbox" @click="switchValue($event)">
       <label for="checkbox" class="slider"></label>
       <label for="checkbox">{{ bulkMode }}</label>
-    </div>
+    </div> -->
     <h2>Bulk Upload</h2>
     <table class="table table-striped">
       <thead>
@@ -115,6 +115,20 @@ export default {
                 hasPermission: (this.checkPermission('antigen-result') || this.checkPermission('lab-result')) && this.checkPermission('lab-received') && this.checkPermission('sample-collection') && this.checkPermission('cases-registration'),
                 slug: 'bulk_file_registration_sample_collection_lab_test',
                 description: 'Register new "New Case"(Case Type will vary according to the Lab Received), create "Sample Collection" ,create "Lab Received"(PCR/Antigen) & update "Lab Results"(PCR/Antigen).',
+              },
+              {
+                name: 'Asymptomatic POE Registration',
+                templateLocation: '/downloads/excel/Asymptomatic_PoE_Bulk_Upload.xlsx',
+                hasPermission: this.checkPermission('poe-registration'),
+                slug: 'bulk_file_asymptomtic_poe',
+                description: 'Register Asymptomatic POE Registration.',
+              },
+              {
+                name: 'Symptomatic POE Registration',
+                templateLocation: '/downloads/excel/Symptomatic_PoE_Bulk_Upload.xlsx',
+                hasPermission: this.checkPermission('poe-registration'),
+                slug: 'bulk_file_symptomtic_poe',
+                description: 'Register Symptomatic POE Registration.',
               }
           ]
         );
@@ -178,7 +192,7 @@ export default {
     },
     handleFileUpload(slug) {
       this.isUploading = true;
-      this[slug] = this.$refs[slug].files[0];
+      this[slug] = this.$refs[slug][0].files[0];
       this.submitBulkFile(slug);
       return;
     },
@@ -189,9 +203,10 @@ export default {
         alert("Please upload a valid excel file");
         return;
       }
+      formData.append('slug', slug);
       formData.append(slug, this[slug]);
       axios
-        .post('/v1/bulk-upload/submit', formData, {
+        .post('/api/v1/bulk-upload/submit', formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -206,7 +221,7 @@ export default {
           self.isUploading = false;
           if (err.response.status === 500) {
             errorMsg =
-              "Please use the latest valid template downloaded from the system. If problem persists, please contact support.";
+              "Please use the latest valid template downloaded from the system & try again. If problem persists, please contact support.";
           } else {
             errorMsg =
               "The Bulk File could not be uploaded due to the following problems: \n";
