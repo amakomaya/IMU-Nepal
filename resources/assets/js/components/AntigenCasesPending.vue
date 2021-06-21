@@ -61,7 +61,7 @@
                      <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
                   <button v-if="checkPermission('antigen-result') && checkAddReceivedView(item.latest_anc)" v-on:click="addAntigenResultInLab(item, removeItemOnSuccess)" title="Add Antigen Result">
-                    <i class="fa fa-medkit" aria-hidden="true"></i> |
+                    <i class="fa fa-flask" aria-hidden="true"></i> |
                   </button>
                   <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
                         <i class="fa fa-hospital-o"></i> |
