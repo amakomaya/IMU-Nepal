@@ -79,6 +79,24 @@ export default {
   methods: {
     getTableData(mode) {
       if(mode=='new') {
+        if(this.checkPermission('poe-registration')){
+          return ([
+            {
+                name: 'Asymptomatic POE Registration',
+                templateLocation: '/downloads/excel/Asymptomatic_PoE_Bulk_Upload.xlsx',
+                hasPermission: this.checkPermission('poe-registration'),
+                slug: 'bulk_file_asymptomtic_poe',
+                description: 'Register Asymptomatic POE Registration.',
+              },
+              {
+                name: 'Symptomatic POE Registration',
+                templateLocation: '/downloads/excel/Symptomatic_PoE_Bulk_Upload.xlsx',
+                hasPermission: this.checkPermission('poe-registration'),
+                slug: 'bulk_file_symptomtic_poe',
+                description: 'Register Symptomatic POE Registration.',
+              }
+          ]);
+        }
         return ([
               {
                 name: 'Lab Received(PCR/Antigen)',
@@ -115,20 +133,6 @@ export default {
                 hasPermission: (this.checkPermission('antigen-result') || this.checkPermission('lab-result')) && this.checkPermission('lab-received') && this.checkPermission('sample-collection') && this.checkPermission('cases-registration'),
                 slug: 'bulk_file_registration_sample_collection_lab_test',
                 description: 'Register new "New Case"(Case Type will vary according to the Lab Received), create "Sample Collection" ,create "Lab Received"(PCR/Antigen) & update "Lab Results"(PCR/Antigen).',
-              },
-              {
-                name: 'Asymptomatic POE Registration',
-                templateLocation: '/downloads/excel/Asymptomatic_PoE_Bulk_Upload.xlsx',
-                hasPermission: this.checkPermission('poe-registration'),
-                slug: 'bulk_file_asymptomtic_poe',
-                description: 'Register Asymptomatic POE Registration.',
-              },
-              {
-                name: 'Symptomatic POE Registration',
-                templateLocation: '/downloads/excel/Symptomatic_PoE_Bulk_Upload.xlsx',
-                hasPermission: this.checkPermission('poe-registration'),
-                slug: 'bulk_file_symptomtic_poe',
-                description: 'Register Symptomatic POE Registration.',
               }
           ]
         );
