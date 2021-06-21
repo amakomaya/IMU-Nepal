@@ -630,8 +630,8 @@
                                 <label for="vaccine_name">Name of Vaccine</label>
                                 <select name="vaccine_dosage" class="form-control" required>
                                     <option {{ old('vaccine_dosage') == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
-                                    <option {{ old('vaccine_dosage') == '1' ? "selected" : "" }} value="1">1st Dose</option>
-                                    <option {{ old('vaccine_dosage') == '2' ? "selected" : "" }} value="2">2nd (Final) Dose</option>
+                                    <option {{ old('vaccine_dosage') == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
+                                    <option {{ old('vaccine_dosage') == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
                                     <option {{ old('vaccine_dosage') == '3' ? "selected" : "" }} value="3">Pfizer</option>
                                     <option {{ old('vaccine_dosage') == '4' ? "selected" : "" }} value="4">Moderna</option>
                                     <option {{ old('vaccine_dosage') == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
