@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Yagiten\Nepalicalendar\Calendar;
 use App\User;
 use Illuminate\Validation\Rule;
+use Auth;
 
 class WomenController extends Controller
 {
@@ -51,6 +52,12 @@ class WomenController extends Controller
             $woman = SuspectedCase::active();
         }
 
+        if(Auth::user()->can('poe-registration')){
+            $woman->where('case_type', '3');
+        } else {
+            $woman->where('case_type', '!=', '3');
+        }
+
         $woman = $woman->whereIn('hp_code', $hpCodes)
             ->doesnthave('ancs')
             ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
@@ -72,6 +79,12 @@ class WomenController extends Controller
             $woman = SuspectedCaseOld::active();
         } else{
             $woman = SuspectedCase::active();
+        }
+
+        if(Auth::user()->can('poe-registration')){
+            $woman->where('case_type', '3');
+        } else {
+            $woman->where('case_type', '!=', '3');
         }
         $woman = $woman->whereIn('hp_code', $hpCodes)
             ->where(function ($query){
@@ -97,6 +110,12 @@ class WomenController extends Controller
             $woman = SuspectedCaseOld::active();
         } else{
             $woman = SuspectedCase::active();
+        }
+
+        if(Auth::user()->can('poe-registration')){
+            $woman->where('case_type', '3');
+        } else {
+            $woman->where('case_type', '!=', '3');
         }
         $woman->whereIn('hp_code', $hpCodes)
             ->where(function ($query){
@@ -127,6 +146,12 @@ class WomenController extends Controller
         } else{
             $woman = SuspectedCase::active();
         }
+
+        if(Auth::user()->can('poe-registration')){
+            $woman->where('case_type', '3');
+        } else {
+            $woman->where('case_type', '!=', '3');
+        }
         $woman->whereIn('hp_code', $hpCodes)
             ->whereHas('ancs', function($q){
                 $q->where('service_for', '!=' , "2")->where('result', '=', 4);
@@ -150,6 +175,12 @@ class WomenController extends Controller
             $woman = SuspectedCaseOld::active();
         } else{
             $woman = SuspectedCase::active();
+        }
+
+        if(Auth::user()->can('poe-registration')){
+            $woman->where('case_type', '3');
+        } else {
+            $woman->where('case_type', '!=', '3');
         }
         $woman->whereIn('hp_code', $hpCodes)
             ->whereHas('ancs', function($q){
@@ -176,6 +207,12 @@ class WomenController extends Controller
             } else{
                 $woman = SuspectedCase::active();
             }
+
+            if(Auth::user()->can('poe-registration')){
+                $woman->where('case_type', '3');
+            } else {
+                $woman->where('case_type', '!=', '3');
+            }
             $woman->whereIn('hp_code', $hpCodes)->whereHas('ancs', function($q){
                     $q->where('service_for', '!=' , "2")->where('result', '=', 3);
                 })->with(['ancs','healthpost' => function($q) {
@@ -196,6 +233,12 @@ class WomenController extends Controller
             $woman = SuspectedCaseOld::active();
         } else{
             $woman = SuspectedCase::active();
+        }
+
+        if(Auth::user()->can('poe-registration')){
+            $woman->where('case_type', '3');
+        } else {
+            $woman->where('case_type', '!=', '3');
         }
         $woman->whereIn('hp_code', $hpCodes)
             ->where(function ($query){
@@ -242,6 +285,12 @@ class WomenController extends Controller
         } else{
             $woman = SuspectedCase::active();
         }
+
+        if(Auth::user()->can('poe-registration')){
+            $woman->where('case_type', '3');
+        } else {
+            $woman->where('case_type', '!=', '3');
+        }
         $woman->whereIn('hp_code', $hpCodes)
             ->whereHas('ancs', function($q){
                 $q->where('service_for', '!=' , "2")->where('result', '=', 9);
@@ -264,6 +313,12 @@ class WomenController extends Controller
             $woman = SuspectedCaseOld::active();
         } else{
             $woman = SuspectedCase::active();
+        }
+
+        if(Auth::user()->can('poe-registration')){
+            $woman->where('case_type', '3');
+        } else {
+            $woman->where('case_type', '!=', '3');
         }
         $woman->whereIn('hp_code', $hpCodes)
             ->where(function ($query){
