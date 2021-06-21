@@ -130,8 +130,8 @@
                                     <option {{ old('occupation') == '1' ? "selected" : "" }} value="1">Front Line Health
                                         Worker
                                     </option>
-                                    <option {{ old('occupation') == '2' ? "selected" : "" }} value="2">Tourist</option>
-                                    <option {{ old('occupation') == '3' ? "selected" : "" }} value="3">Migrant Worker</option>
+                                    <option {{ old('occupation') == '11' ? "selected" : "" }} value="11">Tourist</option>
+                                    <option {{ old('occupation') == '12' ? "selected" : "" }} value="12">Migrant Worker</option>
                                     <option {{ old('occupation') == '4' ? "selected" : "" }} value="4">Police/Army
                                     </option>
                                     <option {{ old('occupation') == '5' ? "selected" : "" }} value="5">
