@@ -368,19 +368,19 @@ class WomanController extends Controller
         $row['token'] = md5(microtime(true) . mt_Rand());
         $row['status'] = 1;
         $row['created_by'] = auth()->user()->token;
-        if($request->symptoms_recent == 1) {
+        // if($request->symptoms_recent == 1) {
             $row['symptoms_comorbidity'] = [];
             if($request->symptoms_comorbidity_trimester) {
                 array_push($row['symptoms_comorbidity'], $request->symptoms_comorbidity_trimester);
             }
             $row['symptoms'] = isset($row['symptoms']) ? "[" . implode(', ', $row['symptoms']) . "]" : "[]";
             $row['symptoms_comorbidity'] = isset($row['symptoms_comorbidity']) ? "[" . implode(', ', $row['symptoms_comorbidity']) . "]" : "[]";
-        } else {
-            $row['symptoms'] = "[]";
-            $row['symptoms_specific'] = "";
-            $row['symptoms_comorbidity'] = "[]";
-            $row['symptoms_comorbidity_specific'] = "";
-        }
+        // } else {
+        //     $row['symptoms'] = "[]";
+        //     $row['symptoms_specific'] = "";
+        //     $row['symptoms_comorbidity'] = "[]";
+        //     $row['symptoms_comorbidity_specific'] = "";
+        // }
         $row['travelled_where'] = "[" . $request->travelled_where ."]";
         $row['hp_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
         $row['cases'] = '0';
@@ -396,6 +396,32 @@ class WomanController extends Controller
 
         $row['reson_for_testing'] = isset($row['reson_for_testing']) ? "[" . implode(', ', $row['reson_for_testing']) . "]" : "[]";
         unset($row['symptoms_comorbidity_trimester']);
+
+
+        if($request->case_type == '3') {
+            $row['travelled_where'] = "[" . $request->travelled_where . ", " . $request->travelled_city ."]";
+
+            $contact_relationship = $request->contact_relationship ?? '5';
+            $row['nearest_contact'] = "[-, " . $contact_relationship . ", " . $request->emergency_contact_two . "]";
+
+            $malaria_test_status = $request->malaria_test_status ?? '0';
+            $malaria_result = $request->malaria_result ?? '0';
+            $row['malaria'] = "[" . $malaria_test_status . ", " . $malaria_result .", " . $request->malaraia_isolation . "]";
+
+            $symptoms_recent = $request->symptoms_recent ?? '0';
+            $antigen_test_status = $request->antigen_test_status ?? '0';
+            $antigen_result = $request->antigen_result ?? '0';
+    
+            $row['case_reason'] = "[" . $antigen_test_status . ", " . $antigen_result .", " . $request->antigen_isolation . "]";
+    
+            $vaccine_status = $request->vaccine_status ?? '0';
+            $vaccination_card = $request->vaccination_card ?? '0';
+            $vaccination_dosage_complete = $request->vaccination_dosage_complete ?? '0';
+            $vaccine_dosage_count = $request->vaccine_dosage_count ?? '0';
+            $vaccine_name = $request->vaccine_name ?? '6';
+    
+            $row['covid_vaccination_details'] = "[" . $vaccine_status . ", " . $vaccination_card . ", " . $vaccination_dosage_complete . ", " . $vaccine_dosage_count . ", " . $vaccine_name . "]";
+        }
 
         SuspectedCase::create($row);
 
