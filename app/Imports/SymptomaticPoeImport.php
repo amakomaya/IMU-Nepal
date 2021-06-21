@@ -67,7 +67,7 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
           // 'name_of_vaccine' => ['verocell (sinopharm)'=> '1', 'covishield (the serum institute of india)'=>'2', 'pfizer' => '3', 'moderna' => '4', 'astrazeneca' => '5', 'other' => '10'],
           'occupation' => ['1' =>'front line health worker', '2' =>'doctor','3' => 'nurse','4' =>'police/army', '5' =>'business/industry', '6' =>'teacher/student(education)', '7' =>'civil servant', '8' =>'journalist', '9' =>'agriculture', '10' =>'transport/delivery', '11' =>'Tourist', '12' =>'migrant worker'],
           'relationship_with_the_contact_person' => ['family'=>0,'friend'=>1,'neighbour'=>2,'relative'=>3,'other'=>4],
-          'malaria_test_result' => ['positive'=>1, 'negative'=>0],
+          'result' => ['positive'=>1, 'negative'=>0],
           #TO fix variables//'comorbidity' => [],
         );
         $this->todayDateEn = Carbon::now();
@@ -125,7 +125,8 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
           'symptoms_recent' => $row['covid_19_symptoms'],
           'symptoms_within_four_week' => $row['covid_19_symptoms'],
           'malaria' => '['.$row['if_fever_malaria_test_done'].','.$row['malaria_test_result'].','.$row['if_malaria_positive_isolation_center_referred_to'].']',
-          // 'symptoms_specific' => '['.$row['comorbidity'].']',
+          'symptoms_specific' => '['.$row['comorbidity'].']', //TODO replace with ID
+          'case_reason' => $row['covid_19_symptoms']?'['.$row['if_fever_covid_19_antigen_test_done'].','.$row['antigen_result'].','.$row['if_antigen_positive_isolation_center_referred_to'].']':null,
         ]);
         return;
     }
@@ -171,8 +172,10 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
 
         $data['covid_19_symptoms'] = $this->enums['yes_no'][strtolower(trim($data['covid_19_symptoms']))] ?? null;
         $data['if_fever_malaria_test_done'] = $this->enums['yes_no'][strtolower(trim($data['if_fever_malaria_test_done']))] ?? null;
-        $data['malaria_test_result'] = $this->enums['malaria_test_result'][strtolower(trim($data['malaria_test_result']))] ?? null;
+        $data['malaria_test_result'] = $this->enums['result'][strtolower(trim($data['malaria_test_result']))] ?? null;
         $data['comorbidity'] = $this->enums['comorbidity'][strtolower(trim($data['comorbidity']))] ?? null;
+        $data['if_fever_covid_19_antigen_test_done'] = $this->enums['yes_no'][strtolower(trim($data['if_fever_covid_19_antigen_test_done']))] ?? null;
+        $data['antigen_result'] = $this->enums['result'][strtolower(trim($data['antigen_result']))] ?? null;
         
         // $data[] = 
       }
