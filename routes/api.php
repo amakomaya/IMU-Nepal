@@ -299,7 +299,7 @@ Route::post('/v1/lab-test', function (Request $request) {
         $received_date_en = explode("-", Carbon::parse($value['created_at'])->format('Y-m-d'));
         $received_date_np = Calendar::eng_to_nep($received_date_en[0], $received_date_en[1], $received_date_en[2])->getYearMonthDayEngToNep();
 
-        $reporting_date_en = explode("-", Carbon::now()->toDateString());
+        $reporting_date_en = explode("-", Carbon::now()->format('Y-m-d'));
         $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
 
         try {
@@ -329,7 +329,7 @@ Route::post('/v1/lab-test', function (Request $request) {
                     'received_date_en' => Carbon::parse($value['created_at'])->format('Y-m-d'),
                     'received_date_np' => $received_date_np,
                     'lab_token' => $value['token'],
-                    'reporting_date_en' => Carbon::now()->toDateTimeString(),
+                    'reporting_date_en' => Carbon::now()->format('Y-m-d'),
                     'reporting_date_np' => $reporting_date_np
                 ]);
                 $find_test = LabTest::where('token', $value['token'])->first();
@@ -451,7 +451,7 @@ Route::post('/v1/received-in-lab', function (Request $request) {
             'result' => '9',
             'received_by' => $data['checked_by'],
             'received_by_hp_code' => $data['hp_code'],
-            'received_date_en' => Carbon::now()->toDateString(),
+            'received_date_en' => Carbon::now()->format('Y-m-d'),
             'received_date_np' => $data['sample_recv_date'],
             'lab_token' => $data['token']
         ];
@@ -472,7 +472,7 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
         $sample_test_date_np_array = explode("-", $value['sample_test_date']);
         $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDayNepToEng();
 
-        $reporting_date_en = explode("-", Carbon::now()->toDateString());
+        $reporting_date_en = explode("-", Carbon::now()->format('Y-m-d'));
         $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
 
         SampleCollection::where('token', $find_test->sample_token)
@@ -481,7 +481,7 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
                 'sample_test_date_en' => $sample_test_date_en,
                 'sample_test_date_np' => $value['sample_test_date'],
                 'sample_test_time' => $value['sample_test_time'],
-                'reporting_date_en' => Carbon::now()->toDateTimeString(),
+                'reporting_date_en' => Carbon::now()->format('Y-m-d'),
                 'reporting_date_np' => $reporting_date_np
             ]);
         if ($find_test) {
@@ -508,7 +508,7 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
       $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDayNepToEng();
       $healthWorker = OrganizationMember::where('token', $user->token)->first();
 
-      $reporting_date_en = explode("-", Carbon::now()->toDateString());
+      $reporting_date_en = explode("-", Carbon::now()->format('Y-m-d'));
       $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
 
       $sample_collection->update([
@@ -521,7 +521,7 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
            'received_date_en' => $sample_test_date_en,
            'received_date_np' => $value['sample_test_date'],
            'lab_token' => $value['token'],
-          'reporting_date_en' => Carbon::now()->toDateTimeString(),
+          'reporting_date_en' => Carbon::now()->format('Y-m-d'),
           'reporting_date_np' => $reporting_date_np
       ]);
 

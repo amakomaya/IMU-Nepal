@@ -2062,13 +2062,15 @@
                 <th>Shortness of breath</th>
                 <th>Other symptoms: specify</th>
             </tr>
-            {{-- <tr>
-                <td style="text-align: center;">{{ $data->contactFollowUp ? $data->contact_with_case_day : '' }}</td>
+            @if($data->contactFollowUp)
+            @foreach($data->contactFollowUp as $followup)
+            <tr>
+                <td style="text-align: center;">{{ $followup->contact_with_case_day }}</td>
                 <td style="text-align: center;">
-                    <p>{{ $data->contactFollowUp ? $data->follow_up_day : '' }}</p>
+                    <p>{{ $followup->follow_up_day }}</p>
                     <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
                 </td>
-                <td>{{ $data->contactFollowUp ? $data->follow_up_date : '' }}</td>
+                <td>{{ $followup->follow_up_date }}</td>
                 <td>
                     <div style="padding-left: 0.5em;">
                         <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
@@ -2126,8 +2128,23 @@
                     </div>
                 </td>
                 <td></td>
-            </tr> --}}
+            </tr>
+            @endforeach
+            @else
             <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            @endif
+            {{-- <tr>
                 <td style="text-align: center;">0</td>
                 <td style="text-align: center;">
                     <p>10</p>
@@ -2841,7 +2858,7 @@
                     </div>
                 </td>
                 <td></td>
-            </tr>
+            </tr> --}}
         </table>
         <div style="margin-top: 0.5em; margin-bottom: 1em;" class="col-md-12">
             <p>* Follow-up should start from the day it has been since last contact with the case. For e.g., if the contact has not been in contact with the case
