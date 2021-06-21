@@ -19,7 +19,7 @@
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
       </tr>
       </thead>
-      <tr slot-scope="{item}">
+      <tr slot-scope="{item, removeItemOnSuccess}">
         <td>
           <div v-if="item.parent_case_id !== null">Parent Case ID : {{ item.parent_case_id }}</div>
         </td>
@@ -46,7 +46,10 @@
         </td>
         <td>
           <button v-if="item.latest_anc.result === '9'" v-on:click="addResultInLab(item)" title="Add Result">
-            <i class = "material-icons">biotech</i>
+            <i class = "material-icons">biotech</i> | 
+          </button>
+          <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Move Patient Data">
+            <i class="fa fa-trash"></i>
           </button>
         </td>
         <!-- </div>             -->
@@ -221,6 +224,50 @@ export default {
           districts : this.districts,
           municipalities : this.municipalities
         },
+      })
+    },
+
+    deletePatientData: function (item, removeItemOnSuccess) {
+      this.$swal({
+        title: "Are you sure?",
+        text: "Your data will be moved to Pending List.",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, move it!",
+        cancelButtonText: "No, cancel please!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      }).then((result) => {
+        if (result.value) {
+          axios.post('/api/v1/suspected-case-delete/' + item.token)
+              .then((response) => {
+                if (response.data.message === 'success') {
+                  removeItemOnSuccess(item);
+                  this.$swal({
+                    title: 'Record Moved',
+                    type: 'success',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                  })
+                  this.healthpostSelected = null;
+                  
+                } else {
+                  this.$swal({
+                    title: 'Oops. No record found.',
+                    type: 'error',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                  })
+                }
+              })
+        } else {
+          this.$swal("Cancelled", "Data not moved :)", "error");
+        }
       })
     },
 
