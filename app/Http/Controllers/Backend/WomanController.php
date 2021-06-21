@@ -425,48 +425,53 @@ class WomanController extends Controller
 
         SuspectedCase::create($row);
 
-        if($request->swab_collection_conformation == 1) {
-            $sample_row['token'] = $request->token;
-            $sample_row['woman_token'] = $row['token'];
-            $sample_row['checked_by'] = auth()->user()->token;
-            $sample_row['status'] = 1;
-            $sample_row['result'] = 2;
-            $sample_row['regdev'] = 'web';
-            $sample_row['service_type'] = $request->service_type;
-            $sample_row['service_for'] = $request->service_for;
-            $sample_row['infection_type'] = $request->infection_type;
-            $sample_row['sample_type_specific'] = $request->sample_type_specific ?? '';
-            $sample_row['sample_identification_type'] = 'unique_id';
-            $sample_row['collection_date_en'] = Carbon::now()->format('Y-m-d');
-            $nep_date_array = explode("-", Carbon::now()->format('Y-m-d'));
-            $sample_row['collection_date_np'] = Calendar::eng_to_nep($nep_date_array[0], $nep_date_array[1], $nep_date_array[2])->getYearMonthDay();
+        if($request->case_type != '3') {
+            if($request->swab_collection_conformation == 1) {
+                $sample_row['token'] = $request->token;
+                $sample_row['woman_token'] = $row['token'];
+                $sample_row['checked_by'] = auth()->user()->token;
+                $sample_row['status'] = 1;
+                $sample_row['result'] = 2;
+                $sample_row['regdev'] = 'web';
+                $sample_row['service_type'] = $request->service_type;
+                $sample_row['service_for'] = $request->service_for;
+                $sample_row['infection_type'] = $request->infection_type;
+                $sample_row['sample_type_specific'] = $request->sample_type_specific ?? '';
+                $sample_row['sample_identification_type'] = 'unique_id';
+                $sample_row['collection_date_en'] = Carbon::now()->format('Y-m-d');
+                $nep_date_array = explode("-", Carbon::now()->format('Y-m-d'));
+                $sample_row['collection_date_np'] = Calendar::eng_to_nep($nep_date_array[0], $nep_date_array[1], $nep_date_array[2])->getYearMonthDay();
 
-            switch (auth()->user()->role) {
-                case 'healthpost':
-                    $healthpost = Organization::where('token', auth()->user()->token)->first();
-                    $sample_row['hp_code'] = $healthpost->hp_code;
-                    $sample_row['checked_by_name'] = $healthpost->name;
-                    $sample_row['checked_by'] = $healthpost->token;
-                    // $sample_row['received_by_hp_code'] = $healthpost->hp_code;
-    
-                case 'healthworker':
-                    $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
-                    $sample_row['hp_code'] = $healthworker->hp_code;
-                    $sample_row['checked_by_name'] = $healthworker->name;
-                    $sample_row['checked_by'] = $healthworker->token;
-                    // $sample_row['received_by_hp_code'] = $healthworker->hp_code;
-    
+                switch (auth()->user()->role) {
+                    case 'healthpost':
+                        $healthpost = Organization::where('token', auth()->user()->token)->first();
+                        $sample_row['hp_code'] = $healthpost->hp_code;
+                        $sample_row['checked_by_name'] = $healthpost->name;
+                        $sample_row['checked_by'] = $healthpost->token;
+                        // $sample_row['received_by_hp_code'] = $healthpost->hp_code;
+        
+                    case 'healthworker':
+                        $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
+                        $sample_row['hp_code'] = $healthworker->hp_code;
+                        $sample_row['checked_by_name'] = $healthworker->name;
+                        $sample_row['checked_by'] = $healthworker->token;
+                        // $sample_row['received_by_hp_code'] = $healthworker->hp_code;
+        
+                }
+                if ($request->service_for === '1')
+                    $sample_row['sample_type'] = "[" . implode(', ', $request->sample_type) . "]";
+
+                SampleCollection::create($sample_row);
             }
-            if ($request->service_for === '1')
-                $sample_row['sample_type'] = "[" . implode(', ', $request->sample_type) . "]";
-
-            SampleCollection::create($sample_row);
         }
 
         $request->session()->flash('message', 'Data Inserted successfully');
-        // if ($request->swab_collection_conformation == '1') {
-        //     return $this->sampleCollectionCreate($row['token']);
-        // }
+
+        if($request->case_type == '3') {
+            if ($request->swab_collection_conformation == '1') {
+                return $this->sampleCollectionCreate($row['token']);
+            }
+        }
         return redirect()->back();
     }
 

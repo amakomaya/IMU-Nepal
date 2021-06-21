@@ -638,6 +638,23 @@
                                     <option {{ old('vaccine_dosage') == '10' ? "selected" : "" }} value="6">Other</option>
                                 </select>
                             </div>
+                            
+                            <div class="form-group">
+                                <label class="control-label">Are you collecting COVID -19 swab now ?</label>
+                                <div class="control-group">
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               {{ old('swab_collection_conformation') == "0" ? 'checked' : '' }} name="swab_collection_conformation"
+                                               value="0" class="swab_collection_conformation">No
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               {{ old('swab_collection_conformation') == "1" ? 'checked' : '' }} name="swab_collection_conformation"
+                                               value="1" checked class="swab_collection_conformation">Yes
+                                    </label>
+
+                                </div>
+                            </div>
 
                             <input type="hidden" name="case_type" value="3">
 
