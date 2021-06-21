@@ -120,8 +120,8 @@ class AsymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidatio
           'case_id' => $this->healthWorker->id . '-' . bin2hex(random_bytes(3)),
           'register_date_en' => $this->todayDateEn,
           'register_date_np' => $this->todayDateNp,
-          'symptoms_recent' => 0,
-          'symptoms_within_four_week' => 0
+          'symptoms_recent' => '0',
+          'symptoms_within_four_week' => '0'
         ]);
         return;
     }

@@ -32,6 +32,7 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
     public static $importedRowCount = 0;
     public function __construct(User $importedBy)
     {
+      
         $provinceList = Province::select(['id', 'province_name'])->get();
         $districtList = District::select(['id', 'district_name'])->get();
         $municipalityList = Municipality::select(['id', 'municipality_name'])->get();
@@ -51,7 +52,7 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
         $userToken = auth()->user()->token;
         $healthWorker = \App\Models\OrganizationMember::where('token', $userToken)->first();
         $hpCode = $healthWorker->hp_code;
-
+        
         $this->importedBy = $importedBy;
         $this->userToken =  $userToken;
         $this->hpCode = $hpCode;
@@ -63,7 +64,7 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
           'destination_in_nepal_district' => $districts,
           'destination_in_nepal_municipality' => $municipalities,
           'countries' => ['nepal'=>167, 'india'=>104, 'china'=>47, 'other'=>300],
-          'yes_no' => ['yes'=>1, 'no'=>0],
+          'yes_no' => ['yes'=>'1', 'no'=>'0'],
           'how_many_dosages_of_vaccine_you_have_received' => ['1st dose' => 1,'2nd (final) dose'=>2],
           // 'name_of_vaccine' => ['verocell (sinopharm)'=> '1', 'covishield (the serum institute of india)'=>'2', 'pfizer' => '3', 'moderna' => '4', 'astrazeneca' => '5', 'other' => '10'],
           'occupation' => ['1' =>'front line health worker', '2' =>'doctor','3' => 'nurse','4' =>'police/army', '5' =>'business/industry', '6' =>'teacher/student(education)', '7' =>'civil servant', '8' =>'journalist', '9' =>'agriculture', '10' =>'transport/delivery', '11' =>'Tourist', '12' =>'migrant worker'],
@@ -89,9 +90,6 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
         if(!array_filter($row)) { return null;} //Ignore empty rows.
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
-
-        // handle "antigen_result" => "Positive"
-        // "if_antigen_positive_isolation_center_referred_to" => "test"
         $suspectedCase = SuspectedCase::create([
           'name' => $row['full_name'],
           'age' => $row['age'],
@@ -129,7 +127,6 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
           // 'symptoms_specific' => '['.$row['comorbidity'].']', //TODO replace with ID
           'case_reason' => $row['covid_19_symptoms']?'['.$row['if_fever_covid_19_antigen_test_done'].','.$row['antigen_result'].','.$row['if_antigen_positive_isolation_center_referred_to'].']':null,
         ]);
-        
         if($row['covid_19_symptoms']) {
           $sampleTestTime = $this->todayDateEn->format('g : i A');
           $labResult = $row['antigen_result']==0?'4':'3';
