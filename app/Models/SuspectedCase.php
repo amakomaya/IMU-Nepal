@@ -37,7 +37,9 @@ class SuspectedCase extends Model
         'nationality','id_card_detail', 'id_card_issue', 'name_of_poe','covid_vaccination_details',
         'nearest_contact' ,
 
-        'register_date_en' , 'register_date_np'
+        'register_date_en' , 'register_date_np',
+
+        'malaria'
     ];
     protected $dates = ['deleted_at'];
     protected $allowedFilters = [
