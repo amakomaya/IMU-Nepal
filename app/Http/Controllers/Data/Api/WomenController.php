@@ -561,7 +561,6 @@ class WomenController extends Controller
                             'sample_test_date_en' => null,
                             'sample_test_date_np' => null,
                             'sample_test_time' => null,
-                            'lab_token' => null
                         ]);
                         LabTest::where('sample_token', $patients->latestAnc->token)->update(['sample_test_result' => '2']);
                     } else {
@@ -588,7 +587,6 @@ class WomenController extends Controller
                         'sample_test_date_en' => null,
                         'sample_test_date_np' => null,
                         'sample_test_time' => null,
-                        'lab_token' => null
                     ]);
                     LabTest::where('sample_token', $patients->latestAnc->token)->update(['sample_test_result' => '2']);
                 }else {
@@ -633,8 +631,7 @@ class WomenController extends Controller
                         'received_date_np' => null,
                         'sample_test_date_en' => null,
                         'sample_test_date_np' => null,
-                        'sample_test_time' => null,
-                        'lab_token' => null
+                        'sample_test_time' => null
                     ]);
                     LabTest::where('sample_token', $patients->latestAnc->token)->update(['sample_test_result' => '2']);
                 }else {
