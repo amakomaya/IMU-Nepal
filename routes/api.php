@@ -95,18 +95,24 @@ Route::get('/api/v1/check-by-sid-or-lab-id', function () {
 
 Route::post('/v1/client', function (Request $request) {
     $data = $request->json()->all();
-     try {
-            SuspectedCase::insert($data);
-        } catch (\Exception $e) {
-         foreach ($data as $value) {
-             try {
+    //  try {
+    //         SuspectedCase::insert($data);
+    //     } catch (\Exception $e) {
+        foreach ($data as $value) {
+            try {
 //                 $value['case_id'] = bin2hex(random_bytes(3));
-                 SuspectedCase::create($value);
-             } catch (\Exception $e) {
-//                 return response()->json(['message' => 'Something went wrong, Please try again.']);
-             }
-         }
-        }
+                    $value['register_date_en'] = Carbon::parse($value['created_at'])->format('Y-m-d');
+                    
+                    $register_date_en = explode("-", $value['register_date_en']);
+                    $register_date_np = Calendar::eng_to_nep($register_date_en[0], $register_date_en[1], $register_date_en[2])->getYearMonthDayEngToNep();
+                    
+                    $value['register_date_np'] = $register_date_np;
+                    SuspectedCase::create($value);
+                } catch (\Exception $e) {
+                //                 return response()->json(['message' => 'Something went wrong, Please try again.']);
+                }
+            }
+        // }
     return response()->json(['message' => 'Data Successfully Sync']);
 });
 
@@ -129,9 +135,11 @@ Route::get('/v1/client', function (Request $request) {
         ->where('hp_code', $hp_code)
         ->where('end_case', '0')
         ->where('created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
-        ->whereHas('ancs', function($q){
-            $q->where('result', '!=', 4)
-                ->orWhere('women.created_at', '>=', Carbon::now()->subDays(2)->toDateTimeString());
+        ->where(function ($query) {
+            $query->whereHas('ancs', function($q){
+                $q->where('result', '!=', 4)
+                    ->orWhere('women.created_at', '>=', Carbon::now()->subDays(2)->toDateTimeString());
+            })->orDoesntHave('ancs');
         })
         ->get();
 
@@ -180,7 +188,7 @@ Route::get('/v1/client', function (Request $request) {
         $response['case_where'] = $row->case_where ?? '';
         $response['end_case'] = $row->end_case ?? '';
         $response['payment'] = $row->payment ?? '';
-        $response['result'] = $row->ancs ? $row->ancs->first()->result : '';
+        $response['result'] = $row->ancs->first() ? $row->ancs->first()->result : '';
 
         $response['nationality'] = $row->nationality ?? '';
         $response['id_card_detail'] = $row->id_card_detail ?? '';
@@ -232,11 +240,10 @@ Route::post('/v1/client-tests', function (Request $request) {
             foreach ($data as $value) {
                 try {
                     $value['collection_date_en'] = Carbon::parse($value['created_at'])->format('Y-m-d');
-
                     $collection_date_en = explode("-", Carbon::parse($value['created_at'])->format('Y-m-d'));
-                    $collection_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDay();
-
+                    $collection_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDayEngToNep();
                     $value['collection_date_np'] = $collection_date_np;
+
                     unset($value['created_at']);
                     unset($value['updated_at']);
 
@@ -287,10 +294,13 @@ Route::post('/v1/lab-test', function (Request $request) {
     foreach ($data as $value) {
 
         $sample_test_date_np_array = explode("-", $value['sample_test_date']);
-        $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDay();
+        $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDayNepToEng();
 
         $received_date_en = explode("-", Carbon::parse($value['created_at'])->format('Y-m-d'));
-        $received_date_np = Calendar::eng_to_nep($received_date_en[0], $received_date_en[1], $received_date_en[2])->getYearMonthDay();
+        $received_date_np = Calendar::eng_to_nep($received_date_en[0], $received_date_en[1], $received_date_en[2])->getYearMonthDayEngToNep();
+
+        $reporting_date_en = explode("-", Carbon::now()->toDateString());
+        $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
 
         try {
             if ($value['sample_test_date'] == '') {
@@ -318,7 +328,9 @@ Route::post('/v1/lab-test', function (Request $request) {
                     'received_by_hp_code' => $value['hp_code'],
                     'received_date_en' => Carbon::parse($value['created_at'])->format('Y-m-d'),
                     'received_date_np' => $received_date_np,
-                    'lab_token' => $value['token']
+                    'lab_token' => $value['token'],
+                    'reporting_date_en' => Carbon::now()->toDateTimeString(),
+                    'reporting_date_np' => $reporting_date_np
                 ]);
                 $find_test = LabTest::where('token', $value['token'])->first();
                 if ($find_test) {
@@ -429,7 +441,7 @@ Route::post('/v1/received-in-lab', function (Request $request) {
     $data['checked_by'] = $healthworker->token;
     $data['status'] = 1;
     $to_date_array = explode("-", Carbon::now()->format('Y-m-d'));
-    $data['sample_recv_date'] = Calendar::eng_to_nep($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay();
+    $data['sample_recv_date'] = Calendar::eng_to_nep($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDayEngToNep();
     try {
         $sample = SampleCollection::where('token', $data['sample_token']);
         if ($sample->count() < 1) {
@@ -458,14 +470,19 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
         $value['token'] = auth()->user()->token . '-' . $value['token'];
         $find_test = LabTest::where('token', $value['token'])->first();
         $sample_test_date_np_array = explode("-", $value['sample_test_date']);
-        $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDay();
+        $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDayNepToEng();
+
+        $reporting_date_en = explode("-", Carbon::now()->toDateString());
+        $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
 
         SampleCollection::where('token', $find_test->sample_token)
             ->update([
                 'result' => $value['sample_test_result'],
                 'sample_test_date_en' => $sample_test_date_en,
                 'sample_test_date_np' => $value['sample_test_date'],
-                'sample_test_time' => $value['sample_test_time']
+                'sample_test_time' => $value['sample_test_time'],
+                'reporting_date_en' => Carbon::now()->toDateTimeString(),
+                'reporting_date_np' => $reporting_date_np
             ]);
         if ($find_test) {
             $find_test->update([
@@ -488,8 +505,11 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
       $sample_collection = SampleCollection::where('token', $value['sample_token'])->get()->first();
 
       $sample_test_date_np_array = explode("-", $value['sample_test_date']);
-      $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDay();
+      $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDayNepToEng();
       $healthWorker = OrganizationMember::where('token', $user->token)->first();
+
+      $reporting_date_en = explode("-", Carbon::now()->toDateString());
+      $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
 
       $sample_collection->update([
            'result' => $value['sample_test_result'],
@@ -500,7 +520,9 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
            'received_by_hp_code' => $healthWorker->hp_code,
            'received_date_en' => $sample_test_date_en,
            'received_date_np' => $value['sample_test_date'],
-           'lab_token' => $value['token']
+           'lab_token' => $value['token'],
+          'reporting_date_en' => Carbon::now()->toDateTimeString(),
+          'reporting_date_np' => $reporting_date_np
       ]);
 
             LabTest::create([
@@ -601,15 +623,15 @@ Route::post('/v1/payment-cases', function (Request $request) {
                 
                 if(isset($payment_case['register_date_en'])) {
                     $date_en_array = explode("-", date("Y-m-d", strtotime($payment_case['register_date_en'])));
-                    $payment_case_create['register_date_np'] = Calendar::eng_to_nep($date_en_array[0], $date_en_array[1], $date_en_array[2])->getYearMonthDay();
+                    $payment_case_create['register_date_np'] = Calendar::eng_to_nep($date_en_array[0], $date_en_array[1], $date_en_array[2])->getYearMonthDayEngToNep();
                 }
                 if(isset($payment_case['date_of_outcome_en'])) {
                     $date_en_array = explode("-", date("Y-m-d", strtotime($payment_case['date_of_outcome_en'])));
-                    $payment_case_create['date_of_outcome'] = Calendar::eng_to_nep($date_en_array[0], $date_en_array[1], $date_en_array[2])->getYearMonthDay();
+                    $payment_case_create['date_of_outcome'] = Calendar::eng_to_nep($date_en_array[0], $date_en_array[1], $date_en_array[2])->getYearMonthDayEngToNep();
                 }
                 if(isset($payment_case['date_of_positive'])) {
                     $date_en_array = explode("-", date("Y-m-d", strtotime($payment_case['date_of_positive'])));
-                    $payment_case_create['date_of_positive_np'] = Calendar::eng_to_nep($date_en_array[0], $date_en_array[1], $date_en_array[2])->getYearMonthDay();
+                    $payment_case_create['date_of_positive_np'] = Calendar::eng_to_nep($date_en_array[0], $date_en_array[1], $date_en_array[2])->getYearMonthDayEngToNep();
                 }
                 PaymentCase::create($payment_case_create);
             }
@@ -885,11 +907,8 @@ Route::post('/v1/cases-payment/delete', function(Request $request){
 });
 Route::post('/v1/bulk-case-payment', 'CasesPaymentController@bulkUpload')->name('cases.payment.bulk.upload');
 
-Route::post('/v1/bulk-upload/lab-received', 'Backend\BulkUploadController@labReceived')->name('bulk.upload.lab-received');
-Route::post('/v1/bulk-upload/lab-result', 'Backend\BulkUploadController@labResult')->name('bulk.upload.lab-result');
-Route::post('/v1/bulk-upload/lab-received-result', 'Backend\BulkUploadController@labReceivedResult')->name('bulk.upload.lab-received.lab-result');
-Route::post('/v1/bulk-upload/registration-sample-collection', 'Backend\BulkUploadController@registrationSampleCollection')->name('bulk.upload.register.sample-collection');
-Route::post('/v1/bulk-upload/registration-sample-collection-lab-test', 'Backend\BulkUploadController@registrationSampleCollectionLabTest')->name('bulk.upload.register.sample.lab');
+Route::post('/v1/bulk-upload/submit', 'Backend\BulkUploadController@bulkFileHandle')->name('bulk.upload.submit');
 Route::get('/v1/server-date', 'Data\Api\DateController@index');
 
 Route::post('/v1/suspected-case-delete/{id}', 'Data\Api\WomenController@deleteSuspectedCase');
+Route::post('/v1/lab-suspected-case-delete/{id}', 'Data\Api\WomenController@deleteLabSuspectedCase');

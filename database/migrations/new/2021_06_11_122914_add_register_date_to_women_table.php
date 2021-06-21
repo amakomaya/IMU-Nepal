@@ -14,7 +14,7 @@ class AddRegisterDateToWomenTable extends Migration
     public function up()
     {
         Schema::table('women', function (Blueprint $table) {
-            $table->date('register_date_en')->nullable();
+            $table->dateTime('register_date_en')->nullable();
             $table->string('register_date_np')->nullable();
         });
     }

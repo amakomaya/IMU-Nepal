@@ -10,12 +10,15 @@ use App\Models\ContactTracing;
 use App\Models\LaboratoryParameter;
 use App\Models\LabTest;
 use App\Models\Message;
+use App\Models\OrganizationMember;
 use App\Models\SampleCollection;
 use App\Models\SuspectedCase;
 use App\Models\Symptoms;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Spatie\Activitylog\Models\Activity;
+use Yagiten\Nepalicalendar\Calendar;
 
 class Kernel extends ConsoleKernel
 {
@@ -150,8 +153,8 @@ class Kernel extends ConsoleKernel
                 });
         })->dailyAt('02:00');
 //        })->everyMinute();
-    }
 
+        }
     /**
      * Register the commands for the application.
      *

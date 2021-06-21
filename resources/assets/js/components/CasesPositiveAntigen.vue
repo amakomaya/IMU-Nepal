@@ -16,9 +16,10 @@
         <th width="10%" title="Municipality">Municipality</th>
         <th width="4%" title="Ward No">Ward</th>
         <th width="15%">Case</th>
-        <th width="10%" title="Case Created Date">Date</th>
-        <th width="10%" title="Sample Collection Details">Sample</th>
+        <th width="8%" title="Case Created Date">Date</th>
+        <th width="8%" title="Sample Collection Details">Sample</th>
         <th width="8%" title="Latest Lab Result">Result</th>
+        <th width="4%" title="Infection Type">Type</th>
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
       </tr>
       </thead>
@@ -40,7 +41,7 @@
           Type : {{ checkCaseType(item.cases) }} <br>
           Management : {{ checkCaseManagement(item.cases, item.case_where) }}
         </td>
-        <td>{{ ad2bs(item.created_at) }}</td>
+        <td>{{ ad2bs(item.latest_anc.sample_test_date_en) }}</td>
         <td><span class="label label-info"> {{ item.ancs.length }}</span>
           <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
         </td>
@@ -49,6 +50,9 @@
             <span class="label label-danger"> Positive</span>
           </div>
           <div>{{ labToken(item.latest_anc.lab_token) }}</div>
+        </td>
+        <td>
+          {{ checkInfectionType(item.symptoms_recent) }}
         </td>
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
@@ -90,7 +94,7 @@ export default {
         orderables: [
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},
-          {title: 'Case Created At', name: 'created_at'},
+          {title: 'Case Created At', name: 'register_date_en'},
         ],
         filterGroups: [
           {
@@ -100,20 +104,20 @@ export default {
               {title: 'Name', name: 'name', type: 'string'},
               {title: 'Age', name: 'age', type: 'numeric'},
               {title: 'Phone Number', name: 'emergency_contact_one', type: 'text'},
-              {title: 'Case Created At', name: 'created_at', type: 'datetime'},
+              {title: 'Case Created At', name: 'register_date_en', type: 'datetime'},
             ]
           },
           {
             name: 'Swab Collection',
             filters: [
               {title: 'Swab ID ', name: 'ancs.token', type: 'string'},
-              {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
+              {title: 'Swab Created At', name: 'ancs.collection_date_en', type: 'datetime'}
             ]
           },
           {
             name: 'Lab Result',
             filters: [
-              {title: 'Lab Result Created At', name: 'ancs.updated_at', type: 'datetime'}
+              {title: 'Lab Result Created At', name: 'ancs.sample_test_date_en', type: 'datetime'}
             ]
           }
         ],
@@ -362,6 +366,16 @@ export default {
           return 'F';
         default:
           return 'O';
+      }
+    },
+    checkInfectionType(value) {
+      switch (value) {
+        case '0':
+          return 'Asymptomatic';
+        case '1':
+          return 'Symptomatic';
+        default:
+          return "N/A";
       }
     },
     checkPermission(value) {

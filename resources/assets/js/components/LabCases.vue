@@ -19,7 +19,7 @@
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
       </tr>
       </thead>
-      <tr slot-scope="{item}">
+      <tr slot-scope="{item, removeItemOnSuccess}">
         <td>
           <div v-if="item.parent_case_id !== null">Parent Case ID : {{ item.parent_case_id }}</div>
         </td>
@@ -36,7 +36,7 @@
           Type : {{ checkCaseType(item.cases) }} <br>
           Management : {{ checkCaseManagement(item.cases, item.case_where) }}
         </td>
-        <td>{{ ad2bs(item.created_at) }}</td>
+        <td>{{ ad2bs(item.latest_anc.received_date_en) }}</td>
         <td><span class="label label-info"> {{ item.ancs.length }}</span>
           <div title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
         </td>
@@ -46,7 +46,10 @@
         </td>
         <td>
            <button v-if="checkPermission('lab-result')" v-on:click="addResultInLab(item)" title="Add Result">
-             <i class = "material-icons">biotech</i>
+             <i class = "material-icons">biotech</i> | 
+          </button>
+          <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Move Patient Data">
+            <i class="fa fa-trash"></i>
           </button>
         </td>
       </tr>
@@ -82,12 +85,13 @@ export default {
   components: {Filterable, fab},
   data() {
     return {
+      permission: this.$permissionId,
       filterable: {
           url: '/data/api/lab/received-sample',
         orderables: [
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},
-          {title: 'Case Created At', name: 'created_at'}
+          {title: 'Case Created At', name: 'register_date_en'}
         ],
         filterGroups: [
           {
@@ -96,20 +100,20 @@ export default {
               {title: 'Name', name: 'name', type: 'string'},
               {title: 'Age', name: 'age', type: 'numeric'},
               {title: 'Phone Number', name: 'emergency_contact_one', type: 'text'},
-              {title: 'Case Created At', name: 'created_at', type: 'datetime'},
+              {title: 'Case Created At', name: 'register_date_en', type: 'datetime'},
             ]
           },
           {
             name: 'Swab Collection',
             filters: [
               {title: 'Swab ID ', name: 'ancs.token', type: 'string'},
-              {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
+              {title: 'Swab Created At', name: 'ancs.collection_date_en', type: 'datetime'}
             ]
           },
           {
             name: 'Lab Result',
             filters: [
-              {title: 'Lab Result Created At', name: 'ancs.updated_at', type: 'datetime'}
+              {title: 'Lab Result Created At', name: 'ancs.sample_test_date_en', type: 'datetime'}
             ]
           }
         ],
@@ -219,6 +223,50 @@ export default {
           districts : this.districts,
           municipalities : this.municipalities
         },
+      })
+    },
+
+    deletePatientData: function (item, removeItemOnSuccess) {
+      this.$swal({
+        title: "Are you sure?",
+        text: "Your data will be moved to Registered Only List.",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, move it!",
+        cancelButtonText: "No, cancel please!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      }).then((result) => {
+        if (result.value) {
+          axios.post('/api/v1/lab-suspected-case-delete/' + item.token)
+              .then((response) => {
+                if (response.data.message === 'success') {
+                  removeItemOnSuccess(item);
+                  this.$swal({
+                    title: 'Record Moved',
+                    type: 'success',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                  })
+                  this.healthpostSelected = null;
+                  
+                } else {
+                  this.$swal({
+                    title: 'Oops. No record found.',
+                    type: 'error',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                  })
+                }
+              })
+        } else {
+          this.$swal("Cancelled", "Data not moved :)", "error");
+        }
       })
     },
 

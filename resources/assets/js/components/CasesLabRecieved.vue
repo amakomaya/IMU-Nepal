@@ -16,7 +16,7 @@
         <th width="10%" title="Municipality">Municipality</th>
         <th width="4%" title="Ward No">Ward</th>
         <th width="15%">Case</th>
-        <th width="10%" title="Case Created Date">Date</th>
+        <th width="10%" title="Received Date">Date</th>
         <th width="10%" title="Sample Collection Details">Sample</th>
         <th width="8%" title="Latest Lab Result">Result</th>
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
@@ -39,7 +39,11 @@
           Type : {{ checkCaseType(item.cases) }} <br>
           Management : {{ checkCaseManagement(item.cases, item.case_where) }}
         </td>
-        <td>{{ ad2bs(item.created_at) }}</td>
+        <td>
+          <div v-if="item.latest_anc">
+            {{ ad2bs(item.latest_anc.received_date_en) }}
+          </div>
+        </td>
         <td><span class="label label-info"> {{ item.ancs.length }}</span>
           <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
         </td>
@@ -98,7 +102,7 @@ export default {
         orderables: [
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},
-          {title: 'Case Created At', name: 'created_at'},
+          {title: 'Case Register At', name: 'register_date_en'},
         ],
         filterGroups: [
           {
@@ -107,20 +111,20 @@ export default {
               {title: 'Name', name: 'name', type: 'string'},
               {title: 'Age', name: 'age', type: 'numeric'},
               {title: 'Phone Number', name: 'emergency_contact_one', type: 'text'},
-              {title: 'Case Created At', name: 'created_at', type: 'datetime'},
+              {title: 'Case Register At', name: 'register_date_en', type: 'datetime'},
             ]
           },
           {
             name: 'Swab Collection',
             filters: [
               {title: 'Swab ID ', name: 'ancs.token', type: 'string'},
-              {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
+              {title: 'Collection Date', name: 'ancs.collection_date_en', type: 'datetime'}
             ]
           },
           {
             name: 'Lab Result',
             filters: [
-              {title: 'Lab Result Created At', name: 'ancs.updated_at', type: 'datetime'}
+              {title: 'Lab Result Created At', name: 'ancs.sample_test_date_en', type: 'datetime'}
             ]
           }
         ],

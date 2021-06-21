@@ -130,7 +130,7 @@ class AncDetailController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $filter_date = $this->dataFromAndTo($request);
-        $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']);
+        $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']) + 1;
 
         foreach ($response as $key => $value) {
             $$key = $value;
@@ -140,7 +140,7 @@ class AncDetailController extends Controller
             ->whereIn('ancs.hp_code', $hpCodes)
             ->whereIn('ancs.result', [3, 4])
             ->whereIn('healthposts.hospital_type', [2, 3])
-            ->whereBetween(\DB::raw('DATE(ancs.updated_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
+            ->whereBetween(\DB::raw('DATE(ancs.sample_test_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
 
         if ($response['province_id'] !== null){
             $reports = $reports->where('healthposts.province_id', $response['province_id']);
@@ -181,21 +181,17 @@ class AncDetailController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $filter_date = $this->dataFromAndTo($request);
-        $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']);
+        $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']) +1;
 
         foreach ($response as $key => $value) {
             $$key = $value;
         }
 
         $user = auth()->user();
-        $reports = LabTest::leftjoin('healthposts', 'lab_tests.hp_code', '=', 'healthposts.hp_code')
-            ->whereIn('lab_tests.hp_code', $hpCodes)
-            // ->where(function($q) use ($hpCodes, $user) {
-            //     $q->where('lab_tests.checked_by', $user->token)
-            //         ->orWhereIn('lab_tests.hp_code', $hpCodes);
-            // })
-            ->whereIn('lab_tests.sample_test_result', ['3', '4'])
-            ->whereBetween(\DB::raw('DATE(lab_tests.updated_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
+        $reports = SampleCollection::leftjoin('healthposts', 'ancs.received_by_hp_code', '=', 'healthposts.hp_code')
+            ->whereIn('ancs.received_by_hp_code', $hpCodes)
+            ->whereIn('ancs.result', ['3', '4'])
+            ->whereBetween(\DB::raw('DATE(ancs.sample_test_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
 
 
         if ($response['province_id'] !== null){

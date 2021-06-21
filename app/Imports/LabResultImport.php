@@ -39,6 +39,8 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
         $this->enums = [
           'result' => array('positive' => '3', 'negative' => '4')
         ];
+        $this->todayDateEn = Carbon::now();
+        $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();
     }
     
     public function registerEvents(): array
@@ -55,11 +57,9 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
         if(!array_filter($row)) { return null;} //Ignore empty rows.
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
-        $date_en = Carbon::now();
-        $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
         $labResult = $row['result'];
         $patientLabId = $row['patient_lab_id'];
-        $sampleTestTime = $date_en->format('g : i A');
+        $sampleTestTime = $this->todayDateEn->format('g : i A');
         $labTests = $this->getLabTestByPatientLabId($patientLabId);
         if(!$labTests) {
           $error = ['patient_lab_id' => 'The patient with the given Patient Lab ID couldnot be found in your lab. Please create the data of the patient & try again.'];
@@ -78,15 +78,28 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
                 ]);
               } else {
                 $labTests->update([
-                  'sample_test_date' => $date_np,
+                  'sample_test_date' => $this->todayDateNp,
                   'sample_test_time' => $sampleTestTime,
                   'sample_test_result' => $labResult
                 ]);
               }
               $ancs = SampleCollection::where('token', $sId);
-              $ancs->update([
-                'result' => $labResult
-              ]);
+              $hasAlreadyReported = $ancs->get()->first()->sample_test_date_en;
+              if($hasAlreadyReported) {
+                $ancs->update([
+                  'result' => $labResult
+                ]);
+              } else {
+                $ancs->update([
+                  'result' => $labResult,
+                  'sample_test_date_en' => $this->todayDateEn,
+                  'sample_test_date_np' => $this->todayDateNp,
+                  'sample_test_time' => $sampleTestTime,
+                  'reporting_date_en' => $this->todayDateEn,
+                  'reporting_date_np' => $this->todayDateNp
+                ]);
+              }
+              
             } else {
               $error = ['patient_lab_id' => 'The patient with the given Patient Lab ID doesnot have Sample Collection record. Please create the data of the patient & try again.'];
               $failures[] = new Failure($currentRowNumber, 'patient_lab_id', $error, $row);

@@ -49,27 +49,27 @@
                 @endif
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                       <h3 class="text-center"><span id="form_title"></span> Registration Form</h3>
+                       <h3 class="text-center"><span id="form_title"></span>POE Registration Form</h3>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         {!! rcForm::open('POST', route('woman.store'), ['name' => 'createCase']) !!}
                         <div class="panel-body">
                             <div class="form-group">
-                                <label class="control-label"><h3>Test Type</h3></label>
+                                <label class="control-label">Currently symptomatic?</label>
                                 <div class="control-group">
-                                    <label class="radio-inline" style="padding-right: 60px;">
-                                        <h4>PCR Swab Collection</h4>
-                                        <input type="radio" name="service_for" value="1" onclick="toggleLayout(true)" required style="top: 7px;">
+                                    <label class="radio-inline">
+                                        <h5>Symptomatic</h5>
+                                        <input type="radio" name="symptoms_recent" value="1" id="symptoms_recent" class="symptoms_recent" style="bottom: 12px;" required>
                                     </label>
                                     <label class="radio-inline">
-                                        <h4>Antigen Test</h4>
-                                        <input type="radio" name="service_for" value="2" onclick="toggleLayout(false)" style="top: 7px;">
+                                        <h5>Asymptomatic</h5>
+                                        <input type="radio" name="symptoms_recent" value="0" class="symptoms_recent" style="bottom: 12px;">
                                     </label>
                                 </div>
-                                @if ($errors->has('service_for'))
+                                @if ($errors->has('symptoms_recent'))
                                     <small id="help"
-                                           class="form-text text-danger">{{ $errors->first('service_for') }}</small>
+                                           class="form-text text-danger">{{ $errors->first('symptoms_recent') }}</small>
                                 @endif
                             </div>
                             <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
@@ -130,8 +130,8 @@
                                     <option {{ old('occupation') == '1' ? "selected" : "" }} value="1">Front Line Health
                                         Worker
                                     </option>
-                                    <option {{ old('occupation') == '2' ? "selected" : "" }} value="2">Doctor</option>
-                                    <option {{ old('occupation') == '3' ? "selected" : "" }} value="3">Nurse</option>
+                                    <option {{ old('occupation') == '11' ? "selected" : "" }} value="11">Tourist</option>
+                                    <option {{ old('occupation') == '12' ? "selected" : "" }} value="12">Migrant Worker</option>
                                     <option {{ old('occupation') == '4' ? "selected" : "" }} value="4">Police/Army
                                     </option>
                                     <option {{ old('occupation') == '5' ? "selected" : "" }} value="5">
@@ -156,8 +156,13 @@
                             </div>
                             <div class="form-group {{ $errors->has('nationality') ? 'has-error' : '' }}">
                                 <label for="nationality">Nationality</label>
-                                <input type="text" id="nationality" class="form-control" value="{{ old('nationality') }}" name="nationality"
-                                       aria-describedby="help" placeholder="Enter Nationality">
+                                <select name="nationality" class="form-control">
+                                    <option {{ old('nationality') == '' ? "selected" : "" }} value="">Select Nationality</option>
+                                    <option {{ old('nationality') == '167' ? "selected" : "" }} value="167">Nepal</option>
+                                    <option {{ old('nationality') == '104' ? "selected" : "" }} value="104">India</option>
+                                    <option {{ old('nationality') == '47' ? "selected" : "" }} value="47">China</option>
+                                    <option {{ old('nationality') == '300' ? "selected" : "" }} value="300">Other</option>
+                                </select>
                                 @if ($errors->has('nationality'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('nationality') }}</small>
                                 @endif
@@ -171,11 +176,24 @@
                                 @endif
                             </div>
                             <div class="form-group {{ $errors->has('travelled_where') ? 'has-error' : '' }}">
-                                <label for="travelled_where">Travel From</label>
-                                <input type="text" id="travelled_where" class="form-control" value="{{ old('travelled_where') }}" name="travelled_where"
-                                       aria-describedby="help" placeholder="Enter Travel From">
+                                <label for="travelled_where">Travelled From (Country)</label>
+                                <select name="travelled_where" class="form-control">
+                                    <option {{ old('travelled_where') == '' ? "selected" : "" }} value="">Select Travelled From (Country)</option>
+                                    <option {{ old('travelled_where') == '167' ? "selected" : "" }} value="167">Nepal</option>
+                                    <option {{ old('travelled_where') == '104' ? "selected" : "" }} value="104">India</option>
+                                    <option {{ old('travelled_where') == '47' ? "selected" : "" }} value="47">China</option>
+                                    <option {{ old('travelled_where') == '300' ? "selected" : "" }} value="300">Other</option>
+                                </select>
                                 @if ($errors->has('travelled_where'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('travelled_where') }}</small>
+                                @endif
+                            </div>
+                            <div class="form-group {{ $errors->has('travelled_city') ? 'has-error' : '' }}">
+                                <label for="travelled_city">Travelled From (City)</label>
+                                <input type="text" id="travelled_city" class="form-control" value="{{ old('travelled_city') }}" name="travelled_city"
+                                       aria-describedby="help" placeholder="Travelled From (City)">
+                                @if ($errors->has('travelled_city'))
+                                    <small id="help" class="form-text text-danger">{{ $errors->first('travelled_city') }}</small>
                                 @endif
                             </div>
                             <div class="form-group {{ $errors->has('travelled_date') ? 'has-error' : '' }}">
@@ -292,68 +310,171 @@
                                            class="form-text text-danger">{{ $errors->first('nearest_contact') }}</small>
                                 @endif
                             </div>
+                            
                             <div class="form-group {{ $errors->has('emergency_contact_two') ? 'has-error' : '' }}">
-                                <label for="name">Nearest Contact person Phone</label>
+                                <label for="name">Contact of nearest person (Phone)</label>
                                 <input type="text" class="form-control" value="{{ old('emergency_contact_two') }}"
                                        name="emergency_contact_two" aria-describedby="help"
-                                       placeholder="Enter Nearest Contact person Phone">
+                                       placeholder="Enter Contact of nearest person (Phone)">
                                 @if ($errors->has('emergency_contact_two'))
                                     <small id="help"
                                            class="form-text text-danger">{{ $errors->first('emergency_contact_two') }}</small>
                                 @endif
                             </div>
-                            <div class="form-group">
-                                <label class="control-label">Currently symptomatic</label>
-                                <div class="control-group">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="symptoms_recent"
-                                               {{ old('symptoms_recent') == "0" ? 'checked' : '' }} value="0"
-                                               data-rel="earning" checked onclick="toggleDateOnset(true)">No
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio"
-                                               {{ old('symptoms_recent') == "1" ? 'checked' : '' }} name="symptoms_recent"
-                                               value="1" data-rel="earning" onclick="toggleDateOnset(false)">Yes
-                                    </label>
-                                </div>
+                            
+                            <div class="form-group {{ $errors->has('contact_relationship') ? 'has-error' : '' }}">
+                                <label for="contact_relationship">Relationship with the contact person</label>
+                                <select name="contact_relationship" class="form-control">
+                                    <option {{ old('contact_relationship') == '' ? "selected" : "" }} value="">Select Relationship with the contact person</option>
+                                    <option {{ old('contact_relationship') == '1' ? "selected" : "" }} value="1">Family</option>
+                                    <option {{ old('contact_relationship') == '2' ? "selected" : "" }} value="2">Friend</option>
+                                    <option {{ old('contact_relationship') == '3' ? "selected" : "" }} value="3">Neighbour</option>
+                                    <option {{ old('contact_relationship') == '4' ? "selected" : "" }} value="4">Relative</option>
+                                    <option {{ old('contact_relationship') == '4' ? "selected" : "" }} value="5">Other</option>
+                                </select>
+                                @if ($errors->has('contact_relationship'))
+                                    <small id="help"
+                                           class="form-text text-danger">{{ $errors->first('contact_relationship') }}</small>
+                                @endif
                             </div>
+
                             <div class="form-group {{ $errors->has('temperature') ? 'has-error' : '' }}">
-                                <label for="name">Body Temperature</label>
+                                <label for="name">Body Temperature (In Fahrenheit)</label>
                                 <input type="number" class="form-control" value="{{ old('temperature') }}"
                                        name="temperature" aria-describedby="help"
-                                       placeholder="Enter Body Temperature">
+                                       placeholder="Body Temperature (In Fahrenheit)">
                                 @if ($errors->has('temperature'))
                                     <small id="help"
                                            class="form-text text-danger">{{ $errors->first('temperature') }}</small>
                                 @endif
                             </div>
-                            <div class="form-group">
-                                <label class="control-label">Have any symptoms of Covid-19 seen anytime during the past 2 weeks?</label>
-                                <div class="control-group">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="symptoms_within_four_week"
-                                               {{ old('symptoms_within_four_week') == "0" ? 'checked' : '' }} value="0"
-                                               data-rel="earning" checked>No
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio"
-                                               {{ old('symptoms_within_four_week') == "1" ? 'checked' : '' }} name="symptoms_within_four_week"
-                                               value="1" data-rel="earning">Yes
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="is-symptomatic" style="display: none;">
-                                <div class="form-group {{ $errors->has('date_of_onset_of_first_symptom') ? 'has-error' : '' }}">
-                                    <label for="date_of_onset_of_first_symptom">Date of onset of first symptom:</label>
-                                    <input type="text" class="form-control" value="{{ date('Y-m-d') }}"
-                                        name="date_of_onset_of_first_symptom" aria-describedby="help">
-                                    @if ($errors->has('date_of_onset_of_first_symptom'))
+
+                            <div class="asymptomatic">
+                            
+                                <div class="form-group {{ $errors->has('fever') ? 'has-error' : '' }}">
+                                    <label for="name">Fever (>38 C/100.4F)</label>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio"
+                                                {{ old('fever') == "0" ? 'checked' : '' }} name="fever"
+                                                value="0" class="fever">No
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio"
+                                                {{ old('fever') == "1" ? 'checked' : '' }} name="fever"
+                                                value="1" class="fever">Yes
+                                        </label>
+                                    </div>
+                                    @if ($errors->has('fever'))
                                         <small id="help"
-                                            class="form-text text-danger">{{ $errors->first('date_of_onset_of_first_symptom') }}</small>
+                                            class="form-text text-danger">{{ $errors->first('fever') }}</small>
                                     @endif
                                 </div>
+                                
+                                <div class="form-group fever-status {{ $errors->has('malaria') ? 'has-error' : '' }}">
+                                    <label for="name">Malaria test done ?</label>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio"
+                                                {{ old('malaria_test_status') == "0" ? 'checked' : '' }} name="malaria_test_status"
+                                                value="0" class="malaria_test_status">No
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio"
+                                                {{ old('malaria_test_status') == "1" ? 'checked' : '' }} name="malaria_test_status"
+                                                value="1" class="malaria_test_status">Yes
+                                        </label>
+                                    </div>
+                                    @if ($errors->has('malaria_test_status'))
+                                        <small id="help"
+                                            class="form-text text-danger">{{ $errors->first('malaria') }}</small>
+                                    @endif
+                                </div>
+                                
+                                <div class="form-group malaria-status {{ $errors->has('malaria_result') ? 'has-error' : '' }}">
+                                    <label for="name">Malaria Test Result</label>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio"
+                                                {{ old('malaria_result') == "0" ? 'checked' : '' }} name="malaria_result"
+                                                value="0" class="malaria_result">Negative
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio"
+                                                {{ old('malaria_result') == "1" ? 'checked' : '' }} name="malaria_result"
+                                                value="1" class="malaria_result">Positive
+                                        </label>
+                                    </div>
+                                    @if ($errors->has('malaria_result'))
+                                        <small id="help"
+                                            class="form-text text-danger">{{ $errors->first('malaria_result') }}</small>
+                                    @endif
+                                </div>
+                                
+                                <div class="form-group malaria-result-status {{ $errors->has('malaraia_isolation') ? 'has-error' : '' }}">
+                                    <label for="name">Isolation Center Referred To</label>
+                                    <input type="text" class="form-control" value="{{ old('malaraia_isolation') }}"
+                                        name="malaraia_isolation" aria-describedby="help"
+                                        placeholder="Isolation Center Referred To (Malaria)">
+                                    @if ($errors->has('malaraia_isolation'))
+                                        <small id="help"
+                                            class="form-text text-danger">{{ $errors->first('malaraia_isolation') }}</small>
+                                    @endif
+                                </div>
+                                
+                                <div class="form-group fever-status {{ $errors->has('antigen_test_status') ? 'has-error' : '' }}">
+                                    <label for="name">Covid-19 Antigen Test Done ?</label>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio"
+                                                {{ old('antigen_test_status') == "0" ? 'checked' : '' }} name="antigen_test_status"
+                                                value="0" class="antigen_test_status">No
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio"
+                                                {{ old('antigen_test_status') == "1" ? 'checked' : '' }} name="antigen_test_status"
+                                                value="1" class="antigen_test_status">Yes
+                                        </label>
+                                    </div>
+                                    @if ($errors->has('antigen_test_status'))
+                                        <small id="help"
+                                            class="form-text text-danger">{{ $errors->first('antigen_test_status') }}</small>
+                                    @endif
+                                </div>
+                                
+                                <div class="form-group antigen-status {{ $errors->has('antigen_result') ? 'has-error' : '' }}">
+                                    <label for="name">Antigen Result</label>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio"
+                                                {{ old('antigen_result') == "0" ? 'checked' : '' }} name="antigen_result"
+                                                value="0" class="antigen_result">Negative
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio"
+                                                {{ old('antigen_result') == "1" ? 'checked' : '' }} name="antigen_result"
+                                                value="1" class="antigen_result">Positive
+                                        </label>
+                                    </div>
+                                    @if ($errors->has('antigen_result'))
+                                        <small id="help"
+                                            class="form-text text-danger">{{ $errors->first('antigen_result') }}</small>
+                                    @endif
+                                </div>
+                                
+                                <div class="form-group antigen-result-status {{ $errors->has('antigen_isolation') ? 'has-error' : '' }}">
+                                    <label for="name">Isolation Center Referred To</label>
+                                    <input type="text" class="form-control" value="{{ old('antigen_isolation') }}"
+                                        name="antigen_isolation" aria-describedby="help"
+                                        placeholder="Isolation Center Referred To (Antigen)">
+                                    @if ($errors->has('antigen_isolation'))
+                                        <small id="help"
+                                            class="form-text text-danger">{{ $errors->first('antigen_isolation') }}</small>
+                                    @endif
+                                </div>
+
                                 <div class="form-group" id="symptomatic-patient">
-                                    <label class="control-label" for="symptoms">Symptomatic patient with:</label><br>
+                                    <label class="control-label" for="symptoms">Covid-19 Symptoms:</label><br>
                                     <input type="checkbox" name="symptoms[]" value="1">Pneumonia<br>
                                     <input type="checkbox" name="symptoms[]" value="2">ARDS<br>
                                     <input type="checkbox" name="symptoms[]" value="3">Influenza-like illness<br>
@@ -391,14 +512,14 @@
                                 <div class="form-group {{ $errors->has('symptoms_specific') ? 'has-error' : '' }}">
                                     <label for="symptoms_specific">If other specify</label>
                                     <input type="text" class="form-control" value="{{ old('symptoms_specific') }}" name="symptoms_specific"
-                                           aria-describedby="help" placeholder="Enter other symptoms"
+                                            aria-describedby="help" placeholder="Enter other symptoms"
                                     >
                                     @if ($errors->has('symptoms_specific'))
                                         <small id="help" class="form-text text-danger">{{ $errors->first('symptoms_specific') }}</small>
                                     @endif
                                 </div>
-                                <div class="form-group" id="symptoms_comorbidity">
-                                    <label class="control-label" for="symptoms_comorbidity">Symptomatic patient with comorbidity</label><br>
+                                <div class="form-group " id="symptoms_comorbidity">
+                                    <label class="control-label" for="symptoms_comorbidity">Comorbidity:</label><br>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="1">Diabetes<br>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="2">HTN<br>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="3">Hermodialysis<br>
@@ -422,70 +543,102 @@
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="15">Chric lung disesase/asthma/artery<br>
                                     @if ($errors->has('symptoms_comorbidity'))
                                         <small id="help"
-                                               class="form-text text-danger">{{ $errors->first('symptoms_comorbidity') }}</small>
+                                                class="form-text text-danger">{{ $errors->first('symptoms_comorbidity') }}</small>
                                     @endif
                                 </div>
                                 <div class="form-group {{ $errors->has('symptoms_comorbidity_specific') ? 'has-error' : '' }}">
                                     <label for="symptoms_comorbidity_specific">If other specify</label>
                                     <input type="text" class="form-control" value="{{ old('symptoms_comorbidity_specific') }}" name="symptoms_comorbidity_specific"
-                                           aria-describedby="help" placeholder="Enter other symptoms"
+                                            aria-describedby="help" placeholder="Enter other symptoms"
                                     >
                                     @if ($errors->has('symptoms_comorbidity_specific'))
                                         <small id="help" class="form-text text-danger">{{ $errors->first('symptoms_comorbidity_specific') }}</small>
                                     @endif
                                 </div>
                             </div>
+
+
                             <div class="form-group">
-                                <label class="control-label">Is Detected From Contract Tracing ?</label>
-                                <div class="control-group">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="is_detected"
-                                               {{ old('is_detected') == "no" ? 'checked' : '' }} value="no"
-                                               data-rel="earning" checked onclick="toggleReasonLayout(true)">No
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio"
-                                               {{ old('is_detected') == "yes" ? 'checked' : '' }} name="is_detected"
-                                               value="yes" data-rel="earning" onclick="toggleReasonLayout(false)">Yes
-                                    </label>
-                                    <div class="earning form-group">
-                                        <label class="form-label">Parent Case ID</label>
-                                        <div class="form-group">
-                                            <input class="form-control" type="text" value="{{ old('parent_case_id') }}"
-                                                   name="parent_case_id" placeholder="Enter Parent Case ID"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">Have you traveled anywhere till 14 days ago?</label>
+                                <label class="control-label">Have you ever received Covid-19 vaccine?</label>
                                 <div class="control-group">
                                     <label class="radio-inline">
                                         <input type="radio"
-                                               {{ old('travelled') == "0" ? 'checked' : '' }} name="travelled" value="0"
-                                               checked>No
+                                               {{ old('vaccine_status') == "0" ? 'checked' : '' }} name="vaccine_status"
+                                               value="0" class="vaccine_status" required>No
                                     </label>
                                     <label class="radio-inline">
                                         <input type="radio"
-                                               {{ old('travelled') == "1" ? 'checked' : '' }} name="travelled"
-                                               value="1">Yes
+                                               {{ old('vaccine_status') == "1" ? 'checked' : '' }} name="vaccine_status"
+                                               value="1" class="vaccine_status">Yes
                                     </label>
+
                                 </div>
                             </div>
-                            <div class="form-group" id="case_reason">
-                                <label class="control-label" for="reson_for_testing">Reason for testing:</label><br>
-                                <input type="checkbox" name="reson_for_testing[]" value="1">Planned travel<br>
-                                <input type="checkbox" name="reson_for_testing[]" value="2">Mandatory requirement<br>
-                                <input type="checkbox" name="reson_for_testing[]" value="3">Returnee/Migrant worker<br>
-                                <input type="checkbox" name="reson_for_testing[]" value="4">Pre-medical/surgical procedure<br>
-                                <input type="checkbox" name="reson_for_testing[]" value="5">Pregnancy complications/Pre-delivery<br>
-                                <input type="checkbox" name="reson_for_testing[]" value="6">Testing by Government authority for other purpose<br>
-                                <input type="checkbox" name="reson_for_testing[]" value="7">Test on demand by person<br>
-                                @if ($errors->has('reson_for_testing'))
-                                    <small id="help"
-                                           class="form-text text-danger">{{ $errors->first('reson_for_testing') }}</small>
-                                @endif
+
+                            <div class="form-group">
+                                <label class="control-label">Do you have a vaccination card?</label>
+                                <div class="control-group">
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               {{ old('vaccination_card') == "0" ? 'checked' : '' }} name="vaccination_card"
+                                               value="0" class="vaccination_card" required>No
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               {{ old('vaccination_card') == "1" ? 'checked' : '' }} name="vaccination_card"
+                                               value="1" class="vaccination_card">Yes
+                                    </label>
+
+                                </div>
                             </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Vaccination doses complete?</label>
+                                <div class="control-group">
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               {{ old('vaccination_dosage_complete') == "0" ? 'checked' : '' }} name="vaccination_dosage_complete"
+                                               value="0" class="vaccination_dosage_complete" required>No
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               {{ old('vaccination_dosage_complete') == "1" ? 'checked' : '' }} name="vaccination_dosage_complete"
+                                               value="1" class="vaccination_dosage_complete">Yes
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">How many dosages of vaccine you have received?</label>
+                                <div class="control-group">
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               {{ old('vaccine_dosage_count') == "1" ? 'checked' : '' }} name="vaccine_dosage_count"
+                                               value="1" class="vaccine_dosage_count" required>1st Dose
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               {{ old('vaccine_dosage_count') == "2" ? 'checked' : '' }} name="vaccine_dosage_count"
+                                               value="2" class="vaccine_dosage_count">2nd (Final) Dose
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group {{ $errors->has('vaccine_dosage') ? 'has-error' : '' }}">
+                                <label for="vaccine_name">Name of Vaccine</label>
+                                <select name="vaccine_dosage" class="form-control" required>
+                                    <option {{ old('vaccine_dosage') == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
+                                    <option {{ old('vaccine_dosage') == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
+                                    <option {{ old('vaccine_dosage') == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
+                                    <option {{ old('vaccine_dosage') == '3' ? "selected" : "" }} value="3">Pfizer</option>
+                                    <option {{ old('vaccine_dosage') == '4' ? "selected" : "" }} value="4">Moderna</option>
+                                    <option {{ old('vaccine_dosage') == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
+                                    <option {{ old('vaccine_dosage') == '10' ? "selected" : "" }} value="6">Other</option>
+                                </select>
+                            </div>
+                            
                             <div class="form-group">
                                 <label class="control-label">Are you collecting COVID -19 swab now ?</label>
                                 <div class="control-group">
@@ -503,72 +656,7 @@
                                 </div>
                             </div>
 
-                            <div class="swab-data">
-                            
-                                <div id="sample">
-                                    <div class="form-group">
-                                        <label class="control-label">Sample Collection Type</label>
-                                        <div class="control-group">
-                                            <input type="checkbox" name="sample_type[]" value="1"> Nasopharyngeal<br>
-                                            <input type="checkbox" name="sample_type[]" value="2"> Oropharyngeal
-                                        </div>
-                                    </div>
-                                    <div class="form-group {{ $errors->has('sample_type_specific') ? 'has-error' : '' }} ">
-                                        <label for="sample_type_specific">If other specify sample collected type</label>
-                                        <input type="text" class="form-control" name="sample_type_specific"
-                                               aria-describedby="help"
-                                               placeholder="Enter if other specify sample collected type"
-                                        >
-                                        @if ($errors->has('sample_type_specific'))
-                                            <small id="help"
-                                                   class="form-text text-danger">{{ $errors->first('sample_type_specific') }}</small>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">Infection Type</label>
-                                    <div class="control-group">
-                                        <label class="radio-inline">
-                                            <input type="radio" name="infection_type" value="1">Symptomatic
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="infection_type" value="2">Asymptomatic
-                                        </label>
-                                    </div>
-                                    @if ($errors->has('infection_type'))
-                                        <small id="help"
-                                               class="form-text text-danger">{{ $errors->first('infection_type') }}</small>
-                                    @endif
-                                </div>
-    
-                                <div class="form-group">
-                                    <label class="control-label">Service Type</label>
-                                    <div class="control-group">
-                                        <label class="radio-inline">
-                                            <input type="radio" name="service_type" value="1">Paid Service
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="service_type" value="2">Free of cost service
-                                        </label>
-                                    </div>
-                                    @if ($errors->has('service_type'))
-                                        <small id="help"
-                                               class="form-text text-danger">{{ $errors->first('service_type') }}</small>
-                                    @endif
-                                </div>
-                                <div class="panel panel-danger">
-                                    <div class="panel-heading"><strong>Auto Generated Sample ID is :</strong></div>
-                                    <?php
-                                        $id = App\Models\OrganizationMember::where('token', auth()->user()->token)->first()->id;
-                                        $time = explode(':', Carbon\Carbon::now()->format('H:i:s'));
-                                        $converted_time = ($time[0] * 3600) + ($time[1] * 60) + $time[2];
-                                        $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon\Carbon::now()->format('ymd') . '-' . $converted_time;
-                                    ?>
-                                    <div class="panel-body text-center"><h3>{{ $swab_id }}</h3></div>
-                                </div>
-                                <input type="text" name="token" value="{{$swab_id}}" hidden>
-                                {{-- <input type="text" name="woman_token" value="{{$token}}" hidden> --}}
-                            </div>
+                            <input type="hidden" name="case_type" value="3">
 
                             {!! rcForm::close('post') !!}
                         </div>
@@ -611,47 +699,127 @@
             });
         }
 
-        function toggleReasonLayout(reason) {
-            x = document.getElementById("reason");
-            if (reason) {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-        }
-
-        function toggleDateOnset(val) {
-            if (val) {
-                $('.is-symptomatic').hide();
-            } else {
-                $('.is-symptomatic').show();
-            }            
-        }
-
-        function toggleLayout(sample) {
-            x = document.getElementById("sample");
-            if (sample) {
-                x.style.display = "block";
-                $('#form_title').html('PCR');
-            } else {
-                x.style.display = "none";
-                $('#form_title').html('Antigen');
-            }
-        }
-
-        swabFormShow();
-        $('.swab_collection_conformation').on('change', function() {
-        console.log('ss');
-            swabFormShow();
+        symptomaticCheck();
+        $('.symptoms_recent').on('change', function() {
+            symptomaticCheck();
         });
-        function swabFormShow() {
-            if($('.swab_collection_conformation:checked').val() == '1'){
-                $('.swab-data').show();
+        function symptomaticCheck() {
+            if($('.symptoms_recent:checked').val() == '1'){
+                $('.asymptomatic').show();
             }
             else {
-                $('.swab-data').hide();
+                $('.asymptomatic').hide();
             }
         }
+
+        feverCheck();
+        $('.fever').on('change', function() {
+            feverCheck();
+        });
+        function feverCheck() {
+            if($('.fever:checked').val() == '1'){
+                $('.fever-status').show();
+            }
+            else {
+                $('.fever-status').hide();
+            }
+        }
+
+        malariaCheck();
+        $('.malaria_test_status').on('change', function() {
+            malariaCheck();
+        });
+        function malariaCheck() {
+            if($('.malaria_test_status:checked').val() == '1'){
+                $('.malaria-status').show();
+            }
+            else {
+                $('.malaria-status').hide();
+            }
+        }
+
+        malariaResultCheck();
+        $('.malaria_result').on('change', function() {
+            malariaResultCheck();
+        });
+        function malariaResultCheck() {
+            if($('.malaria_result:checked').val() == '1'){
+                $('.malaria-result-status').show();
+            }
+            else {
+                $('.malaria-result-status').hide();
+            }
+        }
+
+        antigenCheck();
+        $('.antigen_test_status').on('change', function() {
+            antigenCheck();
+        });
+        function antigenCheck() {
+            if($('.antigen_test_status:checked').val() == '1'){
+                $('.antigen-status').show();
+            }
+            else {
+                $('.antigen-status').hide();
+            }
+        }
+
+        antigenResultCheck();
+        $('.antigen_result').on('change', function() {
+            antigenResultCheck();
+        });
+        function antigenResultCheck() {
+            if($('.antigen_result:checked').val() == '1'){
+                $('.antigen-result-status').show();
+            }
+            else {
+                $('.antigen-result-status').hide();
+            }
+        }
+
+
+
+        // function toggleReasonLayout(reason) {
+        //     x = document.getElementById("reason");
+        //     if (reason) {
+        //         x.style.display = "block";
+        //     } else {
+        //         x.style.display = "none";
+        //     }
+        // }
+
+        // function toggleDateOnset(val) {
+        //     if (val) {
+        //         $('.is-symptomatic').hide();
+        //     } else {
+        //         $('.is-symptomatic').show();
+        //     }            
+        // }
+
+        // function toggleLayout(sample) {
+        //     x = document.getElementById("sample");
+        //     if (sample) {
+        //         x.style.display = "block";
+        //         $('#form_title').html('PCR');
+        //     } else {
+        //         x.style.display = "none";
+        //         $('#form_title').html('Antigen');
+        //     }
+        // }
+
+        // swabFormShow();
+        // $('.swab_collection_conformation').on('change', function() {
+        // console.log('ss');
+        //     swabFormShow();
+        // });
+        // function swabFormShow() {
+        //     if($('.swab_collection_conformation:checked').val() == '1'){
+        //         $('.swab-data').show();
+        //     }
+        //     else {
+        //         $('.swab-data').hide();
+        //     }
+        // }
         
 
         $(function () {

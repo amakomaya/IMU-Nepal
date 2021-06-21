@@ -39,7 +39,7 @@
                     Type : {{ checkCaseType(item.cases) }} <br>
                     Management : {{ checkCaseManagement(item.cases, item.case_where) }}
                 </td>
-              <td>{{ ad2bs(item.created_at) }}</td>
+              <td>{{ ad2bs(item.register_date_en) }}</td>
                 <td><span class="label label-info"> {{ item.ancs.length }}</span>
                     <div v-if="item.latest_anc" title="Swab ID">
                       SID : <strong>{{ item.latest_anc.token }}</strong> <br>
@@ -61,7 +61,7 @@
                      <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
                   <button v-if="checkPermission('antigen-result') && checkAddReceivedView(item.latest_anc)" v-on:click="addAntigenResultInLab(item, removeItemOnSuccess)" title="Add Antigen Result">
-                    <i class="fa fa-medkit" aria-hidden="true"></i> |
+                    <i class="fa fa-flask" aria-hidden="true"></i> |
                   </button>
                   <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
                         <i class="fa fa-hospital-o"></i> |
@@ -111,7 +111,7 @@ export default {
         orderables: [
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},
-          {title: 'Case Created At', name: 'created_at'},
+          {title: 'Case Created At', name: 'register_date_en'},
         ],
         filterGroups: [
           {
@@ -120,13 +120,13 @@ export default {
               {title: 'Name', name: 'name', type: 'string'},
               {title: 'Age', name: 'age', type: 'numeric'},
               {title: 'Phone Number', name: 'phone', type: 'numeric'},
-              {title: 'Case Created At', name: 'created_at', type: 'datetime'},
+              {title: 'Case Created At', name: 'register_date_en', type: 'datetime'},
             ]
           },
           {
             name: 'Swab Collection',
             filters: [
-              {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
+              {title: 'Swab Created At', name: 'ancs.collection_date_en', type: 'datetime'}
             ]
           }
         ],

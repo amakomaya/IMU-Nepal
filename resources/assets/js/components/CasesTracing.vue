@@ -85,7 +85,7 @@ export default {
         orderables: [
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},
-          {title: 'Case Created At', name: 'created_at'},
+          {title: 'Case Created At', name: 'register_date_en'},
         ],
         filterGroups: [
           {
@@ -95,20 +95,20 @@ export default {
               {title: 'Name', name: 'name', type: 'string'},
               {title: 'Age', name: 'age', type: 'numeric'},
               {title: 'Phone Number', name: 'emergency_contact_one', type: 'text'},
-              {title: 'Case Created At', name: 'created_at', type: 'datetime'},
+              {title: 'Case Created At', name: 'register_date_en', type: 'datetime'},
             ]
           },
           {
             name: 'Swab Collection',
             filters: [
               {title: 'Swab ID ', name: 'ancs.token', type: 'string'},
-              {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
+              {title: 'Swab Created At', name: 'ancs.register_date_en', type: 'datetime'}
             ]
           },
           {
             name: 'Lab Result',
             filters: [
-              {title: 'Lab Result Created At', name: 'ancs.updated_at', type: 'datetime'}
+              {title: 'Lab Result Created At', name: 'ancs.collection_date_en', type: 'datetime'}
             ]
           }
         ],

@@ -145,8 +145,8 @@
                                         <td> {{ $loop->iteration }}</td>
                                         <td> {{ $datum['district_name'] }}</td>
                                         <td> {{ $datum['healthpost_name'] }}</td>
-                                        <td> {{ $datum['postive_cases_count'] }}</td>
                                         <td> {{ $datum['negative_cases_count'] }}</td>
+                                        <td> {{ $datum['postive_cases_count'] }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
