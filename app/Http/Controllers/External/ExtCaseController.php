@@ -76,6 +76,29 @@ class ExtCaseController extends Controller
         return ($d[0] * 3600) + ($d[1] * 60) + $d[2];
     }
 
+    public function testValidEnDate($date){
+      if($date) {
+        if (preg_match ("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/", $date, $parts))
+        {
+          $year = $parts[1];
+          $month = $parts[2];
+          $day = $parts[3];
+          if (checkdate($month ,$day, $year)) {
+            if((int)$year <= Carbon::now()->year) {
+              return true;
+            }
+          }
+
+        }
+      }
+      return false;
+    }
+  
+    public function testValidEnDateTime($dateTime) {
+      $date = Carbon::parse($dateTime)->toDateString();
+      return $this->testValidEnDate($date);
+    }
+
     public function store(Request $request)
     {
         $key = request()->getUser();
@@ -128,12 +151,44 @@ class ExtCaseController extends Controller
                 ];
                 $id = OrganizationMember::where('token', $user->token)->first()->id;
                 $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($index)->format('H:i:s'));
-                
                 $update = false;
                 $existingSampleCollection = $existingSuspectedCase = $existingLabTest = '';
+                
+                if(!is_numeric($value['province_id']) || ((int)$value['province_id']<1 || (int)$value['province_id']>7) ) {
+                  DB::rollback();
+                  return response()->json(['message' => 'The data couldnot be uploaded due to following errors: Invalid Province ID. Error at index:'.$index ]);
+                }
+                if(!is_numeric($value['district_id']) || ((int)$value['district_id']<1 || (int)$value['district_id']>77) ) {
+                  DB::rollback();
+                  return response()->json(['message' => 'The data couldnot be uploaded due to following errors: Invalid District ID. Error at index:'.$index ]);
+                }
+                if(!is_numeric($value['municipality_id']) || ((int)$value['municipality_id']<1 || (int)$value['municipality_id']>754) ) {
+                  DB::rollback();
+                  return response()->json(['message' => 'The data couldnot be uploaded due to following errors: Invalid Municipality ID. Error at index:'.$index ]);
+                }
                 if(!in_array(strval($value['lab_result']), ['3', '4'])) {
                   DB::rollback();
-                  return response()->json(['message' => 'The data couldnot be uploaded due to following errors: Invalid Lab Result. Need value 3 For Positive, 4 For Negative' ]);
+                  return response()->json(['message' => 'The data couldnot be uploaded due to following errors: Invalid Lab Result. Need value 3 For Positive, 4 For Negative. Error at index:'.$index ]);
+                }
+                $isValidLabDate = $this->testValidEnDate($value['lab_test_date']);
+                if(!$isValidLabDate) {
+                  DB::rollback();
+                  return response()->json(['message' => 'Invalid Lab Test Date. Please send a valid english date in YYYY-MM-DD format as mentioned in API documentation. Error at index:'.$index  ]);
+                }
+                $isValidSampleCollectedDate = $this->testValidEnDate($value['sample_collected_date']);
+                if(!$isValidSampleCollectedDate) {
+                  DB::rollback();
+                  return response()->json(['message' => 'Invalid Sample Collected Date. Please send a valid english date in YYYY-MM-DD format as mentioned in API documentation. Error at index:'.$index ]);
+                }
+                $isValidRegDate = $this->testValidEnDateTime($value['registered_at']);
+                if(!$isValidRegDate) {
+                  DB::rollback();
+                  return response()->json(['message' => 'Invalid Registered Date. Please send a valid english date in YYYY-MM-DD format as mentioned in API documentation. Error at index:'.$index ]);
+                }
+                $isValidLabReceivedDate = $this->testValidEnDate($value['lab_received_date']);
+                if(!$isValidLabReceivedDate) {
+                  DB::rollback();
+                  return response()->json(['message' => 'Invalid Lab Received Date. Please send a valid english date in YYYY-MM-DD format as mentioned in API documentation. Error at index:'.$index ]);
                 }
                 if(array_key_exists('imu_swab_id', $value) && $value['imu_swab_id']) {
                   $existingSampleCollection = SampleCollection::where('checked_by', $user->token)->where('token', $value['imu_swab_id'])->first();
@@ -144,7 +199,7 @@ class ExtCaseController extends Controller
                     $swab_id = $value['imu_swab_id'];
                   } else {
                     DB::rollback();
-                    return response()->json(['message' => 'The data couldnot be uploaded due to following errors: This IMU Swab ID was not found in IMU System. Please enter valid swab ID to update record or leave it blank to create new record' ]);
+                    return response()->json(['message' => 'The data couldnot be uploaded due to following errors: This IMU Swab ID was not found in IMU System. Please enter valid swab ID to update record or leave it blank to create new record. Error at index:'.$index ]);
                   }
                 }
                 if(!$value['sample_type']) {
@@ -155,6 +210,9 @@ class ExtCaseController extends Controller
                 $randomLetter = substr(str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, 2);
                 $singleRandomLabId = (int)$randomLabId+$index+1;
                 $lab_id = array_key_exists('lab_id', $value) && $value['lab_id']?$value['lab_id']:str_pad($singleRandomLabId, 6, '0', STR_PAD_LEFT).'-'.$randomLetter;
+
+                $reporting_date_en = explode("-", Carbon::now()->toDateString());
+                $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
 
                 $sample = [
                     'token' => $swab_id,
@@ -178,7 +236,9 @@ class ExtCaseController extends Controller
                     'sample_test_date_np' => $this->ad2bs($value['lab_test_date']),
                     'sample_test_time' => $value['lab_test_time'],
                     'received_by' => $healthworker->token,
-                    'received_by_hp_code' => $healthworker->hp_code
+                    'received_by_hp_code' => $healthworker->hp_code,
+                    'reporting_date_en' => Carbon::now()->toDateTimeString(),
+                    'reporting_date_np' => $reporting_date_np
                 ];
                 $lab_test = [
                     'token' => $user->token.'-'.$lab_id,
@@ -191,7 +251,7 @@ class ExtCaseController extends Controller
                     'checked_by' => $healthworker->token,
                     'checked_by_name' => $healthworker->name,
                     'status' => 1,
-                    'regdev' => 'api'
+                    'regdev' => 'api',
                 ];
                 try {
                     if(!$update) {
@@ -211,7 +271,8 @@ class ExtCaseController extends Controller
                       unset($sample['collection_date_en']);
                       unset($sample['collection_date_np']);
                       unset($sample['regdev']);
-
+//                      unset($sample['reporting_date_en']);
+//                      unset($sample['reporting_date_np']);
                       $existingSuspectedCase->update($case);
                       $existingSampleCollection->update($sample);
                       if($existingLabTest) {
@@ -223,7 +284,7 @@ class ExtCaseController extends Controller
                     }
                 } catch (\Exception $e) {
                     DB::rollback();
-                    return response()->json(['message' => 'The data couldnot be uploaded due to following errors: \n '. $e->getMessage()]);
+                    return response()->json(['message' => 'Error at index:'.$index.'.The data couldnot be uploaded due to following errors: \n '. $e->getMessage()]);
                 }
             }
             DB::commit();
