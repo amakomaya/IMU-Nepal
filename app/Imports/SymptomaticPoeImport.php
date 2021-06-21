@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use Carbon\Carbon;
 use App\Models\SampleCollection;
+use App\Models\LabTest;
 use App\Models\Province;
 use App\Models\District;
 use App\Models\Municipality;
@@ -31,6 +32,7 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
     public static $importedRowCount = 0;
     public function __construct(User $importedBy)
     {
+      
         $provinceList = Province::select(['id', 'province_name'])->get();
         $districtList = District::select(['id', 'district_name'])->get();
         $municipalityList = Municipality::select(['id', 'municipality_name'])->get();
@@ -50,7 +52,7 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
         $userToken = auth()->user()->token;
         $healthWorker = \App\Models\OrganizationMember::where('token', $userToken)->first();
         $hpCode = $healthWorker->hp_code;
-
+        
         $this->importedBy = $importedBy;
         $this->userToken =  $userToken;
         $this->hpCode = $hpCode;
@@ -62,7 +64,7 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
           'destination_in_nepal_district' => $districts,
           'destination_in_nepal_municipality' => $municipalities,
           'countries' => ['nepal'=>167, 'india'=>104, 'china'=>47, 'other'=>300],
-          'yes_no' => ['yes'=>1, 'no'=>0],
+          'yes_no' => ['yes'=>'1', 'no'=>'0'],
           'how_many_dosages_of_vaccine_you_have_received' => ['1st dose' => 1,'2nd (final) dose'=>2],
           // 'name_of_vaccine' => ['verocell (sinopharm)'=> '1', 'covishield (the serum institute of india)'=>'2', 'pfizer' => '3', 'moderna' => '4', 'astrazeneca' => '5', 'other' => '10'],
           'occupation' => ['1' =>'front line health worker', '2' =>'doctor','3' => 'nurse','4' =>'police/army', '5' =>'business/industry', '6' =>'teacher/student(education)', '7' =>'civil servant', '8' =>'journalist', '9' =>'agriculture', '10' =>'transport/delivery', '11' =>'Tourist', '12' =>'migrant worker'],
@@ -88,9 +90,6 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
         if(!array_filter($row)) { return null;} //Ignore empty rows.
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
-
-        // handle "antigen_result" => "Positive"
-        // "if_antigen_positive_isolation_center_referred_to" => "test"
         $suspectedCase = SuspectedCase::create([
           'name' => $row['full_name'],
           'age' => $row['age'],
@@ -125,9 +124,68 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
           'symptoms_recent' => $row['covid_19_symptoms'],
           'symptoms_within_four_week' => $row['covid_19_symptoms'],
           'malaria' => '['.$row['if_fever_malaria_test_done'].','.$row['malaria_test_result'].','.$row['if_malaria_positive_isolation_center_referred_to'].']',
-          'symptoms_specific' => '['.$row['comorbidity'].']', //TODO replace with ID
+          // 'symptoms_specific' => '['.$row['comorbidity'].']', //TODO replace with ID
           'case_reason' => $row['covid_19_symptoms']?'['.$row['if_fever_covid_19_antigen_test_done'].','.$row['antigen_result'].','.$row['if_antigen_positive_isolation_center_referred_to'].']':null,
         ]);
+        if($row['covid_19_symptoms']) {
+          $sampleTestTime = $this->todayDateEn->format('g : i A');
+          $labResult = $row['antigen_result']==0?'4':'3';
+          $sampleCollectionData = [
+            'service_for' => '2',
+            'checked_by' => $this->userToken,
+            'hp_code' => $this->hpCode,
+            'status' => 1,
+            'checked_by_name'=> $this->healthWorker->name,
+            'sample_identification_type' => 'unique_id',
+            // 'service_type' => $row['service_type'], //TODO verify service type paid or free
+            'result' => $labResult,
+            'regdev' => 'excel',
+            'woman_token' => $suspectedCase->token,
+            'infection_type' => '1',
+            'sample_test_date_en' => $this->todayDateEn,
+            'sample_test_date_np' => $this->todayDateNp,
+            'sample_test_time' => $sampleTestTime,
+            'received_by' => $this->userToken,
+            'received_by_hp_code' => $this->hpCode,
+            'received_by' => $this->userToken,
+            'received_by_hp_code' => $this->hpCode,
+            'received_date_en' => $this->todayDateEn,
+            'received_date_np' => $this->todayDateNp,
+            'collection_date_en' => $this->todayDateEn,
+            'collection_date_np' => $this->todayDateNp,
+            'reporting_date_en' => $this->todayDateEn,
+            'reporting_date_np' => $this->todayDateNp
+          ];
+          $id = $this->healthWorker->id;
+          $patientLabId = Carbon::now()->format('ymd'). '-' .'-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber+1)->format('H:i:s'));
+          $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber+1)->format('H:i:s'));
+          $sampleCollectionData['token'] = $swabId;
+          $sampleCollectionData['lab_token'] = $this->userToken.'-'.$patientLabId;
+          $sampleCollection = SampleCollection::create($sampleCollectionData);
+          try {
+            LabTest::create([
+              'token' => $this->userToken.'-'.$patientLabId,
+              'hp_code' => $this->hpCode,
+              'status' => 1,
+              'sample_recv_date' =>  $this->todayDateNp,
+              'sample_test_date' => $this->todayDateNp,
+              'sample_test_time' => $sampleTestTime,
+              'sample_test_result' => $labResult,
+              'checked_by' => $this->userToken,
+              'checked_by_name' => $this->healthWorker->name,
+              'sample_token' => $sampleCollection->token,
+              'regdev' => 'excel'
+            ]);
+          } catch (\Illuminate\Database\QueryException $e) {
+            $error = ['patient_lab_id' => 'The test with the given Patient Lab ID already exists in the system.'];
+            $failures[] = new Failure($currentRowNumber, 'patient_lab_id', $error, $row);
+            throw new ValidationException(
+                \Illuminate\Validation\ValidationException::withMessages($error),
+                $failures
+            );
+            return;
+          }
+        }
         return;
     }
   
