@@ -36,7 +36,7 @@
           Type : {{ checkCaseType(item.cases) }} <br>
           Management : {{ checkCaseManagement(item.cases, item.case_where) }}
         </td>
-        <td>{{ ad2bs(item.latest_anc.sample_test_date_en) }}</td>
+        <td>{{ formattedDate(item.latest_anc.sample_test_date_np) }}</td>
         <td><span class="label label-info"> {{ item.ancs.length }}</span>
           <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
         </td>
@@ -320,6 +320,63 @@ export default {
 
       return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
 
+    },
+
+    formattedDate(data) {
+      if(data === null) {
+        return '';
+      }else {
+        var date_array = data.split('-');
+        switch (date_array[1]) {
+          case '1':
+          case '01':
+            return date_array[2] + " Baishakh, " + date_array[0];
+
+          case '2':
+          case '02':
+            return  date_array[2] + " Jestha, " + date_array[0];
+
+          case '3':
+          case '03':
+            return  date_array[2] + " Ashad, " + date_array[0];
+
+          case '4':
+          case '04':
+            return  date_array[2] + " Shrawan, " + date_array[0];
+
+          case '5':
+          case '05':
+            return  date_array[2] + " Bhadra, " + date_array[0];
+
+          case '6':
+          case '06':
+            return  date_array[2] + " Ashwin, " + date_array[0];
+
+          case '7':
+          case '07':
+            return  date_array[2] + " Karthik, " + date_array[0];
+
+          case '8':
+          case '08':
+            return  date_array[2] + " Mangsir, " + date_array[0];
+
+          case '9':
+          case '09':
+            return  date_array[2] + " Poush, " + date_array[0];
+
+          case '10':
+            return  date_array[2] + " Magh, " + date_array[0];
+
+          case '11':
+            return  date_array[2] + " Falgun, " + date_array[0];
+
+          case '12':
+            return  date_array[2] + " Chaitra, " + date_array[0];
+
+          default:
+            return '';
+        }
+      }
     },
     checkDistrict : function(value){
       if (value == 0 || value == null || value == ''){

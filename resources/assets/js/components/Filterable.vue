@@ -365,7 +365,7 @@ export default {
           exportableData.district = data.district.district_name;
           exportableData.municipality = data.municipality.municipality_name;
           exportableData.ward = data.ward;
-          exportableData.current_hospital = data.healthpost.name;
+          exportableData.current_hospital = data.healthpost ? data.healthpost.name : '';
           var date = data.register_date_np;
           if(data.latest_anc){
             exportableData.swab_id = data.latest_anc.token;
