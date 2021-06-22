@@ -60,7 +60,7 @@
                   <button v-if="item.ancs.length === 0 && checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
                      <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
-                  <button v-if="checkPermission('lab-received') && checkAddReceivedView(item.latest_anc) && pcrAllowedOrganizationType.includes(hospitalType)" v-on:click="addReceivedInLab(item.latest_anc.token)" title="Lab Received ( PCR / Antigen )">
+                  <button v-if="checkPermission('lab-received') && checkAddReceivedView(item.latest_anc) && pcrAllowedOrganizationType.includes(hospitalType)" v-on:click="addReceivedInLab(item.latest_anc.token, removeItemOnSuccess)" title="Lab Received ( PCR / Antigen )">
                     <i class="fa fa-flask" aria-hidden="true"></i> |
                   </button>
                   <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
@@ -402,12 +402,13 @@ export default {
     checkAddReceivedView(data){
       return data;
     },
-    addReceivedInLab(item){
+    addReceivedInLab(item, removeItemOnSuccess){
       this.$dlg.modal(AddRecievedInLabModal, {
         title: 'Received  Cases in Lab',
         width : 700,
         params: {
           item : item,
+          onSuccessCallback: removeItemOnSuccess
         },
       })
     },

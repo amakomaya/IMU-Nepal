@@ -39,7 +39,7 @@
         <label>Sample Test Result <span class="text-danger" v-if="!$v.data.sample_test_result.required"> ( * Field is required. )</span></label><br>
         <input v-model="data.sample_test_result" value="4" type="radio">Negative
         <input v-model="data.sample_test_result" value="3" type="radio" >Positive
-        <input v-model="data.sample_test_result" value="5" type="radio" checked>Don't Know
+        <!-- <input v-model="data.sample_test_result" value="5" type="radio" checked>Don't Know -->
       </div>
       <button class="btn btn-primary btn-sm btn-block"
               @click.prevent="submitLabIdToSampleId(data)">
@@ -57,6 +57,7 @@ import axios from "axios";
 export default {
   props: {
     item: Object,
+    onSuccessCallback: Function
   },
   data() {
     return {
@@ -89,6 +90,7 @@ export default {
       axios.post('/api/v1/result-in-lab-from-web', data)
           .then((response) => {
             if (response.data === 'success') {
+              this.onSuccessCallback(this.item);
               this.$swal({
                 title: 'Record received in lab',
                 type: 'success',
