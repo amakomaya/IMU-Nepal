@@ -329,7 +329,7 @@ Route::post('/v1/lab-test', function (Request $request) {
                     'received_date_en' => Carbon::parse($value['created_at'])->format('Y-m-d'),
                     'received_date_np' => $received_date_np,
                     'lab_token' => $value['token'],
-                    'reporting_date_en' => Carbon::now()->format('Y-m-d'),
+                    'reporting_date_en' => Carbon::now()->toDateTimeString(),
                     'reporting_date_np' => $reporting_date_np
                 ]);
                 $find_test = LabTest::where('token', $value['token'])->first();
@@ -481,7 +481,7 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
                 'sample_test_date_en' => $sample_test_date_en,
                 'sample_test_date_np' => $value['sample_test_date'],
                 'sample_test_time' => $value['sample_test_time'],
-                'reporting_date_en' => Carbon::now()->format('Y-m-d'),
+                'reporting_date_en' => Carbon::now()->toDateTimeString(),
                 'reporting_date_np' => $reporting_date_np
             ]);
         if ($find_test) {
@@ -521,7 +521,7 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
            'received_date_en' => $sample_test_date_en,
            'received_date_np' => $value['sample_test_date'],
            'lab_token' => $value['token'],
-          'reporting_date_en' => Carbon::now()->format('Y-m-d'),
+          'reporting_date_en' => Carbon::now()->toDateTimeString(),
           'reporting_date_np' => $reporting_date_np
       ]);
 
