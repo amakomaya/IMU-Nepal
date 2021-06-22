@@ -52,7 +52,7 @@
           <div>{{ labToken(item.latest_anc.lab_token) }}</div>
         </td>
         <td>
-          {{ checkInfectionType(item.symptoms_recent) }}
+          {{ checkInfectionType(item.latest_anc.infection_type) }}
         </td>
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
@@ -370,7 +370,7 @@ export default {
     },
     checkInfectionType(value) {
       switch (value) {
-        case '0':
+        case '2':
           return 'Asymptomatic';
         case '1':
           return 'Symptomatic';
