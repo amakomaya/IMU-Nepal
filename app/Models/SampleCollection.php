@@ -31,7 +31,7 @@ class SampleCollection extends Model
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
-    protected $appends = ['formatted_result'];
+    protected $appends = ['formatted_result', 'formated_token'];
 
     public function woman()
     {
@@ -95,5 +95,10 @@ class SampleCollection extends Model
             return 'Oropharyngeal';
         }
 
+    }
+
+    public function getFormatedTokenAttribute()
+    {
+        return explode('-', $this->lab_token,2)[1] ?? $this->lab_token;
     }
 }
