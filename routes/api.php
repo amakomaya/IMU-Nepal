@@ -239,15 +239,17 @@ Route::post('/v1/client-tests', function (Request $request) {
         // } catch (\Exception $e) {
             foreach ($data as $value) {
                 try {
-                    $value['collection_date_en'] = Carbon::parse($value['created_at'])->format('Y-m-d');
-                    $collection_date_en = explode("-", Carbon::parse($value['created_at'])->format('Y-m-d'));
-                    $collection_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDayEngToNep();
-                    $value['collection_date_np'] = $collection_date_np;
-
-                    unset($value['created_at']);
-                    unset($value['updated_at']);
-
-                    SampleCollection::create($value);
+                    if($value['deleted_at'] == null){
+                        $value['collection_date_en'] = Carbon::parse($value['created_at'])->format('Y-m-d');
+                        $collection_date_en = explode("-", Carbon::parse($value['created_at'])->format('Y-m-d'));
+                        $collection_date_np = Calendar::eng_to_nep($collection_date_en[0], $collection_date_en[1], $collection_date_en[2])->getYearMonthDayEngToNep();
+                        $value['collection_date_np'] = $collection_date_np;
+    
+                        unset($value['created_at']);
+                        unset($value['updated_at']);
+    
+                        SampleCollection::create($value);
+                    }
                 } catch (\Exception $e) {
                 //    return response()->json(['message' => 'Something went wrong, Please try again.']);
                 }
