@@ -258,7 +258,7 @@ Route::post('/v1/client-tests', function (Request $request) {
 
 Route::get('/v1/client-tests', function (Request $request) {
     $hp_code = $request->hp_code;
-    $record = \DB::table('ancs')->where('hp_code', $hp_code)->get();
+    $record = \DB::table('ancs')->where('hp_code', $hp_code)->whereNull('deleted_at')->get();
     $data = collect($record)->map(function ($row) {
         $response = [];
         $response['token'] = $row->token;

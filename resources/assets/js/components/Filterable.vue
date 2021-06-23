@@ -248,6 +248,7 @@ export default {
         'Swab ID' : 'swab_id',
         'Lab ID' : 'lab_id',
         'Result' : 'result',
+        'Date' : 'date',
         'Created At' : 'created_at'
       },
       json_fields_for_dolphins : {
@@ -364,14 +365,18 @@ export default {
           exportableData.district = data.district.district_name;
           exportableData.municipality = data.municipality.municipality_name;
           exportableData.ward = data.ward;
-          exportableData.current_hospital = data.healthpost.name;
+          exportableData.current_hospital = data.healthpost ? data.healthpost.name : '';
+          var date = data.register_date_np;
           if(data.latest_anc){
             exportableData.swab_id = data.latest_anc.token;
-            if(data.latest_anc.labreport){
-              exportableData.lab_id = data.latest_anc.labreport.formated_token;
+            date = data.latest_anc.collection_date_np;
+            if(data.latest_anc.lab_token){
+              exportableData.lab_id = data.latest_anc.formated_token;
+              date = data.latest_anc.sample_test_date_np;
             }
             exportableData.result = data.latest_anc.formatted_result;
           }
+          exportableData.date = date;
           exportableData.created_at = data.created_at;
           list.push(exportableData);
         });

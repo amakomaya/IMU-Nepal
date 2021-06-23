@@ -93,7 +93,7 @@ class AncDetailController extends Controller
         $sample->token = $request->get('token');
         // $sample->woman_token = $request->get('woman_token');
         $sample->service_for = $request->get('service_for');
-        $sample->sample_type = "[".implode(', ', $request->get('sample_type'))."]";
+        $sample->sample_type = $request->get('sample_type') ? "[".implode(', ', $request->get('sample_type'))."]" : "[]";
         $sample->sample_type_specific = $request->get('sample_type_specific');
         $sample->infection_type = $request->get('infection_type');
         $sample->service_type = $request->get('service_type');

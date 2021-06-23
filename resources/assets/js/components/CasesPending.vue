@@ -39,7 +39,7 @@
                     Type : {{ checkCaseType(item.cases) }} <br>
                     Management : {{ checkCaseManagement(item.cases, item.case_where) }}
                 </td>
-              <td>{{ ad2bs(item.register_date_en) }}</td>
+              <td>{{ formattedDate(item.register_date_np) }}</td>
                 <td><span class="label label-info"> {{ item.ancs.length }}</span>
                     <div v-if="item.latest_anc" title="Swab ID">
                       SID : <strong>{{ item.latest_anc.token }}</strong> <br>
@@ -60,7 +60,7 @@
                   <button v-if="item.ancs.length === 0 && checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
                      <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
-                  <button v-if="checkPermission('lab-received') && checkAddReceivedView(item.latest_anc) && pcrAllowedOrganizationType.includes(hospitalType)" v-on:click="addReceivedInLab(item.latest_anc.token)" title="Lab Received ( PCR / Antigen )">
+                  <button v-if="checkPermission('lab-received') && checkAddReceivedView(item.latest_anc) && pcrAllowedOrganizationType.includes(hospitalType)" v-on:click="addReceivedInLab(item.latest_anc.token, removeItemOnSuccess)" title="Lab Received ( PCR / Antigen )">
                     <i class="fa fa-flask" aria-hidden="true"></i> |
                   </button>
                   <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
@@ -287,6 +287,63 @@ export default {
       return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
 
     },
+
+    formattedDate(data) {
+      if(data === null) {
+        return '';
+      }else {
+        var date_array = data.split('-');
+        switch (date_array[1]) {
+          case '1':
+          case '01':
+            return date_array[2] + " Baishakh, " + date_array[0];
+
+          case '2':
+          case '02':
+            return  date_array[2] + " Jestha, " + date_array[0];
+
+          case '3':
+          case '03':
+            return  date_array[2] + " Ashad, " + date_array[0];
+
+          case '4':
+          case '04':
+            return  date_array[2] + " Shrawan, " + date_array[0];
+
+          case '5':
+          case '05':
+            return  date_array[2] + " Bhadra, " + date_array[0];
+
+          case '6':
+          case '06':
+            return  date_array[2] + " Ashwin, " + date_array[0];
+
+          case '7':
+          case '07':
+            return  date_array[2] + " Karthik, " + date_array[0];
+
+          case '8':
+          case '08':
+            return  date_array[2] + " Mangsir, " + date_array[0];
+
+          case '9':
+          case '09':
+            return  date_array[2] + " Poush, " + date_array[0];
+
+          case '10':
+            return  date_array[2] + " Magh, " + date_array[0];
+
+          case '11':
+            return  date_array[2] + " Falgun, " + date_array[0];
+
+          case '12':
+            return  date_array[2] + " Chaitra, " + date_array[0];
+
+          default:
+            return '';
+        }
+      }
+    },
     checkDistrict: function (value) {
       if (value === 0 || value == null || value === '') {
         return ''
@@ -402,12 +459,13 @@ export default {
     checkAddReceivedView(data){
       return data;
     },
-    addReceivedInLab(item){
+    addReceivedInLab(item, removeItemOnSuccess){
       this.$dlg.modal(AddRecievedInLabModal, {
         title: 'Received  Cases in Lab',
         width : 700,
         params: {
           item : item,
+          onSuccessCallback: removeItemOnSuccess
         },
       })
     },
