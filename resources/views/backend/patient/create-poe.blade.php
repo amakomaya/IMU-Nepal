@@ -130,23 +130,17 @@
                                     <option {{ old('occupation') == '1' ? "selected" : "" }} value="1">Front Line Health
                                         Worker
                                     </option>
+                                    <option {{ old('occupation') == '2' ? "selected" : "" }} value="2">Doctor</option>
+                                    <option {{ old('occupation') == '3' ? "selected" : "" }} value="3">Nurse</option>
+                                    <option {{ old('occupation') == '4' ? "selected" : "" }} value="4">Police/Army</option>
+                                    <option {{ old('occupation') == '5' ? "selected" : "" }} value="5">Business/Industry</option>
+                                    <option {{ old('occupation') == '6' ? "selected" : "" }} value="6">Teacher/Student/Education</option>
+                                    <option {{ old('occupation') == '7' ? "selected" : "" }} value="7">Journalist</option>
+                                    <option {{ old('occupation') == '8' ? "selected" : "" }} value="8">Agriculture</option>
+                                    <option {{ old('occupation') == '9' ? "selected" : "" }} value="9">Transport/Delivery</option>
                                     <option {{ old('occupation') == '11' ? "selected" : "" }} value="11">Tourist</option>
                                     <option {{ old('occupation') == '12' ? "selected" : "" }} value="12">Migrant Worker</option>
-                                    <option {{ old('occupation') == '4' ? "selected" : "" }} value="4">Police/Army
-                                    </option>
-                                    <option {{ old('occupation') == '5' ? "selected" : "" }} value="5">
-                                        Business/Industry
-                                    </option>
-                                    <option {{ old('occupation') == '6' ? "selected" : "" }} value="6">
-                                        Teacher/Student/Education
-                                    </option>
-                                    <option {{ old('occupation') == '7' ? "selected" : "" }} value="7">Journalist
-                                    </option>
-                                    <option {{ old('occupation') == '8' ? "selected" : "" }} value="8">Agriculture
-                                    </option>
-                                    <option {{ old('occupation') == '9' ? "selected" : "" }} value="9">
-                                        Transport/Delivery
-                                    </option>
+                                    <option {{ old('occupation') == '13' ? "selected" : "" }} value="13">Civil Servant</option>
                                     <option {{ old('occupation') == '10' ? "selected" : "" }} value="10">Other</option>
                                 </select>
                                 @if ($errors->has('occupation'))
