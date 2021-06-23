@@ -58,7 +58,6 @@ import {required, minLength} from 'vuelidate/lib/validators'
 export default {
   props:{
     item : String,
-    onSuccessCallback: Function
   },
   data() {
     return {
@@ -100,7 +99,6 @@ export default {
       axios.post('/api/v1/received-in-lab', payload)
           .then((response) => {
             if (response.data === 'success') {
-              this.onSuccessCallback(this.item);
               this.$swal({
                 title: 'Record received in lab',
                 type: 'success',
