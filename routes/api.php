@@ -447,6 +447,7 @@ Route::post('/v1/received-in-lab', function (Request $request) {
         if ($sample->count() < 1) {
             return response()->json('error');
         }
+<<<<<<< HEAD
         $updateData = [
             'result' => '9',
             'received_by' => $data['checked_by'],
@@ -458,6 +459,24 @@ Route::post('/v1/received-in-lab', function (Request $request) {
         $sample->update($updateData);
         LabTest::create($data);
         return response()->json('success');
+=======
+        $result_check = $sample->first();
+        if($result_check->result == '3' || $result_check->result == '4') {
+            return response()->json('error');
+        } else {
+            $updateData = [
+                'result' => '9',
+                'received_by' => $data['checked_by'],
+                'received_by_hp_code' => $data['hp_code'],
+                'received_date_en' => Carbon::now()->toDateString(),
+                'received_date_np' => $data['sample_recv_date'],
+                'lab_token' => $data['token']
+            ];
+            $sample->update($updateData);
+            LabTest::create($data);
+            return response()->json('success');
+        }
+>>>>>>> e0491dc4e7b2f76f5734a27793299c656496f75d
     } catch (\Exception $e) {
       return response()->json(['message'=>$e->getMessage()]);
     }
