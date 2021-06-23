@@ -16,4 +16,14 @@ class ContactTracingOld extends Model
         'address', 'phone', 'checked_by', 'hp_code', 'regdev', 'status', 
         'created_at', 'updated_at', 'checked_by_name'
     ];
+
+    public function contactDetail()
+    {
+        return $this->hasOne('App\Models\ContactDetailOld', 'contact_tracing_token', 'token');
+    }
+
+    public function contactFollowUp()
+    {
+        return $this->hasMany('App\Models\ContactFollowUpOld', 'contact_token', 'token');
+    }
 }

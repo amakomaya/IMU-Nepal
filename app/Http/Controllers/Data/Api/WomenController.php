@@ -6,10 +6,13 @@ namespace App\Http\Controllers\Data\Api;
 use App\Helpers\GetHealthpostCodes;
 use App\Http\Controllers\Controller;
 use App\Models\ContactTracing;
+use App\Models\ContactTracingOld;
 use App\Models\Organization;
 use App\Models\PaymentCase;
 use App\Models\SampleCollection;
+use App\Models\SampleCollectionOld;
 use App\Models\LabTest;
+use App\Models\LabTestOld;
 use App\Models\SuspectedCase;
 use App\Models\SuspectedCaseOld;
 use App\Reports\FilterRequest;
@@ -259,13 +262,13 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-//        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->pluck('woman_token');
 
-        $tracing_tokens = ContactTracing::whereIn('hp_code', $hpCodes)->pluck('woman_token');
-
+        
         if($request->db_switch == '2') {
+            $tracing_tokens = ContactTracingOld::whereIn('hp_code', $hpCodes)->pluck('woman_token');
             $woman = SuspectedCaseOld::active();
         } else{
+            $tracing_tokens = ContactTracing::whereIn('hp_code', $hpCodes)->pluck('woman_token');
             $woman = SuspectedCase::active();
         }
 
@@ -340,16 +343,22 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
-        $sample_token = SampleCollection::where(function($q) use ($hpCodes, $user) {
-                $q->where('received_by', $user->token)
-                    ->orWhereIn('received_by_hp_code', $hpCodes);
-            })
-            ->where('result', '9')->pluck('woman_token');
 
-        $data = SuspectedCase::active()->whereIn('token', $sample_token)->withAll();
+        if($request->db_switch == '2') {
+            $sample_token = SampleCollectionOld::where('result', '9');
+            $data = SuspectedCaseOld::active();
+        } else{
+            $sample_token = SampleCollection::where('result', '9');
+            $data = SuspectedCase::active();
+        }
 
-//        $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
-//        $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
+        $sample_token = $sample_token->where(function($q) use ($hpCodes, $user) {
+            $q->where('received_by', $user->token)
+                ->orWhereIn('received_by_hp_code', $hpCodes);
+            })->pluck('woman_token');
+
+        $data = $data->whereIn('token', $sample_token)->withAll();
+
         return response()->json([
             'collection' => $data->advancedFilter()
         ]);
@@ -360,12 +369,20 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
-        $sample_token = SampleCollection::where(function($q) use ($hpCodes, $user) {
+
+        if($request->db_switch == '2') {
+            $sample_token = SampleCollectionOld::where('result', '3');
+            $data = SuspectedCaseOld::active();
+        } else{
+            $sample_token = SampleCollection::where('result', '3');
+            $data = SuspectedCase::active();
+        }
+
+        $sample_token = $sample_token->where(function($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-            })
-            ->where('result', '3')->pluck('woman_token');
-        $data = SuspectedCase::active()->whereIn('token', $sample_token)->withAll();
+            })->pluck('woman_token');
+        $data = $data->whereIn('token', $sample_token)->withAll();
         return response()->json([
             'collection' => $data->advancedFilter()
         ]);
@@ -376,11 +393,20 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
-        $sample_token = SampleCollection::where(function($q) use ($hpCodes, $user) {
+
+        if($request->db_switch == '2') {
+            $sample_token = SampleCollectionOld::where('result', '4');
+            $data = SuspectedCaseOld::active();
+        } else{
+            $sample_token = SampleCollection::where('result', '4');
+            $data = SuspectedCase::active();
+        }
+        $sample_token = $sample_token->where(function($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-            })->where('result', '4')->pluck('woman_token');
-        $data = SuspectedCase::active()->whereIn('token', $sample_token)->withAll();
+            })->pluck('woman_token');
+        $data = $data->whereIn('token', $sample_token)->withAll();
+
         return response()->json([
             'collection' => $data->advancedFilter()
         ]);

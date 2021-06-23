@@ -258,7 +258,7 @@ Route::post('/v1/client-tests', function (Request $request) {
 
 Route::get('/v1/client-tests', function (Request $request) {
     $hp_code = $request->hp_code;
-    $record = \DB::table('ancs')->where('hp_code', $hp_code)->whereNull('deleted_at')->get();
+    $record = SampleCollection::where('hp_code', $hp_code)->get();
     $data = collect($record)->map(function ($row) {
         $response = [];
         $response['token'] = $row->token;
@@ -513,7 +513,7 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
       $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDayNepToEng();
       $healthWorker = OrganizationMember::where('token', $user->token)->first();
 
-      $reporting_date_en = explode("-", Carbon::now()->toDateString());
+      $reporting_date_en = explode("-", Carbon::now()->format('Y-m-d'));
       $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
 
       $sample_collection->update([
