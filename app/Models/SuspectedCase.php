@@ -45,6 +45,7 @@ class SuspectedCase extends Model
         'created_at',
         'emergency_contact_one',
         'case_id',
+        'register_date_en',
         // nested
         'ancs.service_for',
         'ancs.created_at', 'ancs.token' , 'ancs.updated_at' ,
