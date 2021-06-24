@@ -40,6 +40,11 @@ class AdminController extends Controller
         return view('admin');
     }
 
+    public function newDashbaord()
+    {
+        return view('admin-new-dashboard');
+    }
+
     public function getDistrictValue(Request $request){
         $id = $request->get('id');
         $district_name = District::where('district_id', $id)->get();

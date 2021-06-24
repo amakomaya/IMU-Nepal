@@ -35,6 +35,7 @@ Route::get('/admin/something', 'AdminController@index')->name('admin');
 //Backend Home
 Route::get('/admin/update-vaccination-center','UpdateVaccinationCenter@index')->name('updateVaccinationCenter');
 Route::get('/admin', 'AdminController@index')->name('admin');
+Route::get('/admin-new', 'AdminController@newDashbaord')->name('admin.new.dashboard');
 Route::get('/admin/healthpost-select', 'AdminController@healthpostSelect')->name('admin.healthpost-select');
 Route::get('/admin/municipality-select-province', 'AdminController@municipalitySelectByProvince')->name('admin.municipality-select-province');
 Route::get('/admin/municipality-select-district', 'AdminController@municipalitySelectByDistrict')->name('admin.municipality-select-district');
