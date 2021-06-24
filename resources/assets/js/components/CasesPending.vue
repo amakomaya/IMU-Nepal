@@ -121,7 +121,7 @@ export default {
             filters: [
               {title: 'Name', name: 'name', type: 'string'},
               {title: 'Age', name: 'age', type: 'numeric'},
-              {title: 'Phone Number', name: 'phone', type: 'numeric'},
+              {title: 'Phone Number', name: 'emergency_contact_one', type: 'numeric'},
               {title: 'Case Created At', name: 'register_date_en', type: 'datetime'},
             ]
           },
