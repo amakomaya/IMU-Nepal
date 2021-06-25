@@ -575,13 +575,13 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group vaccine-status">
                                 <label class="control-label">Do you have a vaccination card?</label>
                                 <div class="control-group">
                                     <label class="radio-inline">
                                         <input type="radio"
                                                {{ old('vaccination_card') == "0" ? 'checked' : '' }} name="vaccination_card"
-                                               value="0" class="vaccination_card" required>No
+                                               value="0" class="vaccination_card">No
                                     </label>
                                     <label class="radio-inline">
                                         <input type="radio"
@@ -592,13 +592,13 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group vaccine-status">
                                 <label class="control-label">Vaccination doses complete?</label>
                                 <div class="control-group">
                                     <label class="radio-inline">
                                         <input type="radio"
                                                {{ old('vaccination_dosage_complete') == "0" ? 'checked' : '' }} name="vaccination_dosage_complete"
-                                               value="0" class="vaccination_dosage_complete" required>No
+                                               value="0" class="vaccination_dosage_complete">No
                                     </label>
                                     <label class="radio-inline">
                                         <input type="radio"
@@ -609,13 +609,13 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group vaccine-status">
                                 <label class="control-label">How many dosages of vaccine you have received?</label>
                                 <div class="control-group">
                                     <label class="radio-inline">
                                         <input type="radio"
                                                {{ old('vaccine_dosage_count') == "1" ? 'checked' : '' }} name="vaccine_dosage_count"
-                                               value="1" class="vaccine_dosage_count" required>1st Dose
+                                               value="1" class="vaccine_dosage_count">1st Dose
                                     </label>
                                     <label class="radio-inline">
                                         <input type="radio"
@@ -626,9 +626,9 @@
                                 </div>
                             </div>
 
-                            <div class="form-group {{ $errors->has('vaccine_dosage') ? 'has-error' : '' }}">
+                            <div class="form-group vaccine-status {{ $errors->has('vaccine_dosage') ? 'has-error' : '' }}">
                                 <label for="vaccine_name">Name of Vaccine</label>
-                                <select name="vaccine_dosage" class="form-control" required>
+                                <select name="vaccine_dosage" class="form-control">
                                     <option {{ old('vaccine_dosage') == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
                                     <option {{ old('vaccine_dosage') == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
                                     <option {{ old('vaccine_dosage') == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
@@ -639,18 +639,18 @@
                                 </select>
                             </div>
                             
-                            <div class="form-group">
+                            <div class="form-group collect-swab-now">
                                 <label class="control-label">Are you collecting COVID -19 swab now ?</label>
                                 <div class="control-group">
                                     <label class="radio-inline">
                                         <input type="radio"
                                                {{ old('swab_collection_conformation') == "0" ? 'checked' : '' }} name="swab_collection_conformation"
-                                               value="0" class="swab_collection_conformation">No
+                                               value="0" checked class="swab_collection_conformation">No
                                     </label>
                                     <label class="radio-inline">
                                         <input type="radio"
                                                {{ old('swab_collection_conformation') == "1" ? 'checked' : '' }} name="swab_collection_conformation"
-                                               value="1" checked class="swab_collection_conformation">Yes
+                                               value="1" class="swab_collection_conformation">Yes
                                     </label>
 
                                 </div>
@@ -706,9 +706,11 @@
         function symptomaticCheck() {
             if($('.symptoms_recent:checked').val() == '1'){
                 $('.asymptomatic').show();
+                $('.collect-swab-now').show();
             }
             else {
                 $('.asymptomatic').hide();
+                $('.collect-swab-now').hide();
             }
         }
 
@@ -776,6 +778,22 @@
                 $('.antigen-result-status').hide();
             }
         }
+
+        vaccineStatusCheck();
+        $('.vaccine_status').on('change', function() {
+            vaccineStatusCheck();
+        });
+        function vaccineStatusCheck() {
+            if($('.vaccine_status:checked').val() == '1'){
+                $('.vaccine-status').show();
+            }
+            else {
+                $('.vaccine-status').hide();
+            }
+        }
+
+
+        
 
 
 
