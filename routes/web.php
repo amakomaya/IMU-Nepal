@@ -484,3 +484,7 @@ Route::get('/calc-data', function(){
 
     return 'Success';
 });
+
+Route::get('/script/collection-date-fix', 'Backend\ScriptController@collectionDateFix');
+Route::get('/script/reporting-date-fix', 'Backend\ScriptController@reportingDateFix');
+Route::get('/script/received-date-fix', 'Backend\ScriptController@receivedDateFix');
