@@ -35,6 +35,7 @@ Route::get('/admin/something', 'AdminController@index')->name('admin');
 //Backend Home
 Route::get('/admin/update-vaccination-center','UpdateVaccinationCenter@index')->name('updateVaccinationCenter');
 Route::get('/admin', 'AdminController@index')->name('admin');
+Route::get('/admin-new', 'AdminController@newDashbaord')->name('admin.new.dashboard');
 Route::get('/admin/healthpost-select', 'AdminController@healthpostSelect')->name('admin.healthpost-select');
 Route::get('/admin/municipality-select-province', 'AdminController@municipalitySelectByProvince')->name('admin.municipality-select-province');
 Route::get('/admin/municipality-select-district', 'AdminController@municipalitySelectByDistrict')->name('admin.municipality-select-district');
@@ -304,6 +305,13 @@ Route::get('download/vaccination-list', function (\Illuminate\Http\Request $requ
     return Excel::download(new \App\Exports\VaccinationList($request), 'vaccination-list' . date('Y-m-d H:i:s') . '.xlsx');
 
 });
+
+Route::get('admin/download/sample-collection-download', function (\Illuminate\Http\Request $request){
+
+    return Excel::download(new \App\Exports\NewDashboardSampleDownload($request), 'record-list' . date('Y-m-d H:i:s') . '.xlsx');
+
+});
+
 
 Route::get('admin/cases-report-payment', 'CasesPaymentController@report')->name('cases.payment.report');
 

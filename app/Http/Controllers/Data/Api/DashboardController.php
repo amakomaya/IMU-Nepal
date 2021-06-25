@@ -11,6 +11,7 @@ use App\Models\SampleCollectionOld;
 use App\Models\SuspectedCase;
 use App\Models\SuspectedCaseOld;
 use App\Models\VaccinationRecord;
+use App\Models\PaymentCase;
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -199,6 +200,62 @@ class DashboardController extends Controller
 //                ->whereNull('vaccinated_status')->count(),
 //            'immunized' => HealthProfessional::whereIn('checked_by', auth()->user()->token)
 //                ->where('vaccinated_status', '1')->count(),
+        ];
+
+        return response()->json($data);
+    }
+
+
+
+    public function indexNew(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+
+        $date_chosen = Carbon::now()->toDateString();
+        if($request->date_selected){
+            if($request->date_selected == '2') {
+                $date_chosen = Carbon::now()->subDays(1)->toDateString();
+            }elseif($request->date_selected == '3') {
+                $date_chosen = Carbon::now()->subDays(2)->toDateString();
+            }elseif($request->date_selected == '4') {
+                $date_chosen = Carbon::now()->subDays(3)->toDateString();
+            }elseif($request->date_selected == '5') {
+                $date_chosen = Carbon::now()->subDays(4)->toDateString();
+            }elseif($request->date_selected == '6') {
+                $date_chosen = Carbon::now()->subDays(5)->toDateString();
+            }elseif($request->date_selected == '7') {
+                $date_chosen = Carbon::now()->subDays(6)->toDateString();
+            }else {
+                $date_chosen = Carbon::now()->toDateString();
+            }
+        }
+
+        $antigen_positive = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '2')->where('result', '3')
+            ->whereDate('reporting_date_en', $date_chosen)->active()->count();
+        $antigen_negative = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '2')->where('result', '4')
+            ->whereDate('reporting_date_en', $date_chosen)->active()->count();
+
+        $pcr_positive = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '1')->where('result', '3')
+            ->whereDate('reporting_date_en', $date_chosen)->active()->count();
+        $pcr_negative = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '1')->where('result', '4')
+            ->whereDate('reporting_date_en', $date_chosen)->active()->count();
+
+        $hospital_admission = PaymentCase::whereIn('hp_code', $hpCodes)->whereDate('register_date_en', $date_chosen)->count();
+        $hospital_active_cases = PaymentCase::whereIn('hp_code', $hpCodes)->whereNull('is_death')
+            ->whereDate('register_date_en', '<=', $date_chosen)->count();
+        $hospital_discharge = PaymentCase::whereIn('hp_code', $hpCodes)->where('is_death', 1)->where('date_of_outcome_en', $date_chosen)->count();
+        $hospital_death = PaymentCase::whereIn('hp_code', $hpCodes)->where('is_death', 2)->where('date_of_outcome_en', $date_chosen)->count();
+
+        $data = [
+            'antigen_positive' => $antigen_positive,
+            'antigen_negative' => $antigen_negative,
+            'pcr_positive' => $pcr_positive,
+            'pcr_negative' => $pcr_negative,
+            'hospital_admission' => $hospital_admission,
+            'hospital_active_cases' => $hospital_active_cases,
+            'hospital_discharge' => $hospital_discharge,
+            'hospital_death' => $hospital_death
         ];
 
         return response()->json($data);

@@ -24,6 +24,7 @@ Route::get('api/lab/add-result-negative', 'Data\Api\WomenController@labAddResult
 Route::get('api/lab/add-result-positive', 'Data\Api\WomenController@labAddResultPositiveIndex');
 
 Route::get('api/admin/dashboard', 'Data\Api\DashboardController@index');
+Route::get('api/admin/dashboard-new', 'Data\Api\DashboardController@indexNew');
 
 Route::get('/api/patient/export', 'Data\Api\WomenController@export');
 Route::get('/api/lab-patient/export', 'Data\Api\WomenController@labExport');
