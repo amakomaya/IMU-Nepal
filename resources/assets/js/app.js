@@ -45,6 +45,7 @@ import PublicClientCreate from "./components/public_client/Create";
 import VaccinationList from "./components/VaccinationList.vue";
 import VaccinatedList from "./components/VaccinatedList";
 import AdminDashboard from "./components/AdminDashboard";
+import AdminNewDashboard from "./components/AdminNewDashboard";
 import OrganizationSearch from "./components/organization/Search";
 import CasesTracing from "./components/CasesTracing";
 import AddSampleCollection from "./components/AddSampleCollection";
@@ -116,6 +117,7 @@ Vue.component('lab-negative-patient-list', LabNegativeCases)
 Vue.component('lab-positive-patient-list', LabPositiveCases)
 Vue.component('vaccination-chart');
 Vue.component('admin-dashboard', AdminDashboard)
+Vue.component('admin-new-dashboard', AdminNewDashboard)
 Vue.component('select-year-month', SelectYearMonth)
 Vue.component('lab-case-report', LabCaseReport)
 Vue.component('map-index', MapIndex)

@@ -153,11 +153,11 @@
             </div>
             <div class="col-md-3">
               <h4 class="text-center">Organization</h4>
-              <select id="organization-selector" name="organization-type">
+              <select id="organization-selector" name="organization-type" multiple="multiple">
                 <option value="">Select</option>
                   <option value="6">Hospital without PCR Lab</option>
                   <option value="5"> Institutional Isolation</option>
-                <option value="3">Lab & Treatment( Hospital )</option>
+                <option value="3" selected>Lab & Treatment( Hospital )</option>
               </select>
             </div>
           </div>
@@ -577,14 +577,7 @@
 @endsection
 @section('script')
 <script>
-  $('#organization-selector').on('change', function() {
-    var org_val = $(this).val();
-    if(org_val == 5) {
-      $('.insti-isolate').hide();
-    } else {
-      $('.insti-isolate').show();
-    }
-  });
+  
 
   var activeProvince, activeDistrict, activeMunicipality, mainData, activeOrganization;
   var province_id = {!! json_encode($province_id) !!};
@@ -617,9 +610,10 @@
 
   function fetchData() {
     let params = '?';
-    // if (activeOrganization === undefined){
-    //     activeOrganization = {name: "Lab & Treatment( Hospital )", id: "3"};
-    // }
+    if (activeOrganization === undefined){
+        // activeOrganization = {name: "Lab & Treatment( Hospital )", id: "3"};
+        activeOrganization = "[" + 3 + "]";
+    }
 
     if(activeMunicipality) {
       params += 'municipality_id='+activeMunicipality.id;
@@ -629,7 +623,7 @@
       params += 'province_id='+activeProvince.id;
     }
     if(activeOrganization) {
-      params += '&organization_type='+activeOrganization.id;
+      params += '&organization_type='+activeOrganization;
     }
     $.get("api/status"+params, function(data) {
      mainData = data;
@@ -942,12 +936,21 @@
     });
 
     $('#organization-selector').on('change', function() {
-      var selectedValue = this.value;
+      var selectedValue = $(this).val();
       if (selectedValue) {
-        activeOrganization = {
-          name: $(this).children("option:selected").text(),
-          id: selectedValue
-        };
+       var check_5 = selectedValue.includes("5");
+       var check_5_length = selectedValue.length;
+        if(check_5 === true && check_5_length === 1) {
+          $('.insti-isolate').hide();
+        } else {
+          $('.insti-isolate').show();
+        }
+        selectedValue = "[" + selectedValue.toString() + "]";
+        // activeOrganization = {
+        //   name: $(this).children("option:selected").text(),
+        //   id: selectedValue
+        // };
+        activeOrganization = selectedValue;
       } else {
         resetOrganization();
       }

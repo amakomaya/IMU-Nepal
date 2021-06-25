@@ -61,7 +61,7 @@
                      <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
                   <button v-if="checkPermission('lab-received') && checkAddReceivedView(item.latest_anc) && pcrAllowedOrganizationType.includes(hospitalType)" v-on:click="addReceivedInLab(item.latest_anc.token, removeItemOnSuccess)" title="Lab Received ( PCR / Antigen )">
-                    <i class="fa fa-flask" aria-hidden="true"></i> |
+                    <i class="material-icons">biotech</i> |
                   </button>
                   <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
                         <i class="fa fa-hospital-o"></i> |
@@ -121,7 +121,7 @@ export default {
             filters: [
               {title: 'Name', name: 'name', type: 'string'},
               {title: 'Age', name: 'age', type: 'numeric'},
-              {title: 'Phone Number', name: 'phone', type: 'numeric'},
+              {title: 'Phone Number', name: 'emergency_contact_one', type: 'numeric'},
               {title: 'Case Created At', name: 'register_date_en', type: 'datetime'},
             ]
           },

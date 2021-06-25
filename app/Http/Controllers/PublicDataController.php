@@ -49,11 +49,13 @@ class PublicDataController extends Controller
     }
 
     public function publicPortal(Request $request){
-        $data = \DB::table('payment_cases')->whereIn('healthposts.hospital_type', [3,5,6]);
-//            ->whereNull('payment_cases.is_death');
 
+        $data = \DB::table('payment_cases')->whereIn('healthposts.hospital_type', [3,5,6]);
+        //            ->whereNull('payment_cases.is_death');
+        
             if($request->has('organization_type')){
-                $data = $data->where('healthposts.hospital_type', $request->get('organization_type'));
+                $organization_array = $request->organization_type ? json_decode($request->organization_type) : [];
+                $data = $data->whereIn('healthposts.hospital_type', $organization_array);
             }
 
             if ($request->has('province_id')){
