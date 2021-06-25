@@ -1,3 +1,5 @@
+@include('layouts.backend.navigation.html.dashboard')
+
 @if($h_type != 4)
     <li>
         <a href="#">

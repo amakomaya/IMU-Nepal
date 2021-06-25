@@ -306,6 +306,13 @@ Route::get('download/vaccination-list', function (\Illuminate\Http\Request $requ
 
 });
 
+Route::get('admin/download/sample-collection-download', function (\Illuminate\Http\Request $request){
+
+    return Excel::download(new \App\Exports\NewDashboardSampleDownload($request), 'record-list' . date('Y-m-d H:i:s') . '.xlsx');
+
+});
+
+
 Route::get('admin/cases-report-payment', 'CasesPaymentController@report')->name('cases.payment.report');
 
 Route::post('admin/cases-report-payment-send', 'CasesPaymentController@sendToDhis')->name('cases.payment.report-send');
