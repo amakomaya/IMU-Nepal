@@ -17,7 +17,6 @@ class ScriptController extends Controller
         ini_set('max_execution_time', 0);
 
         $sample_collections = SampleCollection::whereNull('collection_date_en')->whereNotNull('collection_date_np')->get();
-        // dd($sample_collections);
         foreach($sample_collections as $key => $sample) {
             if($sample->collection_date_np) {
                 $collection_date_np_array = explode("-", $sample->collection_date_np);
@@ -38,7 +37,7 @@ class ScriptController extends Controller
         }
 
         $sample_collections_third = SampleCollection::whereNull('collection_date_en')->whereNull('collection_date_np')->get();
-        foreach($sample_collections_second as $key => $sample) {
+        foreach($sample_collections_third as $key => $sample) {
             $collection_date_en_array = explode("-", Carbon::parse($sample->created_at)->format('Y-m-d'));
             $collection_date_np = Calendar::eng_to_nep($collection_date_en_array[0], $collection_date_en_array[1], $collection_date_en_array[2])->getYearMonthDayEngToNep();
 
@@ -52,6 +51,8 @@ class ScriptController extends Controller
     }
 
     public function reportingDateFix(){
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 0);
         $sample_collections = SampleCollection::where(function ($query) {
                 $query->where('result','4')
                 ->orWhere('result', '3');
@@ -80,6 +81,8 @@ class ScriptController extends Controller
     }
 
     public function receivedDateFix(){
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 0);
         $sample_collections = SampleCollection::whereNull('received_date_np')->whereNotNull('received_date_en')->get();
         foreach($sample_collections as $key => $sample) {
             if($sample->received_date_en) {
