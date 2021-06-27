@@ -29,9 +29,17 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  <i class="fa fa-frown-o fa-3x"></i>
+                  <i class="fa fa-plus-square-o fa-3x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
+                  <div v-if="Object.keys(report).length === 0">
+                    <loading-progress
+                        :progress="progress"
+                        :indeterminate="indeterminate"
+                        shape="line"
+                        size="30"
+                    />
+                  </div>
                   <div class="huge">{{ report.antigen_positive }}</div>
                   <div>Positive</div>
                 </div>
@@ -50,9 +58,17 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  <i class="fa fa-smile-o fa-3x"></i>
+                  <i class="fa fa-minus-square-o fa-3x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
+                  <div v-if="Object.keys(report).length === 0">
+                    <loading-progress
+                        :progress="progress"
+                        :indeterminate="indeterminate"
+                        shape="line"
+                        size="30"
+                    />
+                  </div>
                   <div class="huge">{{ report.antigen_negative }}</div>
                   <div>Negative</div>
                 </div>
@@ -68,9 +84,17 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  <i class="fa fa-frown-o fa-3x"></i>
+                  <i class="fa fa-plus-square-o fa-3x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
+                  <div v-if="Object.keys(report).length === 0">
+                    <loading-progress
+                        :progress="progress"
+                        :indeterminate="indeterminate"
+                        shape="line"
+                        size="30"
+                    />
+                  </div>
                   <div class="huge">{{ report.pcr_positive }}</div>
                   <div>Positive</div>
                 </div>
@@ -89,9 +113,17 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  <i class="fa fa-smile-o fa-3x"></i>
+                  <i class="fa fa-minus-square-o fa-3x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
+                  <div v-if="Object.keys(report).length === 0">
+                    <loading-progress
+                        :progress="progress"
+                        :indeterminate="indeterminate"
+                        shape="line"
+                        size="30"
+                    />
+                  </div>
                   <div class="huge">{{ report.pcr_negative }}</div>
                   <div>Negative</div>
                 </div>
@@ -111,7 +143,7 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  <i class="fa fa-plus-square fa-3x"></i>
+                  <i class="fa fa-hospital-o fa-3x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
                   <div class="huge">{{ report.hospital_admission }}</div>
@@ -126,9 +158,17 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  <i class="fa fa-hospital-o fa-3x"></i>
+                  <i class="fa fa-stethoscope fa-3x" aria-hidden="true"></i>
                 </div>
                 <div class="col-xs-9 text-right">
+                  <div v-if="Object.keys(report).length === 0">
+                    <loading-progress
+                        :progress="progress"
+                        :indeterminate="indeterminate"
+                        shape="line"
+                        size="30"
+                    />
+                  </div>
                   <div class="huge">{{ report.hospital_active_cases }}</div>
                   <div>Active Cases</div>
                 </div>
@@ -159,6 +199,14 @@
                   <i class="fa fa-frown-o fa-3x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
+                  <div v-if="Object.keys(report).length === 0">
+                    <loading-progress
+                        :progress="progress"
+                        :indeterminate="indeterminate"
+                        shape="line"
+                        size="30"
+                    />
+                  </div>
                   <div class="huge">{{ report.hospital_death }}</div>
                   <div>Death</div>
                 </div>
