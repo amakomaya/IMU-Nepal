@@ -154,7 +154,17 @@ class Kernel extends ConsoleKernel
         })->dailyAt('02:00');
 //        })->everyMinute();
 
-        }
+        // $schedule->call('App\Http\Controllers\Backend\ScriptController@collectionDateFix')
+        //     ->everyFiveMinutes()
+        //     ->name('collection.date.fix')->withoutOverlapping(10);
+        // $schedule->call('App\Http\Controllers\Backend\ScriptController@reportingDateFix')
+        //     ->everyFiveMinutes()
+        //     ->name('reporting.date.fix')->withoutOverlapping(10);
+        // $schedule->call('App\Http\Controllers\Backend\ScriptController@receivedDateFix')
+        //     ->everyFiveMinutes()
+        //     ->name('received.date.fix')->withoutOverlapping(10);
+
+    }
     /**
      * Register the commands for the application.
      *

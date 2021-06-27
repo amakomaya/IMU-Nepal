@@ -244,8 +244,8 @@ class DashboardController extends Controller
         $hospital_admission = PaymentCase::whereIn('hp_code', $hpCodes)->whereDate('register_date_en', $date_chosen)->count();
         $hospital_active_cases = PaymentCase::whereIn('hp_code', $hpCodes)->whereNull('is_death')
             ->whereDate('register_date_en', '<=', $date_chosen)->count();
-        $hospital_discharge = PaymentCase::whereIn('hp_code', $hpCodes)->where('is_death', 1)->where('date_of_outcome_en', $date_chosen)->count();
-        $hospital_death = PaymentCase::whereIn('hp_code', $hpCodes)->where('is_death', 2)->where('date_of_outcome_en', $date_chosen)->count();
+        $hospital_discharge = PaymentCase::whereIn('hp_code', $hpCodes)->where('is_death', 1)->whereDate('date_of_outcome_en', $date_chosen)->count();
+        $hospital_death = PaymentCase::whereIn('hp_code', $hpCodes)->where('is_death', 2)->whereDate('date_of_outcome_en', $date_chosen)->count();
 
         $data = [
             'antigen_positive' => $antigen_positive,
