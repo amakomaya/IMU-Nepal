@@ -23,13 +23,13 @@
       <div class="clearfix"></div>
       
       <div class="col-lg-6">
-        <h3>Antigen</h3>
+        <h3 class="text-center">ANTIGEN</h3>
         <div class="col-lg-6 col-md-6">
           <div class="panel panel-danger">
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  Antigen Positive
+                  Positive
                 </div>
                 <div class="col-xs-9 text-right">
                   <div class="huge">{{ report.antigen_positive }}</div>
@@ -49,7 +49,7 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  Antigen Negative
+                  Negative
                 </div>
                 <div class="col-xs-9 text-right">
                   <div class="huge">{{ report.antigen_negative }}</div>
@@ -60,13 +60,13 @@
         </div>
       </div>
       <div class="col-lg-6">
-        <h3>PCR</h3>
+        <h3 class="text-center">PCR</h3>
         <div class="col-lg-6 col-md-6">
           <div class="panel panel-danger">
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  PCR Positive
+                  Positive
                 </div>
                 <div class="col-xs-9 text-right">
                   <div class="huge">{{ report.pcr_positive }}</div>
@@ -86,7 +86,7 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  PCR Negative
+                  Negative
                 </div>
                 <div class="col-xs-9 text-right">
                   <div class="huge">{{ report.pcr_negative }}</div>
@@ -96,6 +96,8 @@
           </div>
         </div>
       </div>
+      <div class="clearfix"></div>
+      <hr>
       <div class="col-lg-12">
         <h3>Hospital Reporting</h3>
       </div>
