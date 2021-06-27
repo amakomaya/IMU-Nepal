@@ -16,7 +16,7 @@ class ScriptController extends Controller
         ini_set('memory_limit', '-1');
         ini_set('max_execution_time', 0);
 
-        if($request->type == 1){
+        if($type == 1){
             $sample_collections = SampleCollection::whereNull('collection_date_en')->whereNotNull('collection_date_np')->get();
             foreach($sample_collections as $key => $sample) {
                 if($sample->collection_date_np) {
@@ -28,7 +28,7 @@ class ScriptController extends Controller
             }
         }
 
-        if($request->type == 2){
+        if($type == 2){
             $sample_collections_second = SampleCollection::whereNull('collection_date_np')->whereNotNull('collection_date_en')->get();
             foreach($sample_collections_second as $key => $sample) {
                 if($sample->collection_date_en) {
@@ -40,7 +40,7 @@ class ScriptController extends Controller
             }
         }
 
-        if($request->type == 3){
+        if($type == 3){
             $sample_collections_third = SampleCollection::whereNull('collection_date_en')->whereNull('collection_date_np')->get();
             foreach($sample_collections_third as $key => $sample) {
                 $collection_date_en_array = explode("-", Carbon::parse($sample->created_at)->format('Y-m-d'));
@@ -60,7 +60,7 @@ class ScriptController extends Controller
         ini_set('memory_limit', '-1');
         ini_set('max_execution_time', 0);
 
-        if($request->type == 1){
+        if($type == 1){
             $sample_collections = SampleCollection::where(function ($query) {
                     $query->where('result','4')
                     ->orWhere('result', '3');
@@ -76,7 +76,7 @@ class ScriptController extends Controller
             }
         }
 
-        if($request->type == 2){
+        if($type == 2){
             $sample_collections_second = SampleCollection::whereIn('result', ['3', '4'])->whereNull('reporting_date_en')->whereNotNull('reporting_date_np')->get();
             foreach($sample_collections_second as $key => $sample) {
                 if($sample->reporting_date_np) {
@@ -95,7 +95,7 @@ class ScriptController extends Controller
         ini_set('memory_limit', '-1');
         ini_set('max_execution_time', 0);
 
-        if($request->type == 1){
+        if($type == 1){
             $sample_collections = SampleCollection::whereNull('received_date_np')->whereNotNull('received_date_en')->get();
             foreach($sample_collections as $key => $sample) {
                 if($sample->received_date_en) {
@@ -107,7 +107,7 @@ class ScriptController extends Controller
             }
         }
 
-        if($request->type == 2){
+        if($type == 2){
             $sample_collections_second = SampleCollection::whereNull('received_date_en')->whereNotNull('received_date_np')->get();
             foreach($sample_collections_second as $key => $sample) {
                 if($sample->received_date_np) {
