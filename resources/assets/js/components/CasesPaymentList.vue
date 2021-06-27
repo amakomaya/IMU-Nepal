@@ -8,6 +8,7 @@
         <th>Age</th>
         <th>Phone</th>
         <th>Address</th>
+        <th v-show="checkReportingUser()">Organization</th>
         <th title="Latest Health Condition">Health Condition</th>
         <th>Paid / Free</th>
         <th>Register Date</th>
@@ -20,7 +21,8 @@
         <td>{{item.name}}</td>
         <td>{{item.age}}</td>
         <td>{{item.phone}}</td>
-        <td>{{ item.address }}</td>
+        <td>{{item.municipality?(item.municipality.district_name +', '+ item.municipality.municipality_name+ '-'+item.ward)+', ':''}}{{ item.address }}</td>
+        <td v-show="checkReportingUser()">{{item.organization.name}}</td>
         <td>{{ formattedHealthCondition(item.health_condition, item.health_condition_update) }}</td>
         <td>{{ formattedSafeOrFree(item.self_free) }}</td>
         <td>{{ item.register_date_np }}</td>
@@ -164,6 +166,9 @@ export default {
     checkDeleteButton() {
       // main super admin token
       return this.$userSessionToken === '5a4425' || this.$permissionId === '1';
+    },
+    checkReportingUser(){
+      return this.$userRole==='main'||this.$userRole==='center'||this.$userRole==='province'||this.$userRole==='dho'||this.$userRole==='municipality';
     }
   }
 }
