@@ -97,7 +97,7 @@
               <div class="col-xs-6 text-right">
                 Patient No : {{ reportData.patient_no || '.................' }}<br>
                 Sample No : {{ reportData.sample_no || '.................' }}<br>
-                Sample Collected Date : {{ ad2bs(reportData.sample_collected_date) || '.................' }}<br>
+                Sample Collected Date : {{ reportData.sample_collected_date || '.................' }}<br>
                 Lab No : {{ reportData.lab_no || '.................' }}<br>
                 Sample Received Date : {{ reportData.sample_received_date || '.................' }}<br>
                 Date & Time of Analysis : {{ reportData.date_and_time_of_analysis || '.................' }}<br>
