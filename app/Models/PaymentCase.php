@@ -33,8 +33,30 @@ class PaymentCase extends Model
         'phone'
     ];
 
+    protected $supportedRelations = ['municipality', 'organization'];
+
+    public function scopeWithAll($query)
+    {
+        return $query->with($this->supportedRelations);
+    }
+  
     public function organization()
     {
         return $this->hasOne('App\Models\Organization', 'hp_code', 'hp_code');
+    }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class);
+    }
+
+    public function municipality()
+    {
+        return $this->belongsTo(Municipality::class);
     }
 }
