@@ -4,7 +4,7 @@
       <div class="col-lg-12">
         <h3>{{ headingTitle }}'s Update</h3>
       </div>
-      <div class="col-lg-12">
+      <div class="col-lg-12" style="margin-bottom: 20px;">
         <div class="col-md-3">
           <div class="panel panel-danger">
             <select name="date_selected" @change="onDateChange($event)" class="form-control" v-model="dayVal">
@@ -29,10 +29,11 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  Positive
+                  <i class="fa fa-frown-o fa-3x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
                   <div class="huge">{{ report.antigen_positive }}</div>
+                  <div>Positive</div>
                 </div>
               </div>
             </div>
@@ -49,10 +50,11 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  Negative
+                  <i class="fa fa-smile-o fa-3x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
                   <div class="huge">{{ report.antigen_negative }}</div>
+                  <div>Negative</div>
                 </div>
               </div>
             </div>
@@ -66,10 +68,11 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  Positive
+                  <i class="fa fa-frown-o fa-3x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
                   <div class="huge">{{ report.pcr_positive }}</div>
+                  <div>Positive</div>
                 </div>
               </div>
             </div>
@@ -86,10 +89,11 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  Negative
+                  <i class="fa fa-smile-o fa-3x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
                   <div class="huge">{{ report.pcr_negative }}</div>
+                  <div>Negative</div>
                 </div>
               </div>
             </div>
@@ -107,10 +111,11 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  Admission
+                  <i class="fa fa-plus-square fa-3x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
                   <div class="huge">{{ report.hospital_admission }}</div>
+                  <div>Admission</div>
                 </div>
               </div>
             </div>
@@ -121,10 +126,11 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  Active Cases
+                  <i class="fa fa-hospital-o fa-3x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
                   <div class="huge">{{ report.hospital_active_cases }}</div>
+                  <div>Active Cases</div>
                 </div>
               </div>
             </div>
@@ -135,10 +141,11 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  Discharge
+                  <i class="fa fa-smile-o fa-3x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
                   <div class="huge">{{ report.hospital_discharge }}</div>
+                  <div>Discharge</div>
                 </div>
               </div>
             </div>
@@ -149,10 +156,11 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
-                  Death
+                  <i class="fa fa-frown-o fa-3x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
                   <div class="huge">{{ report.hospital_death }}</div>
+                  <div>Death</div>
                 </div>
               </div>
             </div>
