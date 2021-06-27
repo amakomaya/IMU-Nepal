@@ -23,7 +23,7 @@
       <div class="clearfix"></div>
       
       <div class="col-lg-6">
-        <h3 class="text-center">ANTIGEN</h3>
+        <h3 class="text-center" style="padding-bottom: 10px;">ANTIGEN</h3>
         <div class="col-lg-6 col-md-6">
           <div class="panel panel-danger">
             <div class="panel-heading">
@@ -60,7 +60,7 @@
         </div>
       </div>
       <div class="col-lg-6">
-        <h3 class="text-center">PCR</h3>
+        <h3 class="text-center" style="padding-bottom: 10px;">PCR</h3>
         <div class="col-lg-6 col-md-6">
           <div class="panel panel-danger">
             <div class="panel-heading">
@@ -99,7 +99,7 @@
       <div class="clearfix"></div>
       <hr>
       <div class="col-lg-12">
-        <h3>Hospital Reporting</h3>
+        <h3 class="text-center" style="padding-bottom: 10px;">HOSPITAL REPORTING</h3>
       </div>
       <div class="col-lg-12">
         <div class="col-lg-3 col-md-6">
