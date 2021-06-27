@@ -55,10 +55,12 @@ class WomenController extends Controller
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->can('poe-registration')){
-            $woman->where('case_type', '3');
-        } else {
-            $woman->where('case_type', '!=', '3');
+        if(Auth::user()->role == 'healthworker'){
+            if(Auth::user()->can('poe-registration')){
+                $woman->where('case_type', '3');
+            } else {
+                $woman->where('case_type', '!=', '3');
+            }
         }
 
         $woman = $woman->whereIn('hp_code', $hpCodes)
