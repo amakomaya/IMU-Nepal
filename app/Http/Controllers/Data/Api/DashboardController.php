@@ -241,11 +241,33 @@ class DashboardController extends Controller
         $pcr_negative = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '1')->where('result', '4')
             ->whereDate('reporting_date_en', $date_chosen)->active()->count();
 
-        $hospital_admission = PaymentCase::whereIn('hp_code', $hpCodes)->whereDate('register_date_en', $date_chosen)->count();
-        $hospital_active_cases = PaymentCase::whereIn('hp_code', $hpCodes)->whereNull('is_death')
-            ->whereDate('register_date_en', '<=', $date_chosen)->count();
-        $hospital_discharge = PaymentCase::whereIn('hp_code', $hpCodes)->where('is_death', 1)->whereDate('date_of_outcome_en', $date_chosen)->count();
-        $hospital_death = PaymentCase::whereIn('hp_code', $hpCodes)->where('is_death', 2)->whereDate('date_of_outcome_en', $date_chosen)->count();
+        $hospital_admission = PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
+            ->select('payment_cases.*', 'healthposts.hospital_type')
+            ->whereIn('payment_cases.hp_code', $hpCodes)
+            ->whereDate('register_date_en', $date_chosen)
+            ->whereIn('healthposts.hospital_type', [3,5,6])
+            ->count();
+
+        $hospital_active_cases = PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
+            ->select('payment_cases.*', 'healthposts.hospital_type')
+            ->whereIn('payment_cases.hp_code', $hpCodes)
+            ->whereNull('is_death')
+            ->whereDate('register_date_en', '<=', $date_chosen)
+            ->count();
+
+        $hospital_discharge = PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
+            ->select('payment_cases.*', 'healthposts.hospital_type')
+            ->whereIn('payment_cases.hp_code', $hpCodes)
+            ->where('is_death', 1)
+            ->whereDate('date_of_outcome_en', $date_chosen)
+            ->count();
+
+        $hospital_death = PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
+            ->select('payment_cases.*', 'healthposts.hospital_type')
+            ->whereIn('payment_cases.hp_code', $hpCodes)
+            ->where('is_death', 2)
+            ->whereDate('date_of_outcome_en', $date_chosen)
+            ->count();
 
         $data = [
             'antigen_positive' => $antigen_positive,

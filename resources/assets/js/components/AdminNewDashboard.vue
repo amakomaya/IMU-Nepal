@@ -184,6 +184,14 @@
                   <i class="fa fa-smile-o fa-3x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
+                  <div v-if="Object.keys(report).length === 0">
+                    <loading-progress
+                        :progress="progress"
+                        :indeterminate="indeterminate"
+                        shape="line"
+                        size="30"
+                    />
+                  </div>
                   <div class="huge">{{ report.hospital_discharge }}</div>
                   <div>Discharge</div>
                 </div>

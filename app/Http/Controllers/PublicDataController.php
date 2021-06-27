@@ -50,12 +50,15 @@ class PublicDataController extends Controller
 
     public function publicPortal(Request $request){
 
-        $data = \DB::table('payment_cases')->whereIn('healthposts.hospital_type', [3,5,6]);
+        $data = \DB::table('payment_cases');
+            // ->whereIn('healthposts.hospital_type', [3,5,6]);
         //            ->whereNull('payment_cases.is_death');
         
             if($request->has('organization_type')){
-                $organization_array = $request->organization_type ? json_decode($request->organization_type) : [];
+                $organization_array = $request->organization_type ? json_decode($request->organization_type) : [3,5,6];
                 $data = $data->whereIn('healthposts.hospital_type', $organization_array);
+            } else{
+                $data = $data->whereIn('healthposts.hospital_type', [3,5,6]);
             }
 
             if ($request->has('province_id')){
@@ -96,6 +99,7 @@ class PublicDataController extends Controller
                 'payment_cases.register_date_en',
                 'payment_cases.date_of_outcome_en',
             ])
+            ->whereNotNull('payment_cases.register_date_en')
             ->orderBy('healthposts.name', 'asc')
             ->get();
 
@@ -141,14 +145,16 @@ class PublicDataController extends Controller
                 $return['health_condition'] = collect($array_health_condition)->last()['id'];
             }
 
+            
             if($parse_register_date->isToday()){
                 $return['is_admission'] = 10;
             }
-
+            
             return $return;
         })->groupBy(function($item) {
             return $item['hp_code'];
         });
+        
 
         $mapped_data_second = $mapped_data->map(function ($value){
             $return = [];
@@ -165,20 +171,21 @@ class PublicDataController extends Controller
             $return['total_icu'] = $value[0]['total_icu'];
             $return['total_ventilators'] = $value[0]['total_ventilators'];
 
-            $return['today_total_admission'] = collect($value)->where('is_admission', 10)->count();
-            $return['today_total_death'] = collect($value)->where('is_death', 12)->count();
-            $return['today_total_discharge'] = collect($value)->where('is_discharge', 11)->count();
+            $return['today_total_admission'] = $value->where('is_admission', 10)->count();
+            $return['today_total_death'] = $value->where('is_death', 12)->count();
+            $return['today_total_discharge'] = $value->where('is_discharge', 11)->count();
 
-            $return['used_general'] = collect($value)->where('is_death', null)->whereIn('health_condition', [1,2])->count();
-            $return['used_hdu'] = collect($value)->where('is_death', null)->where('health_condition', 3)->count();
-            $return['used_icu'] = collect($value)->where('is_death', null)->where('health_condition', 4)->count();
-            $return['used_ventilators'] = collect($value)->where('is_death', null)->where('health_condition', 5)->count();
+            $return['used_general'] = $value->where('is_death', null)->whereIn('health_condition', [1,2])->count();
+            $return['used_hdu'] = $value->where('is_death', null)->where('health_condition', 3)->count();
+            $return['used_icu'] = $value->where('is_death', null)->where('health_condition', 4)->count();
+            $return['used_ventilators'] = $value->where('is_death', null)->where('health_condition', 5)->count();
 
             $return['daily_capacity_in_liter'] = $value[0]['daily_capacity_in_liter'];
             $return['oxygen_availability'] = $value[0]['oxygen_availability'];
 
             return $return;
         })->values();
+
         return response()->json(['organizations' => $mapped_data_second]);
     }
 }
