@@ -86,11 +86,14 @@ class WomenController extends Controller
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->can('poe-registration')){
-            $woman->where('case_type', '3');
-        } else {
-            $woman->where('case_type', '!=', '3');
+        if(Auth::user()->role == 'healthworker'){
+            if(Auth::user()->can('poe-registration')){
+                $woman->where('case_type', '3');
+            } else {
+                $woman->where('case_type', '!=', '3');
+            }
         }
+
         $woman = $woman->whereIn('hp_code', $hpCodes)
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
@@ -117,11 +120,14 @@ class WomenController extends Controller
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->can('poe-registration')){
-            $woman->where('case_type', '3');
-        } else {
-            $woman->where('case_type', '!=', '3');
+        if(Auth::user()->role == 'healthworker'){
+            if(Auth::user()->can('poe-registration')){
+                $woman->where('case_type', '3');
+            } else {
+                $woman->where('case_type', '!=', '3');
+            }
         }
+
         $woman->whereIn('hp_code', $hpCodes)
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
@@ -152,10 +158,12 @@ class WomenController extends Controller
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->can('poe-registration')){
-            $woman->where('case_type', '3');
-        } else {
-            $woman->where('case_type', '!=', '3');
+        if(Auth::user()->role == 'healthworker'){
+            if(Auth::user()->can('poe-registration')){
+                $woman->where('case_type', '3');
+            } else {
+                $woman->where('case_type', '!=', '3');
+            }
         }
         $woman->whereIn('hp_code', $hpCodes)
             ->whereHas('ancs', function($q){
@@ -182,11 +190,14 @@ class WomenController extends Controller
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->can('poe-registration')){
-            $woman->where('case_type', '3');
-        } else {
-            $woman->where('case_type', '!=', '3');
+        if(Auth::user()->role == 'healthworker'){
+            if(Auth::user()->can('poe-registration')){
+                $woman->where('case_type', '3');
+            } else {
+                $woman->where('case_type', '!=', '3');
+            }
         }
+
         $woman->whereIn('hp_code', $hpCodes)
             ->whereHas('ancs', function($q){
                 $q->where('service_for', "2")->where('result', '=', 4);
@@ -207,25 +218,28 @@ class WomenController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
 //        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->pluck('woman_token');
 
-            if($request->db_switch == '2') {
-                $woman = SuspectedCaseOld::active();
-            } else{
-                $woman = SuspectedCase::active();
-            }
+        if($request->db_switch == '2') {
+            $woman = SuspectedCaseOld::active();
+        } else{
+            $woman = SuspectedCase::active();
+        }
 
+        if(Auth::user()->role == 'healthworker'){
             if(Auth::user()->can('poe-registration')){
                 $woman->where('case_type', '3');
             } else {
                 $woman->where('case_type', '!=', '3');
             }
-            $woman->whereIn('hp_code', $hpCodes)->whereHas('ancs', function($q){
-                    $q->where('service_for', '!=' , "2")->where('result', '=', 3);
-                })->with(['ancs','healthpost' => function($q) {
-                    $q->select('name', 'hp_code');
-                }, 'latestAnc', 'district', 'municipality']);
-            return response()->json([
-                'collection' => $woman->advancedFilter()
-            ]);
+        }
+
+        $woman->whereIn('hp_code', $hpCodes)->whereHas('ancs', function($q){
+                $q->where('service_for', '!=' , "2")->where('result', '=', 3);
+            })->with(['ancs','healthpost' => function($q) {
+                $q->select('name', 'hp_code');
+            }, 'latestAnc', 'district', 'municipality']);
+        return response()->json([
+            'collection' => $woman->advancedFilter()
+        ]);
         
     }
 
@@ -240,11 +254,14 @@ class WomenController extends Controller
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->can('poe-registration')){
-            $woman->where('case_type', '3');
-        } else {
-            $woman->where('case_type', '!=', '3');
+        if(Auth::user()->role == 'healthworker'){
+            if(Auth::user()->can('poe-registration')){
+                $woman->where('case_type', '3');
+            } else {
+                $woman->where('case_type', '!=', '3');
+            }
         }
+
         $woman->whereIn('hp_code', $hpCodes)
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
@@ -291,11 +308,14 @@ class WomenController extends Controller
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->can('poe-registration')){
-            $woman->where('case_type', '3');
-        } else {
-            $woman->where('case_type', '!=', '3');
+        if(Auth::user()->role == 'healthworker'){
+            if(Auth::user()->can('poe-registration')){
+                $woman->where('case_type', '3');
+            } else {
+                $woman->where('case_type', '!=', '3');
+            }
         }
+
         $woman->whereIn('hp_code', $hpCodes)
             ->whereHas('ancs', function($q){
                 $q->where('service_for', '!=' , "2")->where('result', '=', 9);
@@ -320,11 +340,14 @@ class WomenController extends Controller
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->can('poe-registration')){
-            $woman->where('case_type', '3');
-        } else {
-            $woman->where('case_type', '!=', '3');
+        if(Auth::user()->role == 'healthworker'){
+            if(Auth::user()->can('poe-registration')){
+                $woman->where('case_type', '3');
+            } else {
+                $woman->where('case_type', '!=', '3');
+            }
         }
+
         $woman->whereIn('hp_code', $hpCodes)
             ->where(function ($query){
                 $query->whereHas('ancs', function($q){
