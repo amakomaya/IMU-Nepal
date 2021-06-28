@@ -140,10 +140,14 @@
 
                                                     $datetime1 = new DateTime($item->date);
                                                     $datetime2 = new DateTime($next_date);
-                                                    $interval = $datetime1->diff($datetime2);
-                                                    $days_d = $interval->format('%a');
-                                                    $days = array_key_exists($key2 + 1, $conditions[$key]) ? $days_d : $days_d + 1;
-                                                    $total_days += $days;
+                                                    if($datetime2 < $datetime1){
+                                                        $days = $total_days = 0;
+                                                    } else {
+                                                        $interval = $datetime1->diff($datetime2);
+                                                        $days_d = $interval->format('%a');
+                                                        $days = array_key_exists($key2 + 1, $conditions[$key]) ? $days_d : $days_d + 1;
+                                                        $total_days += $days;
+                                                    }
                                                 @endphp
                                                 {{ $days }} {{ \Illuminate\Support\Str::plural('day', $days) }}<br>
                                             @endforeach
