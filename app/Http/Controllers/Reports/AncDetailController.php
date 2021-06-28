@@ -238,4 +238,38 @@ class AncDetailController extends Controller
             'to_date' => $to_date_eng ?? Carbon::now()->endOfDay()
         ];
     }
+
+    public function labVisualizationReport() {
+        $lab_organizations = SampleCollection::whereIn('service_for', ['1', '2'])
+            ->whereIn('result', ['3', '4'])
+            ->whereBetween('collection_date_en', [Carbon::now()->subDays(1)->toDateString(), Carbon::now()->toDateString()])
+            ->get()
+            ->groupBy('hp_code');
+        
+        $data = [];
+        foreach($lab_organizations as $key => $lab) {
+            $pcr_postive_today = $lab->where('service_for', '1')->where('result', '3')->whereDate('collection_date_en', Carbon::now()->toDateString())->count();
+            $pcr_negative_today = $lab->where('service_for', '1')->where('result', '4')->whereDate('collection_date_en', Carbon::now()->toDateString())->count();
+            $antigen_positive_today = $lab->where('service_for', '2')->where('result', '3')->whereDate('collection_date_en', Carbon::now()->toDateString())->count();
+            $antigen_negative_today = $lab->where('service_for', '2')->where('result', '4')->whereDate('collection_date_en', Carbon::now()->toDateString())->count();
+
+            $pcr_postive_yesterday = $lab->where('service_for', '1')->where('result', '3')->whereDate('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
+            $pcr_negative_yesterday = $lab->where('service_for', '1')->where('result', '4')->whereDate('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
+            $antigen_positive_yesterday = $lab->where('service_for', '2')->where('result', '3')->whereDate('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
+            $antigen_negative_yesterday = $lab->where('service_for', '2')->where('result', '4')->whereDate('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
+            
+            $api_data_today = $lab->where('regdev', 'api')->whereDate('collection_date_en', Carbon::now()->toDateString())->count();
+            if($api_data_today > 0) {
+                $api_today = 'Yes';
+            } else {
+                $api_today = 'No';
+            }
+            $api_data_yesterday = $lab->where('regdev', 'api')->whereDate('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
+            if($api_data_yesterday > 0) {
+                $api_yesterday = 'Yes';
+            } else {
+                $api_yesterday = 'No';
+            }
+        }
+    }
 }

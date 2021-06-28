@@ -22,3 +22,5 @@ Route::get('cases-report/report' , 'Reports\SuspectedCaseReportController@casesR
 
 Route::get('situation-report/ancs-report' , 'Reports\AncDetailController@sampleAncsReport')->name('report.sample-report.ancs');
 Route::get('situation-report/lab-report' , 'Reports\AncDetailController@sampleLabReport')->name('report.sample-report.lab');
+
+Route::get('lab-report-visualization', 'Reports\AncDetailController@labVisualizationReport')->name('report.visualization');
