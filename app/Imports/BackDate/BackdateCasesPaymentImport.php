@@ -23,7 +23,7 @@ use Maatwebsite\Excel\Validators\Failure;
 
 use App\User;
 
-class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
+class BackdateCasesPaymentImport implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
 {
     use Importable, RemembersRowNumber;
     public static $importedRowCount = 0;
@@ -68,6 +68,8 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
         $this->totalVentilatorCases = 0;
         $this->totalGeneralCases = 0;
         $this->hpCode = $hpCode;
+        $this->todayDateEn = Carbon::now();
+        $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();
     }
     
     public function registerEvents(): array
@@ -84,8 +86,6 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
         if(!array_filter($row)) { return null;} //Ignore empty rows.
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
-        $date_en = Carbon::now();
-        $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
         $health_condition = $row['health_condition'];
         $bed_status = $this->bed_status;
         if($health_condition === 1 || $health_condition === 2){
@@ -130,12 +130,15 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
                 $failures
             );
         } 
-
+        $backDateEn = $row['date_of_case_entryyyyy_mm_dd_ad'];
+        list($bdYearEn, $bdMonthEn, $bdDayEn) = explode('-', $backDateEn);
+        $backDateNp = Calendar::eng_to_nep($bdYearEn,$bdMonthEn,$bdDayEn)->getYearMonthDay();
+        
         return new PaymentCase([
             'hospital_register_id' => $row['hospital_id'],
             'name' => $row['full_name_of_patient'],
-            'register_date_en'=> $date_en->isoFormat("Y-M-D"),
-            'register_date_np' => $date_np,
+            'register_date_en'=> $backDateEn,
+            'register_date_np' => $backDateNp,
             'lab_name' => $row['lab_name']??'No Lab Found',
             'lab_id' => $row['lab_id']??'0123456789',
             'age' => $row['age'],
@@ -152,7 +155,7 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             'is_in_imu' => 0,
             'method_of_diagnosis' => $row['method_of_diagnosis'],
             'hp_code' => $this->hpCode,
-            'reg_dev' => 'excel',
+            'reg_dev' => 'excel-bd',
             'province_id' => $row['province'],
             'district_id' => $row['district'],
             'municipality_id' => $row['municipality']
@@ -160,7 +163,7 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
     }
 
     private function filterEmptyRow($data) {
-      $required_row = ['paid_free', 'gender', 'age_unit', 'health_condition', 'method_of_diagnosis']; //added to solve teplate throwing wierd default values
+      $required_row = ['paid_free', 'gender', 'age_unit', 'health_condition', 'method_of_diagnosis', 'date_of_case_entry', 'date_of_case_entryyyyy_mm_dd_ad']; //added to solve teplate throwing wierd default values
       $unset = true;
       foreach($data as $key=>$col){
         if($col && in_array($key, $required_row)) {
@@ -241,6 +244,11 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             'municipality' => function($attribute, $value, $onFailure) {
               if ($value === '' || $value === null) {
                    $onFailure('Invalid Municipality');
+              }
+            },
+            'date_of_case_entryyyyy_mm_dd_ad' => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Invalid Case Entry Date');
               }
             },
         ];

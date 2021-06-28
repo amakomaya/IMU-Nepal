@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Imports;
+namespace App\Imports\Backdate;
 
 use Carbon\Carbon;
 use App\Models\SampleCollection;
@@ -25,7 +25,7 @@ use Maatwebsite\Excel\Validators\Failure;
 
 use App\User;
 
-class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
+class BackdateRegisterSampleCollectionLabImport implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
 {
     use Importable, RemembersRowNumber;
 
@@ -68,8 +68,11 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'province' => $provinces,
           'district' => $districts,
           'municipality' => $municipalities,
-          'result' => array('positive' => '3', 'negative' => '4')
+          'result' => array('positive' => '3', 'negative' => '4', "don't know"=>'5')
         );
+        $this->todayDateEn = Carbon::now();
+        $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();
+    
     }
     
     public function registerEvents(): array
@@ -86,6 +89,12 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
         if(!array_filter($row)) { return null;} //Ignore empty rows.
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
+        $labResult = $row['result'];
+        $patientLabId = $row['patient_lab_id'];
+        $sampleTestTime = $this->todayDateEn->format('g : i A');
+        $backDateEn = $row['date_of_testyyyy_mm_dd_ad'];
+        list($bdYearEn, $bdMonthEn, $bdDayEn) = explode('-', $backDateEn);
+        $backDateNp = Calendar::eng_to_nep($bdYearEn,$bdMonthEn,$bdDayEn)->getYearMonthDay();
         $suspectedCase = SuspectedCase::create([
           'name' => $row['person_name'],
           'age' => $row['age'],
@@ -99,7 +108,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'ward' => $row['ward'],
           'caste' => $row['ethnicity'],
           'created_by' => $this->userToken,
-          'registered_device' => 'excel',
+          'registered_device' => 'excel-bd',
           'status' => 1,
           'sex' => $row['gender'],
           'emergency_contact_one' => $row['emergency_contact_one'],
@@ -108,7 +117,11 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'cases' => '0',
           'case_type' => '1',
           'case_id' => $this->healthWorker->id . '-' . bin2hex(random_bytes(3)),
+          'register_date_en' => $backDateEn,
+          'register_date_np' => $backDateNp
         ]);
+
+
         $sampleCollectionData = [
           'service_for' => $row['test_type'],
           'checked_by' => $this->userToken,
@@ -118,36 +131,46 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'sample_identification_type' => 'unique_id',
           'service_type' => $row['service_type'],
           'result' => $row['result'],
-          'regdev' => 'excel',
+          'regdev' => 'excel-bd',
           'woman_token' => $suspectedCase->token,
           'infection_type' => $row['infection_type'],
+          'sample_test_date_en' => $backDateEn,
+          'sample_test_date_np' => $backDateNp,
+          'sample_test_time' => $sampleTestTime,
+          'received_by' => $this->userToken,
+          'received_by_hp_code' => $this->hpCode,
+          'received_by' => $this->userToken,
+          'received_by_hp_code' => $this->hpCode,
+          'received_date_en' => $backDateEn,
+          'received_date_np' => $backDateNp,
+          'lab_token' => $this->userToken.'-'.$patientLabId,
+          'collection_date_en' => $backDateEn,
+          'collection_date_np' => $backDateNp,
+          'reporting_date_en' => $this->todayDateEn,
+          'reporting_date_np' => $this->todayDateNp
         ];
         $id = $this->healthWorker->id;
-        $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber)->format('H:i:s'));
+        $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber+1)->format('H:i:s'));
         $sampleCollectionData['token'] = $swabId;
         if ($sampleCollectionData['service_for'] === '1')
             $sampleCollectionData['sample_type'] = $row['sample_type'];
 
         $sampleCollection = SampleCollection::create($sampleCollectionData);
         
-        $date_en = Carbon::now();
-        $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
-        $labResult = $row['result'];
-        $patientLabId = $row['patient_lab_id'];
-        $sampleTestTime = $date_en->format('g : i A');
+       
         try {
           LabTest::create([
             'token' => $this->userToken.'-'.$patientLabId,
             'hp_code' => $this->hpCode,
             'status' => 1,
-            'sample_recv_date' =>  $date_np,
-            'sample_test_date' => $date_np,
+            'sample_recv_date' =>  $this->todayDateNp,
+            'sample_test_date' => $this->todayDateNp,
             'sample_test_time' => $sampleTestTime,
             'sample_test_result' => $labResult,
             'checked_by' => $this->userToken,
             'checked_by_name' => $this->healthWorker->name,
             'sample_token' => $sampleCollection->token,
-            'regdev' => 'excel'
+            'regdev' => 'excel-bd'
           ]);
         } catch (\Illuminate\Database\QueryException $e) {
           $error = ['patient_lab_id' => 'The test with the given Patient Lab ID already exists in the system.'];
@@ -168,7 +191,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
     }
   
     private function filterEmptyRow($data) {
-      $required_row = ['test_type', 'sample_type', 'age_unit', 'gender', 'ethnicity', 'province' , 'district', 'municipality', 'service_type', 'infection_type', 'result']; //added to solve teplate throwing wierd default values
+      $required_row = ['test_type', 'sample_type', 'age_unit', 'gender', 'ethnicity', 'province' , 'district', 'municipality', 'service_type', 'infection_type', 'result', 'date_of_testyyyy_mm_dd_ad']; //added to solve teplate throwing wierd default values
       $unset = true;
       foreach($data as $key=>$col){
         if($col && in_array($key, $required_row)) {
@@ -283,6 +306,11 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
                    $onFailure('Invalid Patient Lab ID');
               }
             },
+            'date_of_testyyyy_mm_dd_ad'  => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Invalid Test Date');
+              }
+            }
         ];
     }
 
