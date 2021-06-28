@@ -19,6 +19,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Spatie\Activitylog\Models\Activity;
 use Yagiten\Nepalicalendar\Calendar;
+use DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -154,15 +155,39 @@ class Kernel extends ConsoleKernel
         })->dailyAt('02:00');
 //        })->everyMinute();
 
-        // $schedule->call('App\Http\Controllers\Backend\ScriptController@collectionDateFix')
-        //     ->everyFiveMinutes()
-        //     ->name('collection.date.fix')->withoutOverlapping(10);
-        // $schedule->call('App\Http\Controllers\Backend\ScriptController@reportingDateFix')
-        //     ->everyFiveMinutes()
-        //     ->name('reporting.date.fix')->withoutOverlapping(10);
-        // $schedule->call('App\Http\Controllers\Backend\ScriptController@receivedDateFix')
-        //     ->everyFiveMinutes()
-        //     ->name('received.date.fix')->withoutOverlapping(10);
+        // $schedule->call(function () {
+        //     DB::connection('mysqldump')->table('women')->whereNotNull('deleted_at')->delete();
+        //     DB::connection('mysqldump')->table('ancs')->whereNotNull('deleted_at')->delete();
+        //     DB::connection('mysqldump')->table('lab_tests')->whereNotNull('deleted_at')->delete();
+        //     SuspectedCase::query()
+        //         ->whereNotNull('deleted_at')
+        //         ->each(function ($oldRecord) {
+        //             $newRecord = $oldRecord->replicate();
+        //             try{
+        //                 $newRecord->setConnection('mysqldump')->save();
+        //                 $oldRecord->forceDelete();
+        //             }catch (\Exception $e){}
+        //         });
+        //     SampleCollection::query()
+        //         ->whereNotNull('deleted_at')
+        //         ->each(function ($oldRecord) {
+        //             $newRecord = $oldRecord->replicate();
+        //             try{
+        //                 $newRecord->setConnection('mysqldump')->save();
+        //                 $oldRecord->forceDelete();
+        //             }catch (\Exception $e){}
+        //         });
+
+        //     LabTest::query()
+        //         ->whereNotNull('deleted_at')
+        //         ->each(function ($oldRecord) {
+        //             $newRecord = $oldRecord->replicate();
+        //             try{
+        //                 $newRecord->setConnection('mysqldump')->save();
+        //                 $oldRecord->forceDelete();
+        //             }catch (\Exception $e){}
+        //         });
+        // })->daily();
 
     }
     /**
