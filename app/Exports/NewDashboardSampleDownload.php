@@ -6,6 +6,7 @@ use App\Helpers\GetHealthpostCodes;
 use App\Models\OrganizationMember;
 use App\Models\SampleCollection;
 use App\Models\SuspectedCase;
+use App\Models\SuspectedCaseOld;
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -37,6 +38,12 @@ class NewDashboardSampleDownload implements FromCollection, WithHeadings
             ->whereDate('reporting_date_en', $date_chosen)->active()->groupBy('woman_token')->get()->pluck('woman_token');
 
         $data = SuspectedCase::whereIn('token', $tokens)->with('district', 'municipality', 'latestAnc')->get();
+
+        if($tokens->count() > $data->count()){
+            $dump_data = SuspectedCaseOld::whereIn('token', $tokens)->with('district', 'municipality', 'latestAnc')->get();
+            $data = $dump_data->merge($data);
+        }
+
 
         return $data->map(function ($item, $key) {
             try {
