@@ -332,19 +332,17 @@
                                 @endif
                             </div>
 
-                            <div class="form-group {{ $errors->has('temperature') ? 'has-error' : '' }}">
-                                <label for="name">Body Temperature (In Fahrenheit)</label>
-                                <input type="number" class="form-control" value="{{ old('temperature') }}"
-                                       name="temperature" aria-describedby="help"
-                                       placeholder="Body Temperature (In Fahrenheit)">
-                                @if ($errors->has('temperature'))
-                                    <small id="help"
-                                           class="form-text text-danger">{{ $errors->first('temperature') }}</small>
-                                @endif
-                            </div>
-
                             <div class="asymptomatic">
-                            
+                                <div class="form-group {{ $errors->has('temperature') ? 'has-error' : '' }}">
+                                    <label for="name">Body Temperature (In Fahrenheit)</label>
+                                    <input type="number" class="form-control" value="{{ old('temperature') }}"
+                                           name="temperature" aria-describedby="help"
+                                           placeholder="Body Temperature (In Fahrenheit)">
+                                    @if ($errors->has('temperature'))
+                                        <small id="help"
+                                               class="form-text text-danger">{{ $errors->first('temperature') }}</small>
+                                    @endif
+                                </div>
                                 <div class="form-group {{ $errors->has('fever') ? 'has-error' : '' }}">
                                     <label for="name">Fever (>38 C/100.4F)</label>
                                     <div class="control-group">
@@ -787,57 +785,15 @@
         }
 
 
-        
-
-
-
-        // function toggleReasonLayout(reason) {
-        //     x = document.getElementById("reason");
-        //     if (reason) {
-        //         x.style.display = "block";
-        //     } else {
-        //         x.style.display = "none";
-        //     }
-        // }
-
-        // function toggleDateOnset(val) {
-        //     if (val) {
-        //         $('.is-symptomatic').hide();
-        //     } else {
-        //         $('.is-symptomatic').show();
-        //     }            
-        // }
-
-        // function toggleLayout(sample) {
-        //     x = document.getElementById("sample");
-        //     if (sample) {
-        //         x.style.display = "block";
-        //         $('#form_title').html('PCR');
-        //     } else {
-        //         x.style.display = "none";
-        //         $('#form_title').html('Antigen');
-        //     }
-        // }
-
-        // swabFormShow();
-        // $('.swab_collection_conformation').on('change', function() {
-        // console.log('ss');
-        //     swabFormShow();
-        // });
-        // function swabFormShow() {
-        //     if($('.swab_collection_conformation:checked').val() == '1'){
-        //         $('.swab-data').show();
-        //     }
-        //     else {
-        //         $('.swab-data').hide();
-        //     }
-        // }
+        $('#travelled_date').nepaliDatePicker({
+            language: 'english',
+        });
         
 
         $(function () {
             $.validator.addMethod("nameCustom", function (value, element) {
                 return this.optional(element) || /^[a-zA-Z\.\'\-]{2,50}(?: [a-zA-Z\.\'\-]{2,50})+$/i.test(value);
-            }, "Email Address is invalid: Please enter a valid email address.");
+            }, "Please enter a valid name.");
 
             $.validator.addMethod("ageCustom", function (value, element) {
                 return this.optional(element) || /^(12[0-7]|1[01][0-9]|[1-9]?[0-9])$/i.test(value);
@@ -857,27 +813,77 @@
                         required: true,
                         ageCustom: true,
                     },
+                    caste: {
+                        required: true
+                    },
+                    sex: {
+                        required: true,
+                    },
+                    occupation: {
+                        required: true,
+                    },
+                    nationality: {
+                        required: true,
+                    },
+                    id_card_detail: {
+                        required: true,
+                        maxlength: 30,
+                    },
+                    travelled_where: {
+                        required: true,
+                    },
+                    travelled_city: {
+                        required: true,
+                    },
+                    travelled_date: {
+                        required: true,
+                    },
+                    province_id: {
+                        required: true,
+                    },
                     district_id: {
                         required: true
                     },
                     municipality_id: {
                         required: true
                     },
-                    sex: {
-                        required: true,
-                    },
                     ward: {
                         required: true,
+                        digits: true
                     },
                     tole: {
                         required: true,
                     },
                     emergency_contact_one: {
                         required: true,
+                        digits: true,
+                        minlength: 10,
+                        maxlength: 10,
                         phoneCustom: true
                     },
-                    occupation: {
+                    nearest_contact: {
                         required: true,
+                        nameCustom: true
+                    },
+                    emergency_contact_two: {
+                        required: true,
+                        digits: true,
+                        minlength: 10,
+                        maxlength: 10,
+                        phoneCustom: true
+                    },
+                    contact_relationship: {
+                        required: true,
+                    },
+                    "symptoms[]": {
+                        required: function () {
+                            return $(".symptoms_recent:checked").val() == "1";
+                        }
+                    },
+                    "symptoms_comorbidity[]": {
+                        required: function () {
+                            return $(".symptoms_recent:checked").val() == "1";
+                        }
                     }
                 },
                 // Specify validation error messages
