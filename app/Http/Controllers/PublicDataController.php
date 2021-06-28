@@ -24,7 +24,7 @@ class PublicDataController extends Controller
         }elseif(Auth::user()->role == 'main' || auth()->user()->role == 'center') {
             $province_id = null;
         }else {
-            return redirect('/admin');
+            $province_id = null;
         }
         return view('public.home.index', compact('province_id'));
     }

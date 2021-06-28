@@ -321,7 +321,7 @@ Route::get('admin/cases-payment-all-by-institutional', 'CasesPaymentController@b
 Route::get('admin/cases-payment-all-by-lab-and-treatment', 'CasesPaymentController@byLabAndTreatment')->name('cases.payment.by.lab-treatment');
 Route::get('admin/cases-payment-all-by-hospital-without-pcr-lab', 'CasesPaymentController@byHospitalWoPCRLab')->name('cases.payment.by.hospital.wo.pcrlab');
 
-Route::get('home', 'PublicDataController@index')->name('public.home.index');
+Route::get('e83249bd3ba79932e16fb1fb5100dafade9954c2', 'PublicDataController@index')->name('public.home.index');
 Route::get('api/status', 'PublicDataController@publicPortal');
 
 
