@@ -111,7 +111,7 @@ class ScriptController extends Controller
             $sample_collections_second = SampleCollection::whereNull('received_date_en')->whereNotNull('received_date_np')->get();
             foreach($sample_collections_second as $key => $sample) {
                 if($sample->received_date_np) {
-                    $received_date_np_array = explode("-", $sample->collection_date_n);
+                    $received_date_np_array = explode("-", $sample->received_date_np);
                     $received_date_en = Calendar::nep_to_eng($received_date_np_array[0], $received_date_np_array[1], $received_date_np_array[2])->getYearMonthDayNepToEng();
 
                     $sample->update(['received_date_en' => $received_date_en]);
