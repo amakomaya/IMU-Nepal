@@ -156,9 +156,6 @@ class Kernel extends ConsoleKernel
 //        })->everyMinute();
 
         // $schedule->call(function () {
-        //     DB::connection('mysqldump')->table('women')->whereNotNull('deleted_at')->delete();
-        //     DB::connection('mysqldump')->table('ancs')->whereNotNull('deleted_at')->delete();
-        //     DB::connection('mysqldump')->table('lab_tests')->whereNotNull('deleted_at')->delete();
         //     SuspectedCase::query()
         //         ->whereNotNull('deleted_at')
         //         ->each(function ($oldRecord) {
