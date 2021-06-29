@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Imports;
+namespace App\Imports\Backdate;
 
 use Carbon\Carbon;
 use App\Models\LabTest;
@@ -22,7 +22,7 @@ use Maatwebsite\Excel\Validators\Failure;
 
 use App\User;
 
-class LabResultImport implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
+class BackdateLabResultImport implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
 {
     use Importable, RemembersRowNumber;
 
@@ -37,8 +37,10 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
         $this->healthWorker =  $healthWorker;
         $this->hpCode = $hpCode;
         $this->enums = [
-          'result' => array('positive' => '3', 'negative' => '4')
+          'result' => array('positive' => '3', 'negative' => '4', "don't know"=>'5')
         ];
+        $this->todayDateEn = Carbon::now();
+        $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();
     }
     
     public function registerEvents(): array
@@ -55,11 +57,9 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
         if(!array_filter($row)) { return null;} //Ignore empty rows.
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
-        $date_en = Carbon::now();
-        $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
         $labResult = $row['result'];
         $patientLabId = $row['patient_lab_id'];
-        $sampleTestTime = $date_en->format('g : i A');
+        $sampleTestTime = $this->todayDateEn->format('g : i A');
         $labTests = $this->getLabTestByPatientLabId($patientLabId);
         if(!$labTests) {
           $error = ['patient_lab_id' => 'The patient with the given Patient Lab ID couldnot be found in your lab. Please create the data of the patient & try again.'];
@@ -71,6 +71,9 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
         } else {
             $labTests = $labTests->get()->first();
             $sId = $labTests->sample_token;
+            $backDateEn = $row['date_of_resultyyyy_mm_dd_ad'];
+            list($bdYearEn, $bdMonthEn, $bdDayEn) = explode('-', $backDateEn);
+            $backDateNp = Calendar::eng_to_nep($bdYearEn,$bdMonthEn,$bdDayEn)->getYearMonthDay();
             if($sId) {
               if($labTests->sample_test_date){
                 $labTests->update([
@@ -78,15 +81,27 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
                 ]);
               } else {
                 $labTests->update([
-                  'sample_test_date' => $date_np,
+                  'sample_test_date' => $backDateNp,
                   'sample_test_time' => $sampleTestTime,
                   'sample_test_result' => $labResult
                 ]);
               }
               $ancs = SampleCollection::where('token', $sId);
-              $ancs->update([
-                'result' => $labResult
-              ]);
+              $hasAlreadyReported = $ancs->get()->first()->sample_test_date_en;
+              if($hasAlreadyReported) {
+                $ancs->update([
+                  'result' => $labResult
+                ]);
+              } else {
+                $ancs->update([
+                  'result' => $labResult,
+                  'sample_test_date_en' => $backDateEn,
+                  'sample_test_date_np' => $backDateNp,
+                  'sample_test_time' => $sampleTestTime,
+                  'reporting_date_en' => $backDateEn,
+                  'reporting_date_np' => $backDateNp
+                ]);
+              }
             } else {
               $error = ['patient_lab_id' => 'The patient with the given Patient Lab ID doesnot have Sample Collection record. Please create the data of the patient & try again.'];
               $failures[] = new Failure($currentRowNumber, 'patient_lab_id', $error, $row);
@@ -150,6 +165,11 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
             'patient_lab_id' => function($attribute, $value, $onFailure) {
               if ($value === '' || $value === null) {
                    $onFailure('Invalid Patient Lab ID');
+              }
+            },
+            'date_of_resultyyyy_mm_dd_ad'  => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Invalid Lab Result Date');
               }
             },
         ];

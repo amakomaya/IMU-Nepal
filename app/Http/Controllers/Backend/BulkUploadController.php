@@ -15,10 +15,9 @@ use App\Imports\BackDate\BackdateLabResultImport;
 use App\Imports\BackDate\BackdateLabReceivedResultImport;
 use App\Imports\BackDate\BackdateRegisterSampleCollectionImport;
 use App\Imports\BackDate\BackdateRegisterSampleCollectionLabImport;
+use App\Imports\BackDate\BackdateCasesPaymentImport;
 use App\Imports\AsymptomaticPoeImport;
 use App\Imports\SymptomaticPoeImport;
-
-
 class BulkUploadController extends Controller
 {
 
@@ -59,6 +58,35 @@ class BulkUploadController extends Controller
             case 'bulk_file_symptomtic_poe':
               $import = new SymptomaticPoeImport(auth()->user());
               $successMessage = "Symptomatic POE data registered successfully";
+              break;
+
+            case 'bulk_file_case_payment_bd':
+              //todo pass bed status
+              $bedStatus = app('\App\Http\Controllers\Backend\WomanController')->getRemainingBedsWoRequest();
+              $bedStatus = $bedStatus->getData();
+              $bedStatus = $bedStatus->remaining_beds;
+              $import = new BackdateCasesPaymentImport(auth()->user(),$bedStatus);
+              $successMessage = "Backdate Case Payment uploaded successfully";
+              break;
+            case 'bulk_file_lab_received_bd':
+              $import = new BackdateLabReceivedImport(auth()->user());
+              $successMessage = "Backdate Lab Received Data uploaded successfully";
+              break;
+            case 'bulk_file_lab_result_bd':
+              $import = new BackdateLabResultImport(auth()->user());
+              $successMessage = "Backdate Lab Result Data updated successfully";
+              break;
+            case 'bulk_file_lab_received_result_bd':
+              $import = new BackdateLabReceivedResultImport(auth()->user());
+              $successMessage = "Backdate Lab Received & Results Data created successfully";
+              break;
+            case 'bulk_file_registration_sample_collection_bd':
+              $import = new BackdateRegisterSampleCollectionImport(auth()->user());
+              $successMessage = "Backdate Sample Collection Data created successfully.";
+              break;
+            case 'bulk_file_registration_sample_collection_lab_test_bd':
+              $import = new BackdateRegisterSampleCollectionLabImport(auth()->user());
+              $successMessage = "Backdate Sample Collection Data with Lab Test created successfully";
               break;
               
           }
