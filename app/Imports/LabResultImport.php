@@ -37,7 +37,7 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
         $this->healthWorker =  $healthWorker;
         $this->hpCode = $hpCode;
         $this->enums = [
-          'result' => array('positive' => '3', 'negative' => '4')
+          'result' => array('positive' => '3', 'negative' => '4', "don't know"=>'5')
         ];
         $this->todayDateEn = Carbon::now();
         $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();

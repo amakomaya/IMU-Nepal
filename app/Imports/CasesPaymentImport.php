@@ -68,6 +68,8 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
         $this->totalVentilatorCases = 0;
         $this->totalGeneralCases = 0;
         $this->hpCode = $hpCode;
+        $this->todayDateEn = Carbon::now();
+        $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();
     }
     
     public function registerEvents(): array
@@ -84,8 +86,6 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
         if(!array_filter($row)) { return null;} //Ignore empty rows.
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
-        $date_en = Carbon::now();
-        $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
         $health_condition = $row['health_condition'];
         $bed_status = $this->bed_status;
         if($health_condition === 1 || $health_condition === 2){
@@ -134,8 +134,8 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
         return new PaymentCase([
             'hospital_register_id' => $row['hospital_id'],
             'name' => $row['full_name_of_patient'],
-            'register_date_en'=> $date_en->isoFormat("Y-M-D"),
-            'register_date_np' => $date_np,
+            'register_date_en'=> $this->todayDateEn->isoFormat("Y-M-D"),
+            'register_date_np' => $this->todayDateNp,
             'lab_name' => $row['lab_name']??'No Lab Found',
             'lab_id' => $row['lab_id']??'0123456789',
             'age' => $row['age'],

@@ -35,7 +35,7 @@ class NewDashboardSampleDownload implements FromCollection, WithHeadings
         }
 
         $tokens = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', $service_for_chosen)->where('result', $result_chosen)
-            ->whereDate('reporting_date_en', $date_chosen)->active()->get()->pluck('woman_token');
+            ->whereDate('created_at', $date_chosen)->active()->get()->pluck('woman_token');
 
         $data = SuspectedCase::whereIn('token', $tokens)->with('district', 'municipality', 'latestAnc')->get();
 

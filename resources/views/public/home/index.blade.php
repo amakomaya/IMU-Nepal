@@ -157,7 +157,7 @@
                 <option value="">Select</option>
                   <option value="6">Hospital without PCR Lab</option>
                   <option value="5"> Institutional Isolation</option>
-                <option value="3" selected>Lab & Treatment( Hospital )</option>
+                  <option value="3" selected>Lab & Treatment( Hospital )</option>
               </select>
             </div>
           </div>
@@ -172,7 +172,7 @@
                 <div class="icon">
                   <i class="fa fa-hospital-o " style="color: #d6ff22;"></i>
                 </div>
-                <h3>Hospital & Isolation</h3>
+                <h3 id="active-first-header">Lab & Treatment( Hospital )</h3>
               </div>
               <h1  class="info-count" id="hospital-count"></h1>
             </div>
@@ -226,7 +226,7 @@
             </div>
           </div>
 
-          <div class="card oxygen-card insti-isolate" data-toggle="modal" data-target="#oxygen-modal">
+          {{-- <div class="card oxygen-card insti-isolate" data-toggle="modal" data-target="#oxygen-modal">
             <div class="card-body">
               <div class="info-header">
                 <div class="icon">
@@ -236,7 +236,7 @@
               </div>
               <h1 class="info-count" id="oxygen-count"></h1>
             </div>
-          </div>
+          </div> --}}
         </div>
 
         <h2 id="active-title">Today's Record</h2>
@@ -938,24 +938,56 @@
     $('#organization-selector').on('change', function() {
       var selectedValue = $(this).val();
       if (selectedValue) {
-       var check_5 = selectedValue.includes("5");
-       var check_5_length = selectedValue.length;
+        
+        var haystack = ["3", "5", "6"];
+        if(containsAll(selectedValue, haystack) === true) {
+          $('#active-first-header').html('Hospital & Isolation');
+        }
+
+        var haystack2 = ["3", "6"];
+        if(containsAll(selectedValue, haystack2) === true) {
+          $('#active-first-header').html('Hospital');
+        }
+
+        var check_6 = selectedValue.includes("6");
+        var check_6_length = selectedValue.length;
+        if(check_6 === true && check_6_length === 1) {
+          $('#active-first-header').html('Hospital without PCR Lab');
+        }
+
+        var check_3 = selectedValue.includes("3");
+        var check_3_length = selectedValue.length;
+        if(check_3 === true && check_3_length === 1) {
+          $('#active-first-header').html('Lab & Treatment( Hospital )');
+        }
+
+        var check_5 = selectedValue.includes("5");
+        var check_5_length = selectedValue.length;
         if(check_5 === true && check_5_length === 1) {
+          $('#active-first-header').html('Institution Isolation');
           $('.insti-isolate').hide();
         } else {
           $('.insti-isolate').show();
         }
-        selectedValue = "[" + selectedValue.toString() + "]";
+        var selectedValue = "[" + selectedValue.toString() + "]";
         // activeOrganization = {
         //   name: $(this).children("option:selected").text(),
         //   id: selectedValue
         // };
+
         activeOrganization = selectedValue;
       } else {
         resetOrganization();
       }
       fetchData();
     });
+  }
+
+  function containsAll(needles, haystack){ 
+    for(var i = 0; i < needles.length; i++){
+      if($.inArray(needles[i], haystack) == -1) return false;
+    }
+    return true;
   }
 
   $(document).ready(function() {
