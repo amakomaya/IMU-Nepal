@@ -61,11 +61,8 @@ class ScriptController extends Controller
         ini_set('max_execution_time', 0);
 
         if($type == 1){
-            $sample_collections = SampleCollection::where(function ($query) {
-                    $query->where('result','4')
-                    ->orWhere('result', '3');
-                })
-            ->whereNull('reporting_date_np')->whereNotNull('reporting_date_en')->get();
+            $sample_collections = SampleCollection::whereIn('result', ['3', '4'])
+                ->whereNull('reporting_date_np')->whereNotNull('reporting_date_en')->get();
             foreach($sample_collections as $key => $sample) {
                 if($sample->reporting_date_en) {
                     $reporting_date_en_array = explode("-", Carbon::parse($sample->reporting_date_en)->format('Y-m-d'));
