@@ -11,24 +11,26 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <form action="" method="GET">
-                            <select name="date" id="date_selected">
-                                <option value="1">Today</option>
-                                <option value="2">Yesterday</option>
-                                <option value="3">{{ Carbon\Carbon::now()->subDays(2)->toDateString() }}</option>
-                                <option value="4">{{ Carbon\Carbon::now()->subDays(3)->toDateString() }}</option>
-                                <option value="5">{{ Carbon\Carbon::now()->subDays(4)->toDateString() }}</option>
-                                <option value="6">{{ Carbon\Carbon::now()->subDays(5)->toDateString() }}</option>
-                                <option value="7">{{ Carbon\Carbon::now()->subDays(6)->toDateString() }}</option>
-                            </select>
-                        </form>
+                        <div class="col-md-3" style="margin-bottom: 40px;">
+                            <form action="" method="GET">
+                                <select class="form-control" name="date_selected" id="date_selected">
+                                    <option value="1" @if(Request::get('date_selected') == '1') selected @endif>Today</option>
+                                    <option value="2" @if(Request::get('date_selected') == '2') selected @endif>Yesterday</option>
+                                    <option value="3" @if(Request::get('date_selected') == '3') selected @endif>{{ Carbon\Carbon::now()->subDays(2)->toDateString() }}</option>
+                                    <option value="4" @if(Request::get('date_selected') == '4') selected @endif>{{ Carbon\Carbon::now()->subDays(3)->toDateString() }}</option>
+                                    <option value="5" @if(Request::get('date_selected') == '5') selected @endif>{{ Carbon\Carbon::now()->subDays(4)->toDateString() }}</option>
+                                    <option value="6" @if(Request::get('date_selected') == '6') selected @endif>{{ Carbon\Carbon::now()->subDays(5)->toDateString() }}</option>
+                                    <option value="7" @if(Request::get('date_selected') == '7') selected @endif>{{ Carbon\Carbon::now()->subDays(6)->toDateString() }}</option>
+                                </select>
+                            </form>
+                        </div>
 
                         <div class="dataTable_wrapper">
                             <table class="table table-striped table-bordered table-hover" id="dataTable" style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th rowspan="2">Organization Name</th>
-                                        <th colspan="4">Total Data</th>
+                                        <th colspan="4" class="text-center">Total Data</th>
                                     </tr>
                                     <tr>
                                         <th>Web</th>
@@ -69,7 +71,7 @@
 @section('script')
 <script>
 $(function() {
-    $('#date_select').change(function() {
+    $('#date_selected').change(function() {
         this.form.submit();
     });
 });

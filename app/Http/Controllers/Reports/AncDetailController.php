@@ -292,11 +292,31 @@ class AncDetailController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         
-        $date = $request->date ?? Carbon::now()->toDateString();
+        $date_chosen = Carbon::now()->toDateString();
+        if($request->date_selected){
+            if($request->date_selected == '2') {
+                $date_chosen = Carbon::now()->subDays(1)->toDateString();
+            }elseif($request->date_selected == '3') {
+                $date_chosen = Carbon::now()->subDays(2)->toDateString();
+            }elseif($request->date_selected == '4') {
+                $date_chosen = Carbon::now()->subDays(3)->toDateString();
+            }elseif($request->date_selected == '5') {
+                $date_chosen = Carbon::now()->subDays(4)->toDateString();
+            }elseif($request->date_selected == '6') {
+                $date_chosen = Carbon::now()->subDays(5)->toDateString();
+            }elseif($request->date_selected == '7') {
+                $date_chosen = Carbon::now()->subDays(6)->toDateString();
+            }else {
+                $date_chosen = Carbon::now()->toDateString();
+            }
+        }
+
+        // dd($date_chosen);
+
         $organizations = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
             ->select('ancs.*', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token')
             ->whereIn('ancs.hp_code', $hpCodes)
-            ->whereDate('collection_date_en', $date)
+            ->whereDate('collection_date_en', $date_chosen)
             ->get()
             ->groupBy('ancs.hp_code');
         
