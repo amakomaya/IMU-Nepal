@@ -24,3 +24,4 @@ Route::get('situation-report/ancs-report' , 'Reports\AncDetailController@sampleA
 Route::get('situation-report/lab-report' , 'Reports\AncDetailController@sampleLabReport')->name('report.sample-report.lab');
 
 Route::get('lab-report-visualization', 'Reports\AncDetailController@labVisualizationReport')->name('report.visualization');
+Route::get('regdev-data', 'Reports\AncDetailController@organizationRegdevCount')->name('report.regdev');

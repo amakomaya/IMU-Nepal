@@ -239,37 +239,82 @@ class AncDetailController extends Controller
         ];
     }
 
-    public function labVisualizationReport() {
-        $lab_organizations = SampleCollection::whereIn('service_for', ['1', '2'])
+    public function labVisualizationReport(Request $request) {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+
+        $lab_organizations = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
+            ->select('ancs.*', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token')
+            ->whereIn('ancs.hp_code', $hpCodes)
+            ->whereIn('service_for', ['1', '2'])
             ->whereIn('result', ['3', '4'])
             ->whereBetween('collection_date_en', [Carbon::now()->subDays(1)->toDateString(), Carbon::now()->toDateString()])
             ->get()
-            ->groupBy('hp_code');
+            ->groupBy('ancs.hp_code');
         
-        $data = [];
-        foreach($lab_organizations as $key => $lab) {
-            $pcr_postive_today = $lab->where('service_for', '1')->where('result', '3')->whereDate('collection_date_en', Carbon::now()->toDateString())->count();
-            $pcr_negative_today = $lab->where('service_for', '1')->where('result', '4')->whereDate('collection_date_en', Carbon::now()->toDateString())->count();
-            $antigen_positive_today = $lab->where('service_for', '2')->where('result', '3')->whereDate('collection_date_en', Carbon::now()->toDateString())->count();
-            $antigen_negative_today = $lab->where('service_for', '2')->where('result', '4')->whereDate('collection_date_en', Carbon::now()->toDateString())->count();
+        $mapped_data = $lab_organizations->map(function ($lab, $key) {
+            $return = [];
+            $return['key'] = $lab[0]->healthpost_name;
+            $return['healthpost_token'] = $lab[0]->healthpost_token;
+            $return['pcr_postive_today'] = $lab->where('service_for', '1')->where('result', '3')->where('collection_date_en', Carbon::now()->toDateString())->count();
+            $return['pcr_negative_today'] = $lab->where('service_for', '1')->where('result', '4')->where('collection_date_en', Carbon::now()->toDateString())->count();
+            $return['antigen_positive_today'] = $lab->where('service_for', '2')->where('result', '3')->where('collection_date_en', Carbon::now()->toDateString())->count();
+            $return['antigen_negative_today'] = $lab->where('service_for', '2')->where('result', '4')->where('collection_date_en', Carbon::now()->toDateString())->count();
 
-            $pcr_postive_yesterday = $lab->where('service_for', '1')->where('result', '3')->whereDate('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
-            $pcr_negative_yesterday = $lab->where('service_for', '1')->where('result', '4')->whereDate('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
-            $antigen_positive_yesterday = $lab->where('service_for', '2')->where('result', '3')->whereDate('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
-            $antigen_negative_yesterday = $lab->where('service_for', '2')->where('result', '4')->whereDate('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
+            $return['pcr_postive_yesterday'] = $lab->where('service_for', '1')->where('result', '3')->where('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
+            $return['pcr_negative_yesterday'] = $lab->where('service_for', '1')->where('result', '4')->where('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
+            $return['antigen_positive_yesterday'] = $lab->where('service_for', '2')->where('result', '3')->where('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
+            $return['antigen_negative_yesterday'] = $lab->where('service_for', '2')->where('result', '4')->where('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
             
-            $api_data_today = $lab->where('regdev', 'api')->whereDate('collection_date_en', Carbon::now()->toDateString())->count();
+            $api_data_today = $lab->where('regdev', 'api')->where('collection_date_en', Carbon::now()->toDateString())->count();
             if($api_data_today > 0) {
-                $api_today = 'Yes';
+                $return['api_today'] = 'Yes';
             } else {
-                $api_today = 'No';
+                $return['api_today'] = 'No';
             }
-            $api_data_yesterday = $lab->where('regdev', 'api')->whereDate('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
+            $api_data_yesterday = $lab->where('regdev', 'api')->where('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
             if($api_data_yesterday > 0) {
-                $api_yesterday = 'Yes';
+                $return['api_yesterday'] = 'Yes';
             } else {
-                $api_yesterday = 'No';
+                $return['api_yesterday'] = 'No';
             }
-        }
+
+            return $return;
+        })->values();
+
+        $data = $mapped_data;
+
+        return view('backend.sample.report.lab-visualization', compact('data'));
+
+    }
+
+    public function organizationRegdevCount(Request $request) {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        
+        $date = $request->date ?? Carbon::now()->toDateString();
+        $organizations = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
+            ->select('ancs.*', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token')
+            ->whereIn('ancs.hp_code', $hpCodes)
+            ->whereDate('collection_date_en', $date)
+            ->get()
+            ->groupBy('ancs.hp_code');
+        
+        $mapped_data = $organizations->map(function ($lab, $key) {
+            $return = [];
+            $return['key'] = $lab[0]->healthpost_name;
+            $return['healthpost_token'] = $lab[0]->healthpost_token;
+            $return['web_count'] = $lab->where('regdev', 'web')->count();
+            $return['mobile_count'] = $lab->where('regdev', 'mobile')->count();
+            $return['api_count'] = $lab->where('regdev', 'api')->count();
+            $return['excel_count'] = $lab->where('regdev', 'excel')->count();
+
+            return $return;
+        })->values();
+
+        $data = $mapped_data;
+
+        return view('backend.sample.report.regdev', compact('data'));
+
     }
 }
