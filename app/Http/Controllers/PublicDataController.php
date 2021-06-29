@@ -19,11 +19,12 @@ use Auth;
 class PublicDataController extends Controller
 {
     public function index() {
-        if(Auth::user()->role == 'province') {
-            $province_id = ProvinceInfo::where('token', Auth::user()->token)->first()->province_id;
-        }elseif(Auth::user()->role == 'main' || auth()->user()->role == 'center') {
-            $province_id = null;
-        }else {
+        $province_id = null;
+        try {
+            if(Auth::user()->role == 'province') {
+                $province_id = ProvinceInfo::where('token', Auth::user()->token)->first()->province_id;
+            }
+        }catch (\Exception $e){
             $province_id = null;
         }
         return view('public.home.index', compact('province_id'));
