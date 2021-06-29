@@ -34,8 +34,20 @@ class NewDashboardSampleDownload implements FromCollection, WithHeadings
             $date_chosen = Carbon::now()->subDays(1)->format('Y-m-d');
         }
 
-        $tokens = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', $service_for_chosen)->where('result', $result_chosen)
-            ->whereDate('created_at', $date_chosen)->active()->get()->pluck('woman_token');
+        // $data = DB::raw("
+        // SELECT women.name, women.age, genders.name as gender, women.province_id, districts.district_name, municipalities.municipality_name, women.ward, women.tole, women.emergency_contact_one, women.emergency_contact_two , ancs.token SID, ancs.created_at, ancs.reporting_date_en FROM `ancs` LEFT JOIN women on women.token = ancs.woman_token LEFT JOIN districts ON women.district_id = districts.id LEFT JOIN municipalities on women.municipality_id = municipalities.id LEFT JOIN genders on women.sex = genders.id LEFT JOIN healthposts h on h.hp_code = ancs.hp_code WHERE ((ancs.created_at like '2021-06-29%' and ancs.received_date_en is null) or ancs.reporting_date_en LIKE '2021-06-29%') and ancs.service_for = 2 AND ancs.result = 4 AND ancs.status = 1 and women.name is not null ORDER BY `ancs`.`created_at` ASC
+        // ")
+
+        $tokens = SampleCollection::whereIn('hp_code', $hpCodes)
+            ->where('service_for', $service_for_chosen)->where('result', $result_chosen)
+            ->where(function($q) use($date_chosen){
+                $q->where(function($q2) use($date_chosen) {
+                    $q2->whereDate('created_at', $date_chosen)
+                    ->whereNull('received_date_en');
+                })->orWhereDate('reporting_date_en', $date_chosen);
+            })
+            ->active()->get()->pluck('woman_token');
+            
 
         $data = SuspectedCase::whereIn('token', $tokens)->with('district', 'municipality', 'latestAnc')->get();
 

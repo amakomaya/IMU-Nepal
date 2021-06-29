@@ -231,15 +231,49 @@ class DashboardController extends Controller
             }
         }
 
-        $antigen_positive = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '2')->where('result', '3')
-            ->whereDate('created_at', $date_chosen)->active()->groupBy('woman_token')->get()->count();
-        $antigen_negative = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '2')->where('result', '4')
-            ->whereDate('created_at', $date_chosen)->active()->groupBy('woman_token')->get()->count();
+        $antigen_positive = SampleCollection::whereIn('hp_code', $hpCodes)
+            ->where('service_for', '2')->where('result', '3')
+            ->where(function($q) use($date_chosen){
+                $q->where(function($q2) use($date_chosen) {
+                    $q2->whereDate('created_at', $date_chosen)
+                    ->whereNull('received_date_en');
+                })->orWhereDate('reporting_date_en', $date_chosen);
+            })
+            ->active()->groupBy('woman_token')
+            ->get()->count();
+            
+        $antigen_negative = SampleCollection::whereIn('hp_code', $hpCodes)
+            ->where('service_for', '2')->where('result', '4')
+            ->where(function($q) use($date_chosen){
+                $q->where(function($q2) use($date_chosen) {
+                    $q2->whereDate('created_at', $date_chosen)
+                    ->whereNull('received_date_en');
+                })->orWhereDate('reporting_date_en', $date_chosen);
+            })
+            ->active()->groupBy('woman_token')
+            ->get()->count();
 
-        $pcr_positive = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '1')->where('result', '3')
-            ->whereDate('created_at', $date_chosen)->active()->groupBy('woman_token')->get()->count();
-        $pcr_negative = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '1')->where('result', '4')
-            ->whereDate('created_at', $date_chosen)->active()->groupBy('woman_token')->get()->count();
+        $pcr_positive = SampleCollection::whereIn('hp_code', $hpCodes)
+            ->where('service_for', '1')->where('result', '3')
+            ->where(function($q) use($date_chosen){
+                $q->where(function($q2) use($date_chosen) {
+                    $q2->whereDate('created_at', $date_chosen)
+                    ->whereNull('received_date_en');
+                })->orWhereDate('reporting_date_en', $date_chosen);
+            })
+            ->active()->groupBy('woman_token')
+            ->get()->count();
+
+        $pcr_negative = SampleCollection::whereIn('hp_code', $hpCodes)
+            ->where('service_for', '1')->where('result', '4')
+            ->where(function($q) use($date_chosen){
+                $q->where(function($q2) use($date_chosen) {
+                    $q2->whereDate('created_at', $date_chosen)
+                    ->whereNull('received_date_en');
+                })->orWhereDate('reporting_date_en', $date_chosen);
+            })
+            ->active()->groupBy('woman_token')
+            ->get()->count();
 
         $hospital_admission = PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
             ->select('payment_cases.*', 'healthposts.hospital_type')
