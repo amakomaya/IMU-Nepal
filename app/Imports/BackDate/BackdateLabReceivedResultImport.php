@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Imports;
+namespace App\Imports\BackDate;
 
 use Carbon\Carbon;
 use App\Models\LabTest;
@@ -22,7 +22,7 @@ use Maatwebsite\Excel\Validators\Failure;
 
 use App\User;
 
-class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
+class BackdateLabReceivedResultImport implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
 {
     use Importable, RemembersRowNumber;
 
@@ -38,8 +38,10 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
         $this->hpCode = $hpCode;
         $this->organizationType = \App\Models\Organization::where('hp_code', $hpCode)->first()->hospital_type;
         $this->enums = [
-          'result' => array('positive' => '3', 'negative' => '4')
+          'result' => array('positive' => '3', 'negative' => '4', "don't know"=>'5')
         ];
+        $this->todayDateEn = Carbon::now();
+        $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();
     }
     
     public function registerEvents(): array
@@ -56,12 +58,10 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
         if(!array_filter($row)) { return null;} //Ignore empty rows.
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
-        $date_en = Carbon::now();
-        $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
         $sId = $row['sid'];
         $labId = $row['patient_lab_id'];
         $labResult = $row['result'];
-        $sampleTestTime = $date_en->format('g : i A');
+        $sampleTestTime = $this->todayDateEn->format('g : i A');
         $ancs = $this->getAncsBySid($sId);
         if(!$ancs) {
           $error = ['sid' => 'The patient with the given Sample ID couldnot be found. Please create the data of the patient & try again.'];
@@ -81,20 +81,23 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
             );
             return;
           }
+          $backDateEn = $row['date_of_resultyyyy_mm_dd_ad'];
+          list($bdYearEn, $bdMonthEn, $bdDayEn) = explode('-', $backDateEn);
+          $backDateNp = Calendar::eng_to_nep($bdYearEn,$bdMonthEn,$bdDayEn)->getYearMonthDay();
           //check if sid exists
           try {
             LabTest::create([
               'token' => $this->userToken.'-'.$labId,
               'hp_code' => $this->hpCode,
               'status' => 1,
-              'sample_recv_date' =>  $date_np,
-              'sample_test_date' => $date_np,
+              'sample_recv_date' =>  $backDateNp,
+              'sample_test_date' => $backDateNp,
               'sample_test_time' => $sampleTestTime,
               'sample_test_result' => $labResult,
               'checked_by' => $this->userToken,
               'checked_by_name' => $this->healthWorker->name,
               'sample_token' => $sId,
-              'regdev' => 'excel'
+              'regdev' => 'excel-bd'
             ]);
           } catch (\Illuminate\Database\QueryException $e) {
             $error = ['sid' => 'The test with the given Sample ID/Patient Lab ID already exists in the system.'];
@@ -106,7 +109,17 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
             return;
           }
           $ancs->update([
-            'result' => $labResult
+              'result' => $labResult,
+              'sample_test_date_en' => $backDateEn,
+              'sample_test_date_np' => $backDateNp,
+              'sample_test_time' => $sampleTestTime,
+              'received_by' => $this->userToken,
+              'received_by_hp_code' => $this->hpCode,
+              'received_date_en' => $backDateEn,
+              'received_date_np' => $backDateNp,
+              'lab_token' => $this->userToken.'-'.$labId,
+              'reporting_date_en' => $this->todayDateEn,
+              'reporting_date_np' => $this->todayDateNp
           ]);
         }
         return;
@@ -121,7 +134,7 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
     }
   
     private function filterEmptyRow($data) {
-      $required_row = ['result', 'patient_lab_id', 'sid']; //added to solve teplate throwing wierd default values
+      $required_row = ['result', 'patient_lab_id', 'sid', 'date_of_resultyyyy_mm_dd_ad']; //added to solve teplate throwing wierd default values
       $unset = true;
       foreach($data as $key=>$col){
         if($col && in_array($key, $required_row)) {
@@ -174,7 +187,12 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
               if ($value === '' || $value === null) {
                 $onFailure('Invalid Result');
               }
-            }
+            },
+            'date_of_resultyyyy_mm_dd_ad'  => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Invalid Lab Result Date');
+              }
+            },
          ];
     }
 

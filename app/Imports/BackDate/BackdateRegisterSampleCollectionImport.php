@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Imports;
+namespace App\Imports\Backdate;
 
 use Carbon\Carbon;
 use App\Models\SampleCollection;
@@ -24,7 +24,7 @@ use Maatwebsite\Excel\Validators\Failure;
 
 use App\User;
 
-class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
+class BackdateRegisterSampleCollectionImport implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
 {
     use Importable, RemembersRowNumber;
 
@@ -67,6 +67,8 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
           'district' => $districts,
           'municipality' => $municipalities,
         );
+        $this->todayDateEn = Carbon::now();
+        $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();
     }
     
     public function registerEvents(): array
@@ -83,9 +85,9 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
         if(!array_filter($row)) { return null;} //Ignore empty rows.
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
-        $date_en = Carbon::now();
-        $date_np = Calendar::eng_to_nep($date_en->year,$date_en->month,$date_en->day)->getYearMonthDay();
-
+        $backDateEn = $row['date_of_sample_collectionyyyy_mm_dd_ad'];
+        list($bdYearEn, $bdMonthEn, $bdDayEn) = explode('-', $backDateEn);
+        $backDateNp = Calendar::eng_to_nep($bdYearEn,$bdMonthEn,$bdDayEn)->getYearMonthDay();
         $suspectedCase = SuspectedCase::create([
           'name' => $row['person_name'],
           'age' => $row['age'],
@@ -98,7 +100,7 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
           'ward' => $row['ward'],
           'caste' => $row['ethnicity'],
           'created_by' => $this->userToken,
-          'registered_device' => 'excel',
+          'registered_device' => 'excel-bd',
           'status' => 1,
           'token' => 'e-' . md5(microtime(true) . mt_Rand()),
           'sex' => $row['gender'],
@@ -107,7 +109,9 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
           'swab_collection_conformation' => '1',
           'cases' => '0',
           'case_type' => '1',
-          'case_id' => $this->healthWorker->id . '-' . bin2hex(random_bytes(3))
+          'case_id' => $this->healthWorker->id . '-' . bin2hex(random_bytes(3)),
+          'register_date_en' => $backDateEn,
+          'register_date_np' => $backDateNp
         ]);
         $sampleCollectionData = [
           'service_for' => $row['test_type'],
@@ -118,9 +122,11 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
           'sample_identification_type' => 'unique_id',
           'service_type' => $row['service_type'],
           'result' => 2,
-          'regdev' => 'excel',
+          'regdev' => 'excel-bd',
           'woman_token' => $suspectedCase->token,
           'infection_type' => $row['infection_type'],
+          'collection_date_en' => $backDateEn,
+          'collection_date_np' => $backDateNp
         ];
         $id = $this->healthWorker->id;
         $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber)->format('H:i:s'));
@@ -138,7 +144,7 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
     }
   
     private function filterEmptyRow($data) {
-      $required_row = ['test_type', 'sample_type', 'age_unit', 'gender', 'ethnicity', 'province' , 'district', 'municipality', 'service_type', 'infection_type']; //added to solve teplate throwing wierd default values
+      $required_row = ['test_type', 'sample_type', 'age_unit', 'gender', 'ethnicity', 'province' , 'district', 'municipality', 'service_type', 'infection_type', 'date_of_sample_collectionyyyy_mm_dd_ad']; //added to solve teplate throwing wierd default values
       $unset = true;
       foreach($data as $key=>$col){
         if($col && in_array($key, $required_row)) {
@@ -237,6 +243,11 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
             'infection_type' => function($attribute, $value, $onFailure) {
               if ($value === '' || $value === null) {
                    $onFailure('Invalid Infection Type');
+              }
+            },
+            'date_of_sample_collectionyyyy_mm_dd_ad'  => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Invalid Swab Collection Date');
               }
             }
         ];

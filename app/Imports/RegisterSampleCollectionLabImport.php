@@ -68,7 +68,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'province' => $provinces,
           'district' => $districts,
           'municipality' => $municipalities,
-          'result' => array('positive' => '3', 'negative' => '4')
+          'result' => array('positive' => '3', 'negative' => '4', "don't know"=>'5')
         );
         $this->todayDateEn = Carbon::now();
         $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();

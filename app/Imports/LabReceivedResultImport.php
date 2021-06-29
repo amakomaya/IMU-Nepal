@@ -38,7 +38,7 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
         $this->hpCode = $hpCode;
         $this->organizationType = \App\Models\Organization::where('hp_code', $hpCode)->first()->hospital_type;
         $this->enums = [
-          'result' => array('positive' => '3', 'negative' => '4')
+          'result' => array('positive' => '3', 'negative' => '4', "don't know"=>'5')
         ];
         $this->todayDateEn = Carbon::now();
         $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();
