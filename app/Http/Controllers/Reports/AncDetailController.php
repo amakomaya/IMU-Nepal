@@ -250,7 +250,9 @@ class AncDetailController extends Controller
             ->whereIn('result', ['3', '4'])
             ->whereBetween('collection_date_en', [Carbon::now()->subDays(1)->toDateString(), Carbon::now()->toDateString()])
             ->get()
-            ->groupBy('ancs.hp_code');
+            ->groupBy('hp_code');
+
+            // dd($lab_organizations);
         
         $mapped_data = $lab_organizations->map(function ($lab, $key) {
             $return = [];
@@ -311,14 +313,12 @@ class AncDetailController extends Controller
             }
         }
 
-        // dd($date_chosen);
-
         $organizations = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
             ->select('ancs.*', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token')
             ->whereIn('ancs.hp_code', $hpCodes)
             ->whereDate('collection_date_en', $date_chosen)
             ->get()
-            ->groupBy('ancs.hp_code');
+            ->groupBy('hp_code');
         
         $mapped_data = $organizations->map(function ($lab, $key) {
             $return = [];
