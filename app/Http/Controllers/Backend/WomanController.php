@@ -420,19 +420,12 @@ class WomanController extends Controller
         $row['token'] = md5(microtime(true) . mt_Rand());
         $row['status'] = 1;
         $row['created_by'] = auth()->user()->token;
-        // if($request->symptoms_recent == 1) {
-            $row['symptoms_comorbidity'] = [];
-            if($request->symptoms_comorbidity_trimester) {
-                array_push($row['symptoms_comorbidity'], $request->symptoms_comorbidity_trimester);
-            }
-            $row['symptoms'] = isset($row['symptoms']) ? "[" . implode(', ', $row['symptoms']) . "]" : "[]";
-            $row['symptoms_comorbidity'] = isset($row['symptoms_comorbidity']) ? "[" . implode(', ', $row['symptoms_comorbidity']) . "]" : "[]";
-        // } else {
-        //     $row['symptoms'] = "[]";
-        //     $row['symptoms_specific'] = "";
-        //     $row['symptoms_comorbidity'] = "[]";
-        //     $row['symptoms_comorbidity_specific'] = "";
-        // }
+        $row['symptoms_comorbidity'] = [];
+        if($request->symptoms_comorbidity_trimester) {
+            array_push($row['symptoms_comorbidity'], $request->symptoms_comorbidity_trimester);
+        }
+        $row['symptoms'] = isset($row['symptoms']) ? "[" . implode(', ', $row['symptoms']) . "]" : "[]";
+        $row['symptoms_comorbidity'] = isset($row['symptoms_comorbidity']) ? "[" . implode(', ', $row['symptoms_comorbidity']) . "]" : "[]";
         $row['travelled_where'] = "[" . $request->travelled_where ."]";
         $row['hp_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
         $row['cases'] = '0';
@@ -451,6 +444,10 @@ class WomanController extends Controller
 
 
         if($request->case_type == '3') {
+            $row['register_date_np'] = $request->register_date_np;
+            $register_np_array = explode("-", $request->register_date_np);
+            $row['register_date_en'] = Calendar::nep_to_eng($register_np_array[0], $register_np_array[1], $register_np_array[2])->getYearMonthDayNepToEng();
+            
             $row['travelled_where'] = "[" . $request->travelled_where . ", " . $request->travelled_city ."]";
 
             $contact_relationship = $request->contact_relationship ?? '5';
@@ -458,7 +455,7 @@ class WomanController extends Controller
 
             $malaria_test_status = $request->malaria_test_status ?? '0';
             $malaria_result = $request->malaria_result ?? '0';
-            $row['malaria'] = "[" . $malaria_test_status . ", " . $malaria_result .", " . $request->malaraia_isolation . "]";
+            $row['malaria'] = "[" . $malaria_test_status . ", " . $malaria_result . "]";
 
             $symptoms_recent = $request->symptoms_recent ?? '0';
             $antigen_test_status = $request->antigen_test_status ?? '0';
@@ -573,7 +570,7 @@ class WomanController extends Controller
 
         }
         if ($row['service_for'] === '1')
-            $row['sample_type'] = "[" . implode(', ', $row['sample_type']) . "]";
+            $row['sample_type'] = $request->sample_type ? "[" . implode(', ', $request->sample_type) . "]" : "[]";
         SampleCollection::create($row);
         $request->session()->flash('message', 'Data Inserted successfully');
         return redirect()->route('woman.create');

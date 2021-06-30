@@ -72,6 +72,14 @@
                                            class="form-text text-danger">{{ $errors->first('symptoms_recent') }}</small>
                                 @endif
                             </div>
+                            <div class="form-group {{ $errors->has('register_date_np') ? 'has-error' : '' }}">
+                                <label for="register_date_np">Date of persons entering Nepal through land-crossings (LC)/Point of Entry (POE)</label>
+                                <input type="text" id="register_date_np" class="form-control" value="{{ old('register_date_np') }}" name="register_date_np"
+                                       aria-describedby="help" placeholder="Enter Date of POE" readonly>
+                                @if ($errors->has('register_date_np'))
+                                    <small id="help" class="form-text text-danger">{{ $errors->first('register_date_np') }}</small>
+                                @endif
+                            </div>
                             <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
                                 <label for="name">Full Name</label>
                                 <input type="text" id="name" class="form-control" value="{{ old('name') }}" name="name"
@@ -162,11 +170,19 @@
                                 @endif
                             </div>
                             <div class="form-group {{ $errors->has('id_card_detail') ? 'has-error' : '' }}">
-                                <label for="id_card_detail">Passport/Nationality No</label>
+                                <label for="id_card_detail">Citizenship/Passport/Voter's ID Card</label>
                                 <input type="text" id="id_card_detail" class="form-control" value="{{ old('id_card_detail') }}" name="id_card_detail"
-                                       aria-describedby="help" placeholder="Enter Passport/Nationality No">
+                                       aria-describedby="help" placeholder="Enter Citizenship/Passport/Voter's ID Card">
                                 @if ($errors->has('id_card_detail'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('id_card_detail') }}</small>
+                                @endif
+                            </div>
+                            <div class="form-group {{ $errors->has('id_card_issue') ? 'has-error' : '' }}">
+                                <label for="id_card_issue">Country/District of Issue (Citizenship/Passport)</label>
+                                <input type="text" id="id_card_issue" class="form-control" value="{{ old('id_card_issue') }}" name="id_card_issue"
+                                       aria-describedby="help" placeholder="Enter Country/District of Issue (Citizenship/Passport)">
+                                @if ($errors->has('id_card_issue'))
+                                    <small id="help" class="form-text text-danger">{{ $errors->first('id_card_issue') }}</small>
                                 @endif
                             </div>
                             <div class="form-group {{ $errors->has('travelled_where') ? 'has-error' : '' }}">
@@ -191,9 +207,9 @@
                                 @endif
                             </div>
                             <div class="form-group {{ $errors->has('travelled_date') ? 'has-error' : '' }}">
-                                <label for="travelled_date">Travel Date</label>
+                                <label for="travelled_date">Date of Travel</label>
                                 <input type="text" id="travelled_date" class="form-control" value="{{ old('travelled_date') }}" name="travelled_date"
-                                       aria-describedby="help" placeholder="Enter Travel Date">
+                                       aria-describedby="help" placeholder="Enter Date of Travel" readonly>
                                 @if ($errors->has('travelled_date'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('travelled_date') }}</small>
                                 @endif
@@ -294,7 +310,7 @@
                                 @endif
                             </div>
                             <div class="form-group {{ $errors->has('nearest_contact') ? 'has-error' : '' }}">
-                                <label for="name">Nearest Contact person in Nepal</label>
+                                <label for="name">Nearest Contact person in Nepal (Full Name)</label>
                                 <input type="text" class="form-control" value="{{ old('nearest_contact') }}"
                                        name="nearest_contact" aria-describedby="help"
                                        placeholder="Nearest Contact person in Nepal"
@@ -332,17 +348,17 @@
                                 @endif
                             </div>
 
-                            <div class="asymptomatic">
-                                <div class="form-group {{ $errors->has('temperature') ? 'has-error' : '' }}">
-                                    <label for="name">Body Temperature (In Fahrenheit)</label>
-                                    <input type="number" class="form-control" value="{{ old('temperature') }}"
+                            <div class="form-group {{ $errors->has('temperature') ? 'has-error' : '' }}">
+                                <label for="name">Body Temperature (In Fahrenheit)</label>
+                                <input type="number" class="form-control" value="{{ old('temperature') }}"
                                            name="temperature" aria-describedby="help"
                                            placeholder="Body Temperature (In Fahrenheit)">
                                     @if ($errors->has('temperature'))
-                                        <small id="help"
-                                               class="form-text text-danger">{{ $errors->first('temperature') }}</small>
+                                    <small id="help"
+                                    class="form-text text-danger">{{ $errors->first('temperature') }}</small>
                                     @endif
                                 </div>
+                            <div class="asymptomatic">
                                 <div class="form-group {{ $errors->has('fever') ? 'has-error' : '' }}">
                                     <label for="name">Fever (>38 C/100.4F)</label>
                                     <div class="control-group">
@@ -364,7 +380,7 @@
                                 </div>
                                 
                                 <div class="form-group fever-status {{ $errors->has('malaria') ? 'has-error' : '' }}">
-                                    <label for="name">Malaria test done ?</label>
+                                    <label for="name">RDT-Malaria Test performed?</label>
                                     <div class="control-group">
                                         <label class="radio-inline">
                                             <input type="radio"
@@ -403,19 +419,8 @@
                                     @endif
                                 </div>
                                 
-                                <div class="form-group malaria-result-status {{ $errors->has('malaraia_isolation') ? 'has-error' : '' }}">
-                                    <label for="name">Isolation Center Referred To</label>
-                                    <input type="text" class="form-control" value="{{ old('malaraia_isolation') }}"
-                                        name="malaraia_isolation" aria-describedby="help"
-                                        placeholder="Isolation Center Referred To (Malaria)">
-                                    @if ($errors->has('malaraia_isolation'))
-                                        <small id="help"
-                                            class="form-text text-danger">{{ $errors->first('malaraia_isolation') }}</small>
-                                    @endif
-                                </div>
-                                
                                 <div class="form-group fever-status {{ $errors->has('antigen_test_status') ? 'has-error' : '' }}">
-                                    <label for="name">Covid-19 Antigen Test Done ?</label>
+                                    <label for="name">Antigen Test for Covid-19 swab collected ?</label>
                                     <div class="control-group">
                                         <label class="radio-inline">
                                             <input type="radio"
@@ -666,6 +671,9 @@
 @section('script')
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
     <script type="text/javascript">
+        // import DataConverter from "ad-bs-converter";
+        // console.log(NepaliFunctions.GetCurrentBsDate())
+
         $(':radio[data-rel]').change(function () {
             var rel = $("." + $(this).data('rel'));
             if ($(this).val() == 'yes') {
@@ -784,11 +792,17 @@
             }
         }
 
+        var currentDate = NepaliFunctions.ConvertDateFormat(NepaliFunctions.GetCurrentBsDate(), "YYYY-MM-DD");
 
         $('#travelled_date').nepaliDatePicker({
             language: 'english',
+            disableAfter: currentDate,
         });
-        
+
+        $('#register_date_np').nepaliDatePicker({
+            language: 'english',
+            disableAfter: currentDate,
+        });
 
         $(function () {
             $.validator.addMethod("nameCustom", function (value, element) {
@@ -805,6 +819,9 @@
             $("form[name='createCase']").validate({
                 // Define validation rules
                 rules: {
+                    register_date_np: {
+                        required: true,
+                    },
                     name: {
                         required: true,
                         nameCustom: true
@@ -828,6 +845,9 @@
                     id_card_detail: {
                         required: true,
                         maxlength: 30,
+                    },
+                    id_card_issue: {
+                        required: true,
                     },
                     travelled_where: {
                         required: true,
@@ -875,6 +895,9 @@
                     contact_relationship: {
                         required: true,
                     },
+                    temperature: {
+                        required: true,
+                    },
                     "symptoms[]": {
                         required: function () {
                             return $(".symptoms_recent:checked").val() == "1";
@@ -883,6 +906,51 @@
                     "symptoms_comorbidity[]": {
                         required: function () {
                             return $(".symptoms_recent:checked").val() == "1";
+                        }
+                    },
+                    fever: {
+                        required: function () {
+                            return $(".symptoms_recent:checked").val() == "1";
+                        }
+                    },
+                    malaria_test_status: {
+                        required: function () {
+                            return $(".fever:checked").val() == "1";
+                        }
+                    },
+                    malaria_result: {
+                        required: function () {
+                            return $(".malaria_test_status:checked").val() == "1";
+                        }
+                    },
+                    antigen_test_status: {
+                        required: function () {
+                            return $(".fever:checked").val() == "1";
+                        }
+                    },
+                    antigen_result: {
+                        required: function () {
+                            return $(".antigen_test_status:checked").val() == "1";
+                        }
+                    },
+                    vaccination_card: {
+                        required: function () {
+                            return $(".vaccine_status:checked").val() == "1";
+                        }
+                    },
+                    vaccination_dosage_complete: {
+                        required: function () {
+                            return $(".vaccine_status:checked").val() == "1";
+                        }
+                    },
+                    vaccine_dosage_count: {
+                        required: function () {
+                            return $(".vaccine_status:checked").val() == "1";
+                        }
+                    },
+                    vaccine_dosage: {
+                        required: function () {
+                            return $(".vaccine_status:checked").val() == "1";
                         }
                     }
                 },
