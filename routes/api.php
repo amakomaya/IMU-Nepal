@@ -278,6 +278,18 @@ Route::get('/v1/client-tests', function (Request $request) {
         $response['result'] = $row->result ?? '';
         $response['infection_type'] = $row->infection_type ?? '';
         $response['service_for'] = $row->service_for ?? '';
+        $response['collection_date_en'] = $row->collection_date_en ?? '';
+        $response['collection_date_np'] = $row->collection_date_np ?? '';
+        $response['received_by'] = $row->received_by ?? '';
+        $response['received_by_hp_code'] = $row->received_by_hp_code ?? '';
+        $response['received_date_en'] = $row->received_date_en ?? '';
+        $response['received_date_np'] = $row->received_date_np ?? '';
+        $response['sample_test_date_en'] = $row->sample_test_date_en ?? '';
+        $response['sample_test_date_np'] = $row->sample_test_date_np ?? '';
+        $response['sample_test_time'] = $row->sample_test_time ?? '';
+        $response['lab_token'] = $row->lab_token ?? '';
+        $response['reporting_date_en'] = $row->reporting_date_en ?? '';
+        $response['reporting_date_np'] = $row->reporting_date_np ?? '';
         return $response;
     })->values();
     return response()->json($data);
