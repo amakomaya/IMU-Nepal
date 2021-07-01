@@ -48,7 +48,7 @@
            <button v-if="checkPermission('lab-result')" v-on:click="addResultInLab(item, removeItemOnSuccess)" title="Add Result">
              <i class = "material-icons">biotech</i> | 
           </button>
-          <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Move Patient Data">
+          <button v-if="permission == 1" v-on:click="deleteResultData(item, removeItemOnSuccess)" title="Move Patient Data">
             <i class="fa fa-trash"></i>
           </button>
         </td>
@@ -184,7 +184,7 @@ export default {
     select: function () {
       this.allSelected = false;
     },
-    sendPatientData: function (item) {
+    sendPatientData: function (item, removeItemOnSuccess) {
       this.$dlg.modal(SendPatientDataModel, {
         title: 'Do you want to send '+item.name+' \'s patients data ?',
         height : 600,
@@ -226,10 +226,10 @@ export default {
       })
     },
 
-    deletePatientData: function (item, removeItemOnSuccess) {
+    deleteResultData: function (item, removeItemOnSuccess) {
       this.$swal({
         title: "Are you sure?",
-        text: "Your data will be moved to Registered Only List.",
+        text: "Your data will be moved to Pending List.",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
@@ -239,7 +239,7 @@ export default {
         closeOnCancel: false
       }).then((result) => {
         if (result.value) {
-          axios.post('/api/v1/lab-suspected-case-delete/' + item.token)
+          axios.post('/api/v1/lab-sample-delete/' + item.latest_anc.token)
               .then((response) => {
                 if (response.data.message === 'success') {
                   removeItemOnSuccess(item);

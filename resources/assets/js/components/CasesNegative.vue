@@ -172,7 +172,7 @@
                 closeOnCancel: false
               }).then((result) => {
                 if (result.value) {
-                  axios.post('/api/v1/suspected-case-delete/' + item.token)
+                  axios.post('/api/v1/lab-sample-delete/' + item.latest_anc.token)
                       .then((response) => {
                         if (response.data.message === 'success') {
                           removeItemOnSuccess(item);

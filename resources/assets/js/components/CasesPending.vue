@@ -203,7 +203,7 @@ export default {
     deletePatientData: function (item, removeItemOnSuccess) {
       this.$swal({
         title: "Are you sure?",
-        text: "You won\'t able to to retrieve this data.",
+        text: "All swab and patient data will be deleted, you won\'t able to to retrieve this data.",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",

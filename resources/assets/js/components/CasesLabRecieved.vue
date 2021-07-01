@@ -58,7 +58,7 @@
           <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
             <i class="fa fa-hospital-o"></i> |
           </button>
-          <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Move Patient Data">
+          <button v-if="permission == 1" v-on:click="deleteResultData(item, removeItemOnSuccess)" title="Move Patient Data">
             <i class="fa fa-trash"></i>
           </button>
         </td>
@@ -196,7 +196,7 @@ export default {
       })
     },
 
-    deletePatientData: function (item, removeItemOnSuccess) {
+    deleteResultData: function (item, removeItemOnSuccess) {
       this.$swal({
         title: "Are you sure?",
         text: "Your data will be moved to Pending List.",
@@ -209,7 +209,7 @@ export default {
         closeOnCancel: false
       }).then((result) => {
         if (result.value) {
-          axios.post('/api/v1/suspected-case-delete/' + item.token)
+          axios.post('/api/v1/lab-sample-delete/' + item.latest_anc.token)
               .then((response) => {
                 if (response.data.message === 'success') {
                   removeItemOnSuccess(item);
