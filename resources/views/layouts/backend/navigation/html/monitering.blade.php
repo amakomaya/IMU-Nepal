@@ -2,7 +2,7 @@
     <a href="#">
         <i class="fa fa-desktop" aria-hidden="true"></i>
 
-        Monitering <span class="fa arrow"></span>
+        Monitoring <span class="fa arrow"></span>
     </a>
 
     <ul class="nav nav-second-level">
