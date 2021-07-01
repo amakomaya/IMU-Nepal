@@ -20,6 +20,7 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Yagiten\Nepalicalendar\Calendar;
 use Maatwebsite\Excel\Validators\ValidationException;
 use Maatwebsite\Excel\Validators\Failure;
+use Illuminate\Support\Facades\Cache;
 
 use App\User;
 
@@ -29,9 +30,15 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
     public static $importedRowCount = 0;
     public function __construct(User $importedBy, $bed_status)
     {
-        $provinceList = Province::select(['id', 'province_name'])->get();
-        $districtList = District::select(['id', 'district_name'])->get();
-        $municipalityList = Municipality::select(['id', 'municipality_name'])->get();
+        $provinceList = Cache::remember('province-list', 48*60*60, function () {
+          return Province::select(['id', 'province_name'])->get();
+        });
+        $districtList = Cache::remember('district-list', 48*60*60, function () {
+          return District::select(['id', 'district_name'])->get();
+        });
+        $municipalityList = Cache::remember('municipality-list', 48*60*60, function () {
+          return Municipality::select(['id', 'municipality_name'])->get();
+        });
         $provinces = $districts = $municipalities = [];
         $provinceList->map(function ($province) use (&$provinces) {
           $provinces[strtolower(trim($province->province_name))] = $province->id;

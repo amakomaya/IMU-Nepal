@@ -57,7 +57,7 @@
           <label class="control-label" for="register_date_np">Register Date * </label><br />
           <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-            <input id="register_date_np" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.register_date_np" value="" name="register_date_np" class="form-control date-picker-register_date_np" />
+            <input readonly id="register_date_np" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.register_date_np" value="" name="register_date_np" class="form-control date-picker-register_date_np" />
           </div>
       </div>
       <div v-else class="form-group col-lg-6" :class="{ 'has-error': $v.data.register_date_np.$error }">
@@ -159,7 +159,7 @@
           <div class="input-group"><span class="input-group-addon"><i
               class="fa fa-calendar"></i></span>
 
-              <input id="date_of_positive_np" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.date_of_positive_np" value="" name="date" class="form-control date-picker-date_of_positive_np" />
+              <input readonly id="date_of_positive_np" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.date_of_positive_np" value="" name="date" class="form-control date-picker-date_of_positive_np" />
             <!-- <v-nepalidatepicker id="date_of_positive_np" classValue="form-control" calenderType="Nepali" placeholder="Covid 19 Positive Date"
                                 format="YYYY-MM-DD" v-model.trim="data.date_of_positive_np" :yearSelect="false"
                                 :monthSelect="false"/> -->
@@ -365,7 +365,7 @@
         <label for="date_of_outcome">Date of Outcome * &nbsp;<span class="label label-info pull-right">{{ data.date_of_outcome }}</span></label>
           <div class="input-group"><span class="input-group-addon"><i
               class="fa fa-calendar"></i></span>
-              <input id="date_of_outcome" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.date_of_outcome" value="" name="date" class="form-control date-picker-date_of_outcome" />
+              <input readonly id="date_of_outcome" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.date_of_outcome" value="" name="date" class="form-control date-picker-date_of_outcome" />
             <!-- <v-nepalidatepicker id="date_of_outcome" classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD"
                                 format="YYYY-MM-DD" v-model.trim="data.date_of_outcome" :yearSelect="false"
                                 :monthSelect="false"/> -->
