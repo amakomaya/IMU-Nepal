@@ -49,7 +49,7 @@
                             @csrf
                             @method('PUT')
                             <div class="panel-body">
-                                <div class="form-group {{ $errors->has('token') ? 'has-error' : '' }}">
+                                {{-- <div class="form-group {{ $errors->has('token') ? 'has-error' : '' }}">
                                     <label for="token">Token</label>
                                     <input type="text" id="token" class="form-control" name="token"
                                            aria-describedby="help" placeholder="Enter Token" value="{{ $data->token }}"
@@ -58,7 +58,7 @@
                                         <small id="help"
                                                class="form-text text-danger">{{ $errors->first('token') }}</small>
                                     @endif
-                                </div>
+                                </div> --}}
                                 {{-- <div class="form-group {{ $errors->has('woman_token') ? 'has-error' : '' }}">
                                     <label for="woman_token">Woman Token</label>
                                     <input type="text" id="woman_token" class="form-control" name="woman_token"
@@ -155,7 +155,7 @@
                                                class="form-text text-danger">{{ $errors->first('service_type') }}</small>
                                     @endif
                                 </div>
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label class="control-label" for="result">Result</label>
                                     <select name="result" class="form-control">
                                         <option {{ $data->result == '2' ? "selected" : "" }} value="2">Pending</option>
@@ -165,7 +165,7 @@
                                         </option>
                                         <option {{ $data->result == '6' ? "selected" : "" }} value="6">Rejected</option>
                                     </select>
-                                </div>
+                                </div> --}}
 
                                 {!! rcForm::close('post') !!}
                             </div>

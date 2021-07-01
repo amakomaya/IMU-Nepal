@@ -462,7 +462,7 @@
                                             <th title="Sample Unique ID">SID</th>
                                             <th title="Test Type">Test Type</th>
                                             <th title="Service Type">Service Type</th>
-                                            <th title="Sample Collected Date">Date</th>
+                                            <th title="Sample Collected Date">Swab Collection Date</th>
                                             <th title="Sample Result">Result</th>
                                             <th><i class="fa fa-cogs" aria-hidden="true"></i>
                                             </th>
@@ -488,7 +488,7 @@
                                                         Free of cost service
                                                     @endif
                                                 </td>
-                                                <td>{{$sample->created_at}}</td>
+                                                <td>{{$sample->collection_date_np}}</td>
                                                 <td>
                                                     @if($sample->result === '2')
                                                         Pending

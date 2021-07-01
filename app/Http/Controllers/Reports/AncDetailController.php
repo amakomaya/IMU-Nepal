@@ -90,7 +90,7 @@ class AncDetailController extends Controller
         
 
         $sample = SampleCollection::find($id);
-        $sample->token = $request->get('token');
+        // $sample->token = $request->get('token');
         // $sample->woman_token = $request->get('woman_token');
         $sample->service_for = $request->get('service_for');
         $sample->sample_type = $request->get('sample_type') ? "[".implode(', ', $request->get('sample_type'))."]" : "[]";
@@ -100,6 +100,10 @@ class AncDetailController extends Controller
         $sample->result = $request->get('result');
 
         $sample->save();
+
+        LabTest::where('sample_token', $id)->update([
+            'result' => $request->get('result')
+        ]);
         $request->session()->flash('message', 'Data Updated successfully');
 
         // return view('backend.woman.index');
