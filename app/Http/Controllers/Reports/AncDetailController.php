@@ -81,14 +81,14 @@ class AncDetailController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'token' => 'required',
+            // 'token' => 'required',
             'service_for' => 'required',
             'infection_type' => 'required',
             'service_type' => 'required',
-            'result' => 'required',
+            // 'result' => 'required',
         ]);
         
-
+        
         $sample = SampleCollection::find($id);
         // $sample->token = $request->get('token');
         // $sample->woman_token = $request->get('woman_token');
@@ -97,13 +97,14 @@ class AncDetailController extends Controller
         $sample->sample_type_specific = $request->get('sample_type_specific');
         $sample->infection_type = $request->get('infection_type');
         $sample->service_type = $request->get('service_type');
-        $sample->result = $request->get('result');
+        // $sample->result = $request->get('result');
+
 
         $sample->save();
 
-        LabTest::where('sample_token', $id)->update([
-            'result' => $request->get('result')
-        ]);
+        // LabTest::where('sample_token', $id)->update([
+        //     'sample_test_result' => $request->get('result')
+        // ]);
         $request->session()->flash('message', 'Data Updated successfully');
 
         // return view('backend.woman.index');
