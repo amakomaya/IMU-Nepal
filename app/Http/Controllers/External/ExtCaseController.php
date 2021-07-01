@@ -4,9 +4,11 @@ namespace App\Http\Controllers\External;
 
 use App\Http\Controllers\Controller;
 use App\Models\LabTest;
+use App\Models\Organization;
 use App\Models\OrganizationMember;
 use App\Models\SampleCollection;
 use App\Models\SuspectedCase;
+use App\Models\Municipality;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -121,10 +123,27 @@ class ExtCaseController extends Controller
             }
             $data = json_decode($request->getContent(), true);
             DB::beginTransaction();
+
+           
             foreach ($data as $index=>$value) {
                 $case_token = 'a-' . md5(microtime(true) . mt_Rand());
                 if(empty($value['registered_at'])){
                     $value['registered_at'] = $value['sample_collected_date'];
+                }
+                if(!is_numeric($value['municipality_id']) || ((int)$value['municipality_id']<1 || (int)$value['municipality_id']>754) ) {
+                  //Put default id
+
+                  $organization = Organization::where('hp_code', $healthworker->hp_code)->get()->first();
+                  $value['province_id'] = $organization->province_id;
+                  $value['district_id'] = $organization->district_id;
+                  $value['municipality_id'] = $organization->municipality_id;
+                  //DB::rollback();
+                  // return response()->json(['message' => 'The data couldnot be uploaded due to following errors: Invalid Municipality ID. Error at index:'.$index ]);
+                } else {
+                  $municipality = Municipality::where('id', $value['municipality_id'])->get()->first();
+                  // dd($municipality);
+                  $value['province_id'] = $municipality->province_id;
+                  $value['district_id'] = $municipality->district_id;
                 }
                 $case = [
                     'token' => $case_token,
@@ -139,8 +158,8 @@ class ExtCaseController extends Controller
                     'ward' => $value['ward'],
                     'tole' => $value['tole'],
                     'emergency_contact_one' => $value['emergency_contact_one'],
-                    'travelled' => $value['travelled'],
-                    'occupation' => $value['occupation'],
+                    'travelled' => $value['travelled']??'0',
+                    'occupation' => $value['occupation']??0,
                     'status' => 1,
                     'hp_code' => $healthworker->hp_code,
                     'created_by' => $healthworker->token,
@@ -154,18 +173,15 @@ class ExtCaseController extends Controller
                 $update = false;
                 $existingSampleCollection = $existingSuspectedCase = $existingLabTest = '';
                 
-                if(!is_numeric($value['province_id']) || ((int)$value['province_id']<1 || (int)$value['province_id']>7) ) {
-                  DB::rollback();
-                  return response()->json(['message' => 'The data couldnot be uploaded due to following errors: Invalid Province ID. Error at index:'.$index ]);
-                }
-                if(!is_numeric($value['district_id']) || ((int)$value['district_id']<1 || (int)$value['district_id']>77) ) {
-                  DB::rollback();
-                  return response()->json(['message' => 'The data couldnot be uploaded due to following errors: Invalid District ID. Error at index:'.$index ]);
-                }
-                if(!is_numeric($value['municipality_id']) || ((int)$value['municipality_id']<1 || (int)$value['municipality_id']>754) ) {
-                  DB::rollback();
-                  return response()->json(['message' => 'The data couldnot be uploaded due to following errors: Invalid Municipality ID. Error at index:'.$index ]);
-                }
+                // if(!is_numeric($value['province_id']) || ((int)$value['province_id']<1 || (int)$value['province_id']>7) ) {
+                //   DB::rollback();
+                //   return response()->json(['message' => 'The data couldnot be uploaded due to following errors: Invalid Province ID. Error at index:'.$index ]);
+                // }
+                // if(!is_numeric($value['district_id']) || ((int)$value['district_id']<1 || (int)$value['district_id']>77) ) {
+                //   DB::rollback();
+                //   return response()->json(['message' => 'The data couldnot be uploaded due to following errors: Invalid District ID. Error at index:'.$index ]);
+                // }
+                
                 if(!in_array(strval($value['lab_result']), ['3', '4'])) {
                   DB::rollback();
                   return response()->json(['message' => 'The data couldnot be uploaded due to following errors: Invalid Lab Result. Need value 3 For Positive, 4 For Negative. Error at index:'.$index ]);
@@ -213,7 +229,7 @@ class ExtCaseController extends Controller
 
                 $reporting_date_en = explode("-", Carbon::now()->toDateString());
                 $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
-
+                
                 $sample = [
                     'token' => $swab_id,
                     'woman_token' => $case_token,
