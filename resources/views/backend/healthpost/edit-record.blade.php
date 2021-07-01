@@ -281,7 +281,7 @@
                                 @php($list = (new \App\Models\Organization())->array_organization_type)
                                 <div class="col-md-7">
                                     <select id="status" class="form-control" name="hospital_type" >
-                                        <option value=""> Organization Type</option>
+                                        <option value="">Select Organization Type</option>
                                         @foreach ($list as $key => $value )
                                             <option value="{{ $key }}" @if($data->hospital_type=="$key") {{ 'selected' }} @endif >
                                                 {{ $value }}
@@ -293,6 +293,24 @@
                                         <span class="help-block">
                                                 <strong>{{ $errors->first('hospital_type') }}</strong>
                                             </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group{{ $errors->has('sector') ? ' has-error' : '' }}">
+                                <label for="status" class="col-md-3 control-label"><i data-toggle="tooltip" class="fa fa-info-circle" aria-hidden="true"></i>
+                                    Organization Sector</label>
+                                <div class="col-md-7">
+                                    <select id="sector" class="form-control" name="sector" >
+                                        <option value="">Select Organization Sector</option>
+                                        <option value="1" @if(isset($data->sector) && $data->sector == "1") {{ 'selected' }} @endif>Public</option>
+                                        <option value="2" @if(isset($data->sector) && $data->sector == "2") {{ 'selected' }} @endif>Private</option>
+                                    </select>
+
+                                    @if ($errors->has('sector'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('sector') }}</strong>
+                                        </span>
                                     @endif
                                 </div>
                             </div>
@@ -317,7 +335,7 @@
                                 @php($list = [1=>'Active',0=>'Inative'])
                                 <div class="col-md-7">
                                     <select id="status" class="form-control" name="status" >
-                                        <option value=""> Status</option>
+                                        <option value="">Select Status</option>
                                         @foreach ($list as $key => $value )
                                             <option value="{{ $key }}" @if($data->status=="$key")               {{ 'selected' }} @endif >
                                                 {{ $value }}

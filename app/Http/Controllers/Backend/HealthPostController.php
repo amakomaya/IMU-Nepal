@@ -100,6 +100,7 @@ class HealthPostController extends Controller
             'no_of_hdu' => $request->get('no_of_hdu'),
             'daily_consumption_of_oxygen' => $request->get('daily_consumption_of_oxygen'),
             'hospital_type' => $request->get('hospital_type'),
+            'sector' => $request->get('sector'),
             'vaccination_center_id' => 0
         ]);
 
@@ -183,6 +184,7 @@ class HealthPostController extends Controller
             'no_of_ventilators' => $request->get('no_of_ventilators'),
             'no_of_icu' => $request->get('no_of_icu'),
             'hospital_type' => $request->get('hospital_type'),
+            'sector' => $request->get('sector'),
             'vaccination_center_id' => $request->get('vaccination_center_id'),
             'no_of_hdu' => $request->get('no_of_hdu'),
             'daily_consumption_of_oxygen' => $request->get('daily_consumption_of_oxygen'),

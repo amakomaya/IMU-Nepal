@@ -379,7 +379,7 @@ input:focus ~ div{
                                     @php($list = (new \App\Models\Organization())->array_organization_type)
                                     <div class="col-md-7">
                                         <select id="status" class="form-control" name="hospital_type" >
-                                            <option value="" hidden> Organization Type</option>
+                                            <option value="" hidden>Select Organization Type</option>
                                             @foreach ($list as $key => $value )
                                                 <option value="{{ $key }}" @if($hospital_type=="$key") {{ 'selected' }} @endif >
                                                     {{ $value }}
@@ -394,13 +394,32 @@ input:focus ~ div{
                                         @endif
                                     </div>
                                 </div>
+
+                                <div class="form-group{{ $errors->has('sector') ? ' has-error' : '' }}">
+                                    <label for="status" class="col-md-3 control-label"><i data-toggle="tooltip" class="fa fa-info-circle" aria-hidden="true"></i>
+                                        Organization Sector</label>
+                                    <div class="col-md-7">
+                                        <select id="sector" class="form-control" name="sector" >
+                                            <option value="">Select Organization Sector</option>
+                                            <option value="1" @if(isset($data->sector) && $data->sector == "1") {{ 'selected' }} @endif>Public</option>
+                                            <option value="2" @if(isset($data->sector) && $data->sector == "2") {{ 'selected' }} @endif>Private</option>
+                                        </select>
+
+                                        @if ($errors->has('sector'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('sector') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+
                 				<div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
                                     <label for="status" class="col-md-3 control-label"><i data-toggle="tooltip" title="स्थिति छान्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i>
                                     {{trans('create.status')}}</label>
                                     @php($list = [1=>'Active',0=>'Inative'])
                                     <div class="col-md-7"> 
                                     <select id="status" class="form-control" name="status" >
-                                            <option value=""> Status</option> 
+                                            <option value="">Select Status</option> 
                                                 @foreach ($list as $key => $value )
                                                 <option value="{{ $key }}" @if($status=="$key")               {{ 'selected' }} @endif >
                                                    {{ $value }}
