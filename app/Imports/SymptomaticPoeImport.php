@@ -124,7 +124,11 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
           'symptoms_recent' => $row['covid_19_symptoms'],
           'symptoms_within_four_week' => $row['covid_19_symptoms'],
           'malaria' => '['.$row['if_fever_malaria_test_done'].','.$row['malaria_test_result'].','.$row['if_malaria_positive_isolation_center_referred_to'].']',
+<<<<<<< HEAD
           // 'symptoms_specific' => '['.$row['comorbidity'].']', //TODO replace with ID
+=======
+          'symptoms_specific' => '['.$row['comorbidity'].']', //TODO replace with ID
+>>>>>>> origin/poe-bulk-v2
           'case_reason' => $row['covid_19_symptoms']?'['.$row['if_fever_covid_19_antigen_test_done'].','.$row['antigen_result'].','.$row['if_antigen_positive_isolation_center_referred_to'].']':null,
         ]);
         if($row['covid_19_symptoms']) {
