@@ -168,10 +168,6 @@ export default {
     }
   },
   methods: {
-    newLink() {
-      window.location.href = window.location.protocol + '/admin/lab-case-report-old';
-    },
-
     searchResult(token){
       this.$v.$touch()
       if (this.$v.$invalid) {
