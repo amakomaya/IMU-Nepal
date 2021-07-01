@@ -30,6 +30,12 @@ class DashboardController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
+        
+        // if($request->date_selected == 2){
+        //     $customRecDate = 'reporting_date_en';
+        // } else {
+        //     $customRecDate = 'received_date_en';
+        // }
 
         $date_from = Carbon::today()->startOfDay();
         $date_to = Carbon::now();

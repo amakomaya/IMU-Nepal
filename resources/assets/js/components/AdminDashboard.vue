@@ -1,5 +1,12 @@
 <template>
   <div class="row">
+  <!--
+  <div class="checkbox-slider checkbox-slider-admin">
+    <input type="checkbox" id="checkbox" @click="switchValue($event)">
+    <label for="checkbox" class="slider"></label>
+    <label for="checkbox">{{ title_of_switch }}</label>
+  </div>
+  -->
     <div v-if="!checkHospitalTypeForOrganization()">
       <div class="col-lg-12"
            v-if="checkHospitalTypeForSampleFeature() || checkPermission('cases-registration') || !checkDataEntryRole()">
@@ -513,7 +520,9 @@ export default {
     return {
       indeterminate: true,
       progress: 100,
-      report: []
+      report: [],
+      title_of_switch: 'Click for reporting date',
+      initialApiParam: 1,
     }
   },
   created: function () {
@@ -529,6 +538,41 @@ export default {
         });
     },
   methods: {
+    // switchValue(event){
+    //   if(event.target.checked === true) {
+    //     this.initialApiParam = 2
+    //     this.title_of_switch = 'Click for default date'
+
+    //     let url = window.location.protocol + '/data/api/admin/dashboard';
+    //     axios.get(url)
+    //         .then((response) => {
+    //           this.report = response.data;
+    //         })
+    //         .catch((error) => {
+    //           console.error(error)
+    //         })
+    //         .finally(() => {
+    //         });
+        
+    //   } 
+    //   else {
+    //     this.initialApiParam = 1
+    //     this.title_of_switch = 'Click for reporting date'
+
+    //     let url = window.location.protocol + '/data/api/admin/dashboard?date_selected=' + this.initialApiParam;
+    //     axios.get(url)
+    //         .then((response) => {
+    //           this.report = response.data;
+    //         })
+    //         .catch((error) => {
+    //           console.error(error)
+    //         })
+    //         .finally(() => {
+    //         });
+
+    //   }
+
+    // },
     recordUpdatedAt: function () {
       var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
