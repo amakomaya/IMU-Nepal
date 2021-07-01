@@ -2,6 +2,7 @@
 @include('layouts.backend.navigation.html.dho')
 @include('layouts.backend.navigation.html.municipality')
 @include('layouts.backend.navigation.html.organization')
+@include('layouts.backend.navigation.html.monitering')
 @include('layouts.backend.navigation.html.active-cases')
 @include('layouts.backend.navigation.html.close-cases')
 @include('layouts.backend.navigation.html.case-result-report')
