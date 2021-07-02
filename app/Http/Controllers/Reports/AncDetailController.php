@@ -329,13 +329,10 @@ class AncDetailController extends Controller
             $return = [];
             $return['key'] = $lab[0]->healthpost_name;
             $return['healthpost_token'] = $lab[0]->healthpost_token;
-            $return['web_count'] = $lab->where(function($q){
-                $q->where('regdev', 'web')
-                    ->orWhereNull('regdev');
-            })->count();
+            $return['web_count'] = $lab->where('regdev', 'web')->count();
             $return['mobile_count'] = $lab->where('regdev', 'mobile')->count();
             $return['api_count'] = $lab->where('regdev', 'api')->count();
-            $return['excel_count'] = $lab->where('regdev', 'LIKE', '%excel%')->count();
+            $return['excel_count'] = $lab->where('regdev', 'excel')->count();
 
             return $return;
         })->values();
