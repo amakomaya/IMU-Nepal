@@ -30,7 +30,8 @@ class PaymentCase extends Model
         'name', 'age',
         'created_at',
         'register_date_en',
-        'phone'
+        'phone',
+        'date_of_outcome_en'
     ];
 
     protected $supportedRelations = ['municipality', 'organization'];
