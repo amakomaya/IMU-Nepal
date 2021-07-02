@@ -160,6 +160,9 @@ Route::resource('/admin/download-dev-apks', 'Backend\DownloadApksController');
 
 Route::resource('/admin/backup-restore', 'Backend\BackupRestoreController');
 
+Route::resource('admin/community-deaths', 'Backend\CommunityDeathController');
+
+
 if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
     // Ignores notices and reports all other kinds... and warnings
     // error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);

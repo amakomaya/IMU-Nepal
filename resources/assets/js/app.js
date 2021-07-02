@@ -66,6 +66,8 @@ import CasesPaymentDischargeList from "./components/CasesPaymentDischargeList"
 import CasesPaymentDeathList from "./components/CasesPaymentDeathList"
 import BulkUploadList from "./components/BulkUploadList";
 
+import CommunityDeathCreate from "./components/CommunityDeathCreate"
+
 
 import VueTimepicker from 'vue2-timepicker';
 import 'vue2-timepicker/dist/VueTimepicker.css';
@@ -141,6 +143,9 @@ Vue.component('cases-payment-death-list', CasesPaymentDeathList);
 Vue.component('cases-payment-create', CasesPaymentCreate);
 Vue.component('bulk-upload-list', BulkUploadList);
 Vue.component('vue-timepicker', VueTimepicker);
+
+Vue.component('community-deaths-create', CommunityDeathCreate);
+
 const app = new Vue({
     el: '#app',
     mounted:function(){
