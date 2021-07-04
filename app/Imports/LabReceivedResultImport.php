@@ -1,4 +1,5 @@
 <?php
+ini_set('max_execution_time', '300');
 
 namespace App\Imports;
 
@@ -24,6 +25,7 @@ use App\User;
 
 class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
 {
+    ini_set('max_execution_time', '300');
     use Importable, RemembersRowNumber;
 
     public static $importedRowCount = 0;

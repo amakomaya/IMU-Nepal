@@ -62,6 +62,7 @@ class LoginController extends Controller
 
         if (!empty($user)) {
             $healthworker = OrganizationMember::where('token',$user->token)->get()->first();
+            $organization = Organization::where('hp_code', $healthworker->hp_code)->first();
             $response = [
                 'id' => $healthworker->id,
                 'name'=>$healthworker->name,
@@ -73,7 +74,8 @@ class LoginController extends Controller
                 'municipality_id'=>$healthworker->municipality_id,
                 'district_id'=>$healthworker->district_id,
                 'permissions' => implode(",", $user->getAllPermissions()->pluck('name')->toArray()),
-                'vaccination_center_id' => Organization::where('hp_code', $healthworker->hp_code)->first()->vaccination_center_id
+                'organization_type' => $organization->hospital_type,
+                'vaccination_center_id' => $organization->vaccination_center_id
             ];
             $position = \Location::get();
             $detect = \Browser::detect();
