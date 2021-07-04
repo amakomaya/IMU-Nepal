@@ -30,6 +30,7 @@
 @if($h_type == 1 || $h_type == 3 || $h_type == 5 || $h_type == 6)
     @include('layouts.backend.navigation.html.cases-payment')
 @endcan
+@include('layouts.backend.navigation.html.community-deaths')
 @if(session()->get('permission_id') == 1)
 @include('layouts.backend.navigation.html.swab')
 @endif

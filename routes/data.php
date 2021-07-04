@@ -19,6 +19,8 @@ Route::get('api/cases-payment', 'Data\Api\WomenController@casesPaymentIndex');
 Route::get('api/cases-payment-discharge', 'Data\Api\WomenController@casesPaymentDischargeIndex');
 Route::get('api/cases-payment-death', 'Data\Api\WomenController@casesPaymentDeathIndex');
 
+Route::get('api/community-deaths', 'Data\Api\WomenController@communityDeathIndex');
+
 Route::get('api/lab/received-sample', 'Data\Api\WomenController@labAddReceivedIndex');
 Route::get('api/lab/add-result-negative', 'Data\Api\WomenController@labAddResultNegativeIndex');
 Route::get('api/lab/add-result-positive', 'Data\Api\WomenController@labAddResultPositiveIndex');

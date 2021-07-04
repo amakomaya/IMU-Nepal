@@ -15,6 +15,7 @@ use App\Models\LabTest;
 use App\Models\LabTestOld;
 use App\Models\SuspectedCase;
 use App\Models\SuspectedCaseOld;
+use App\Models\CommunityDeath;
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -594,6 +595,14 @@ class WomenController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
 
         $data = PaymentCase::whereIn('hp_code', $hpCodes)->where('is_death', 2)->latest()->withAll()->advancedFilter();
+        return response()->json(['collection' => $data]);
+    }
+
+    public function communityDeathIndex(Request $request){
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        
+        $data = CommunityDeath::whereIn('hp_code', $hpCodes)->latest()->withAll()->advancedFilter();
         return response()->json(['collection' => $data]);
     }
 

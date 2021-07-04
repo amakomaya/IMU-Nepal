@@ -852,7 +852,6 @@ Route::post('/v1/cases-payment', function (Request $request) {
     if($data['comorbidity']) {
       $data['comorbidity'] = '[' . implode(',', $data['comorbidity']) . ']';
     }
-    // dd($data);
     try {
         if (isset($data['id'])){
             $data = \App\Models\PaymentCase::where('id', $data['id'])->update($data);
@@ -925,6 +924,52 @@ Route::post('/v1/cases-payment/delete', function(Request $request){
     }
 });
 Route::post('/v1/bulk-case-payment', 'CasesPaymentController@bulkUpload')->name('cases.payment.bulk.upload');
+
+Route::post('/v1/community-deaths', function (Request $request) {
+    $data = $request->all();
+    if($data['comorbidity']) {
+      $data['comorbidity'] = '[' . implode(',', $data['comorbidity']) . ']';
+    }
+    try {
+        if (isset($data['id'])){
+            $data = \App\Models\CommunityDeath::where('id', $data['id'])->update($data);
+        }else{
+            $dateToday = Carbon::now(); //#TODO validate register_date_en from serverside.
+            if (auth()->user()->role == 'healthworker'){
+                $data['hp_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
+            }else{
+                $data['hp_code'] = \App\Models\Organization::where('token', auth()->user()->token)->first()->hp_code;
+            }
+            \App\Models\CommunityDeath::insert($data);
+        }
+
+    } catch (\Exception $e) {
+      dump($e);
+        return response()->json(['message' => 'error']);
+    }
+    return response()->json(['message' => 'success']);
+});
+
+Route::get('/v1/search-community-deaths-by-id', function (Request $request) {
+    $data = $request->all();
+    $response = \App\Models\CommunityDeath::where('id', $data['id'])->first();
+    return response()->json($response);
+});
+
+Route::post('/v1/community-deaths/delete', function(Request $request){
+    try{
+        $data = \App\Models\CommunityDeath::find($request->id);
+            if(!empty($data)){
+                $data->delete();
+            }else{
+                return response()->json(['message' => 'error']);
+            }
+        return response()->json(['message' => 'success']);
+    }
+    catch (\Exception $e){
+        return response()->json(['message' => 'error']);
+    }
+});
 
 Route::post('/v1/bulk-upload/submit', 'Backend\BulkUploadController@bulkFileHandle')->name('bulk.upload.submit');
 Route::get('/v1/server-date', 'Data\Api\DateController@index');

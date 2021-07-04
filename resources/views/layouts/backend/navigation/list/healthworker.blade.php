@@ -16,6 +16,7 @@
 @can('cases-payment')
     @include('layouts.backend.navigation.html.cases-payment')
 @endcan
+@include('layouts.backend.navigation.html.community-deaths')
 
 @include('layouts.backend.navigation.html.bulk-upload')
 

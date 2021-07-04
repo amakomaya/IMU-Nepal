@@ -67,6 +67,7 @@ import CasesPaymentDeathList from "./components/CasesPaymentDeathList"
 import BulkUploadList from "./components/BulkUploadList";
 
 import CommunityDeathCreate from "./components/CommunityDeathCreate"
+import CommunityDeathList from "./components/CommunityDeathList"
 
 
 import VueTimepicker from 'vue2-timepicker';
@@ -145,6 +146,7 @@ Vue.component('bulk-upload-list', BulkUploadList);
 Vue.component('vue-timepicker', VueTimepicker);
 
 Vue.component('community-deaths-create', CommunityDeathCreate);
+Vue.component('community-deaths-list', CommunityDeathList);
 
 const app = new Vue({
     el: '#app',
