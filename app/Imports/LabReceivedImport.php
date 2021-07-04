@@ -1,4 +1,5 @@
 <?php
+ini_set('max_execution_time', '300');
 
 namespace App\Imports;
 
@@ -28,6 +29,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
     public static $importedRowCount = 0;
     public function __construct(User $importedBy)
     {
+        ini_set('max_execution_time', '300');
         $userToken = auth()->user()->token;
         $healthWorker = \App\Models\OrganizationMember::where('token', $userToken)->first();
         $hpCode = $healthWorker->hp_code;

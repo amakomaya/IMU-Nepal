@@ -31,6 +31,8 @@ class AsymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidatio
     public static $importedRowCount = 0;
     public function __construct(User $importedBy)
     {
+
+        ini_set('max_execution_time', '300');
         $provinceList = Province::select(['id', 'province_name'])->get();
         $districtList = District::select(['id', 'district_name'])->get();
         $municipalityList = Municipality::select(['id', 'municipality_name'])->get();
@@ -117,7 +119,7 @@ class AsymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidatio
           'swab_collection_conformation' => '1',
           'cases' => '0',
           'case_type' => '3',
-          'case_id' => $this->healthWorker->id . '-' . bin2hex(random_bytes(3)),
+          'case_id' => $this->healthWorker->id . '-' . ctype_upper(bin2hex(random_bytes(3))),
           'register_date_en' => $this->todayDateEn,
           'register_date_np' => $this->todayDateNp,
           'symptoms_recent' => '0',

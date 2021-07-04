@@ -18,7 +18,7 @@
       <div class="inputGroupContainer">
         <div class="input-group"><span class="input-group-addon"><i
             class="fa fa-calendar"></i></span>
-          <v-nepalidatepicker classValue="form-control" calenderType="Nepali" placeholder="YYYY-MM-DD" format="YYYY-MM-DD" v-model="data.sample_test_date" :yearSelect="false" :monthSelect="false" />
+            <input readonly id="sample_test_np" type="text" placeholder="YYYY-MM-DD" v-model.trim="data.sample_test_date" value="" name="sample_test_np" class="form-control date-picker-sample_test_np" />
         </div>
       </div>
       <div class="help-block" v-if="!$v.data.sample_test_date.required">Field is required.</div>
@@ -39,7 +39,7 @@
         <label>Sample Test Result <span class="text-danger" v-if="!$v.data.sample_test_result.required"> ( * Field is required. )</span></label><br>
         <input v-model="data.sample_test_result" value="4" type="radio">Negative
         <input v-model="data.sample_test_result" value="3" type="radio" >Positive
-        <!-- <input v-model="data.sample_test_result" value="5" type="radio" checked>Don't Know -->
+        <input v-model="data.sample_test_result" value="5" type="radio" >Don't Know
       </div>
       <button class="btn btn-primary btn-sm btn-block"
               @click.prevent="submitLabIdToSampleId(data)">
@@ -61,7 +61,12 @@ export default {
   },
   data() {
     return {
-      data : {},
+      data : {
+        sample_test_result: null,
+        sample_test_date: null,
+        sample_test_time: null,
+        token: null
+      },
     }
   },
   validations: {
@@ -120,22 +125,50 @@ export default {
     },
     ad2bs: function (date) {
       var dateObject = new Date(date);
-
-      var dateFormat = dateObject.getFullYear()  + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getDate();
-
+      console.log(dateObject);
+      var dateFormat = dateObject.getFullYear()  + "/"  + (dateObject.getMonth()+1) + "/" + dateObject.getDate();
       let dateConverter = DataConverter.ad2bs(dateFormat);
+      return dateConverter.en.year+'-'+dateConverter.en.month+'-'+dateConverter.en.day;
 
-      return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
-
+    },
+    getTodayDate() {
+      axios.get('/api/v1/server-date')
+        .then((response) => {
+          let date = response.data.date;
+          this.date_today_en = date;
+          this.date_today_np = this.ad2bs(date);
+          var today = new Date();
+          
+          this.data.sample_test_date = this.ad2bs(today);
+          this.data.sample_test_time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+          this.renderDatepickerNp();
+      });
+    },
+    renderDatepickerNp(){
+      let self = this;
+      let testDateNp = this.data.sample_test_date.split('-');
+      if(testDateNp[1] && testDateNp[1].length===1) {
+        testDateNp[1] = '0'+testDateNp[1];
+      }
+      if(testDateNp[2] && testDateNp[2].length===1) {
+        testDateNp[2] = '0'+testDateNp[2];
+      }
+      $('.date-picker-sample_test_np').nepaliDatePicker({
+        language: 'english',
+        disableAfter: this.date_today_np,
+        onChange: function() {
+          self.data.sample_test_date = $('#sample_test_np').val()
+        }
+      });
     },
   },
   created(){
     if(this.item){
       this.data.token = this.item.latest_anc.labreport.token.split('-').splice(1).join('-');
     }
-    var today = new Date();
-    this.data.sample_test_date = this.ad2bs(today);
-    this.data.sample_test_time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  }
+  },
+  mounted () {
+    this.getTodayDate();
+  },
 }
 </script>
