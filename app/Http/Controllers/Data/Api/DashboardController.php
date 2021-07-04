@@ -187,6 +187,11 @@ class DashboardController extends Controller
                     ->whereBetween('sample_test_date_en', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
                     ->active()->count();
             }),
+            'todays_community_death' => Cache::remember('todays_community_death-' . auth()->user()->token, 60 * 60, function () use ($date_to, $date_from, $hpCodes) {
+                return CommunityDeath::whereIn('hp_code', $hpCodes)
+                    ->whereBetween('created_at', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
+                    ->count();
+            }),
 
             'in_lab_received' => $in_lab_received ?? 0,
             'in_lab_received_in_24_hrs' => $in_lab_received_in_24_hrs ?? 0,

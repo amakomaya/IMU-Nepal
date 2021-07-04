@@ -10,6 +10,7 @@ use App\Models\ProvinceInfo;
 use App\Models\Province;
 use App\Models\District;
 use App\Models\Municipality;
+use App\Models\CommunityDeath;
 
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
@@ -187,6 +188,11 @@ class PublicDataController extends Controller
             return $return;
         })->values();
 
-        return response()->json(['organizations' => $mapped_data_second]);
+        // $community_deaths = CommunityDeath::whereDate('created_at', Carbon::today()->toDateString())->get();
+
+        return response()->json([
+            'organizations' => $mapped_data_second
+            // 'community_deaths' => $community_deaths
+        ]);
     }
 }

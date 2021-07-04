@@ -279,6 +279,21 @@
           </div>
         </div>
 
+        {{-- <h2 id="active-title">Today's Community Death</h2>
+        <div class="public-content">
+          <div class="card community-death-card" data-toggle="modal" data-target="#community-death-modal">
+            <div class="card-body">
+              <div class="info-header">
+                <div class="icon">
+                  <i class="fa fa-frown-o" style="color: #d6ff22;"></i>
+                </div>
+                <h3>Community Death</h3>
+              </div>
+              <h1 class="info-count" id="community-death-count"></h1>
+            </div>
+          </div>
+        </div> --}}
+
         <div id="hospital-modal" class="modal fade" role="dialog">
           <div class="modal-dialog">
             <!-- Modal content-->
@@ -647,6 +662,7 @@
       renderDischargeTable();
       renderAdmissionTable();
       renderDeathTable();
+      // renderCommunityDeath();
     }
   }
 
@@ -801,6 +817,21 @@
     $('#death-count').html(totalCount);
     tableDiv.html(tableContent);
   }
+
+  // function renderCommunityDeath() {
+  //   let tableDiv = $('#community-death-modal tbody');
+  //   let tableContent = '';
+  //   let totalCount = 0;
+  //   let count = 0;
+  //   mainData.community_deaths.forEach(function(item,index){
+  //     totalCount += item.today_total_death||0;
+  //     if(item.today_total_death == 0) {} else {
+  //       tableContent += '<tr><td>'+parseInt(++count)+'</td><td>'+item.name+'</td><td>'+item.province_name+'</td><td>'+item.district_name+'</td><td>'+item.municipality_name+'</td><td>'+item.address+'</td><td>'+item.today_total_death+'</td></tr>';
+  //     }
+  //   });
+  //   $('#death-count').html(totalCount);
+  //   tableDiv.html(tableContent);
+  // }
 
   function generateActiveTitle() {
     var titleHtml;

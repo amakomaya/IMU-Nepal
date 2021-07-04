@@ -454,6 +454,32 @@
           </a>
         </div>
       </div>
+      <div v-if="checkCommunityUser()" class="col-lg-12">
+        <h3>Today's Community Death</h3>
+      </div>
+      <div v-if="checkCommunityUser()" class="col-lg-4 col-md-6">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-xs-3">
+                <i class="fa fa-frown-o fa-3x"></i>
+              </div>
+              <div class="col-xs-9 text-right">
+                <div v-if="Object.keys(report).length === 0">
+                  <loading-progress
+                      :progress="progress"
+                      :indeterminate="indeterminate"
+                      shape="line"
+                      size="30"
+                  />
+                </div>
+                <div class="huge">{{ report.todays_community_death }}</div>
+                <div>Deaths</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="col-lg-12" v-show="false">
         <h3>5 Days Trend Data</h3>
       </div>
@@ -600,6 +626,9 @@ export default {
     },
     checkHospitalTypeForOrganization() {
       return this.$hospitalType === '4';
+    },
+    checkCommunityUser(){
+      return this.$hospitalType === '1';
     },
     headingTitle(){
       // var today = new Date().toISOString().slice(0, 10);
