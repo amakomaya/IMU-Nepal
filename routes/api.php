@@ -940,6 +940,7 @@ Route::post('/v1/community-deaths', function (Request $request) {
             }else{
                 $data['hp_code'] = \App\Models\Organization::where('token', auth()->user()->token)->first()->hp_code;
             }
+            $data['created_at'] = Carbon::now()->toDateTimeString();
             \App\Models\CommunityDeath::insert($data);
         }
 
