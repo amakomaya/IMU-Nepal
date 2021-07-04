@@ -29,6 +29,7 @@ class BackdateCasesPaymentImport implements ToModel, WithChunkReading, WithValid
     public static $importedRowCount = 0;
     public function __construct(User $importedBy, $bed_status)
     {
+        ini_set('max_execution_time', '300');
         $provinceList = Cache::remember('province-list', 48*60*60, function () {
           return Province::select(['id', 'province_name'])->get();
         });

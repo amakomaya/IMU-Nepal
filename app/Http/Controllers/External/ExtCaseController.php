@@ -214,8 +214,9 @@ class ExtCaseController extends Controller
                     $update = true;
                     $swab_id = $value['imu_swab_id'];
                   } else {
-                    DB::rollback();
-                    return response()->json(['message' => 'The data couldnot be uploaded due to following errors: This IMU Swab ID was not found in IMU System. Please enter valid swab ID to update record or leave it blank to create new record. Error at index:'.$index ]);
+                    //Bypass invvalid swab id. Remove comment to restrict.
+                    // DB::rollback();
+                    // return response()->json(['message' => 'The data couldnot be uploaded due to following errors: This IMU Swab ID was not found in IMU System. Please enter valid swab ID to update record or leave it blank to create new record. Error at index:'.$index ]);
                   }
                 }
                 if(!$value['sample_type']) {

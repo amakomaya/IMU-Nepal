@@ -33,6 +33,8 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
     public static $importedRowCount = 0;
     public function __construct(User $importedBy)
     {
+
+        ini_set('max_execution_time', '300');
         $provinceList = Cache::remember('province-list', 48*60*60, function () {
           return Province::select(['id', 'province_name'])->get();
         });
@@ -121,7 +123,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'swab_collection_conformation' => '1',
           'cases' => '0',
           'case_type' => '1',
-          'case_id' => $this->healthWorker->id . '-' . bin2hex(random_bytes(3)),
+          'case_id' => $this->healthWorker->id . '-' . ctype_upper(bin2hex(random_bytes(3))),
           'register_date_en' => $this->todayDateEn,
           'register_date_np' => $this->todayDateNp
         ]);

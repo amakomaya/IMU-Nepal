@@ -297,10 +297,10 @@
                                       sort($antiRegTestPermission);
                                       $pcrRegPermission = [ "cases-registration", "sample-collection", "cases-list" ];
                                       sort($pcrRegPermission);
-                                      $pcrRegTestPermission = ["cases-registration", "sample-collection", "cases-list", "lab-received", "lab-result"];
-                                      sort($pcrRegTestPermission);
                                       $pcrLabTestPermission = ["lab-received" , "lab-result"];
                                       sort($pcrLabTestPermission);
+                                      $pcrRegTestPermission = ["cases-registration", "sample-collection", "cases-list", "lab-received", "lab-result"];
+                                      sort($pcrRegTestPermission);
                                       $poeAntigenPermission = ["cases-registration", "sample-collection", "cases-list", "lab-received", "antigen-result", "poe-registration"];
                                       sort($poeAntigenPermission);
                                       $hasAntiRegTestPermission = $hasPcrRegPermission = $hasPcrRegTestPermission = $hasPcrLabTestPermission = $hasPoeAntigenPermission = false;
@@ -332,11 +332,6 @@
                                           $hasPoeAntigenPermission = true;
                                         }
                                       }
-                                      echo($hasAntiRegTestPermission);
-                                      echo($hasPcrRegPermission);
-                                      echo($hasPcrRegTestPermission);
-                                      echo($hasPcrLabTestPermission);
-                                      echo($hasPoeAntigenPermission);
                                    ?>
                                     <div class="col-md-7 checkbox">
                                       <div class="row">
@@ -358,7 +353,7 @@
                                         </div>
                                         <div class="col-lg-12">
                                           <input type="radio" name="permission_bundle" id="pcr-lab" value=<?php echo json_encode($pcrLabTestPermission); ?>
-                                            @if($hasPcrRegTestPermission)
+                                            @if($hasPcrLabTestPermission)
                                               checked
                                             @endif
                                           />
@@ -366,7 +361,7 @@
                                         </div>
                                         <div class="col-lg-12">
                                           <input type="radio" name="permission_bundle" id="pcr-reg-test" value=<?php echo json_encode($pcrRegTestPermission); ?>
-                                            @if($hasPcrLabTestPermission)
+                                            @if($hasPcrRegTestPermission)
                                               checked
                                             @endif
                                           />

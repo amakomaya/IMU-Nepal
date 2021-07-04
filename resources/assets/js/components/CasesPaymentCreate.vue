@@ -455,7 +455,8 @@ export default {
         guardian_name: null,
         phone: null,
         date_of_outcome: '',
-        address: ''
+        address: '',
+        hospital_register_id: null
       },
       lab_id : '',
       options: [],
