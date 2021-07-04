@@ -57,7 +57,7 @@ import {required, minLength} from 'vuelidate/lib/validators'
 
 export default {
   props:{
-    item : String,
+    item : Object,
     onSuccessCallback: Function
   },
   data() {
@@ -146,8 +146,8 @@ export default {
   },
   created(){
     if(this.item){
-      this.sample_lot_id = this.item;
-      this.data.unique_id = this.item.split(/[-]+/).pop();
+      this.sample_lot_id = this.item.latest_anc.token;
+      this.data.unique_id = this.item.latest_anc.token.split(/[-]+/).pop();
     }
   }
 
