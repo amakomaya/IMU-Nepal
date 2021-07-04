@@ -16,7 +16,7 @@
         <th width="10%" title="Municipality">Municipality</th>
         <th width="4%" title="Ward No">Ward</th>
         <th width="15%">Case</th>
-        <th width="8%" title="Case Created Date">Date</th>
+        <th width="8%" title="Date">Test Date</th>
         <th width="8%" title="Sample Collection Details">Sample</th>
         <th width="8%" title="Latest Lab Result">Result</th>
         <th width="4%" title="Infection Type">Type</th>

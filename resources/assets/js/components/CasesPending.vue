@@ -16,7 +16,7 @@
               <th width="10%" title="Municipality">Municipality</th>
               <th width="4%" title="Ward No">Ward</th>
               <th width="15%">Case</th>
-              <th width="8%" title="Case Created Date">Date</th>
+              <th width="8%" title="Case Created Date">Reg. Date</th>
               <th width="10%" title="Sample Collection Details">Sample</th>
               <th width="8%" title="Latest Lab Result">Result</th>
               <th width="10%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
@@ -42,7 +42,8 @@
               <td>{{ formattedDate(item.register_date_np) }}</td>
                 <td><span class="label label-info"> {{ item.ancs.length }}</span>
                     <div v-if="item.latest_anc" title="Swab ID">
-                      SID : <strong>{{ item.latest_anc.token }}</strong> <br>
+                      SID : <strong>{{ item.latest_anc.token }}</strong> <br> <!--#TODO check latest logic-->
+                      Collected Date: {{item.latest_anc.collection_date_np}}
                       Type : {{ checkSampleType(item.latest_anc.service_for) }}
                     </div>
                 </td>
