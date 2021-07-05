@@ -513,12 +513,17 @@ class CasesPaymentController extends Controller
             ->join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
             ->leftjoin('municipalities', 'municipalities.id', '=', 'healthposts.municipality_id')
             ->leftjoin('provinces', 'provinces.id', '=', 'healthposts.province_id')
-            ->where(function($query) use ($filter_date) {
-                return $query
-                    ->whereDate('payment_cases.register_date_en', '>', $filter_date['from_date']->toDateString())
-                    ->where('payment_cases.date_of_outcome_en', '>', $filter_date['from_date']->toDateString())
-                    ->orWhere('payment_cases.date_of_outcome_en', null);
-            })->select([
+            ->whereBetween('payment_cases.register_date_en', [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
+                ->where(function($q) use ($filter_date) {
+                    $q->whereDate('payment_cases.date_of_outcome_en', '>=', $filter_date['from_date']->toDateString())
+                        ->orWhereNull('payment_cases.date_of_outcome_en');
+                    })
+            ->orwhereDate('payment_cases.register_date_en', '<=', $filter_date['from_date']->toDateString())
+                ->where(function($q2) use ($filter_date) {
+                    $q2->whereDate('payment_cases.date_of_outcome_en', '>=', $filter_date['from_date']->toDateString())
+                        ->orWhereNull('payment_cases.date_of_outcome_en');
+                })
+            ->select([
                 'payment_cases.health_condition',
                 'payment_cases.is_death',
                 'payment_cases.health_condition_update',
@@ -526,7 +531,6 @@ class CasesPaymentController extends Controller
                 'payment_cases.register_date_np',
                 'payment_cases.date_of_outcome_en',
                 'payment_cases.date_of_outcome',
-
                 'healthposts.name as healthpost_name',
                 'healthposts.id as healthpost_id',
                 'healthposts.province_id',
@@ -536,13 +540,11 @@ class CasesPaymentController extends Controller
                 'healthposts.no_of_hdu',
                 'healthposts.no_of_icu',
                 'healthposts.no_of_ventilators',
-
                 'provinces.province_name',
                 'municipalities.district_name',
                 'municipalities.municipality_name',
             ])
             ->get();
-
 
         $mapped_data = $running_period_cases->map(function ($item) use ($filter_date) {
             $return = [];
@@ -557,8 +559,10 @@ class CasesPaymentController extends Controller
             $return['no_of_ventilators'] = $item->no_of_ventilators;
 
             $return['total_general'] = $return['total_hdu'] = $return['total_icu'] = $return['total_ventilator'] = $return['death'] = $return['discharge'] = 0;
+
             if($item->is_death != null) {
-                if (Carbon::parse($item->date_of_outcome_en)->lessThan($filter_date['from_date']->toDateString())){}
+                if (Carbon::parse($item->date_of_outcome_en)->toDateString() < $filter_date['from_date']->toDateString() || 
+                Carbon::parse($item->date_of_outcome_en)->toDateString() > $filter_date['to_date']->toDateString()){}
                 else {
                     if($item->is_death == '1') {
                         $return['death'] = 1;
@@ -575,25 +579,25 @@ class CasesPaymentController extends Controller
             $array_all_condition = array_merge($arr_initial_health_condition,$array_health_condition);
 
             if(!empty($item->date_of_outcome_en)) {
-                $end_case_date = Carbon::parse($item->date_of_outcome_en);
+                $end_case_date = Carbon::parse($item->date_of_outcome_en)->toDateString();
             } else {
-                $end_case_date = Carbon::now();
+                $end_case_date = Carbon::now()->toDateString();
             }
 
             foreach ($array_all_condition as $i => $value){
-                $next_date = array_key_exists($i + 1, $array_all_condition) ? Carbon::parse($array_all_condition[$i + 1]['date']) : $end_case_date;
-                if (Carbon::parse($next_date)->lessThan($filter_date['from_date']->toDateString())){
-                    $next_date = $filter_date['from_date']->toDateString();
+                $next_date = array_key_exists($i + 1, $array_all_condition) ? Carbon::parse($array_all_condition[$i + 1]['date'])->toDateString() : $end_case_date;
+                if ($next_date > $filter_date['to_date']->toDateString()){
+                    $next_date = $filter_date['to_date']->toDateString();
                 }
 
-                if (Carbon::parse($value['date'])->lessThan($filter_date['from_date']->toDateString())){
-                    $value['date'] = $filter_date['from_date']->toDateString();
+                if (Carbon::parse($value['date'])->toDateString() > $filter_date['to_date']->toDateString()){
+                    $value['date'] = $filter_date['to_date']->toDateString();
                 }
 
                 $diff_days = Carbon::parse($value['date'])->diffInDays($next_date);
                 $difference_days = array_key_exists($i + 1, $array_all_condition) ? $diff_days : $diff_days +1;
                 if($difference_days > 0){
-                    if($value['id'] == '2') {
+                    if($value['id'] == '1' || $value['id'] == '2') {
                         $return['total_general'] += 1;
                     }
                     elseif($value['id'] == '3') {
@@ -608,15 +612,11 @@ class CasesPaymentController extends Controller
                 }
             }
             return $return;
-        })->toArray();
-        $all_data = $mapped_data;
+        })->groupBy('healthpost_id');
 
-        if(!empty($all_data)) {
-            foreach ($all_data as $element) {
-                $result[$element['healthpost_id']][] = $element;
-            }
-            
-            foreach($result as $keyn => $result_solo_aray) {
+        $final_data = [];
+        if(!empty($mapped_data)) {
+            foreach($mapped_data as $keyn => $result_solo_aray) {
                 $final_data[$keyn]['general_count'] = $final_data[$keyn]['hdu_count'] = $final_data[$keyn]['icu_count'] = $final_data[$keyn]['ventilator_count'] = $final_data[$keyn]['death_count'] = $final_data[$keyn]['discharge_count'] = 0;
                 $final_data[$keyn]['healthpost_name'] = $result_solo_aray[0]['healthpost_name'];
                 $final_data[$keyn]['healthpost_id'] = $result_solo_aray[0]['healthpost_id'];
@@ -638,9 +638,8 @@ class CasesPaymentController extends Controller
                     $final_data[$keyn]['discharge_count'] +=  $res['discharge'];
                 }
             }
-        } else {
-            $final_data = [];
         }
+
 
         return view('backend.cases.reports.situation-report', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
 

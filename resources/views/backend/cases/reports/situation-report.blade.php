@@ -130,7 +130,7 @@
                             </div>
                         </form>
                         <div class="row col-md-12" style="padding-left: 30px;">
-                            Reporting Days: {{ $reporting_days }}
+                            Reporting Days: {{ $reporting_days + 1 }}
                         </div>
                         <div class="clearfix"></div>
                         @if(Request::session()->has('message'))
@@ -161,7 +161,7 @@
                                     <th>No of Ventilators Occupied</th>
                                     <th>No of Discharge</th>
                                     <th>No of Deaths</th>
-                                    <th>No of Registration</th>
+                                    <th>Active Cases</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -181,8 +181,8 @@
                                         <td>{{ $case['icu_count'] }}</td>
                                         <td>{{ $case['no_of_ventilators'] }} </td>
                                         <td>{{ $case['ventilator_count'] }}</td>
-                                        <td>{{ $case['death_count'] }} </td>
                                         <td>{{ $case['discharge_count'] }} </td>
+                                        <td>{{ $case['death_count'] }} </td>
                                         <td>{{ $case['no_of_registration'] }} </td>
                                     </tr>
                                 @endforeach
