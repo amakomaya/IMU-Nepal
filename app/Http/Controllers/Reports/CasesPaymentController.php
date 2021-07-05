@@ -565,9 +565,9 @@ class CasesPaymentController extends Controller
                 Carbon::parse($item->date_of_outcome_en)->toDateString() > $filter_date['to_date']->toDateString()){}
                 else {
                     if($item->is_death == '1') {
-                        $return['death'] = 1;
-                    }elseif($item->is_death == '2') {
                         $return['discharge'] = 1;
+                    }elseif($item->is_death == '2') {
+                        $return['death'] = 1;
                     }
                 }
             }
