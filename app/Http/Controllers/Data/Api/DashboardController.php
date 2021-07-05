@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Data\Api;
 
 use App\CovidImmunization;
 use App\Helpers\GetHealthpostCodes;
+use App\Models\CommunityDeath;
 use App\Models\HealthProfessional;
 use App\Models\LabTest;
 use App\Models\SampleCollection;
