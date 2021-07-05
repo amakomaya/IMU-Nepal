@@ -529,27 +529,27 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
           $healthWorker = OrganizationMember::where('token', $user->token)->first();
           $swabId = $value['sample_token'];
           SampleCollection::where('token', $swabId)
-            ->update([
-                'result' => $value['sample_test_result'],
-                'sample_test_date_en' => $sample_test_date_en,
-                'sample_test_date_np' => $value['sample_test_date'],
-                'sample_test_time' => $value['sample_test_time'],
-                'reporting_date_en' => Carbon::now()->toDateTimeString(),
-                'reporting_date_np' => $reporting_date_np
-            ]);
-            LabTest::create([
-              'token' => $value['token'],
-              'hp_code' => $healthWorker->hp_code,
-              'status' => 1,
-              'sample_recv_date' => $value['sample_test_date'],
-              'sample_test_date' => $value['sample_test_date'],
+          ->update([
+              'result' => $value['sample_test_result'],
+              'sample_test_date_en' => $sample_test_date_en,
+              'sample_test_date_np' => $value['sample_test_date'],
               'sample_test_time' => $value['sample_test_time'],
-              'sample_test_result' => $value['sample_test_result'],
-              'checked_by' => $user->token,
-              'checked_by_name' => $healthWorker->name,
-              'sample_token' => $swabId,
-              'regdev' => 'web'
-            ]);
+              'reporting_date_en' => Carbon::now()->toDateTimeString(),
+              'reporting_date_np' => $reporting_date_np
+          ]);
+          LabTest::create([
+            'token' => $value['token'],
+            'hp_code' => $healthWorker->hp_code,
+            'status' => 1,
+            'sample_recv_date' => $value['sample_test_date'],
+            'sample_test_date' => $value['sample_test_date'],
+            'sample_test_time' => $value['sample_test_time'],
+            'sample_test_result' => $value['sample_test_result'],
+            'checked_by' => $user->token,
+            'checked_by_name' => $healthWorker->name,
+            'sample_token' => $swabId,
+            'regdev' => 'web'
+          ]);
         }
         return response()->json('success');
     } catch (\Exception $e) {
