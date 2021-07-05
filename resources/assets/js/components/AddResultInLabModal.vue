@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="lab-test-modal">
     <div class="form-group" :class="{ 'has-error': $v.data.token.$error }">
       <label class="control-label">Enter Registered Lab ID ( Unique )</label>
       <div class="inputGroupContainer">
@@ -92,6 +92,8 @@ export default {
       if (this.$v.$invalid) {
         return false;
       }
+      
+      if(this.item) data.sample_token = this.item.latest_anc.token;
       axios.post('/api/v1/result-in-lab-from-web', data)
           .then((response) => {
             if (response.data === 'success') {
@@ -155,6 +157,7 @@ export default {
       }
       $('.date-picker-sample_test_np').nepaliDatePicker({
         language: 'english',
+        container: ".v-dialog-modal",
         disableAfter: this.date_today_np,
         onChange: function() {
           self.data.sample_test_date = $('#sample_test_np').val()
