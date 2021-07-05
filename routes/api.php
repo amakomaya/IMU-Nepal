@@ -499,7 +499,7 @@ Route::post('/v1/received-in-lab', function (Request $request) {
 });
 
 Route::post('/v1/result-in-lab-from-web', function (Request $request) {
-
+    $user = auth()->user();
     $value = $request->all();
     try {
         $value['token'] = auth()->user()->token . '-' . $value['token'];
@@ -509,8 +509,8 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
 
         $reporting_date_en = explode("-", Carbon::now()->format('Y-m-d'));
         $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
-
-        SampleCollection::where('token', $find_test->sample_token)
+        if ($find_test) {
+            SampleCollection::where('token', $find_test->sample_token)
             ->update([
                 'result' => $value['sample_test_result'],
                 'sample_test_date_en' => $sample_test_date_en,
@@ -519,11 +519,36 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
                 'reporting_date_en' => Carbon::now()->toDateTimeString(),
                 'reporting_date_np' => $reporting_date_np
             ]);
-        if ($find_test) {
+        
             $find_test->update([
                 'sample_test_date' => $value['sample_test_date'],
                 'sample_test_time' => $value['sample_test_time'],
                 'sample_test_result' => $value['sample_test_result'],
+            ]);
+        } else {
+          $healthWorker = OrganizationMember::where('token', $user->token)->first();
+          $swabId = $value['sample_token'];
+          SampleCollection::where('token', $swabId)
+            ->update([
+                'result' => $value['sample_test_result'],
+                'sample_test_date_en' => $sample_test_date_en,
+                'sample_test_date_np' => $value['sample_test_date'],
+                'sample_test_time' => $value['sample_test_time'],
+                'reporting_date_en' => Carbon::now()->toDateTimeString(),
+                'reporting_date_np' => $reporting_date_np
+            ]);
+            LabTest::create([
+              'token' => $value['token'],
+              'hp_code' => $healthWorker->hp_code,
+              'status' => 1,
+              'sample_recv_date' => $value['sample_test_date'],
+              'sample_test_date' => $value['sample_test_date'],
+              'sample_test_time' => $value['sample_test_time'],
+              'sample_test_result' => $value['sample_test_result'],
+              'checked_by' => $user->token,
+              'checked_by_name' => $healthWorker->name,
+              'sample_token' => $swabId,
+              'regdev' => 'web'
             ]);
         }
         return response()->json('success');
