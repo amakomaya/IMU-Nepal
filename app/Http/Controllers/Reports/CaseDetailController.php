@@ -23,8 +23,11 @@ class CaseDetailController extends Controller
     {
         $token = $request->token;
         $data = SuspectedCase::with(['ancs', 'healthworker', 'healthpost', 'district',
-            'municipality', 'caseManagement', 'clinicalParameter', 'contactDetail',
-            'contactFollowUp', 'contactTracing' , 'laboratoryParameter', 'registerBy', 'symptomsRelation'
+            'municipality', 'caseManagement', 'clinicalParameter',
+            'laboratoryParameter', 'registerBy', 'symptomsRelation',
+            'contactTracing' => function ($q) {
+                $q->with('contactDetail', 'contactFollowUp');
+            }
         ])
         ->where('token', $token)->first();
 
@@ -43,13 +46,14 @@ class CaseDetailController extends Controller
     public function cictDetail(Request $request){
         $token = $request->token;
         $data = SuspectedCase::with(['ancs', 'healthworker', 'healthpost', 'district',
-                'municipality', 'caseManagement', 'clinicalParameter', 'contactDetail',
-                'contactFollowUp', 'contactTracing' , 'laboratoryParameter', 'registerBy', 'symptomsRelation'
+                'municipality', 'caseManagement', 'clinicalParameter', 'laboratoryParameter', 'registerBy', 'symptomsRelation', 
+                'contactTracing' => function ($q) {
+                    $q->with('contactDetail', 'contactFollowUp');
+                }
             ])
             ->where('token', $token)
             ->first();
 
-            // dd($data->contactTracing);
         return view('backend.patient.cict_detail', compact('data'));
     }
 

@@ -6,18 +6,12 @@
     }
 </style>
 @php 
-    $symptoms = json_decode($data->symptoms ?? '[]');
-    $symptoms = $symptoms ?? [];
-    
-    $symptomsComorbidity = json_decode(isset($data->symptoms_comorbidity) ? $data->symptoms_comorbidity : '[]', true);
-    $symptomsComorbidity = $symptomsComorbidity ?? [];
-    $travelled_from = json_decode($data->travelled_where ?? '', true);
-    $vaccineDosefirst = json_decode(isset($data->caseManagement) ? $data->caseManagement->first_source_info : '[]', true);
-    $vaccineDosefirst = $vaccineDosefirst ?? [];
-    $vaccineDosesecond = json_decode(isset($data->caseManagement) ? $data->caseManagement->second_source_info : '[]', true);
-    $vaccineDosesecond = $vaccineDosesecond ?? [];
-    $meansOfTravel = json_decode(isset($data->caseManagement) ? $data->caseManagement->travel_medium : '[]', true);
-    $meansOfTravel = $meansOfTravel ?? [];
+    $symptoms = $data->symptoms ? json_decode($data->symptoms) : [];    
+    $symptomsComorbidity = $data->symptoms_comorbidity ? json_decode($data->symptoms_comorbidity) : [];
+    $travelled_from = $data->travelled_where ? json_decode($data->travelled_where) : [];
+    $vaccineDosefirst = isset($data->caseManagement) && $data->caseManagement->first_source_info != null ? json_decode($data->caseManagement->first_source_info) : [];
+    $vaccineDosesecond = isset($data->caseManagement) && $data->caseManagement->second_source_info != null ? json_decode($data->caseManagement->second_source_info) : [];
+    $meansOfTravel = isset($data->caseManagement) && $data->caseManagement->travel_medium != null ? json_decode($data->caseManagement->travel_medium) : [];
 @endphp
 
 <div id="page-wrapper">
@@ -51,7 +45,7 @@
                 $cict_initiated_date = '';
                 $reporting_institution_name = '';
                 if($data->ancs) {
-                    $date_eng_array = explode("-", Carbon\Carbon::parse($data->ancs[0]->created_at)->format('Y-m-d'));
+                    $date_eng_array = explode("-", Carbon\Carbon::parse($data->ancs->first()->created_at)->format('Y-m-d'));
                     $data_nep= Yagiten\Nepalicalendar\Calendar::eng_to_nep($date_eng_array[0], $date_eng_array[1], $date_eng_array[2])->getYearMonthDay();
                     $date_nep_array = explode("-", $data_nep);
                     $case_received_date = $date_nep_array[2] . '/'. $date_nep_array[1] . '/' . $date_nep_array[0];
@@ -93,7 +87,7 @@
                             </div>
                         </p>
                     </div>
-                    <p>Contact number: <u>{{$data->emergency_contact_one}}</u></p>
+                    <p>Contact number: <u>{{ $data->emergency_contact_one }}</u></p>
                 </div>
                 <div class="pi-2">
                     <p>Name: <u>{{$data->name}}</u></p>
@@ -164,7 +158,7 @@
                                 <input type="checkbox" id="ventilator" name="ventilator" value="" />
                                 <label for="ventilator"> On Ventilator <u></u></label>
                             </div>
-                            <b>Date of Admission: <u></u>dd/ <u></u> mm / <u></u> yyyy</b>
+                            <b>Date of Admission: </b>
                         </td>
                     </tr>
                 </table>
@@ -339,7 +333,7 @@
                     </div>
                     <div>
                         <input type="checkbox" id="post-delivery" name="post-delivery" value="" />
-                        <label for="post-delivery">Post-delivery <span> (<6 weeks) </span></label>
+                        <label for="post-delivery">Post-delivery <span> (< 6 weeks) </span></label>
                     </div>
                     <div>
                         <input type="checkbox" id="cardiovascular-disease" name="cardiovascular-disease" value="" @if(in_array(7, $symptomsComorbidity)) checked @endif readonly/>
@@ -502,7 +496,6 @@
                                 <tr>
                                     <td>{{ isset($data->caseManagement) ? $data->caseManagement->departure : ''}}</td>
                                     <td>{{ isset($data->caseManagement) ? $data->caseManagement->destination : ''}}</td>
-                                    <!-- <td style="background-color:#f0e3ca">{{$data->travelled_date}}</td> -->
                                     <td style="background-color:#f0e3ca">{{ isset($data->caseManagement) ? $data->caseManagement->travel_date : ''}}</td>
                                     <td style="background-color:#f0e3ca"></td>
                                     <td style="background-color:#f0e3ca">
@@ -517,7 +510,7 @@
                                         @elseif($travel_means == 4)
                                             Truck,
                                         @elseif($travel_means == 5)
-                                            other,               
+                                            other             
                                         @endif
                                     @endforeach
                                     </td>
@@ -1231,27 +1224,27 @@
                     <td rowspan="2">Nasopharyngealswab or Oropharyngealswab or Broncheo-Alveolar Lavage </td>
                     <td rowspan="2">
                     <span class="col-md-3">
-                        <input type="checkbox" id="yes" name="yes" value="" @if(isset($data->ancs()->first()->sample_type) && !is_null($data->ancs()->first()->sample_type)) checked readonly @else disabled @endif >
+                        <input type="checkbox" id="yes" name="yes" value="" @if(isset($data->ancs->first()->sample_type) && !is_null($data->ancs->first()->sample_type)) checked readonly @else disabled @endif >
                         <label for="yes">yes</label>
                     </span>
                         <span class="col-md-3" style="padding-left: 2em;">
-                        <input type="checkbox" id="no" name="no" value="" @if(isset($data->ancs()->first()->sample_type) && is_null($data->ancs()->first()->sample_type)) checked readonly @else disabled @endif>
+                        <input type="checkbox" id="no" name="no" value="" @if(isset($data->ancs->first()->sample_type) && is_null($data->ancs->first()->sample_type)) checked readonly @else disabled @endif>
                         <label for="no">no</label>
                     </span>
                     </td>
-                    <td rowspan="2">{{ isset($data->ancs()->first()->labreport) ? $data->ancs()->first()->labreport->created_at : ''}}</td>
+                    <td rowspan="2">{{ $data->ancs ? $data->ancs->first()->collection_date_np : ''}}</td>
                     <td> <b>Date:</b> </td>
-                    <td rowspan="2"></td>
-                    <td rowspan="2"> {{isset($data->ancs()->first()->labreport) ? $data->ancs()->first()->labreport->sample_test_date : ''}} </td>
+                    <td rowspan="2"> {{ $data->ancs ? $data->ancs->first()->received_date_np : ''}} </td>
+                    <td rowspan="2"> {{ $data->ancs ? $data->ancs->first()->sample_test_date_np : ''}} </td>
                     <td rowspan="2"> 
-                        @if(isset($data->ancs()->first()->labreport))
-                        @if($data->ancs()->first()->labreport->sample_test_result == 3)
+                        @if($data->ancs)
+                        @if($data->ancs->first()->result == 3)
                             Positive
-                        @elseif($data->ancs()->first()->labreport->sample_test_result == 4)
+                        @elseif($data->ancs->first()->result == 4)
                             Negative
-                        @elseif($data->ancs()->first()->labreport->sample_test_result == 5)
+                        @elseif($data->ancs->first()->result == 5)
                             Don't know
-                        @elseif($data->ancs()->first()->labreport->sample_test_result == 6)
+                        @elseif($data->ancs->first()->result == 6)
                             Rejected
                         @endif
                         @endif
@@ -1334,19 +1327,32 @@
                         <b>Nationality <u></u></b>
                     </td>
                     <td class="col-md-6">
-                        <b>Relation to the case: <u> {{ $tracing->case_relation }}</u></b>
+                        <?php
+                            if($tracing->case_relation == 1){
+                                $relation = 'Family';
+                            }elseif($tracing->case_relation == 2){
+                                $relation = 'Friend';
+                            }elseif($tracing->case_relation == 3){
+                                $relation = 'Neighbour';
+                            }elseif($tracing->case_relation == 4){
+                                $relation = 'Relative';
+                            }else{
+                                $relation = 'N/A';
+                            }
+                        ?>
+                        <b>Relation to the case: <u> {{ $relation }}</u></b>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2">
                         <div class="col-md-6">
                             <p>Current Address: </p>
-                            <p>Province: {{ $tracing->contactDetail ? $tracing->contactDetail->province_id : '' }}</p>
-                            <p>Municipality: {{ $tracing->contactDetail ? $tracing->contactDetail->municipality_id : ''}}</p>
+                            <p>Province: {{ $tracing->contactDetail ? $tracing->contactDetail->province->province_name : '' }}</p>
+                            <p>Municipality: {{ $tracing->contactDetail ? $tracing->contactDetail->municipality->municipality_name : ''}}</p>
                             <p>Tole/Landmark:{{ $tracing->contactDetail ? $tracing->contactDetail->tole : '' }}</p>
                         </div>
                         <div class="col-md-6">
-                            <p>District: {{ $tracing->contactDetail ? $tracing->contactDetail->district_id : '' }}</p>
+                            <p>District: {{ $tracing->contactDetail ? $tracing->contactDetail->district->district_name : '' }}</p>
                             <p>Ward: {{ $tracing->contactDetail ? $tracing->contactDetail->ward : '' }}</p>
                         </div>
                     </td>
@@ -1371,7 +1377,7 @@
                 </tr>
                 <tr>
                     <td>Name:</td>
-                    <td>Relationshi[ to the contact:</td>
+                    <td>Relationship to the contact:</td>
                 </tr>
                 <tr>
                     <td>Address</td>
@@ -1431,68 +1437,135 @@
                                 $symptomscontactdetail = $symptomscontactdetail ?? [];    
                             }
                         ?>
-                        <div class=" col-md-4">
-                            <div>
-                                <input type="checkbox" id="Fever" name="Fever" value="t" @if(in_array(4, $symptomscontactdetail)) checked @endif readonly/>
-                                <label for="Fever">Fever</label>                                           
+
+                            <div class="list-symptoms">
+                                <div class="row col-md-12">
+                                    <div class="symptoms-1 col-md-3">
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="1" @if(in_array(1, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for="Pneumonia">Pneumonia</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="2" @if(in_array(2, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "ARDS">ARDS</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="3" @if(in_array(3, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Influenza-like illness">Influenza-like illness</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="4" @if(in_array(4, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "History of fever/chills">History of fever/chills</label>
+                                        </div>
+                                    </div>
+                                    <div class="symptoms-3 col-md-3">
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="9" @if(in_array(9, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Shortness of breath">Shortness of breath</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="10" @if(in_array(10, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Irritability/Confusion">Irritability/Confusion</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="11" @if(in_array(11, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Loss of taste">Loss of taste</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="12" @if(in_array(12, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Loss of smell">Loss of smell</label>
+                                        </div>
+                                    </div>
+                                    <div class="symptoms-5 col-md-3">
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="17" @if(in_array(17, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Diarrhea">Diarrhea</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="18" @if(in_array(18, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Nausea/vomiting">Nausea/vomiting</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="19" @if(in_array(19, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Headache">Headache</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="20" @if(in_array(20, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Pharyngeal exudate">Pharyngeal exudate</label>
+                                        </div>
+                                    </div>
+                                    <div class="symptoms-6 col-md-3">
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="21" @if(in_array(21, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Conjunctival injection(eye)">Conjunctival injection(eye)</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="22" @if(in_array(22, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Seizure">Seizure</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="23" @if(in_array(23, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Coma">Coma</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="24" @if(in_array(24, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Dyspnea/tachynea(DB/Fast breathing)">Dyspnea/tachynea(DB/Fast breathing)</label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <input type="checkbox" id="muscles" name="muscles" value="" @if(in_array(13, $symptomscontactdetail)) checked @endif readonly/>
-                                <label for="muscles">Pain in the muscles</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="" name="" value="" readonly @if(in_array(13, $symptomscontactdetail)) checked @endif readonly/>
-                                <label for="">Nausea / Vomiting / Loss of appetite </label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="lossoftaste" name="lossoftaste" value="" @if(in_array(11, $symptomscontactdetail)) checked @endif readonly/>
-                                <label for="lossoftaste"> Recent loss of taste</label>
-                            </div>
-                        </div>
-                            <div class="col-md-2">
-                                <div>
-                                    <input type="checkbox" id="Cough" name="Cough" value="" @if(in_array(6, $symptomscontactdetail)) checked @endif readonly/>
-                                    <label for="Cough"> Cough</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" id="Sorethroat" name="Sorethroat" value="" @if(in_array(7, $symptomscontactdetail)) checked @endif readonly/>
-                                    <label for="Sorethroat"> Sore throat</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" id="Diarrhoea" name="Diarrhoea" value="" @if(in_array(17, $symptomscontactdetail)) checked @endif readonly/>
-                                    <label for="Diarrhoea"> Diarrhoea</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div>
-                                    <input type="checkbox" id="Tiredness" name="Tiredness" value="" @if(in_array(5, $symptomscontactdetail)) checked @endif readonly/>
-                                    <label for="Tiredness"> General weakness/Tiredness</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" id="runnynose" name="runnynose" value="" @if(in_array(8, $symptomscontactdetail)) checked @endif readonly/>
-                                    <label for="runnynose"> Runny nose </label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" id="Irritability/Confusion" name="Irritability/Confusion" value="" @if(in_array(10, $symptomscontactdetail)) checked @endif readonly/>
-                                    <label for="Irritability/Confusion"> Irritability/Confusion</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" id="specify" name="specify" value="" @if(isset($tracing->contactDetail) && !is_null($tracing->contactDetail->symptoms_specific)) checked @endif readonly/>
-                                    <label for="specify"> Others, specify: <span style="font-weight: 500 !important;">{{ isset($tracing->contactDetail) ? $tracing->contactDetail->symptoms_specific : ''}}</span></label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div>
-                                    <input type="checkbox" id="Headache" name="Headache" value="" @if(in_array(19, $symptomscontactdetail)) checked @endif readonly/>
-                                    <label for="Headache"> Headache</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" id="shortbreath" name="shortbreath" value="" @if(in_array(9, $symptomscontactdetail)) checked @endif readonly/>
-                                    <label for="shortbreath"> Shortness of breath</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" id="recent-loss-of-smell" name="recent-loss-of-smell" value="" @if(in_array(12, $symptomscontactdetail)) checked @endif readonly/>
-                                    <label for="recent-loss-of-smell"> Recent loss of smell</label>
+                            <div class="list-symptoms">
+                                <div class="row col-md-12">
+                                    <div class="symptoms-2 col-md-3">
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="5" @if(in_array(5, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "General weaknes">General weakness</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="6" @if(in_array(6, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Cough">Cough</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="7" @if(in_array(7, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Sore Throat">Sore Throat</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="8" @if(in_array(8, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Running nose">Running nose</label>
+                                        </div>
+                                    </div>
+                                    <div class="symptoms-4 col-md-3">
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="13" @if(in_array(13, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Muscular Pain">Muscular Pain</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="14" @if(in_array(14, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Chest Pain">Chest Pain</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="15" @if(in_array(15, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Abdominal Pai">Abdominal Pain</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="16" @if(in_array(16, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Joint Pain">Joint Pain</label>
+                                        </div>
+                                    </div>
+                                    <div class="symptoms-7 col-md-3">
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="25" @if(in_array(25, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Abnormal lung auscultation">Abnormal lung auscultation</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="symptoms[]" value="26" @if(in_array(26, $symptomscontactdetail)) checked @endif readonly>
+                                            <label for= "Abnormal lung x-ray/CT scan findings">Abnormal lung x-ray/CT scan findings</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="specify" name="specify" value="" @if(isset($tracing->contactDetail) && !is_null($tracing->contactDetail->symptoms_specific)) checked @endif readonly/>
+                                            <label for="specify"> Others, specify: <span style="font-weight: 500 !important;"> {{ isset($tracing->contactDetail) ? $tracing->contactDetail->symptoms_specific : ''}}</span></label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1513,48 +1586,52 @@
                                     $symptomsComorbidityContactDetail = $symptomsComorbidityContactDetail ?? [];    
                                 }
                             ?>
-                            <div style="padding-left: 1em;">
-                                <input  style="padding-left: 0.5em;" id="recent-loss-of-smell" type="checkbox" name="recent-loss-of-smell" value="" @if(in_array(5, $symptomsComorbidityContactDetail) || in_array(16, $symptomsComorbidityContactDetail) || in_array(17, $symptomsComorbidityContactDetail)) checked @endif readonly/>
-                                @if(in_array(5, $symptomsComorbidityContactDetail))
-                                    <label for="recent-loss-of-smell">Pregnancy (trimester: <u>One</u> )</label>
-                                @elseif(in_array(16, $symptomsComorbidityContactDetail))
-                                    <label for="recent-loss-of-smell">Pregnancy (trimester: <u>Two</u> )</label>
-                                @elseif(in_array(17, $symptomsComorbidityContactDetail))
-                                    <label for="recent-loss-of-smell">Pregnancy (trimester: <u>Three</u> )</label>
-                                @else
-                                <label for="recent-loss-of-smell">Pregnancy (trimester: <u></u> )</label>
-                                @endif
+                            <div class="comorbidity"> 
+                                <div class="comorbidity1 col-md-6">
+                                    <div>
+                                        <input type="checkbox" id="recent-loss-of-smell" name="recent-loss-of-smell" value="" @if(in_array(5, $symptomsComorbidityContactDetail) || in_array(16, $symptomsComorbidityContactDetail) || in_array(17, $symptomsComorbidityContactDetail)) checked @endif readonly/>
+                                        @if(in_array(5, $symptomsComorbidityContactDetail))
+                                            <label for="recent-loss-of-smell">Pregnancy (trimester: <u>One</u> )</label>
+                                        @elseif(in_array(16, $symptomsComorbidityContactDetail))
+                                            <label for="recent-loss-of-smell">Pregnancy (trimester: <u>Two</u> )</label>
+                                        @elseif(in_array(17, $symptomsComorbidityContactDetail))
+                                            <label for="recent-loss-of-smell">Pregnancy (trimester: <u>Three</u> )</label>
+                                        @else
+                                        <label for="recent-loss-of-smell">Pregnancy (trimester: <u></u> )</label>
+                                        @endif
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="post-delivery" name="post-delivery" value="" />
+                                        <label for="post-delivery">Post-delivery <span> (< 6 weeks) </span></label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="cardiovascular-disease" name="cardiovascular-disease" value="" @if(in_array(7, $symptomsComorbidityContactDetail)) checked @endif readonly/>
+                                        <label for="cardiovascular-disease">Cardiovascular disease, including hypertension</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="diabetes" name="diabetes" value="" @if(in_array(1, $symptomsComorbidityContactDetail)) checked @endif readonly/>
+                                        <label for="diabetes"> Diabetes</label>
+                                    </div>
+                                </div>
+                                <div class="comorbidity2 col-md-6">
+                                    <div>
+                                        <input type="checkbox" id="malignancy" name="malignancy" value="" @if(in_array(14, $symptomsComorbidityContactDetail)) checked @endif readonly/>
+                                        <label for="malignancy"> Malignancy</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="COPD" name="COPD" value="" @if(in_array(15, $symptomsComorbidityContactDetail)) checked @endif readonly/>
+                                        <label for="COPD"> COPD</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="Chronic-Kidney-Diseases" name="Chronic-Kidney-Diseases" value="" @if(in_array(10, $symptomsComorbidityContactDetail)) checked @endif readonly/>
+                                        <label for="Chronic-Kidney-Diseases"> Chronic Kidney Diseases</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="malignancy" name="malignancy" value=""@if(isset($tracing->contactDetail) && !is_null($tracing->contactDetail->symptoms_comorbidity_specific)) checked @endif readonly/>
+                                        <label for="malignancy"> Others, specify: <span style="font-weight: 500 !important;">{{ $tracing->contactDetail ? $tracing->contactDetail->symptoms_comorbidity_specific : '' }}</span></label>
+                                    </div>
+                                </div>
                             </div>
-                            <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" id="post-delivery" type="checkbox" name="post-delivery" value="" />
-                                <label for="post-delivery">Post-delivery <span> (<6 weeks) </span></label>
-                            </div>
-                            <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" id="cardiovascular-disease" type="checkbox" name="cardiovascular-disease" value="" @if(in_array(7, $symptomsComorbidityContactDetail)) checked @endif readonly/>
-                                <label for="cardiovascular-disease">Cardiovascular disease, including hypertension</label>
-                            </div>
-                            <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" id="diabetes" name="diabetes" type="checkbox" value="" @if(in_array(1, $symptomsComorbidityContactDetail)) checked @endif readonly/>
-                                <label for="diabetes"> Diabetes</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                        <div style="padding-left: 1em;">
-                            <input style="padding-left: 0.5em;" id="malignancy" name="malignancy" type="checkbox" value="" @if(in_array(14, $symptomsComorbidityContactDetail)) checked @endif readonly/>
-                            <label for="malignancy"> Malignancy</label>
-                        </div>
-                        <div style="padding-left: 1em;">
-                            <input style="padding-left: 0.5em;" id="COPD" name="COPD" type="checkbox" value="" @if(in_array(15, $symptomsComorbidityContactDetail)) checked @endif readonly/>
-                            <label for="COPD"> COPD</label>
-                        </div>
-                        <div style="padding-left: 1em;">
-                            <input style="padding-left: 0.5em;" id="Chronic-Kidney-Diseases" name="Chronic-Kidney-Diseases" type="checkbox" value="" @if(in_array(10, $symptomsComorbidityContactDetail)) checked @endif readonly/>
-                            <label for="Chronic-Kidney-Diseases"> Chronic Kidney Diseases</label>
-                        </div>
-                        <div style="padding-left: 1em;">
-                            <input style="padding-left: 0.5em;" id="malignancy" name="malignancy" type="checkbox" value="" @if(isset($tracing->contactDetail) && !is_null($tracing->contactDetail->symptoms_comorbidity_specific)) checked @endif readonly/>
-                            <label for="malignancy"> Others, specify: <span style="font-weight: 500 !important;">{{ $tracing->contactDetail ? $tracing->contactDetail->symptoms_comorbidity_specific : '' }}</span></label>
-                        </div>
                         </div>
                     </td>
                 </tr>
@@ -1764,6 +1841,834 @@
                 </tr>
             </table>
         </div>
+        <div class="form-b2">
+            <h4>Annex 3: Form B2 – Contact Follow-up Form/Symptoms Diary {{ ++$keyy }}</h4>
+            <table style="margin-top: 1em;">
+                <tr>
+                    <th colspan="2" style="background-color:#8eaadb">1. Case Information</th>
+                </tr>
+                <tr>
+                    <td>Name of the case: <u>{{ $tracing->name }}</u></td>
+                    <td>EPID ID ______</td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <th colspan="2" style="background-color:#8eaadb">2. Contact Information</th>
+                </tr>
+                <tr>
+                    <td width="75%">Name {{ $tracing->name }}</td>
+                    <td width="25%">EPID ID ______</td>
+                </tr>
+            </table>
+            <table style="margin-top: 1em; ">
+                <tr>
+                    <th rowspan="2">No symptoms (check if none experienced)</th>
+                    <th rowspan="2">Days to follow up*</th>
+                    <th rowspan="2">Date of follow up (dd/mm/yy)</th>
+                    <th style="text-align: center;" colspan="8">Symptoms**</th>
+                </tr>
+                <tr>
+                    <th>Days since last contact with the case</th>
+                    <th>Fever ≥38 °C</th>
+                    <th>Runny nose</th>
+                    <th>Cough</th>
+                    <th>Sorethroat</th>
+                    <th>Shortness of breath</th>
+                    <th>Other symptoms: specify</th>
+                </tr>
+                @if($tracing->contactFollowUp)
+                @foreach($tracing->contactFollowUp as $keyfo => $followup)
+                <tr>
+                    <td style="text-align: center;">{{ $followup->contact_with_case_day }}</td>
+                    <td style="text-align: center;">
+                        <p>{{ $followup->follow_up_day }}</p>
+                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
+                    </td>
+                    <td>{{ $followup->follow_up_date }}</td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
+                            <label for="none"> None</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td width="7%">
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>{{ $followup->symptoms_other }}</td>
+                </tr>
+                @endforeach
+                @endif
+                {{-- <tr>
+                    <td style="text-align: center;">0</td>
+                    <td style="text-align: center;">
+                        <p>10</p>
+                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
+                    </td>
+                    <td></td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
+                            <label for="none"> None</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td width="7%">
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">1</td>
+                    <td style="text-align: center;">
+                        <p>9</p>
+                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
+                    </td>
+                    <td></td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
+                            <label for="none"> None</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td width="7%">
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">2</td>
+                    <td style="text-align: center;">
+                        <p>8</p>
+                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
+                    </td>
+                    <td></td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
+                            <label for="none"> None</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td width="7%">
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">3</td>
+                    <td style="text-align: center;">
+                        <p>7</p>
+                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
+                    </td>
+                    <td></td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
+                            <label for="none"> None</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td width="7%">
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">4</td>
+                    <td style="text-align: center;">
+                        <p>6</p>
+                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
+                    </td>
+                    <td></td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
+                            <label for="none"> None</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td width="7%">
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">5</td>
+                    <td style="text-align: center;">
+                        <p>5</p>
+                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
+                    </td>
+                    <td></td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
+                            <label for="none"> None</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td width="7%">
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">6</td>
+                    <td style="text-align: center;">
+                        <p>4</p>
+                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
+                    </td>
+                    <td></td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
+                            <label for="none"> None</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td width="7%">
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">7</td>
+                    <td style="text-align: center;">
+                        <p>3</p>
+                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
+                    </td>
+                    <td></td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
+                            <label for="none"> None</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td width="7%">
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">8</td>
+                    <td style="text-align: center;">
+                        <p>2</p>
+                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
+                    </td>
+                    <td></td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
+                            <label for="none"> None</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td width="7%">
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">9</td>
+                    <td style="text-align: center;">
+                        <p>1</p>
+                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
+                    </td>
+                    <td></td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
+                            <label for="none"> None</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td width="7%">
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">10</td>
+                    <td style="text-align: center;">
+                        <p>0</p>
+                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
+                    </td>
+                    <td></td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
+                            <label for="none"> None</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td width="7%">
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <label for="Yes"> Yes</label>
+                        </div>
+                        <div style="padding-left: 0.5em;">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <label for="No"> No</label>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr> --}}
+            </table>
+            <div style="margin-top: 0.5em; margin-bottom: 1em;" class="col-md-12">
+                <p>* Follow-up should start from the day it has been since last contact with the case. For e.g., if the contact has not been in contact with the case
+                    since 12 days, the follow-up should start from the 12th day in the column “Days to follow up”
+                </p>
+                <p>** Please select None for No symptoms. If no symptoms are experienced, then consider the entry comple</p>
+            </div>
+        </div>
         @endforeach
         @endif
 
@@ -1778,9 +2683,9 @@
                     received SARS-CoV-2 vaccine (COVID-19
                     vaccine)?
                 </th>
-                <th width="20%">Yes</th>
-                <th colspan="2">No</th>
-                <th colspan="2">Unknown</th>
+                <th width="20%"><input style="padding-left: 0.5em;" type="checkbox" id="yes" name="yes" value="" @if(isset($data->caseManagement) && $data->caseManagement->first_dose == '1') checked @endif>Yes</th>
+                <th colspan="2"><input style="padding-left: 0.5em;" type="checkbox" id="yes" name="yes" value="" @if(isset($data->caseManagement) && $data->caseManagement->first_dose == '0') checked @endif>No</th>
+                <th colspan="2"><input style="padding-left: 0.5em;" type="checkbox" id="yes" name="yes" value="" @if(isset($data->caseManagement) && $data->caseManagement->first_dose == '2') checked @endif>Unknown</th>
             </tr>
             <tr>
                 <td colspan="2" >If <b>Yes,</b>Name of the Vaccine(Product/Brand name)</td>
@@ -1798,8 +2703,8 @@
             </tr>
             <tr>
                 <td width="2%">Dose 1</td>
-                <td></td>
-                <td></td>
+                <td>{{ $data->caseManagement ? $data->caseManagement->first_product_name : '' }}</td>
+                <td>{{ $data->caseManagement ? $data->caseManagement->first_date_vaccination : '' }}</td>
                 <td style="display: flex; justify-content: center;">
                     <span>
                         <input type="checkbox" id="yes" name="yes" value="">
@@ -1843,8 +2748,8 @@
             </tr>
             <tr>
                 <td>Dose 2</td>
-                <td></td>
-                <td></td>
+                <td>{{ $data->caseManagement ? $data->caseManagement->second_product_name : '' }}</td>
+                <td>{{ $data->caseManagement ? $data->caseManagement->second_date_vaccination : '' }}</td>
                 <td style="display: flex; border: none; justify-content: center; ">
                     <span>
                         <input type="checkbox" id="yes" name="yes" value="">
@@ -2008,865 +2913,8 @@
                 </td>
             </tr>
         </table>
+        
         <table style="margin-top: 1em;">
-            <tr>
-                <th colspan="2" style="background-color:#8eaadb">11. Data collector information</th>
-            </tr>
-            <tr>
-                <td width="50%">Name:</td>
-                <td width="50%">Institute</td>
-            </tr>
-            <tr>
-                <td width="50%">Telephone number:</td>
-                <td width="50%">Email: </td>
-            </tr>
-            <tr>
-                <td width="50%">Form completion date (dd/mm/yy):</td>
-                <td width="50%"></td>
-            </tr>
-        </table>
-    </div>
-    <div class="form-b2">
-        <h4>Annex 3: Form B2 – Contact Follow-up Form/Symptoms Diary</h4>
-        <table style="margin-top: 1em;">
-            <tr>
-                <th colspan="2" style="background-color:#8eaadb">1. Case Information</th>
-            </tr>
-            <tr>
-                <td>Name of the case: <u>{{ $data->name }}</u></td>
-                <td>EPID ID ______</td>
-            </tr>
-        </table>
-        <table>
-            <tr>
-                <th colspan="2" style="background-color:#8eaadb">2. Contact Information</th>
-            </tr>
-            <tr>
-                <td width="75%">Name</td>
-                <td width="25%">EPID ID ______</td>
-            </tr>
-        </table>
-        <table style="margin-top: 1em; ">
-            <tr>
-                <th rowspan="2">No symptoms (check if none experienced)</th>
-                <th rowspan="2">Days to follow up*</th>
-                <th rowspan="2">Date of follow up (dd/mm/yy)</th>
-                <th style="text-align: center;" colspan="8">Symptoms**</th>
-            </tr>
-            <tr>
-                <th>Days since last contact with the case</th>
-                <th>Fever ≥38 °C</th>
-                <th>Runny nose</th>
-                <th>Cough</th>
-                <th>Sorethroat</th>
-                <th>Shortness of breath</th>
-                <th>Other symptoms: specify</th>
-            </tr>
-            @if($data->contactFollowUp)
-            @foreach($data->contactFollowUp as $followup)
-            <tr>
-                <td style="text-align: center;">{{ $followup->contact_with_case_day }}</td>
-                <td style="text-align: center;">
-                    <p>{{ $followup->follow_up_day }}</p>
-                    <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                </td>
-                <td>{{ $followup->follow_up_date }}</td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                        <label for="none"> None</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td width="7%">
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td></td>
-            </tr>
-            @endforeach
-            @else
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            @endif
-            {{-- <tr>
-                <td style="text-align: center;">0</td>
-                <td style="text-align: center;">
-                    <p>10</p>
-                    <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                </td>
-                <td></td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                        <label for="none"> None</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td width="7%">
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">1</td>
-                <td style="text-align: center;">
-                    <p>9</p>
-                    <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                </td>
-                <td></td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                        <label for="none"> None</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td width="7%">
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">2</td>
-                <td style="text-align: center;">
-                    <p>8</p>
-                    <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                </td>
-                <td></td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                        <label for="none"> None</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td width="7%">
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">3</td>
-                <td style="text-align: center;">
-                    <p>7</p>
-                    <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                </td>
-                <td></td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                        <label for="none"> None</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td width="7%">
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">4</td>
-                <td style="text-align: center;">
-                    <p>6</p>
-                    <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                </td>
-                <td></td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                        <label for="none"> None</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td width="7%">
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">5</td>
-                <td style="text-align: center;">
-                    <p>5</p>
-                    <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                </td>
-                <td></td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                        <label for="none"> None</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td width="7%">
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">6</td>
-                <td style="text-align: center;">
-                    <p>4</p>
-                    <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                </td>
-                <td></td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                        <label for="none"> None</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td width="7%">
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">7</td>
-                <td style="text-align: center;">
-                    <p>3</p>
-                    <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                </td>
-                <td></td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                        <label for="none"> None</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td width="7%">
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">8</td>
-                <td style="text-align: center;">
-                    <p>2</p>
-                    <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                </td>
-                <td></td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                        <label for="none"> None</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td width="7%">
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">9</td>
-                <td style="text-align: center;">
-                    <p>1</p>
-                    <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                </td>
-                <td></td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                        <label for="none"> None</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td width="7%">
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">10</td>
-                <td style="text-align: center;">
-                    <p>0</p>
-                    <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                </td>
-                <td></td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                        <label for="none"> None</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td width="7%">
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                        <label for="Yes"> Yes</label>
-                    </div>
-                    <div style="padding-left: 0.5em;">
-                        <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                        <label for="No"> No</label>
-                    </div>
-                </td>
-                <td></td>
-            </tr> --}}
-        </table>
-        <div style="margin-top: 0.5em; margin-bottom: 1em;" class="col-md-12">
-            <p>* Follow-up should start from the day it has been since last contact with the case. For e.g., if the contact has not been in contact with the case
-                since 12 days, the follow-up should start from the 12th day in the column “Days to follow up”
-            </p>
-            <p>** Please select None for No symptoms. If no symptoms are experienced, then consider the entry comple</p>
-        </div>
-        <table>
             <tr>
                 <th colspan="2" style="background-color:#8eaadb">Final contact classification at final follow-up – Only for use by contact follow-up team </th>
             </tr>

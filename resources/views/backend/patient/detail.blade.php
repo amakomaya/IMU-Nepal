@@ -248,7 +248,7 @@
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <h5>Sample Collected Date: {{ $anc->created_at }} </h5>
+                                    <h5>Sample Collected Date: {{ $anc->collection_date_np }} </h5>
                                 </tr>
                                 </thead>
                                 <tbody>
