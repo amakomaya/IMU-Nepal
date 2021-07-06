@@ -23,8 +23,11 @@ class CaseDetailController extends Controller
     {
         $token = $request->token;
         $data = SuspectedCase::with(['ancs', 'healthworker', 'healthpost', 'district',
-            'municipality', 'caseManagement', 'clinicalParameter', 'contactDetail',
-            'contactFollowUp', 'contactTracing' , 'laboratoryParameter', 'registerBy', 'symptomsRelation'
+            'municipality', 'caseManagement', 'clinicalParameter',
+            'laboratoryParameter', 'registerBy', 'symptomsRelation',
+            'contactTracing' => function ($q) {
+                $q->with('contactDetail', 'contactFollowUp');
+            }
         ])
         ->where('token', $token)->first();
 
