@@ -28,4 +28,19 @@ class ContactDetail extends Model
         'test_result', 'date_test_result', 'follow_up', 'measures_taken', 'measures_taken_specific',
         'referral_date', 'quarantine_name', 'quarantine_location'
     ];
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class);
+    }
+
+    public function municipality()
+    {
+        return $this->belongsTo(Municipality::class);
+    }
 }

@@ -135,16 +135,6 @@ class SuspectedCase extends Model
         return $this->hasMany('App\Models\ClinicalParameter', 'woman_token', 'token');
     }
 
-    public function contactDetail()
-    {
-        return $this->hasOne('App\Models\ContactDetail', 'contact_tracing_token', 'token');
-    }
-
-    public function contactFollowUp()
-    {
-        return $this->hasOne('App\Models\ContactFollowUp', 'contact_token', 'token');
-    }
-
     public function contactTracing()
     {
         return $this->hasMany('App\Models\ContactTracing', 'woman_token', 'token');
