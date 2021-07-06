@@ -19,6 +19,7 @@ use App\Models\LaboratoryParameter;
 use App\Models\ContactTracing;
 use App\Models\CaseManagement;
 use App\Models\ContactDetail;
+use App\Models\ContactFollowUp;
 use App\VialDetail;
 use Carbon\Carbon;
 use Yagiten\Nepalicalendar\Calendar;
@@ -60,6 +61,7 @@ class BackupRestoreController extends Controller
             $laboratory_parameters = $builder->newQuery()->from('laboratory_parameter')->get();
             $contact_tracings = $builder->newQuery()->from('contact_tracing')->get();
             $case_mgmts = $builder->newQuery()->from('case_mgmt')->get();
+            $contact_follow_ups = $builder->newQuery()->from('contact_follow_up')->get();
             $contact_details = $builder->newQuery()->from('contact_detail')->get();
             $vial_details = $builder->newQuery()->from('vial_details')->get();
 
@@ -234,6 +236,26 @@ class BackupRestoreController extends Controller
             } catch (\Exception $e) {
                 array_push($errors, "Case Management");
             }
+
+            try {
+                $contact_follow_ups->map(function ($item, $key) {
+                    $data = collect($item)->except(['_id', 'regdev', 'sync', 'update_status'])->all();
+                    $data['created_at'] = Carbon::parse($data['created_at'])->toDateTimeString();
+                    $data['updated_at'] = Carbon::parse($data['updated_at'])->toDateTimeString();
+
+                    $contact_follow_up = ContactFollowUp::where('token', $data['token'])->first();
+
+                    if ($contact_follow_up !== null) {
+                        $contact_follow_up->update($data);
+                    } else {
+                        ContactFollowUp::create($data);
+                    }
+                });
+                array_push($success, "Contact Follow Up");
+            } catch (\Exception $e) {
+                array_push($errors, "Contact Follow Up");
+            }
+
 
             try {
                 $contact_details->map(function ($item, $key) {
