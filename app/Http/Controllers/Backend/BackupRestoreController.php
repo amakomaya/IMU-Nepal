@@ -66,11 +66,17 @@ class BackupRestoreController extends Controller
             try {
                 $suspectedCase->map(function ($item, $key) {
                     $data = collect($item)->except(['_id', 'sync', 'update_status'])->all();
+                    $data['created_at'] = Carbon::parse($data['created_at'])->toDateTimeString();
+                    $data['updated_at'] = Carbon::parse($data['updated_at'])->toDateTimeString();
                     $case = SuspectedCase::where('token', $data['token'])->first();
                         if ($case !== null) {
                             $case->update($data);
                         } else {
-                            SuspectedCase::create($data);
+                            try {
+                                SuspectedCase::create($data);
+                            } catch (\Exception $e) {
+                                   dd($e);
+                            }
                         }
                 });
                 array_push($success, "Suspected Case");
@@ -81,7 +87,8 @@ class BackupRestoreController extends Controller
             try {
                 $sampleCollection->map(function ($item, $key) use($labTest) {
                     $data = collect($item)->except(['_id', 'sync', 'update_status'])->all();
-
+                    $data['created_at'] = Carbon::parse($data['created_at'])->toDateTimeString();
+                    $data['updated_at'] = Carbon::parse($data['updated_at'])->toDateTimeString();
                     try{
                         $samp_collect = SampleCollection::where('token', $data['token'])->first();
                         $lab_data = $labTest->where('sample_token', $data['token'])->first();
@@ -117,6 +124,8 @@ class BackupRestoreController extends Controller
             try {
                 $labTest->map(function ($item, $key) {
                     $data = collect($item)->except(['_id', 'regdev', 'sync', 'update_status'])->all();
+                    $data['created_at'] = Carbon::parse($data['created_at'])->toDateTimeString();
+                    $data['updated_at'] = Carbon::parse($data['updated_at'])->toDateTimeString();
 
                     $lab = LabTest::where('token', $data['token'])->first();
 
@@ -134,6 +143,8 @@ class BackupRestoreController extends Controller
             try {
                 $symptoms->map(function ($item, $key) {
                     $data = collect($item)->except(['_id', 'regdev', 'sync', 'update_status'])->all();
+                    $data['created_at'] = Carbon::parse($data['created_at'])->toDateTimeString();
+                    $data['updated_at'] = Carbon::parse($data['updated_at'])->toDateTimeString();
 
                     $symptom = Symptoms::where('token', $data['token'])->first();
 
@@ -151,6 +162,8 @@ class BackupRestoreController extends Controller
             try {
                 $clinical_parameters->map(function ($item, $key) {
                     $data = collect($item)->except(['_id', 'regdev', 'sync', 'update_status'])->all();
+                    $data['created_at'] = Carbon::parse($data['created_at'])->toDateTimeString();
+                    $data['updated_at'] = Carbon::parse($data['updated_at'])->toDateTimeString();
 
                     $clinical_parameter = ClinicalParameter::where('token', $data['token'])->first();
 
@@ -168,6 +181,8 @@ class BackupRestoreController extends Controller
             try {
                 $laboratory_parameters->map(function ($item, $key) {
                     $data = collect($item)->except(['_id', 'regdev', 'sync', 'update_status'])->all();
+                    $data['created_at'] = Carbon::parse($data['created_at'])->toDateTimeString();
+                    $data['updated_at'] = Carbon::parse($data['updated_at'])->toDateTimeString();
 
                     $laboratory_parameter = LaboratoryParameter::where('token', $data['token'])->first();
 
@@ -185,6 +200,8 @@ class BackupRestoreController extends Controller
             try {
                 $contact_tracings->map(function ($item, $key) {
                     $data = collect($item)->except(['_id', 'regdev', 'sync', 'update_status'])->all();
+                    $data['created_at'] = Carbon::parse($data['created_at'])->toDateTimeString();
+                    $data['updated_at'] = Carbon::parse($data['updated_at'])->toDateTimeString();
 
                     $contact_tracing = ContactTracing::where('token', $data['token'])->first();
 
@@ -202,6 +219,8 @@ class BackupRestoreController extends Controller
             try {
                 $case_mgmts->map(function ($item, $key) {
                     $data = collect($item)->except(['_id', 'regdev', 'sync', 'update_status'])->all();
+                    $data['created_at'] = Carbon::parse($data['created_at'])->toDateTimeString();
+                    $data['updated_at'] = Carbon::parse($data['updated_at'])->toDateTimeString();
 
                     $case_mgmt = CaseManagement::where('token', $data['token'])->first();
 
@@ -219,6 +238,8 @@ class BackupRestoreController extends Controller
             try {
                 $contact_details->map(function ($item, $key) {
                     $data = collect($item)->except(['_id', 'regdev', 'sync', 'update_status'])->all();
+                    $data['created_at'] = Carbon::parse($data['created_at'])->toDateTimeString();
+                    $data['updated_at'] = Carbon::parse($data['updated_at'])->toDateTimeString();
 
                     $contact_detail = ContactDetail::where('token', $data['token'])->first();
 
@@ -236,6 +257,8 @@ class BackupRestoreController extends Controller
             try {
                 $vial_details->map(function ($item, $key) {
                     $data = collect($item)->except(['_id', 'regdev', 'sync', 'update_status'])->all();
+                    $data['created_at'] = Carbon::parse($data['created_at'])->toDateTimeString();
+                    $data['updated_at'] = Carbon::parse($data['updated_at'])->toDateTimeString();
                     VialDetail::create($data);
                 });
                 array_push($success, "Vial Details");
