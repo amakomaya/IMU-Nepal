@@ -229,7 +229,7 @@ export default {
       },
       json_fields: {
         'S.N': 'serial_number',
-        'Register Date' : 'register_date_en',
+        'Register Date' : 'register_date_np',
         'Name': 'name',
         'Age': 'age',
         'Gender': 'gender',
@@ -339,7 +339,7 @@ export default {
           let formattedGenderObject = {1:"Male", 2:"Female", 3:"Other"};
           let formattedTreatmentOutcomeObject = {1:"Discharge", 2:"Death"};
           exportableData.serial_number = key +1;
-          exportableData.register_date_en = data.register_date_en;
+          exportableData.register_date_np = data.register_date_np;
           exportableData.name = data.name;
           exportableData.age = data.age;
           exportableData.gender = formattedGenderObject[data.gender];
