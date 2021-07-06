@@ -80,12 +80,13 @@
                                         <form method="post" action="{{route('healthpost.destroy', $healthpost->id)}}" onsubmit="return confirmDelete()">
                                             <div class="icon">
                                                 <a  href="{{route('healthpost.show', $healthpost->id) }}">
-                                                <span class="glyphicon glyphicon-eye-open"></span>                                                </a>
+                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                </a>
                                                 @if(\App\User::checkAuthForViewByMunicipality()===true)
                                                     <a href="{{route('healthpost.edit', $healthpost->id) }}">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
-                                                    @if(Request::session()->get('permission_id') == 1)
+                                                    @if(Request::session()->get('permission_id') == 1 && auth()->user()->role != 'municipality')
                                                       {{csrf_field()}}
                                                       {{method_field('DELETE')}}
                                                       <button name="submit" class="pull-right" title="Delete" style="border: 0; background: transparent;"><i class="fa fa-trash-o"></i></button>
