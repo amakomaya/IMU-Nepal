@@ -36,15 +36,15 @@
           Type : {{ checkCaseType(item.cases) }} <br>
           Management : {{ checkCaseManagement(item.cases, item.case_where) }}
         </td>
-        <td>{{ formattedDate(item.latest_anc.sample_test_date_np) }}</td>
+        <td>{{ formattedDate(item.latest_anc ? item.latest_anc.sample_test_date_np : '') }}</td>
         <td><span class="label label-info"> {{ item.ancs.length }}</span>
-          <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
+          <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc ? item.latest_anc.token : '' }}</strong></div>
         </td>
         <td>
           <div v-if="item.ancs.length > 0">
             <span class="label label-danger"> Positive</span>
           </div>
-          <div>{{ labToken(item.latest_anc.lab_token) }}</div>
+          <div>{{ labToken(item.latest_anc ? item.latest_anc.lab_token : '') }}</div>
         </td>
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
