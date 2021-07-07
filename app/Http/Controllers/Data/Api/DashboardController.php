@@ -40,7 +40,7 @@ class DashboardController extends Controller
 
         $date_from = Carbon::today()->startOfDay();
         $date_to = Carbon::now();
-        $todays_date = Carbon::now()->toDateFormat();
+        $todays_date = Carbon::now()->toDateString();
         if (auth()->user()->role == 'healthworker' || auth()->user()->role == 'healthpost') {
             $in_lab_received = Cache::remember('in_lab_received-' . auth()->user()->token, 60 * 60, function() use ($hpCodes) {
                 $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->get()->count();
