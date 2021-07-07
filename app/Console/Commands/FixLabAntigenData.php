@@ -97,6 +97,8 @@ class FixLabAntigenData extends Command
               'sample_test_date_np' => $sampleCreatedDate['np'],
               'sample_test_time' => $sampleTestTime,
               'lab_token' => $uniqueLabId,
+              'reporting_date_en' => $sampleCreatedDate['en'],
+              'reporting_date_np' => $sampleCreatedDate['np']
             ]
           );
           LabTest::create([
