@@ -13,7 +13,7 @@ use DateTime;
 
 use Illuminate\Console\Command;
 
-class FixLabAntigenData extends Command
+class FixLabPCRData extends Command
 {
     protected $signature = 'fix:pcr:data {limit}';
 
