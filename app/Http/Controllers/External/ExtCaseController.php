@@ -164,7 +164,7 @@ class ExtCaseController extends Controller
                     'hp_code' => $healthworker->hp_code,
                     'created_by' => $healthworker->token,
                     'checked_by_name' => $healthworker->name,
-                    'case_id' => $healthworker->id . '-' . ctype_upper(bin2hex(random_bytes(3))),
+                    'case_id' => $healthworker->id . '-' . strtoupper(bin2hex(random_bytes(3))),
                     'registered_device' => 'api',
                     'register_date_en' => $value['registered_at'],
                     'register_date_np' => $this->ad2bs($value['registered_at'])
