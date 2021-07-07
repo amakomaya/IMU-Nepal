@@ -40,6 +40,7 @@ class DashboardController extends Controller
 
         $date_from = Carbon::today()->startOfDay();
         $date_to = Carbon::now();
+        $todays_date = Carbon::now()->toDateFormat();
         if (auth()->user()->role == 'healthworker' || auth()->user()->role == 'healthpost') {
             $in_lab_received = Cache::remember('in_lab_received-' . auth()->user()->token, 60 * 60, function() use ($hpCodes) {
                 $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->get()->count();
@@ -49,7 +50,7 @@ class DashboardController extends Controller
             });
 
             $in_lab_received_in_24_hrs = Cache::remember('in_lab_received_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->whereDate('received_date_en', Carbon::today())->get()->count();
+                return SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->whereDate('received_date_en', $todays_date)->get()->count();
             });
 
             $in_lab_received_positive = Cache::remember('in_lab_received_positive-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
@@ -60,7 +61,7 @@ class DashboardController extends Controller
             });
 
             $in_lab_received_positive_in_24_hrs = Cache::remember('in_lab_received_positive_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', '3')->whereDate('sample_test_date_en', Carbon::today())->get()->count();
+                return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', '3')->whereDate('sample_test_date_en', $todays_date)->get()->count();
             });
 
             $in_lab_received_negative = Cache::remember('in_lab_received_negative-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
@@ -71,7 +72,7 @@ class DashboardController extends Controller
             });
 
             $in_lab_received_negative_in_24_hrs = Cache::remember('in_lab_received_negative_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', '4')->whereDate('sample_test_date_en', Carbon::today())->get()->count();
+                return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', '4')->whereDate('sample_test_date_en', $todays_date)->get()->count();
             });
         }
 
@@ -206,7 +207,7 @@ class DashboardController extends Controller
             'vaccinated' => $vaccinated ?? 0,
 
             // time expiration in UMT add 5:45 to nepali time, sub 1 hrs to get updated at => 285
-            'cache_created_at' => Carbon::parse(\DB::table('cache')->where('key', 'laravelregistered-'.auth()->user()->token)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s'),
+            // 'cache_created_at' => Carbon::parse(\DB::table('cache')->where('key', 'laravelregistered-'.auth()->user()->token)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s'),
             'user_token' => auth()->user()->token
 //            'immunization_registered' => HealthProfessional::whereIn('checked_by', auth()->user()->token)
 //                ->whereNull('vaccinated_status')->count(),
