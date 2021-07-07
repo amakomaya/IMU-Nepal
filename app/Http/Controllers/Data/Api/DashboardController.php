@@ -40,7 +40,6 @@ class DashboardController extends Controller
 
         $date_from = Carbon::today()->startOfDay();
         $date_to = Carbon::now();
-        $todays_date = Carbon::now()->toDateFormat();
         if (auth()->user()->role == 'healthworker' || auth()->user()->role == 'healthpost') {
             $in_lab_received = Cache::remember('in_lab_received-' . auth()->user()->token, 60 * 60, function() use ($hpCodes) {
                 $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->get()->count();
@@ -50,7 +49,7 @@ class DashboardController extends Controller
             });
 
             $in_lab_received_in_24_hrs = Cache::remember('in_lab_received_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->whereDate('received_date_en', $todays_date)->get()->count();
+                return SampleCollection::whereIn('hp_code', $hpCodes)->whereNotNull('lab_token')->whereDate('received_date_en', Carbon::now())->get()->count();
             });
 
             $in_lab_received_positive = Cache::remember('in_lab_received_positive-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
@@ -61,7 +60,7 @@ class DashboardController extends Controller
             });
 
             $in_lab_received_positive_in_24_hrs = Cache::remember('in_lab_received_positive_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', '3')->whereDate('sample_test_date_en', $todays_date)->get()->count();
+                return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', '3')->whereDate('sample_test_date_en', Carbon::now())->get()->count();
             });
 
             $in_lab_received_negative = Cache::remember('in_lab_received_negative-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
@@ -72,7 +71,7 @@ class DashboardController extends Controller
             });
 
             $in_lab_received_negative_in_24_hrs = Cache::remember('in_lab_received_negative_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', '4')->whereDate('sample_test_date_en', $todays_date)->get()->count();
+                return SampleCollection::whereIn('hp_code', $hpCodes)->where('result', '4')->whereDate('sample_test_date_en', Carbon::now())->get()->count();
             });
         }
 
