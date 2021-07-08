@@ -1717,11 +1717,11 @@
                             ?>
                             <p>Mode of travel: 
                                 {{-- Flight/ Public vehicle/Privatevehicle --}}
-                                @if(in_array(1, $meansOfTravelTrace))Air, @endif
-                                @if(in_array(2, $meansOfTravelTrace))Taxi, @endif
-                                @if(in_array(3, $meansOfTravelTrace))Bus/Micro, @endif
-                                @if(in_array(4, $meansOfTravelTrace))Truck, @endif
-                                @if(in_array(5, $meansOfTravelTrace))Other @endif
+                                @if(isset($tracing->contactDetail) && $tracing->contactDetail->travel_medium == '1')Air @endif
+                                @if(isset($tracing->contactDetail) && $tracing->contactDetail->travel_medium == '2')Taxi @endif
+                                @if(isset($tracing->contactDetail) && $tracing->contactDetail->travel_medium == '3')Bus/Micro @endif
+                                @if(isset($tracing->contactDetail) && $tracing->contactDetail->travel_medium == '4')Truck, @endif
+                                @if(isset($tracing->contactDetail) && $tracing->contactDetail->travel_medium == '5')Other @endif
                             </p>
                             <p>Place visited: <u>{{ $tracing->contactDetail ? $tracing->contactDetail->travelled_where : '' }}</u> </p>
                         </div>
