@@ -393,7 +393,7 @@
         $(window).on('load', function () {
             $('#myModal').modal('hide');
             $('#myModal2').modal('hide');
-            $('#myUpdateModal').modal('show');
+            $('#myUpdateModal').modal('hide');
         });
     </script>
 </div>
