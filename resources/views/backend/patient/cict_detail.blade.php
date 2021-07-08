@@ -1433,8 +1433,7 @@
                         <?php
                             $symptomscontactdetail = [];
                             if($tracing->contactDetail){
-                                $symptomscontactdetail= json_decode($tracing->contactDetail->symptoms ?? '[]', true);
-                                $symptomscontactdetail = $symptomscontactdetail ?? [];    
+                                $symptomscontactdetail= $tracing->contactDetail->symptoms ? json_decode($tracing->contactDetail->symptoms) : [];    
                             }
                         ?>
 
@@ -1582,8 +1581,7 @@
                             <?php
                                 $symptomsComorbidityContactDetail = [];
                                 if($tracing->contactDetail) {
-                                    $symptomsComorbidityContactDetail = json_decode($tracing->contactDetail->symptoms_comorbidity ?? '[]' , true);
-                                    $symptomsComorbidityContactDetail = $symptomsComorbidityContactDetail ?? [];    
+                                    $symptomsComorbidityContactDetail = $tracing->contactDetail->symptoms_comorbidity ? json_decode($tracing->contactDetail->symptoms_comorbidity) : [];    
                                 }
                             ?>
                             <div class="comorbidity"> 
