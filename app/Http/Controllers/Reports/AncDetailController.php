@@ -351,11 +351,26 @@ class AncDetailController extends Controller
         $contact_tracing = ContactTracing::whereIn('hp_code', $hpCodes)
             ->get()
             ->groupBy('hp_code');
+        $contact_tracing_hpcodes = $contact_tracing->map(function ($item, $key) {return $key;})->values();
         
         $contact_tracing_dump = ContactTracingOld::whereIn('hp_code', $hpCodes)
             ->get()
             ->groupBy('hp_code');
+        $contact_tracing_dump_hpcodes = $contact_tracing_dump->map(function ($item, $key) {return $key;})->values();
+        array_merge($contact_tracing_hpcodes, $contact_tracing_dump_hpcodes);
         
-        dd($contact_tracing);
+        $organizations = Organization::whereIn('hp_code', $contact_tracing_hpcodes)
+            ->get()
+            ->groupBy('hp_code');
+        
+        $data = [];
+        foreach($organizations as $key => $organization) {
+            $current_count = isset($contact_tracing[$key]) ? $contact_tracing[$key]->count() : 0;
+            $dump_count = isset($contact_tracing_dump[$key]) ? $contact_tracing_dump[$key]->count() : 0;
+            $data[$key]['count'] = $current_count + $dump_count;
+            $data[$key]['organization_name'] = $organization->first()->name;
+        }
+
+        return view('backend.sample.report.contact-tracing', compact('data'));
     }
 }
