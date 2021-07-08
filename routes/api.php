@@ -825,7 +825,7 @@ Route::get('/v1/check-by-sid-or-lab-id', function (Request $request) {
         'lab_no' => $sample_detail->formated_token,
         'sample_received_date' => $sample_detail->received_date_np,
         'date_and_time_of_analysis' => $sample_detail->sample_test_date_np.' '.$sample_detail->sample_test_time,
-        'sample_tested_by' => OrganizationMember::where('token', $sample_detail->received_by)->first()->name,
+        'sample_tested_by' => OrganizationMember::where('token', $sample_detail->received_by)->first() ? OrganizationMember::where('token', $sample_detail->received_by)->first()->name : '',
 
         // 'sample_tested_by' => ($sample_detail->labreport !== null) ? $sample_detail->labreport->checked_by_name : '',
 
