@@ -351,11 +351,13 @@ class AncDetailController extends Controller
         $contact_tracing = ContactTracing::whereIn('hp_code', $hpCodes)
             ->get()
             ->groupBy('hp_code');
+        $contact_tracing_hpcodes = [];
         $contact_tracing_hpcodes = $contact_tracing->map(function ($item, $key) {return $key;})->values();
         
         $contact_tracing_dump = ContactTracingOld::whereIn('hp_code', $hpCodes)
             ->get()
             ->groupBy('hp_code');
+        $contact_tracing_dump_hpcodes = [];
         $contact_tracing_dump_hpcodes = $contact_tracing_dump->map(function ($item, $key) {return $key;})->values();
         array_merge($contact_tracing_hpcodes, $contact_tracing_dump_hpcodes);
         
