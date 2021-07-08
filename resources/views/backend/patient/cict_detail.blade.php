@@ -1433,8 +1433,7 @@
                         <?php
                             $symptomscontactdetail = [];
                             if($tracing->contactDetail){
-                                $symptomscontactdetail= json_decode($tracing->contactDetail->symptoms ?? '[]', true);
-                                $symptomscontactdetail = $symptomscontactdetail ?? [];    
+                                $symptomscontactdetail= $tracing->contactDetail->symptoms ? json_decode($tracing->contactDetail->symptoms) : [];    
                             }
                         ?>
 
@@ -1582,8 +1581,7 @@
                             <?php
                                 $symptomsComorbidityContactDetail = [];
                                 if($tracing->contactDetail) {
-                                    $symptomsComorbidityContactDetail = json_decode($tracing->contactDetail->symptoms_comorbidity ?? '[]' , true);
-                                    $symptomsComorbidityContactDetail = $symptomsComorbidityContactDetail ?? [];    
+                                    $symptomsComorbidityContactDetail = $tracing->contactDetail->symptoms_comorbidity ? json_decode($tracing->contactDetail->symptoms_comorbidity) : [];    
                                 }
                             ?>
                             <div class="comorbidity"> 
@@ -1714,8 +1712,7 @@
                             <?php
                                 $meansOfTravelTrace = [];
                                 if($tracing->contactDetail) {
-                                    $meansOfTravelTrace = json_decode($tracing->contactDetail->travel_medium ?? '[]', true);
-                                    $meansOfTravelTrace = $meansOfTravelTrace ?? [];
+                                    $meansOfTravelTrace = $tracing->contactDetail->travel_medium ? json_decode($tracing->contactDetail->travel_medium) : [];
                                 }
                             ?>
                             <p>Mode of travel: 
