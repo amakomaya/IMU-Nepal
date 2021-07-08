@@ -6,6 +6,8 @@ use App\Models\SampleCollection;
 use App\Models\Organization;
 use App\Models\District;
 use App\Models\LabTest;
+use App\Models\ContactTracing;
+use App\Models\ContactTracingOld;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -341,5 +343,19 @@ class AncDetailController extends Controller
 
         return view('backend.sample.report.regdev', compact('data'));
 
+    }
+
+    public function organizationContactTracing(Request $request) {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $contact_tracing = ContactTracing::whereIn('hp_code', $hpCodes)
+            ->get()
+            ->groupBy('hp_code');
+        
+        $contact_tracing_dump = ContactTracingOld::whereIn('hp_code', $hpCodes)
+            ->get()
+            ->groupBy('hp_code');
+        
+        dd($contact_tracing);
     }
 }
