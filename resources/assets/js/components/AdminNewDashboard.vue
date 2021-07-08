@@ -16,6 +16,7 @@
               <option value="5">{{ getDates().fourDaysAgoFormatted}}</option>
               <option value="6">{{ getDates().fiveDaysAgoFormatted}}</option>
               <option value="7">{{ getDates().sixDaysAgoFormatted}}</option>
+              <option value="8">{{ getDates().sevenDaysAgoFormatted}}</option>
             </select>
           </div>
         </div>
@@ -311,7 +312,9 @@ export default {
       var fiveDaysAgo = new Date(date.getTime() - (5 * 24 * 60 * 60 * 1000));
       var fiveDaysAgoFormatted = moment(String(fiveDaysAgo)).format('YYYY-MM-DD');
       var sixDaysAgo = new Date(date.getTime() - (6 * 24 * 60 * 60 * 1000));
-      var sixDaysAgoFormatted = moment(String(sixDaysAgo)).format('YYYY-MM-DD');  
+      var sixDaysAgoFormatted = moment(String(sixDaysAgo)).format('YYYY-MM-DD');
+      var sevenDaysAgo = new Date(date.getTime() - (7 * 24 * 60 * 60 * 1000));
+      var sevenDaysAgoFormatted = moment(String(sevenDaysAgo)).format('YYYY-MM-DD');
 
       var dates = [];
       dates['today'] = 'Today',
@@ -323,6 +326,7 @@ export default {
       dates['fourDaysAgoFormatted'] = fourDaysAgoFormatted;
       dates['fiveDaysAgoFormatted'] = fiveDaysAgoFormatted;
       dates['sixDaysAgoFormatted'] = sixDaysAgoFormatted;
+      dates['sevenDaysAgoFormatted'] = sevenDaysAgoFormatted;
 
       return dates;
     }

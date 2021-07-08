@@ -238,6 +238,8 @@ class DashboardController extends Controller
                 $date_chosen = Carbon::now()->subDays(5)->toDateString();
             }elseif($request->date_selected == '7') {
                 $date_chosen = Carbon::now()->subDays(6)->toDateString();
+            }elseif($request->date_selected == '8') {
+                $date_chosen = Carbon::now()->subDays(7)->toDateString();
             }else {
                 $date_chosen = Carbon::now()->toDateString();
             }
@@ -297,8 +299,11 @@ class DashboardController extends Controller
         $hospital_active_cases = PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
             ->select('payment_cases.*', 'healthposts.hospital_type')
             ->whereIn('payment_cases.hp_code', $hpCodes)
-            ->whereNull('is_death')
             ->whereDate('register_date_en', '<=', $date_chosen)
+            ->where(function($q) use ($date_chosen) {
+                $q->whereDate('payment_cases.date_of_outcome_en', '>=', $date_chosen)
+                    ->orWhereNull('payment_cases.date_of_outcome_en');
+                })
             ->count();
 
         $hospital_discharge = PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
