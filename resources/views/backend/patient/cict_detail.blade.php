@@ -1714,8 +1714,7 @@
                             <?php
                                 $meansOfTravelTrace = [];
                                 if($tracing->contactDetail) {
-                                    $meansOfTravelTrace = json_decode($tracing->contactDetail->travel_medium ?? '[]', true);
-                                    $meansOfTravelTrace = $meansOfTravelTrace ?? [];
+                                    $meansOfTravelTrace = $tracing->contactDetail->travel_medium ? json_decode($tracing->contactDetail->travel_medium) : [];
                                 }
                             ?>
                             <p>Mode of travel: 
