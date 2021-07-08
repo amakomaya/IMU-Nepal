@@ -1,7 +1,10 @@
 <template>
   <div class="row">
     <div>
-      <div class="col-lg-12">
+      <a :href="'/admin'" class="btn btn-primary pull-right" style="margin-right: 20px;">
+        <i class="fa fa-tachometer" aria-hidden="true"></i> Old Dashboard
+      </a>
+      <div class="col-lg-6">
         <h3>{{ headingTitle }}'s Update</h3>
       </div>
       <div class="col-lg-12" style="margin-bottom: 20px;">
