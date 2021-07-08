@@ -234,12 +234,16 @@ export default {
         'Age': 'age',
         'Gender': 'gender',
         'Phone' : 'phone',
+        'District' : 'district',
         'Address' : 'address',
         'Parent/Guardian Name' : 'guardian_name',
         'Health Condition' : 'health_condition',
         'Safe / Free' : 'self_free',
         'Treatment Outcome' : 'treatment_outcome',
         'Date of Outcome' : 'date_of_outcome',
+        'Organization Name' : 'organization_name',
+        'Vaccinated Status' : 'complete_vaccination',
+        'Cause of Death' : 'cause_of_death',
         'Remark' : 'remark'
       }
     }
@@ -278,6 +282,40 @@ export default {
           return 'Severe - Ventilator';
         default:
           return 'N/A';
+      }
+    },
+    formattedVaccinationStatus: function (value) {
+      if (value == null){
+        return 'None';
+      }
+      switch (value) {
+        case 1:
+          return '1st Dose';
+        case 2:
+          return '2nd Dose';
+        default:
+          return 'None';
+      }
+    },
+    formattedCauseOfDeath : function (value) {
+      if (value == null){
+        return '-';
+      }
+      switch (value) {
+        case 1:
+          return 'COVID-19';
+        case 2:
+          return 'COVID 19, Pneumonia';
+        case 3:
+          return 'COVID 19, Pneumonia with Cardio Respiratory Failure';
+        case 4:
+          return 'COVID 19 with ARDS';
+        case 5:
+          return 'Severe COVID 19, Pneumonia with HTN';
+        case 6:
+          return 'Others';
+        default:
+          return '-';
       }
     },
     handleFileChange() {
@@ -344,12 +382,16 @@ export default {
           exportableData.age = data.age;
           exportableData.gender = formattedGenderObject[data.gender];
           exportableData.phone = data.phone;
+          exportableData.district = data.municipality ? data.municipality.district_name : '';
           exportableData.address = data.address;
           exportableData.guardian_name = data.guardian_name;
           exportableData.treatment_outcome = formattedTreatmentOutcomeObject[data.is_death];
           exportableData.date_of_outcome = data.date_of_outcome;
           exportableData.health_condition = self.formattedHealthCondition(data.health_condition,data.health_condition_update);
           exportableData.self_free = formattedSafeOrFreeObject[data.self_free];
+          exportableData.organization_name = data.organization.name;
+          exportableData.complete_vaccination = self.formattedVaccinationStatus(data.complete_vaccination);
+          exportableData.cause_of_death = self.formattedCauseOfDeath(data.cause_of_death);
           exportableData.remark = data.remark;
           list.push(exportableData);
         });
