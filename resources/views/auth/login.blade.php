@@ -266,7 +266,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">सूचना ! सूचना!! सूचना!!!</h4> <strong class="pull-right">२४ असार २०७८, बिहिवार</strong>
+                                    <h4 class="modal-title">सूचना ! सूचना!! सूचना!!!</h4> <strong class="pull-right">२५ असार २०७८, शुक्रवार</strong>
                                 </div>
                                 <div class="modal-body">
                                     <ol>IMU को mobile एपमा अपडेट भएको छ।
@@ -393,7 +393,7 @@
         $(window).on('load', function () {
             $('#myModal').modal('hide');
             $('#myModal2').modal('hide');
-            $('#myUpdateModal').modal('hide');
+            $('#myUpdateModal').modal('show');
         });
     </script>
 </div>
