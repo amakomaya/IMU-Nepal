@@ -28,7 +28,7 @@ class FixLabAntigenData extends Command
 
     public function addZeroToDate($date) {
       $dateArray = explode("-", $date);
-      return $dateArray[0].'-'.strlen($dateArray[1])==1?'0':''.$dateArray[1].'-'.strlen($dateArray[2])==1?'0':''.$dateArray[2];
+      return $dateArray[0].'-'.(strlen($dateArray[1])==1?'0':'').$dateArray[1].'-'.(strlen($dateArray[2])==1?'0':'').$dateArray[2];
     }
     
     public function generateDateFromSid($sid){
