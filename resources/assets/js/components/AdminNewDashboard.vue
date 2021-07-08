@@ -1,7 +1,10 @@
 <template>
   <div class="row">
     <div>
-      <div class="col-lg-12">
+      <a :href="'/admin'" class="btn btn-primary pull-right" style="margin-right: 20px;">
+        <i class="fa fa-tachometer" aria-hidden="true"></i> Old Dashboard
+      </a>
+      <div class="col-lg-6">
         <h3>{{ headingTitle }}'s Update</h3>
       </div>
       <div class="col-lg-12" style="margin-bottom: 20px;">
@@ -16,6 +19,7 @@
               <option value="5">{{ getDates().fourDaysAgoFormatted}}</option>
               <option value="6">{{ getDates().fiveDaysAgoFormatted}}</option>
               <option value="7">{{ getDates().sixDaysAgoFormatted}}</option>
+              <option value="8">{{ getDates().sevenDaysAgoFormatted}}</option>
             </select>
           </div>
         </div>
@@ -311,7 +315,9 @@ export default {
       var fiveDaysAgo = new Date(date.getTime() - (5 * 24 * 60 * 60 * 1000));
       var fiveDaysAgoFormatted = moment(String(fiveDaysAgo)).format('YYYY-MM-DD');
       var sixDaysAgo = new Date(date.getTime() - (6 * 24 * 60 * 60 * 1000));
-      var sixDaysAgoFormatted = moment(String(sixDaysAgo)).format('YYYY-MM-DD');  
+      var sixDaysAgoFormatted = moment(String(sixDaysAgo)).format('YYYY-MM-DD');
+      var sevenDaysAgo = new Date(date.getTime() - (7 * 24 * 60 * 60 * 1000));
+      var sevenDaysAgoFormatted = moment(String(sevenDaysAgo)).format('YYYY-MM-DD');
 
       var dates = [];
       dates['today'] = 'Today',
@@ -323,6 +329,7 @@ export default {
       dates['fourDaysAgoFormatted'] = fourDaysAgoFormatted;
       dates['fiveDaysAgoFormatted'] = fiveDaysAgoFormatted;
       dates['sixDaysAgoFormatted'] = sixDaysAgoFormatted;
+      dates['sevenDaysAgoFormatted'] = sevenDaysAgoFormatted;
 
       return dates;
     }
