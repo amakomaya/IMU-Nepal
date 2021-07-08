@@ -100,7 +100,7 @@ Route::post('/v1/client', function (Request $request) {
     //     } catch (\Exception $e) {
         foreach ($data as $value) {
             try {
-//                 $value['case_id'] = bin2hex(random_bytes(3));
+    //$value['case_id'] = bin2hex(random_bytes(3));
                     $value['register_date_en'] = Carbon::parse($value['created_at'])->format('Y-m-d');
                     
                     $register_date_en = explode("-", $value['register_date_en']);
@@ -274,6 +274,7 @@ Route::post('/v1/client-tests', function (Request $request) {
     return response()->json(['message' => 'Data Successfully Sync']);
 });
 
+
 Route::get('/v1/client-tests', function (Request $request) {
     $hp_code = $request->hp_code;
     $record = SampleCollection::where('hp_code', $hp_code)->get();
@@ -322,16 +323,12 @@ Route::get('/v1/lab-test', function (Request $request) {
 Route::post('/v1/lab-test', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
-
-        $sample_test_date_np_array = explode("-", $value['sample_test_date']);
-        $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDayNepToEng();
-
-        $received_date_en = explode("-", Carbon::parse($value['created_at'])->format('Y-m-d'));
-        $received_date_np = Calendar::eng_to_nep($received_date_en[0], $received_date_en[1], $received_date_en[2])->getYearMonthDayEngToNep();
-
-        $reporting_date_en = explode("-", Carbon::now()->format('Y-m-d'));
-        $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
-
+      $sample_test_date_np_array = explode("-", $value['sample_test_date']);
+      $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDayNepToEng();
+      $received_date_en = explode("-", Carbon::parse($value['created_at'])->format('Y-m-d'));
+      $received_date_np = Calendar::eng_to_nep($received_date_en[0], $received_date_en[1], $received_date_en[2])->getYearMonthDayEngToNep();
+      $reporting_date_en = explode("-", Carbon::now()->format('Y-m-d'));
+      $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
         try {
             if ($value['sample_test_date'] == '') {
                 $value['sample_test_result'] = '9';
@@ -385,6 +382,61 @@ Route::post('/v1/lab-test', function (Request $request) {
     return response()->json(['message' => 'Data Successfully Sync']);
 });
 
+Route::post('/v2/lab-test', function (Request $request) {
+  $data = $request->json()->all();
+  foreach ($data as $value) {
+      try {
+          if ($value['sample_test_date'] == '') {
+              $value['sample_test_result'] = '9';
+              LabTest::create($value);
+
+              SampleCollection::where('token', $value['sample_token'])->update([
+                  'result' => '9',        
+                  'sample_test_date_en' => $sample_test_date_en,
+                  'sample_test_date_np' => $value['sample_test_date'],
+                  'sample_test_time' => $value['sample_test_time'],
+                  'received_by' => $value['checked_by'],
+                  'received_by_hp_code' => $value['hp_code'],
+                  'received_date_en' => Carbon::parse($value['created_at'])->format('Y-m-d'),
+                  'received_date_np' => $received_date_np,
+                  'lab_token' => $value['token']
+              ]);
+          } else {
+              SampleCollection::where('token', $value['sample_token'])->update([
+                  'result' => $value['sample_test_result'],        
+                  'sample_test_date_en' => $sample_test_date_en,
+                  'sample_test_date_np' => $value['sample_test_date'],
+                  'sample_test_time' => $value['sample_test_time'],
+                  'received_by' => $value['checked_by'],
+                  'received_by_hp_code' => $value['hp_code'],
+                  'received_date_en' => Carbon::parse($value['created_at'])->format('Y-m-d'),
+                  'received_date_np' => $received_date_np,
+                  'lab_token' => $value['token'],
+                  'reporting_date_en' => Carbon::now()->toDateTimeString(),
+                  'reporting_date_np' => $reporting_date_np
+              ]);
+              $find_test = LabTest::where('token', $value['token'])->first();
+              if ($find_test) {
+                  $find_test->update([
+                      'sample_test_date' => $value['sample_test_date'],
+                      'sample_test_time' => $value['sample_test_time'],
+                      'sample_test_result' => $value['sample_test_result'],
+                      'checked_by' => $value['checked_by'],
+                      'hp_code' => $value['hp_code'],
+                      'status' => $value['status'],
+                      'created_at' => $value['created_at'],
+                      'checked_by_name' => $value['checked_by_name']
+                  ]);
+              } else {
+                  LabTest::create($value);
+              }
+          }
+      } catch (\Exception $e) {
+          return response()->json(['message' => $e]);
+      }
+  }
+  return response()->json(['message' => 'Data Successfully Sync']);
+});
 
 Route::post('/v1/patient-transfer', function (Request $request) {
 
@@ -825,10 +877,8 @@ Route::get('/v1/check-by-sid-or-lab-id', function (Request $request) {
         'lab_no' => $sample_detail->formated_token,
         'sample_received_date' => $sample_detail->received_date_np,
         'date_and_time_of_analysis' => $sample_detail->sample_test_date_np.' '.$sample_detail->sample_test_time,
-        'sample_tested_by' => OrganizationMember::where('token', $sample_detail->received_by)->first() ? OrganizationMember::where('token', $sample_detail->received_by)->first()->name : '',
-
+        'sample_tested_by' => OrganizationMember::where('token', $sample_detail->received_by)->first()->name??'',
         // 'sample_tested_by' => ($sample_detail->labreport !== null) ? $sample_detail->labreport->checked_by_name : '',
-
         'test_type' => ($sample_detail->service_for == "2") ? 'Rapid Antigen Test' : 'SARS-CoV-2 RNA Test',
         'test_result' => $sample_detail->formatted_result
     ];
