@@ -435,6 +435,88 @@
                                            class="form-text text-danger">{{ $errors->first('reson_for_testing') }}</small>
                                 @endif
                             </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label">Have you ever received Covid-19 vaccine?</label>
+                                <div class="control-group">
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               {{ old('vaccine_status') == "0" ? 'checked' : '' }} name="vaccine_status"
+                                               value="0" class="vaccine_status" required>No
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               {{ old('vaccine_status') == "1" ? 'checked' : '' }} name="vaccine_status"
+                                               value="1" class="vaccine_status">Yes
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group vaccine-status">
+                                <label class="control-label">Do you have a vaccination card?</label>
+                                <div class="control-group">
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               {{ old('vaccination_card') == "0" ? 'checked' : '' }} name="vaccination_card"
+                                               value="0" class="vaccination_card">No
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               {{ old('vaccination_card') == "1" ? 'checked' : '' }} name="vaccination_card"
+                                               value="1" class="vaccination_card">Yes
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group vaccine-status">
+                                <label class="control-label">Vaccination doses complete?</label>
+                                <div class="control-group">
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               {{ old('vaccination_dosage_complete') == "0" ? 'checked' : '' }} name="vaccination_dosage_complete"
+                                               value="0" class="vaccination_dosage_complete">No
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               {{ old('vaccination_dosage_complete') == "1" ? 'checked' : '' }} name="vaccination_dosage_complete"
+                                               value="1" class="vaccination_dosage_complete">Yes
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group vaccine-status">
+                                <label class="control-label">How many dosages of vaccine you have received?</label>
+                                <div class="control-group">
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               {{ old('vaccine_dosage_count') == "1" ? 'checked' : '' }} name="vaccine_dosage_count"
+                                               value="1" class="vaccine_dosage_count">1st Dose
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               {{ old('vaccine_dosage_count') == "2" ? 'checked' : '' }} name="vaccine_dosage_count"
+                                               value="2" class="vaccine_dosage_count">2nd (Final) Dose
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group vaccine-status {{ $errors->has('vaccine_dosage') ? 'has-error' : '' }}">
+                                <label for="vaccine_name">Name of Vaccine</label>
+                                <select name="vaccine_dosage" class="form-control">
+                                    <option {{ old('vaccine_dosage') == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
+                                    <option {{ old('vaccine_dosage') == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
+                                    <option {{ old('vaccine_dosage') == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
+                                    <option {{ old('vaccine_dosage') == '3' ? "selected" : "" }} value="3">Pfizer</option>
+                                    <option {{ old('vaccine_dosage') == '4' ? "selected" : "" }} value="4">Moderna</option>
+                                    <option {{ old('vaccine_dosage') == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
+                                    <option {{ old('vaccine_dosage') == '10' ? "selected" : "" }} value="10">Other</option>
+                                </select>
+                            </div>
                             <div class="form-group">
                                 <label class="control-label">Are you collecting COVID -19 swab now ?</label>
                                 <div class="control-group">
@@ -618,6 +700,19 @@
                 $(".sample_type").prop('required',false);
             }
         }
+
+        vaccineStatusCheck();
+        $('.vaccine_status').on('change', function() {
+            vaccineStatusCheck();
+        });
+        function vaccineStatusCheck() {
+            if($('.vaccine_status:checked').val() == '1'){
+                $('.vaccine-status').show();
+            }
+            else {
+                $('.vaccine-status').hide();
+            }
+        }
         
 
         $(function () {
@@ -654,12 +749,22 @@
                     },
                     ward: {
                         required: true,
+                        digits: true
                     },
                     tole: {
                         required: true,
                     },
                     emergency_contact_one: {
                         required: true,
+                        digits: true,
+                        minlength: 10,
+                        maxlength: 10,
+                        phoneCustom: true
+                    },
+                    emergency_contact_two: {
+                        digits: true,
+                        minlength: 10,
+                        maxlength: 10,
                         phoneCustom: true
                     },
                     occupation: {
