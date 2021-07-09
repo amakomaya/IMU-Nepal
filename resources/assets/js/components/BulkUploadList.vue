@@ -140,7 +140,7 @@ export default {
          return ([
               {
                 name: 'Backdate Cases Payment',
-                templateLocation: '/downloads/excel/backdate/cases_payment_import_template.xlsx',
+                templateLocation: '/downloads/excel/backdate/cases_payment_import_template_backdate.xlsx',
                 hasPermission: this.checkBackDatePermission(), // change to this.checkPermission('cases-payment') && this.checkBackDatePermission(),
                 slug: 'bulk_file_case_payment_bd',
                 description: 'Create Cases Payment',
