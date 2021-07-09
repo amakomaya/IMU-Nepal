@@ -437,7 +437,7 @@
                             </div>
 
 
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label class="control-label">Have you ever received Covid-19 vaccine?</label>
                                 <div class="control-group">
                                     <label class="radio-inline">
@@ -516,7 +516,7 @@
                                     <option {{ old('vaccine_dosage') == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
                                     <option {{ old('vaccine_dosage') == '10' ? "selected" : "" }} value="10">Other</option>
                                 </select>
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label class="control-label">Are you collecting COVID -19 swab now ?</label>
                                 <div class="control-group">
