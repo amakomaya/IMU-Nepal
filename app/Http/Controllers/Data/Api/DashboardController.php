@@ -299,10 +299,10 @@ class DashboardController extends Controller
         $hospital_active_cases = PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
             ->select('payment_cases.*', 'healthposts.hospital_type')
             ->whereIn('payment_cases.hp_code', $hpCodes)
-            ->whereDate('register_date_en', '<=', $date_chosen)
             ->where(function($q) use ($date_chosen) {
-                $q->whereDate('payment_cases.date_of_outcome_en', '>=', $date_chosen)
-                    ->orWhereNull('payment_cases.date_of_outcome_en');
+                $q->whereNull('payment_cases.date_of_outcome_en')
+                    ->orWhereDate('payment_cases.date_of_outcome_en', '>=', $date_chosen)
+                    ->whereDate('register_date_en', '<=', $date_chosen);
                 })
             ->count();
 
