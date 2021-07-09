@@ -169,7 +169,7 @@ export default {
   },
   created(){
     if(this.item){
-      this.data.token = this.item.latest_anc.labreport.token.split('-').splice(1).join('-');
+      this.data.token = this.item.latest_anc.lab_token.split('-').splice(1).join('-');
     }
   },
   mounted () {

@@ -259,8 +259,6 @@ class AncDetailController extends Controller
             ->get()
             ->groupBy('hp_code');
 
-            // dd($lab_organizations);
-        
         $mapped_data = $lab_organizations->map(function ($lab, $key) {
             $return = [];
             $return['key'] = $lab[0]->healthpost_name;
@@ -332,7 +330,9 @@ class AncDetailController extends Controller
             $return['key'] = $lab[0]->healthpost_name;
             $return['healthpost_token'] = $lab[0]->healthpost_token;
             $return['web_count'] = $lab->where('regdev', 'web')->count();
-            $return['mobile_count'] = $lab->where('regdev', 'mobile')->count();
+            $mob_count = $lab->where('regdev', 'mobile')->count();
+            $null_count = $lab->where('regdev', null)->count();
+            $return['mobile_count'] = $mob_count + $null_count;
             $return['api_count'] = $lab->where('regdev', 'api')->count();
             $return['excel_count'] = $lab->where('regdev', 'excel')->count();
 
@@ -352,13 +352,13 @@ class AncDetailController extends Controller
             ->get()
             ->groupBy('hp_code');
         $contact_tracing_hpcodes = [];
-        $contact_tracing_hpcodes = $contact_tracing->map(function ($item, $key) {return $key;})->values();
+        $contact_tracing_hpcodes = $contact_tracing->map(function ($item, $key) {return $key;})->values()->toArray();
         
         $contact_tracing_dump = ContactTracingOld::whereIn('hp_code', $hpCodes)
             ->get()
             ->groupBy('hp_code');
         $contact_tracing_dump_hpcodes = [];
-        $contact_tracing_dump_hpcodes = $contact_tracing_dump->map(function ($item, $key) {return $key;})->values();
+        $contact_tracing_dump_hpcodes = $contact_tracing_dump->map(function ($item, $key) {return $key;})->values()->toArray();
         array_merge($contact_tracing_hpcodes, $contact_tracing_dump_hpcodes);
         
         $organizations = Organization::whereIn('hp_code', $contact_tracing_hpcodes)

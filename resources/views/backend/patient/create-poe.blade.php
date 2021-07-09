@@ -632,8 +632,17 @@
                                     <option {{ old('vaccine_dosage') == '3' ? "selected" : "" }} value="3">Pfizer</option>
                                     <option {{ old('vaccine_dosage') == '4' ? "selected" : "" }} value="4">Moderna</option>
                                     <option {{ old('vaccine_dosage') == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
-                                    <option {{ old('vaccine_dosage') == '10' ? "selected" : "" }} value="6">Other</option>
+                                    <option {{ old('vaccine_dosage') == '10' ? "selected" : "" }} value="10">Other</option>
                                 </select>
+                            </div>
+                            <div class="form-group {{ $errors->has('vaccine_name_other') ? 'has-error' : '' }}">
+                                <label for="vaccine_name_other">If other specify</label>
+                                <input type="text" class="form-control" value="{{ old('vaccine_name_other') }}" name="vaccine_name_other"
+                                        aria-describedby="help" placeholder="Enter other vaccine name"
+                                >
+                                @if ($errors->has('vaccine_name_other'))
+                                    <small id="help" class="form-text text-danger">{{ $errors->first('vaccine_name_other') }}</small>
+                                @endif
                             </div>
                             
                             <div class="form-group collect-swab-now">

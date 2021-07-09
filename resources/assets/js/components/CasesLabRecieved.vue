@@ -49,7 +49,7 @@
         </td>
         <td>
           <span class="label label-warning"> Received </span>
-          <div>{{ labToken(item.latest_anc.labreport) }}</div>
+          <div>{{ labToken(item.latest_anc.lab_token) }}</div>
         </td>
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
@@ -342,7 +342,7 @@ export default {
     },
     labToken(data){
       if (data !== null){
-        return data.token.split('-').splice(1).join('-');
+        return data.split('-').splice(1).join('-');
       }
     },
     checkDistrict : function(value){
