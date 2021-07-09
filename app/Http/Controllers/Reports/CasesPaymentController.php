@@ -10,6 +10,7 @@ use Yagiten\Nepalicalendar\Calendar;
 
 use App\Models\District;
 use App\Models\Municipality;
+use App\Models\PaymentCase;
 
 class CasesPaymentController extends Controller
 {
@@ -491,18 +492,21 @@ class CasesPaymentController extends Controller
             return view('backend.cases.reports.situation-report', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
         }
 
-        $data = \DB::table('payment_cases');
+        $data = PaymentCase::join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
+            ->leftjoin('provinces', 'provinces.id', '=', 'healthposts.province_id')
+            ->leftjoin('districts', 'districts.id', '=', 'healthposts.district_id')
+            ->leftjoin('municipalities', 'municipalities.id', '=', 'healthposts.municipality_id');
 
         if ($response['province_id'] !== null){
-            $data = $data->where('healthposts.province_id', $response['province_id']);
+            $data = $data->where('payment_cases.province_id', $response['province_id']);
         }
 
         if ($response['district_id'] !== null){
-            $data = $data->where('healthposts.district_id', $response['district_id']);
+            $data = $data->where('payment_cases.district_id', $response['district_id']);
         }
 
         if ($response['municipality_id'] !== null){
-            $data = $data->where('healthposts.municipality_id', $response['municipality_id']);
+            $data = $data->where('payment_cases.municipality_id', $response['municipality_id']);
         }
 
         if ($response['hospital_type'] !== null){
@@ -510,19 +514,18 @@ class CasesPaymentController extends Controller
         }
 
         $running_period_cases = $data
-            ->join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
-            ->leftjoin('municipalities', 'municipalities.id', '=', 'healthposts.municipality_id')
-            ->leftjoin('provinces', 'provinces.id', '=', 'healthposts.province_id')
-            ->whereBetween('payment_cases.register_date_en', [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
-                ->where(function($q) use ($filter_date) {
-                    $q->whereDate('payment_cases.date_of_outcome_en', '>=', $filter_date['from_date']->toDateString())
-                        ->orWhereNull('payment_cases.date_of_outcome_en');
-                    })
-            ->orwhereDate('payment_cases.register_date_en', '<=', $filter_date['from_date']->toDateString())
-                ->where(function($q2) use ($filter_date) {
-                    $q2->whereDate('payment_cases.date_of_outcome_en', '>=', $filter_date['from_date']->toDateString())
-                        ->orWhereNull('payment_cases.date_of_outcome_en');
-                })
+            ->where(function ($query) use ($filter_date){
+                $query->whereBetween('payment_cases.register_date_en', [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
+                    ->where(function($q) use ($filter_date) {
+                        $q->whereDate('payment_cases.date_of_outcome_en', '>=', $filter_date['from_date']->toDateString())
+                            ->orWhereNull('payment_cases.date_of_outcome_en');
+                        })
+                ->orWhereDate('payment_cases.register_date_en', '<=', $filter_date['from_date']->toDateString())
+                    ->where(function($q2) use ($filter_date) {
+                        $q2->whereDate('payment_cases.date_of_outcome_en', '>=', $filter_date['from_date']->toDateString())
+                            ->orWhereNull('payment_cases.date_of_outcome_en');
+                    });
+            })
             ->select([
                 'payment_cases.health_condition',
                 'payment_cases.is_death',
@@ -541,8 +544,8 @@ class CasesPaymentController extends Controller
                 'healthposts.no_of_icu',
                 'healthposts.no_of_ventilators',
                 'provinces.province_name',
-                'municipalities.district_name',
-                'municipalities.municipality_name',
+                'districts.district_name',
+                'municipalities.municipality_name'
             ])
             ->get();
 
@@ -613,6 +616,8 @@ class CasesPaymentController extends Controller
             }
             return $return;
         })->groupBy('healthpost_id');
+
+        // dd($mapped_data);
 
         $final_data = [];
         if(!empty($mapped_data)) {

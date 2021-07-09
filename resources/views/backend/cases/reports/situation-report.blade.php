@@ -161,7 +161,7 @@
                                     <th>No of Ventilators Occupied</th>
                                     <th>No of Discharge</th>
                                     <th>No of Deaths</th>
-                                    <th>Active Cases</th>
+                                    {{-- <th>Active Cases</th> --}}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -183,7 +183,7 @@
                                         <td>{{ $case['ventilator_count'] }}</td>
                                         <td>{{ $case['discharge_count'] }} </td>
                                         <td>{{ $case['death_count'] }} </td>
-                                        <td>{{ $case['no_of_registration'] }} </td>
+                                        {{-- <td>{{ $case['no_of_registration'] }} </td> --}}
                                     </tr>
                                 @endforeach
                                 </tbody>
