@@ -255,6 +255,7 @@ class AncDetailController extends Controller
             ->whereIn('ancs.hp_code', $hpCodes)
             ->whereIn('service_for', ['1', '2'])
             ->whereIn('result', ['3', '4'])
+            ->whereIn('hospital_type', [2, 3])
             ->whereBetween('collection_date_en', [Carbon::now()->subDays(1)->toDateString(), Carbon::now()->toDateString()])
             ->get()
             ->groupBy('hp_code');
