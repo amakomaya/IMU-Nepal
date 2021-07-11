@@ -594,7 +594,8 @@
                                                class="form-text text-danger">{{ $errors->first('service_type') }}</small>
                                     @endif
                                 </div>
-                                <div class="panel panel-danger">
+
+                                <div class="panel panel-danger pcr-part">
                                     <div class="panel-heading"><strong>Auto Generated Sample ID is :</strong></div>
                                     <?php
                                         $id = App\Models\OrganizationMember::where('token', auth()->user()->token)->first()->id;
@@ -603,6 +604,10 @@
                                         $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon\Carbon::now()->format('ymd') . '-' . $converted_time;
                                     ?>
                                     <div class="panel-body text-center"><h3>{{ $swab_id }}</h3></div>
+                                </div>
+
+                                <div class="form-group antigen-part">
+                                    <label class="control-label">Enter Registered Lab Id</label>
                                 </div>
                                 <input type="text" name="token" value="{{$swab_id}}" hidden>
                                 {{-- <input type="text" name="woman_token" value="{{$token}}" hidden> --}}
@@ -700,6 +705,22 @@
                 $(".sample_type").prop('required',false);
             }
         }
+
+        pcrOrAntigenCheck();
+        $('.service_for').on('change', function() {
+            pcrOrAntigenCheck();
+        });
+        function pcrOrAntigenCheck(){
+            if($('.service_for:checked').val() == '1'){
+                $('.pcr-part').show();
+            }
+            else {
+                $('.pcr-part').hide();
+            }
+
+            
+        }
+
 
         vaccineStatusCheck();
         $('.vaccine_status').on('change', function() {
