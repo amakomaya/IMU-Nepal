@@ -607,9 +607,9 @@
                                 </div>
 
                                 <div class="form-group antigen-part">
-                                    <label class="control-label">Enter Registered Lab Id (Unique)</label>
+                                    <label class="control-label">Enter Registered Lab Id (Unique): </label>
                                     {{ Carbon\Carbon::now()->format('ymd') }}-
-                                    <input class="form-control" type="text" name="lab_token"/>
+                                    <input class="form-control" type="text" name="lab_token" id="lab_token"/>
                                 </div>
                                 <input type="text" name="token" value="{{$swab_id}}" hidden>
                                 {{-- <input type="text" name="woman_token" value="{{$token}}" hidden> --}}
@@ -789,6 +789,12 @@
                     },
                     occupation: {
                         required: true,
+                    },
+                    lab_token: {
+                        required:  function () {
+                            return $(".service_for:checked").val() == "2";
+                        },
+                        maxlength: 8
                     }
                 },
                 // Specify validation error messages

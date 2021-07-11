@@ -625,7 +625,7 @@
 
                             <div class="form-group vaccine-status {{ $errors->has('vaccine_dosage') ? 'has-error' : '' }}">
                                 <label for="vaccine_name">Name of Vaccine</label>
-                                <select name="vaccine_dosage" class="form-control">
+                                <select name="vaccine_dosage" class="form-control" id="vaccine_dosage">
                                     <option {{ old('vaccine_dosage') == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
                                     <option {{ old('vaccine_dosage') == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
                                     <option {{ old('vaccine_dosage') == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
@@ -635,7 +635,7 @@
                                     <option {{ old('vaccine_dosage') == '10' ? "selected" : "" }} value="10">Other</option>
                                 </select>
                             </div>
-                            <div class="form-group {{ $errors->has('vaccine_name_other') ? 'has-error' : '' }}">
+                            <div class="form-group vaccine-other {{ $errors->has('vaccine_name_other') ? 'has-error' : '' }}">
                                 <label for="vaccine_name_other">If other specify</label>
                                 <input type="text" class="form-control" value="{{ old('vaccine_name_other') }}" name="vaccine_name_other"
                                         aria-describedby="help" placeholder="Enter other vaccine name"
@@ -801,6 +801,19 @@
             }
         }
 
+        vaccineOtherCheck();
+        $('#vaccine_dosage').on('change', function() {
+            vaccineOtherCheck();
+        });
+        function vaccineOtherCheck() {
+            if($('#vaccine_dosage').val() == '10'){
+                $('.vaccine-other').show();
+            }
+            else {
+                $('.vaccine-other').hide();
+            }
+        }
+
         var currentDate = NepaliFunctions.ConvertDateFormat(NepaliFunctions.GetCurrentBsDate(), "YYYY-MM-DD");
 
         $('#travelled_date').nepaliDatePicker({
@@ -897,9 +910,7 @@
                     emergency_contact_two: {
                         required: true,
                         digits: true,
-                        minlength: 10,
-                        maxlength: 10,
-                        phoneCustom: true
+                        minlength: 7
                     },
                     contact_relationship: {
                         required: true,
