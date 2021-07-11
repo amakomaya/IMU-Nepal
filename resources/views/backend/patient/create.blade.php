@@ -607,7 +607,9 @@
                                 </div>
 
                                 <div class="form-group antigen-part">
-                                    <label class="control-label">Enter Registered Lab Id</label>
+                                    <label class="control-label">Enter Registered Lab Id (Unique)</label>
+                                    {{ Carbon\Carbon::now()->format('ymd') }}-
+                                    <input class="form-control" type="text" name="lab_token"/>
                                 </div>
                                 <input type="text" name="token" value="{{$swab_id}}" hidden>
                                 {{-- <input type="text" name="woman_token" value="{{$token}}" hidden> --}}
@@ -711,16 +713,13 @@
             pcrOrAntigenCheck();
         });
         function pcrOrAntigenCheck(){
-            if($('.service_for:checked').val() == '1'){
-                $('.pcr-part').show();
+            if($('.service_for:checked').val() == '2'){
+                $('.antigen-part').show();
             }
             else {
-                $('.pcr-part').hide();
+                $('.antigen-part').hide();
             }
-
-            
         }
-
 
         vaccineStatusCheck();
         $('.vaccine_status').on('change', function() {

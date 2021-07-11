@@ -6,6 +6,7 @@ use App\Helpers\GetHealthpostCodes;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\WomenRequest;
 use App\Models\SampleCollection;
+use App\Models\LabTest;
 use App\Models\Delivery;
 use App\Models\District;
 use App\Models\Organization;
@@ -442,7 +443,6 @@ class WomanController extends Controller
         $row['reson_for_testing'] = isset($row['reson_for_testing']) ? "[" . implode(', ', $row['reson_for_testing']) . "]" : "[]";
         unset($row['symptoms_comorbidity_trimester']);
 
-
         if($request->case_type == '3') {
             $row['register_date_np'] = $request->register_date_np;
             $register_np_array = explode("-", $request->register_date_np);
@@ -510,6 +510,26 @@ class WomanController extends Controller
                 if ($request->service_for === '1')
                     $sample_row['sample_type'] = "[" . implode(', ', $request->sample_type) . "]";
 
+                if($request->service_for == '2') {
+                    $sample_row['sample_type'] = "[]";
+                    $sample_row['result'] = 9;
+                    $sample_row['lab_token'] = auth()->user()->token . '-' . Carbon::now()->format('ymd') . $request->lab_token;
+                    $sample_row['received_date_en'] = $sample_row['collection_date_en'];
+                    $sample_row['received_date_np'] = $sample_row['collection_date_np'];
+                    $sample_row['received_by'] = $sample_row['checked_by'];
+                    $sample_row['received_by_hp_code'] = $sample_row['hp_code'];
+
+                    LabTest::create([
+                        'token' => $sample_row['lab_token'],
+                        'hp_code' => $sample_row['hp_code'],
+                        'sample_test_result' => '9',
+                        'status' => 1,
+                        'checked_by' => $sample_row['checked_by'],
+                        'checked_by_name' => $sample_row['checked_by_name'],
+                        'sample_token' => $sample_row['token'],
+                        'regdev' => 'web'
+                    ]);
+                }
                 SampleCollection::create($sample_row);
             }
         }
