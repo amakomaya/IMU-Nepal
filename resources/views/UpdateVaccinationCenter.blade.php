@@ -78,6 +78,7 @@
                 <table class="table">
                 <thead>
                 <tr>
+                    <th>S.N.</th>
                     <th>Organization</th>
                     <th>Vaccination Center</th>
                 </tr>
@@ -85,8 +86,9 @@
                 <tbody>
                 @foreach(collect($organizations)->where('vaccination_center_id', '>', 0) as $org)
                 <tr>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $org->name }}</td>
-                    <td></td>
+                    <td>{{ $vaccination_centers->values()->where('id', $org->vaccination_center_id)->first()->vaccination_center ?? '' }}</td>
                 </tr>
                 @endforeach
                 </tbody>
