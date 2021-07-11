@@ -142,6 +142,7 @@ input:focus ~ div{
                                         @endif
                                     </div>
                                 </div>
+                                @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) != 'Municipality')
                                     @if (!isset($data))
                                     
                                     <div class="form-group{{ $errors->has('hp_code') ? ' has-error' : '' }} form-item">
@@ -162,6 +163,7 @@ input:focus ~ div{
 
                                     </div>
                                     @endif
+                                @endif
 
                                     <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
                                         <label for="phone" class="col-md-3 control-label"><i data-toggle="tooltip" title=" स्वास्थ्य चौेेकीको फोन नंम्बर हाल्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i>
@@ -303,6 +305,7 @@ input:focus ~ div{
                                             @endif
                                         </div>
                                     </div>
+                                @if(auth()->user()->role != 'municipality')
                                 <div class="form-group{{ $errors->has('no_of_beds') ? ' has-error' : '' }}">
                                     <label for="no_of_beds" class="col-md-3 control-label"><i data-toggle="tooltip" title=""class="fa fa-info-circle" aria-hidden="true"></i> No of Beds ( General )</label>
 
@@ -373,18 +376,24 @@ input:focus ~ div{
                                     </div>
                                 </div>
 
+                                @endif
+
                                 <div class="form-group{{ $errors->has('hospital_type') ? ' has-error' : '' }}">
                                     <label for="status" class="col-md-3 control-label"><i data-toggle="tooltip" class="fa fa-info-circle" aria-hidden="true"></i>
                                         Organization Type</label>
                                     @php($list = (new \App\Models\Organization())->array_organization_type)
                                     <div class="col-md-7">
                                         <select id="status" class="form-control" name="hospital_type" >
+                                            @if(auth()->user()->role == 'municipality')
+                                            <option value="8">Vaccination Center</option>
+                                            @else
                                             <option value="" hidden>Select Organization Type</option>
                                             @foreach ($list as $key => $value )
                                                 <option value="{{ $key }}" @if($hospital_type=="$key") {{ 'selected' }} @endif >
                                                     {{ $value }}
                                                 </option>
                                             @endforeach
+                                            @endif
                                         </select>
 
                                         @if ($errors->has('hospital_type'))
@@ -395,6 +404,7 @@ input:focus ~ div{
                                     </div>
                                 </div>
 
+                                @if(auth()->user()->role != 'municipality')
                                 <div class="form-group{{ $errors->has('sector') ? ' has-error' : '' }}">
                                     <label for="status" class="col-md-3 control-label"><i data-toggle="tooltip" class="fa fa-info-circle" aria-hidden="true"></i>
                                         Organization Sector</label>
@@ -412,6 +422,7 @@ input:focus ~ div{
                                         @endif
                                     </div>
                                 </div>
+                                @endif
 
                 				<div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
                                     <label for="status" class="col-md-3 control-label"><i data-toggle="tooltip" title="स्थिति छान्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i>
