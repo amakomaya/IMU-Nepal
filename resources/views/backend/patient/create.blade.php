@@ -608,8 +608,10 @@
 
                                 <div class="form-group antigen-part">
                                     <label class="control-label">Enter Registered Lab Id (Unique): </label>
-                                    {{ Carbon\Carbon::now()->format('ymd') }}-
-                                    <input class="form-control" type="text" name="lab_token" id="lab_token"/>
+                                    <div class="anti-lab-id" style="display: flex;">
+                                        <span style="margin-top: 6px;">{{ Carbon\Carbon::now()->format('ymd') }}-</span>
+                                        <input class="form-control" type="text" name="lab_token" id="lab_token"/> 
+                                    </div>
                                 </div>
                                 <input type="text" name="token" value="{{$swab_id}}" hidden>
                                 {{-- <input type="text" name="woman_token" value="{{$token}}" hidden> --}}
