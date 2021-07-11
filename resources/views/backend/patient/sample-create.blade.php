@@ -1,4 +1,38 @@
 @extends('layouts.backend.app')
+@section('style')
+    <style>
+        .earning {
+            display: none;
+        }
+
+        form {
+            background: #ecf5fc;
+            padding: 20px 50px 45px;
+        }
+
+        .form-control:focus {
+            border-color: #000;
+            box-shadow: none;
+        }
+
+        label {
+            font-weight: 600;
+        }
+
+        .error {
+            color: red;
+            font-weight: 400;
+            display: block;
+            padding: 6px 0;
+            font-size: 14px;
+        }
+
+        .form-control.error {
+            border-color: red;
+            padding: .375rem .75rem;
+        }
+    </style>
+@endsection
 @section('content')
     <div id="page-wrapper">
         <div class="row">
@@ -8,17 +42,17 @@
                         Create
                     </div>
                     <div class="panel-body">
-                        {!! rcForm::open('POST', route('patient.sample.store')) !!}
+                        {!! rcForm::open('POST', route('patient.sample.store'), ['name' => 'createCase']) !!}
                         <div class="panel-body">
                             <div class="form-group">
                                 <label class="control-label">Test Type</label>
                                 <div class="control-group">
                                     <label class="radio-inline">
-                                        <input type="radio" name="service_for" value="1" onclick="toggleLayout(true)"
+                                        <input type="radio" class="service_for" name="service_for" value="1" onclick="toggleLayout(true)"
                                                >PCR Swab Collection
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="service_for" value="2" onclick="toggleLayout(false)">Antigen
+                                        <input type="radio" class="service_for" name="service_for" value="2" onclick="toggleLayout(false)">Antigen
                                         Test
                                     </label>
                                 </div>
@@ -82,6 +116,14 @@
                                 <div class="panel-heading"><strong>Auto Generated Sample ID is :</strong></div>
                                 <div class="panel-body text-center"><h3>{{ $swab_id }}</h3></div>
                             </div>
+
+                            <div class="form-group antigen-part">
+                                <label class="control-label">Enter Registered Lab Id (Unique): </label>
+                                <div class="anti-lab-id" style="display: flex;">
+                                    <span style="margin-top: 6px;">{{ Carbon\Carbon::now()->format('ymd') }}-</span>
+                                    <input class="form-control" type="text" name="lab_token" id="lab_token"/> 
+                                </div>
+                            </div>
                             <input type="text" name="token" value="{{$swab_id}}" hidden>
                             <input type="text" name="woman_token" value="{{$token}}" hidden>
                             {!! rcForm::close('post') !!}
@@ -107,5 +149,51 @@
                         x.style.display = "none";
                     }
                 }
+
+                pcrOrAntigenCheck();
+                $('.service_for').on('change', function() {
+                    pcrOrAntigenCheck();
+                });
+                function pcrOrAntigenCheck(){
+                    if($('.service_for:checked').val() == '2'){
+                        $('.antigen-part').show();
+                    }
+                    else {
+                        $('.antigen-part').hide();
+                    }
+                }
+        
+
+        $(function () {
+            $("form[name='createCase']").validate({
+                // Define validation rules
+                rules: {
+                    service_for: {
+                        required: true,
+                    },
+                    infection_type: {
+                        required: true,
+                    },
+                    service_type: {
+                        required: true
+                    },
+                    lab_token: {
+                        required:  function () {
+                            return $(".service_for:checked").val() == "2";
+                        },
+                        maxlength: 8
+                    }
+                },
+                // Specify validation error messages
+                messages: {
+                    name: "Please provide a valid name.",
+                    age: "Please provide a valid age.",
+
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            });
+        });
             </script>
 @endsection

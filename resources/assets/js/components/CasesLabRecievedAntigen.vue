@@ -1,9 +1,5 @@
 <template>
   <div>
-    <!-- <div class="col-md-12">
-      <h3>Latest Data</h3>
-      <button class="btn btn-success" style="float:right"  @click="newLink()">Click for data older than 15 days</button>
-    </div> -->
     <filterable v-bind="filterable">
       <thead slot="thead">
       <tr>
@@ -16,7 +12,7 @@
         <th width="10%" title="Municipality">Municipality</th>
         <th width="4%" title="Ward No">Ward</th>
         <th width="15%">Case</th>
-        <th width="10%" title="Case Created Date">Date</th>
+        <th width="10%" title="Received Date">Received Date</th>
         <th width="10%" title="Sample Collection Details">Sample</th>
         <th width="8%" title="Latest Lab Result">Result</th>
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
@@ -39,13 +35,17 @@
           Type : {{ checkCaseType(item.cases) }} <br>
           Management : {{ checkCaseManagement(item.cases, item.case_where) }}
         </td>
-        <td>{{ ad2bs(item.latest_anc.received_date_en) }}</td>
+        <td>
+          <div v-if="item.latest_anc">
+            {{ formattedDate(item.latest_anc.received_date_np) }}
+          </div>
+        </td>
         <td><span class="label label-info"> {{ item.ancs.length }}</span>
           <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
         </td>
         <td>
           <span class="label label-warning"> Received </span>
-          <div>{{ labToken(item.latest_anc.labreport) }}</div>
+          <div>{{ labToken(item.latest_anc.lab_token) }}</div>
         </td>
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
@@ -143,9 +143,6 @@ export default {
     this.fetch()
   },
   methods: {
-    newLink() {
-      window.location.href = window.location.protocol + '/admin/lab-received-patients-antigen-old';
-    },
     getHealthPostName: function(item) {
       if(item === null) {
         return ''
@@ -237,9 +234,66 @@ export default {
       return dateConverter.en.day + ' ' + dateConverter.en.strMonth + ', ' + dateConverter.en.year;
 
     },
+
+    formattedDate(data) {
+      if(data === null) {
+        return '';
+      }else {
+        var date_array = data.split('-');
+        switch (date_array[1]) {
+          case '1':
+          case '01':
+            return date_array[2] + " Baishakh, " + date_array[0];
+
+          case '2':
+          case '02':
+            return  date_array[2] + " Jestha, " + date_array[0];
+
+          case '3':
+          case '03':
+            return  date_array[2] + " Ashad, " + date_array[0];
+
+          case '4':
+          case '04':
+            return  date_array[2] + " Shrawan, " + date_array[0];
+
+          case '5':
+          case '05':
+            return  date_array[2] + " Bhadra, " + date_array[0];
+
+          case '6':
+          case '06':
+            return  date_array[2] + " Ashwin, " + date_array[0];
+
+          case '7':
+          case '07':
+            return  date_array[2] + " Karthik, " + date_array[0];
+
+          case '8':
+          case '08':
+            return  date_array[2] + " Mangsir, " + date_array[0];
+
+          case '9':
+          case '09':
+            return  date_array[2] + " Poush, " + date_array[0];
+
+          case '10':
+            return  date_array[2] + " Magh, " + date_array[0];
+
+          case '11':
+            return  date_array[2] + " Falgun, " + date_array[0];
+
+          case '12':
+            return  date_array[2] + " Chaitra, " + date_array[0];
+
+          default:
+            return '';
+        }
+      }
+    },
     labToken(data){
       if (data !== null){
-        return data.token.split('-').splice(1).join('-');
+        return data.split('-').splice(1).join('-');
       }
     },
     checkDistrict : function(value){

@@ -594,7 +594,8 @@
                                                class="form-text text-danger">{{ $errors->first('service_type') }}</small>
                                     @endif
                                 </div>
-                                <div class="panel panel-danger">
+
+                                <div class="panel panel-danger pcr-part">
                                     <div class="panel-heading"><strong>Auto Generated Sample ID is :</strong></div>
                                     <?php
                                         $id = App\Models\OrganizationMember::where('token', auth()->user()->token)->first()->id;
@@ -603,6 +604,14 @@
                                         $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon\Carbon::now()->format('ymd') . '-' . $converted_time;
                                     ?>
                                     <div class="panel-body text-center"><h3>{{ $swab_id }}</h3></div>
+                                </div>
+
+                                <div class="form-group antigen-part">
+                                    <label class="control-label">Enter Registered Lab Id (Unique): </label>
+                                    <div class="anti-lab-id" style="display: flex;">
+                                        <span style="margin-top: 6px;">{{ Carbon\Carbon::now()->format('ymd') }}-</span>
+                                        <input class="form-control" type="text" name="lab_token" id="lab_token"/> 
+                                    </div>
                                 </div>
                                 <input type="text" name="token" value="{{$swab_id}}" hidden>
                                 {{-- <input type="text" name="woman_token" value="{{$token}}" hidden> --}}
@@ -701,6 +710,19 @@
             }
         }
 
+        pcrOrAntigenCheck();
+        $('.service_for').on('change', function() {
+            pcrOrAntigenCheck();
+        });
+        function pcrOrAntigenCheck(){
+            if($('.service_for:checked').val() == '2'){
+                $('.antigen-part').show();
+            }
+            else {
+                $('.antigen-part').hide();
+            }
+        }
+
         vaccineStatusCheck();
         $('.vaccine_status').on('change', function() {
             vaccineStatusCheck();
@@ -769,6 +791,12 @@
                     },
                     occupation: {
                         required: true,
+                    },
+                    lab_token: {
+                        required:  function () {
+                            return $(".service_for:checked").val() == "2";
+                        },
+                        maxlength: 8
                     }
                 },
                 // Specify validation error messages

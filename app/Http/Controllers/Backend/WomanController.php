@@ -6,6 +6,7 @@ use App\Helpers\GetHealthpostCodes;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\WomenRequest;
 use App\Models\SampleCollection;
+use App\Models\LabTest;
 use App\Models\Delivery;
 use App\Models\District;
 use App\Models\Organization;
@@ -442,7 +443,6 @@ class WomanController extends Controller
         $row['reson_for_testing'] = isset($row['reson_for_testing']) ? "[" . implode(', ', $row['reson_for_testing']) . "]" : "[]";
         unset($row['symptoms_comorbidity_trimester']);
 
-
         if($request->case_type == '3') {
             $row['register_date_np'] = $request->register_date_np;
             $register_np_array = explode("-", $request->register_date_np);
@@ -467,9 +467,9 @@ class WomanController extends Controller
             $vaccination_card = $request->vaccination_card ?? '0';
             $vaccination_dosage_complete = $request->vaccination_dosage_complete ?? '0';
             $vaccine_dosage_count = $request->vaccine_dosage_count ?? '0';
-            $vaccine_name = $request->vaccine_name ?? '6';
+            $vaccine_name = $request->vaccine_name ?? '10';
     
-            $row['covid_vaccination_details'] = "[" . $vaccine_status . ", " . $vaccination_card . ", " . $vaccination_dosage_complete . ", " . $vaccine_dosage_count . ", " . $vaccine_name . "]";
+            $row['covid_vaccination_details'] = "[" . $vaccine_status . ", " . $vaccination_card . ", " . $vaccination_dosage_complete . ", " . $vaccine_dosage_count . ", " . $vaccine_name . ", " . $request->vaccine_name_other . "]";
         }
 
         SuspectedCase::create($row);
@@ -510,11 +510,34 @@ class WomanController extends Controller
                 if ($request->service_for === '1')
                     $sample_row['sample_type'] = "[" . implode(', ', $request->sample_type) . "]";
 
+                if($request->service_for == '2') {
+                    $sample_row['sample_type'] = "[]";
+                    $sample_row['result'] = 9;
+                    $sample_row['lab_token'] = auth()->user()->token . '-' . Carbon::now()->format('ymd') . '-' . $request->lab_token;
+                    $sample_row['received_date_en'] = $sample_row['collection_date_en'];
+                    $sample_row['received_date_np'] = $sample_row['collection_date_np'];
+                    $sample_row['received_by'] = $sample_row['checked_by'];
+                    $sample_row['received_by_hp_code'] = $sample_row['hp_code'];
+
+                    LabTest::create([
+                        'token' => $sample_row['lab_token'],
+                        'hp_code' => $sample_row['hp_code'],
+                        'sample_test_result' => '9',
+                        'status' => 1,
+                        'checked_by' => $sample_row['checked_by'],
+                        'checked_by_name' => $sample_row['checked_by_name'],
+                        'sample_token' => $sample_row['token'],
+                        'regdev' => 'web'
+                    ]);
+                }
                 SampleCollection::create($sample_row);
             }
         }
-
-        $request->session()->flash('message', 'Data Inserted successfully');
+        if($request->service_for == '2') {
+            $request->session()->flash('message', 'Data Inserted successfully. Created Lab ID is " ' . $request->lab_token . ' "');
+        } else {
+            $request->session()->flash('message', 'Data Inserted successfully');
+        }
 
         if($request->case_type == '3') {
             if ($request->swab_collection_conformation == '1') {
@@ -556,23 +579,50 @@ class WomanController extends Controller
         $row['collection_date_en'] = Carbon::now()->format('Y-m-d');
         $nep_date_array = explode("-", Carbon::now()->format('Y-m-d'));
         $row['collection_date_np'] = Calendar::eng_to_nep($nep_date_array[0], $nep_date_array[1], $nep_date_array[2])->getYearMonthDay();
+        $row['sample_type'] = $request->sample_type ? "[" . implode(', ', $request->sample_type) . "]" : "[]";
 
         switch (auth()->user()->role) {
             case 'healthpost':
                 $healthpost = Organization::where('token', auth()->user()->token)->first();
                 $row['hp_code'] = $healthpost->hp_code;
                 $row['created_by_name'] = $healthpost->name;
+                $row['checked_by'] = $healthpost->token;
 
             case 'healthworker':
                 $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
                 $row['hp_code'] = $healthworker->hp_code;
                 $row['created_by_name'] = $healthworker->name;
+                $row['checked_by'] = $healthworker->token;
 
         }
-        if ($row['service_for'] === '1')
-            $row['sample_type'] = $request->sample_type ? "[" . implode(', ', $request->sample_type) . "]" : "[]";
+        
+        if($request->service_for == '2') {
+            $row['sample_type'] = "[]";
+            $row['result'] = 9;
+            $row['lab_token'] = auth()->user()->token . '-' . Carbon::now()->format('ymd') . '-' . $request->lab_token;
+            $row['received_date_en'] = $row['collection_date_en'];
+            $row['received_date_np'] = $row['collection_date_np'];
+            $row['received_by'] = $row['hp_code'];
+            $row['received_by_hp_code'] = $row['hp_code'];
+
+            LabTest::create([
+                'token' => $row['lab_token'],
+                'hp_code' => $row['hp_code'],
+                'sample_test_result' => '9',
+                'status' => 1,
+                'checked_by' => $row['checked_by'],
+                'checked_by_name' => $row['created_by_name'],
+                'sample_token' => $row['token'],
+                'regdev' => 'web'
+            ]);
+        }
+
         SampleCollection::create($row);
-        $request->session()->flash('message', 'Data Inserted successfully');
+        if($request->service_for == '2') {
+            $request->session()->flash('message', 'Data Inserted successfully. Created Lab ID is " ' . $request->lab_token . ' "');
+        } else {
+            $request->session()->flash('message', 'Data Inserted successfully');
+        }
         return redirect()->route('woman.create');
     }
 

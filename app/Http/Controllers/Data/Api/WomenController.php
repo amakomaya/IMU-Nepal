@@ -323,8 +323,6 @@ class WomenController extends Controller
             })->with(['ancs','healthpost' => function($q) {
                 $q->select('name', 'hp_code');
             }, 'latestAnc', 'district', 'municipality']);
-//        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 9)->pluck('woman_token');
-//        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);

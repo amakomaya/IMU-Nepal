@@ -17,7 +17,7 @@ class UpdateVaccinationCenter extends Controller
         $vaccination_centers_api = json_decode(file_get_contents('http://vaccine2.mohp.gov.np/api/vaccination-centers'));
 
         $vaccination_centers = collect($vaccination_centers_api)->where('municipality_id', $municipality->municipality_id);
-        return view('updateVaccinationCenter',compact('organizations', 'vaccination_centers'));
+        return view('UpdateVaccinationCenter',compact('organizations', 'vaccination_centers'));
 
     }
 
