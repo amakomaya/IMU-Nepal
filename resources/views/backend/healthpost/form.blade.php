@@ -142,7 +142,11 @@ input:focus ~ div{
                                         @endif
                                     </div>
                                 </div>
-                                @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) != 'Municipality')
+                                @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Municipality')
+                                <div style="display:none">
+                                @else
+                                <div>
+                                @endif
                                     @if (!isset($data))
                                     
                                     <div class="form-group{{ $errors->has('hp_code') ? ' has-error' : '' }} form-item">
@@ -163,8 +167,7 @@ input:focus ~ div{
 
                                     </div>
                                     @endif
-                                @endif
-
+                                </div>
                                     <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
                                         <label for="phone" class="col-md-3 control-label"><i data-toggle="tooltip" title=" स्वास्थ्य चौेेकीको फोन नंम्बर हाल्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i>
                                         {{trans('create.phone')}}</label>

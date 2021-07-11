@@ -79,7 +79,6 @@ class HealthPostController extends Controller
         }
         
         $this->validateForm($request, $scenario = "create");
-        
         $healthpost = Organization::create([
             'name' => $request->get('name'),
             'token' => uniqid() . time(),
