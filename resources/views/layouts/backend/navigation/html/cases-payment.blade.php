@@ -93,6 +93,8 @@
                             <span class="label label-info pull-right"> Monthly </span>
                         </a>
                     </li>
+                    @if(auth()->user()->role == 'main' || auth()->user()->role == 'province' || 
+                    auth()->user()->role == 'dho' || auth()->user()->role == 'municipality')
                     <li>
                         <a href="{{ route('report.case-payment-situation-report') }}">
                             <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
@@ -100,6 +102,7 @@
                             <span class="label label-info pull-right"> SR </span>
                         </a>
                     </li>
+                    @endif
                     <li>
                         <a href="{{ route('cases.patient.detail') }}">
                             <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
