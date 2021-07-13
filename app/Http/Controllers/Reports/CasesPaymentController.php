@@ -54,11 +54,17 @@ class CasesPaymentController extends Controller
 
         $running_period_cases = $data
             ->join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
-            ->where(function($query) use ($filter_date) {
-                return $query
-                    ->whereDate('payment_cases.register_date_en', '>', $filter_date['from_date']->toDateString())
-                    ->where('payment_cases.date_of_outcome_en', '>', $filter_date['from_date']->toDateString())
-                    ->orWhere('payment_cases.date_of_outcome_en', null);
+            ->where(function ($query) use ($filter_date){
+                $query->whereBetween('payment_cases.register_date_en', [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
+                    ->where(function($q) use ($filter_date) {
+                        $q->whereDate('payment_cases.date_of_outcome_en', '>=', $filter_date['from_date']->toDateString())
+                            ->orWhereNull('payment_cases.date_of_outcome_en');
+                        })
+                ->orWhereDate('payment_cases.register_date_en', '<=', $filter_date['from_date']->toDateString())
+                    ->where(function($q2) use ($filter_date) {
+                        $q2->whereDate('payment_cases.date_of_outcome_en', '>=', $filter_date['from_date']->toDateString())
+                            ->orWhereNull('payment_cases.date_of_outcome_en');
+                    });
             })->select([
                 'payment_cases.name as name',
                 'payment_cases.age',
