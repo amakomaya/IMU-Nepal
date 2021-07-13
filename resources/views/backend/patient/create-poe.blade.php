@@ -632,6 +632,7 @@
                                     <option {{ old('vaccine_dosage') == '3' ? "selected" : "" }} value="3">Pfizer</option>
                                     <option {{ old('vaccine_dosage') == '4' ? "selected" : "" }} value="4">Moderna</option>
                                     <option {{ old('vaccine_dosage') == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
+                                    <option {{ old('vaccine_dosage') == '6' ? "selected" : "" }} value="6">Johnson & Johnson</option>
                                     <option {{ old('vaccine_dosage') == '10' ? "selected" : "" }} value="10">Other</option>
                                 </select>
                             </div>
