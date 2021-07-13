@@ -1,0 +1,327 @@
+*,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+p,b {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 14px;
+}
+
+header {
+    display: flex!important;
+    flex-direction: row;
+    justify-content: center;
+    align-self: center;
+    padding: 10px;
+    background-color: #1e7eb8;
+}
+
+header>img {
+    display: flex;
+    justify-content: start;
+    align-items: flex-start;
+    margin-right: auto;
+}
+
+.header-title {
+    line-height: 17px;
+    text-align: center;
+    color: #fff;
+    font-weight: 600;
+}
+
+.side-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.side-header {
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-self: center;
+    margin-left: auto;
+}
+
+h3 {
+    margin: 1em 0 1em 0;
+    text-align: center;
+    color: #1c609d;
+}
+
+.investigation-form>form {
+    display: flex;
+    font-size: 14px;
+}
+
+.investigation-form>form>input,
+p {
+    margin-left: 20px;
+}
+
+.info {
+    margin-top: 1em;
+    line-height: 20px;
+    font-size: 14px;
+}
+
+.section-1,
+.section-2 {
+    margin: 10px
+}
+
+.section-1>h5 {
+    font-size: 16px;
+    color: #fff;
+    background-color: #2f5496;
+    padding: 0.7em;
+}
+
+.date {
+    display: flex;
+    display: row;
+}
+
+.pi-1 {
+    line-height: 20px;
+}
+
+.pi-2 {
+    line-height: 20px;
+}
+
+.info-personal {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-self: center;
+    margin-top: 0.7em;
+}
+
+.gender {
+    display: flex;
+    display: row;
+}
+
+.pi-2 {
+    margin-left: auto;
+}
+
+sub-section>h5 {
+    padding: 0.4em;
+    margin-top: 0.7em;
+    background-color: #dfdfdfdf;
+}
+
+table {
+    width: 100%;
+}
+
+td {
+    font-size: 14px;
+    padding: 5px !important;
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 5px;
+    text-align: left;
+}
+
+.isolatedAt {
+    line-height: 25px;
+}
+
+.detail-checkbox {
+    display: flex;
+    flex-direction: row;
+}
+
+.detail-checkbox>input {
+    margin-left: 0.5em;
+}
+
+.detail-checkbox {
+    padding-top: 1em;
+}
+
+.section-2>h5 {
+    font-size: 16px;
+    color: #fff;
+    background-color: #2f5496;
+    padding: 0.7em;
+}
+
+.section-2>p {
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+    font-size: 14px;
+    padding: 0.5em;
+    margin: 0.7em!important;
+    background-color: rgb(233, 233, 233);
+}
+
+.list-symptoms {
+    display: flex;
+    flex-direction: row;
+}
+
+.list-symptoms>.symptom-1 {
+    display: flex;
+    flex-direction: row;
+}
+
+.comorbidity1{
+    display: flex;
+    flex-direction: column;
+}
+
+.high-exposures>b {
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+    font-size: 14px;
+    padding: 0.5em;
+    margin: 0.7em!important;
+    background-color: rgb(233, 233, 233);
+}
+
+.high-exposure-title > p{
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+    font-size: 14px;
+    padding: 0.5em;
+    margin: 0.7em!important;
+    background-color: rgb(233, 233, 233);
+}
+
+.travel-head {
+    display: flex;
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+    font-size: 14px;
+    padding: 0.5em;
+    margin: 0.7em 0 !important;
+    background-color: rgb(233, 233, 233);
+}
+
+.travel-checkbox{
+    display: flex;
+    margin-left: auto;
+}
+
+.checkbox-tra{
+    padding-left: 1em;
+}
+
+.foreign-domestic-table{
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+}
+
+th, td{
+    padding: 5px !important;
+}
+
+.source-title{
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+    font-size: 14px;
+    padding: 0.5em;
+    margin: 0.7em!important;
+    background-color: rgb(233, 233, 233);
+}
+
+.source-body{
+    border: 1px soild #000;
+}
+
+.information{
+    margin-top : 1em;
+}
+
+.information-head {
+    display: flex;
+    margin-top: 1em;
+    padding: 0.5em;
+    background-color: #e7e6e6;
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+}
+
+.box-body {
+    border-bottom: 1px solid black;
+}
+
+.box {
+    padding: 5px;
+    border: 1px solid black;
+    margin-top: 0.7em;
+}
+
+.box-head {
+    border-bottom: 1px solid black;
+    padding: 5px;
+}
+
+.vacc-status-title{
+    display: flex;
+    margin-top: 1em;
+    padding: 0.5em;
+    background-color: #e7e6e6;
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+}
+
+.information-close-title > p{
+    display: flex;
+    margin-top: 1em !important;
+    padding: 0.5em !important;
+    background-color: #e7e6e6;
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+}
+
+.section-3>h5 {
+    font-size: 16px;
+    color: #fff;
+    background-color: #2f5496;
+    padding: 0.7em;
+}
+
+.section-4>h5 {
+    font-size: 16px;
+    color: #fff;
+    background-color: #2f5496;
+    padding: 0.7em;
+}
+
+.form-b1 > h4{
+    margin: 2em 0 1em 0;
+    color: #23497e;
+    text-align: center;
+}
+
+.form-b2 > h4 {
+    margin: 2em 0 1em 0;
+    color: #23497e;
+    text-align: center;
+}
+
+.arrow-img{
+    position: absolute;
+    margin-top: -20px;
+    z-index: -1;
+}
