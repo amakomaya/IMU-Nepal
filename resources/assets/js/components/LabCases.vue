@@ -45,7 +45,7 @@
           <div>{{ labToken(item.latest_anc.lab_token) }}</div>
         </td>
         <td>
-           <button v-if="checkPermission('lab-result')" v-on:click="addResultInLab(item, removeItemOnSuccess)" title="Add Result">
+           <button v-if="checkPermission('lab-result') || checkPermission('antigen-result')" v-on:click="addResultInLab(item, removeItemOnSuccess)" title="Add Result">
              <i class = "material-icons">biotech</i> | 
           </button>
           <button v-if="permission == 1" v-on:click="deleteResultData(item, removeItemOnSuccess)" title="Move Patient Data">
