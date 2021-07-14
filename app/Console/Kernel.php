@@ -43,9 +43,12 @@ class Kernel extends ConsoleKernel
         $schedule->command('db:dump')
             ->dailyAt('01:00');
 //    ->everyMinute();
-        $schedule->call(function () {
+        $subDays = 30;
+        $schedule->call(function () use ($subDays) {
+            $tokens = SuspectedCase::where('created_at', '<=', now()->subDays($subDays))->pluck('token');
+            $sample_tokens = SampleCollection::whereIn('token', $tokens)->pluck('token');
             SuspectedCase::query()
-                ->where('created_at', '<=', now()->subDays(15))
+                ->whereIn('token', $tokens)
                 ->each(function ($oldRecord) {
                     $newRecord = $oldRecord->replicate();
                     try{
@@ -54,7 +57,7 @@ class Kernel extends ConsoleKernel
                     }catch (\Exception $e){}
                 });
             SampleCollection::query()
-                ->where('created_at', '<=', now()->subDays(15))
+                ->whereIn('women_token', $tokens)
                 ->each(function ($oldRecord) {
                     $newRecord = $oldRecord->replicate();
                     try{
@@ -63,7 +66,7 @@ class Kernel extends ConsoleKernel
                     }catch (\Exception $e){}
                 });
             LabTest::query()
-                ->where('created_at', '<=', now()->subDays(15))
+                ->whereIn('sample_token', $sample_tokens)
                 ->each(function ($oldRecord) {
                     $newRecord = $oldRecord->replicate();
                     try{
@@ -80,60 +83,60 @@ class Kernel extends ConsoleKernel
                         $oldRecord->delete();
                     }catch (\Exception $e){}
                 });
-            CaseManagement::query()
-                ->where('created_at', '<=', now()->subDays(15))
-                ->each(function ($oldRecord) {
-                    $newRecord = $oldRecord->replicate();
-                    try{
-                        $newRecord->setConnection('mysqldump')->save();
-                        $oldRecord->delete();
-                    }catch (\Exception $e){}
-                });
-            ClinicalParameter::query()
-                ->where('created_at', '<=', now()->subDays(15))
-                ->each(function ($oldRecord) {
-                    $newRecord = $oldRecord->replicate();
-                    try{
-                        $newRecord->setConnection('mysqldump')->save();
-                        $oldRecord->delete();
-                    }catch (\Exception $e){}
-                });
-            ContactDetail::query()
-                ->where('created_at', '<=', now()->subDays(15))
-                ->each(function ($oldRecord) {
-                    $newRecord = $oldRecord->replicate();
-                    try{
-                        $newRecord->setConnection('mysqldump')->save();
-                        $oldRecord->delete();
-                    }catch (\Exception $e){}
-                });
-            ContactFollowUp::query()
-                ->where('created_at', '<=', now()->subDays(15))
-                ->each(function ($oldRecord) {
-                    $newRecord = $oldRecord->replicate();
-                    try{
-                        $newRecord->setConnection('mysqldump')->save();
-                        $oldRecord->delete();
-                    }catch (\Exception $e){}
-                });
-            ContactTracing::query()
-                ->where('created_at', '<=', now()->subDays(15))
-                ->each(function ($oldRecord) {
-                    $newRecord = $oldRecord->replicate();
-                    try{
-                        $newRecord->setConnection('mysqldump')->save();
-                        $oldRecord->delete();
-                    }catch (\Exception $e){}
-                });
-            LaboratoryParameter::query()
-                ->where('created_at', '<=', now()->subDays(15))
-                ->each(function ($oldRecord) {
-                    $newRecord = $oldRecord->replicate();
-                    try{
-                        $newRecord->setConnection('mysqldump')->save();
-                        $oldRecord->delete();
-                    }catch (\Exception $e){}
-                });
+//            CaseManagement::query()
+//                ->where('created_at', '<=', now()->subDays($subDays))
+//                ->each(function ($oldRecord) {
+//                    $newRecord = $oldRecord->replicate();
+//                    try{
+//                        $newRecord->setConnection('mysqldump')->save();
+//                        $oldRecord->delete();
+//                    }catch (\Exception $e){}
+//                });
+//            ClinicalParameter::query()
+//                ->where('created_at', '<=', now()->subDays($subDays))
+//                ->each(function ($oldRecord) {
+//                    $newRecord = $oldRecord->replicate();
+//                    try{
+//                        $newRecord->setConnection('mysqldump')->save();
+//                        $oldRecord->delete();
+//                    }catch (\Exception $e){}
+//                });
+//            ContactDetail::query()
+//                ->where('created_at', '<=', now()->subDays($subDays))
+//                ->each(function ($oldRecord) {
+//                    $newRecord = $oldRecord->replicate();
+//                    try{
+//                        $newRecord->setConnection('mysqldump')->save();
+//                        $oldRecord->delete();
+//                    }catch (\Exception $e){}
+//                });
+//            ContactFollowUp::query()
+//                ->where('created_at', '<=', now()->subDays($subDays))
+//                ->each(function ($oldRecord) {
+//                    $newRecord = $oldRecord->replicate();
+//                    try{
+//                        $newRecord->setConnection('mysqldump')->save();
+//                        $oldRecord->delete();
+//                    }catch (\Exception $e){}
+//                });
+//            ContactTracing::query()
+//                ->where('created_at', '<=', now()->subDays(15))
+//                ->each(function ($oldRecord) {
+//                    $newRecord = $oldRecord->replicate();
+//                    try{
+//                        $newRecord->setConnection('mysqldump')->save();
+//                        $oldRecord->delete();
+//                    }catch (\Exception $e){}
+//                });
+//            LaboratoryParameter::query()
+//                ->where('created_at', '<=', now()->subDays(15))
+//                ->each(function ($oldRecord) {
+//                    $newRecord = $oldRecord->replicate();
+//                    try{
+//                        $newRecord->setConnection('mysqldump')->save();
+//                        $oldRecord->delete();
+//                    }catch (\Exception $e){}
+//                });
             Message::query()
                 ->where('created_at', '<=', now()->subDays(2))
                 ->each(function ($oldRecord) {
@@ -143,15 +146,15 @@ class Kernel extends ConsoleKernel
                         $oldRecord->forceDelete();
                     }catch (\Exception $e){}
                 });
-            Symptoms::query()
-                ->where('created_at', '<=', now()->subDays(15))
-                ->each(function ($oldRecord) {
-                    $newRecord = $oldRecord->replicate();
-                    try{
-                        $newRecord->setConnection('mysqldump')->save();
-                        $oldRecord->delete();
-                    }catch (\Exception $e){}
-                });
+//            Symptoms::query()
+//                ->where('created_at', '<=', now()->subDays(15))
+//                ->each(function ($oldRecord) {
+//                    $newRecord = $oldRecord->replicate();
+//                    try{
+//                        $newRecord->setConnection('mysqldump')->save();
+//                        $oldRecord->delete();
+//                    }catch (\Exception $e){}
+//                });
         })->dailyAt('02:00');
 //        })->everyMinute();
 
