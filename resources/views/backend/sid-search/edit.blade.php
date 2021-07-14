@@ -88,7 +88,7 @@
                                 <option {{ $ancs->woman->caste == '1' ? "selected" : "" }} value="1">Janajati</option>
                                 <option {{ $ancs->woman->caste == '2' ? "selected" : "" }} value="2">Madheshi</option>
                                 <option {{ $ancs->woman->caste == '3' ? "selected" : "" }} value="3">Muslim</option>
-                                <option {{ $ancs->woman->caste == '4' ? "selected" : "" }} value="4">Brahmin/Chhetrai
+                                <option {{ $ancs->woman->caste == '4' ? "selected" : "" }} value="4">Brahmin/Chhetri
                                 </option>
                                 <option {{ $ancs->woman->caste == '5' ? "selected" : "" }} value="5">Other</option>
                             </select>
