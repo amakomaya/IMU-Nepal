@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backend;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Models\SuspectedCase;
+
 class CictTracingController extends Controller
 {
     /**
@@ -22,9 +24,16 @@ class CictTracingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('backend.cict-tracing.create');
+        if($request->case_id){
+            $patient = SuspectedCase::with('province', 'district', 'municipality', 'ancs', 'latestAnc')
+                ->where('case_id', $request->case_id)->first();
+        }else{
+            $patient = null;
+        }
+        
+        return view('backend.cict-tracing.create', compact('patient'));
     }
 
     /**
