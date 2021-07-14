@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\SuspectedCase;
+use App\Models\CictTracing;
 
 class CictTracingController extends Controller
 {
@@ -17,6 +18,10 @@ class CictTracingController extends Controller
     public function index()
     {
         //
+    }
+
+    public function search(){
+        return view('backend.cict-tracing.search');
     }
 
     /**
@@ -44,7 +49,17 @@ class CictTracingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $data = $request->all();
+            unset($data['_token']);
+            $data['token'] = uniqid().time();
+            dd($data);
+            CictTracing::create($data);
+
+            $request->session()->flash('message', 'Data Inserted successfully');
+        }catch(exception $e){
+
+        }
     }
 
     /**

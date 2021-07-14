@@ -212,6 +212,7 @@ Route::get('/admin/sample/remove/{token}', 'Reports\AncDetailController@delete')
 
 //Route::resource('/observation-cases', 'Backend\ObservationCasesController');
 Route::resource('/admin/cases-payment-observation', 'Backend\ObservationCasesController', ['names' => 'observation-cases']);
+Route::get('/admin/cict-tracing/search', 'Backend\CictTracingController@search', ['names' => 'cict-tracing.search']);
 Route::resource('/admin/cict-tracing', 'Backend\CictTracingController', ['names' => 'cict-tracing']);
 
 Route::get('/admin/sid-search', 'AdminController@sidSearch')->name('admin.sid.search');

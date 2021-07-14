@@ -48,23 +48,8 @@
                     </div>
                 @endif
                 <div class="panel panel-default">
-                    <div class="panel panel-default">
-                        <div class="panel-heading text-center">
-                            <strong>CICT Form</strong>
-                        </div>
-                        <div class="panel-body">
-                            <form action="">
-                                <div class="row">
-                                    <div class="col-lg-8 form-group">
-                                        <label>Search Case ID</label>
-                                        <input type="text" name="case_id" class="form-control" placeholder="Enter Case Id" value="{{ request()->get('case_id') }}"><br>
-                                        <button class="btn btn-info" title="Search CaseID">
-                                            <i class="fa fa-search"> Search</i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="panel-heading text-center">
+                        <strong>CICT Form</strong>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -308,6 +293,8 @@
                                 @endif
                             </div>
 
+                            <input type="hidden" name="woman_token" value={{ $patient ? $patient->token : '0' }}>
+
                             <button type="submit" class="btn btn-primary btn-sm btn-block ">SAVE AND CONTINUE</button>
                             
                             </form>
@@ -379,78 +366,85 @@
         }
         
 
-        // $(function () {
-        //     $.validator.addMethod("nameCustom", function (value, element) {
-        //         return this.optional(element) || /^[a-zA-Z\.\'\-]{2,50}(?: [a-zA-Z\.\'\-]{2,50})+$/i.test(value);
-        //     }, "Email Address is invalid: Please enter a valid email address.");
+        $(function () {
+            $.validator.addMethod("nameCustom", function (value, element) {
+                return this.optional(element) || /^[a-zA-Z\.\'\-]{2,50}(?: [a-zA-Z\.\'\-]{2,50})+$/i.test(value);
+            }, "Name is invalid: Please enter a valid name.");
 
-        //     $.validator.addMethod("ageCustom", function (value, element) {
-        //         return this.optional(element) || /^(12[0-7]|1[01][0-9]|[1-9]?[0-9])$/i.test(value);
-        //     }, "Age is invalid: Please enter a valid age.");
+            $.validator.addMethod("ageCustom", function (value, element) {
+                return this.optional(element) || /^(12[0-7]|1[01][0-9]|[1-9]?[0-9])$/i.test(value);
+            }, "Age is invalid: Please enter a valid age.");
 
-        //     $.validator.addMethod("phoneCustom", function (value, element) {
-        //         return this.optional(element) || /^((984|985|986|974|975|980|981|982|961|988|972|963)\d{7})|((097|095|081|053|084|083|029|056|096|089|093|010|026|041|068|049|094|064|079|027|046|087|091|076|061|036|025|066|077|099|044|057|023|021|069|055|037|075|024|067|051|086|082|071|033|031|092|047|038|063|035)(4|5|6)\d{5})|(01)(4|5|6)\d{6}$/i.test(value);
-        //     }, "Contact number is invalid: Please enter a valid phone number.");
-        //     $("form[name='createCase']").validate({
-        //         // Define validation rules
-        //         rules: {
-        //             name: {
-        //                 required: true,
-        //                 nameCustom: true
-        //             },
-        //             age: {
-        //                 required: true,
-        //                 ageCustom: true,
-        //             },
-        //             district_id: {
-        //                 required: true
-        //             },
-        //             municipality_id: {
-        //                 required: true
-        //             },
-        //             sex: {
-        //                 required: true,
-        //             },
-        //             ward: {
-        //                 required: true,
-        //                 digits: true
-        //             },
-        //             tole: {
-        //                 required: true,
-        //             },
-        //             emergency_contact_one: {
-        //                 required: true,
-        //                 digits: true,
-        //                 minlength: 10,
-        //                 maxlength: 10,
-        //                 phoneCustom: true
-        //             },
-        //             emergency_contact_two: {
-        //                 digits: true,
-        //                 minlength: 10,
-        //                 maxlength: 10,
-        //                 phoneCustom: true
-        //             },
-        //             occupation: {
-        //                 required: true,
-        //             },
-        //             lab_token: {
-        //                 required:  function () {
-        //                     return $(".service_for:checked").val() == "2";
-        //                 },
-        //                 maxlength: 8
-        //             }
-        //         },
-        //         // Specify validation error messages
-        //         messages: {
-        //             name: "Please provide a valid name.",
-        //             age: "Please provide a valid age.",
+            $.validator.addMethod("phoneCustom", function (value, element) {
+                return this.optional(element) || /^((984|985|986|974|975|980|981|982|961|988|972|963)\d{7})|((097|095|081|053|084|083|029|056|096|089|093|010|026|041|068|049|094|064|079|027|046|087|091|076|061|036|025|066|077|099|044|057|023|021|069|055|037|075|024|067|051|086|082|071|033|031|092|047|038|063|035)(4|5|6)\d{5})|(01)(4|5|6)\d{6}$/i.test(value);
+            }, "Contact number is invalid: Please enter a valid phone number.");
+            $("form[name='createCase']").validate({
+                // Define validation rules
+                rules: {
+                    case_what: {
+                        required: true
+                    },
+                    name: {
+                        required: true,
+                        nameCustom: true
+                    },
+                    age: {
+                        required: true,
+                        ageCustom: true,
+                    },
+                    age_unit: {
+                        required: true
+                    },
+                    sex: {
+                        required: true,
+                    },
+                    emergency_contact_one: {
+                        required: true,
+                        digits: true,
+                        minlength: 10,
+                        maxlength: 10,
+                        phoneCustom: true
+                    },
+                    emergency_contact_two: {
+                        digits: true,
+                        minlength: 7,
+                        maxlength: 10,
+                    },
+                    province_id: {
+                        required: true
+                    },
+                    district_id: {
+                        required: true
+                    },
+                    municipality_id: {
+                        required: true
+                    },
+                    ward: {
+                        required: true,
+                        digits: true
+                    },
+                    tole: {
+                        required: true,
+                    },
+                    informant_name: {
+                        nameCustom: true
+                    },
+                    informant_phone: {
+                        digits: true,
+                        minlength: 7,
+                        maxlength: 10,
+                    }
+                },
+                // Specify validation error messages
+                messages: {
+                    name: "Please provide a valid name.",
+                    age: "Please provide a valid age.",
 
-        //         },
-        //         submitHandler: function (form) {
-        //             form.submit();
-        //         }
-        //     });
-        // });
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            });
+        });
     </script>
 @endsection
