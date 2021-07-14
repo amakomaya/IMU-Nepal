@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Session;
 
 class UpdateVaccinationCenter extends Controller
 {
@@ -19,6 +20,13 @@ class UpdateVaccinationCenter extends Controller
         $vaccination_centers = collect($vaccination_centers_api)->where('municipality_id', $municipality->municipality_id);
         return view('UpdateVaccinationCenter',compact('organizations', 'vaccination_centers'));
 
+    }
+
+    public function unlink($id){
+        $orgaization =  \App\Models\Organization::where('id', $id)
+            ->update(["vaccination_center_id" => null]);
+        Session::flash('message', 'Data Unlinked successfully');
+        return redirect()->back();
     }
 
 }
