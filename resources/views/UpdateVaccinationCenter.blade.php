@@ -145,15 +145,16 @@ $(document).ready(function() {
     // $searchfield.prop('disabled', true);
 
     $('.unlink-center').click(function () {
-    var url = $(this).attr('data-url');
-    $("#unlinkForm").attr("action", url);
-
-    $('#myModal').on('show.bs.modal', function (e) {
-        var button = $(e.relatedTarget);
-        var id = button.data('id');
-        $('#unlinkForm').attr('action', url);
+        var url = $(this).attr('data-url');
+        $("#unlinkForm").attr("action", url);
+        
+        $('#myModal').on('show.bs.modal', function (e) {
+            var button = $(e.relatedTarget);
+            var id = button.data('id');
+            $('#unlinkForm').attr('action', url);
+        });
     });
-});
+
 });
 </script>
 @endsection
