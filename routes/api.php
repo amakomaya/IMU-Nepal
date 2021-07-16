@@ -151,14 +151,15 @@ Route::get('/v1/client', function (Request $request) {
         
     $record = SuspectedCase::with('ancs')
         ->where('hp_code', $hp_code)
-        ->where('end_case', '0')
         ->where('created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
-        ->where(function ($query) {
-            $query->whereHas('ancs', function($q){
-                $q->where('result', '!=', 4)
-                    ->orWhere('women.created_at', '>=', Carbon::now()->subDays(2)->toDateTimeString());
-            })->orDoesntHave('ancs');
-        })
+        ->active()
+
+        // ->where(function ($query) {
+        //     $query->whereHas('ancs', function($q){
+        //         $q->where('result', '!=', 4)
+        //             ->orWhere('women.created_at', '>=', Carbon::now()->subDays(2)->toDateTimeString());
+        //     })->orDoesntHave('ancs');
+        // })
         ->get();
 
     $data = collect($record)->map(function ($row) {

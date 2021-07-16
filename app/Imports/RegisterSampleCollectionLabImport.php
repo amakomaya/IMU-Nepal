@@ -73,7 +73,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'infection_type' => array ('symptomatic' => 1, 'asymptomatic' => 2),
           'age_unit' => array ('year' => 0, 'month' => 1, 'day' => 2),
           'gender'=> array( 'male' => 1, 'female' => 2, 'other' => 3 ),
-          'ethnicity' => array( "don't know"=> 6, 'dalit'=> 0, 'janajati'=> 1, 'madheshi'=> 2, 'muslim'=> 3, 'brahmin'=> 4, 'other'=> 5),
+          'ethnicity' => array( "don't know"=> 6, 'dalit'=> 0, 'janajati'=> 1, 'madheshi'=> 2, 'muslim'=> 3, 'brahmin/chhetri'=> 4, 'other'=> 5),
           'province' => $provinces,
           'district' => $districts,
           'municipality' => $municipalities,

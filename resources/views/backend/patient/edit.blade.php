@@ -123,7 +123,7 @@
                                         <option {{ $data->caste == '2' ? "selected" : "" }} value="2">Janajati</option>
                                         <option {{ $data->caste == '3' ? "selected" : "" }} value="3">Madheshi</option>
                                         <option {{ $data->caste == '4' ? "selected" : "" }} value="4">Muslim</option>
-                                        <option {{ $data->caste == '5' ? "selected" : "" }} value="5">Brahmin/Chhetrai
+                                        <option {{ $data->caste == '5' ? "selected" : "" }} value="5">Brahmin/Chhetri
                                         </option>
                                         <option {{ $data->caste == '6' ? "selected" : "" }} value="6">Other</option>
                                     </select>
