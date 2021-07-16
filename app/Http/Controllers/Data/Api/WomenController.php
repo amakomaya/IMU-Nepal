@@ -288,13 +288,13 @@ class WomenController extends Controller
 //            $woman = SuspectedCaseOld::active();
             $woman1 = SuspectedCase::whereIn('token', $tracing_tokens)->active();
             $woman2 = SuspectedCaseOld::whereIn('token', $tracing_tokens)->active();
-            $woman = $woman1->unionAll($woman2)->unique();
+            $woman = $woman1->unionAll($woman2)->distinct();
         } else{
             $tracing_tokens = ContactTracing::whereIn('hp_code', $hpCodes)->pluck('woman_token');
 //            $woman = SuspectedCase::active();
             $woman2 = SuspectedCaseOld::whereIn('token', $tracing_tokens)->active();
             $woman1 = SuspectedCase::whereIn('token', $tracing_tokens)->active();
-            $woman = $woman1->unionAll($woman2)->unique();
+            $woman = $woman1->unionAll($woman2)->distinct();
         }
         $woman = $woman->withAll();
         return response()->json([
