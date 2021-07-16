@@ -292,8 +292,8 @@ class WomenController extends Controller
         } else{
             $tracing_tokens = ContactTracing::whereIn('hp_code', $hpCodes)->pluck('woman_token');
 //            $woman = SuspectedCase::active();
-            $woman1 = SuspectedCase::whereIn('token', $tracing_tokens)->active();
             $woman2 = SuspectedCaseOld::whereIn('token', $tracing_tokens)->active();
+            $woman1 = SuspectedCase::whereIn('token', $tracing_tokens)->active();
             $woman = $woman1->unionAll($woman2);
         }
         $woman = $woman->withAll();
