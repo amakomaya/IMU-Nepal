@@ -294,7 +294,7 @@ class WomenController extends Controller
 //            $woman = SuspectedCase::active();
             $woman2 = SuspectedCaseOld::whereIn('token', $tracing_tokens)->active();
             $woman1 = SuspectedCase::whereIn('token', $tracing_tokens)->active();
-            $woman = $woman1->unionAll($woman2);
+            $woman = $woman1->unionAll($woman2)->unique();
         }
         $woman = $woman->withAll();
         return response()->json([
