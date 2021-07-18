@@ -49,21 +49,21 @@
                 @endif
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">
-                        <strong>CICT Form Part 1</strong>
+                        <strong>CICT Form Part 1/3</strong>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        {!! rcForm::open('POST', route('cict-tracing.store'), ['name' => 'createCase']) !!}
+                        {!! rcForm::open('POST', route('cict-tracing.section-one.update', ['_case_id' => $data->case_id]), ['name' => 'createCase']) !!}
                         <div class="panel-body">
                             <div class="form-group">
                                 <div class="control-group">
                                     <label class="radio-inline">
                                         <h4>Confirmed case</h4>
-                                        <input type="radio" name="case_what" value="1" class="case_what" style="top: 7px;">
+                                        <input type="radio" name="case_what" value="1" class="case_what" style="top: 7px;" {{ $data && $data->case_what == "1" ? 'checked' : '' }}>
                                     </label>
                                     <label class="radio-inline" style="padding-right: 60px;">
                                         <h4>Probable case</h4>
-                                        <input type="radio" name="case_what" value="2" class="case_what" style="top: 7px;">
+                                        <input type="radio" name="case_what" value="2" class="case_what" style="top: 7px;" {{ $data && $data->case_what == "2" ? 'checked' : '' }}>
                                     </label>
                                 </div>
                                 @if ($errors->has('case_what'))
@@ -73,7 +73,7 @@
 
                             <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
                                 <label for="name">Full Name</label>
-                                <input type="text" id="name" class="form-control" value="{{ $patient ? $patient->name : '' }}" name="name"
+                                <input type="text" id="name" class="form-control" value="{{ $data ? $data->name : '' }}" name="name"
                                        aria-describedby="help" placeholder="Enter Full Name">
                                 @if ($errors->has('name'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('name') }}</small>
@@ -82,14 +82,13 @@
 
                             <div class="form-group {{ $errors->has('age') ? 'has-error' : '' }}">
                                 <label for="age">Age</label>
-                                <input type="text" id="age" value="{{ $patient ? $patient->age : '' }}" class="form-control col-xs-9" name="age" placeholder="Enter Age" ><br>
-                                <?php $age_unit = $patient ? $patient->age_unit : '' ?>
+                                <input type="text" id="age" value="{{ $data ? $data->age : '' }}" class="form-control col-xs-9" name="age" placeholder="Enter Age" ><br>
                                 <input type="radio" name="age_unit"
-                                       {{ $age_unit == "0" ? 'checked' : '' }} value="0" data-rel="earning">Years
+                                       {{ $data && $data->age_unit == "0" ? 'checked' : '' }} value="0" data-rel="earning">Years
                                 <input type="radio" name="age_unit"
-                                       {{ $age_unit == "1" ? 'checked' : '' }} value="1" data-rel="earning">Months
+                                       {{ $data && $data->age_unit == "1" ? 'checked' : '' }} value="1" data-rel="earning">Months
                                 <input type="radio" name="age_unit"
-                                       {{ $age_unit == "2" ? 'checked' : '' }} value="2" data-rel="earning">Days
+                                       {{ $data && $data->age_unit == "2" ? 'checked' : '' }} value="2" data-rel="earning">Days
                                 <br>
                                 @if ($errors->has('age'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('age') }}</small>
@@ -98,12 +97,11 @@
 
                             <div class="form-group">
                                 <label class="control-label" for="company">Gender</label>
-                                <?php $sex = $patient ? $patient->sex : '' ?>
                                 <select name="sex" class="form-control">
                                     <option value="" disabled selected>Select Gender</option>
-                                    <option {{ $sex == '1' ? "selected" : "" }} value="1">Male</option>
-                                    <option {{ $sex == '2' ? "selected" : "" }} value="2">Female</option>
-                                    <option {{ $sex == '3' ? "selected" : "" }}  value="3">Other</option>
+                                    <option {{ $data && $data->sex == '1' ? "selected" : "" }} value="1">Male</option>
+                                    <option {{ $data && $data->sex == '2' ? "selected" : "" }} value="2">Female</option>
+                                    <option {{ $data && $data->sex == '3' ? "selected" : "" }}  value="3">Other</option>
                                 </select>
                                 @if ($errors->has('sex'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('sex') }}</small>
@@ -112,7 +110,7 @@
 
                             <div class="form-group {{ $errors->has('emergency_contact_one') ? 'has-error' : '' }}">
                                 <label for="name">Mobile Number</label>
-                                <input type="text" class="form-control" value="{{ $patient ? $patient->emergency_contact_one : '' }}"
+                                <input type="text" class="form-control" value="{{ $data ? $data->emergency_contact_one : '' }}"
                                        name="emergency_contact_one" aria-describedby="help"
                                        placeholder="Enter Mobile Number"
                                 >
@@ -124,7 +122,7 @@
 
                             <div class="form-group {{ $errors->has('emergency_contact_two') ? 'has-error' : '' }}">
                                 <label for="name">Other Contact Number</label>
-                                <input type="text" class="form-control" value="{{ $patient ? $patient->emergency_contact_two : '' }}"
+                                <input type="text" class="form-control" value="{{ $data ? $data->emergency_contact_two : '' }}"
                                        name="emergency_contact_two" aria-describedby="help"
                                        placeholder="Enter Other Contact Number">
                                 @if ($errors->has('emergency_contact_two'))
@@ -136,10 +134,10 @@
                             <div class="form-group {{ $errors->has('nationality') ? 'has-error' : '' }}">
                                 <label for="name">Nationality</label>
                                 <select name="nationality" class="form-control nationality">
-                                    <option value="167">Nepal</option>
-                                    <option value="104">India</option>
-                                    <option value="47">China</option>
-                                    <option value="300">Other</option>
+                                    <option {{ $data && $data->nationality == '167' ? "selected" : "" }} value="167">Nepal</option>
+                                    <option {{ $data && $data->nationality == '104' ? "selected" : "" }} value="104">India</option>
+                                    <option {{ $data && $data->nationality == '47' ? "selected" : "" }} value="47">China</option>
+                                    <option {{ $data && $data->nationality == '300' ? "selected" : "" }} value="300">Other</option>
                                 </select>
                                 @if ($errors->has('nationality'))
                                     <small id="help"
@@ -149,7 +147,7 @@
 
                             <div class="form-group nationality_other_class {{ $errors->has('nationality_other') ? 'has-error' : '' }}">
                                 <label for="name">Please specify other nationality</label>
-                                <input type="text" class="form-control" value="{{ old('nationality_other') }}"
+                                <input type="text" class="form-control" value="{{ $data ? $data->nationality_other : '' }}"
                                        name="nationality_other" aria-describedby="help"
                                        placeholder="Enter Other Natonality">
                                 @if ($errors->has('nationality_other'))
@@ -160,7 +158,7 @@
 
                             <div class="form-group {{ $errors->has('guardian_name') ? 'has-error' : '' }}">
                                 <label for="name">Guardian Name</label>
-                                <input type="text" class="form-control" value="{{ old('guardian_name') }}"
+                                <input type="text" class="form-control" value="{{ $data ? $data->guardian_name : '' }}"
                                        name="guardian_name" aria-describedby="help"
                                        placeholder="Enter Guardian Name">
                                 @if ($errors->has('guardian_name'))
@@ -173,12 +171,12 @@
                                 <label class="control-label" for="company">Current Address</label>
                                 <div class="row">
                                     <div class="form-group col-sm-4" id="province">
-                                        <?php $province_id = $patient ? $patient->province_id : '' ?>
+                                        <?php $province_id = $data ? $data->province_id : '' ?>
                                         <select name="province_id" class="form-control"
                                                 onchange="provinceOnchange($(this).val())">
                                                 <option value="">-- Select Province --</option>
                                             @foreach(App\Models\Province::all() as $province)
-                                                @if($province_id==$province->id || old('province_id')==$province->id)
+                                                @if($province_id == $province->id)
                                                     @php($selectedProvince = "selected")
                                                 @else
                                                     @php($selectedProvince = "")
@@ -193,12 +191,12 @@
                                     </div>
 
                                     <div class="form-group  col-sm-4" id="district">
-                                        <?php $district_id = $patient ? $patient->district_id : '' ?>
+                                        <?php $district_id = $data ? $data->district_id : '' ?>
                                         <select name="district_id" class="form-control"
                                                 onchange="districtOnchange($(this).val())">
                                                 <option value="">-- Select District --</option>
                                             @foreach(App\Models\District::where('province_id', $province_id)->get() as $district)
-                                                @if($district_id==$district->id || old('district_id')==$district->id)
+                                                @if($district_id == $district->id)
                                                     @php($selectedDistrict = "selected")
                                                 @else
                                                     @php($selectedDistrict = "")
@@ -212,14 +210,14 @@
                                         @endif
                                     </div>
 
-                                    <div class="form-group  col-sm-4" id="municipality">
-                                        <?php $municipality_id = $patient ? $patient->municipality_id : '' ?>
+                                    <div class="form-group col-sm-4" id="municipality">
+                                        <?php $municipality_id = $data ? $data->municipality_id : '' ?>
                                         <select name="municipality_id" class="form-control"
                                                 onchange="municipalityOnchange($(this).val())"
                                                 id="municipality_id">
-                                                <option value="">-- Select  Municipality --</option>
+                                                <option value="">-- Select Municipality --</option>
                                             @foreach(\App\Models\Municipality::where('district_id', $district_id)->get() as $municipality)
-                                                @if($municipality_id==$municipality->id  || old('municipality_id')==$municipality->id)
+                                                @if($municipality_id == $municipality->id)
                                                     @php($selectedMunicipality = "selected")
                                                 @else
                                                     @php($selectedMunicipality = "")
@@ -237,7 +235,7 @@
 
                             <div class="form-group {{ $errors->has('ward') ? 'has-error' : '' }}">
                                 <label for="ward">Ward No</label>
-                                <input type="text" class="form-control" value="{{ $patient ? $patient->ward : '' }}" name="ward" aria-describedby="help" placeholder="Enter Ward No" >
+                                <input type="text" class="form-control" value="{{ $data ? $data->ward : '' }}" name="ward" aria-describedby="help" placeholder="Enter Ward No" >
                                 @if ($errors->has('ward'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('ward') }}</small>
                                 @endif
@@ -245,7 +243,7 @@
 
                             <div class="form-group {{ $errors->has('tole') ? 'has-error' : '' }}">
                                 <label for="tole">Tole</label>
-                                <input type="text" class="form-control" value="{{ $patient ? $patient->tole : '' }}" name="tole" aria-describedby="help" placeholder="Enter Tole" >
+                                <input type="text" class="form-control" value="{{ $data ? $data->tole : '' }}" name="tole" aria-describedby="help" placeholder="Enter Tole" >
                                 @if ($errors->has('tole'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('tole') }}</small>
                                 @endif
@@ -257,7 +255,7 @@
 
                             <div class="form-group {{ $errors->has('informant_name') ? 'has-error' : '' }}">
                                 <label for="informant_name">Name of the Informant</label>
-                                <input type="text" class="form-control" value="{{ old('informant_name') }}" name="informant_name" aria-describedby="help" placeholder="Enter Name of the Informant" >
+                                <input type="text" class="form-control" value="{{ $data ? $data->informant_name : '' }}" name="informant_name" aria-describedby="help" placeholder="Enter Name of the Informant" >
                                 @if ($errors->has('informant_name'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('informant_name') }}</small>
                                 @endif
@@ -267,12 +265,12 @@
                                 <label for="informant_relation">Relationship with Informant</label>
                                 <select name="informant_relation" class="form-control informant_relation">
                                     <option value="" disabled selected>-- Select Relation --</option>
-                                    <option value="1">Family</option>
-                                    <option value="2">Friends</option>
-                                    <option value="3">Neighbour</option>
-                                    <option value="4">Relatives</option>
-                                    <option value="5">Co-Worker</option>
-                                    <option value="0">Other</option>
+                                    <option {{ $data && $data->informant_relation == '1' ? "selected" : "" }} value="1">Family</option>
+                                    <option {{ $data && $data->informant_relation == '2' ? "selected" : "" }} value="2">Friends</option>
+                                    <option {{ $data && $data->informant_relation == '3' ? "selected" : "" }} value="3">Neighbour</option>
+                                    <option {{ $data && $data->informant_relation == '4' ? "selected" : "" }} value="4">Relatives</option>
+                                    <option {{ $data && $data->informant_relation == '5' ? "selected" : "" }} value="5">Co-Worker</option>
+                                    <option {{ $data && $data->informant_relation == '0' ? "selected" : "" }} value="0">Other</option>
                                 </select>
                                 @if ($errors->has('informant_relation'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('informant_relation') }}</small>
@@ -281,7 +279,7 @@
 
                             <div class="form-group informant_relation_other_class {{ $errors->has('informant_relation_other') ? 'has-error' : '' }}">
                                 <label for="informant_relation_other">Please specify other relationship</label>
-                                <input type="text" class="form-control" value="{{ old('informant_relation_other') }}" name="informant_relation_other" aria-describedby="help" placeholder="Enter other relationship" >
+                                <input type="text" class="form-control" value="{{ $data ? $data->informant_relation_other : '' }}" name="informant_relation_other" aria-describedby="help" placeholder="Enter other relationship" >
                                 @if ($errors->has('informant_relation_other'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('informant_relation_other') }}</small>
                                 @endif
@@ -289,7 +287,7 @@
 
                             <div class="form-group {{ $errors->has('informant_phone') ? 'has-error' : '' }}">
                                 <label for="informant_phone">Informant Contact No.</label>
-                                <input type="text" class="form-control" value="{{ old('informant_phone') }}" name="informant_phone" aria-describedby="help" placeholder="Enter Informant Contact No." >
+                                <input type="text" class="form-control" value="{{ $data ? $data->informant_phone : '' }}" name="informant_phone" aria-describedby="help" placeholder="Enter Informant Contact No." >
                                 @if ($errors->has('informant_phone'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('informant_phone') }}</small>
                                 @endif
@@ -301,11 +299,11 @@
                                 <label for="case_managed_at">Case Managed At</label>
                                 <select name="case_managed_at" class="form-control case_managed_at">
                                     <option value="" disabled selected>-- Select Option --</option>
-                                    <option value="1">Home Isolation</option>
-                                    <option value="2">Hotel Isolation</option>
-                                    <option value="3">Institutional Isolation</option>
-                                    <option value="4">Hospital</option>
-                                    <option value="0">Other</option>
+                                    <option {{ $data && $data->case_managed_at == '1' ? "selected" : "" }} value="1">Home Isolation</option>
+                                    <option {{ $data && $data->case_managed_at == '2' ? "selected" : "" }} value="2">Hotel Isolation</option>
+                                    <option {{ $data && $data->case_managed_at == '3' ? "selected" : "" }} value="3">Institutional Isolation</option>
+                                    <option {{ $data && $data->case_managed_at == '4' ? "selected" : "" }} value="4">Hospital</option>
+                                    <option {{ $data && $data->case_managed_at == '0' ? "selected" : "" }} value="0">Other</option>
                                 </select>
                                 @if ($errors->has('case_managed_at'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('case_managed_at') }}</small>
@@ -314,14 +312,14 @@
 
                             <div class="form-group case_managed_at_other_class {{ $errors->has('case_managed_at_other') ? 'has-error' : '' }}">
                                 <label for="case_managed_at_other">Please specify other case managed at</label>
-                                <input type="text" class="form-control" value="{{ old('case_managed_at_other') }}" name="case_managed_at_other" aria-describedby="help" placeholder="Enter other case managed at" >
+                                <input type="text" class="form-control" value="{{ $data ? $data->case_managed_at_other : '' }}" name="case_managed_at_other" aria-describedby="help" placeholder="Enter other case managed at" >
                                 @if ($errors->has('case_managed_at_other'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('case_managed_at_other') }}</small>
                                 @endif
                             </div>
 
-                            <input type="hidden" name="woman_token" value={{ $patient ? $patient->token : '' }}>
-                            <input type="hidden" name="case_id" value={{ $patient ? $patient->case_id : '' }}>
+                            <input type="hidden" name="check_token" value={{ $data ? $data->token : '' }}>
+                            <input type="hidden" name="case_id" value={{ $data ? $data->case_id : '' }}>
 
                             <button type="submit" class="btn btn-primary btn-sm btn-block ">SAVE AND CONTINUE</button>
                             

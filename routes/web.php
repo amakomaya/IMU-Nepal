@@ -212,7 +212,13 @@ Route::get('/admin/sample/remove/{token}', 'Reports\AncDetailController@delete')
 
 //Route::resource('/observation-cases', 'Backend\ObservationCasesController');
 Route::resource('/admin/cases-payment-observation', 'Backend\ObservationCasesController', ['names' => 'observation-cases']);
-Route::get('/admin/cict-tracing/search', 'Backend\CictTracingController@search', ['names' => 'cict-tracing.search']);
+Route::get('/admin/cict-tracing/search', 'Backend\CictTracingController@search')->name('cict-tracing.search');
+Route::get('/admin/cict-tracing/section-one', 'Backend\CictTracingController@sectionOne')->name('cict-tracing.section-one');
+Route::post('/admin/cict-tracing/section-one-update', 'Backend\CictTracingController@sectionOneUpdate')->name('cict-tracing.section-one.update');
+Route::get('/admin/cict-tracing/section-two', 'Backend\CictTracingController@sectionTwo')->name('cict-tracing.section-two');
+Route::post('/admin/cict-tracing/section-two-update', 'Backend\CictTracingController@sectionTwoUpdate')->name('cict-tracing.section-two.update');
+Route::get('/admin/cict-tracing/section-three', 'Backend\CictTracingController@sectionThree')->name('cict-tracing.section-three');
+Route::post('/admin/cict-tracing/section-three-update', 'Backend\CictTracingController@sectionThreeUpdate')->name('cict-tracing.section-three.update');
 Route::resource('/admin/cict-tracing', 'Backend\CictTracingController', ['names' => 'cict-tracing']);
 
 Route::get('/admin/sid-search', 'AdminController@sidSearch')->name('admin.sid.search');
