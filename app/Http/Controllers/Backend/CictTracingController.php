@@ -200,8 +200,6 @@ class CictTracingController extends Controller
                 array_push($data['symptoms_comorbidity'], $request->symptoms_comorbidity_trimester);
             }
             $data['symptoms_comorbidity'] = $request->symptoms_comorbidity ? "[" . implode(', ', $request->symptoms_comorbidity) . "]" : "[]";
-
-            $data['high_exposure'] = $request->high_exposure ? "[" . implode(', ', $request->high_exposure) . "]" : "[]";
             
             $travelled_14_days_details_array = [];
             for ($i = 0; $i < count($request->travelled_14_days_details_departure_from); $i++) {

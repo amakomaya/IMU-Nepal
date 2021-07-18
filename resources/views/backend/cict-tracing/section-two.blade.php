@@ -187,64 +187,38 @@
 
                             <div class="part-three">
                                 <h4>III. High exposure category of Case under Investigation belongs to</h4><br>
-                                <?php
-                                    if($data){
-                                        $high_exposure = $data->high_exposure ? json_decode($data->high_exposure) : [];    
-                                    }else {
-                                        $high_exposure = [];
-                                    }
-                                ?>
 
                                 <div class="form-group">
-                                    <label class="control-label" for="caste">(Tick any that apply):</label><br>
-    
-                                    <input type="checkbox" id="health-care" name="high_exposure[]" value="1" @if(in_array(1, $high_exposure)) checked @endif>
-                                    Health Care Work (any type, level & facility, including cleaning staff)<br>
-                                    <input type="checkbox" id="community-health" name="high_exposure[]" value="2" @if(in_array(2, $high_exposure)) checked @endif>
-                                    Community Health / Immunization Clinic Volunteer<br>
-                                    <input type="checkbox" id="sanitary" name="high_exposure[]" value="3" @if(in_array(3, $high_exposure)) checked @endif>
-                                    Sanitary / Waste Collection / Management Worker / Transport Driver / Helper<br>
-                                    <input type="checkbox" id="data-dead-body" name="high_exposure[]" value="4" @if(in_array(4, $high_exposure)) checked @endif>
-                                    data & Dead body Transport Driver/Helper<br>
-                                    <input type="checkbox" id="management-work" name="high_exposure[]" value="5" @if(in_array(5, $high_exposure)) checked @endif>
-                                    Dead body management work<br>
-                                    <input type="checkbox" id="old-age-home" name="high_exposure[]" value="6" @if(in_array(6, $high_exposure)) checked @endif>
-                                    Old Age Home / Care work<br>
-                                    <input type="checkbox" id="border-crossing" name="high_exposure[]" value="7" @if(in_array(7, $high_exposure)) checked @endif>
-                                    Border Crossing / Point of Entry Staff<br>
-                                    <input type="checkbox" id="security-staff" name="high_exposure[]" value="8" @if(in_array(8, $high_exposure)) checked @endif>
-                                    Any Security Staff<br>
-                                    <input type="checkbox" id="hotel-restaurant" name="high_exposure[]" value="9" @if(in_array(9, $high_exposure)) checked @endif>
-                                    Hotel/Restaurant/Bar work<br>
-                                    <input type="checkbox" id="farm-work" name="high_exposure[]" value="10" @if(in_array(10, $high_exposure)) checked @endif>
-                                    Farm work<br>
-                                    <input type="checkbox" id="shop-worker" name="high_exposure[]" value="11" @if(in_array(11, $high_exposure)) checked @endif>
-                                    Shop/Store worker<br>
-                                    <input type="checkbox" id="journalist" name="high_exposure[]" value="12" @if(in_array(12, $high_exposure)) checked @endif>
-                                    Journalist<br>
-                                    <input type="checkbox" id="migrant" name="high_exposure[]" value="13" @if(in_array(13, $high_exposure)) checked @endif>
-                                    Migrant<br>
-                                    <input type="checkbox" id="refugee" name="high_exposure[]" value="14" @if(in_array(14, $high_exposure)) checked @endif>
-                                    Refugee<br>
-                                    <input type="checkbox" id="prisoner" name="high_exposure[]" value="15" @if(in_array(15, $high_exposure)) checked @endif>
-                                    Prisoner<br>
-                                    <input type="checkbox" id="teacher" name="high_exposure[]" value="16" @if(in_array(16, $high_exposure)) checked @endif>
-                                    Teacher<br>
-                                    <input type="checkbox" id="student" name="high_exposure[]" value="17" @if(in_array(17, $high_exposure)) checked @endif>
-                                    Student<br>
-                                    <input type="checkbox" id="elected-representative" name="high_exposure[]" value="18" @if(in_array(18, $high_exposure)) checked @endif>
-                                    Local body Elected Representative<br>
-                                    <input type="checkbox" id="bank-govt-office" name="high_exposure[]" value="19" @if(in_array(19, $high_exposure)) checked @endif>
-                                    Bank/Govt Office / Public Corporation staff<br>
-                                    <input type="checkbox" id="un-ingo" name="high_exposure[]" value="20" @if(in_array(20, $high_exposure)) checked @endif>
-                                    UN / Development Partner / INGO / NGO Frontline worker<br>
-                                    {{-- <input type="checkbox" id="specify-other" name="high_exposure[]" value="0" @if(in_array(0, $high_exposure)) checked @endif> --}}
-                                    {{-- Others --}}
+                                    <select name="high_exposure" class="form-control high_exposure">
+                                        <option value="" disabled selected>Select High Exposure</option>
+                                        <option value="1" {{ $data->high_exposure == "1" ? 'selected' : "" }}>Health Care Work (any type, level & facility, including cleaning staff</option>
+                                        <option value="2" {{ $data->high_exposure == "2" ? 'selected' : "" }}>Community Health / Immunization Clinic Volunteer</option>
+                                        <option value="3" {{ $data->high_exposure == "3" ? 'selected' : "" }}>Sanitary / Waste Collection / Management Worker / Transport Driver / Helper</option>
+                                        <option value="4" {{ $data->high_exposure == "4" ? 'selected' : "" }}>Patient & Dead Body Transport Driver/ Helper</option>
+                                        <option value="5" {{ $data->high_exposure == "5" ? 'selected' : "" }}>Dead body management work</option>
+                                        <option value="6" {{ $data->high_exposure == "6" ? 'selected' : "" }}>Old Age Home / Care work</option>
+                                        <option value="7" {{ $data->high_exposure == "7" ? 'selected' : "" }}>Border Crossing / Point of Entry Staff</option>
+                                        <option value="8" {{ $data->high_exposure == "8" ? 'selected' : "" }}>Any Security Staff</option>
+                                        <option value="9" {{ $data->high_exposure == "9" ? 'selected' : "" }}>Hotel/Restaurant/Bar work</option>
+                                        <option value="10" {{ $data->high_exposure == "10" ? 'selected' : "" }}>Farm work</option>
+                                        <option value="11" {{ $data->high_exposure == "11" ? 'selected' : "" }}>Shop/Store worker</option>
+                                        <option value="12" {{ $data->high_exposure == "12" ? 'selected' : "" }}>Journalist</option>
+                                        <option value="13" {{ $data->high_exposure == "13" ? 'selected' : "" }}>Migrant</option>
+                                        <option value="14" {{ $data->high_exposure == "14" ? 'selected' : "" }}>Refugee</option>
+                                        <option value="15" {{ $data->high_exposure == "15" ? 'selected' : "" }}>Prisoner</option>
+                                        <option value="16" {{ $data->high_exposure == "16" ? 'selected' : "" }}>Teacher</option>
+                                        <option value="17" {{ $data->high_exposure == "17" ? 'selected' : "" }}>Student</option>
+                                        <option value="18" {{ $data->high_exposure == "18" ? 'selected' : "" }}>Local body Elected Representative</option>
+                                        <option value="19" {{ $data->high_exposure == "19" ? 'selected' : "" }}>Bank/Govt Office / Public Corporation staff</option>
+                                        <option value="20" {{ $data->high_exposure == "20" ? 'selected' : "" }}>UN / Development Partner / INGO / NGO Frontline worker</option>
+                                        <option value="0" {{ $data->high_exposure == "0" ? 'selected' : "" }}>Others</option>
+                                    </select>
+                                    <br>
                                     
-                                    <div class="form-group {{ $errors->has('high_exposure_other') ? 'has-error' : '' }}">
+                                    <div class="form-group high_exposure_other_class {{ $errors->has('high_exposure_other') ? 'has-error' : '' }}">
                                         <label for="high_exposure_other">If others, specify</label>
                                         <input type="text" class="form-control" value="{{ $data ? $data->high_exposure_other : '' }}" name="high_exposure_other"
-                                               aria-describedby="help" placeholder="Enter other symptoms"
+                                               aria-describedby="help" placeholder="Enter other high exposure"
                                         >
                                         @if ($errors->has('high_exposure_other'))
                                             <small id="help" class="form-text text-danger">{{ $errors->first('high_exposure_other') }}</small>
@@ -837,6 +811,18 @@
             symptomsTwoWeeks();
         }
     });
+
+    high_exposure();
+    $('.high_exposure').on('change', function() {
+        high_exposure();
+    });
+    function high_exposure(){
+        if($('.high_exposure').val() == '0'){
+            $('.high_exposure_other_class').show();
+        }else {
+            $('.high_exposure_other_class').hide();
+        }
+    }
 
     travelled_14_days();
     $('.travelled_14_days').on('change', function() {
