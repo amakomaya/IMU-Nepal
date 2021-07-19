@@ -310,6 +310,7 @@ Route::get('admin/download/positive-list', function (\Illuminate\Http\Request $r
 
 });
 
+
 Route::get('download/vaccination-list', function (\Illuminate\Http\Request $request){
 
     return Excel::download(new \App\Exports\VaccinationList($request), 'vaccination-list' . date('Y-m-d H:i:s') . '.xlsx');
@@ -320,6 +321,17 @@ Route::get('admin/download/sample-collection-download', function (\Illuminate\Ht
 
     return Excel::download(new \App\Exports\NewDashboardSampleDownload($request), 'record-list' . date('Y-m-d H:i:s') . '.xlsx');
 
+});
+
+
+Route::get('admin/download/positive-list-poe', function (\Illuminate\Http\Request $request){
+
+  return Excel::download(new \App\Exports\DownloadablePositiveListPoe($request), 'positive-list-poe' . date('Y-m-d H:i:s') . '.xlsx');
+
+});
+
+Route::get('admin/download/positive-list-poe-by-date', function (\Illuminate\Http\Request $request){
+  return Excel::download(new \App\Exports\DownloadablePositiveListPoeByDate($request), 'positive-list' . date('Y-m-d H:i:s') . '.xlsx');
 });
 
 

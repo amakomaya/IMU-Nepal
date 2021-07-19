@@ -101,7 +101,7 @@ export default {
                 this.onSuccessCallback(this.item);
               }
               this.$swal({
-                title: 'Record received in lab',
+                title: 'Test successfully added in lab',
                 type: 'success',
                 toast: true,
                 position: 'top-end',
