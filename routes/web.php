@@ -220,6 +220,10 @@ Route::post('/admin/cict-tracing/section-two-update', 'Backend\CictTracingContro
 Route::get('/admin/cict-tracing/section-three', 'Backend\CictTracingController@sectionThree')->name('cict-tracing.section-three');
 Route::post('/admin/cict-tracing/section-three-update', 'Backend\CictTracingController@sectionThreeUpdate')->name('cict-tracing.section-three.update');
 Route::resource('/admin/cict-tracing', 'Backend\CictTracingController', ['names' => 'cict-tracing']);
+Route::get('/admin/cict-tracing/contact-list/{token}', 'Backend\CictTracingController@aFormContactList')->name('cict-tracing.contact-list');
+
+Route::post('/admin/b-one-form/part-one/{token}', 'Backend\CictTracingController@partOne')->name('b-one-form.part-one');
+Route::get('/admin/b-one-form/part-two', 'Backend\CictTracingController@partTwo')->name('b-one-form.part-two');
 
 Route::get('/admin/sid-search', 'AdminController@sidSearch')->name('admin.sid.search');
 Route::post('/admin/sid-search/update', 'AdminController@sidUpdate')->name('admin.sid.update');

@@ -12,7 +12,7 @@
 @can('cases-registration','lab-received')
     @include('layouts.backend.navigation.html.case-result-report')
 @endcan
-
+@include('layouts.backend.navigation.html.cict-tracing')
 @can('cases-payment')
     @include('layouts.backend.navigation.html.cases-payment')
 @endcan

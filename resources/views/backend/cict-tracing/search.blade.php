@@ -18,33 +18,44 @@
                     <strong>CICT Form</strong>
                 </div>
                 <div class="panel-body">
-                    {!! rcForm::open('POST', route('cict-tracing.store'), ['name' => 'createCase', 'id' => 'createCict']) !!}
+                    <form method="GET" action="">
                         <div class="row">
                             <div class="col-lg-8 form-group">
-                                <label>Is the patient already registered in IMU system?</label>
-                                <div class="form-group">
-                                    <div class="control-group">
-                                        <label class="radio-inline">
-                                            <h5>Yes</h5>
-                                            <input type="radio" name="yes" value="1" class="already_exists" style="top: 7px;">
-                                        </label>
-                                        <label class="radio-inline" style="padding-right: 60px;">
-                                            <h5>No (and continue to form)</h5>
-                                            <input type="radio" name="yes" value="2" class="already_exists" style="top: 7px;">
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="case-id-class" style="display: none;">
+                                <div class="case-id-class">
                                     <input type="text" name="case_id" class="form-control" placeholder="Enter Case Id" value="{{ request()->get('case_id') }}" required><br>
                                     <button class="btn btn-info" title="Search CaseID" value="Submit">
-                                        <i class="fa fa-search"> Create and Continue</i>
+                                        <i class="fa fa-search"> Search</i>
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
+                @if(isset($patient))
+                <div class="panel-body">
+                    <div class="col-12 table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Case ID</th>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tr>
+                                <td>{{ $patient->case_id }}</td>
+                                <td>{{ $patient->name }}</td>
+                                <td>
+                                    {!! rcForm::open('POST', route('cict-tracing.store'), ['name' => 'createCase', 'id' => 'createCict']) !!}
+                                        <input type="hidden" name="case_id" value="{{ $patient->case_id }}">
+                                        <button type="button" id="btnSubmit" class="btn btn-sm btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Create</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                @endif
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -58,19 +69,10 @@
 @section('script')
 <script>
 
-$('.already_exists').on('change', function() {
-	case_id_check();
+$('#btnSubmit').on('click', function() {
+	if (confirm("Are you sure?")){
+        $('form#createCict').submit();
+    }
 });
-
-function case_id_check() {
-	if($('.already_exists:checked').val() == 1){
-		$('.case-id-class').show();
-	}
-	else{
-		$('.case-id-class').hide();
-        $('#createCict').submit();
-		// window.location.href = "{{ route('cict-tracing.section-one') }}"
-	}
-}
 </script>
 @endsection
