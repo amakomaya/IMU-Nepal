@@ -124,7 +124,7 @@
           </download-excel>
 
         </div>
-        <div class="btn btn-secondary">
+        <!-- <div class="btn btn-secondary">
           <download-excel
               :fetch   = "exportToExcelForDolphins"
               :fields = "json_fields_for_dolphins"
@@ -133,7 +133,7 @@
             Download Data for Dolphins
             <i class="fa fa-file-excel-o" aria-hidden="true"></i>
           </download-excel>
-        </div>
+        </div> -->
         <!--        <button @click="exportToCSV()">Export</button>-->
 
       <div>
