@@ -20,8 +20,8 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="col-12 table-responsive">
-                            <table class="table table-bordered">
-                                <thead style="background: #fff;">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
                                     <tr>
                                         <th>SN</th>
                                         <th>Case ID</th>
@@ -53,7 +53,8 @@
                                         <td>{{ $data->emergency_contact_one }}</td>
                                         <td>{{ $data->ward }}</td>
                                         <td>
-                                            <a class="btn btn-sm btn-primary" href="{{ route('cict-tracing.section-one', ['case_id' => $data['case_id']]) }}">Edit</a>
+                                            <a class="btn btn-sm btn-success" href="{{ route('cict-tracing.section-one', ['case_id' => $data['case_id']]) }}" title="Edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                            <a class="btn btn-sm btn-primary" href="{{ route('cict-tracing.contact-list', $data->token) }}" title="Contact List"><i class="fa fa-users" aria-hidden="true"></i></a>
                                         </td>
                                     </tr>
                                     @endforeach

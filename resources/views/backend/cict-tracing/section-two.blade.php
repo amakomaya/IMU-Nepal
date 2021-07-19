@@ -191,27 +191,27 @@
                                 <div class="form-group">
                                     <select name="high_exposure" class="form-control high_exposure">
                                         <option value="" disabled selected>Select High Exposure</option>
-                                        <option value="1" {{ $data->high_exposure == "1" ? 'selected' : "" }}>Health Care Work (any type, level & facility, including cleaning staff</option>
-                                        <option value="2" {{ $data->high_exposure == "2" ? 'selected' : "" }}>Community Health / Immunization Clinic Volunteer</option>
-                                        <option value="3" {{ $data->high_exposure == "3" ? 'selected' : "" }}>Sanitary / Waste Collection / Management Worker / Transport Driver / Helper</option>
-                                        <option value="4" {{ $data->high_exposure == "4" ? 'selected' : "" }}>Patient & Dead Body Transport Driver/ Helper</option>
-                                        <option value="5" {{ $data->high_exposure == "5" ? 'selected' : "" }}>Dead body management work</option>
-                                        <option value="6" {{ $data->high_exposure == "6" ? 'selected' : "" }}>Old Age Home / Care work</option>
-                                        <option value="7" {{ $data->high_exposure == "7" ? 'selected' : "" }}>Border Crossing / Point of Entry Staff</option>
-                                        <option value="8" {{ $data->high_exposure == "8" ? 'selected' : "" }}>Any Security Staff</option>
-                                        <option value="9" {{ $data->high_exposure == "9" ? 'selected' : "" }}>Hotel/Restaurant/Bar work</option>
-                                        <option value="10" {{ $data->high_exposure == "10" ? 'selected' : "" }}>Farm work</option>
-                                        <option value="11" {{ $data->high_exposure == "11" ? 'selected' : "" }}>Shop/Store worker</option>
-                                        <option value="12" {{ $data->high_exposure == "12" ? 'selected' : "" }}>Journalist</option>
-                                        <option value="13" {{ $data->high_exposure == "13" ? 'selected' : "" }}>Migrant</option>
-                                        <option value="14" {{ $data->high_exposure == "14" ? 'selected' : "" }}>Refugee</option>
-                                        <option value="15" {{ $data->high_exposure == "15" ? 'selected' : "" }}>Prisoner</option>
-                                        <option value="16" {{ $data->high_exposure == "16" ? 'selected' : "" }}>Teacher</option>
-                                        <option value="17" {{ $data->high_exposure == "17" ? 'selected' : "" }}>Student</option>
-                                        <option value="18" {{ $data->high_exposure == "18" ? 'selected' : "" }}>Local body Elected Representative</option>
-                                        <option value="19" {{ $data->high_exposure == "19" ? 'selected' : "" }}>Bank/Govt Office / Public Corporation staff</option>
-                                        <option value="20" {{ $data->high_exposure == "20" ? 'selected' : "" }}>UN / Development Partner / INGO / NGO Frontline worker</option>
-                                        <option value="0" {{ $data->high_exposure == "0" ? 'selected' : "" }}>Others</option>
+                                        <option value="1" {{$data && $data->high_exposure == "1" ? 'selected' : "" }}>Health Care Work (any type, level & facility, including cleaning staff</option>
+                                        <option value="2" {{$data && $data->high_exposure == "2" ? 'selected' : "" }}>Community Health / Immunization Clinic Volunteer</option>
+                                        <option value="3" {{$data && $data->high_exposure == "3" ? 'selected' : "" }}>Sanitary / Waste Collection / Management Worker / Transport Driver / Helper</option>
+                                        <option value="4" {{$data && $data->high_exposure == "4" ? 'selected' : "" }}>Patient & Dead Body Transport Driver/ Helper</option>
+                                        <option value="5" {{$data && $data->high_exposure == "5" ? 'selected' : "" }}>Dead body management work</option>
+                                        <option value="6" {{$data && $data->high_exposure == "6" ? 'selected' : "" }}>Old Age Home / Care work</option>
+                                        <option value="7" {{$data && $data->high_exposure == "7" ? 'selected' : "" }}>Border Crossing / Point of Entry Staff</option>
+                                        <option value="8" {{$data && $data->high_exposure == "8" ? 'selected' : "" }}>Any Security Staff</option>
+                                        <option value="9" {{$data && $data->high_exposure == "9" ? 'selected' : "" }}>Hotel/Restaurant/Bar work</option>
+                                        <option value="10" {{$data && $data->high_exposure == "10" ? 'selected' : "" }}>Farm work</option>
+                                        <option value="11" {{$data && $data->high_exposure == "11" ? 'selected' : "" }}>Shop/Store worker</option>
+                                        <option value="12" {{$data && $data->high_exposure == "12" ? 'selected' : "" }}>Journalist</option>
+                                        <option value="13" {{$data && $data->high_exposure == "13" ? 'selected' : "" }}>Migrant</option>
+                                        <option value="14" {{$data && $data->high_exposure == "14" ? 'selected' : "" }}>Refugee</option>
+                                        <option value="15" {{$data && $data->high_exposure == "15" ? 'selected' : "" }}>Prisoner</option>
+                                        <option value="16" {{$data && $data->high_exposure == "16" ? 'selected' : "" }}>Teacher</option>
+                                        <option value="17" {{$data && $data->high_exposure == "17" ? 'selected' : "" }}>Student</option>
+                                        <option value="18" {{$data && $data->high_exposure == "18" ? 'selected' : "" }}>Local body Elected Representative</option>
+                                        <option value="19" {{$data && $data->high_exposure == "19" ? 'selected' : "" }}>Bank/Govt Office / Public Corporation staff</option>
+                                        <option value="20" {{$data && $data->high_exposure == "20" ? 'selected' : "" }}>UN / Development Partner / INGO / NGO Frontline worker</option>
+                                        <option value="0" {{$data && $data->high_exposure == "0" ? 'selected' : "" }}>Others</option>
                                     </select>
                                     <br>
                                     
