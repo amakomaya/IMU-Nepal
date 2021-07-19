@@ -35,9 +35,27 @@ class AdminController extends Controller
      */
 
 
-    public function index()
+    public function index(Request $request)
     {
+      $user = auth()->user();
+      $userRole = $user->role;
+      if($userRole == 'healthpost'){
+        $organization = Organization::where('token', $user->token)->first();
+        $organizationType = $organization->hospital_type;
+      } else if($userRole == 'healthworker') {
+        $organization_hp_code = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
+        $organization = Organization::where('hp_code', $organization_hp_code)->first();
+        $organizationType = $organization->hospital_type;
+      } else {
         return view('admin');
+      }
+      switch($organizationType) {
+        case 7:
+          return view('admin-poe');
+          break;
+        default:
+          return view('admin'); 
+      }
     }
 
     public function newDashbaord()

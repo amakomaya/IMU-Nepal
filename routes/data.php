@@ -27,6 +27,9 @@ Route::get('api/lab/add-result-positive', 'Data\Api\WomenController@labAddResult
 
 Route::get('api/admin/dashboard', 'Data\Api\DashboardController@index');
 Route::get('api/admin/dashboard-new', 'Data\Api\DashboardController@indexNew');
+Route::get('api/admin/poe-dashboard', 'Data\Api\DashboardController@poeDashboard');
+
+Route::get('api/admin/poe-dashboard-by-date', 'Data\Api\DashboardController@poeDashboardByDate');
 
 Route::get('/api/patient/export', 'Data\Api\WomenController@export');
 Route::get('/api/lab-patient/export', 'Data\Api\WomenController@labExport');
