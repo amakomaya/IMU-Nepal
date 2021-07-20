@@ -49,7 +49,7 @@
                 @endif
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">
-                        <strong>CICT Form Part 2/3</strong>
+                        <strong>Contact Interview Form (1 of 2)</strong>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
