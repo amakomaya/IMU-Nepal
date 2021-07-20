@@ -223,10 +223,16 @@ Route::resource('/admin/cict-tracing', 'Backend\CictTracingController', ['names'
 Route::get('/admin/cict-tracing/contact-list/{token}', 'Backend\CictTracingController@aFormContactList')->name('cict-tracing.contact-list');
 
 Route::post('/admin/b-one-form/part-one/{token}', 'Backend\CictTracingController@partOne')->name('b-one-form.part-one');
+Route::post('/admin/b-one-form/part-one-update', 'Backend\CictTracingController@partOneUpdate')->name('b-one-form.part-one.update');
 Route::get('/admin/b-one-form/part-two', 'Backend\CictTracingController@partTwo')->name('b-one-form.part-two');
+Route::post('/admin/b-one-form/part-two-update', 'Backend\CictTracingController@partTwoUpdate')->name('b-one-form.part-two.update');
+
+Route::get('/admin/b-two-form/{token}', 'Backend\CictTracingController@followUp')->name('b-two-form.follow-up');
+Route::post('/admin/b-two-form-update', 'Backend\CictTracingController@followUpUpdate')->name('b-two-form.update');
+
 
 Route::get('/admin/sid-search', 'AdminController@sidSearch')->name('admin.sid.search');
-Route::post('/admin/sid-search/update', 'AdminController@sidUpdate')->name('admin.sid.update');
+Route::get('/admin/sid-search/update', 'AdminController@sidUpdate')->name('admin.sid.update');
 Route::get('/admin/remaining-beds', 'Backend\WomanController@getRemainingBeds');
 
 

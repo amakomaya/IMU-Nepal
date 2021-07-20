@@ -25,8 +25,8 @@
                                     <tr>
                                         <th>Name</th>
                                         <th>Age</th>
-                                        <th title="Gender">G</th>
-                                        <th title="Relationship">Relationship</th>
+                                        <th title="Gender">Sex</th>
+                                        {{-- <th title="Relationship">Relationship</th> --}}
                                         <th title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
                                     </tr>
                                 </thead>
@@ -35,10 +35,19 @@
                                     @php $household_details = json_decode($contact_list->household_details) @endphp
                                     @foreach ($household_details as $key => $item)
                                         <tr>
+                                            <?php
+                                            if($item->sex == '1'){
+                                                $sex = "M";
+                                            }elseif($item->sex == '2'){
+                                                $sex = "F";
+                                            }else{
+                                                $sex = "O";
+                                            }
+                                            ?>
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->age }}</td>
-                                            <td>{{ $item->sex }}</td>
-                                            <td>{{ $item->sex }}</td>
+                                            <td>{{ $sex }}</td>
+                                            {{-- <td>{{ $item->sex }}</td> --}}
                                             <td>
                                                 <form method="POST" action="{{ route('b-one-form.part-one', $contact_list->token) }}">
                                                     @csrf
@@ -53,10 +62,19 @@
                                     @php $travel_vehicle_details = json_decode($contact_list->travel_vehicle_details) @endphp
                                     @foreach ($travel_vehicle_details as $key => $item)
                                         <tr>
+                                            <?php
+                                            if($item->sex == '1'){
+                                                $sex = "M";
+                                            }elseif($item->sex == '2'){
+                                                $sex = "F";
+                                            }else{
+                                                $sex = "O";
+                                            }
+                                            ?>
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->age }}</td>
-                                            <td>{{ $item->sex }}</td>
-                                            <td>{{ $item->sex }}</td>
+                                            <td>{{ $sex }}</td>
+                                            {{-- <td>{{ $item->sex }}</td> --}}
                                             <td>
                                                 <form method="POST" action="{{ route('b-one-form.part-one', $contact_list->token) }}">
                                                     @csrf
@@ -71,10 +89,19 @@
                                     @php $other_direct_care_details = json_decode($contact_list->other_direct_care_details) @endphp
                                     @foreach ($other_direct_care_details as $key => $item)
                                         <tr>
+                                            <?php
+                                            if($item->sex == '1'){
+                                                $sex = "M";
+                                            }elseif($item->sex == '2'){
+                                                $sex = "F";
+                                            }else{
+                                                $sex = "O";
+                                            }
+                                            ?>
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->age }}</td>
-                                            <td>{{ $item->sex }}</td>
-                                            <td>{{ $item->sex }}</td>
+                                            <td>{{ $sex }}</td>
+                                            {{-- <td>{{ $item->sex }}</td> --}}
                                             <td>
                                                 <form method="POST" action="{{ route('b-one-form.part-one', $contact_list->token) }}">
                                                     @csrf

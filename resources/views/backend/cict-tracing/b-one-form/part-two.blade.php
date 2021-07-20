@@ -53,11 +53,11 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        {!! rcForm::open('POST', route('cict-tracing.section-two.update'), ['name' => 'createCase']) !!}
+                        {!! rcForm::open('POST', route('b-one-form.part-two.update'), ['name' => 'createCase']) !!}
                         <div class="panel-body">
 
                             <div class="part-one">
-                                <h4>I. Contacts Clinical Informations</h4><br>
+                                <h4>Contacts Clinical Informations</h4><br>
 
                                 <div class="form-group">
                                     <label class="control-label">Currently symptomatic</label>
@@ -78,11 +78,11 @@
                                     <div class="control-group">
                                         <label class="radio-inline">
                                             <input type="radio" name="symptoms_two_weeks" class="symptoms_two_weeks"
-                                                {{ $data && $data->symptoms_two_weeks == "1" ? 'checked' : '' }} value="1">Yes
+                                                {{ isset($data) && $data->symptoms_two_weeks == "1" ? 'checked' : '' }} value="1">Yes
                                         </label>
                                         <label class="radio-inline">
                                             <input type="radio" name="symptoms_two_weeks" class="symptoms_two_weeks"
-                                                {{ $data && $data->symptoms_two_weeks == "0" ? 'checked' : '' }} value="0">No
+                                                {{ isset($data) && $data->symptoms_two_weeks == "0" ? 'checked' : '' }} value="0">No
                                         </label>
                                     </div>
                                 </div>
@@ -91,7 +91,7 @@
                                     <div class="form-group {{ $errors->has('date_of_onset_of_first_symptom_np') ? 'has-error' : '' }}">
                                         <label for="date_of_onset_of_first_symptom_np">Date of onset of first symptom:</label>
                                         <input type="text" class="form-control" id="date_of_onset_of_first_symptom_np"
-                                            name="date_of_onset_of_first_symptom_np" value="{{ $data ? $data->date_of_onset_of_first_symptom : '' }}" aria-describedby="help">
+                                            name="date_of_onset_of_first_symptom_np" value="{{ isset($data) ? $data->date_of_onset_of_first_symptom : '' }}" aria-describedby="help">
                                         @if ($errors->has('date_of_onset_of_first_symptom_np'))
                                             <small id="help"
                                                 class="form-text text-danger">{{ $errors->first('date_of_onset_of_first_symptom_np') }}</small>
@@ -99,7 +99,7 @@
                                     </div>
 
                                     <?php
-                                        if($data){
+                                        if(isset($data)){
                                             $symptoms = $data->symptoms ? json_decode($data->symptoms) : [];    
                                         }else {
                                             $symptoms = [];
@@ -130,7 +130,7 @@
 
                                     <div class="form-group symptoms_other_class {{ $errors->has('symptoms_specific') ? 'has-error' : '' }}">
                                         <label for="symptoms_specific">If other, specify</label>
-                                        <input type="text" class="form-control" value="{{ $data ? $data->symptoms_specific : '' }}" name="symptoms_specific"
+                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->symptoms_specific : '' }}" name="symptoms_specific"
                                             aria-describedby="help" placeholder="Enter other symptoms"
                                         >
                                         @if ($errors->has('symptoms_specific'))
@@ -141,10 +141,10 @@
                             </div>
                             <hr>
                             <div class="part-two">
-                                <h4>II. Underlying medical conditions or disease / comorbidity</h4><br>
+                                <h4>Contact pre-existing condition(s)</h4><br>
 
                                 <?php
-                                    if($data){
+                                    if(isset($data)){
                                         $symptoms_comorbidity = $data->symptoms_comorbidity ? json_decode($data->symptoms_comorbidity) : [];    
                                     }else {
                                         $symptoms_comorbidity = [];
@@ -174,7 +174,7 @@
     
                                 <div class="form-group {{ $errors->has('symptoms_comorbidity_specific') ? 'has-error' : '' }}">
                                     <label for="symptoms_comorbidity_specific">If other, specify</label>
-                                    <input type="text" class="form-control" value="{{ $data ? $data->symptoms_comorbidity_specific : '' }}" name="symptoms_comorbidity_specific"
+                                    <input type="text" class="form-control" value="{{ isset($data) ? $data->symptoms_comorbidity_specific : '' }}" name="symptoms_comorbidity_specific"
                                            aria-describedby="help" placeholder="Enter other symptoms"
                                     >
                                     @if ($errors->has('symptoms_comorbidity_specific'))
@@ -185,23 +185,23 @@
 
                             <hr>
                             <div class="form-group">
-                                <h4>III. Occupation</h4><br>
-                                <select name="occupation" class="form-control">
-                                    <option {{ old('occupation') == '' ? "selected" : "" }} value="">Select Occupation
+                                <h4>Occupation</h4><br>
+                                <select name="occupation" class="form-control occupation">
+                                    <option {{ isset($data) && $data->occupation == '' ? "selected" : "" }} value="">Select Occupation
                                     </option>
-                                    <option {{ old('occupation') == '1' ? "selected" : "" }} value="1">Health care worker
+                                    <option {{ isset($data) && $data->occupation == '1' ? "selected" : "" }} value="1">Health care worker
                                     </option>
-                                    <option {{ old('occupation') == '14' ? "selected" : "" }} value="14">Working with animals</option>
-                                    <option {{ old('occupation') == '6' ? "selected" : "" }} value="6">Student/Teacher</option>
-                                    <option {{ old('occupation') == '16' ? "selected" : "" }} value="16">Security Personnel
+                                    <option {{ isset($data) && $data->occupation == '14' ? "selected" : "" }} value="14">Working with animals</option>
+                                    <option {{ isset($data) && $data->occupation == '6' ? "selected" : "" }} value="6">Student/Teacher</option>
+                                    <option {{ isset($data) && $data->occupation == '16' ? "selected" : "" }} value="16">Security Personnel
                                     </option>
-                                    <option {{ old('occupation') == '17' ? "selected" : "" }} value="17">Waste Management Worker
+                                    <option {{ isset($data) && $data->occupation == '17' ? "selected" : "" }} value="17">Waste Management Worker
                                     </option>
-                                    <option {{ old('occupation') == '18' ? "selected" : "" }} value="18">Hotel/Restaurants/Bars
+                                    <option {{ isset($data) && $data->occupation == '18' ? "selected" : "" }} value="18">Hotel/Restaurants/Bars
                                     </option>
-                                    <option {{ old('occupation') == '19' ? "selected" : "" }} value="19">Bank and Finance worker
+                                    <option {{ isset($data) && $data->occupation == '19' ? "selected" : "" }} value="19">Bank and Finance worker
                                     </option>
-                                    <option {{ old('occupation') == '11' ? "selected" : "" }} value="11">Others</option>
+                                    <option {{ isset($data) && $data->occupation == '0' ? "selected" : "" }} value="0">Others</option>
                                 </select>
                                 @if ($errors->has('occupation'))
                                     <small id="help"
@@ -209,139 +209,112 @@
                                 @endif
                             </div>
     
-                            <div class="form-group {{ $errors->has('occupaton_other') ? 'has-error' : '' }}">
+                            <div class="form-group occupation_other_class {{ $errors->has('occupaton_other') ? 'has-error' : '' }}">
                                 <label for="occupaton_other">If other, specify</label>
-                                <input type="text" class="form-control" value="{{ $data ? $data->occupaton_other : '' }}" name="occupaton_other"
-                                       aria-describedby="help" placeholder="Enter other symptoms"
+                                <input type="text" class="form-control" value="{{ isset($data) ? $data->occupaton_other : '' }}" name="occupaton_other"
+                                       aria-describedby="help" placeholder="Enter other occupation"
                                 >
                                 @if ($errors->has('occupaton_other'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('occupaton_other') }}</small>
                                 @endif
                             </div>
-    
-                            <div class="form-group {{ $errors->has('healthworker_title') ? 'has-error' : '' }}">
-                                <label for="healthworker_title">Job Title</label>
-                                <input type="text" class="form-control" value="{{ $data ? $data->healthworker_title : '' }}" name="healthworker_title"
-                                       aria-describedby="help" placeholder="Enter other symptoms"
-                                >
-                                @if ($errors->has('healthworker_title'))
-                                    <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_title') }}</small>
-                                @endif
 
-                                <label for="healthworker_workplace">Name of the work place</label>
-                                <input type="text" class="form-control" value="{{ $data ? $data->healthworker_workplace : '' }}" name="healthworker_workplace"
-                                       aria-describedby="help" placeholder="Enter other symptoms"
-                                >
-                                @if ($errors->has('healthworker_workplace'))
-                                    <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_workplace') }}</small>
-                                @endif
+                            <div class="occupation_health_worker_class">
+                                <div class="form-group {{ $errors->has('healthworker_title') ? 'has-error' : '' }}">
+                                    <label for="healthworker_title">Job Title</label>
+                                    <input type="text" class="form-control" value="{{ isset($data) ? $data->healthworker_title : '' }}" name="healthworker_title"
+                                        aria-describedby="help" placeholder="Enter Job Title"
+                                    >
+                                    @if ($errors->has('healthworker_title'))
+                                        <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_title') }}</small>
+                                    @endif
 
-                                <label>Station</label><br>
+                                    <label for="healthworker_workplace">Name of the work place</label>
+                                    <input type="text" class="form-control" value="{{ isset($data) ? $data->healthworker_workplace : '' }}" name="healthworker_workplace"
+                                        aria-describedby="help" placeholder="Name of the work place"
+                                    >
+                                    @if ($errors->has('healthworker_workplace'))
+                                        <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_workplace') }}</small>
+                                    @endif
 
-                                <select name="healthworker_station" class="form-control">
-                                    <option {{ old('healthworker_station') == '' ? "selected" : "" }} value="">Select healthworker_station
-                                    </option>
-                                    <option {{ old('healthworker_station') == '1' ? "selected" : "" }} value="1">Fever Clinic
-                                    </option>
-                                    <option {{ old('healthworker_station') == '2' ? "selected" : "" }} value="2">Isolation Ward</option>
-                                    <option {{ old('healthworker_station') == '3' ? "selected" : "" }} value="3">ICU/Ventilator</option>
-                                    <option {{ old('healthworker_station') == '4' ? "selected" : "" }} value="4">Lab
-                                    <option {{ old('healthworker_station') == '0' ? "selected" : "" }} value="0">Others</option>
-                                </select>
-                                @if ($errors->has('healthworker_station'))
-                                    <small id="help"
-                                           class="form-text text-danger">{{ $errors->first('healthworker_station') }}</small>
-                                @endif
+                                    <label>Station</label><br>
 
-                                <label for="healthworker_station_other">If others, specfiy</label>
-                                <input type="text" class="form-control" value="{{ $data ? $data->healthworker_station_other : '' }}" name="healthworker_station_other"
-                                       aria-describedby="help" placeholder="Enter other station"
-                                >
-                                @if ($errors->has('healthworker_station_other'))
-                                    <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_station_other') }}</small>
-                                @endif
-
-                            </div>
-
-
-                            <div class="part-three">
-                                <h4>III. High exposure category of Case under Investigation belongs to</h4><br>
-
-                                <div class="form-group">
-                                    <select name="high_exposure" class="form-control high_exposure">
-                                        <option value="" disabled selected>Select High Exposure</option>
-                                        <option value="1" {{$data && $data->high_exposure == "1" ? 'selected' : "" }}>Health Care Work (any type, level & facility, including cleaning staff</option>
-                                        <option value="2" {{$data && $data->high_exposure == "2" ? 'selected' : "" }}>Community Health / Immunization Clinic Volunteer</option>
-                                        <option value="3" {{$data && $data->high_exposure == "3" ? 'selected' : "" }}>Sanitary / Waste Collection / Management Worker / Transport Driver / Helper</option>
-                                        <option value="4" {{$data && $data->high_exposure == "4" ? 'selected' : "" }}>Patient & Dead Body Transport Driver/ Helper</option>
-                                        <option value="5" {{$data && $data->high_exposure == "5" ? 'selected' : "" }}>Dead body management work</option>
-                                        <option value="6" {{$data && $data->high_exposure == "6" ? 'selected' : "" }}>Old Age Home / Care work</option>
-                                        <option value="7" {{$data && $data->high_exposure == "7" ? 'selected' : "" }}>Border Crossing / Point of Entry Staff</option>
-                                        <option value="8" {{$data && $data->high_exposure == "8" ? 'selected' : "" }}>Any Security Staff</option>
-                                        <option value="9" {{$data && $data->high_exposure == "9" ? 'selected' : "" }}>Hotel/Restaurant/Bar work</option>
-                                        <option value="10" {{$data && $data->high_exposure == "10" ? 'selected' : "" }}>Farm work</option>
-                                        <option value="11" {{$data && $data->high_exposure == "11" ? 'selected' : "" }}>Shop/Store worker</option>
-                                        <option value="12" {{$data && $data->high_exposure == "12" ? 'selected' : "" }}>Journalist</option>
-                                        <option value="13" {{$data && $data->high_exposure == "13" ? 'selected' : "" }}>Migrant</option>
-                                        <option value="14" {{$data && $data->high_exposure == "14" ? 'selected' : "" }}>Refugee</option>
-                                        <option value="15" {{$data && $data->high_exposure == "15" ? 'selected' : "" }}>Prisoner</option>
-                                        <option value="16" {{$data && $data->high_exposure == "16" ? 'selected' : "" }}>Teacher</option>
-                                        <option value="17" {{$data && $data->high_exposure == "17" ? 'selected' : "" }}>Student</option>
-                                        <option value="18" {{$data && $data->high_exposure == "18" ? 'selected' : "" }}>Local body Elected Representative</option>
-                                        <option value="19" {{$data && $data->high_exposure == "19" ? 'selected' : "" }}>Bank/Govt Office / Public Corporation staff</option>
-                                        <option value="20" {{$data && $data->high_exposure == "20" ? 'selected' : "" }}>UN / Development Partner / INGO / NGO Frontline worker</option>
-                                        <option value="0" {{$data && $data->high_exposure == "0" ? 'selected' : "" }}>Others</option>
+                                    <select name="healthworker_station" class="form-control">
+                                        <option {{ isset($data) && $data->healthworker_station == '' ? "selected" : "" }} value="">Select Station
+                                        </option>
+                                        <option {{ isset($data) && $data->healthworker_station == '1' ? "selected" : "" }} value="1">Fever Clinic
+                                        </option>
+                                        <option {{ isset($data) && $data->healthworker_station == '2' ? "selected" : "" }} value="2">Isolation Ward</option>
+                                        <option {{ isset($data) && $data->healthworker_station == '3' ? "selected" : "" }} value="3">ICU/Ventilator</option>
+                                        <option {{ isset($data) && $data->healthworker_station == '4' ? "selected" : "" }} value="4">Lab
+                                        <option {{ isset($data) && $data->healthworker_station == '0' ? "selected" : "" }} value="0">Others</option>
                                     </select>
-                                    <br>
-                                    
-                                    <div class="form-group high_exposure_other_class {{ $errors->has('high_exposure_other') ? 'has-error' : '' }}">
-                                        <label for="high_exposure_other">If others, specify</label>
-                                        <input type="text" class="form-control" value="{{ $data ? $data->high_exposure_other : '' }}" name="high_exposure_other"
-                                               aria-describedby="help" placeholder="Enter other high exposure"
-                                        >
-                                        @if ($errors->has('high_exposure_other'))
-                                            <small id="help" class="form-text text-danger">{{ $errors->first('high_exposure_other') }}</small>
-                                        @endif
-                                    </div>
+                                    @if ($errors->has('healthworker_station'))
+                                        <small id="help"
+                                            class="form-text text-danger">{{ $errors->first('healthworker_station') }}</small>
+                                    @endif
+
+                                    <label for="healthworker_station_other">If others, specfiy</label>
+                                    <input type="text" class="form-control" value="{{ isset($data) ? $data->healthworker_station_other : '' }}" name="healthworker_station_other"
+                                        aria-describedby="help" placeholder="Enter other station"
+                                    >
+                                    @if ($errors->has('healthworker_station_other'))
+                                        <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_station_other') }}</small>
+                                    @endif
+
 
                                     <div class="form-group">
                                         <label class="control-label">Was appropriate PPE used?</label>
                                         <div class="control-group">
                                             <label class="radio-inline">
                                                 <input type="radio" name="healthworker_ppe" class="healthworker_ppe"
-                                                    {{ $data && $data->healthworker_ppe == "1" ? 'checked' : '' }} value="1">Yes
+                                                    {{ isset($data) && $data->healthworker_ppe == "1" ? 'checked' : '' }} value="1">Yes
                                             </label>
                                             <label class="radio-inline">
                                                 <input type="radio" name="healthworker_ppe" class="healthworker_ppe"
-                                                    {{ $data && $data->healthworker_ppe == "0" ? 'checked' : '' }} value="0">No
+                                                    {{ isset($data) && $data->healthworker_ppe == "0" ? 'checked' : '' }} value="0">No
                                             </label>
                                         </div>
                                     </div>
-    
+
                                     <div class="form-group">
                                         <label for="healthworker_first_date">Date of first contact</label>
-                                        <input type="text" class="form-control" value="{{ $data ? $data->healthworker_first_date : '' }}" name="healthworker_first_date"
-                                               aria-describedby="help" placeholder="Enter other symptoms"
+                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->healthworker_first_date : '' }}" name="healthworker_first_date"
+                                            aria-describedby="help" placeholder="Enter Date of first contact"
                                         >
                                         @if ($errors->has('healthworker_first_date'))
                                             <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_first_date') }}</small>
                                         @endif
 
                                         <label for="healthworker_last_date">Date of last contact</label>
-                                        <input type="text" class="form-control" value="{{ $data ? $data->healthworker_last_date : '' }}" name="healthworker_last_date"
-                                               aria-describedby="help" placeholder="Enter other symptoms"
+                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->healthworker_last_date : '' }}" name="healthworker_last_date"
+                                            aria-describedby="help" placeholder="Enter Date of last contact"
                                         >
                                         @if ($errors->has('healthworker_last_date'))
                                             <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_last_date') }}</small>
                                         @endif
 
                                         <label for="healthworker_narrative">Any relevant narrative</label>
-                                        <input type="text" class="form-control" value="{{ $data ? $data->healthworker_narrative : '' }}" name="healthworker_narrative"
-                                               aria-describedby="help" placeholder="Enter other symptoms"
+                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->healthworker_narrative : '' }}" name="healthworker_narrative"
+                                            aria-describedby="help" placeholder="Enter relevant narrative"
                                         >
                                         @if ($errors->has('healthworker_narrative'))
                                             <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_narrative') }}</small>
                                         @endif
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label">Based on the exposure history, classification of the contact</label>
+                                        <div class="control-group">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="healthworker_classify" class="healthworker_classify"
+                                                    {{ isset($data) && $data->healthworker_classify == "1" ? 'checked' : '' }} value="1">Close
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="healthworker_classify" class="healthworker_classify"
+                                                    {{ isset($data) && $data->healthworker_classify == "2" ? 'checked' : '' }} value="2">Casual
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -349,9 +322,10 @@
                             <hr>
 
                             <div class="part-four">
-                                <h4>IV. Travel during 14 days before OR aftersymptom onset or date of sample collection for testing</h4><br>
+                                <h4>General Exposure Information</h4><br>
 
                                 <div class="form-group">
+                                    <label>Has the contact travelled in last 14 days?</label>
                                     <div class="control-group">
                                         <label class="radio-inline">
                                             <input type="radio" name="travelled_14_days" class="travelled_14_days"
@@ -363,9 +337,324 @@
                                         </label>
                                     </div>
                                 </div>
+
+                                <div class="travelled_14_days_yes_class">
+                                    <div class="form-group">
+                                        <label for="date_14_days">Date of travel</label>
+                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->date_14_days : '' }}" name="date_14_days"
+                                            aria-describedby="help" placeholder="Enter Date of travel"
+                                        >
+                                        @if ($errors->has('date_14_days'))
+                                            <small id="help" class="form-text text-danger">{{ $errors->first('date_14_days') }}</small>
+                                        @endif
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Travel Detail</label>
+                                        <div class="control-group">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="travel_type" class="travel_type"
+                                                {{ $data && $data->travel_type == "1" ? 'checked' : '' }} value="1">Domestic Travel
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="travel_type" class="travel_type"
+                                                {{ $data && $data->travel_type == "2" ? 'checked' : '' }} value="2">International
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="modes_of_travel">Modes of travel</label>
+                                        <select name="modes_of_travel" class="form-control modes_of_travel">
+                                            <option value=""  {{ isset($data) && $data->modes_of_travel == "" ? 'selected' : "" }}>Select Measures Taken</option>
+                                            <option value="1" {{ isset($data) && $data->modes_of_travel == "1" ? 'selected' : "" }}>Air</option>
+                                            <option value="2" {{ isset($data) && $data->modes_of_travel == "2" ? 'selected' : "" }}>Public transport (Bus, Micro, Truck, Taxi,etc)</option>
+                                            <option value="3" {{ isset($data) && $data->modes_of_travel == "3" ? 'selected' : "" }}>Private vehicle</option>
+                                            <option value="0" {{ isset($data) && $data->modes_of_travel == "0" ? 'selected' : "" }}>Others</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group modes_of_travel_other_class">
+                                        <label for="modes_of_travel_other"></label>If other, specify</label>
+                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->modes_of_travel_other : '' }}" name="modes_of_travel_other"
+                                            aria-describedby="help" placeholder="Enter other modes of travel">
+                                        @if ($errors->has('modes_of_travel_other'))
+                                            <small id="help" class="form-text text-danger">{{ $errors->first('modes_of_travel_other') }}</small>
+                                        @endif
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="travel_place"></label>Place Visited</label>
+                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->travel_place : '' }}" name="travel_place"
+                                            aria-describedby="help" placeholder="Enter Place Visited">
+                                        @if ($errors->has('travel_place'))
+                                            <small id="help" class="form-text text-danger">{{ $errors->first('travel_place') }}</small>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>In the past 14 days, has the contact had contact with anyone with suspected on confirmed COVID 19 infection?</label>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="contact_status" class="contact_status"
+                                            {{ $data && $data->contact_status == "1" ? 'checked' : '' }} value="1">Yes
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="contact_status" class="contact_status"
+                                            {{ $data && $data->contact_status == "0" ? 'checked' : '' }} value="0">No
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group contact_status_yes_class">
+                                    <label for="contact_last_date"></label>Date of last contact</label>
+                                    <input type="text" class="form-control" value="{{ isset($data) ? $data->contact_last_date : '' }}" name="contact_last_date"
+                                           aria-describedby="help" placeholder="Enter Date of last contact">
+                                    @if ($errors->has('contact_last_date'))
+                                        <small id="help" class="form-text text-danger">{{ $errors->first('contact_last_date') }}</small>
+                                    @endif
+                                </div>
+
+                                <div class="form-group">
+                                    <label>has the contact visited social gathering/meetings/events/temples/markets/halls etc.</label>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="contact_social_status" class="contact_social_status"
+                                            {{ $data && $data->contact_social_status == "1" ? 'checked' : '' }} value="1">Yes
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="contact_social_status" class="contact_social_status"
+                                            {{ $data && $data->contact_social_status == "0" ? 'checked' : '' }} value="0">No
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group contact_social_status_yes_class">
+                                    <label for="contact_social_last_date"></label>Date of last visit</label>
+                                    <input type="text" class="form-control" value="{{ isset($data) ? $data->contact_social_last_date : '' }}" name="contact_social_last_date"
+                                           aria-describedby="help" placeholder="Enter Date of last visit">
+                                    @if ($errors->has('contact_social_last_date'))
+                                        <small id="help" class="form-text text-danger">{{ $errors->first('contact_social_last_date') }}</small>
+                                    @endif
+                                </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary btn-sm btn-block ">SAVE AND CONTINUE</button>
+
+                            <div class="part-four">
+                                <h4>Vaccination Status</h4><br>
+
+                                <div class="form-group">
+                                    <label class="control-label">Has the Case under Investigation received SARS-CoV-2 vaccine (COVID-19 vaccine)?</label>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="sars_cov2_vaccinated" class="sars_cov2_vaccinated"
+                                                {{ isset($data) && $data->sars_cov2_vaccinated == "0" ? 'checked' : '' }} value="0">No
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="sars_cov2_vaccinated" class="sars_cov2_vaccinated"
+                                                {{ isset($data) && $data->sars_cov2_vaccinated == "1" ? 'checked' : '' }} value="1">Yes
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="sars_cov2_vaccinated" class="sars_cov2_vaccinated"
+                                                {{ isset($data) && $data->sars_cov2_vaccinated == "2" ? 'checked' : '' }} value="2">Unknown
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group sars_cov2_vaccinated_yes_class">
+                                    <div class="col-12 table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead style="background: #fff;">
+                                                <tr>
+                                                    <th colspan="2">Name of the vaccine (Product/Brand Name)</th>
+                                                    <th>Date of Vaccination</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table-sars-cov-tbody text-center">
+                                                <tr class="table-sars-cov-tr">
+                                                    <td>
+                                                        Dose 1
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="dose_one_name" value="{{ isset($data) ? $data->dose_one_name : '' }}">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="dose_one_date" id="dose_one_date" value="{{ isset($data) ? $data->dose_one_date : '' }}">
+                                                    </td>
+                                                </tr>
+                                                <tr class="table-sars-cov-tr">
+                                                    <td>
+                                                        Dose 2
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="dose_two_name" value="{{ isset($data) ? $data->dose_two_name : '' }}">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="dose_two_date" id="dose_two_date" value="{{ isset($data) ? $data->dose_two_date : '' }}">
+                                                    </td>
+                                                </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="part-four">
+                                <h4>Contact Management</h4><br>
+
+                                <label> (Measures taken:)</label><br>
+                                <div class="form-group">
+                                    <select name="measures_taken" class="form-control measures_taken">
+                                        <option value="" disabled selected>Select Measures Taken</option>
+                                        <option value="1" {{ isset($data) && $data->measures_taken == "1" ? 'selected' : "" }}>Home quarantine</option>
+                                        <option value="2" {{ isset($data) && $data->measures_taken == "2" ? 'selected' : "" }}>Referred to Quarantine center</option>
+                                        <option value="3" {{ isset($data) && $data->measures_taken == "3" ? 'selected' : "" }}>Contact admitted to hospital</option>
+                                        <option value="4" {{ isset($data) && $data->measures_taken == "4" ? 'selected' : "" }}>Contact lost</option>
+                                        <option value="0" {{ isset($data) && $data->measures_taken == "0" ? 'selected' : "" }}>Others</option>
+                                    </select>
+                                </div>
+                                <div class="form-group measures_taken_other_class">
+                                    <label for="measures_taken_other">If others, specfiy</label>
+                                    <input type="text" class="form-control" value="{{ isset($data) ? $data->measures_taken_other : '' }}" name="measures_taken_other"
+                                            aria-describedby="help" placeholder="Enter other measures taken"
+                                    >
+                                    @if ($errors->has('measures_taken_other'))
+                                        <small id="help" class="form-text text-danger">{{ $errors->first('measures_taken_other') }}</small>
+                                    @endif
+                                </div>
+
+                                <div class="form-group measures_taken_hospital_class">
+                                    <label>If referred to hospital/quarantine facility:</label>
+                                    <div class="form-group">
+                                        <label>Referral Date</label><br>
+                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->measures_referral_date : '' }}" name="measures_referral_date"
+                                                aria-describedby="help" placeholder="Enter Referral Date"
+                                        >
+                                        @if ($errors->has('measures_referral_date'))
+                                            <small id="help" class="form-text text-danger">{{ $errors->first('measures_referral_date') }}</small>
+                                        @endif
+
+                                        <label>Name of hospital/quarantine center </label><br>
+                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->measures_hospital_name : '' }}" name="measures_hospital_name"
+                                                aria-describedby="help" placeholder="Enter Name of hospital/quarantine center"
+                                        >
+                                        @if ($errors->has('measures_hospital_name'))
+                                            <small id="help" class="form-text text-danger">{{ $errors->first('measures_hospital_name') }}</small>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="part-four">
+                                <h4>Test status of the contact</h4><br>
+
+                                <div class="form-group">
+                                    <label class="control-label">Was the contact tested?</label>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="test_status" class="test_status"
+                                                {{ isset($data) && $data->test_status == "0" ? 'checked' : '' }} value="0">No
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="test_status" class="test_status"
+                                                {{ isset($data) && $data->test_status == "1" ? 'checked' : '' }} value="1">Yes
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="test_status_yes_class">
+
+                                    <div class="form-group">
+                                        <label class="control-label">test conducted</label>
+                                        <div class="control-group">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="test_type" class="test_type"
+                                                    {{ isset($data) && $data->test_type == "1" ? 'checked' : '' }} value="1">RT-PCR
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="test_type" class="test_type"
+                                                    {{ isset($data) && $data->test_type == "2" ? 'checked' : '' }} value="2">RDT-Antigen
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="test_type" class="test_type"
+                                                    {{ isset($data) && $data->test_type == "0" ? 'checked' : '' }} value="1">Unknown
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Date of Swab collection </label><br>
+                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->collection_date : '' }}" name="collection_date"
+                                                aria-describedby="help" placeholder="Enter Date of Swab collection"
+                                        >
+                                        @if ($errors->has('collection_date'))
+                                            <small id="help" class="form-text text-danger">{{ $errors->first('collection_date') }}</small>
+                                        @endif
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label">test result</label>
+                                        <div class="control-group">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="test_type" class="test_type"
+                                                    {{ isset($data) && $data->test_type == "1" ? 'checked' : '' }} value="1">Positive
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="test_type" class="test_type"
+                                                    {{ isset($data) && $data->test_type == "2" ? 'checked' : '' }} value="2">Negative
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="test_type" class="test_type"
+                                                    {{ isset($data) && $data->test_type == "0" ? 'checked' : '' }} value="1">Unknown
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>test Result Date </label><br>
+                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->result_date : '' }}" name="result_date"
+                                                aria-describedby="help" placeholder="Enter test Result Date"
+                                        >
+                                        @if ($errors->has('result_date'))
+                                            <small id="help" class="form-text text-danger">{{ $errors->first('result_date') }}</small>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="part-four">
+                                <h4>Follow Status( to be completed at the end of the prescribed follow up period)</h4><br>
+
+                                <select name="followup_status" class="form-control">
+                                    <option {{ isset($data) && $data->followup_status == '' ? "selected" : "" }} value="">Select Followup Status
+                                    </option>
+                                    <option {{ isset($data) && $data->followup_status == '1' ? "selected" : "" }} value="1">contact remain asymptomatic
+                                    <option {{ isset($data) && $data->followup_status == '2' ? "selected" : "" }} value="2">Developed symptoms and investigated</option>
+                                    <option {{ isset($data) && $data->followup_status == '3' ? "selected" : "" }} value="3">turned into confirmed caser</option>
+                                    <option {{ isset($data) && $data->followup_status == '4' ? "selected" : "" }} value="4">death
+                                    <option {{ isset($data) && $data->followup_status == '0' ? "selected" : "" }} value="5">Lost/unknown</option>
+                                </select>
+                                @if ($errors->has('followup_status'))
+                                    <small id="help"
+                                            class="form-text text-danger">{{ $errors->first('followup_status') }}</small>
+                                @endif
+                            </div>
+
+                            <div class="part-four">
+                                <h4>Data Collector information</h4><br>
+
+                                <div class="form-group">
+                                    <label>Form Completion Date </label><br>
+                                    <input type="text" class="form-control" value="{{ isset($data) ? $data->completion_date : '' }}" name="completion_date"
+                                            aria-describedby="help" placeholder="Enter Form Completion Date"
+                                    >
+                                    @if ($errors->has('completion_date'))
+                                        <small id="help" class="form-text text-danger">{{ $errors->first('completion_date') }}</small>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="case_id" value="{{ $data->case_id }}">
+
+                            <button type="submit" class="btn btn-primary btn-sm btn-block ">SAVE</button>
                             
                             </form>
                         </div>
@@ -421,15 +710,20 @@
         }
     });
 
-    high_exposure();
-    $('.high_exposure').on('change', function() {
-        high_exposure();
+    occupation();
+    $('.occupation').on('change', function() {
+        occupation();
     });
-    function high_exposure(){
-        if($('.high_exposure').val() == '0'){
-            $('.high_exposure_other_class').show();
-        }else {
-            $('.high_exposure_other_class').hide();
+    function occupation(){
+        if($('.occupation').val() == '0'){
+            $('.occupation_other_class').show();
+            $('.occupation_health_worker_class').hide();
+        }else if($('.occupation').val() == '1'){
+            $('.occupation_health_worker_class').show();
+            $('.occupation_other_class').hide();
+        }else{
+            $('.occupation_other_class').hide();
+            $('.occupation_health_worker_class').hide();
         }
     }
 
@@ -445,51 +739,80 @@
         }
     }
 
-    same_household();
-    $('.same_household').on('change', function() {
-        same_household();
+    modes_of_travel();
+    $('.modes_of_travel').on('change', function() {
+        modes_of_travel();
     });
-    function same_household(){
-        if($('.same_household:checked').val() == '1'){
-            $('.same_household_yes_class').show();
+    function modes_of_travel(){
+        if($('.modes_of_travel').val() == '0'){
+            $('.modes_of_travel_other_class').show();
         }else {
-            $('.same_household_yes_class').hide();
+            $('.modes_of_travel_other_class').hide();
         }
     }
 
-    close_contact();
-    $('.close_contact').on('change', function() {
-        close_contact();
+    contact_status();
+    $('.contact_status').on('change', function() {
+        contact_status();
     });
-    function close_contact(){
-        if($('.close_contact:checked').val() == '1'){
-            $('.close_contact_yes_class').show();
+    function contact_status(){
+        if($('.contact_status:checked').val() == '1'){
+            $('.contact_status_yes_class').show();
         }else {
-            $('.close_contact_yes_class').hide();
+            $('.contact_status_yes_class').hide();
         }
     }
 
-    direct_care();
-    $('.direct_care').on('change', function() {
-        direct_care();
+    contact_social_status();
+    $('.contact_social_status').on('change', function() {
+        contact_social_status();
     });
-    function direct_care(){
-        if($('.direct_care:checked').val() == '1'){
-            $('.direct_care_yes_class').show();
+    function contact_social_status(){
+        if($('.contact_social_status:checked').val() == '1'){
+            $('.contact_social_status_yes_class').show();
         }else {
-            $('.direct_care_yes_class').hide();
+            $('.contact_social_status_yes_class').hide();
         }
     }
 
-    attend_social();
-    $('.attend_social').on('change', function() {
-        attend_social();
+    sars_cov2_vaccinated();
+    $('.sars_cov2_vaccinated').on('change', function() {
+        sars_cov2_vaccinated();
     });
-    function attend_social(){
-        if($('.attend_social:checked').val() == '1'){
-            $('.attend_social_yes_class').show();
+    function sars_cov2_vaccinated(){
+        if($('.sars_cov2_vaccinated:checked').val() == '1'){
+            $('.sars_cov2_vaccinated_yes_class').show();
         }else {
-            $('.attend_social_yes_class').hide();
+            $('.sars_cov2_vaccinated_yes_class').hide();
+        }
+    }
+
+    measures_taken();
+    $('.measures_taken').on('change', function() {
+        measures_taken();
+    });
+    function measures_taken(){
+        if($('.measures_taken').val() == '0'){
+            $('.measures_taken_other_class').show();
+            $('.measures_taken_hospital_class').hide();
+        }else if($('.measures_taken').val() == '3'){
+            $('.measures_taken_hospital_class').show();
+            $('.measures_taken_other_class').hide();
+        }else{
+            $('.measures_taken_other_class').hide();
+            $('.measures_taken_hospital_class').hide();
+        }
+    }
+
+    test_status();
+    $('.test_status').on('change', function() {
+        test_status();
+    });
+    function test_status(){
+        if($('.test_status:checked').val() == '1'){
+            $('.test_status_yes_class').show();
+        }else {
+            $('.test_status_yes_class').hide();
         }
     }
     
