@@ -57,7 +57,7 @@ class Kernel extends ConsoleKernel
                     }catch (\Exception $e){}
                 });
             SampleCollection::query()
-                ->whereIn('women_token', $tokens)
+                ->whereIn('woman_token', $tokens)
                 ->each(function ($oldRecord) {
                     $newRecord = $oldRecord->replicate();
                     try{

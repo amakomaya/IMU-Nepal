@@ -283,16 +283,20 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        
         if($request->db_switch == '2') {
             $tracing_tokens = ContactTracingOld::whereIn('hp_code', $hpCodes)->pluck('woman_token');
-            $woman = SuspectedCaseOld::active();
+//            $woman = SuspectedCaseOld::active();
+            $woman1 = SuspectedCase::whereIn('token', $tracing_tokens)->active();
+            $woman2 = SuspectedCaseOld::whereIn('token', $tracing_tokens)->active();
+            $woman = $woman1->unionAll($woman2)->distinct();
         } else{
             $tracing_tokens = ContactTracing::whereIn('hp_code', $hpCodes)->pluck('woman_token');
-            $woman = SuspectedCase::active();
+//            $woman = SuspectedCase::active();
+            $woman2 = SuspectedCaseOld::whereIn('token', $tracing_tokens)->active();
+            $woman1 = SuspectedCase::whereIn('token', $tracing_tokens)->active();
+            $woman = $woman1->unionAll($woman2)->distinct();
         }
-
-        $woman = $woman->whereIn('token', $tracing_tokens)->withAll();
+        $woman = $woman->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
