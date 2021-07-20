@@ -20,6 +20,7 @@ Route::get('api/cases-payment-discharge', 'Data\Api\WomenController@casesPayment
 Route::get('api/cases-payment-death', 'Data\Api\WomenController@casesPaymentDeathIndex');
 
 Route::get('api/community-deaths', 'Data\Api\WomenController@communityDeathIndex');
+Route::get('api/cict-tracing', 'Data\Api\WomenController@CICTTracingList');
 
 Route::get('api/lab/received-sample', 'Data\Api\WomenController@labAddReceivedIndex');
 Route::get('api/lab/add-result-negative', 'Data\Api\WomenController@labAddResultNegativeIndex');

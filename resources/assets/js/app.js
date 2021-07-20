@@ -70,6 +70,8 @@ import BulkUploadList from "./components/BulkUploadList";
 import CommunityDeathCreate from "./components/CommunityDeathCreate"
 import CommunityDeathList from "./components/CommunityDeathList"
 
+import CICTTracing from "./components/CICTTracingList"
+
 
 import VueTimepicker from 'vue2-timepicker';
 import 'vue2-timepicker/dist/VueTimepicker.css';
@@ -149,6 +151,8 @@ Vue.component('vue-timepicker', VueTimepicker);
 
 Vue.component('community-deaths-create', CommunityDeathCreate);
 Vue.component('community-deaths-list', CommunityDeathList);
+
+Vue.component('cict-tracing-list', CICTTracing);
 
 const app = new Vue({
     el: '#app',

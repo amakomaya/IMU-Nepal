@@ -1,8 +1,9 @@
 @extends('layouts.backend.app')
+@section('style')
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+@endsection
 @section('content')
-
     <div id="page-wrapper">
-        <!-- /.row -->
         <div class="row">
             <div class="col-lg-12">
                 @if (Request::session()->has('message'))
@@ -11,63 +12,16 @@
                             <i class="ace-icon fa fa-times"></i>
                         </button>
                         {!! Request::session()->get('message') !!}
+
                     </div>
                 @endif
-                <div class="panel panel-default">
-                    <div class="panel-heading text-center">
-                        <strong>CICT List</strong>
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <div class="col-12 table-responsive">
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                <thead>
-                                    <tr>
-                                        <th>SN</th>
-                                        <th>Case ID</th>
-                                        <th>Name</th>
-                                        <th>Age</th>
-                                        <th title="Gender">G</th>
-                                        <th title="Emergency Contact Number">Phone</th>
-                                        <th title="Ward No">Ward</th>
-                                        <th title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table-sars-cov-tbody text-center">
-                                    @foreach ($cict_tracings as $key => $data)
-                                    <?php
-                                        if($data->sex == '1'){
-                                            $formatted_sex = 'M';
-                                        }elseif($data->sex == '2'){
-                                            $formatted_sex = 'F';
-                                        }else{
-                                            $formatted_sex = '0';
-                                        }
-                                    ?>
-                                    <tr>
-                                        <td>{{ ++$key }}</td>
-                                        <td>{{ $data->case_id }}</td>
-                                        <td>{{ $data->name }}</td>
-                                        <td>{{ $data->age }}</td>
-                                        <td>{{ $formatted_sex }}</td>
-                                        <td>{{ $data->emergency_contact_one }}</td>
-                                        <td>{{ $data->ward }}</td>
-                                        <td>
-                                            <a class="btn btn-sm btn-success" href="{{ route('cict-tracing.section-one', ['case_id' => $data['case_id']]) }}" title="Edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            <a class="btn btn-sm btn-primary" href="{{ route('cict-tracing.contact-list', $data->token) }}" title="Contact List"><i class="fa fa-users" aria-hidden="true"></i></a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- /.panel-body -->
+                <div id="app">
+                    <cict-tracing-list></cict-tracing-list>
                 </div>
-                <!-- /.panel -->
             </div>
-            <!-- /.row -->
         </div>
     </div>
-    <!-- /#page-wrapper -->
+@endsection
+@section('script')
+    <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
 @endsection
