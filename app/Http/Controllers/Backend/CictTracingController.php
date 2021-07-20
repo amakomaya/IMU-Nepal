@@ -312,10 +312,22 @@ class CictTracingController extends Controller
     public function sectionThreeUpdate(Request $request)
     {
         try{
+            $cict_tracing = CictTracing::where('case_id', $request->case_id)->first();
         
             $data = $request->all();
             unset($data['_token']);
             unset($data['check_token']);
+
+            // foreach ($request['household_details'] as $item) {
+			// 	$item['case_id'] = md5(microtime(true) . mt_Rand());
+            //     $item['parent_case_id'] = $cict_tracing->case_id;
+			// 	$item['name'] = $company->sync_id;
+			// 	$item['name'] = $company->sync_id;
+			// 	$company_labours_app_id = CompanyLabour::orderBy('id', 'desc')->first() ? CompanyLabour::orderBy('id', 'desc')->first()->id + 1 : 1;
+			// 	$company_labours['sync_id'] = $request->user()->province_id .sprintf("%03d", $this->_server_code) . $company_labours_app_id;
+			// 	$labour = CompanyLabour::create($company_labours);
+			// }
+
             
             $household_details_array = [];
             for ($i = 0; $i < count($request->household_details_name); $i++) {
@@ -389,7 +401,6 @@ class CictTracingController extends Controller
             unset($data['other_attend_social_details_name']);
             unset($data['other_attend_social_details_details']);
 
-            $cict_tracing = CictTracing::where('case_id', $request->case_id)->first();
             $cict_tracing->update($data);
             
             $request->session()->flash('message', 'Data Inserted successfully');
@@ -481,6 +492,7 @@ class CictTracingController extends Controller
     }
 
     public function followUpUpdate(Request $request){
+        // dd($request->all());
         $request->session()->flash('message', 'Data Inserted successfully');
 
         return redirect()->route('cict-tracing.index');
