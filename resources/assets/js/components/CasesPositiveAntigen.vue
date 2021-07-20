@@ -25,7 +25,7 @@
       </thead>
       <tr slot-scope="{item, removeItemOnSuccess}">
         <td>
-          <div v-if="checkForPositiveOnly(item.latest_anc)" title="Case ID">C ID : {{ item.case_id }}</div>
+          <div title="Case ID">C ID : {{ item.case_id }}</div>
           <div v-if="item.parent_case_id !== null" title="Parent Case ID">PC ID : {{ item.parent_case_id }}</div>
         </td>
         <td>{{ roleVisibility(item.name)}}</td>

@@ -15,6 +15,7 @@ use App\Models\Ward;
 use App\User;
 use Auth;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Cache;
 
 class FchvController extends Controller
 {
@@ -74,9 +75,15 @@ class FchvController extends Controller
             $healthWorkers = OrganizationMember::where('role', 'fchv')->latest()->get();
        }        
 
-        $provinces = Province::get();
-        $districts = District::get();
-        $municipalities = Municipality::get();
+        $provinces = $province_list = Cache::remember('province-list', 48*60*60, function () {
+            return Province::select(['id', 'province_name'])->get();
+        });
+        $districts = Cache::remember('district-list', 48*60*60, function () {
+          return District::select(['id', 'district_name', 'province_id' ])->get();
+        });
+        $municipalities = Cache::remember('municipality-list', 48*60*60, function () {
+          return Municipality::select(['id', 'municipality_name', 'province_id', 'district_id', 'municipality_name_np', 'type', 'total_no_of_wards'])->get();
+        });
         $permissions = Permission::all();
         $role = 'fchv';
         return view('backend.fchv.create',compact('provinces','districts','municipalities','role', 'permissions'));

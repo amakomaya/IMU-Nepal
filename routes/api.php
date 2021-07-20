@@ -992,7 +992,7 @@ Route::post('/v1/cases-search-by-lab-and-id', function (Request $request) {
         ->leftJoin('ancs', 'lab_tests.sample_token', '=', 'ancs.token')
         ->leftJoin('women', 'ancs.woman_token', '=', 'women.token')
         ->leftJoin('municipalities', 'women.municipality_id', '=', 'municipalities.id')
-        ->select('ancs.service_for', \DB::raw('DATE(ancs.updated_at) AS date_of_positive'), 'women.name', 'women.age', 'women.age_unit', 'women.province_id', 'women.district_id', 'women.municipality_id', 'women.emergency_contact_one', 'women.sex', 'municipalities.municipality_name', 'women.tole', 'women.ward')->first();
+        ->select('ancs.service_for', \DB::raw('DATE(ancs.sample_test_date_np) AS date_of_positive'), 'women.name', 'women.age', 'women.age_unit', 'women.province_id', 'women.district_id', 'women.municipality_id', 'women.emergency_contact_one', 'women.sex', 'municipalities.municipality_name', 'women.tole', 'women.ward')->first();
 
     if(count($response_data) == 0){
         return response()->json(['message' => 'error']);

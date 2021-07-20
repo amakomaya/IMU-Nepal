@@ -9,6 +9,7 @@ use App\Models\Municipality;
 use App\Models\Province;
 use App\Models\Ward;
 use Auth;
+use Illuminate\Support\Facades\Cache;
 
 class FilterRequest
 {
@@ -76,7 +77,9 @@ class FilterRequest
             $municipalities = Municipality::where('id', $municipality_id)->orderBy('municipality_name', 'asc')->get();
             $healthposts = Organization::where('hp_code', $hp_code)->orderBy('name', 'asc')->get();
         } else{
-            $provinces = Province::all();
+            $provinces = Cache::remember('province-list', 48*60*60, function () {
+              return Province::select(['id', 'province_name'])->get();
+            });
             $districts = District::where('province_id', $province_id)->orderBy('district_name', 'asc')->get();
             $municipalities = Municipality::where('district_id', $district_id)->orderBy('municipality_name', 'asc')->get();
             $healthposts = Organization::where([['municipality_id', $municipality_id]])->orderBy('name', 'asc')->get();

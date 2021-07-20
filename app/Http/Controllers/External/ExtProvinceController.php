@@ -4,8 +4,9 @@ namespace App\Http\Controllers\External;
 
 use App\Http\Controllers\Controller;
 use App\Models\OrganizationMember;
-use App\Models\province;
+use App\Models\Province;
 use App\User;
+use Illuminate\Support\Facades\Cache;
 
 class ExtProvinceController extends Controller
 {
@@ -15,7 +16,9 @@ class ExtProvinceController extends Controller
         $user = $userCheck->checkUserExists(request()->getUser(),request()->getPassword());
 
         if ($user) {
-            $provinces = province::all();
+            $provinces = Cache::remember('province-list', 48*60*60, function () {
+              return Province::select(['id', 'province_name'])->get();
+            });
             return response()->json($provinces);
         }
         return ['message' => 'Authentication Failed'];

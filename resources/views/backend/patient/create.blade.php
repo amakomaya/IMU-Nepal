@@ -133,7 +133,9 @@
                                             @if(Auth::user()->role!="province" && Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
                                                 <option value="">Select All Provinces</option>
                                             @endif
-                                            @foreach(App\Models\province::all() as $province)
+                                            @foreach(\Illuminate\Support\Facades\Cache::remember('province-list', 48*60*60, function () {
+                                              return Province::select(['id', 'province_name'])->get();
+                                            }) as $province)
                                                 @if($province_id==$province->id || old('province_id')==$province->id)
                                                     @php($selectedProvince = "selected")
                                                 @else
