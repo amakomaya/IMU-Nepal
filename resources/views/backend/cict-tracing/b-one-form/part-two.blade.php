@@ -342,7 +342,7 @@
                                     <div class="form-group">
                                         <label for="date_14_days">Date of travel</label>
                                         <input type="text" class="form-control" value="{{ isset($data) ? $data->date_14_days : '' }}" name="date_14_days"
-                                            aria-describedby="help" placeholder="Enter Date of travel"
+                                            aria-describedby="help" placeholder="Enter Date of travel" id="date_14_days"
                                         >
                                         @if ($errors->has('date_14_days'))
                                             <small id="help" class="form-text text-danger">{{ $errors->first('date_14_days') }}</small>
@@ -407,7 +407,7 @@
                                 <div class="form-group contact_status_yes_class">
                                     <label for="contact_last_date"></label>Date of last contact</label>
                                     <input type="text" class="form-control" value="{{ isset($data) ? $data->contact_last_date : '' }}" name="contact_last_date"
-                                           aria-describedby="help" placeholder="Enter Date of last contact">
+                                           aria-describedby="help" placeholder="Enter Date of last contact" id="contact_last_date">
                                     @if ($errors->has('contact_last_date'))
                                         <small id="help" class="form-text text-danger">{{ $errors->first('contact_last_date') }}</small>
                                     @endif
@@ -428,7 +428,7 @@
                                 </div>
                                 <div class="form-group contact_social_status_yes_class">
                                     <label for="contact_social_last_date"></label>Date of last visit</label>
-                                    <input type="text" class="form-control" value="{{ isset($data) ? $data->contact_social_last_date : '' }}" name="contact_social_last_date"
+                                    <input type="text" class="form-control" value="{{ isset($data) ? $data->contact_social_last_date : '' }}" name="contact_social_last_date" id="contact_social_last_date"
                                            aria-describedby="help" placeholder="Enter Date of last visit">
                                     @if ($errors->has('contact_social_last_date'))
                                         <small id="help" class="form-text text-danger">{{ $errors->first('contact_social_last_date') }}</small>
@@ -525,7 +525,7 @@
                                     <label>If referred to hospital/quarantine facility:</label>
                                     <div class="form-group">
                                         <label>Referral Date</label><br>
-                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->measures_referral_date : '' }}" name="measures_referral_date"
+                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->measures_referral_date : '' }}" name="measures_referral_date" id="measures_referral_date"
                                                 aria-describedby="help" placeholder="Enter Referral Date"
                                         >
                                         @if ($errors->has('measures_referral_date'))
@@ -583,7 +583,7 @@
                                     <div class="form-group">
                                         <label>Date of Swab collection </label><br>
                                         <input type="text" class="form-control" value="{{ isset($data) ? $data->collection_date : '' }}" name="collection_date"
-                                                aria-describedby="help" placeholder="Enter Date of Swab collection"
+                                                aria-describedby="help" placeholder="Enter Date of Swab collection" id="collection_date"
                                         >
                                         @if ($errors->has('collection_date'))
                                             <small id="help" class="form-text text-danger">{{ $errors->first('collection_date') }}</small>
@@ -611,7 +611,7 @@
                                     <div class="form-group">
                                         <label>test Result Date </label><br>
                                         <input type="text" class="form-control" value="{{ isset($data) ? $data->result_date : '' }}" name="result_date"
-                                                aria-describedby="help" placeholder="Enter test Result Date"
+                                                aria-describedby="help" placeholder="Enter test Result Date" id="result_date"
                                         >
                                         @if ($errors->has('result_date'))
                                             <small id="help" class="form-text text-danger">{{ $errors->first('result_date') }}</small>
@@ -644,7 +644,7 @@
                                 <div class="form-group">
                                     <label>Form Completion Date </label><br>
                                     <input type="text" class="form-control" value="{{ isset($data) ? $data->completion_date : '' }}" name="completion_date"
-                                            aria-describedby="help" placeholder="Enter Form Completion Date"
+                                            aria-describedby="help" placeholder="Enter Form Completion Date" id="completion_date"
                                     >
                                     @if ($errors->has('completion_date'))
                                         <small id="help" class="form-text text-danger">{{ $errors->first('completion_date') }}</small>
@@ -824,12 +824,31 @@
         language: 'english',
         disableAfter: currentDate
     });
-
-    $('#exposure_ref_period_from_np').nepaliDatePicker({
+    $('#date_14_days').nepaliDatePicker({
         language: 'english',
     });
-
-    $('#exposure_ref_period_to_np').nepaliDatePicker({
+    $('#contact_last_date').nepaliDatePicker({
+        language: 'english',
+    });
+    $('#contact_social_last_date').nepaliDatePicker({
+        language: 'english',
+    });
+    $('#dose_one_date').nepaliDatePicker({
+        language: 'english',
+    });
+    $('#dose_two_date').nepaliDatePicker({
+        language: 'english',
+    });
+    $('#measures_referral_date').nepaliDatePicker({
+        language: 'english',
+    });
+    $('#collection_date').nepaliDatePicker({
+        language: 'english',
+    });
+    $('#result_date').nepaliDatePicker({
+        language: 'english',
+    });
+    $('#completion_date').nepaliDatePicker({
         language: 'english',
     });
 
