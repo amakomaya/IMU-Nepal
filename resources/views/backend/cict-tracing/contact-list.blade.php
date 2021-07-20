@@ -45,13 +45,14 @@
                                             }
                                             ?>
                                             <td>{{ $item->name }}</td>
-                                            <td>{{ $item->age }}</td>
+                                            <td>{{ $item->age }}{{ $item->case_id }}</td>
                                             <td>{{ $sex }}</td>
                                             {{-- <td>{{ $item->sex }}</td> --}}
                                             <td>
-                                                <form method="POST" action="{{ route('b-one-form.part-one', $contact_list->token) }}">
-                                                    @csrf
+                                                <form method="GET" action="{{ route('b-one-form.part-one') }}">
                                                     <input type="hidden" name="contact_values" value="{{ serialize($household_details[$key]) }}">
+                                                    <input type="hidden" name="case_id" value="{{ $item->case_id }}">
+                                                    <input type="hidden" name="parent_case_id" value="{{ $contact_list->case_id }}">
                                                     <button class="btn btn-sm btn-success" type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                                 </form>
                                             </td>
@@ -72,13 +73,14 @@
                                             }
                                             ?>
                                             <td>{{ $item->name }}</td>
-                                            <td>{{ $item->age }}</td>
+                                            <td>{{ $item->age }}{{ $item->case_id }}</td>
                                             <td>{{ $sex }}</td>
                                             {{-- <td>{{ $item->sex }}</td> --}}
                                             <td>
-                                                <form method="POST" action="{{ route('b-one-form.part-one', $contact_list->token) }}">
-                                                    @csrf
+                                                <form method="GET" action="{{ route('b-one-form.part-one') }}">
                                                     <input type="hidden" name="contact_values" value="{{ serialize($travel_vehicle_details[$key]) }}">
+                                                    <input type="hidden" name="case_id" value="{{ $item->case_id }}">
+                                                    <input type="hidden" name="parent_case_id" value="{{ $contact_list->case_id }}">
                                                     <button class="btn btn-sm btn-success" type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                                 </form>
                                             </td>
@@ -103,9 +105,10 @@
                                             <td>{{ $sex }}</td>
                                             {{-- <td>{{ $item->sex }}</td> --}}
                                             <td>
-                                                <form method="POST" action="{{ route('b-one-form.part-one', $contact_list->token) }}">
-                                                    @csrf
+                                                <form method="GET" action="{{ route('b-one-form.part-one') }}">
                                                     <input type="hidden" name="contact_values" value="{{ serialize($other_direct_care_details[$key]) }}">
+                                                    <input type="hidden" name="case_id" value="{{ $item->case_id }}">
+                                                    <input type="hidden" name="parent_case_id" value="{{ $contact_list->case_id }}">
                                                     <button class="btn btn-sm btn-success" type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                                 </form>
                                             </td>

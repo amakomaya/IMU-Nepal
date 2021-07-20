@@ -53,7 +53,7 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        {!! rcForm::open('POST', route('b-one-form.part-one.update', ['_case_id' => $data->parent_case_id]), ['name' => 'createCase']) !!}
+                        {!! rcForm::open('POST', route('b-one-form.part-one.update', ['_case_id' => $data->case_id]), ['name' => 'createCase']) !!}
                         <div class="panel-body">
                             <label class="control-label"><h4>Case information</h4></label>
                             
@@ -291,6 +291,7 @@
                                 @endif
                             </div>
 
+                            <input type="hidden" name="case_id" value={{ isset($data->case_id) ? $data->case_id : '' }}>
                             <input type="hidden" name="check_token" value={{ isset($data->token) ? $data->token : '' }}>
                             <input type="hidden" name="parent_case_id" value={{ $data ? $data->parent_case_id : '' }}>
 

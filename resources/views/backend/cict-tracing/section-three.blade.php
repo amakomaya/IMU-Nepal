@@ -175,7 +175,7 @@
                                                         <button type="button" class="btn btn-danger btn-sm btn-remove-close-contact-info mt-1"><i class="fa fa-trash"></i></button>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="household_details_name[]" value="{{ $sub_data->name }}">
+                                                        <input type="text" class="form-control " name="household_details_name[]" value="{{ $sub_data->name }}">
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="household_details_age[]" value="{{ $sub_data->age }}">
@@ -205,9 +205,11 @@
                                                             <option value="4" {{ $sub_data->relationship == '4' ? 'selected' : '' }}>Co-Worker</option>
                                                             <option value="0" {{ $sub_data->relationship == '0' ? 'selected' : '' }}>Others</option>
                                                         </select>
+                                                        <input type="hidden" name="household_details_relationship_others[]" value="">
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="household_details_phone[]" value="{{ $sub_data->phone }}">
+                                                        <input type="hidden" name="household_details_case_id" value="{{ $sub_data->case_id }}" class="household_details_case_id">
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -247,9 +249,11 @@
                                                             <option value="4">Co-Worker</option>
                                                             <option value="0">Others</option>
                                                         </select>
+                                                        <input type="hidden" name="household_details_relationship_others[]" value="">
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="household_details_phone[]">
+                                                        <input type="hidden" name="household_details_case_id[]" class="household_details_case_id">
                                                     </td>
                                                 </tr>
                                                 @endif
@@ -331,9 +335,11 @@
                                                             <option value="4" {{ $sub_data->relationship == '4' ? 'selected' : '' }}>Co-Worker</option>
                                                             <option value="0" {{ $sub_data->relationship == '0' ? 'selected' : '' }}>Others</option>
                                                         </select>
+                                                        <input type="hidden" name="travel_vehicle_details_relationship_others[]" value="">
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="travel_vehicle_details_phone[]" value="{{ $sub_data->phone }}">
+                                                        <input type="hidden" name="travel_vehicle_details_case_id" value="{{ $sub_data->case_id }}" class="travel_vehicle_details_case_id">
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -373,9 +379,11 @@
                                                             <option value="4">Co-Worker</option>
                                                             <option value="0">Others</option>
                                                         </select>
+                                                        <input type="hidden" name="travel_vehicle_details_relationship_others[]" value="">
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="travel_vehicle_details_phone[]">
+                                                        <input type="hidden" name="travel_vehicle_details_case_id[]" class="travel_vehicle_details_case_id">
                                                     </td>
                                                 </tr>
                                                 @endif
@@ -456,9 +464,12 @@
                                                             <option value="4" {{ $sub_data->relationship == '4' ? 'selected' : '' }}>Co-Worker</option>
                                                             <option value="0" {{ $sub_data->relationship == '0' ? 'selected' : '' }}>Others</option>
                                                         </select>
+                                                        <input type="hidden" name="other_direct_care_details_relationship_others[]" value="">
+                                                        
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="other_direct_care_details_phone[]" value="{{ $sub_data->phone }}">
+                                                        <input type="hidden" name="other_direct_care_details_case_id" value="{{ $sub_data->case_id }}" class="other_direct_care_details_case_id">
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -498,9 +509,12 @@
                                                             <option value="4">Co-Worker</option>
                                                             <option value="0">Others</option>
                                                         </select>
+                                                        <input type="hidden" name="other_direct_care_details_relationship_others[]" value="">
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="other_direct_care_details_phone[]">
+                                                        <input type="hidden" name="other_direct_care_details_case_id[]" class="other_direct_care_details_case_id">
+                                                    </td>
                                                     </td>
                                                 </tr>
                                                 @endif
@@ -788,6 +802,20 @@
     //     disableAfter: currentDate
     // });
 
+    // OrganizationMember::where('token', auth()->user()->token)->first()->id . '-' . strtoupper(bin2hex(random_bytes(3)));
+    var org_id = {!! json_encode($org_id, JSON_HEX_TAG) !!}
+
+    function randomString(){
+        var result = '';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        var charactersLength = characters.length;
+        for(var i=0; i<7; i++){
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        result = org_id + '-' + result;
+        return result;
+    }
+
 	$('.btn-add-close-contact-info').on('click', function() {
 		var tr = $(".table-close-contact-info-tr").last();
 		var count_row = tr.data("row-id");
@@ -798,6 +826,7 @@
 		.show()
 		.appendTo(".table-close-contact-info-tbody");
 
+        new_row.find(".household_details_case_id").val(randomString());
 		new_row.attr('data-row-id', count_row);
 		new_row.find(".btn-remove-close-contact-info").show();
 	});
@@ -820,6 +849,7 @@
         .show()
         .appendTo(".table-travel-public-tbody");
 
+        new_row.find(".other_direct_care_details_case_id").val(randomString());
         new_row.attr('data-row-id', count_row);
         new_row.find(".btn-remove-travel-public").show();
     });
@@ -842,6 +872,7 @@
         .show()
         .appendTo(".table-direct-care-any-tbody");
 
+        new_row.find(".travel_vehicle_details_case_id").val(randomString());
         new_row.attr('data-row-id', count_row);
         new_row.find(".btn-remove-direct-care-any").show();
     });

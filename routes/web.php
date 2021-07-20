@@ -222,7 +222,7 @@ Route::post('/admin/cict-tracing/section-three-update', 'Backend\CictTracingCont
 Route::resource('/admin/cict-tracing', 'Backend\CictTracingController', ['names' => 'cict-tracing']);
 Route::get('/admin/cict-tracing/contact-list/{token}', 'Backend\CictTracingController@aFormContactList')->name('cict-tracing.contact-list');
 
-Route::post('/admin/b-one-form/part-one/{token}', 'Backend\CictTracingController@partOne')->name('b-one-form.part-one');
+Route::get('/admin/b-one-form/part-one', 'Backend\CictTracingController@partOne')->name('b-one-form.part-one');
 Route::post('/admin/b-one-form/part-one-update', 'Backend\CictTracingController@partOneUpdate')->name('b-one-form.part-one.update');
 Route::get('/admin/b-one-form/part-two', 'Backend\CictTracingController@partTwo')->name('b-one-form.part-two');
 Route::post('/admin/b-one-form/part-two-update', 'Backend\CictTracingController@partTwoUpdate')->name('b-one-form.part-two.update');
