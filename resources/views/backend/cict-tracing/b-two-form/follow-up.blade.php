@@ -75,40 +75,60 @@
                                     <table class="table table-bordered">
                                         <thead style="background: #fff;">
                                             <tr>
-                                                <th>Days since last contact with the case</th>
-                                                <th>Days to follow up</th>
-                                                <th>Date of follow up</th>
-                                                <th>Symptoms</th>
+                                                <th rowspan="2">Days since last contact with the case</th>
+                                                <th rowspan="2">Days to follow up</th>
+                                                <th rowspan="2">Date of follow up</th>
+                                                <th colspan="8">Symptoms</th>
+                                            </tr>
+                                            <tr>
+                                                <th>No Symptoms</th>
+                                                <th>Fever ≥38 °C</th>
+                                                <th>Runny nose</th>
+                                                <th>Cough</th>
+                                                <th>Sorethroat</th>
+                                                <th>Shortness of breath</th>
                                                 <th>Other symptoms: specify</th>
                                             </tr>
                                         </thead>
                                         <tbody class="table-sars-cov-tbody text-center">
-                                            <tr class="table-sars-cov-tr">
-                                                {{-- <td>
-                                                    <input type="text" class="form-control" name="days_last_contact" value="{{ isset($data) ? $data->days_last_contact : '' }}" aria-describedby="help" placeholder="Enter Name">
-                                                </td> --}}
+                                            <?php 
+                                            for($i=0; $i<11; $i++){
+                                            ?>
+
+                                            <tr>
+                                                <td>{{ $i }}</td>
+                                                <td>{{ 10 - $i }}</td>
                                                 <td>
-                                                    <input type="text" class="form-control" name="days_to_follow_up" value="{{ isset($data) ? $data->days_to_follow_up : '' }}">
+                                                    <input type="text" class="form-control" name="date_of_follow_up_{{$i}}" id="date_of_follow_up_{{$i}}" value="{{ isset($data) ? $data->{'date_of_follow_up_'.$i} : '' }}">
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" name="days_of_follow_up" id="days_of_follow_up" value="{{ isset($data) ? $data->days_of_follow_up : '' }}">
+                                                    <input type="radio" value="1" name="no_symptoms_{{$i}}" {{ isset($data) && $data->{'no_symptoms_'.$i} == 1 ? 'checked' : '' }}>None
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" name="days_of_follow_up" id="days_of_follow_up" value="{{ isset($data) ? $data->days_of_follow_up : '' }}">
+                                                    <input type="radio" value="1" name="fever_{{$i}}" {{ isset($data) && $data->{'fever_'.$i} == 1 ? 'checked' : '' }}> Yes
+                                                    <input type="radio" value="0" name="fever_{{$i}}" {{ isset($data) && $data->{'fever_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
-                                                    <input type="checkbox" value="1" {{ isset($data) && $data->symptoms == "1" ? 'selected' : "" }}>No symptoms<br>
-                                                    <input type="checkbox" value="2" {{ isset($data) && $data->symptoms == "2" ? 'selected' : "" }}>Fever ≥38 °C<br>
-                                                    <input type="checkbox" value="3" {{ isset($data) && $data->symptoms == "3" ? 'selected' : "" }}>Runny Nose<br>
-                                                    <input type="checkbox" value="4" {{ isset($data) && $data->symptoms == "4" ? 'selected' : "" }}>Cough<br>
-                                                    <input type="checkbox" value="5" {{ isset($data) && $data->symptoms == "5" ? 'selected' : "" }}>Sore Throat<br>
-                                                    <input type="checkbox" value="5" {{ isset($data) && $data->symptoms == "5" ? 'selected' : "" }}>Shortness of Breath<br>
-                                                    <input type="checkbox" value="0" {{ isset($data) && $data->symptoms == "0" ? 'selected' : "" }}>Others<br>
+                                                    <input type="radio" value="1" name="runny_nose_{{$i}}" {{ isset($data) && $data->{'runny_nose_'.$i} == 1 ? 'checked' : '' }}> Yes
+                                                    <input type="radio" value="0" name="runny_nose_{{$i}}" {{ isset($data) && $data->{'runny_nose_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" name="symptoms_other" id="symptoms_other" value="{{ isset($data) ? $data->symptoms_other : '' }}">
+                                                    <input type="radio" value="1" name="cough_{{$i}}" {{ isset($data) && $data->{'cough_'.$i} == 1 ? 'checked' : '' }}> Yes
+                                                    <input type="radio" value="0" name="cough_{{$i}}" {{ isset($data) && $data->{'cough_'.$i} == 0 ? 'checked' : '' }}> No
+                                                </td>
+                                                <td>
+                                                    <input type="radio" value="1" name="sore_throat_{{$i}}" {{ isset($data) && $data->{'sore_throat_'.$i} == 1 ? 'checked' : '' }}> Yes
+                                                    <input type="radio" value="0" name="sore_throat_{{$i}}" {{ isset($data) && $data->{'sore_throat_'.$i} == 0 ? 'checked' : '' }}> No
+                                                </td>
+                                                <td>
+                                                    <input type="radio" value="1" name="breath_{{$i}}" {{ isset($data) && $data->{'breath_'.$i} == 1 ? 'checked' : '' }}> Yes
+                                                    <input type="radio" value="0" name="breath_{{$i}}" {{ isset($data) && $data->{'breath_'.$i} == 0 ? 'checked' : '' }}> No
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" name="symptoms_other_{{$i}}" id="symptoms_other_{{$i}}" value="{{ isset($data) ? $data->{'symptoms_other_'.$i} : '' }}">
                                                 </td>
                                             </tr>
+                                            <?php } ?>
                                     </table>
                                 </div>
                             </div>
@@ -123,6 +143,20 @@
                                     <option value="4" {{ isset($data) && $data->high_exposure == "4" ? 'selected' : "" }}>Suspected Case</option>
                                     <option value="5" {{ isset($data) && $data->high_exposure == "5" ? 'selected' : "" }}>Probable Case</option>
                                 </select>
+                            </div>
+
+                            <div class="part-four">
+                                <h4>Data Collector information</h4><br>
+
+                                <div class="form-group">
+                                    <label>Form Completion Date </label><br>
+                                    <input type="text" class="form-control" value="{{ isset($data) ? $data->completion_date : '' }}" name="completion_date"
+                                            aria-describedby="help" placeholder="Enter Form Completion Date" id="completion_date"
+                                    >
+                                    @if ($errors->has('completion_date'))
+                                        <small id="help" class="form-text text-danger">{{ $errors->first('completion_date') }}</small>
+                                    @endif
+                                </div>
                             </div>
 
                             <input type="hidden" name="cict_token" value={{ isset($data) ? $data->cict_token : '' }}>
@@ -147,148 +181,17 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
     
     <script>
-        $(':radio[data-rel]').change(function () {
-            var rel = $("." + $(this).data('rel'));
-            if ($(this).val() == 'yes') {
-                rel.slideDown();
-            } else {
-                rel.slideUp();
-                rel.find(":text,select").val("");
-                rel.find(":radio,:checkbox").prop("checked", false);
-            }
+        var currentDate = NepaliFunctions.ConvertDateFormat(NepaliFunctions.GetCurrentBsDate(), "YYYY-MM-DD");
+        $('#completion_date').nepaliDatePicker({
+            language: 'english',
+            disableAfter: currentDate
         });
 
-        function provinceOnchange(id) {
-            $("#district").text("Loading...").fadeIn("slow");
-            $.get("{{route("district-select-province")}}?id=" + id, function (data) {
-                $("#district").html(data);
+        var i;
+        for (i = 0; i < 11; ++i) {
+            $("#date_of_follow_up_" + i).nepaliDatePicker({
+                language: 'english',
             });
         }
-
-        function districtOnchange(id) {
-            $("#municipality").text("Loading...").fadeIn("slow");
-            $.get("{{route("municipality-select-district")}}?id=" + id, function (data) {
-                $("#municipality").html(data);
-            });
-        }
-
-        otherRelationship();
-        $('.informant_relation').on('change', function() {
-            otherRelationship();
-        });
-        function otherRelationship(){
-            if($('.informant_relation').val() == '0'){
-                $('.informant_relation_other_class').show();
-            }
-            else {
-                $('.informant_relation_other_class').hide();
-            }
-        }
-
-        otherCaseManagedAt();
-        $('.case_managed_at').on('change', function() {
-            otherCaseManagedAt();
-        });
-        function otherCaseManagedAt(){
-            if($('.case_managed_at').val() == '0'){
-                $('.case_managed_at_other_class').show();
-            }else{
-                $('.case_managed_at_other_class').hide();
-            }
-        }
-
-        otherNationality();
-        $('.nationality').on('change', function() {
-            otherNationality();
-        });
-        function otherNationality(){
-            if($('.nationality').val() == '300'){
-                $('.nationality_other_class').show();
-            }else{
-                $('.nationality_other_class').hide();
-            }
-        }
-
-        $(function () {
-            $.validator.addMethod("nameCustom", function (value, element) {
-                return this.optional(element) || /^[a-zA-Z\.\'\-]{2,50}(?: [a-zA-Z\.\'\-]{2,50})+$/i.test(value);
-            }, "Name is invalid: Please enter a valid name.");
-
-            $.validator.addMethod("ageCustom", function (value, element) {
-                return this.optional(element) || /^(12[0-7]|1[01][0-9]|[1-9]?[0-9])$/i.test(value);
-            }, "Age is invalid: Please enter a valid age.");
-
-            $.validator.addMethod("phoneCustom", function (value, element) {
-                return this.optional(element) || /^((984|985|986|974|975|980|981|982|961|988|972|963)\d{7})|((097|095|081|053|084|083|029|056|096|089|093|010|026|041|068|049|094|064|079|027|046|087|091|076|061|036|025|066|077|099|044|057|023|021|069|055|037|075|024|067|051|086|082|071|033|031|092|047|038|063|035)(4|5|6)\d{5})|(01)(4|5|6)\d{6}$/i.test(value);
-            }, "Contact number is invalid: Please enter a valid phone number.");
-            $("form[name='createCase']").validate({
-                // Define validation rules
-                rules: {
-                    case_what: {
-                        required: true
-                    },
-                    name: {
-                        required: true,
-                        nameCustom: true
-                    },
-                    age: {
-                        required: true,
-                        ageCustom: true,
-                    },
-                    age_unit: {
-                        required: true
-                    },
-                    sex: {
-                        required: true,
-                    },
-                    emergency_contact_one: {
-                        required: true,
-                        digits: true,
-                        minlength: 10,
-                        maxlength: 10,
-                        phoneCustom: true
-                    },
-                    emergency_contact_two: {
-                        digits: true,
-                        minlength: 7,
-                        maxlength: 10,
-                    },
-                    province_id: {
-                        required: true
-                    },
-                    district_id: {
-                        required: true
-                    },
-                    municipality_id: {
-                        required: true
-                    },
-                    ward: {
-                        required: true,
-                        digits: true
-                    },
-                    tole: {
-                        required: true,
-                        maxlength: 25,
-                    },
-                    informant_name: {
-                        nameCustom: true
-                    },
-                    informant_phone: {
-                        digits: true,
-                        minlength: 7,
-                        maxlength: 10,
-                    }
-                },
-                // Specify validation error messages
-                messages: {
-                    name: "Please provide a valid name.",
-                    age: "Please provide a valid age.",
-
-                },
-                submitHandler: function (form) {
-                    form.submit();
-                }
-            });
-        });
     </script>
 @endsection
