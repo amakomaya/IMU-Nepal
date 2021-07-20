@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Support\Dataviewer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CictTracing extends Model
 {
     use SoftDeletes;
+    use Dataviewer;
 
     protected $fillable = [
         'case_id', 'token', 'woman_token', 'hp_code', 'checked_by', 'case_what', 'name', 'age', 'age_unit', 'sex',
@@ -26,4 +28,28 @@ class CictTracing extends Model
         'other_attend_social', 'other_attend_social_details',
         'completion_date'
     ];
+
+    protected $allowedFilters = [
+        'name', 'age',
+        'created_at',
+        'emergency_contact_one'
+    ];
+
+    protected $orderable = ['name', 'age', 'created_at'];
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class);
+    }
+
+    public function municipality()
+    {
+        return $this->belongsTo(Municipality::class);
+    }
+
 }

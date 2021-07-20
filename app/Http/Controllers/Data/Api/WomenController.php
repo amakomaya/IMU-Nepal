@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Data\Api;
 
 use App\Helpers\GetHealthpostCodes;
 use App\Http\Controllers\Controller;
+use App\Models\CictTracing;
 use App\Models\ContactTracing;
 use App\Models\ContactTracingOld;
 use App\Models\Organization;
@@ -686,5 +687,14 @@ class WomenController extends Controller
         catch (\Exception $e){
             return response()->json(['message' => 'error']);
         }
+    }
+
+    public function CICTTracingList(Request $request){
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+
+        $data = CictTracing::whereIn('hp_code', $hpCodes)->with('municipality', 'district')->latest()->advancedFilter();
+        return response()->json(['collection' => $data]);
+
     }
 }
