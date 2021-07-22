@@ -25,9 +25,12 @@
               <i class="fa fa-edit" aria-hidden="true"> CICT Update</i>
             </button>
           <br>
-            <button v-on:click="deleteData(item.id)" class="btn btn-secondary btn-sm" title="Delete Data">
+            <button v-on:click="contactList(item.token)" class="btn btn-secondary btn-sm" title="Contact List">
               <i class="fa fa-list" aria-hidden="true"> Contact List</i>
             </button>
+            <!-- <button v-on:click="deleteData(item.id)" class="btn btn-danger btn-sm" title="Delete Data">
+              <i class="fa fa-list" aria-hidden="true"> Delete</i>
+            </button> -->
         </td>
         <!-- </div>             -->
       </tr>
@@ -69,6 +72,12 @@ export default {
     cictUpdateDate : function (id){
       window.open(
           '/admin/cict-tracing/section-one?case_id=' + id,
+          '_self'
+      );
+    },
+    contactList : function (id){
+      window.open(
+          '/admin/cict-tracing/contact-list/' + id,
           '_self'
       );
     },

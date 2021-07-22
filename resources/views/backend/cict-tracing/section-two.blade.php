@@ -53,7 +53,8 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        {!! rcForm::open('POST', route('cict-tracing.section-two.update'), ['name' => 'createCase']) !!}
+                        {!! rcForm::open('POST', route('cict-tracing.section-two.update', $data->case_id), ['name' => 'createCase']) !!}
+                        {{ method_field('PUT') }}
                         <div class="panel-body">
 
                             <div class="part-one">
@@ -72,6 +73,15 @@
                                         </label>
                                     </div>
                                 </div>
+
+                                @if(isset($data->suspectedCase))
+                                    @if(isset($data->suspectedCase->latestAnc))
+                                        <input type="hidden" id="sample_collection_date" value="{{ $data->data->suspectedCase->latestAnc->collection_date_en ?? date('Y-m-d') }}">
+                                    @else
+
+                                    <input type="hidden" id="sample_collection_date" value="{{ date('Y-m-d') }}">
+                                    @endif
+                                @endif
 
                                 <div class="form-group symptoms_two_weeks_class">
                                     <label class="control-label">Whether symptomatic any time during the past two weeks?</label>
@@ -160,7 +170,7 @@
                                         <input type="radio" name="symptoms_comorbidity_trimester" value=""> No<br>
                                     </div>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="18" @if(in_array(18, $symptoms_comorbidity)) checked @endif> Post delivery (< 6 weeks)<br>
-                                    <input type="checkbox" name="symptoms_comorbidity[]" value="7" @if(in_array(7, $symptoms_comorbidity)) checked @endif> Cardiovascular disease, including hypertension<br>
+                                    <input type="checkbox" name="symptoms_comorbidity[]" value="7" @if(in_array(7, $symptoms_comorbidity)) checked @endif> Cardiovascular disease or hypertension<br>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="1" @if(in_array(1, $symptoms_comorbidity)) checked @endif> Diabetes<br>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="14" @if(in_array(14, $symptoms_comorbidity)) checked @endif> Malignancy<br>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="19" @if(in_array(19, $symptoms_comorbidity)) checked @endif> COPD<br>
@@ -190,7 +200,7 @@
 
                                 <div class="form-group">
                                     <select name="high_exposure" class="form-control high_exposure">
-                                        <option value="" disabled selected>Select High Exposure</option>
+                                        <option value="" {{$data && $data->high_exposure == "" ? 'selected' : "" }}>Select High Exposure</option>
                                         <option value="1" {{$data && $data->high_exposure == "1" ? 'selected' : "" }}>Health Care Work (any type, level & facility, including cleaning staff</option>
                                         <option value="2" {{$data && $data->high_exposure == "2" ? 'selected' : "" }}>Community Health / Immunization Clinic Volunteer</option>
                                         <option value="3" {{$data && $data->high_exposure == "3" ? 'selected' : "" }}>Sanitary / Waste Collection / Management Worker / Transport Driver / Helper</option>
@@ -210,7 +220,7 @@
                                         <option value="17" {{$data && $data->high_exposure == "17" ? 'selected' : "" }}>Student</option>
                                         <option value="18" {{$data && $data->high_exposure == "18" ? 'selected' : "" }}>Local body Elected Representative</option>
                                         <option value="19" {{$data && $data->high_exposure == "19" ? 'selected' : "" }}>Bank/Govt Office / Public Corporation staff</option>
-                                        <option value="20" {{$data && $data->high_exposure == "20" ? 'selected' : "" }}>UN / Development Partner / INGO / NGO Frontline worker</option>
+                                        <option value="20" {{$data && $data->high_exposure == "20" ? 'selected' : "" }}>UN / Development Partner / INGO / NGO (Frontline worker)</option>
                                         <option value="0" {{$data && $data->high_exposure == "0" ? 'selected' : "" }}>Others</option>
                                     </select>
                                     <br>
@@ -286,7 +296,7 @@
                                                     </td>
                                                     <td>
                                                         <select class="form-control" name="travelled_14_days_details_travel_mode[]">
-                                                            <option value="" selected>Select Mode of travel</option>
+                                                            <option value=""  {{ $sub_data->travel_mode == '' ? 'selected' : '' }}>Select Mode of travel</option>
                                                             <option class="form-control" value="1" {{ $sub_data->travel_mode == '1' ? 'selected' : '' }}>Air</option>
                                                             <option class="form-control" value="2" {{ $sub_data->travel_mode == '2' ? 'selected' : '' }}>Public Transport</option>
                                                             <option class="form-control" value="3" {{ $sub_data->travel_mode == '3' ? 'selected' : '' }}>Private Vehicle</option>
@@ -355,6 +365,9 @@
                                     @if ($errors->has('exposure_ref_period_to_np'))
                                         <small id="help" class="form-text text-danger">{{ $errors->first('exposure_ref_period_to_np') }}</small>
                                     @endif
+
+                                    <input type="hidden" id="exposure_ref_period_from_np_bak" value="{{ $data ? $data->exposure_ref_period_from_np : "" }}">
+                                    <input type="hidden" id="exposure_ref_period_to_np_bak" value="{{ $data ? $data->exposure_ref_period_to_np : "" }}">
                                 </div>
 
                                 <hr>    
@@ -683,7 +696,7 @@
                                 <hr>
     
                                 <div class="form-group">
-                                    <label>Did the case under investigation attend School / Workplace / Hospitals / Healthcase institution / Social gathering(s) during the reference period?</label>
+                                    <label>Did the case under investigation attend School / Workplace / Hospitals / Healthcare institution / Social gathering(s) during the reference period?</label>
                                     <label class="radio-inline">
                                         <input type="radio" name="attend_social" class="attend_social"
                                                 {{ $data && $data->attend_social == "0" ? 'checked' : '' }} value="0">No
@@ -753,9 +766,6 @@
                                 </div>
                             </div>
 
-                            <input type="hidden" name="check_token" value="{{ $data->token }}"/>
-                            <input type="hidden" name="case_id" value={{ $data ? $data->case_id : '' }}>
-
                             <button type="submit" class="btn btn-primary btn-sm btn-block ">SAVE AND CONTINUE</button>
                             
                             </form>
@@ -789,6 +799,57 @@
             $("#municipality").html(data);
         });
     }
+    
+    var currentDate = NepaliFunctions.ConvertDateFormat(NepaliFunctions.GetCurrentBsDate(), "YYYY-MM-DD");
+    $('#date_of_onset_of_first_symptom_np').nepaliDatePicker({
+        language: 'english',
+        disableAfter: currentDate,
+        onChange: function(){
+            var en_11_date_final = getFourteenDays($('#date_of_onset_of_first_symptom_np').val());
+            $('#exposure_ref_period_from_np').val(en_11_date_final);
+            $('#exposure_ref_period_to_np').val($('#date_of_onset_of_first_symptom_np').val());
+        }
+    });
+    
+    function getFourteenDays(cur_date){
+        var np_date_obj = NepaliFunctions.ConvertToDateObject($('#date_of_onset_of_first_symptom_np').val(), "YYYY-MM-DD");
+        var en_date_obj = NepaliFunctions.BS2AD(np_date_obj);
+        var en_date = NepaliFunctions.ConvertDateFormat(en_date_obj, "YYYY-MM-DD");
+        var en_date = new Date(en_date);
+        en_date.setDate(en_date.getDate() - 14);
+        var en_11_date = en_date.getFullYear() + "-" + (en_date.getMonth() +1) + "-" + en_date.getDate();
+        var en_11_date_obj = NepaliFunctions.ConvertToDateObject(en_11_date, "YYYY-MM-DD");
+        en_11_date_obj = NepaliFunctions.AD2BS(en_11_date_obj);
+        var en_11_date_final = NepaliFunctions.ConvertDateFormat(en_11_date_obj, "YYYY-MM-DD");
+        return en_11_date_final;
+    }
+
+    function collectionDate(sel_date){
+        var en_date = new Date(sel_date);
+        en_date.setDate(en_date.getDate() - 24);
+        var en_11_date = en_date.getFullYear() + "-" + (en_date.getMonth() +1) + "-" + en_date.getDate();
+        var en_11_date_obj = NepaliFunctions.ConvertToDateObject(en_11_date, "YYYY-MM-DD");
+        en_11_date_obj = NepaliFunctions.AD2BS(en_11_date_obj);
+        var en_11_date_final = NepaliFunctions.ConvertDateFormat(en_11_date_obj, "YYYY-MM-DD");
+        return en_11_date_final;
+    }
+
+    function currentNepaliDate(sel_date){
+        var en_date = new Date(sel_date);
+        var en_11_date = en_date.getFullYear() + "-" + (en_date.getMonth() +1) + "-" + en_date.getDate();
+        var en_11_date_obj = NepaliFunctions.ConvertToDateObject(en_11_date, "YYYY-MM-DD");
+        en_11_date_obj = NepaliFunctions.AD2BS(en_11_date_obj);
+        var en_11_date_final = NepaliFunctions.ConvertDateFormat(en_11_date_obj, "YYYY-MM-DD");
+        return en_11_date_final;
+    }
+
+    $('#exposure_ref_period_from_np').nepaliDatePicker({
+        language: 'english',
+    });
+
+    $('#exposure_ref_period_to_np').nepaliDatePicker({
+        language: 'english',
+    });
 
     symptomsTwoWeeks();
     $('.symptoms_recent').on('change', function() {
@@ -798,10 +859,18 @@
         if($('.symptoms_recent:checked').val() == '0'){
             $('.symptoms_two_weeks_class').show();
             $('.is-symptomatic').hide();
+
+            if($('#exposure_ref_period_from_np_bak').val() == ''){
+                $('#exposure_ref_period_from_np').val(collectionDate($('#sample_collection_date').val()));
+            }
+            if($('#exposure_ref_period_to_np_bak').val() == ''){
+                $('#exposure_ref_period_to_np').val(currentNepaliDate($('#sample_collection_date').val()));
+            }
         }
         else {
             $('.symptoms_two_weeks_class').hide();
             $('.is-symptomatic').show();
+
         }
     }
     $('.symptoms_two_weeks').on('change', function() {
@@ -883,23 +952,6 @@
             $('.attend_social_yes_class').hide();
         }
     }
-    
-
-    
-    
-    var currentDate = NepaliFunctions.ConvertDateFormat(NepaliFunctions.GetCurrentBsDate(), "YYYY-MM-DD");
-    $('#date_of_onset_of_first_symptom_np').nepaliDatePicker({
-        language: 'english',
-        disableAfter: currentDate
-    });
-
-    $('#exposure_ref_period_from_np').nepaliDatePicker({
-        language: 'english',
-    });
-
-    $('#exposure_ref_period_to_np').nepaliDatePicker({
-        language: 'english',
-    });
 
     
     

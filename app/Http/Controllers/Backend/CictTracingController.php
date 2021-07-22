@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\CictTracing;
 use App\Models\CictContact;
+use App\Models\CictFollowUp;
 use App\Models\SuspectedCase;
 use App\Models\SampleCollection;
 use App\Models\OrganizationMember;
@@ -53,20 +54,7 @@ class CictTracingController extends Controller
      */
     public function create(Request $request)
     {
-        if($request->case_id){
-            $patient = SuspectedCase::with('province', 'district', 'municipality', 'ancs', 'latestAnc')
-                ->where('case_id', $request->case_id)->first();
-            if($patient){
-                return view('backend.cict-tracing.create', compact('patient'));
-            } else{
-                $request->session()->flash('message', 'Case Id not found');
-                return redirect()->route('cict-tracing.search');
-            }
-        }else{
-            $patient = null;
-            return view('backend.cict-tracing.create', compact('patient'));
-        }
-        
+        //
     }
 
     /**
@@ -77,7 +65,6 @@ class CictTracingController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
         try{
             if($request->case_id){
@@ -120,9 +107,7 @@ class CictTracingController extends Controller
 
                     $request->session()->flash('message', 'Data auto generated successfully');
                     return redirect()->route('cict-tracing.section-one', ['case_id' => $data['case_id']]);
-                    // dd('sss');
                 } else{
-                    // dd('ss');
                     $request->session()->flash('message', 'Case Id not found');
                     return redirect()->route('cict-tracing.search');
                 }
@@ -149,25 +134,24 @@ class CictTracingController extends Controller
         
     }
 
-    public function sectionOneUpdate(Request $request)
+    public function sectionOneUpdate(Request $request, $case_id)
     {
         $data = $request->all();
         unset($data['_token']);
-        unset($data['check_token']);
-        unset($data['case_id']);
-        unset($data['_case_id']);
-        $data['municipality_id'] = $request->municipality_id;
-        $cict_tracing = CictTracing::where('case_id', $request->case_id)->first();
+        unset($data['_method']);
+        $cict_tracing = CictTracing::where('case_id', $case_id)->first();
         $cict_tracing->update($data);
             
         $request->session()->flash('message', 'Data Inserted successfully');
-        return redirect()->route('cict-tracing.section-two', ['_case_id' => $cict_tracing->case_id]);
+        return redirect()->route('cict-tracing.section-two', ['case_id' => $case_id]);
     }
 
     public function sectionTwo(Request $request)
     {
-        if($request->_case_id){
-            $data = CictTracing::where('case_id', $request->_case_id)->first();
+        if($request->case_id){
+            $data = CictTracing::with(['suspectedCase' => function($q){
+                    $q->with('ancs', 'latestAnc');
+                }])->where('case_id', $request->case_id)->first();
             if($data){
                 return view('backend.cict-tracing.section-two', compact('data'));
             } else{
@@ -180,12 +164,12 @@ class CictTracingController extends Controller
         }
     }
 
-    public function sectionTwoUpdate(Request $request)
+    public function sectionTwoUpdate(Request $request, $case_id)
     {
         try{
             $data = $request->all();
             unset($data['_token']);
-            unset($data['check_token']);
+            unset($data['_method']);
 
             $data['symptoms'] = $request->symptoms ? "[" . implode(', ', $request->symptoms) . "]" : "[]";
 
@@ -287,7 +271,7 @@ class CictTracingController extends Controller
             $cict_tracing->update($data);
             
             $request->session()->flash('message', 'Data Inserted successfully');
-            return redirect()->route('cict-tracing.section-three', ['_case_id' => $cict_tracing->case_id]);
+            return redirect()->route('cict-tracing.section-three', ['case_id' => $case_id]);
         }catch(exception $e){
 
         }
@@ -295,8 +279,8 @@ class CictTracingController extends Controller
 
     public function sectionThree(Request $request)
     {
-        if($request->_case_id){
-            $data = CictTracing::where('case_id', $request->_case_id)->first();
+        if($request->case_id){
+            $data = CictTracing::where('case_id', $request->case_id)->first();
             if($data){
                 $org_id = OrganizationMember::where('token', auth()->user()->token)->first()->id;
                 return view('backend.cict-tracing.section-three', compact('data', 'org_id'));
@@ -310,26 +294,14 @@ class CictTracingController extends Controller
         }
     }
 
-    public function sectionThreeUpdate(Request $request)
+    public function sectionThreeUpdate(Request $request, $case_id)
     {
+
         try{
             $cict_tracing = CictTracing::where('case_id', $request->case_id)->first();
         
             $data = $request->all();
-            unset($data['_token']);
-            unset($data['check_token']);
 
-            // foreach ($request['household_details'] as $item) {
-			// 	$item['case_id'] = md5(microtime(true) . mt_Rand());
-            //     $item['parent_case_id'] = $cict_tracing->case_id;
-			// 	$item['name'] = $company->sync_id;
-			// 	$item['name'] = $company->sync_id;
-			// 	$company_labours_app_id = CompanyLabour::orderBy('id', 'desc')->first() ? CompanyLabour::orderBy('id', 'desc')->first()->id + 1 : 1;
-			// 	$company_labours['sync_id'] = $request->user()->province_id .sprintf("%03d", $this->_server_code) . $company_labours_app_id;
-			// 	$labour = CompanyLabour::create($company_labours);
-			// }
-
-            
             $household_details_array = [];
             for ($i = 0; $i < count($request->household_details_name); $i++) {
                 if ($request->household_details_name[$i] != '') {
@@ -340,7 +312,11 @@ class CictTracingController extends Controller
                     $household_details['relationship'] = $request->household_details_relationship[$i];
                     $household_details['relationship_others'] = $request->household_details_relationship_others[$i];
                     $household_details['phone'] = $request->household_details_phone[$i];
-                    $household_details['case_id'] = $request->household_details_case_id[$i];
+                    if($request->household_details_case_id[$i]){
+                        $household_details['case_id'] = $request->household_details_case_id[$i];
+                    }else{
+                        $household_details['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id . '-' . strtoupper(bin2hex(random_bytes(3)));
+                    }
                     array_push($household_details_array, $household_details);
                 }
             }
@@ -364,7 +340,11 @@ class CictTracingController extends Controller
                     $travel_vehicle_details['relationship'] = $request->travel_vehicle_details_relationship[$i];
                     $travel_vehicle_details['relationship_others'] = $request->travel_vehicle_details_relationship_others[$i];
                     $travel_vehicle_details['phone'] = $request->travel_vehicle_details_phone[$i];
-                    $travel_vehicle_details['case_id'] = $request->travel_vehicle_details_case_id[$i];
+                    if($request->travel_vehicle_details_case_id[$i]){
+                        $travel_vehicle_details['case_id'] = $request->travel_vehicle_details_case_id[$i];
+                    }else{
+                        $travel_vehicle_details['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id . '-' . strtoupper(bin2hex(random_bytes(3)));
+                    }
                     array_push($travel_vehicle_details_array, $travel_vehicle_details);
                 }
             }
@@ -388,7 +368,11 @@ class CictTracingController extends Controller
                     $other_direct_care_details['relationship'] = $request->other_direct_care_details_relationship[$i];
                     $other_direct_care_details['relationship_others'] = $request->other_direct_care_details_relationship_others[$i];
                     $other_direct_care_details['phone'] = $request->other_direct_care_details_phone[$i];
-                    $other_direct_care_details['case_id'] = $request->other_direct_care_details_case_id[$i];
+                    if($request->other_direct_care_details_case_id[$i]){
+                        $other_direct_care_details['case_id'] = $request->other_direct_care_details_case_id[$i];
+                    }else{
+                        $other_direct_care_details['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id . '-' . strtoupper(bin2hex(random_bytes(3)));
+                    }
                     array_push($other_direct_care_details_array, $other_direct_care_details);
                 }
             }
@@ -429,14 +413,12 @@ class CictTracingController extends Controller
             ->where('token', $token)->first();
         
         return view('backend.cict-tracing.contact-list', compact('contact_list'));
-        // dd($contact_list);
     }
 
     public function partOne(Request $request){
         $cict_contact = CictContact::where('case_id', $request->case_id)->first();
         if($cict_contact){
             $data = $cict_contact;
-            return view('backend.cict-tracing.b-one-form.part-one', compact('data'));
         }else {
             $contact_tracing = CictTracing::where('case_id', $request->parent_case_id)->first();
     
@@ -452,69 +434,92 @@ class CictTracingController extends Controller
             $data['parent_case_id'] = $contact_tracing->case_id;
             $data['cict_token'] = $contact_tracing->token;
             $data = (object)$data;
-            return view('backend.cict-tracing.b-one-form.part-one', compact('data'));
         }
+        return view('backend.cict-tracing.b-one-form.part-one', compact('data'));
 
     }
 
-    public function partOneUpdate(Request $request)
+    public function partOneUpdate(Request $request, $case_id)
     {
-        // dd($request->all());
         $data = $request->all();
-        unset($data['_token']);
-        unset($data['check_token']);
-        unset($data['_case_id']);
-        $data['token'] = md5(microtime(true) . mt_Rand());
-        // $data['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id . '-' . strtoupper(bin2hex(random_bytes(3)));
-        // dd($data);
-        $cict_contact = CictContact::create($data);
+        $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
+        $cict_contact = CictContact::where('case_id', $case_id)->first();
+        if($cict_contact){
+            $cict_contact->update($data);
+        }else{
+            $data['token'] = md5(microtime(true) . mt_Rand());
+            $data['hp_code'] = $healthworker->hp_code;
+            $data['checked_by'] = $healthworker->token;
+            $cict_contact = CictContact::create($data);
+        }
             
         $request->session()->flash('message', 'Data Inserted successfully');
-        return redirect()->route('b-one-form.part-two', ['_case_id' => $data['case_id']]);
+        return redirect()->route('b-one-form.part-two', ['case_id' => $case_id]);
     }
 
     public function partTwo(Request $request)
     {
-        // dd($request->all());
-        // if($request->_case_id){
-            $data = CictContact::where('case_id', $request->_case_id)->first();
-        //     if($data){
-            // $data = null;
+        if($request->case_id){
+            $data = CictContact::where('case_id', $request->case_id)->first();
+            if($data){
                 return view('backend.cict-tracing.b-one-form.part-two', compact('data'));
-        //     } else{
-        //         $request->session()->flash('message', 'Case Id not found');
-        //         return redirect()->route('cict-tracing.search');
-        //     }
-        // }else{
-        //     $request->session()->flash('message', 'Case Id not found');
-        //     return redirect()->route('cict-tracing.search');
-        // }
+            } else{
+                $request->session()->flash('message', 'Case Id not found');
+                return redirect()->route('cict-tracing.search');
+            }
+        }else{
+            $request->session()->flash('message', 'Case Id not found');
+            return redirect()->route('cict-tracing.search');
+        }
     }
 
-    public function partTwoUpdate(Request $request)
+    public function partTwoUpdate(Request $request, $case_id)
     {
         $data = $request->all();
-        unset($data['_token']);
-        // unset($data['check_token']);
-        // unset($data['_case_id']);
-        $cict_contact = CictContact::where('case_id', $request->case_id)->first();
+
+        $data['symptoms'] = $request->symptoms ? "[" . implode(', ', $request->symptoms) . "]" : "[]";
+
+        $data['symptoms_comorbidity'] = [];
+        if($request->symptoms_comorbidity_trimester) {
+            array_push($data['symptoms_comorbidity'], $request->symptoms_comorbidity_trimester);
+        }
+        $data['symptoms_comorbidity'] = $request->symptoms_comorbidity ? "[" . implode(', ', $request->symptoms_comorbidity) . "]" : "[]";
+        
+        $cict_contact = CictContact::where('case_id', $case_id)->first();
         $cict_contact->update($data);
             
         $request->session()->flash('message', 'Data Inserted successfully');
         return redirect()->route('cict-tracing.index');
-        // return redirect()->route('b-two-form.follow-up', ['_case_id' => $cict_contact->case_id]);
     }
 
-    public function followUp(Request $request, $id){
-
-        $cict_contact = CictContact::where('case_id', $id)->first();
-        $cict_tracing = CictTracing::where('case_id', $cict_contact->parent_case_id)->first();
-        return view('backend.cict-tracing.b-two-form.follow-up', compact('cict_contact', 'cict_tracing'));
-
+    public function followUp(Request $request){
+        $cict_follow_up = CictFollowUp::where('case_id', $request->case_id)->first();
+        $cict_contact = CictContact::where('case_id', $request->case_id)->first();
+        $cict_tracing = CictTracing::where('case_id', $request->parent_case_id)->first();
+        if($cict_follow_up){
+            $data = $cict_follow_up;
+        }else {
+            $data->case_id = $request->case_id;
+            $data->parent_case_id = $request->parent_case_id;
+        }
+        
+        return view('backend.cict-tracing.b-two-form.follow-up', compact('cict_contact', 'cict_tracing', 'data'));
     }
 
-    public function followUpUpdate(Request $request){
-        // dd($request->all());
+    public function followUpUpdate(Request $request, $case_id){
+        
+        $data = $request->all();
+        $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
+        $cict_follow_up = CictFollowUp::where('case_id', $case_id)->first();
+        if($cict_follow_up){
+            $cict_follow_up->update($data);
+        }else{
+            $data['token'] = md5(microtime(true) . mt_Rand());
+            $data['hp_code'] = $healthworker->hp_code;
+            $data['checked_by'] = $healthworker->token;
+            $cict_follow_up = CictFollowUp::create($data);
+        }
+
         $request->session()->flash('message', 'Data Inserted successfully');
 
         return redirect()->route('cict-tracing.index');

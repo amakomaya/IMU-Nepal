@@ -14,7 +14,7 @@ class CictTracing extends Model
     protected $fillable = [
         'case_id', 'token', 'woman_token', 'hp_code', 'checked_by', 'case_what', 'name', 'age', 'age_unit', 'sex',
         'emergency_contact_one', 'emergency_contact_two', 'nationality', 'nationality_other', 
-        'guardian_name', 'province_id', 'district_id', 'municipality_id', 'tole', 'ward',
+        'province_id', 'district_id', 'municipality_id', 'tole', 'ward',
         'informant_name', 'informant_relation', 'informant_relation_other', 'informant_phone', 'case_managed_at', 'case_managed_at_other',
         'symptoms_recent', 'symptoms_two_weeks', 'date_of_onset_of_first_symptom', 'symptoms', 'symptoms_specific', 
         'symptoms_comorbidity', 'symptoms_comorbidity_specific', 'high_exposure', 'high_exposure_other',
@@ -50,6 +50,11 @@ class CictTracing extends Model
     public function municipality()
     {
         return $this->belongsTo(Municipality::class);
+    }
+
+    public function suspectedCase()
+    {
+        return $this->belongsTo(SuspectedCase::class, 'woman_token', 'token');
     }
 
 }

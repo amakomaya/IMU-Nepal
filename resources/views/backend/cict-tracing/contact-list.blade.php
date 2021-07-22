@@ -45,7 +45,7 @@
                                             }
                                             ?>
                                             <td>{{ $item->name }}</td>
-                                            <td>{{ $item->age }}{{ $item->case_id }}</td>
+                                            <td>{{ $item->age }}</td>
                                             <td>{{ $sex }}</td>
                                             {{-- <td>{{ $item->sex }}</td> --}}
                                             <td>
@@ -53,7 +53,12 @@
                                                     <input type="hidden" name="contact_values" value="{{ serialize($household_details[$key]) }}">
                                                     <input type="hidden" name="case_id" value="{{ $item->case_id }}">
                                                     <input type="hidden" name="parent_case_id" value="{{ $contact_list->case_id }}">
-                                                    <button class="btn btn-sm btn-success" type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                                    <button class="btn btn-sm btn-success" type="submit"><i class="fa fa-plus" aria-hidden="true"></i> B1 Form</button>
+                                                </form>
+                                                <form method="GET" action="{{ route('b-two-form.follow-up') }}">
+                                                    <input type="hidden" name="case_id" value="{{ $item->case_id }}">
+                                                    <input type="hidden" name="parent_case_id" value="{{ $contact_list->case_id }}">
+                                                    <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-plus" aria-hidden="true"></i> B2 Form</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -73,7 +78,7 @@
                                             }
                                             ?>
                                             <td>{{ $item->name }}</td>
-                                            <td>{{ $item->age }}{{ $item->case_id }}</td>
+                                            <td>{{ $item->age }}</td>
                                             <td>{{ $sex }}</td>
                                             {{-- <td>{{ $item->sex }}</td> --}}
                                             <td>
@@ -81,7 +86,12 @@
                                                     <input type="hidden" name="contact_values" value="{{ serialize($travel_vehicle_details[$key]) }}">
                                                     <input type="hidden" name="case_id" value="{{ $item->case_id }}">
                                                     <input type="hidden" name="parent_case_id" value="{{ $contact_list->case_id }}">
-                                                    <button class="btn btn-sm btn-success" type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                                    <button class="btn btn-sm btn-success" type="submit"><i class="fa fa-plus" aria-hidden="true"></i> B1 Form</button>
+                                                </form>
+                                                <form method="GET" action="{{ route('b-two-form.follow-up') }}">
+                                                    <input type="hidden" name="case_id" value="{{ $item->case_id }}">
+                                                    <input type="hidden" name="parent_case_id" value="{{ $contact_list->case_id }}">
+                                                    <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-plus" aria-hidden="true"></i> B2 Form</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -109,7 +119,12 @@
                                                     <input type="hidden" name="contact_values" value="{{ serialize($other_direct_care_details[$key]) }}">
                                                     <input type="hidden" name="case_id" value="{{ $item->case_id }}">
                                                     <input type="hidden" name="parent_case_id" value="{{ $contact_list->case_id }}">
-                                                    <button class="btn btn-sm btn-success" type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                                    <button class="btn btn-sm btn-success" type="submit"><i class="fa fa-plus" aria-hidden="true"></i> B1 Form</button>
+                                                </form>
+                                                <form method="GET" action="{{ route('b-two-form.follow-up') }}">
+                                                    <input type="hidden" name="case_id" value="{{ $item->case_id }}">
+                                                    <input type="hidden" name="parent_case_id" value="{{ $contact_list->case_id }}">
+                                                    <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-plus" aria-hidden="true"></i> B2 Form</button>
                                                 </form>
                                             </td>
                                         </tr>

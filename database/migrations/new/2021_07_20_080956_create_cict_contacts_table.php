@@ -54,10 +54,8 @@ class CreateCictContactsTable extends Migration
             $table->string('healthworker_station', 5)->nullable();
             $table->string('healthworker_station_other', 64)->nullable();
             $table->string('healthworker_ppe', 3)->nullable();
-            $table->string('healthworker_first_date', 10)->nullable();
             $table->string('healthworker_last_date', 10)->nullable();
             $table->text('healthworker_narrative')->nullable();
-            $table->string('healthworker_classify', 3)->nullable();
 
             $table->string('travelled_14_days', 3)->nullable();
             $table->string('date_14_days', 10)->nullable();
@@ -86,7 +84,6 @@ class CreateCictContactsTable extends Migration
             $table->string('collection_date', 10)->nullable();
             $table->string('test_type', 3)->nullable();
             $table->string('result_date', 10)->nullable();
-            $table->string('followup_status', 3)->nullable();
             $table->string('completion_date', 10)->nullable();
             
             $table->softDeletes();

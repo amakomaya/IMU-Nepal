@@ -30,7 +30,6 @@ class CreateCictTracingsTable extends Migration
             $table->string('emergency_contact_two', 10)->nullable();
             $table->string('nationality', 4)->nullable();
             $table->string('nationality_other', 30)->nullable();
-            $table->string('guardian_name', 64)->nullable();
             $table->tinyInteger('province_id')->nullable();
             $table->tinyInteger('district_id')->nullable();
             $table->integer('municipality_id')->nullable();

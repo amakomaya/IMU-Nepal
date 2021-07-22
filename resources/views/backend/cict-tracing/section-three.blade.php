@@ -53,7 +53,8 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        {!! rcForm::open('POST', route('cict-tracing.section-three.update'), ['name' => 'createCase']) !!}
+                        {!! rcForm::open('POST', route('cict-tracing.section-three.update', $data->case_id), ['name' => 'createCase']) !!}
+                        {{ method_field('PUT') }}
                         <div class="panel-body">
 
                             <div class="part-one">
@@ -92,7 +93,16 @@
                                                         Dose 1
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="dose_one_name" value="{{ $data->dose_one_name }}">
+                                                        <select name="dose_one_name" class="form-control" id="dose_one_name">
+                                                            <option {{ isset($data) && $data->dose_one_name == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
+                                                            <option {{ isset($data) && $data->dose_one_name == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
+                                                            <option {{ isset($data) && $data->dose_one_name == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
+                                                            <option {{ isset($data) && $data->dose_one_name == '3' ? "selected" : "" }} value="3">Pfizer</option>
+                                                            <option {{ isset($data) && $data->dose_one_name == '4' ? "selected" : "" }} value="4">Moderna</option>
+                                                            <option {{ isset($data) && $data->dose_one_name == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
+                                                            <option {{ isset($data) && $data->dose_one_name == '6' ? "selected" : "" }} value="6">Johnson & Johnson</option>
+                                                            <option {{ isset($data) && $data->dose_one_name == '0' ? "selected" : "" }} value="10">Other</option>
+                                                        </select>
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="dose_one_date" id="dose_one_date" value="{{ $data->dose_one_date }}">
@@ -103,7 +113,16 @@
                                                         Dose 2
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="dose_two_name" value="{{ $data->dose_two_name }}">
+                                                        <select name="dose_two_name" class="form-control" id="dose_two_name">
+                                                            <option {{ isset($data) && $data->dose_two_name == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
+                                                            <option {{ isset($data) && $data->dose_two_name == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
+                                                            <option {{ isset($data) && $data->dose_two_name == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
+                                                            <option {{ isset($data) && $data->dose_two_name == '3' ? "selected" : "" }} value="3">Pfizer</option>
+                                                            <option {{ isset($data) && $data->dose_two_name == '4' ? "selected" : "" }} value="4">Moderna</option>
+                                                            <option {{ isset($data) && $data->dose_two_name == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
+                                                            <option {{ isset($data) && $data->dose_two_name == '6' ? "selected" : "" }} value="6">Johnson & Johnson</option>
+                                                            <option {{ isset($data) && $data->dose_two_name == '0' ? "selected" : "" }} value="10">Other</option>
+                                                        </select>
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="dose_two_date" id="dose_two_date" value="{{ $data->dose_two_date }}">
@@ -116,7 +135,7 @@
                                 <h4>VII. Information on Close Contact(s) of Case under Investigation</h4><br>
 
                                 <div class="form-group">
-                                    <label>Identify and list the following categories of persons who were exposed upto 2 days before and 10 days of the development of the symptoms OR 10 days before and 10 days after the date of sample collection in case of asymptomatic</label><br>
+                                    <label>Identify and list the following categories of persons who were exposed upto 2 days before and 10 days after the development of the symptoms OR 10 days before and 10 days after the date of sample collection in case of asymptomatic</label><br>
                                     
                                     <div class="form-group">
                                         <label for="reference_period_for">Reference Period From</label>
@@ -209,7 +228,7 @@
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="household_details_phone[]" value="{{ $sub_data->phone }}">
-                                                        <input type="hidden" name="household_details_case_id" value="{{ $sub_data->case_id }}" class="household_details_case_id">
+                                                        <input type="hidden" name="household_details_case_id[]" value="{{ $sub_data->case_id }}" class="household_details_case_id">
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -253,7 +272,7 @@
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="household_details_phone[]">
-                                                        <input type="hidden" name="household_details_case_id[]" class="household_details_case_id">
+                                                        <input type="hidden" name="household_details_case_id[]" class="household_details_case_id" value="">
                                                     </td>
                                                 </tr>
                                                 @endif
@@ -339,7 +358,7 @@
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="travel_vehicle_details_phone[]" value="{{ $sub_data->phone }}">
-                                                        <input type="hidden" name="travel_vehicle_details_case_id" value="{{ $sub_data->case_id }}" class="travel_vehicle_details_case_id">
+                                                        <input type="hidden" name="travel_vehicle_details_case_id[]" value="{{ $sub_data->case_id }}" class="travel_vehicle_details_case_id">
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -383,7 +402,7 @@
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="travel_vehicle_details_phone[]">
-                                                        <input type="hidden" name="travel_vehicle_details_case_id[]" class="travel_vehicle_details_case_id">
+                                                        <input type="hidden" name="travel_vehicle_details_case_id[]" class="travel_vehicle_details_case_id" value="">
                                                     </td>
                                                 </tr>
                                                 @endif
@@ -469,7 +488,7 @@
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="other_direct_care_details_phone[]" value="{{ $sub_data->phone }}">
-                                                        <input type="hidden" name="other_direct_care_details_case_id" value="{{ $sub_data->case_id }}" class="other_direct_care_details_case_id">
+                                                        <input type="hidden" name="other_direct_care_details_case_id[]" value="{{ $sub_data->case_id }}" class="other_direct_care_details_case_id">
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -513,7 +532,7 @@
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="other_direct_care_details_phone[]">
-                                                        <input type="hidden" name="other_direct_care_details_case_id[]" class="other_direct_care_details_case_id">
+                                                        <input type="hidden" name="other_direct_care_details_case_id[]" class="other_direct_care_details_case_id" value="">
                                                     </td>
                                                     </td>
                                                 </tr>
@@ -678,9 +697,6 @@
                                     @endif
                                 </div>
                             </div>
-
-                            <input type="hidden" name="check_token" value="{{ $data->token }}"/>
-                            <input type="hidden" name="case_id" value={{ $data ? $data->case_id : '' }}>
 
                             <button type="submit" class="btn btn-primary btn-sm btn-block ">SAVE</button>
                             

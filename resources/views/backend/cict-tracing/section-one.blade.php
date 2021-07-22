@@ -53,7 +53,8 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        {!! rcForm::open('POST', route('cict-tracing.section-one.update', ['_case_id' => $data->case_id]), ['name' => 'createCase']) !!}
+                        {!! rcForm::open('POST', route('cict-tracing.section-one.update', $data->case_id), ['name' => 'createCase']) !!}
+                        {{ method_field('PUT') }}
                         <div class="panel-body">
                             <div class="form-group">
                                 <div class="control-group">
@@ -155,17 +156,6 @@
                                            class="form-text text-danger">{{ $errors->first('nationality_other') }}</small>
                                 @endif
                             </div>
-
-                            <div class="form-group {{ $errors->has('guardian_name') ? 'has-error' : '' }}">
-                                <label for="name">Guardian Name</label>
-                                <input type="text" class="form-control" value="{{ $data ? $data->guardian_name : '' }}"
-                                       name="guardian_name" aria-describedby="help"
-                                       placeholder="Enter Guardian Name">
-                                @if ($errors->has('guardian_name'))
-                                    <small id="help"
-                                           class="form-text text-danger">{{ $errors->first('guardian_name') }}</small>
-                                @endif
-                            </div>
                             
                             <div class="form-group">
                                 <label class="control-label" for="company">Current Address</label>
@@ -251,7 +241,7 @@
 
                             <hr>
 
-                            <label class="control-label"><h4>Informant Details</h4></label>
+                            <label class="control-label"><h4>Informant Details</h4>(If provided)</label>
 
                             <div class="form-group {{ $errors->has('informant_name') ? 'has-error' : '' }}">
                                 <label for="informant_name">Name of the Informant</label>
@@ -317,9 +307,6 @@
                                     <small id="help" class="form-text text-danger">{{ $errors->first('case_managed_at_other') }}</small>
                                 @endif
                             </div>
-
-                            <input type="hidden" name="check_token" value={{ $data ? $data->token : '' }}>
-                            <input type="hidden" name="case_id" value={{ $data ? $data->case_id : '' }}>
 
                             <button type="submit" class="btn btn-primary btn-sm btn-block ">SAVE AND CONTINUE</button>
                             

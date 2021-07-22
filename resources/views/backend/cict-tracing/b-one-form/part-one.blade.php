@@ -53,7 +53,8 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        {!! rcForm::open('POST', route('b-one-form.part-one.update', ['_case_id' => $data->case_id]), ['name' => 'createCase']) !!}
+                        {!! rcForm::open('POST', route('b-one-form.part-one.update', $data->case_id), ['name' => 'createCase']) !!}
+                        {{ method_field('PUT') }}
                         <div class="panel-body">
                             <label class="control-label"><h4>Case information</h4></label>
                             
@@ -290,10 +291,8 @@
                                     <small id="help" class="form-text text-danger">{{ $errors->first('informant_phone') }}</small>
                                 @endif
                             </div>
-
-                            <input type="hidden" name="case_id" value={{ isset($data->case_id) ? $data->case_id : '' }}>
-                            <input type="hidden" name="check_token" value={{ isset($data->token) ? $data->token : '' }}>
-                            <input type="hidden" name="parent_case_id" value={{ $data ? $data->parent_case_id : '' }}>
+                            <input type="hidden" name="case_id" value={{ $data->case_id }}>
+                            <input type="hidden" name="parent_case_id" value={{ $data->parent_case_id }}>
 
                             <button type="submit" class="btn btn-primary btn-sm btn-block ">SAVE AND CONTINUE</button>
                             

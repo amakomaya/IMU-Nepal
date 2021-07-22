@@ -53,7 +53,8 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        {!! rcForm::open('POST', route('b-one-form.part-two.update'), ['name' => 'createCase']) !!}
+                        {!! rcForm::open('POST', route('b-one-form.part-two.update', $data->case_id), ['name' => 'createCase']) !!}
+                        {{ method_field('PUT') }}
                         <div class="panel-body">
 
                             <div class="part-one">
@@ -160,7 +161,7 @@
                                         <input type="radio" name="symptoms_comorbidity_trimester" value=""> No<br>
                                     </div>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="18" @if(in_array(18, $symptoms_comorbidity)) checked @endif> Post delivery (< 6 weeks)<br>
-                                    <input type="checkbox" name="symptoms_comorbidity[]" value="7" @if(in_array(7, $symptoms_comorbidity)) checked @endif> Cardiovascular disease, including hypertension<br>
+                                    <input type="checkbox" name="symptoms_comorbidity[]" value="7" @if(in_array(7, $symptoms_comorbidity)) checked @endif> Cardiovascular disease or hypertension<br>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="1" @if(in_array(1, $symptoms_comorbidity)) checked @endif> Diabetes<br>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="14" @if(in_array(14, $symptoms_comorbidity)) checked @endif> Malignancy<br>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="19" @if(in_array(19, $symptoms_comorbidity)) checked @endif> COPD<br>
@@ -278,14 +279,6 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="healthworker_first_date">Date of first contact</label>
-                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->healthworker_first_date : '' }}" name="healthworker_first_date"
-                                            aria-describedby="help" placeholder="Enter Date of first contact"
-                                        >
-                                        @if ($errors->has('healthworker_first_date'))
-                                            <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_first_date') }}</small>
-                                        @endif
-
                                         <label for="healthworker_last_date">Date of last contact</label>
                                         <input type="text" class="form-control" value="{{ isset($data) ? $data->healthworker_last_date : '' }}" name="healthworker_last_date"
                                             aria-describedby="help" placeholder="Enter Date of last contact"
@@ -301,20 +294,6 @@
                                         @if ($errors->has('healthworker_narrative'))
                                             <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_narrative') }}</small>
                                         @endif
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label">Based on the exposure history, classification of the contact</label>
-                                        <div class="control-group">
-                                            <label class="radio-inline">
-                                                <input type="radio" name="healthworker_classify" class="healthworker_classify"
-                                                    {{ isset($data) && $data->healthworker_classify == "1" ? 'checked' : '' }} value="1">Close
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="healthworker_classify" class="healthworker_classify"
-                                                    {{ isset($data) && $data->healthworker_classify == "2" ? 'checked' : '' }} value="2">Casual
-                                            </label>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -473,7 +452,16 @@
                                                         Dose 1
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="dose_one_name" value="{{ isset($data) ? $data->dose_one_name : '' }}">
+                                                        <select name="dose_one_name" class="form-control" id="dose_one_name">
+                                                            <option {{ isset($data) && $data->dose_one_name == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
+                                                            <option {{ isset($data) && $data->dose_one_name == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
+                                                            <option {{ isset($data) && $data->dose_one_name == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
+                                                            <option {{ isset($data) && $data->dose_one_name == '3' ? "selected" : "" }} value="3">Pfizer</option>
+                                                            <option {{ isset($data) && $data->dose_one_name == '4' ? "selected" : "" }} value="4">Moderna</option>
+                                                            <option {{ isset($data) && $data->dose_one_name == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
+                                                            <option {{ isset($data) && $data->dose_one_name == '6' ? "selected" : "" }} value="6">Johnson & Johnson</option>
+                                                            <option {{ isset($data) && $data->dose_one_name == '0' ? "selected" : "" }} value="10">Other</option>
+                                                        </select>
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="dose_one_date" id="dose_one_date" value="{{ isset($data) ? $data->dose_one_date : '' }}">
@@ -484,7 +472,16 @@
                                                         Dose 2
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="dose_two_name" value="{{ isset($data) ? $data->dose_two_name : '' }}">
+                                                        <select name="dose_two_name" class="form-control" id="dose_two_name">
+                                                            <option {{ isset($data) && $data->dose_two_name == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
+                                                            <option {{ isset($data) && $data->dose_two_name == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
+                                                            <option {{ isset($data) && $data->dose_two_name == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
+                                                            <option {{ isset($data) && $data->dose_two_name == '3' ? "selected" : "" }} value="3">Pfizer</option>
+                                                            <option {{ isset($data) && $data->dose_two_name == '4' ? "selected" : "" }} value="4">Moderna</option>
+                                                            <option {{ isset($data) && $data->dose_two_name == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
+                                                            <option {{ isset($data) && $data->dose_two_name == '6' ? "selected" : "" }} value="6">Johnson & Johnson</option>
+                                                            <option {{ isset($data) && $data->dose_two_name == '0' ? "selected" : "" }} value="10">Other</option>
+                                                        </select>
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="dose_two_date" id="dose_two_date" value="{{ isset($data) ? $data->dose_two_date : '' }}">
@@ -621,24 +618,6 @@
                             </div>
 
                             <div class="part-four">
-                                <h4>Follow Status( to be completed at the end of the prescribed follow up period)</h4><br>
-
-                                <select name="followup_status" class="form-control">
-                                    <option {{ isset($data) && $data->followup_status == '' ? "selected" : "" }} value="">Select Followup Status
-                                    </option>
-                                    <option {{ isset($data) && $data->followup_status == '1' ? "selected" : "" }} value="1">contact remain asymptomatic
-                                    <option {{ isset($data) && $data->followup_status == '2' ? "selected" : "" }} value="2">Developed symptoms and investigated</option>
-                                    <option {{ isset($data) && $data->followup_status == '3' ? "selected" : "" }} value="3">turned into confirmed caser</option>
-                                    <option {{ isset($data) && $data->followup_status == '4' ? "selected" : "" }} value="4">death
-                                    <option {{ isset($data) && $data->followup_status == '0' ? "selected" : "" }} value="5">Lost/unknown</option>
-                                </select>
-                                @if ($errors->has('followup_status'))
-                                    <small id="help"
-                                            class="form-text text-danger">{{ $errors->first('followup_status') }}</small>
-                                @endif
-                            </div>
-
-                            <div class="part-four">
                                 <h4>Data Collector information</h4><br>
 
                                 <div class="form-group">
@@ -651,8 +630,6 @@
                                     @endif
                                 </div>
                             </div>
-
-                            <input type="hidden" name="case_id" value="{{ $data->case_id }}">
 
                             <button type="submit" class="btn btn-primary btn-sm btn-block ">SAVE</button>
                             
