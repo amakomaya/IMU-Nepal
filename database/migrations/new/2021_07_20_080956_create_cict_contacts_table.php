@@ -42,6 +42,7 @@ class CreateCictContactsTable extends Migration
             $table->string('informant_phone', 10)->nullable();
             
             $table->enum('symptoms_recent', ['0', '1'])->nullable();
+            $table->enum('symptoms_two_weeks', ['0', '1'])->nullable();
             $table->string('date_of_onset_of_first_symptom', 10)->nullable();
             $table->string('symptoms', 100)->nullable();
             $table->string('symptoms_specific', 64)->nullable();

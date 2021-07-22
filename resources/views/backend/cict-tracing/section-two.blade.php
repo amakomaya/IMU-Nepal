@@ -631,13 +631,13 @@
                                                         <button type="button" class="btn btn-danger btn-sm btn-remove-direct-care mt-1"><i class="fa fa-trash"></i></button>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="	direct_care_details_name[]" value="{{ $sub_data->name }}">
+                                                        <input type="text" class="form-control" name="direct_care_details_name[]" value="{{ $sub_data->name }}">
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="	direct_care_details_age[]" value="{{ $sub_data->age }}">
+                                                        <input type="text" class="form-control" name="direct_care_details_age[]" value="{{ $sub_data->age }}">
                                                     </td>
                                                     <td>
-                                                        <select name="	direct_care_details_age_unit[]" class="form-control">
+                                                        <select name="direct_care_details_age_unit[]" class="form-control">
                                                             <option value="">Select Age Unit</option>
                                                             <option value="0" {{ $sub_data->age_unit == '0' ? 'selected' : '' }}>Years</option>
                                                             <option value="1" {{ $sub_data->age_unit == '1' ? 'selected' : '' }}>Months</option>
@@ -645,7 +645,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="	direct_care_details_sex[]" class="form-control">
+                                                        <select name="direct_care_details_sex[]" class="form-control">
                                                             <option value="" selected>Select Gender</option>
                                                             <option value="1" {{ $sub_data->sex == '1' ? 'selected' : '' }}>Male</option>
                                                             <option value="2" {{ $sub_data->sex == '2' ? 'selected' : '' }}>Female</option>
@@ -653,7 +653,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="	direct_care_details_phone[]" value="{{ $sub_data->phone }}">
+                                                        <input type="text" class="form-control" name="direct_care_details_phone[]" value="{{ $sub_data->phone }}">
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -696,7 +696,7 @@
                                 <hr>
     
                                 <div class="form-group">
-                                    <label>Did the case under investigation attend School / Workplace / Hospitals / Healthcare institution / Social gathering(s) during the reference period?</label>
+                                    <label>Did the case under investigation attend School / Workplace / Hospitals / Healthcare institution / Social gathering(s) during the reference period?</label><br>
                                     <label class="radio-inline">
                                         <input type="radio" name="attend_social" class="attend_social"
                                                 {{ $data && $data->attend_social == "0" ? 'checked' : '' }} value="0">No
@@ -735,13 +735,13 @@
                                                         <button type="button" class="btn btn-danger btn-sm btn-remove-school-attend mt-1"><i class="fa fa-trash"></i></button>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="	attend_social_details_name[]" value="{{ $sub_data->name }}">
+                                                        <input type="text" class="form-control" name="attend_social_details_name[]" value="{{ $sub_data->name }}">
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="	attend_social_details_phone[]" value="{{ $sub_data->phone }}">
+                                                        <input type="text" class="form-control" name="attend_social_details_phone[]" value="{{ $sub_data->phone }}">
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="	attend_social_details_remarks[]" value="{{ $sub_data->remarks }}">
+                                                        <input type="text" class="form-control" name="attend_social_details_remarks[]" value="{{ $sub_data->remarks }}">
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -1006,10 +1006,6 @@
 
         new_row.attr('data-row-id', count_row);
         new_row.find(".btn-remove-same-household").show();
-        new_row.find(".nep-date-picker").nepaliDatePicker({
-            language: 'english',
-            disableAfter: currentDate
-        });
     });
 
     $('body').on('click', '.btn-remove-same-household', function() {
@@ -1032,10 +1028,6 @@
 
         new_row.attr('data-row-id', count_row);
         new_row.find(".btn-remove-close-contact").show();
-        new_row.find(".nep-date-picker").nepaliDatePicker({
-            language: 'english',
-            disableAfter: currentDate
-        });
     });
 
     $('body').on('click', '.btn-remove-close-contact', function() {
@@ -1058,10 +1050,6 @@
 
         new_row.attr('data-row-id', count_row);
         new_row.find(".btn-remove-direct-care").show();
-        new_row.find(".nep-date-picker").nepaliDatePicker({
-            language: 'english',
-            disableAfter: currentDate
-        });
     });
 
     $('body').on('click', '.btn-remove-direct-care', function() {
@@ -1084,10 +1072,6 @@
 
         new_row.attr('data-row-id', count_row);
         new_row.find(".btn-remove-school-attend").show();
-        new_row.find(".nep-date-picker").nepaliDatePicker({
-            language: 'english',
-            disableAfter: currentDate
-        });
     });
 
     $('body').on('click', '.btn-remove-school-attend', function() {

@@ -107,29 +107,35 @@
                                                     <input type="checkbox" value="1" name="no_symptoms_{{$i}}" {{ isset($data->{'no_symptoms_'.$i}) && $data->{'no_symptoms_'.$i} == 1 ? 'checked' : '' }}> None
                                                 </td>
                                                 <td>
-                                                    <input type="radio" value="1" name="fever_{{$i}}" {{ isset($data->{'fever_'.$i}) && $data->{'fever_'.$i} == 1 ? 'checked' : '' }}> Yes
+                                                    <input type="radio" value="1" name="fever_{{$i}}" {{ isset($data->{'fever_'.$i}) && $data->{'fever_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
                                                     <input type="radio" value="0" name="fever_{{$i}}" {{ isset($data->{'fever_'.$i}) && $data->{'fever_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
-                                                    <input type="radio" value="1" name="runny_nose_{{$i}}" {{ isset($data->{'runny_nose_'.$i}) && $data->{'runny_nose_'.$i} == 1 ? 'checked' : '' }}> Yes
+                                                    <input type="radio" value="1" name="runny_nose_{{$i}}" {{ isset($data->{'runny_nose_'.$i}) && $data->{'runny_nose_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
                                                     <input type="radio" value="0" name="runny_nose_{{$i}}" {{ isset($data->{'runny_nose_'.$i}) && $data->{'runny_nose_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
-                                                    <input type="radio" value="1" name="cough_{{$i}}" {{ isset($data->{'cough_'.$i}) && $data->{'cough_'.$i} == 1 ? 'checked' : '' }}> Yes
+                                                    <input type="radio" value="1" name="cough_{{$i}}" {{ isset($data->{'cough_'.$i}) && $data->{'cough_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
                                                     <input type="radio" value="0" name="cough_{{$i}}" {{ isset($data->{'cough_'.$i}) && $data->{'cough_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
-                                                    <input type="radio" value="1" name="sore_throat_{{$i}}" {{ isset($data->{'sore_throat_'.$i}) && $data->{'sore_throat_'.$i} == 1 ? 'checked' : '' }}> Yes
+                                                    <input type="radio" value="1" name="sore_throat_{{$i}}" {{ isset($data->{'sore_throat_'.$i}) && $data->{'sore_throat_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
                                                     <input type="radio" value="0" name="sore_throat_{{$i}}" {{ isset($data->{'sore_throat_'.$i}) && $data->{'sore_throat_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
-                                                    <input type="radio" value="1" name="breath_{{$i}}" {{ isset($data->{'breath_'.$i}) && $data->{'breath_'.$i} == 1 ? 'checked' : '' }}> Yes
+                                                    <input type="radio" value="1" name="breath_{{$i}}" {{ isset($data->{'breath_'.$i}) && $data->{'breath_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
                                                     <input type="radio" value="0" name="breath_{{$i}}" {{ isset($data->{'breath_'.$i}) && $data->{'breath_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control" name="symptoms_other_{{$i}}" id="symptoms_other_{{$i}}" value="{{ isset($data->{'symptoms_other_'.$i}) ?? '' }}">
                                                 </td>
-                                                <td>@if($i == 5) PCR/Antigen Test @endif</td>
+                                                @if($i == 5)
+                                                <td style="background-color: red; color:white">
+                                                    PCR/Antigen Test
+                                                </td>
+                                                @else
+                                                <td></td>
+                                                @endif
                                             </tr>
                                             <?php } ?>
                                     </table>

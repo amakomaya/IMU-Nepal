@@ -14,7 +14,7 @@ class CictContact extends Model
         'emergency_contact_one', 'emergency_contact_two', 'nationality', 'nationality_other', 
         'realtionship', 'province_id', 'district_id', 'municipality_id', 'tole', 'ward',
         'informant_name', 'informant_relation', 'informant_relation_other', 'informant_phone',
-        'symptoms_recent', 'date_of_onset_of_first_symptom', 'symptoms', 'symptoms_specific', 
+        'symptoms_recent', 'date_of_onset_of_first_symptom', 'symptoms_two_weeks', 'symptoms', 'symptoms_specific', 
         'symptoms_comorbidity', 'symptoms_comorbidity_specific', 'occupation', 'occupaton_other',
         'healthworker_title', 'healthworker_workplace', 'healthworker_station', 'healthworker_station_other',
         'healthworker_ppe', 'healthworker_last_date', 'healthworker_narrative',

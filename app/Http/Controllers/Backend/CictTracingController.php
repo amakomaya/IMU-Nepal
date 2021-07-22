@@ -172,12 +172,12 @@ class CictTracingController extends Controller
             unset($data['_method']);
 
             $data['symptoms'] = $request->symptoms ? "[" . implode(', ', $request->symptoms) . "]" : "[]";
-
-            $data['symptoms_comorbidity'] = [];
+            
+            $data['symptoms_comorbidity'] = $request->symptoms_comorbidity ?? [];
             if($request->symptoms_comorbidity_trimester) {
                 array_push($data['symptoms_comorbidity'], $request->symptoms_comorbidity_trimester);
             }
-            $data['symptoms_comorbidity'] = $request->symptoms_comorbidity ? "[" . implode(', ', $request->symptoms_comorbidity) . "]" : "[]";
+            $data['symptoms_comorbidity'] = $data['symptoms_comorbidity'] ? "[" . implode(', ', $data['symptoms_comorbidity']) . "]" : "[]";
             
             $travelled_14_days_details_array = [];
             for ($i = 0; $i < count($request->travelled_14_days_details_departure_from); $i++) {
@@ -420,7 +420,9 @@ class CictTracingController extends Controller
     public function partOne(Request $request){
         $cict_contact = CictContact::where('case_id', $request->case_id)->first();
         if($cict_contact){
+            $contact_tracing = CictTracing::where('case_id', $request->parent_case_id)->first();
             $data = $cict_contact;
+            $data->parent_case_name = $contact_tracing->name;
         }else {
             $contact_tracing = CictTracing::where('case_id', $request->parent_case_id)->first();
     
@@ -481,11 +483,11 @@ class CictTracingController extends Controller
 
         $data['symptoms'] = $request->symptoms ? "[" . implode(', ', $request->symptoms) . "]" : "[]";
 
-        $data['symptoms_comorbidity'] = [];
+        $data['symptoms_comorbidity'] = $request->symptoms_comorbidity ?? [];
         if($request->symptoms_comorbidity_trimester) {
             array_push($data['symptoms_comorbidity'], $request->symptoms_comorbidity_trimester);
         }
-        $data['symptoms_comorbidity'] = $request->symptoms_comorbidity ? "[" . implode(', ', $request->symptoms_comorbidity) . "]" : "[]";
+        $data['symptoms_comorbidity'] = $data['symptoms_comorbidity'] ? "[" . implode(', ', $data['symptoms_comorbidity']) . "]" : "[]";
         
         $cict_contact = CictContact::where('case_id', $case_id)->first();
         $cict_contact->update($data);
@@ -513,6 +515,10 @@ class CictTracingController extends Controller
         $data = $request->all();
         $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
         $cict_follow_up = CictFollowUp::where('case_id', $case_id)->first();
+        
+        for($i=0; $i<11; $i++){
+            $data['no_symptoms_' . $i] = $request->{'no_symptoms_'.$i} ?? 0;
+        }
         if($cict_follow_up){
             $cict_follow_up->update($data);
         }else{
@@ -569,6 +575,14 @@ class CictTracingController extends Controller
      */
     public function destroy($id)
     {
-        //
+        dd($id);
+        try{
+            $cict_tracing = CictTracing::where('token', $id)->first();
+            $cict_tracing->delete();
+            return response()->json(['message' => 'success']);
+        }
+        catch (\Exception $e){
+            return response()->json(['message' => 'error']);
+        }
     }
 }

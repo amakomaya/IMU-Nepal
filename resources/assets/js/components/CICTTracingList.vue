@@ -12,7 +12,7 @@
         <th></th>
       </tr>
       </thead>
-      <tr slot-scope="{item}">
+      <tr slot-scope="{item, removeItemOnSuccess}">
         <td>{{ item.case_id}}</td>
         <td>{{item.name}}</td>
         <td>{{item.age}}</td>
@@ -28,8 +28,8 @@
             <button v-on:click="contactList(item.token)" class="btn btn-secondary btn-sm" title="Contact List">
               <i class="fa fa-list" aria-hidden="true"> Contact List</i>
             </button>
-            <!-- <button v-on:click="deleteData(item.id)" class="btn btn-danger btn-sm" title="Delete Data">
-              <i class="fa fa-list" aria-hidden="true"> Delete</i>
+            <!-- <button v-on:click="deletePatientData(item, removeItemOnSuccess)" class="btn btn-danger btn-sm" title="Delete Data">
+              <i class="fa fa-trash" aria-hidden="true"> Delete</i>
             </button> -->
         </td>
         <!-- </div>             -->
@@ -80,6 +80,50 @@ export default {
           '/admin/cict-tracing/contact-list/' + id,
           '_self'
       );
+    },
+
+    deletePatientData: function (item, removeItemOnSuccess) {
+      this.$swal({
+        title: "Are you sure?",
+        text: "Your data will be deleted.",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel please!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      }).then((result) => {
+        if (result.value) {
+          axios.delete('/cict-tracing/' + item.token)
+              .then((response) => {
+                if (response.data.message === 'success') {
+                  removeItemOnSuccess(item);
+                  this.$swal({
+                    title: 'Record Deleted',
+                    type: 'success',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                  })
+                  this.healthpostSelected = null;
+                  
+                } else {
+                  this.$swal({
+                    title: 'Oops. No record found.',
+                    type: 'error',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                  })
+                }
+              })
+        } else {
+          this.$swal("Cancelled", "Data not moved :)", "error");
+        }
+      })
     },
     sex(type) {
       switch (type) {

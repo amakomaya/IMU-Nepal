@@ -321,9 +321,9 @@
                                                     $sub_data_array = json_decode($data->travel_vehicle_details);
                                                 ?>
                                                 @foreach($sub_data_array as $sub_data)
-                                                <tr class="table-travel-public-info-tr">
+                                                <tr class="table-travel-public-tr">
                                                     <td width="95px">
-                                                        <button type="button" class="btn btn-danger btn-sm btn-remove-travel-public-info mt-1"><i class="fa fa-trash"></i></button>
+                                                        <button type="button" class="btn btn-danger btn-sm btn-remove-travel-public mt-1"><i class="fa fa-trash"></i></button>
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="travel_vehicle_details_name[]" value="{{ $sub_data->name }}">
@@ -450,9 +450,9 @@
                                                     $sub_data_array = json_decode($data->other_direct_care_details);
                                                 ?>
                                                 @foreach($sub_data_array as $sub_data)
-                                                <tr class="table-direct-care-any-info-tr">
+                                                <tr class="table-direct-care-any-tr">
                                                     <td width="95px">
-                                                        <button type="button" class="btn btn-danger btn-sm btn-remove-direct-care-any-info mt-1"><i class="fa fa-trash"></i></button>
+                                                        <button type="button" class="btn btn-danger btn-sm btn-remove-direct-care-any mt-1"><i class="fa fa-trash"></i></button>
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="other_direct_care_details_name[]" value="{{ $sub_data->name }}">
