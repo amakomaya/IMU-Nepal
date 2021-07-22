@@ -152,6 +152,8 @@
                                             <small id="help" class="form-text text-danger">{{ $errors->first('close_ref_period_to_np') }}</small>
                                         @endif
                                     </div>
+                                    <input type="hidden" id="close_ref_period_from_np_bak" value="{{ $data->close_ref_period_from_np }}">
+                                    <input type="hidden" id="close_ref_period_to_np_bak" value="{{ $data->close_ref_period_to_np }}">
                                 </div>
 
                                 <div class="form-group">
@@ -698,6 +700,17 @@
                                 </div>
                             </div>
 
+                            <input type="hidden" id="onset_date_bak" value="{{ $data->date_of_onset_of_first_symptom }}">
+
+                            @if(isset($data->suspectedCase))
+                                @if(isset($data->suspectedCase->latestAnc))
+                                    <input type="hidden" id="sample_collection_date" value="{{ $data->data->suspectedCase->latestAnc->collection_date_en ?? date('Y-m-d') }}">
+                                @else
+
+                                <input type="hidden" id="sample_collection_date" value="{{ date('Y-m-d') }}">
+                                @endif
+                            @endif
+
                             <button type="submit" class="btn btn-primary btn-sm btn-block ">SAVE</button>
                             
                             </form>
@@ -731,6 +744,96 @@
             $("#municipality").html(data);
         });
     }
+
+    var currentDate = NepaliFunctions.ConvertDateFormat(NepaliFunctions.GetCurrentBsDate(), "YYYY-MM-DD");
+    $('#dose_one_date').nepaliDatePicker({
+        language: 'english',
+        disableAfter: currentDate
+    });
+    $('#dose_two_date').nepaliDatePicker({
+        language: 'english',
+        disableAfter: currentDate
+    });
+    $('#close_ref_period_from_np').nepaliDatePicker({
+        language: 'english',
+        disableAfter: currentDate
+    });
+    $('#close_ref_period_to_np').nepaliDatePicker({
+        language: 'english',
+        disableAfter: currentDate
+    });
+    $('#completion_date').nepaliDatePicker({
+        language: 'english',
+        disableAfter: currentDate
+    });
+
+    if($('#onset_date_bak').val() == ''){
+        console.log('1');
+        if($('#close_ref_period_from_np_bak').val() == ''){
+            $('#close_ref_period_from_np').val(getPastDate($('#sample_collection_date').val(), 10));
+        }
+        if($('#close_ref_period_to_np_bak').val() == ''){
+            $('#close_ref_period_to_np').val(getFutureDate($('#sample_collection_date').val(), 10));
+        }
+    }
+    else{
+
+        console.log('12');
+
+        if($('#close_ref_period_from_np_bak').val() == ''){
+            $('#close_ref_period_from_np').val(getOnsetPastDate($('#onset_date_bak').val(), 2));
+        }
+        if($('#close_ref_period_to_np_bak').val() == ''){
+            $('#close_ref_period_to_np').val(getOnsetFutureDate($('#onset_date_bak').val(), 10));
+        }
+    }
+    
+    function getOnsetFutureDate(sel_date, sel_days){
+        var np_date_obj = NepaliFunctions.ConvertToDateObject(sel_date, "YYYY-MM-DD");
+        var en_date_obj = NepaliFunctions.BS2AD(np_date_obj);
+        var en_date = NepaliFunctions.ConvertDateFormat(en_date_obj, "YYYY-MM-DD");
+        var en_date = new Date(en_date);
+        en_date.setDate(en_date.getDate() + sel_days);
+        var en_11_date = en_date.getFullYear() + "-" + (en_date.getMonth() +1) + "-" + en_date.getDate();
+        var en_11_date_obj = NepaliFunctions.ConvertToDateObject(en_11_date, "YYYY-MM-DD");
+        en_11_date_obj = NepaliFunctions.AD2BS(en_11_date_obj);
+        var en_11_date_final = NepaliFunctions.ConvertDateFormat(en_11_date_obj, "YYYY-MM-DD");
+        return en_11_date_final;
+    }
+    
+    function getOnsetPastDate(sel_date, sel_days){
+        var np_date_obj = NepaliFunctions.ConvertToDateObject(sel_date, "YYYY-MM-DD");
+        var en_date_obj = NepaliFunctions.BS2AD(np_date_obj);
+        var en_date = NepaliFunctions.ConvertDateFormat(en_date_obj, "YYYY-MM-DD");
+        var en_date = new Date(en_date);
+        en_date.setDate(en_date.getDate() - sel_days);
+        var en_11_date = en_date.getFullYear() + "-" + (en_date.getMonth() +1) + "-" + en_date.getDate();
+        var en_11_date_obj = NepaliFunctions.ConvertToDateObject(en_11_date, "YYYY-MM-DD");
+        en_11_date_obj = NepaliFunctions.AD2BS(en_11_date_obj);
+        var en_11_date_final = NepaliFunctions.ConvertDateFormat(en_11_date_obj, "YYYY-MM-DD");
+        return en_11_date_final;
+    }
+    
+    function getFutureDate(sel_date, sel_days){
+        var en_date = new Date(sel_date);
+        en_date.setDate(en_date.getDate() + sel_days);
+        var en_11_date = en_date.getFullYear() + "-" + (en_date.getMonth() +1) + "-" + en_date.getDate();
+        var en_11_date_obj = NepaliFunctions.ConvertToDateObject(en_11_date, "YYYY-MM-DD");
+        en_11_date_obj = NepaliFunctions.AD2BS(en_11_date_obj);
+        var en_11_date_final = NepaliFunctions.ConvertDateFormat(en_11_date_obj, "YYYY-MM-DD");
+        return en_11_date_final;
+    }
+    
+    function getPastDate(sel_date, sel_days){
+        var en_date = new Date(sel_date);
+        en_date.setDate(en_date.getDate() - sel_days);
+        var en_11_date = en_date.getFullYear() + "-" + (en_date.getMonth() +1) + "-" + en_date.getDate();
+        var en_11_date_obj = NepaliFunctions.ConvertToDateObject(en_11_date, "YYYY-MM-DD");
+        en_11_date_obj = NepaliFunctions.AD2BS(en_11_date_obj);
+        var en_11_date_final = NepaliFunctions.ConvertDateFormat(en_11_date_obj, "YYYY-MM-DD");
+        return en_11_date_final;
+    }
+
 
     sars_cov2_vaccinated();
     $('.sars_cov2_vaccinated').on('change', function() {
@@ -779,28 +882,6 @@
             $('.other_attend_social_yes_class').hide();
         }
     }
-
-    var currentDate = NepaliFunctions.ConvertDateFormat(NepaliFunctions.GetCurrentBsDate(), "YYYY-MM-DD");
-    $('#dose_one_date').nepaliDatePicker({
-        language: 'english',
-        disableAfter: currentDate
-    });
-    $('#dose_two_date').nepaliDatePicker({
-        language: 'english',
-        disableAfter: currentDate
-    });
-    $('#close_ref_period_from_np').nepaliDatePicker({
-        language: 'english',
-        disableAfter: currentDate
-    });
-    $('#close_ref_period_to_np').nepaliDatePicker({
-        language: 'english',
-        disableAfter: currentDate
-    });
-    $('#completion_date').nepaliDatePicker({
-        language: 'english',
-        disableAfter: currentDate
-    });
     // $('#collection_date_np').nepaliDatePicker({
     //     language: 'english',
     //     disableAfter: currentDate

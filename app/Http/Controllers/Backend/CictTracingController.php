@@ -280,7 +280,9 @@ class CictTracingController extends Controller
     public function sectionThree(Request $request)
     {
         if($request->case_id){
-            $data = CictTracing::where('case_id', $request->case_id)->first();
+            $data = CictTracing::with(['suspectedCase' => function($q){
+                    $q->with('ancs', 'latestAnc');
+                }])->where('case_id', $request->case_id)->first();
             if($data){
                 $org_id = OrganizationMember::where('token', auth()->user()->token)->first()->id;
                 return view('backend.cict-tracing.section-three', compact('data', 'org_id'));
