@@ -575,7 +575,6 @@ class CictTracingController extends Controller
      */
     public function destroy($id)
     {
-        dd($id);
         try{
             $cict_tracing = CictTracing::where('token', $id)->first();
             $cict_tracing->delete();

@@ -24,13 +24,12 @@
             <button v-on:click="cictUpdateDate(item.case_id)" class="btn btn-primary btn-sm" title="CICT Update Data">
               <i class="fa fa-edit" aria-hidden="true"> CICT Update</i>
             </button>
-          <br>
             <button v-on:click="contactList(item.token)" class="btn btn-secondary btn-sm" title="Contact List">
               <i class="fa fa-list" aria-hidden="true"> Contact List</i>
             </button>
-            <!-- <button v-on:click="deletePatientData(item, removeItemOnSuccess)" class="btn btn-danger btn-sm" title="Delete Data">
+            <button v-on:click="deletePatientData(item, removeItemOnSuccess)" class="btn btn-danger btn-sm" title="Delete Data">
               <i class="fa fa-trash" aria-hidden="true"> Delete</i>
-            </button> -->
+            </button>
         </td>
         <!-- </div>             -->
       </tr>
@@ -69,6 +68,17 @@ export default {
     }
   },
   methods: {
+    removeItemOnSuccess(item) {
+      let removeIndex = [];
+      this.collection.data.find((d, index)=>{
+        if (d.id == item.id){
+          removeIndex.push(index);
+        }
+      });
+      removeIndex.map(index => {
+        this.collection.data.splice(index, 1);
+      });
+    },
     cictUpdateDate : function (id){
       window.open(
           '/admin/cict-tracing/section-one?case_id=' + id,
@@ -95,7 +105,7 @@ export default {
         closeOnCancel: false
       }).then((result) => {
         if (result.value) {
-          axios.delete('/cict-tracing/' + item.token)
+          axios.delete('/admin/cict-tracing/' + item.token)
               .then((response) => {
                 if (response.data.message === 'success') {
                   removeItemOnSuccess(item);
