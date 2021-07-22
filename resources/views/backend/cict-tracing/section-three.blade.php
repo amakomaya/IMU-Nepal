@@ -78,57 +78,49 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group sars_cov2_vaccinated_yes_class">
-                                    <div class="col-12 table-responsive">
-                                        <table class="table table-bordered">
-                                            <thead style="background: #fff;">
-                                                <tr>
-                                                    <th colspan="2">Name of the vaccine (Product/Brand Name)</th>
-                                                    <th>Date of Vaccination</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="table-sars-cov-tbody text-center">
-                                                <tr class="table-sars-cov-tr">
-                                                    <td>
-                                                        Dose 1
-                                                    </td>
-                                                    <td>
-                                                        <select name="dose_one_name" class="form-control" id="dose_one_name">
-                                                            <option {{ isset($data) && $data->dose_one_name == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
-                                                            <option {{ isset($data) && $data->dose_one_name == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
-                                                            <option {{ isset($data) && $data->dose_one_name == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
-                                                            <option {{ isset($data) && $data->dose_one_name == '3' ? "selected" : "" }} value="3">Pfizer</option>
-                                                            <option {{ isset($data) && $data->dose_one_name == '4' ? "selected" : "" }} value="4">Moderna</option>
-                                                            <option {{ isset($data) && $data->dose_one_name == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
-                                                            <option {{ isset($data) && $data->dose_one_name == '6' ? "selected" : "" }} value="6">Johnson & Johnson</option>
-                                                            <option {{ isset($data) && $data->dose_one_name == '0' ? "selected" : "" }} value="10">Other</option>
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="form-control" name="dose_one_date" id="dose_one_date" value="{{ $data->dose_one_date }}">
-                                                    </td>
-                                                </tr>
-                                                <tr class="table-sars-cov-tr">
-                                                    <td>
-                                                        Dose 2
-                                                    </td>
-                                                    <td>
-                                                        <select name="dose_two_name" class="form-control" id="dose_two_name">
-                                                            <option {{ isset($data) && $data->dose_two_name == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
-                                                            <option {{ isset($data) && $data->dose_two_name == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
-                                                            <option {{ isset($data) && $data->dose_two_name == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
-                                                            <option {{ isset($data) && $data->dose_two_name == '3' ? "selected" : "" }} value="3">Pfizer</option>
-                                                            <option {{ isset($data) && $data->dose_two_name == '4' ? "selected" : "" }} value="4">Moderna</option>
-                                                            <option {{ isset($data) && $data->dose_two_name == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
-                                                            <option {{ isset($data) && $data->dose_two_name == '6' ? "selected" : "" }} value="6">Johnson & Johnson</option>
-                                                            <option {{ isset($data) && $data->dose_two_name == '0' ? "selected" : "" }} value="10">Other</option>
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="form-control" name="dose_two_date" id="dose_two_date" value="{{ $data->dose_two_date }}">
-                                                    </td>
-                                                </tr>
-                                        </table>
+                                <div class="sars_cov2_vaccinated_yes_class">
+                                    <div class="form-group">
+                                        <label>Name of the vaccine (Product/Brand Name)</label>
+                                        <select name="dose_one_name" class="form-control" id="dose_one_name">
+                                            <option {{ isset($data) && $data->dose_one_name == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
+                                            <option {{ isset($data) && $data->dose_one_name == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
+                                            <option {{ isset($data) && $data->dose_one_name == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
+                                            <option {{ isset($data) && $data->dose_one_name == '3' ? "selected" : "" }} value="3">Pfizer</option>
+                                            <option {{ isset($data) && $data->dose_one_name == '4' ? "selected" : "" }} value="4">Moderna</option>
+                                            <option {{ isset($data) && $data->dose_one_name == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
+                                            <option {{ isset($data) && $data->dose_one_name == '6' ? "selected" : "" }} value="6">Johnson & Johnson</option>
+                                            <option {{ isset($data) && $data->dose_one_name == '0' ? "selected" : "" }} value="10">Other</option>
+                                        </select>
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <div class="col-12 table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead style="background: #fff;">
+                                                    <tr>
+                                                        <th>Name of the vaccine (Product/Brand Name)</>
+                                                        <th>Date of Vaccination</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="table-sars-cov-tbody text-center">
+                                                    <tr class="table-sars-cov-tr">
+                                                        <td>
+                                                            Dose 1
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control" name="dose_one_date" id="dose_one_date" value="{{ $data->dose_one_date }}">
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="table-sars-cov-tr">
+                                                        <td>
+                                                            Dose 2
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control" name="dose_two_date" id="dose_two_date" value="{{ $data->dose_two_date }}">
+                                                        </td>
+                                                    </tr>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -1003,6 +995,37 @@
         var $this = $(this);
         $this.parents(".table-school-reference-tr").remove();
     });
+
+$(function () {
+    $.validator.addMethod("nameCustom", function (value, element) {
+        return this.optional(element) || /^[a-zA-Z\.\'\-]{2,50}(?: [a-zA-Z\.\'\-]{2,50})+$/i.test(value);
+    }, "Name is invalid: Please enter a valid name.");
+
+    $.validator.addMethod("ageCustom", function (value, element) {
+        return this.optional(element) || /^(12[0-7]|1[01][0-9]|[1-9]?[0-9])$/i.test(value);
+    }, "Age is invalid: Please enter a valid age.");
+
+    $.validator.addMethod("phoneCustom", function (value, element) {
+        return this.optional(element) || /^((984|985|986|974|975|980|981|982|961|988|972|963)\d{7})|((097|095|081|053|084|083|029|056|096|089|093|010|026|041|068|049|094|064|079|027|046|087|091|076|061|036|025|066|077|099|044|057|023|021|069|055|037|075|024|067|051|086|082|071|033|031|092|047|038|063|035)(4|5|6)\d{5})|(01)(4|5|6)\d{6}$/i.test(value);
+    }, "Contact number is invalid: Please enter a valid phone number.");
+    $("form[name='createCase']").validate({
+        // Define validation rules
+        rules: {
+            sars_cov2_vaccinated: {
+                required: true
+            },
+        },
+        // Specify validation error messages
+        messages: {
+            name: "Please provide a valid name.",
+            age: "Please provide a valid age.",
+
+        },
+        submitHandler: function (form) {
+            form.submit();
+        }
+    });
+});
 
     </script>
 @endsection

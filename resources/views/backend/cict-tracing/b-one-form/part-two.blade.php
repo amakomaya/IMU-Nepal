@@ -438,11 +438,24 @@
                                 </div>
 
                                 <div class="form-group sars_cov2_vaccinated_yes_class">
+                                    <div class="form-group">
+                                        <label>Name of the vaccine (Product/Brand Name)</label>
+                                        <select name="dose_one_name" class="form-control" id="dose_one_name">
+                                            <option {{ isset($data) && $data->dose_one_name == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
+                                            <option {{ isset($data) && $data->dose_one_name == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
+                                            <option {{ isset($data) && $data->dose_one_name == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
+                                            <option {{ isset($data) && $data->dose_one_name == '3' ? "selected" : "" }} value="3">Pfizer</option>
+                                            <option {{ isset($data) && $data->dose_one_name == '4' ? "selected" : "" }} value="4">Moderna</option>
+                                            <option {{ isset($data) && $data->dose_one_name == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
+                                            <option {{ isset($data) && $data->dose_one_name == '6' ? "selected" : "" }} value="6">Johnson & Johnson</option>
+                                            <option {{ isset($data) && $data->dose_one_name == '0' ? "selected" : "" }} value="10">Other</option>
+                                        </select>
+                                    </div>
                                     <div class="col-12 table-responsive">
                                         <table class="table table-bordered">
                                             <thead style="background: #fff;">
                                                 <tr>
-                                                    <th colspan="2">Name of the vaccine (Product/Brand Name)</th>
+                                                    <th>Name of the vaccine (Product/Brand Name)</th>
                                                     <th>Date of Vaccination</th>
                                                 </tr>
                                             </thead>
@@ -452,36 +465,12 @@
                                                         Dose 1
                                                     </td>
                                                     <td>
-                                                        <select name="dose_one_name" class="form-control" id="dose_one_name">
-                                                            <option {{ isset($data) && $data->dose_one_name == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
-                                                            <option {{ isset($data) && $data->dose_one_name == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
-                                                            <option {{ isset($data) && $data->dose_one_name == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
-                                                            <option {{ isset($data) && $data->dose_one_name == '3' ? "selected" : "" }} value="3">Pfizer</option>
-                                                            <option {{ isset($data) && $data->dose_one_name == '4' ? "selected" : "" }} value="4">Moderna</option>
-                                                            <option {{ isset($data) && $data->dose_one_name == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
-                                                            <option {{ isset($data) && $data->dose_one_name == '6' ? "selected" : "" }} value="6">Johnson & Johnson</option>
-                                                            <option {{ isset($data) && $data->dose_one_name == '0' ? "selected" : "" }} value="10">Other</option>
-                                                        </select>
-                                                    </td>
-                                                    <td>
                                                         <input type="text" class="form-control" name="dose_one_date" id="dose_one_date" value="{{ isset($data) ? $data->dose_one_date : '' }}">
                                                     </td>
                                                 </tr>
                                                 <tr class="table-sars-cov-tr">
                                                     <td>
                                                         Dose 2
-                                                    </td>
-                                                    <td>
-                                                        <select name="dose_two_name" class="form-control" id="dose_two_name">
-                                                            <option {{ isset($data) && $data->dose_two_name == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
-                                                            <option {{ isset($data) && $data->dose_two_name == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
-                                                            <option {{ isset($data) && $data->dose_two_name == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
-                                                            <option {{ isset($data) && $data->dose_two_name == '3' ? "selected" : "" }} value="3">Pfizer</option>
-                                                            <option {{ isset($data) && $data->dose_two_name == '4' ? "selected" : "" }} value="4">Moderna</option>
-                                                            <option {{ isset($data) && $data->dose_two_name == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
-                                                            <option {{ isset($data) && $data->dose_two_name == '6' ? "selected" : "" }} value="6">Johnson & Johnson</option>
-                                                            <option {{ isset($data) && $data->dose_two_name == '0' ? "selected" : "" }} value="10">Other</option>
-                                                        </select>
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="dose_two_date" id="dose_two_date" value="{{ isset($data) ? $data->dose_two_date : '' }}">

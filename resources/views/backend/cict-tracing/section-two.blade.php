@@ -87,7 +87,7 @@
                                     <label class="control-label">Whether symptomatic any time during the past two weeks?</label>
                                     <div class="control-group">
                                         <label class="radio-inline">
-                                            <input type="radio" name="symptoms_two_weeks" class="symptoms_two_weeks"
+                                            <input type="radio" name="symptoms_two_weeks" class="symptoms_two_weeks" id="symptoms_two_weeks"
                                                 {{ $data && $data->symptoms_two_weeks == "1" ? 'checked' : '' }} value="1">Yes
                                         </label>
                                         <label class="radio-inline">
@@ -858,7 +858,9 @@
     function symptomsTwoWeeks(){
         if($('.symptoms_recent:checked').val() == '0'){
             $('.symptoms_two_weeks_class').show();
+            $('#symptoms_two_weeks').prop('required', true);
             $('.is-symptomatic').hide();
+            $('#date_of_onset_of_first_symptom').prop('required', false);
 
             if($('#exposure_ref_period_from_np_bak').val() == ''){
                 $('#exposure_ref_period_from_np').val(collectionDate($('#sample_collection_date').val()));
@@ -869,13 +871,16 @@
         }
         else {
             $('.symptoms_two_weeks_class').hide();
+            $('#symptoms_two_weeks').prop('required', false);
             $('.is-symptomatic').show();
+            $('#date_of_onset_of_first_symptom').prop('required', true);
 
         }
     }
     $('.symptoms_two_weeks').on('change', function() {
         if($('.symptoms_two_weeks:checked').val() == '1'){
             $('.is-symptomatic').show();
+            $('#date_of_onset_of_first_symptom').prop('required', true);
         }else {
             symptomsTwoWeeks();
         }
@@ -1080,6 +1085,89 @@
         }
         var $this = $(this);
         $this.parents(".table-school-attend-tr").remove();
+    });
+
+    $(function () {
+        $.validator.addMethod("nameCustom", function (value, element) {
+            return this.optional(element) || /^[a-zA-Z\.\'\-]{2,50}(?: [a-zA-Z\.\'\-]{2,50})+$/i.test(value);
+        }, "Name is invalid: Please enter a valid name.");
+
+        $.validator.addMethod("ageCustom", function (value, element) {
+            return this.optional(element) || /^(12[0-7]|1[01][0-9]|[1-9]?[0-9])$/i.test(value);
+        }, "Age is invalid: Please enter a valid age.");
+
+        $.validator.addMethod("phoneCustom", function (value, element) {
+            return this.optional(element) || /^((984|985|986|974|975|980|981|982|961|988|972|963)\d{7})|((097|095|081|053|084|083|029|056|096|089|093|010|026|041|068|049|094|064|079|027|046|087|091|076|061|036|025|066|077|099|044|057|023|021|069|055|037|075|024|067|051|086|082|071|033|031|092|047|038|063|035)(4|5|6)\d{5})|(01)(4|5|6)\d{6}$/i.test(value);
+        }, "Contact number is invalid: Please enter a valid phone number.");
+        $("form[name='createCase']").validate({
+            // Define validation rules
+            rules: {
+                symptoms_recent: {
+                    required: true
+                },
+                "symptoms_comorbidity[]": {
+                    required: true
+                },
+                high_exposure: {
+                    required: true
+                },
+                high_exposure_other: {
+                    maxlength: 50,
+                },
+                "travelled_14_days_details_departure_from[]": {
+                    required: function () {
+                        return $(".travelled_14_days:checked").val() == "1";
+                    }
+                },
+                "travelled_14_days_details_arrival_to[]": {
+                    required: function () {
+                        return $(".travelled_14_days:checked").val() == "1";
+                    }
+                },
+                "travelled_14_days_details_departure_date_np[]": {
+                    required: function () {
+                        return $(".travelled_14_days:checked").val() == "1";
+                    }
+                },
+                "travelled_14_days_details_arrival_date_np[]": {
+                    required: function () {
+                        return $(".travelled_14_days:checked").val() == "1";
+                    }
+                },
+                "travelled_14_days_details_travel_mode[]": {
+                    required: function () {
+                        return $(".travelled_14_days:checked").val() == "1";
+                    }
+                },
+                exposure_ref_period_from_np: {
+                    required: true
+                },
+                exposure_ref_period_to_np: {
+                    required: true
+                },
+                same_household: {
+                    required: true
+                },
+                close_contact: {
+                    required: true
+                },
+                direct_care: {
+                    required: true
+                },
+                attend_social: {
+                    required: true
+                }
+            },
+            // Specify validation error messages
+            messages: {
+                name: "Please provide a valid name.",
+                age: "Please provide a valid age.",
+
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
     });
     </script>
 @endsection

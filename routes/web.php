@@ -230,6 +230,8 @@ Route::put('/admin/b-one-form/part-two-update/{case_id}', 'Backend\CictTracingCo
 Route::get('/admin/b-two-form', 'Backend\CictTracingController@followUp')->name('b-two-form.follow-up');
 Route::put('/admin/b-two-form-update/{case_id}', 'Backend\CictTracingController@followUpUpdate')->name('b-two-form.update');
 
+Route::get('/admin/cict-tracing/report/{case_id}', 'Backend\CictTracingController@report')->name('cict-tracing.report');
+
 
 Route::get('/admin/sid-search', 'AdminController@sidSearch')->name('admin.sid.search');
 Route::get('/admin/sid-search/update', 'AdminController@sidUpdate')->name('admin.sid.update');
