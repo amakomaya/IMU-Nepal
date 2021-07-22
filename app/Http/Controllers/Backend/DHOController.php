@@ -46,7 +46,7 @@ class DHOController extends Controller
         // }
 
         $districts = Cache::remember('district-list', 48*60*60, function () {
-          return District::select(['id', 'district_name'])->get();
+          return District::select(['id', 'district_name', 'province_id' ])->get();
         });
 
         if (Auth::user()->role == "province") {
@@ -110,7 +110,7 @@ class DHOController extends Controller
         $data = $this->findModel($id);
         $user = $this->findModelUser($data->token);
         $districts = Cache::remember('district-list', 48*60*60, function () {
-          return District::select(['id', 'district_name'])->get();
+          return District::select(['id', 'district_name', 'province_id' ])->get();
         });
         if (Auth::user()->role == "province") {
             $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;

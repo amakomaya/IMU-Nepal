@@ -17,7 +17,7 @@ class DistrictController extends Controller
           return response()->json($district);
         } else {
           $district = Cache::remember('district-list', 48*60*60, function () {
-            return District::select(['id', 'district_name'])->get();
+            return District::select(['id', 'district_name', 'province_id' ])->get();
           });
           return response()->json($district);
         }

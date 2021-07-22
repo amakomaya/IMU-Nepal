@@ -38,10 +38,10 @@ class BackdateRegisterSampleCollectionLabImport implements ToModel, WithChunkRea
           return Province::select(['id', 'province_name'])->get();
         });
         $districtList = Cache::remember('district-list', 48*60*60, function () {
-          return District::select(['id', 'district_name'])->get();
+          return District::select(['id', 'district_name', 'province_id' ])->get();
         });
         $municipalityList = Cache::remember('municipality-list', 48*60*60, function () {
-          return Municipality::select(['id', 'municipality_name'])->get();
+          return Municipality::select(['id', 'municipality_name', 'province_id', 'district_id', 'municipality_name_np', 'type', 'total_no_of_wards'])->get();
         });
         $provinces = $districts = $municipalities = [];
         $provinceList->map(function ($province) use (&$provinces) {

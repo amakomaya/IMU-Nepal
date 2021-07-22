@@ -53,7 +53,7 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <form action="{{ route('patient.update',$data->id) }}" method="POST" name="updateCase">
+                        <form action="{{ route('patient.update',$data->id) }}" method="POST" name="updateCase" id="updateCase" onsubmit="disableSubmit()">
                             @csrf
                             @method('PUT')
                             <h4>1. Personal Information </h4>
@@ -169,7 +169,7 @@
                                                     <option value="">Select All Districts</option>
 {{--                                                @endif--}}
                                                 @foreach(\Illuminate\Support\Facades\Cache::remember('district-list', 48*60*60, function () {
-                                                    return District::select(['id', 'district_name'])->get();
+                                                    return District::select(['id', 'district_name', 'province_id' ])->get();
                                                   }) as $district)
                                                     @if($data->district_id==$district->id)
                                                         @php($selectedDistrict = "selected")
@@ -527,9 +527,8 @@
                                     </table>
                                 </div>
                             @endif
-                            {!! rcForm::close('post') !!}
-
-                        </form>
+                            <button type="submit" id="submit-form" class="btn btn-primary btn-sm btn-block ">SAVE</button>
+                          </form>
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
@@ -663,7 +662,10 @@
                     },
                     occupation: {
                         required: true,
-                    }
+                    },
+                    // reson_for_testing: {
+                    //   required: true,
+                    // }
                 },
                 // Specify validation error messages
                 messages: {
@@ -673,8 +675,23 @@
                 },
                 submitHandler: function (form) {
                     form.submit();
+                },
+                errorPlacement: function(error, element) {
+                  enableSubmit();
                 }
             });
         });
+
+        function disableSubmit() {
+          $("#submit-form").prop('disabled', true);
+          $("#submit-form").html("SAVING...");
+          return false;
+        }
+
+        function enableSubmit() {
+          $("#submit-form").prop('disabled', false);
+          $("#submit-form").html("SAVE");
+          return false;
+        }
     </script>
 @endsection
