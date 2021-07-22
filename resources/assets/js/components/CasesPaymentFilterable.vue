@@ -154,7 +154,7 @@
           <tbody>
             <slot v-if="collection.data && collection.data.length"
                 v-for="item in collection.data"
-                :item="item"
+                :item="item" :removeItemOnSuccess="removeItemOnSuccess"
             >
             </slot>
           </tbody>
@@ -264,6 +264,17 @@ export default {
     this.addFilter()
   },
   methods: {
+    removeItemOnSuccess(item) {
+      let removeIndex = [];
+      this.collection.data.find((d, index)=>{
+        if (d.id == item.id){
+          removeIndex.push(index);
+        }
+      });
+      removeIndex.map(index => {
+        this.collection.data.splice(index, 1);
+      });
+    },
     formattedHealthCondition : function (type, update) {
       if (update !== null){
         var data = JSON.parse(update).slice(-1)[0] ;

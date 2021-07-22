@@ -68,17 +68,6 @@ export default {
     }
   },
   methods: {
-    removeItemOnSuccess(item) {
-      let removeIndex = [];
-      this.collection.data.find((d, index)=>{
-        if (d.id == item.id){
-          removeIndex.push(index);
-        }
-      });
-      removeIndex.map(index => {
-        this.collection.data.splice(index, 1);
-      });
-    },
     cictUpdateDate : function (id){
       window.open(
           '/admin/cict-tracing/section-one?case_id=' + id,
