@@ -187,6 +187,7 @@ class CictTracingController extends Controller
                     $travelled_14_days_details_data['departure_date'] = $request->travelled_14_days_details_departure_date_np[$i];
                     $travelled_14_days_details_data['arrival_date'] = $request->travelled_14_days_details_arrival_date_np[$i];
                     $travelled_14_days_details_data['travel_mode'] = $request->travelled_14_days_details_travel_mode[$i];
+                    $travelled_14_days_details_data['travel_mode_other'] = $request->travelled_14_days_details_travel_mode_other[$i];
                     $travelled_14_days_details_data['vehicle_no'] = $request->travelled_14_days_details_vehicle_no[$i];
                     array_push($travelled_14_days_details_array, $travelled_14_days_details_data);
                 }
@@ -197,6 +198,7 @@ class CictTracingController extends Controller
             unset($data['travelled_14_days_details_departure_date_np']);
             unset($data['travelled_14_days_details_arrival_date_np']);
             unset($data['travelled_14_days_details_travel_mode']);
+            unset($data['travelled_14_days_details_travel_mode_other']);
             unset($data['travelled_14_days_details_vehicle_no']);
 
             $same_household_details_array = [];

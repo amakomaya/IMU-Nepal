@@ -263,13 +263,14 @@
                                         <table class="table table-bordered">
                                             <thead style="background: #fff;">
                                                 <tr>
-                                                    <td></td>
-                                                    <td>Place of Departure from</td>
-                                                    <td>Place of arrival to</td>
-                                                    <td>Date of Departure from or to the place</td>
-                                                    <td>Date of Arrival in Nepal or Current place of Residence</td>
-                                                    <td>Mode of travel [Air, Public Transport,Private Vehicle]</td>
-                                                    <td>Flight / Vehicle No. / Bus Route / Driver Contact No.</td>
+                                                    <th></th>
+                                                    <th>Place of Departure from</th>
+                                                    <th>Place of arrival to</th>
+                                                    <th>Date of Departure from or to the place</th>
+                                                    <th>Date of Arrival in Nepal or Current place of Residence</th>
+                                                    <th>Mode of travel</th>
+                                                    <th>Other Mode of travel</th>
+                                                    <th>Flight / Vehicle No. / Bus Route / Driver Contact No.</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="table-fourteen-days-tbody text-center">
@@ -295,12 +296,16 @@
                                                         <input type="text" class="form-control nep-date-arrival" name="travelled_14_days_details_arrival_date_np[]" value="{{ $sub_data->arrival_date }}">
                                                     </td>
                                                     <td>
-                                                        <select class="form-control" name="travelled_14_days_details_travel_mode[]">
+                                                        <select class="form-control travelled_14_days_details_travel_mode" name="travelled_14_days_details_travel_mode[]">
                                                             <option value=""  {{ $sub_data->travel_mode == '' ? 'selected' : '' }}>Select Mode of travel</option>
                                                             <option class="form-control" value="1" {{ $sub_data->travel_mode == '1' ? 'selected' : '' }}>Air</option>
                                                             <option class="form-control" value="2" {{ $sub_data->travel_mode == '2' ? 'selected' : '' }}>Public Transport</option>
                                                             <option class="form-control" value="3" {{ $sub_data->travel_mode == '3' ? 'selected' : '' }}>Private Vehicle</option>
+                                                            <option class="form-control" value="3" {{ $sub_data->travel_mode == '0' ? 'selected' : '' }}>Other</option>
                                                         </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control travelled_14_days_details_travel_mode_other" name="travelled_14_days_details_travel_mode_other[]" value="{{ $sub_data->travel_mode_other }}" @if( $sub_data->travel_mode != '0') readonly @endif>
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="travelled_14_days_details_vehicle_no[]" value="{{ $sub_data->vehicle_no }}">
@@ -325,12 +330,16 @@
                                                         <input type="text" class="form-control nep-date-arrival" name="travelled_14_days_details_arrival_date_np[]">
                                                     </td>
                                                     <td>
-                                                        <select class="form-control" name="travelled_14_days_details_travel_mode[]">
+                                                        <select class="form-control travelled_14_days_details_travel_mode" name="travelled_14_days_details_travel_mode[]">
                                                             <option value="" selected>Select Mode of travel</option>
                                                             <option class="form-control" value="1">Air</option>
                                                             <option class="form-control" value="2">Public Transport</option>
                                                             <option class="form-control" value="3">Private Vehicle</option>
+                                                            <option class="form-control" value="0">Other</option>
                                                         </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control travelled_14_days_details_travel_mode_other" name="travelled_14_days_details_travel_mode_other[]" readonly>
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="travelled_14_days_details_vehicle_no[]">
@@ -958,6 +967,17 @@
         }
     }
 
+
+
+    $(document).on('change', '.travelled_14_days_details_travel_mode', function() {
+        if ($(this).val() == 0) {
+            $(this).parent().next().find("[readonly]").prop('readonly', false);
+        } else {
+            $(this).parent().next().find(".travelled_14_days_details_travel_mode_other").val("");
+            $(this).parent().next().find(".travelled_14_days_details_travel_mode_other").prop('readonly', true);
+        }
+    });
+
     
     
     var min = 0;
@@ -984,6 +1004,7 @@
 			language: 'english',
             disableAfter: currentDate
 		});
+        new_row.find(".travelled_14_days_details_travel_mode_other").prop('readonly', true);
         
 		// new_row.find(".nep-date-picker").nepaliDatePicker({
 		// 	language: 'english',

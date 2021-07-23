@@ -174,6 +174,7 @@
                                                     <th>Age Unit</th>
                                                     <th>Sex</th>
                                                     <th>Relationship</th>
+                                                    <th>Other Relationship</th>
                                                     <th>Phone no.</th>
                                                 </tr>
                                             </thead>
@@ -210,7 +211,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="household_details_relationship[]" class="form-control">
+                                                        <select name="household_details_relationship[]" class="form-control household_details_relationship">
                                                             <option value="" selected>Select Relationship</option>
                                                             <option value="1" {{ $sub_data->relationship == '1' ? 'selected' : '' }}>Family</option>
                                                             <option value="2" {{ $sub_data->relationship == '2' ? 'selected' : '' }}>Friend</option>
@@ -218,7 +219,9 @@
                                                             <option value="4" {{ $sub_data->relationship == '4' ? 'selected' : '' }}>Co-Worker</option>
                                                             <option value="0" {{ $sub_data->relationship == '0' ? 'selected' : '' }}>Others</option>
                                                         </select>
-                                                        <input type="hidden" name="household_details_relationship_others[]" value="">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control household_details_relationship_others" name="household_details_relationship_others[]" value="{{ $sub_data->relationship_others }}" @if( $sub_data->relationship_others != '0') readonly @endif>
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="household_details_phone[]" value="{{ $sub_data->phone }}">
@@ -254,7 +257,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="household_details_relationship[]" class="form-control">
+                                                        <select name="household_details_relationship[]" class="form-control household_details_relationship">
                                                             <option value="" selected>Select Relationship</option>
                                                             <option value="1">Family</option>
                                                             <option value="2">Friend</option>
@@ -262,7 +265,9 @@
                                                             <option value="4">Co-Worker</option>
                                                             <option value="0">Others</option>
                                                         </select>
-                                                        <input type="hidden" name="household_details_relationship_others[]" value="">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control household_details_relationship_others" name="household_details_relationship_others[]" readonly>
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="household_details_phone[]">
@@ -303,6 +308,7 @@
                                                     <th>Age Unit</th>
                                                     <th>Sex</th>
                                                     <th>Relationship</th>
+                                                    <th>Other Relationship</th>
                                                     <th>Phone no.</th>
                                                 </tr>
                                             </thead>
@@ -340,7 +346,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details_relationship[]" class="form-control">
+                                                        <select name="travel_vehicle_details_relationship[]" class="form-control travel_vehicle_details_relationship">
                                                             <option value="" selected>Select Relationship</option>
                                                             <option value="1" {{ $sub_data->relationship == '1' ? 'selected' : '' }}>Family</option>
                                                             <option value="2" {{ $sub_data->relationship == '2' ? 'selected' : '' }}>Friend</option>
@@ -348,7 +354,9 @@
                                                             <option value="4" {{ $sub_data->relationship == '4' ? 'selected' : '' }}>Co-Worker</option>
                                                             <option value="0" {{ $sub_data->relationship == '0' ? 'selected' : '' }}>Others</option>
                                                         </select>
-                                                        <input type="hidden" name="travel_vehicle_details_relationship_others[]" value="">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control travel_vehicle_details_relationship_others" name="travel_vehicle_details_relationship_others[]" value="{{ $sub_data->relationship_others }}" @if( $sub_data->relationship_others != '0') readonly @endif>
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="travel_vehicle_details_phone[]" value="{{ $sub_data->phone }}">
@@ -384,7 +392,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details_relationship[]" class="form-control">
+                                                        <select name="travel_vehicle_details_relationship[]" class="form-control travel_vehicle_details_relationship">
                                                             <option value="" selected>Select Relationship</option>
                                                             <option value="1">Family</option>
                                                             <option value="2">Friend</option>
@@ -392,7 +400,9 @@
                                                             <option value="4">Co-Worker</option>
                                                             <option value="0">Others</option>
                                                         </select>
-                                                        <input type="hidden" name="travel_vehicle_details_relationship_others[]" value="">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control travel_vehicle_details_relationship_others" name="travel_vehicle_details_relationship_others[]" readonly>
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="travel_vehicle_details_phone[]">
@@ -433,6 +443,7 @@
                                                     <th>Age Unit</th>
                                                     <th>Sex</th>
                                                     <th>Relationship</th>
+                                                    <th>Other Relationship</th>
                                                     <th>Phone no.</th>
                                                 </tr>
                                             </thead>
@@ -469,7 +480,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="other_direct_care_details_relationship[]" class="form-control">
+                                                        <select name="other_direct_care_details_relationship[]" class="form-control other_direct_care_details_relationship">
                                                             <option value="" selected>Select Relationship</option>
                                                             <option value="1" {{ $sub_data->relationship == '1' ? 'selected' : '' }}>Family</option>
                                                             <option value="2" {{ $sub_data->relationship == '2' ? 'selected' : '' }}>Friend</option>
@@ -477,8 +488,9 @@
                                                             <option value="4" {{ $sub_data->relationship == '4' ? 'selected' : '' }}>Co-Worker</option>
                                                             <option value="0" {{ $sub_data->relationship == '0' ? 'selected' : '' }}>Others</option>
                                                         </select>
-                                                        <input type="hidden" name="other_direct_care_details_relationship_others[]" value="">
-                                                        
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control other_direct_care_details_relationship_others" name="other_direct_care_details_relationship_others[]" value="{{ $sub_data->relationship_others }}" @if( $sub_data->relationship_others != '0') readonly @endif>
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="other_direct_care_details_phone[]" value="{{ $sub_data->phone }}">
@@ -514,7 +526,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="other_direct_care_details_relationship[]" class="form-control">
+                                                        <select name="other_direct_care_details_relationship[]" class="form-control other_direct_care_details_relationship">
                                                             <option value="" selected>Select Relationship</option>
                                                             <option value="1">Family</option>
                                                             <option value="2">Friend</option>
@@ -522,7 +534,9 @@
                                                             <option value="4">Co-Worker</option>
                                                             <option value="0">Others</option>
                                                         </select>
-                                                        <input type="hidden" name="other_direct_care_details_relationship_others[]" value="">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control other_direct_care_details_relationship_others" name="other_direct_care_details_relationship_others[]" readonly>
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="other_direct_care_details_phone[]">
@@ -770,7 +784,6 @@
     }
     else{
 
-        console.log('12');
 
         if($('#close_ref_period_from_np_bak').val() == ''){
             $('#close_ref_period_from_np').val(getOnsetPastDate($('#onset_date_bak').val(), 2));
@@ -904,6 +917,15 @@
         result = org_id + '-' + result;
         return result;
     }
+    
+    $(document).on('change', '.household_details_relationship', function() {
+        if ($(this).val() == 0) {
+            $(this).parent().next().find("[readonly]").prop('readonly', false);
+        } else {
+            $(this).parent().next().find(".household_details_relationship_others").val("");
+            $(this).parent().next().find(".household_details_relationship_others").prop('readonly', true);
+        }
+    });
 
 	$('.btn-add-close-contact-info').on('click', function() {
 		var tr = $(".table-close-contact-info-tr").last();
@@ -918,6 +940,7 @@
         new_row.find(".household_details_case_id").val(randomString());
 		new_row.attr('data-row-id', count_row);
 		new_row.find(".btn-remove-close-contact-info").show();
+        new_row.find(".household_details_relationship_others").prop('readonly', true);
 	});
 
     $('body').on('click', '.btn-remove-close-contact-info', function() {
@@ -926,6 +949,16 @@
         }
         var $this = $(this);
         $this.parents(".table-close-contact-info-tr").remove();
+    });
+
+    
+    $(document).on('change', '.travel_vehicle_details_relationship', function() {
+        if ($(this).val() == 0) {
+            $(this).parent().next().find("[readonly]").prop('readonly', false);
+        } else {
+            $(this).parent().next().find(".travel_vehicle_details_relationship_others").val("");
+            $(this).parent().next().find(".travel_vehicle_details_relationship_others").prop('readonly', true);
+        }
     });
 
     $('.btn-add-travel-public').on('click', function() {
@@ -938,9 +971,10 @@
         .show()
         .appendTo(".table-travel-public-tbody");
 
-        new_row.find(".other_direct_care_details_case_id").val(randomString());
+        new_row.find(".travel_vehicle_details_case_id").val(randomString());
         new_row.attr('data-row-id', count_row);
         new_row.find(".btn-remove-travel-public").show();
+        new_row.find(".travel_vehicle_details_relationship_others").prop('readonly', true);
     });
 
     $('body').on('click', '.btn-remove-travel-public', function() {
@@ -949,6 +983,16 @@
         }
         var $this = $(this);
         $this.parents(".table-travel-public-tr").remove();
+    });
+
+    
+    $(document).on('change', '.other_direct_care_details_relationship', function() {
+        if ($(this).val() == 0) {
+            $(this).parent().next().find("[readonly]").prop('readonly', false);
+        } else {
+            $(this).parent().next().find(".other_direct_care_details_relationship_others").val("");
+            $(this).parent().next().find(".other_direct_care_details_relationship_others").prop('readonly', true);
+        }
     });
 
     $('.btn-add-direct-care-any').on('click', function() {
@@ -961,9 +1005,10 @@
         .show()
         .appendTo(".table-direct-care-any-tbody");
 
-        new_row.find(".travel_vehicle_details_case_id").val(randomString());
+        new_row.find(".other_direct_care_details_case_id").val(randomString());
         new_row.attr('data-row-id', count_row);
         new_row.find(".btn-remove-direct-care-any").show();
+        new_row.find(".other_direct_care_details_relationship_others").prop('readonly', true);
     });
 
     $('body').on('click', '.btn-remove-direct-care-any', function() {
@@ -995,37 +1040,6 @@
         var $this = $(this);
         $this.parents(".table-school-reference-tr").remove();
     });
-
-$(function () {
-    $.validator.addMethod("nameCustom", function (value, element) {
-        return this.optional(element) || /^[a-zA-Z\.\'\-]{2,50}(?: [a-zA-Z\.\'\-]{2,50})+$/i.test(value);
-    }, "Name is invalid: Please enter a valid name.");
-
-    $.validator.addMethod("ageCustom", function (value, element) {
-        return this.optional(element) || /^(12[0-7]|1[01][0-9]|[1-9]?[0-9])$/i.test(value);
-    }, "Age is invalid: Please enter a valid age.");
-
-    $.validator.addMethod("phoneCustom", function (value, element) {
-        return this.optional(element) || /^((984|985|986|974|975|980|981|982|961|988|972|963)\d{7})|((097|095|081|053|084|083|029|056|096|089|093|010|026|041|068|049|094|064|079|027|046|087|091|076|061|036|025|066|077|099|044|057|023|021|069|055|037|075|024|067|051|086|082|071|033|031|092|047|038|063|035)(4|5|6)\d{5})|(01)(4|5|6)\d{6}$/i.test(value);
-    }, "Contact number is invalid: Please enter a valid phone number.");
-    $("form[name='createCase']").validate({
-        // Define validation rules
-        rules: {
-            sars_cov2_vaccinated: {
-                required: true
-            },
-        },
-        // Specify validation error messages
-        messages: {
-            name: "Please provide a valid name.",
-            age: "Please provide a valid age.",
-
-        },
-        submitHandler: function (form) {
-            form.submit();
-        }
-    });
-});
 
     </script>
 @endsection
