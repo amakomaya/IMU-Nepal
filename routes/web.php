@@ -229,7 +229,7 @@ Route::put('/admin/b-one-form/part-two-update/{case_id}', 'Backend\CictTracingCo
 
 Route::get('/admin/b-two-form', 'Backend\CictTracingController@followUp')->name('b-two-form.follow-up');
 Route::put('/admin/b-two-form-update/{case_id}', 'Backend\CictTracingController@followUpUpdate')->name('b-two-form.update');
-
+Route::get('/admin/cict-tracing/close-contact/{case_id}/delete', 'Backend\CictTracingController@destroyCloseContact');
 Route::get('/admin/cict-tracing/report/{case_id}', 'Backend\CictTracingController@report')->name('cict-tracing.report');
 
 

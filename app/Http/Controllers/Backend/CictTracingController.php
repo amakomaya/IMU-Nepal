@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CictTracing;
 use App\Models\CictContact;
 use App\Models\CictFollowUp;
+use App\Models\CictCloseContact;
 use App\Models\SuspectedCase;
 use App\Models\SampleCollection;
 use App\Models\OrganizationMember;
@@ -282,7 +283,7 @@ class CictTracingController extends Controller
     public function sectionThree(Request $request)
     {
         if($request->case_id){
-            $data = CictTracing::with(['suspectedCase' => function($q){
+            $data = CictTracing::with(['closeContacts', 'suspectedCase' => function($q){
                     $q->with('ancs', 'latestAnc');
                 }])->where('case_id', $request->case_id)->first();
             if($data){
@@ -300,67 +301,15 @@ class CictTracingController extends Controller
 
     public function sectionThreeUpdate(Request $request, $case_id)
     {
-
         try{
             $cict_tracing = CictTracing::where('case_id', $request->case_id)->first();
-        
+            $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
+            
             $data = $request->all();
 
-            $household_details_array = [];
-            for ($i = 0; $i < count($request->household_details_name); $i++) {
-                if ($request->household_details_name[$i] != '') {
-                    $household_details['name'] = $request->household_details_name[$i];
-                    $household_details['age'] = $request->household_details_age[$i];
-                    $household_details['age_unit'] = $request->household_details_age_unit[$i];
-                    $household_details['sex'] = $request->household_details_sex[$i];
-                    $household_details['relationship'] = $request->household_details_relationship[$i];
-                    $household_details['relationship_others'] = $request->household_details_relationship_others[$i];
-                    $household_details['phone'] = $request->household_details_phone[$i];
-                    if($request->household_details_case_id[$i]){
-                        $household_details['case_id'] = $request->household_details_case_id[$i];
-                    }else{
-                        $household_details['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id . '-' . strtoupper(bin2hex(random_bytes(3)));
-                    }
-                    array_push($household_details_array, $household_details);
-                }
-            }
-            $data['household_details'] = json_encode($household_details_array);
-            unset($data['household_details_name']);
-            unset($data['household_details_age']);
-            unset($data['household_details_age_unit']);
-            unset($data['household_details_sex']);
-            unset($data['household_details_relationship']);
-            unset($data['household_details_relationship_others']);
-            unset($data['household_details_phone']);
-            unset($data['household_details_case_id']);
-
-            $travel_vehicle_details_array = [];
-            for ($i = 0; $i < count($request->travel_vehicle_details_name); $i++) {
-                if ($request->travel_vehicle_details_name[$i] != '') {
-                    $travel_vehicle_details['name'] = $request->travel_vehicle_details_name[$i];
-                    $travel_vehicle_details['age'] = $request->travel_vehicle_details_age[$i];
-                    $travel_vehicle_details['age_unit'] = $request->travel_vehicle_details_age_unit[$i];
-                    $travel_vehicle_details['sex'] = $request->travel_vehicle_details_sex[$i];
-                    $travel_vehicle_details['relationship'] = $request->travel_vehicle_details_relationship[$i];
-                    $travel_vehicle_details['relationship_others'] = $request->travel_vehicle_details_relationship_others[$i];
-                    $travel_vehicle_details['phone'] = $request->travel_vehicle_details_phone[$i];
-                    if($request->travel_vehicle_details_case_id[$i]){
-                        $travel_vehicle_details['case_id'] = $request->travel_vehicle_details_case_id[$i];
-                    }else{
-                        $travel_vehicle_details['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id . '-' . strtoupper(bin2hex(random_bytes(3)));
-                    }
-                    array_push($travel_vehicle_details_array, $travel_vehicle_details);
-                }
-            }
-            $data['travel_vehicle_details'] = json_encode($travel_vehicle_details_array);
-            unset($data['travel_vehicle_details_name']);
-            unset($data['travel_vehicle_details_age']);
-            unset($data['travel_vehicle_details_age_unit']);
-            unset($data['travel_vehicle_details_sex']);
-            unset($data['travel_vehicle_details_relationship']);
-            unset($data['travel_vehicle_details_relationship_others']);
-            unset($data['travel_vehicle_details_phone']);
-            unset($data['travel_vehicle_details_case_id']);
+            unset($data['household_details']);
+            unset($data['travel_vehicle_details']);
+            unset($data['other_direct_care_details']);
             
             $other_direct_care_details_array = [];
             for ($i = 0; $i < count($request->other_direct_care_details_name); $i++) {
@@ -403,6 +352,81 @@ class CictTracingController extends Controller
             unset($data['other_attend_social_details_details']);
 
             $cict_tracing->update($data);
+
+            foreach ($request->household_details as $key => $details) {
+                if($details['name'] != null){
+                    $household['cict_id'] = $cict_tracing->id;
+                    $household['case_id'] = $details['case_id'];
+                    $household['name'] = $details['name'];
+                    $household['age'] = $details['age'];
+                    $household['age_unit'] = $details['age_unit'];
+                    $household['sex'] = $details['sex'];
+                    $household['relationship'] = $details['relationship'];
+                    $household['relationship_others'] = $details['relationship_others'];
+                    $household['phone'] = $details['phone'];
+                    $household['contact_type'] = $details['contact_type'];
+                    $household['hp_code'] = $healthworker->hp_code;
+                    $household['checked_by'] = $healthworker->token;
+                    $household['parent_case_id'] = $cict_tracing->case_id;
+                    $close_contact = CictCloseContact::where('case_id', $details['case_id'])->where('cict_id', $cict_tracing->id)
+                        ->where('contact_type', '1')->first();
+                    if($close_contact){
+                        $close_contact->update($household);
+                    }else{
+                        CictCloseContact::create($household);
+                    }
+                }
+            }
+
+            foreach ($request->travel_vehicle_details as $key => $details) {
+                if($details['name'] != null){
+                    $travel_vehicle['cict_id'] = $cict_tracing->id;
+                    $travel_vehicle['case_id'] = $details['case_id'];
+                    $travel_vehicle['name'] = $details['name'];
+                    $travel_vehicle['age'] = $details['age'];
+                    $travel_vehicle['age_unit'] = $details['age_unit'];
+                    $travel_vehicle['sex'] = $details['sex'];
+                    $travel_vehicle['relationship'] = $details['relationship'];
+                    $travel_vehicle['relationship_others'] = $details['relationship_others'];
+                    $travel_vehicle['phone'] = $details['phone'];
+                    $travel_vehicle['contact_type'] = $details['contact_type'];
+                    $travel_vehicle['hp_code'] = $healthworker->hp_code;
+                    $travel_vehicle['checked_by'] = $healthworker->token;
+                    $travel_vehicle['parent_case_id'] = $cict_tracing->case_id;
+                    $close_contact = CictCloseContact::where('case_id', $details['case_id'])->where('cict_id', $cict_tracing->id)
+                        ->where('contact_type', '2')->first();
+                    if($close_contact){
+                        $close_contact->update($travel_vehicle);
+                    }else{
+                        CictCloseContact::create($travel_vehicle);
+                    }
+                }
+            }
+
+            foreach ($request->other_direct_care_details as $key => $details) {
+                if($details['name'] != null){
+                    $other_direct_care['cict_id'] = $cict_tracing->id;
+                    $other_direct_care['case_id'] = $details['case_id'];
+                    $other_direct_care['name'] = $details['name'];
+                    $other_direct_care['age'] = $details['age'];
+                    $other_direct_care['age_unit'] = $details['age_unit'];
+                    $other_direct_care['sex'] = $details['sex'];
+                    $other_direct_care['relationship'] = $details['relationship'];
+                    $other_direct_care['relationship_others'] = $details['relationship_others'];
+                    $other_direct_care['phone'] = $details['phone'];
+                    $other_direct_care['contact_type'] = $details['contact_type'];
+                    $other_direct_care['hp_code'] = $healthworker->hp_code;
+                    $other_direct_care['checked_by'] = $healthworker->token;
+                    $other_direct_care['parent_case_id'] = $cict_tracing->case_id;
+                    $close_contact = CictCloseContact::where('case_id', $details['case_id'])->where('cict_id', $cict_tracing->id)
+                        ->where('contact_type', '3')->first();
+                    if($close_contact){
+                        $close_contact->update($other_direct_care);
+                    }else{
+                        CictCloseContact::create($other_direct_care);
+                    }
+                }
+            }
             
             $request->session()->flash('message', 'Data Inserted successfully');
             return redirect()->route('cict-tracing.index');
@@ -583,6 +607,18 @@ class CictTracingController extends Controller
             return response()->json(['message' => 'success']);
         }
         catch (\Exception $e){
+            return response()->json(['message' => 'error']);
+        }
+    }
+    
+    public function destroyCloseContact($case_id)
+    {
+        try {
+            $close_contact = CictCloseContact::where('case_id', $case_id)->first();
+            $close_contact->delete();
+            return response()->json(['message' => 'success']);
+        }
+        catch (Exception $e) {
             return response()->json(['message' => 'error']);
         }
     }
