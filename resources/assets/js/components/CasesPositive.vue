@@ -58,7 +58,10 @@
             <i class="fa fa-hospital-o"></i> |
           </button>
           <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Move Patient Data">
-            <i class="fa fa-trash"></i>
+            <i class="fa fa-trash"></i> |
+          </button>
+          <button v-on:click="sendToCict(item.case_id)" title="Add to Cict Form">
+            <i class="fa fa-users"></i>
           </button>
         </td>
       </tr>
@@ -183,6 +186,12 @@ export default {
           municipalities: this.municipalities
         },
       })
+    },
+    sendToCict(case_id) {
+      window.open(
+      '/admin/cict-tracing/search?case_id=' + case_id,
+          '_blank'
+      );
     },
 
     deletePatientData: function (item, removeItemOnSuccess) {
