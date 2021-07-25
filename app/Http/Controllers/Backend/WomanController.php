@@ -486,7 +486,7 @@ class WomanController extends Controller
             $vaccine_name = $request->vaccine_name ?? '10';
     
             $row['covid_vaccination_details'] = "[" . $vaccine_status . ", " . $vaccination_card . ", " . $vaccination_dosage_complete . ", " . $vaccine_dosage_count . ", " . $vaccine_name . ", " . $request->vaccine_name_other . "]";
-            $row['dose_details'] = "[{type:'1',date:" . $request->dose_one_date . "},{type:'2',date:" . $request->dose_two_date . "}]";
+            $row['dose_details'] = '[{"type":"1","date":"' . $request->dose_one_date . '"},{"type":"2","date":"' . $request->dose_two_date . '"}]';
         }
 
         SuspectedCase::create($row);
