@@ -5,6 +5,7 @@ namespace App\Http\Controllers\External;
 use App\Http\Controllers\Controller;
 use App\Models\Municipality;
 use App\User;
+use Illuminate\Support\Facades\Cache;
 
 class ExtMunicipalityController extends Controller
 {
@@ -14,7 +15,9 @@ class ExtMunicipalityController extends Controller
         $user = $userCheck->checkUserExists(request()->getUser(),request()->getPassword());
 
         if ($user) {
-            $municipalities = Municipality::all();
+            $municipalities = Cache::remember('municipality-list', 48*60*60, function () {
+              return Municipality::select(['id', 'municipality_name', 'province_id', 'district_id', 'municipality_name_np', 'type', 'total_no_of_wards'])->get();
+            });
             $data = collect($municipalities)->map(function ($row) {
                 $response = [];
                 $response['id'] = $row->id;

@@ -12,15 +12,22 @@ use App\Models\Organization;
 use App\Http\Requests\TransferWomanRequest;
 use App\Models\TransferWoman;
 use Auth;
+use Illuminate\Support\Facades\Cache;
 
 class TransferWomanController extends Controller
 {
     public function transfer($from_hp_code, $woman_token){
     	$woman = SuspectedCase::where('token', $woman_token)->get()->first();
-    	$provinces = Province::all();
-        $districts = District::all();
-        $municipalities = Municipality::all();
-        $healthposts = Organization::all();
+    	$provinces = Cache::remember('province-list', 48*60*60, function () {
+        return Province::select(['id', 'province_name'])->get();
+      });
+      $districts = Cache::remember('district-list', 48*60*60, function () {
+        return District::select(['id', 'district_name', 'province_id' ])->get();
+      });
+      $municipalities = Cache::remember('municipality-list', 48*60*60, function () {
+        return Municipality::select(['id', 'municipality_name', 'province_id', 'district_id', 'municipality_name_np', 'type', 'total_no_of_wards'])->get();
+      });
+      $healthposts = Organization::all();
     	return view('backend.transfer-woman.transfer',compact('from_hp_code','woman','provinces','districts','municipalities','healthposts'));
     }
 

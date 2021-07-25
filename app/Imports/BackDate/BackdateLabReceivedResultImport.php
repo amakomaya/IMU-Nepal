@@ -60,7 +60,16 @@ class BackdateLabReceivedResultImport implements ToModel, WithChunkReading, With
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
         $sId = $row['sid'];
-        $labId = $row['patient_lab_id'];
+        $patientLabId = $this->userToken.'-'.$row['patient_lab_id'];
+        if(lab_id_exists($patientLabId)) {
+          $error = ['patient_lab_id' => 'The test with the given Patient Lab ID already exists in the system.'];
+          $failures[] = new Failure($currentRowNumber, 'patient_lab_id', $error, $row);
+          throw new ValidationException(
+              \Illuminate\Validation\ValidationException::withMessages($error),
+              $failures
+          );
+          return;
+        }
         $labResult = $row['result'];
         $sampleTestTime = $this->todayDateEn->format('g : i A');
         $ancs = $this->getAncsBySid($sId);
@@ -83,12 +92,22 @@ class BackdateLabReceivedResultImport implements ToModel, WithChunkReading, With
             return;
           }
           $backDateEn = $row['date_of_resultyyyy_mm_dd_ad'];
+          $isValidDateEn = $this->testValidEnDate($backDateEn);
+          if (!$isValidDateEn) {
+            $error = ['date_of_resultyyyy_mm_dd_ad' => 'Invalid Date. Date must be in AD & YYYY-MM-DD Format'];
+              $failures[] = new Failure(1, 'date_of_resultyyyy_mm_dd_ad', $error, $row);
+              throw new ValidationException(
+                  \Illuminate\Validation\ValidationException::withMessages($error),
+                  $failures
+              );
+              return;
+          }
           list($bdYearEn, $bdMonthEn, $bdDayEn) = explode('-', $backDateEn);
           $backDateNp = Calendar::eng_to_nep($bdYearEn,$bdMonthEn,$bdDayEn)->getYearMonthDay();
           //check if sid exists
           try {
             LabTest::create([
-              'token' => $this->userToken.'-'.$labId,
+              'token' => $patientLabId,
               'hp_code' => $this->hpCode,
               'status' => 1,
               'sample_recv_date' =>  $backDateNp,
@@ -118,7 +137,7 @@ class BackdateLabReceivedResultImport implements ToModel, WithChunkReading, With
               'received_by_hp_code' => $this->hpCode,
               'received_date_en' => $backDateEn,
               'received_date_np' => $backDateNp,
-              'lab_token' => $this->userToken.'-'.$labId,
+              'lab_token' => $patientLabId,
               'reporting_date_en' => $this->todayDateEn,
               'reporting_date_np' => $this->todayDateNp
           ]);
@@ -126,6 +145,24 @@ class BackdateLabReceivedResultImport implements ToModel, WithChunkReading, With
         return;
     }
     
+    private function testValidEnDate($date){
+      if($date) {
+        if (preg_match ("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/", $date, $parts))
+        {
+          $year = $parts[1];
+          $month = $parts[2];
+          $day = $parts[3];
+          if (checkdate($month ,$day, $year)) {
+            if((int)$year <= Carbon::now()->year) {
+              return true;
+            }
+          }
+
+        }
+      }
+      return false;
+    }
+
     private function getAncsBySid ($sId) {
       $ancs = SampleCollection::where('token', $sId);
       if($ancs->count() > 0){

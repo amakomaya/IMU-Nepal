@@ -21,7 +21,8 @@
       </thead>
       <tr slot-scope="{item, removeItemOnSuccess}">
         <td>
-          <div v-if="item.parent_case_id !== null">Parent Case ID : {{ item.parent_case_id }}</div>
+          <div title="Case ID">C ID : {{ item.case_id }}</div>
+          <div v-if="item.parent_case_id !== null" title="Parent Case ID">PC ID : {{ item.parent_case_id }}</div>
         </td>
         <td>{{item.name}}</td>
         <td>{{item.age}}</td>
@@ -382,14 +383,14 @@ export default {
       if (value == 0 || value == null || value == ''){
         return ''
       }else{
-        return this.districts.find(x => x.id === value).district_name;
+        return this.districts.find(x => x.id == value).district_name;
       }
     },
     checkMunicipality : function(value){
       if (value == 0 || value == null || value == ''){
         return ''
       }else{
-        return this.municipalities.find(x => x.id === value).municipality_name;
+        return this.municipalities.find(x => x.id == value).municipality_name;
       }
     },
     checkForPositiveOnly : function (value){

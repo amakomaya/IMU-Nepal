@@ -13,6 +13,7 @@ use App\Models\Province;
 use App\Models\District;
 use App\Models\Municipality;
 use App\User;
+use Illuminate\Support\Facades\Cache;
 use Auth;
 
 class MunicipalityController extends Controller
@@ -69,9 +70,15 @@ class MunicipalityController extends Controller
         // if(User::checkAuthForCreateUpdateDelProvince()===false){
         //     return redirect('/admin');
         // }
-        $provinces = Province::all();
-        $districts = District::all();
-        $municipalities = Municipality::all();
+        $provinces = Cache::remember('province-list', 48*60*60, function () {
+          return Province::select(['id', 'province_name'])->get();
+        });
+        $districts = Cache::remember('district-list', 48*60*60, function () {
+          return District::select(['id', 'district_name', 'province_id' ])->get();
+        });
+        $municipalities = Cache::remember('municipality-list', 48*60*60, function () {
+          return Municipality::select(['id', 'municipality_name', 'province_id', 'district_id', 'municipality_name_np', 'type', 'total_no_of_wards'])->get();
+        });
        //  if(Auth::user()->role=="province"){
        //      $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
        //      $districts = $districts->where('province_id', $province_id);
@@ -158,9 +165,15 @@ class MunicipalityController extends Controller
         // }
 
         $data = $this->findModel($id);
-        $provinces = Province::all();
-        $districts = District::all();
-        $municipalities = Municipality::all();
+        $provinces = Cache::remember('province-list', 48*60*60, function () {
+          return Province::select(['id', 'province_name'])->get();
+        });
+        $districts = Cache::remember('district-list', 48*60*60, function () {
+          return District::select(['id', 'district_name', 'province_id' ])->get();
+        });
+        $municipalities = Cache::remember('municipality-list', 48*60*60, function () {
+          return Municipality::select(['id', 'municipality_name', 'province_id', 'district_id', 'municipality_name_np', 'type', 'total_no_of_wards'])->get();
+        });
 
        //  if(Auth::user()->role=="province"){
        //      $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
