@@ -73,6 +73,16 @@ class BackdateLabResultImport implements ToModel, WithChunkReading, WithValidati
             $labTests = $labTests->get()->first();
             $sId = $labTests->sample_token;
             $backDateEn = $row['date_of_resultyyyy_mm_dd_ad'];
+            $isValidDateEn = $this->testValidEnDate($backDateEn);
+            if (!$isValidDateEn) {
+              $error = ['date_of_resultyyyy_mm_dd_ad' => 'Invalid Date. Date must be in AD & YYYY-MM-DD Format'];
+                $failures[] = new Failure(1, 'date_of_resultyyyy_mm_dd_ad', $error, $row);
+                throw new ValidationException(
+                    \Illuminate\Validation\ValidationException::withMessages($error),
+                    $failures
+                );
+                return;
+            }
             list($bdYearEn, $bdMonthEn, $bdDayEn) = explode('-', $backDateEn);
             $backDateNp = Calendar::eng_to_nep($bdYearEn,$bdMonthEn,$bdDayEn)->getYearMonthDay();
             if($sId) {
@@ -115,6 +125,24 @@ class BackdateLabResultImport implements ToModel, WithChunkReading, WithValidati
         return;
     }
     
+    private function testValidEnDate($date){
+      if($date) {
+        if (preg_match ("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/", $date, $parts))
+        {
+          $year = $parts[1];
+          $month = $parts[2];
+          $day = $parts[3];
+          if (checkdate($month ,$day, $year)) {
+            if((int)$year <= Carbon::now()->year) {
+              return true;
+            }
+          }
+
+        }
+      }
+      return false;
+    }
+  
     private function getLabTestByPatientLabId ($patientLabId) {
       $organiation_member_tokens = OrganizationMember::where('hp_code', $this->hpCode)->pluck('token');
       $labTokens = [];

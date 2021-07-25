@@ -33,9 +33,15 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
     public function __construct(User $importedBy)
     {
         ini_set('max_execution_time', '300');
-        $provinceList = Province::select(['id', 'province_name'])->get();
-        $districtList = District::select(['id', 'district_name'])->get();
-        $municipalityList = Municipality::select(['id', 'municipality_name'])->get();
+        $provinceList = Cache::remember('province-list', 48*60*60, function () {
+          return Province::select(['id', 'province_name'])->get();
+        });
+        $districtList = Cache::remember('district-list', 48*60*60, function () {
+          return District::select(['id', 'district_name', 'province_id' ])->get();
+        });
+        $municipalityList = Cache::remember('municipality-list', 48*60*60, function () {
+          return Municipality::select(['id', 'municipality_name', 'province_id', 'district_id', 'municipality_name_np', 'type', 'total_no_of_wards'])->get();
+        });
         $provinces = $districts = $municipalities = [];
         $provinceList->map(function ($province) use (&$provinces) {
           $provinces[strtolower(trim($province->province_name))] = $province->id;
@@ -70,7 +76,9 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
           'occupation' => ['1' =>'front line health worker', '2' =>'doctor','3' => 'nurse','4' =>'police/army', '5' =>'business/industry', '6' =>'teacher/student(education)', '7' =>'civil servant', '8' =>'journalist', '9' =>'agriculture', '10' =>'transport/delivery', '11' =>'Tourist', '12' =>'migrant worker'],
           'relationship_with_the_contact_person' => ['family'=>0,'friend'=>1,'neighbour'=>2,'relative'=>3,'other'=>4],
           'result' => ['positive'=>1, 'negative'=>0],
-          #TO fix variables//'comorbidity' => [],
+          'comorbidity' => [ '1' => 'diabetes', 2 => 'htn', 3 => 'hermodialysis','4' => 'immunocompromised','6' => 'maternity','7' => 'heart disease, including hypertension',
+            '8' => 'liver disease', '9' => 'nerve related diseases', '10' => 'kidney diseases', '11' => 'malnutrition', '12' => 'autoimmune diseases', '13' => 'immunodeficiency, including hiv', '14' => 'malignancy', '15' => 'chric lung disesase/asthma/artery]'
+          ];
         );
         $this->todayDateEn = Carbon::now();
         $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();
@@ -124,11 +132,7 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
           'symptoms_recent' => $row['covid_19_symptoms'],
           'symptoms_within_four_week' => $row['covid_19_symptoms'],
           'malaria' => '['.$row['if_fever_malaria_test_done'].','.$row['malaria_test_result'].','.$row['if_malaria_positive_isolation_center_referred_to'].']',
-<<<<<<< HEAD
-          // 'symptoms_specific' => '['.$row['comorbidity'].']', //TODO replace with ID
-=======
-          'symptoms_specific' => '['.$row['comorbidity'].']', //TODO replace with ID
->>>>>>> origin/poe-bulk-v2
+          'symptoms_comorbidity' => '['.$row['comorbidity'].']', //TODO replace with ID
           'case_reason' => $row['covid_19_symptoms']?'['.$row['if_fever_covid_19_antigen_test_done'].','.$row['antigen_result'].','.$row['if_antigen_positive_isolation_center_referred_to'].']':null,
         ]);
         if($row['covid_19_symptoms']) {
@@ -163,6 +167,7 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
           $id = $this->healthWorker->id;
           $patientLabId = Carbon::now()->format('ymd'). '-' .'-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber+1)->format('H:i:s'));
           $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber+1)->format('H:i:s'));
+          $swabId = generate_unique_sid($swabId);
           $sampleCollectionData['token'] = $swabId;
           $sampleCollectionData['lab_token'] = $this->userToken.'-'.$patientLabId;
           $sampleCollection = SampleCollection::create($sampleCollectionData);

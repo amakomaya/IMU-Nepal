@@ -53,7 +53,8 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        {!! rcForm::open('POST', route('woman.store'), ['name' => 'createCase']) !!}
+                        <form class="form-group" role="form" action="{{route('woman.store')}}" enctype="multipart/form-data" method="POST" name="createCase" id="createCase" novalidate="novalidate" onsubmit="disableSubmit()">
+                          @csrf
                         <div class="panel-body">
                             <div class="form-group">
                                 <label class="control-label">Currently symptomatic?</label>
@@ -254,7 +255,9 @@
                                                     @if(Auth::user()->role!="province" && Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
                                                         <option value="">Select All Provinces</option>
                                                     @endif
-                                                    @foreach(App\Models\province::all() as $province)
+                                                    @foreach(\Illuminate\Support\Facades\Cache::remember('province-list', 48*60*60, function () {
+                                              return Province::select(['id', 'province_name'])->get();
+                                            }) as $province)
                                                         @if($province_id==$province->id || old('province_id')==$province->id)
                                                             @php($selectedProvince = "selected")
                                                         @else
@@ -696,7 +699,9 @@
 
                             <input type="hidden" name="case_type" value="3">
 
-                            {!! rcForm::close('post') !!}
+                            <button type="submit" id="submit-form" class="btn btn-primary btn-sm btn-block ">SAVE</button>
+
+                          </form>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -1037,8 +1042,23 @@
                 },
                 submitHandler: function (form) {
                     form.submit();
+                },
+                errorPlacement: function(error, element) {
+                  enableSubmit();
                 }
             });
         });
+
+        function disableSubmit() {
+          $("#submit-form").prop('disabled', true);
+          $("#submit-form").html("SAVING...");
+          return false;
+        }
+
+        function enableSubmit() {
+          $("#submit-form").prop('disabled', false);
+          $("#submit-form").html("SAVE");
+          return false;
+        }
     </script>
 @endsection

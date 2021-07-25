@@ -44,9 +44,12 @@
         <input v-model="data.sample_test_result" value="4" type="radio">Negative
         <input v-model="data.sample_test_result" value="3" type="radio" >Positive
       </div>
-      <button class="btn btn-primary btn-sm btn-block"
+      <button v-if="!isSubmitting" class="btn btn-primary btn-sm btn-block"
               @click.prevent="submitLabIdToSampleId(data)">
         Submit
+      </button>
+      <button v-else class="btn btn-primary btn-sm btn-block" disabled>
+        Submitting...
       </button>
     </div>
 </template>
@@ -64,6 +67,7 @@ export default {
   },
   data() {
     return {
+      isSubmitting: false,
       data : {
         token: null,
         sample_test_date: null,
@@ -109,7 +113,7 @@ export default {
       if (this.$v.$invalid) {
         return false;
       }
-
+      this.isSubmitting = true;
       axios.post('/api/v1/antigen-result-in-lab-from-web', data)
           .then((response) => {
             if (response.data === 'success') {
@@ -129,7 +133,9 @@ export default {
                   // do something after all dialog closed
                 })
               }
+              this.isSubmitting = false;
             } else {
+              this.isSubmitting = false;
               this.$swal({
                 title: 'Oops. Something went wrong.',
                 type: 'error',

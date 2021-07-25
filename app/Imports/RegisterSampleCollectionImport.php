@@ -38,10 +38,10 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
           return Province::select(['id', 'province_name'])->get();
         });
         $districtList = Cache::remember('district-list', 48*60*60, function () {
-          return District::select(['id', 'district_name'])->get();
+          return District::select(['id', 'district_name', 'province_id' ])->get();
         });
         $municipalityList = Cache::remember('municipality-list', 48*60*60, function () {
-          return Municipality::select(['id', 'municipality_name'])->get();
+          return Municipality::select(['id', 'municipality_name', 'province_id', 'district_id', 'municipality_name_np', 'type', 'total_no_of_wards'])->get();
         });
         $provinces = $districts = $municipalities = [];
         $provinceList->map(function ($province) use (&$provinces) {
@@ -137,6 +137,7 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
         ];
         $id = $this->healthWorker->id;
         $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber)->format('H:i:s'));
+        $swabId = generate_unique_sid($swabId);
         $sampleCollectionData['token'] = $swabId;
         if ($sampleCollectionData['service_for'] === '1')
             $sampleCollectionData['sample_type'] = $row['sample_type'];

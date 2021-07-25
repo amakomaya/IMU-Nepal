@@ -389,6 +389,7 @@ class WomanController extends Controller
 
     public function store(Request $request)
     {
+        $uniqueLabId = '';
         $customMessages = [
             'required' => 'The :attribute field is required.',
         ];
@@ -528,9 +529,10 @@ class WomanController extends Controller
                     $sample_row['sample_type'] = "[" . implode(', ', $request->sample_type) . "]";
 
                 if($request->service_for == '2') {
+                    $uniqueLabId = generate_unique_lab_id_web(auth()->user()->token . '-' . Carbon::now()->format('ymd') . '-' . $request->lab_token);
                     $sample_row['sample_type'] = "[]";
                     $sample_row['result'] = 9;
-                    $sample_row['lab_token'] = auth()->user()->token . '-' . Carbon::now()->format('ymd') . '-' . $request->lab_token;
+                    $sample_row['lab_token'] = $uniqueLabId;
                     $sample_row['received_date_en'] = $sample_row['collection_date_en'];
                     $sample_row['received_date_np'] = $sample_row['collection_date_np'];
                     $sample_row['received_by'] = $sample_row['checked_by'];
@@ -551,7 +553,9 @@ class WomanController extends Controller
             }
         }
         if($request->service_for == '2') {
-            $request->session()->flash('message', 'Data Inserted successfully. Created Lab ID is " ' . $request->lab_token . ' "');
+            $responseLabId = explode('-', $uniqueLabId);
+            array_shift($responseLabId);
+            $request->session()->flash('message', 'Data Inserted successfully. Created Lab ID is " ' . join("-",$responseLabId) . ' "');
         } else {
             $request->session()->flash('message', 'Data Inserted successfully');
         }
@@ -568,6 +572,7 @@ class WomanController extends Controller
      {
          $id = OrganizationMember::where('token', auth()->user()->token)->first()->id;
          $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
+         $swab_id = generate_unique_sid($swab_id);
          return view('backend.patient.sample-create', compact('token', 'swab_id'));
      }
 
@@ -579,6 +584,7 @@ class WomanController extends Controller
 
     public function sampleCollectionStore(Request $request)
     {
+        $uniqueLabId = '';
         $customMessages = [
             'required' => 'The :attribute field is required.',
         ];
@@ -614,9 +620,11 @@ class WomanController extends Controller
         }
         
         if($request->service_for == '2') {
+            $uniqueLabId = generate_unique_lab_id_web(auth()->user()->token . '-' . Carbon::now()->format('ymd') . '-' . $request->lab_token);
+
             $row['sample_type'] = "[]";
             $row['result'] = 9;
-            $row['lab_token'] = auth()->user()->token . '-' . Carbon::now()->format('ymd') . '-' . $request->lab_token;
+            $row['lab_token'] = $uniqueLabId;
             $row['received_date_en'] = $row['collection_date_en'];
             $row['received_date_np'] = $row['collection_date_np'];
             $row['received_by'] = $row['hp_code'];
@@ -636,7 +644,9 @@ class WomanController extends Controller
 
         SampleCollection::create($row);
         if($request->service_for == '2') {
-            $request->session()->flash('message', 'Data Inserted successfully. Created Lab ID is " ' . $request->lab_token . ' "');
+          $responseLabId = explode('-', $uniqueLabId);
+          array_shift($responseLabId);
+            $request->session()->flash('message', 'Data Inserted successfully. Created Lab ID is " ' . join("-",$responseLabId) . ' "');
         } else {
             $request->session()->flash('message', 'Data Inserted successfully');
         }

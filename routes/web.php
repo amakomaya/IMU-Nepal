@@ -141,7 +141,9 @@ Route::resource('admin/profile', 'Backend\ProfileController');
 Route::get('/api/district', 'Api\DistrictController@index')->name('api.district.index');
 Route::get('/api/municipality', 'Api\MunicipalityController@index')->name('api.municiplaity.index');
 Route::get('/api/province', function () {
-    return \App\Models\Province::all();
+    return \Illuminate\Support\Facades\Cache::remember('province-list', 48*60*60, function () {
+        return \App\Models\Province::select(['id', 'province_name'])->get();
+      });
 });
 
 Route::get('/admin/overview-data', 'Backend\OverviewController@index')->name('admin.overview');

@@ -15,6 +15,7 @@ use App\Models\CommunityDeath;
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Auth;
 
 class PublicDataController extends Controller
@@ -32,7 +33,11 @@ class PublicDataController extends Controller
     }
 
     public function federalInfo() {
-      $province_list = Province::select('id', 'province_name')->get()->toArray();
+      $province_list = Cache::remember('province-list', 48*60*60, function () {
+          return Province::select(['id', 'province_name'])->get();
+      });
+      $province_list = $province_list->toArray();
+
       $response = [];
       foreach($province_list as $province) {
         $district_list = District::select('id', 'district_name')->where('province_id', $province['id'])->get()->toArray();
