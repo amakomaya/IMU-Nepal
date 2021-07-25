@@ -42,7 +42,8 @@
                         Create
                     </div>
                     <div class="panel-body">
-                        {!! rcForm::open('POST', route('patient.sample.store'), ['name' => 'createCase']) !!}
+                        <form action="{{ route('patient.sample.store') }}" method="POST" name="createCase" id="createCase" onsubmit="disableSubmit()">
+                            @csrf
                         <div class="panel-body">
                             <div class="form-group">
                                 <label class="control-label">Test Type</label>
@@ -126,7 +127,8 @@
                             </div>
                             <input type="text" name="token" value="{{$swab_id}}" hidden>
                             <input type="text" name="woman_token" value="{{$token}}" hidden>
-                            {!! rcForm::close('post') !!}
+                            <button type="submit" id="submit-form" class="btn btn-primary btn-sm btn-block ">SAVE</button>
+                          </form>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -192,8 +194,23 @@
                 },
                 submitHandler: function (form) {
                     form.submit();
+                },
+                errorPlacement: function(error, element) {
+                  enableSubmit();
                 }
             });
         });
+
+        function disableSubmit() {
+          $("#submit-form").prop('disabled', true);
+          $("#submit-form").html("SAVING...");
+          return false;
+        }
+
+        function enableSubmit() {
+          $("#submit-form").prop('disabled', false);
+          $("#submit-form").html("SAVE");
+          return false;
+        }
             </script>
 @endsection

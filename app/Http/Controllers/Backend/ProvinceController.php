@@ -14,6 +14,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ProvinceRequest;
 use Auth;
+use Illuminate\Support\Facades\Cache;
 
 class ProvinceController extends Controller
 {
@@ -57,7 +58,9 @@ class ProvinceController extends Controller
         //     return redirect('/admin');
         // }
 
-        $provinces = Province::all();
+        $provinces = Cache::remember('province-list', 48*60*60, function () {
+          return Province::select(['id', 'province_name'])->get();
+        });
         return view('backend.province.create',compact('provinces'));
     }
 
@@ -129,7 +132,9 @@ class ProvinceController extends Controller
 
         $data = $this->findModelprovince($id);
         $user = $this->findModelUser($data->token);
-        $provinces = Province::all();
+        $provinces = Cache::remember('province-list', 48*60*60, function () {
+          return Province::select(['id', 'province_name'])->get();
+        });
         return view('backend.province.edit', compact('data','user','provinces'));
 	}
 
