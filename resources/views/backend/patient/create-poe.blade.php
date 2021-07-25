@@ -650,6 +650,7 @@
                                     <small id="help" class="form-text text-danger">{{ $errors->first('vaccine_name_other') }}</small>
                                 @endif
                             </div>
+                            <div class="row">
                             <div class="form-group col-md-6 vaccine-status">
                                 <table class="table table-bordered">
                                     <tr>
@@ -674,8 +675,10 @@
                                     </tr>
                                 </table>
                             </div>
+                            </div>
+                            <br>
                             
-                            <div class="form-group collect-swab-now">
+                            <div class="form-group">
                                 <label class="control-label">Are you collecting COVID -19 swab now ?</label>
                                 <div class="control-group">
                                     <label class="radio-inline">
@@ -761,11 +764,9 @@
         function symptomaticCheck() {
             if($('.symptoms_recent:checked').val() == '1'){
                 $('.asymptomatic').show();
-                $('.collect-swab-now').show();
             }
             else {
                 $('.asymptomatic').hide();
-                $('.collect-swab-now').hide();
             }
         }
 
