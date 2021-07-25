@@ -505,8 +505,11 @@ class CictTracingController extends Controller
         if($cict_follow_up){
             $data = $cict_follow_up;
         }else {
-            $data->case_id = $request->case_id;
-            $data->parent_case_id = $request->parent_case_id;
+            $test['case_id'] = $request->case_id;
+            $test['parent_case_id'] = $request->parent_case_id;
+            $data = (object) $test;
+            // $data->case_id = $request->case_id;
+            // $data->parent_case_id = $request->parent_case_id;
         }
         
         return view('backend.cict-tracing.b-two-form.follow-up', compact('cict_contact', 'cict_tracing', 'data'));
