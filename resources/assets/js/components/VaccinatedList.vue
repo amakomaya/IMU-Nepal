@@ -117,7 +117,7 @@ export default {
       if (value === 0 || value == null || value === '') {
         return ''
       } else {
-        return this.municipalities.find(x => x.id === value).municipality_name;
+        return this.municipalities.find(x => x.id == value).municipality_name;
       }
     },
   }

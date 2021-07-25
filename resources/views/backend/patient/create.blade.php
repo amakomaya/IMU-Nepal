@@ -596,6 +596,7 @@
                                         $time = explode(':', Carbon\Carbon::now()->format('H:i:s'));
                                         $converted_time = ($time[0] * 3600) + ($time[1] * 60) + $time[2];
                                         $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon\Carbon::now()->format('ymd') . '-' . $converted_time;
+                                        $swab_id = generate_unique_sid($swab_id);
                                     ?>
                                     <div class="panel-body text-center"><h3>{{ $swab_id }}</h3></div>
                                 </div>

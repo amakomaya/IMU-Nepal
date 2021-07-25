@@ -615,6 +615,7 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
   $value = $request->all();
   try {
       $value['token'] = $user->token . '-' . $value['token'];
+      $value['token'] = generate_unique_lab_id_web($value['token']);
       $sample_collection = SampleCollection::where('token', $value['sample_token'])->get()->first();
 
       $sample_test_date_np_array = explode("-", $value['sample_test_date']);
@@ -894,7 +895,7 @@ Route::get('/v1/ext/district', 'External\ExtDistrictController@index');
 Route::get('/v1/ext/municipality', 'External\ExtMunicipalityController@index');
 Route::get('/v1/ext/province', 'External\ExtProvinceController@index');
 
-Route::get('/v1/ext/cases', 'External\ExtCaseController@index');
+// Route::get('/v1/ext/cases', 'External\ExtCaseController@index');
 Route::post('/v1/ext/cases', 'External\ExtCaseController@store');
 Route::get('/v1/ext/get-case-detail', 'External\ExtCaseController@getCaseDetailBySample');
 Route::get('/v1/federal-info', 'PublicDataController@federalInfo');

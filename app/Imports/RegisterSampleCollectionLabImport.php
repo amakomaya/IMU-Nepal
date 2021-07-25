@@ -99,7 +99,17 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
         $labResult = $row['result'];
-        $patientLabId = $row['patient_lab_id'];
+        $patientLabId = $this->userToken.'-'.$row['patient_lab_id'];
+
+        if(lab_id_exists($patientLabId)) {
+          $error = ['patient_lab_id' => 'The test with the given Patient Lab ID already exists in the system.'];
+          $failures[] = new Failure($currentRowNumber, 'patient_lab_id', $error, $row);
+          throw new ValidationException(
+              \Illuminate\Validation\ValidationException::withMessages($error),
+              $failures
+          );
+          return;
+        }
         $sampleTestTime = $this->todayDateEn->format('g : i A');
         
         $suspectedCase = SuspectedCase::create([
@@ -150,7 +160,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'received_by_hp_code' => $this->hpCode,
           'received_date_en' => $this->todayDateEn,
           'received_date_np' => $this->todayDateNp,
-          'lab_token' => $this->userToken.'-'.$patientLabId,
+          'lab_token' => $patientLabId,
           'collection_date_en' => $this->todayDateEn,
           'collection_date_np' => $this->todayDateNp,
           'reporting_date_en' => $this->todayDateEn,
@@ -158,6 +168,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
         ];
         $id = $this->healthWorker->id;
         $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber+1)->format('H:i:s'));
+        $swabId = generate_unique_sid($swabId);
         $sampleCollectionData['token'] = $swabId;
         if ($sampleCollectionData['service_for'] === '1')
             $sampleCollectionData['sample_type'] = $row['sample_type'];
@@ -167,7 +178,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
        
         try {
           LabTest::create([
-            'token' => $this->userToken.'-'.$patientLabId,
+            'token' => $patientLabId,
             'hp_code' => $this->hpCode,
             'status' => 1,
             'sample_recv_date' =>  $this->todayDateNp,

@@ -112,6 +112,7 @@ class BackdateCasesPaymentImport implements ToModel, WithChunkReading, WithValid
               \Illuminate\Validation\ValidationException::withMessages($error),
               $failures
           );
+          return;
         }
         if($this->totalHduCases > $bed_status->hdu) {
             $error = ['health_condition' => 'No. of patient with Moderate &  HDU condition exeeds the no. of available HDU bed('.$bed_status->hdu.'). Please update the data of your existing patient to free up bed & try again.'];
@@ -120,6 +121,7 @@ class BackdateCasesPaymentImport implements ToModel, WithChunkReading, WithValid
                 \Illuminate\Validation\ValidationException::withMessages($error),
                 $failures
             );
+            return;
         }
         if($this->totalIcuCases > $bed_status->icu) {
             $error = ['health_condition' => 'No. of patient with Severe - ICU condition exeeds the no. of available ICU bed('.$bed_status->icu.'). Please update the data of your existing patient to free up bed & try again.'];
@@ -128,6 +130,7 @@ class BackdateCasesPaymentImport implements ToModel, WithChunkReading, WithValid
                 \Illuminate\Validation\ValidationException::withMessages($error),
                 $failures
             );
+            return;
         }
         if($this->totalVentilatorCases > $bed_status->venti) {
             $error = ['health_condition' => 'No. of patient with Severe - Ventilator condition exeeds the no. of available ventilators('.$bed_status->venti.'). Please update the data of your existing patient to free up bed & try again.'];
@@ -136,8 +139,19 @@ class BackdateCasesPaymentImport implements ToModel, WithChunkReading, WithValid
                 \Illuminate\Validation\ValidationException::withMessages($error),
                 $failures
             );
+            return;
         } 
         $backDateEn = $row['date_of_case_entryyyyy_mm_dd_ad'];
+        $isValidDateEn = $this->testValidEnDate($backDateEn);
+        if (!$isValidDateEn) {
+          $error = ['date_of_case_entryyyyy_mm_dd_ad' => 'Invalid Case Entry Date. Date must be in AD & YYYY-MM-DD Format'];
+            $failures[] = new Failure(1, 'date_of_case_entryyyyy_mm_dd_ad', $error, $row);
+            throw new ValidationException(
+                \Illuminate\Validation\ValidationException::withMessages($error),
+                $failures
+            );
+            return;
+        }
         list($bdYearEn, $bdMonthEn, $bdDayEn) = explode('-', $backDateEn);
         $backDateNp = Calendar::eng_to_nep($bdYearEn,$bdMonthEn,$bdDayEn)->getYearMonthDay();
         
@@ -167,6 +181,24 @@ class BackdateCasesPaymentImport implements ToModel, WithChunkReading, WithValid
             'district_id' => $row['district'],
             'municipality_id' => $row['municipality']
         ]);
+    }
+
+    private function testValidEnDate($date){
+      if($date) {
+        if (preg_match ("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/", $date, $parts))
+        {
+          $year = $parts[1];
+          $month = $parts[2];
+          $day = $parts[3];
+          if (checkdate($month ,$day, $year)) {
+            if((int)$year <= Carbon::now()->year) {
+              return true;
+            }
+          }
+
+        }
+      }
+      return false;
     }
 
     private function filterEmptyRow($data) {

@@ -54,6 +54,7 @@ class ExtSampleController extends Controller
             $healthworker = OrganizationMember::where('token', $user->token)->get()->first();
             $id = OrganizationMember::where('token', $user->token)->first()->id;
             $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT).'-'.Carbon::now()->format('ymd').'-'.$this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
+            $swab_id = generate_unique_sid($swab_id);
             $data = $request->json()->all();
             foreach ($data as $value) {
                 try {

@@ -342,14 +342,14 @@ export default {
       if (value === 0 || value == null || value === '') {
         return ''
       } else {
-        return this.districts.find(x => x.id === value).district_name;
+        return this.districts.find(x => x.id == value).district_name;
       }
     },
     checkMunicipality: function (value) {
       if (value === 0 || value == null || value === '') {
         return ''
       } else {
-        return this.municipalities.find(x => x.id === value).municipality_name;
+        return this.municipalities.find(x => x.id == value).municipality_name;
       }
     },
     checkForPositiveOnly: function (value) {

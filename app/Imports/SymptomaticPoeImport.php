@@ -167,6 +167,7 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
           $id = $this->healthWorker->id;
           $patientLabId = Carbon::now()->format('ymd'). '-' .'-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber+1)->format('H:i:s'));
           $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber+1)->format('H:i:s'));
+          $swabId = generate_unique_sid($swabId);
           $sampleCollectionData['token'] = $swabId;
           $sampleCollectionData['lab_token'] = $this->userToken.'-'.$patientLabId;
           $sampleCollection = SampleCollection::create($sampleCollectionData);
