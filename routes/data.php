@@ -47,3 +47,8 @@ Route::get('api/gender', 'Data\Api\AggregateController@gender');
 Route::get('api/time-series', 'Data\Api\AggregateController@timeSeries');
 Route::get('api/occupation', 'Data\Api\AggregateController@occupation');
 Route::get('api/antigen', 'Data\Api\AggregateController@antigen');
+
+
+Route::get('api/ccmc/get-recovered-cases', 'CCMCAPIController@getRecoveredCases');
+Route::get('api/ccmc/vaccination-data', 'CCMCAPIController@vaccinationData');
+Route::get('api/ccmc/hospital-data', 'CCMCAPIController@hospitalData');
