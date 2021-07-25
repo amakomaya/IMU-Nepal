@@ -245,7 +245,7 @@
                             </div>
                             <div class="card" style="background: white; margin-top:10px;">
                                 <div class="" style="padding: 20px;">
-                                    <h4>Destination in Nepal</h4>
+                                    <h4>Place of stay in Nepal</h4>
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="form-group col-sm-4" id="province">
@@ -370,7 +370,7 @@
                                 <input type="radio" name="temperature_type"
                                        {{ old('temperature_type') == "1" ? 'checked' : '' }} value="1" checked> Fahrenheit 
                                 <input type="radio" name="temperature_type"
-                                       {{ old('temperature_type') == "2" ? 'checked' : '' }} value="2"> Celcius<br>
+                                       {{ old('temperature_type') == "2" ? 'checked' : '' }} value="2"> Celsius<br>
 
                                 <input type="number" class="form-control" value="{{ old('temperature') }}"
                                         name="temperature" aria-describedby="help"
