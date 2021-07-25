@@ -444,6 +444,9 @@ class WomanController extends Controller
         unset($row['symptoms_comorbidity_trimester']);
 
         if($request->case_type == '3') {
+            if($request->temperature_type == 2){
+                $row['temperature'] = ($request->temperature * 9/5) + 32;
+            }
             $row['register_date_np'] = $request->register_date_np;
             $register_np_array = explode("-", $request->register_date_np);
             $row['register_date_en'] = Calendar::nep_to_eng($register_np_array[0], $register_np_array[1], $register_np_array[2])->getYearMonthDayNepToEng();
@@ -465,11 +468,25 @@ class WomanController extends Controller
     
             $vaccine_status = $request->vaccine_status ?? '0';
             $vaccination_card = $request->vaccination_card ?? '0';
-            $vaccination_dosage_complete = $request->vaccination_dosage_complete ?? '0';
+            if($request->vaccine_name == 6){
+                if($request->dose_one_date){
+                    $vaccination_dosage_complete = '1';
+                }else{
+                    $vaccination_dosage_complete = '0';
+                }
+            }
+            else{
+                if($request->dose_one_date && $request->dose_two_date){
+                    $vaccination_dosage_complete = '1';
+                }else{
+                    $vaccination_dosage_complete = '0';
+                }
+            }
             $vaccine_dosage_count = $request->vaccine_dosage_count ?? '0';
             $vaccine_name = $request->vaccine_name ?? '10';
     
             $row['covid_vaccination_details'] = "[" . $vaccine_status . ", " . $vaccination_card . ", " . $vaccination_dosage_complete . ", " . $vaccine_dosage_count . ", " . $vaccine_name . ", " . $request->vaccine_name_other . "]";
+            $row['dose_details'] = "[{type:'1',date:" . $request->dose_one_date . "},{type:'2',date:" . $request->dose_two_date . "}]";
         }
 
         SuspectedCase::create($row);
