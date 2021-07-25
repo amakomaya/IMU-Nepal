@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +37,7 @@ class CCMCAPIController extends Controller
             ->whereNotNull('d.district_name')
             ->where('payment_cases.created_at', '>=', $startDate)
             ->where('payment_cases.created_at', '<=', $endDate)
-            ->groupByRaw('d.district_name ,age,is_death,gender,date(payment_cases.created_at)')
+            ->groupBy(DB::raw('d.district_name ,age,is_death,gender,date(payment_cases.created_at)'))
             ->simplePaginate(1000);
         return response(['data' => $data]);
     }
@@ -64,7 +64,7 @@ class CCMCAPIController extends Controller
             ->leftJoin('healthposts as h', 'ancs.hp_code', 'h.hp_code')
             ->leftJoin('districts as d', 'd.id', 'h.district_id')
             ->whereRaw('(result = 3 or result = 4) and (service_for = 1 or service_for = 2)')
-            ->groupByRaw('district_name,ancs.result,ancs.service_for,sample_test_date_en')
+            ->groupBy(DB::raw('district_name,ancs.result,ancs.service_for,sample_test_date_en'))
             ->where('sample_test_date_en', '>=', $startDate)
             ->where('sample_test_date_en', '<=', $endDate)
             ->simplePaginate(1000);
@@ -102,3 +102,4 @@ class CCMCAPIController extends Controller
         return response(['data' => $data]);
     }
 }
+
