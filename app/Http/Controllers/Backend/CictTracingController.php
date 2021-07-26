@@ -11,6 +11,8 @@ use App\Models\CictFollowUp;
 use App\Models\SuspectedCase;
 use App\Models\SampleCollection;
 use App\Models\OrganizationMember;
+use App\Models\Vaccine;
+use Carbon\Carbon;
 
 class CictTracingController extends Controller
 {
@@ -281,13 +283,14 @@ class CictTracingController extends Controller
 
     public function sectionThree(Request $request)
     {
+        $vaccines = Vaccine::get();
         if($request->case_id){
-            $data = CictTracing::with(['suspectedCase' => function($q){
+            $data = CictTracing::with(['checkedBy', 'suspectedCase' => function($q){
                     $q->with('ancs', 'latestAnc');
                 }])->where('case_id', $request->case_id)->first();
             if($data){
                 $org_id = OrganizationMember::where('token', auth()->user()->token)->first()->id;
-                return view('backend.cict-tracing.section-three', compact('data', 'org_id'));
+                return view('backend.cict-tracing.section-three', compact('data', 'org_id', 'vaccines'));
             } else{
                 $request->session()->flash('message', 'Case Id not found');
                 return redirect()->route('cict-tracing.search');
@@ -319,7 +322,7 @@ class CictTracingController extends Controller
                     if($request->household_details_case_id[$i]){
                         $household_details['case_id'] = $request->household_details_case_id[$i];
                     }else{
-                        $household_details['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id . '-' . strtoupper(bin2hex(random_bytes(3)));
+                        $household_details['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id .'-' . Carbon::now()->format('ymd') . '-' . strtoupper(bin2hex(random_bytes(3)));
                     }
                     array_push($household_details_array, $household_details);
                 }
@@ -465,10 +468,11 @@ class CictTracingController extends Controller
 
     public function partTwo(Request $request)
     {
+        $vaccines = Vaccine::get();
         if($request->case_id){
-            $data = CictContact::where('case_id', $request->case_id)->first();
+            $data = CictContact::with('checkedBy')->where('case_id', $request->case_id)->first();
             if($data){
-                return view('backend.cict-tracing.b-one-form.part-two', compact('data'));
+                return view('backend.cict-tracing.b-one-form.part-two', compact('data', 'vaccines'));
             } else{
                 $request->session()->flash('message', 'Case Id not found');
                 return redirect()->route('cict-tracing.search');
@@ -499,7 +503,7 @@ class CictTracingController extends Controller
     }
 
     public function followUp(Request $request){
-        $cict_follow_up = CictFollowUp::where('case_id', $request->case_id)->first();
+        $cict_follow_up = CictFollowUp::with('checkedBy')->where('case_id', $request->case_id)->first();
         $cict_contact = CictContact::where('case_id', $request->case_id)->first();
         $cict_tracing = CictTracing::where('case_id', $request->parent_case_id)->first();
         if($cict_follow_up){

@@ -578,7 +578,6 @@ export default {
         this.isSubmitting = false;
         return false;
       }
-        console.log('dd');
         data.date_of_outcome_en = this.bs2ad(data.date_of_outcome_np);
       if(data.date_of_positive_np) {  
         data.date_of_positive_en = this.bs2ad(data.date_of_positive_np);

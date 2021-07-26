@@ -354,7 +354,7 @@
                             <hr>
 
                             <div class="part-five">
-                                <h4>V. Information on Source of Exposure of case under investigation</h4><br>
+                                <h4>V. Information on <b>Source of Exposure of Case</b> under investigation</h4><br>
                     
                                 <div class="form-group">
                                     <label class="control-label">Identify the following categories of persons whom the case might have contracted the infection from, upto 14 days before the development of the symptoms OR 24 days prior to the date of sample collection in case of asymptomatic</label>
@@ -1126,9 +1126,6 @@
                 symptoms_recent: {
                     required: true
                 },
-                "symptoms_comorbidity[]": {
-                    required: true
-                },
                 high_exposure: {
                     required: true
                 },
@@ -1169,11 +1166,47 @@
                 same_household: {
                     required: true
                 },
+                "same_household_details_name[]": {
+                    nameCustom: true
+                },
+                "same_household_details_age[]": {
+                    digits: true,
+                    maxlength: 3,
+                },
+                "same_household_details_phone[]": {
+                    digits: true,
+                    minlength: 7,
+                    maxlength: 10,
+                },
                 close_contact: {
                     required: true
                 },
+                "close_contact_details_name[]": {
+                    nameCustom: true
+                },
+                "close_contact_details_age[]": {
+                    digits: true,
+                    maxlength: 3,
+                },
+                "close_contact_details_phone[]": {
+                    digits: true,
+                    minlength: 7,
+                    maxlength: 10,
+                },
                 direct_care: {
                     required: true
+                },
+                "direct_care_details_name[]": {
+                    nameCustom: true
+                },
+                "direct_care_details_age[]": {
+                    digits: true,
+                    maxlength: 3,
+                },
+                "direct_care_details_phone[]": {
+                    digits: true,
+                    minlength: 7,
+                    maxlength: 10,
                 },
                 attend_social: {
                     required: true

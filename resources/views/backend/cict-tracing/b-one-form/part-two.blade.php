@@ -151,15 +151,18 @@
                                         $symptoms_comorbidity = [];
                                     }
                                 ?>
+                                <label class="control-label" for="symptoms_comorbidity">(Check any that apply):</label><br>
+                                <div class="form-group col-md-6">
+                                    Pregnancy (Trimester)<br>
+                                    <select name="symptoms_comorbidity_trimester" class="form-control">
+                                        <option value="">-- Select Option --</option>
+                                        <option value="5" @if(in_array(5, $symptoms_comorbidity)) selected @endif>First</option>
+                                        <option value="16" @if(in_array(16, $symptoms_comorbidity)) selected @endif>Second</option>
+                                        <option value="17" @if(in_array(17, $symptoms_comorbidity)) selected @endif>Third</option>
+                                    </select>
+                                </div>
+                                <div class="clearfix"></div>
                                 <div class="form-group" id="symptoms_comorbidity">
-                                    <label class="control-label" for="symptoms_comorbidity">(Check any that apply)</label><br>
-                                    <div style="padding: 10px;">
-                                        Pregnancy (Trimester)<br>
-                                        <input type="radio" name="symptoms_comorbidity_trimester" value="5" @if(in_array(5, $symptoms_comorbidity)) checked @endif> First<br>
-                                        <input type="radio" name="symptoms_comorbidity_trimester" value="16" @if(in_array(16, $symptoms_comorbidity)) checked @endif> Second<br>
-                                        <input type="radio" name="symptoms_comorbidity_trimester" value="17" @if(in_array(17, $symptoms_comorbidity)) checked @endif> Third<br>
-                                        <input type="radio" name="symptoms_comorbidity_trimester" value=""> No<br>
-                                    </div>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="18" @if(in_array(18, $symptoms_comorbidity)) checked @endif> Post delivery (< 6 weeks)<br>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="7" @if(in_array(7, $symptoms_comorbidity)) checked @endif> Cardiovascular disease or hypertension<br>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="1" @if(in_array(1, $symptoms_comorbidity)) checked @endif> Diabetes<br>
@@ -229,7 +232,8 @@
                                     @if ($errors->has('healthworker_title'))
                                         <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_title') }}</small>
                                     @endif
-
+                                </div>
+                                <div class="form-group">
                                     <label for="healthworker_workplace">Name of the work place</label>
                                     <input type="text" class="form-control" value="{{ isset($data) ? $data->healthworker_workplace : '' }}" name="healthworker_workplace"
                                         aria-describedby="help" placeholder="Name of the work place"
@@ -237,10 +241,10 @@
                                     @if ($errors->has('healthworker_workplace'))
                                         <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_workplace') }}</small>
                                     @endif
-
+                                </div>
+                                <div class="form-group">
                                     <label>Station</label><br>
-
-                                    <select name="healthworker_station" class="form-control">
+                                    <select name="healthworker_station" class="form-control healthworker_station">
                                         <option {{ isset($data) && $data->healthworker_station == '' ? "selected" : "" }} value="">Select Station
                                         </option>
                                         <option {{ isset($data) && $data->healthworker_station == '1' ? "selected" : "" }} value="1">Fever Clinic
@@ -254,7 +258,8 @@
                                         <small id="help"
                                             class="form-text text-danger">{{ $errors->first('healthworker_station') }}</small>
                                     @endif
-
+                                </div>
+                                <div class="form-group healthworker_station_other_class">
                                     <label for="healthworker_station_other">If others, specfiy</label>
                                     <input type="text" class="form-control" value="{{ isset($data) ? $data->healthworker_station_other : '' }}" name="healthworker_station_other"
                                         aria-describedby="help" placeholder="Enter other station"
@@ -262,39 +267,40 @@
                                     @if ($errors->has('healthworker_station_other'))
                                         <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_station_other') }}</small>
                                     @endif
+                                </div>
 
 
-                                    <div class="form-group">
-                                        <label class="control-label">Was appropriate PPE used?</label>
-                                        <div class="control-group">
-                                            <label class="radio-inline">
-                                                <input type="radio" name="healthworker_ppe" class="healthworker_ppe"
-                                                    {{ isset($data) && $data->healthworker_ppe == "1" ? 'checked' : '' }} value="1">Yes
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="healthworker_ppe" class="healthworker_ppe"
-                                                    {{ isset($data) && $data->healthworker_ppe == "0" ? 'checked' : '' }} value="0">No
-                                            </label>
-                                        </div>
+                                <div class="form-group">
+                                    <label class="control-label">Was appropriate PPE used?</label>
+                                    <div class="control-group">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="healthworker_ppe" class="healthworker_ppe"
+                                                {{ isset($data) && $data->healthworker_ppe == "1" ? 'checked' : '' }} value="1">Yes
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="healthworker_ppe" class="healthworker_ppe"
+                                                {{ isset($data) && $data->healthworker_ppe == "0" ? 'checked' : '' }} value="0">No
+                                        </label>
                                     </div>
+                                </div>
 
-                                    <div class="form-group">
-                                        <label for="healthworker_last_date">Date of last contact</label>
-                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->healthworker_last_date : '' }}" name="healthworker_last_date"
-                                            aria-describedby="help" placeholder="Enter Date of last contact"
-                                        >
-                                        @if ($errors->has('healthworker_last_date'))
-                                            <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_last_date') }}</small>
-                                        @endif
-
-                                        <label for="healthworker_narrative">Any relevant narrative</label>
-                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->healthworker_narrative : '' }}" name="healthworker_narrative"
-                                            aria-describedby="help" placeholder="Enter relevant narrative"
-                                        >
-                                        @if ($errors->has('healthworker_narrative'))
-                                            <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_narrative') }}</small>
-                                        @endif
-                                    </div>
+                                <div class="form-group">
+                                    <label for="healthworker_last_date">Date of last contact</label>
+                                    <input type="text" class="form-control" value="{{ isset($data) ? $data->healthworker_last_date : '' }}" name="healthworker_last_date" id="healthworker_last_date"
+                                        aria-describedby="help" placeholder="Enter Date of last contact"
+                                    >
+                                    @if ($errors->has('healthworker_last_date'))
+                                        <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_last_date') }}</small>
+                                    @endif
+                                </div>
+                                <div class="form-group">
+                                    <label for="healthworker_narrative">Any relevant narrative</label>
+                                    <input type="text" class="form-control" value="{{ isset($data) ? $data->healthworker_narrative : '' }}" name="healthworker_narrative"
+                                        aria-describedby="help" placeholder="Enter relevant narrative"
+                                    >
+                                    @if ($errors->has('healthworker_narrative'))
+                                        <small id="help" class="form-text text-danger">{{ $errors->first('healthworker_narrative') }}</small>
+                                    @endif
                                 </div>
                             </div>
 
@@ -345,7 +351,7 @@
                                     <div class="form-group">
                                         <label for="modes_of_travel">Modes of travel</label>
                                         <select name="modes_of_travel" class="form-control modes_of_travel">
-                                            <option value=""  {{ isset($data) && $data->modes_of_travel == "" ? 'selected' : "" }}>Select Measures Taken</option>
+                                            <option value=""  {{ isset($data) && $data->modes_of_travel == "" ? 'selected' : "" }}>Select Modes of travel</option>
                                             <option value="1" {{ isset($data) && $data->modes_of_travel == "1" ? 'selected' : "" }}>Air</option>
                                             <option value="2" {{ isset($data) && $data->modes_of_travel == "2" ? 'selected' : "" }}>Public transport (Bus, Micro, Truck, Taxi,etc)</option>
                                             <option value="3" {{ isset($data) && $data->modes_of_travel == "3" ? 'selected' : "" }}>Private vehicle</option>
@@ -353,7 +359,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group modes_of_travel_other_class">
-                                        <label for="modes_of_travel_other"></label>If other, specify</label>
+                                        <label for="modes_of_travel_other">If other, specify</label>
                                         <input type="text" class="form-control" value="{{ isset($data) ? $data->modes_of_travel_other : '' }}" name="modes_of_travel_other"
                                             aria-describedby="help" placeholder="Enter other modes of travel">
                                         @if ($errors->has('modes_of_travel_other'))
@@ -361,7 +367,7 @@
                                         @endif
                                     </div>
                                     <div class="form-group">
-                                        <label for="travel_place"></label>Place Visited</label>
+                                        <label for="travel_place">Place Visited</label>
                                         <input type="text" class="form-control" value="{{ isset($data) ? $data->travel_place : '' }}" name="travel_place"
                                             aria-describedby="help" placeholder="Enter Place Visited">
                                         @if ($errors->has('travel_place'))
@@ -384,7 +390,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group contact_status_yes_class">
-                                    <label for="contact_last_date"></label>Date of last contact</label>
+                                    <label for="contact_last_date">Date of last contact</label>
                                     <input type="text" class="form-control" value="{{ isset($data) ? $data->contact_last_date : '' }}" name="contact_last_date"
                                            aria-describedby="help" placeholder="Enter Date of last contact" id="contact_last_date">
                                     @if ($errors->has('contact_last_date'))
@@ -393,7 +399,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label>has the contact visited social gathering/meetings/events/temples/markets/halls etc.</label>
+                                    <label>Has the contact visited social gathering/meetings/events/temples/markets/halls etc.</label>
                                     <div class="control-group">
                                         <label class="radio-inline">
                                             <input type="radio" name="contact_social_status" class="contact_social_status"
@@ -415,10 +421,10 @@
                                 </div>
                             </div>
 
+                            <hr>
 
                             <div class="part-four">
                                 <h4>Vaccination Status</h4><br>
-
                                 <div class="form-group">
                                     <label class="control-label">Has the Case under Investigation received SARS-CoV-2 vaccine (COVID-19 vaccine)?</label>
                                     <div class="control-group">
@@ -441,14 +447,10 @@
                                     <div class="form-group">
                                         <label>Name of the vaccine (Product/Brand Name)</label>
                                         <select name="dose_one_name" class="form-control" id="dose_one_name">
-                                            <option {{ isset($data) && $data->dose_one_name == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
-                                            <option {{ isset($data) && $data->dose_one_name == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
-                                            <option {{ isset($data) && $data->dose_one_name == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
-                                            <option {{ isset($data) && $data->dose_one_name == '3' ? "selected" : "" }} value="3">Pfizer</option>
-                                            <option {{ isset($data) && $data->dose_one_name == '4' ? "selected" : "" }} value="4">Moderna</option>
-                                            <option {{ isset($data) && $data->dose_one_name == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
-                                            <option {{ isset($data) && $data->dose_one_name == '6' ? "selected" : "" }} value="6">Johnson & Johnson</option>
-                                            <option {{ isset($data) && $data->dose_one_name == '0' ? "selected" : "" }} value="10">Other</option>
+                                            <option value="" {{ isset($data) && $data->dose_one_name == '' ? "selected" : "" }}>-- Select Option --</option>
+                                            @foreach($vaccines as $vaccine)
+                                            <option value="{{ $vaccine->id }}" {{ isset($data) && $data->dose_one_name == $vaccine->id ? "selected" : "" }}>{{ $vaccine->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="col-12 table-responsive">
@@ -468,7 +470,7 @@
                                                         <input type="text" class="form-control" name="dose_one_date" id="dose_one_date" value="{{ isset($data) ? $data->dose_one_date : '' }}">
                                                     </td>
                                                 </tr>
-                                                <tr class="table-sars-cov-tr">
+                                                <tr class="not-jonson">
                                                     <td>
                                                         Dose 2
                                                     </td>
@@ -486,8 +488,8 @@
                             <div class="part-four">
                                 <h4>Contact Management</h4><br>
 
-                                <label> (Measures taken:)</label><br>
                                 <div class="form-group">
+                                    <label>Measures taken</label><br>
                                     <select name="measures_taken" class="form-control measures_taken">
                                         <option value="" disabled selected>Select Measures Taken</option>
                                         <option value="1" {{ isset($data) && $data->measures_taken == "1" ? 'selected' : "" }}>Home quarantine</option>
@@ -529,6 +531,8 @@
                                 </div>
                             </div>
 
+                            <hr>
+
                             <div class="part-four">
                                 <h4>Test status of the contact</h4><br>
 
@@ -549,7 +553,7 @@
                                 <div class="test_status_yes_class">
 
                                     <div class="form-group">
-                                        <label class="control-label">test conducted</label>
+                                        <label class="control-label">Test conducted</label>
                                         <div class="control-group">
                                             <label class="radio-inline">
                                                 <input type="radio" name="test_type" class="test_type"
@@ -577,7 +581,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label">test result</label>
+                                        <label class="control-label">Test result</label>
                                         <div class="control-group">
                                             <label class="radio-inline">
                                                 <input type="radio" name="test_type" class="test_type"
@@ -595,7 +599,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label>test Result Date </label><br>
+                                        <label>Test Result Date </label><br>
                                         <input type="text" class="form-control" value="{{ isset($data) ? $data->result_date : '' }}" name="result_date"
                                                 aria-describedby="help" placeholder="Enter test Result Date" id="result_date"
                                         >
@@ -606,10 +610,17 @@
                                 </div>
                             </div>
 
+                            <hr>
+
                             <div class="part-four">
                                 <h4>Data Collector information</h4><br>
 
                                 <div class="form-group">
+                                    <h4>Data collector information</h4><br>
+                                    <b>Name:</b> {{ isset($data) && $data->checkedBy ? $data->checkedBy->name : '' }}<br>
+                                    <b>Telephone Number:</b> {{ isset($data) && $data->checkedBy ? $data->checkedBy->phone : '' }}<br>
+                                    <b>Instituton:</b> {{ isset($data) && $data->checkedBy ? $data->checkedBy->getHealthpost($data->hp_code) : '' }}<br>
+                                    <b>Email:</b> {{ isset($data) && $data->checkedBy ? $data->checkedBy->user->email : '' }}<br>
                                     <label>Form Completion Date </label><br>
                                     <input type="text" class="form-control" value="{{ isset($data) ? $data->completion_date : '' }}" name="completion_date"
                                             aria-describedby="help" placeholder="Enter Form Completion Date" id="completion_date"
@@ -693,6 +704,32 @@
         }
     }
 
+    vaccineJohnsonCheck();
+    $('#dose_one_name').on('change', function() {
+        vaccineJohnsonCheck();
+    });
+    function vaccineJohnsonCheck() {
+        if($('#dose_one_name').val() == '6'){
+            $('.not-jonson').hide();
+        }
+        else {
+            $('.not-jonson').show();
+        }
+    }
+
+    stationCheck();
+    $('.healthworker_station').on('change', function() {
+        stationCheck();
+    });
+    function stationCheck() {
+        if($('.healthworker_station').val() == '0'){
+            $('.healthworker_station_other_class').show();
+        }
+        else {
+            $('.healthworker_station_other_class').hide();
+        }
+    }
+
     travelled_14_days();
     $('.travelled_14_days').on('change', function() {
         travelled_14_days();
@@ -761,7 +798,7 @@
         if($('.measures_taken').val() == '0'){
             $('.measures_taken_other_class').show();
             $('.measures_taken_hospital_class').hide();
-        }else if($('.measures_taken').val() == '3'){
+        }else if($('.measures_taken').val() == '2' || $('.measures_taken').val() == '3'){
             $('.measures_taken_hospital_class').show();
             $('.measures_taken_other_class').hide();
         }else{
@@ -815,6 +852,9 @@
         language: 'english',
     });
     $('#completion_date').nepaliDatePicker({
+        language: 'english',
+    });
+    $('#healthworker_last_date').nepaliDatePicker({
         language: 'english',
     });
 

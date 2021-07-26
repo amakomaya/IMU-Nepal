@@ -82,14 +82,10 @@
                                     <div class="form-group">
                                         <label>Name of the vaccine (Product/Brand Name)</label>
                                         <select name="dose_one_name" class="form-control" id="dose_one_name">
-                                            <option {{ isset($data) && $data->dose_one_name == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
-                                            <option {{ isset($data) && $data->dose_one_name == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
-                                            <option {{ isset($data) && $data->dose_one_name == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
-                                            <option {{ isset($data) && $data->dose_one_name == '3' ? "selected" : "" }} value="3">Pfizer</option>
-                                            <option {{ isset($data) && $data->dose_one_name == '4' ? "selected" : "" }} value="4">Moderna</option>
-                                            <option {{ isset($data) && $data->dose_one_name == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
-                                            <option {{ isset($data) && $data->dose_one_name == '6' ? "selected" : "" }} value="6">Johnson & Johnson</option>
-                                            <option {{ isset($data) && $data->dose_one_name == '0' ? "selected" : "" }} value="10">Other</option>
+                                            <option value="" {{ isset($data) && $data->dose_one_name == '' ? "selected" : "" }}>-- Select Option --</option>
+                                            @foreach($vaccines as $vaccine)
+                                            <option value="{{ $vaccine->id }}" {{ isset($data) && $data->dose_one_name == $vaccine->id ? "selected" : "" }}>{{ $vaccine->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
     
@@ -111,7 +107,7 @@
                                                             <input type="text" class="form-control" name="dose_one_date" id="dose_one_date" value="{{ $data->dose_one_date }}">
                                                         </td>
                                                     </tr>
-                                                    <tr class="table-sars-cov-tr">
+                                                    <tr class="not-jonson">
                                                         <td>
                                                             Dose 2
                                                         </td>
@@ -123,8 +119,10 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <hr>
                                 
-                                <h4>VII. Information on Close Contact(s) of Case under Investigation</h4><br>
+                                <h4>VII. Information on <b>Close Contact(s) of Case</b> under Investigation</h4><br>
 
                                 <div class="form-group">
                                     <label>Identify and list the following categories of persons who were exposed upto 2 days before and 10 days after the development of the symptoms OR 10 days before and 10 days after the date of sample collection in case of asymptomatic</label><br>
@@ -279,6 +277,8 @@
                                     </div>
                                 </div>
 
+                                <hr>
+
                                 <div class="form-group">
                                     <label>Did the case under investigation travelled in public/ private vehicle in the reference period?</label><br>
                                     <label class="radio-inline">
@@ -414,6 +414,8 @@
                                     </div>
                                 </div>
 
+                                <hr>
+
                                 <div class="form-group">
                                     <label>Did the case under investigation provide direct care to anyone other than household contacts above in the reference period?</label><br>
                                     <label class="radio-inline">
@@ -548,6 +550,8 @@
                                         </table>
                                     </div>
                                 </div>
+
+                                <hr>
 
                                 <div class="form-group">
                                     <label>Did the case travel or attend school/workplace/hospitals/health care institutions/social gathering(s) during the reference period</label><br>
@@ -697,6 +701,10 @@
                             <div class="part-three">
                                 <div class="form-group">
                                     <h4>Data collector information</h4><br>
+                                    <b>Name:</b> {{ $data->checkedBy ? $data->checkedBy->name : '' }}<br>
+                                    <b>Telephone Number:</b> {{ $data->checkedBy ? $data->checkedBy->phone : '' }}<br>
+                                    <b>Instituton:</b> {{ $data->checkedBy ? $data->checkedBy->getHealthpost($data->hp_code) : '' }}<br>
+                                    <b>Email:</b> {{ $data->checkedBy ? $data->checkedBy->user->email : '' }}<br>
                                     <label>Form completion date</label><br>
                                     <input type="text" class="form-control" value="{{ $data ? $data->completion_date : '' }}" name="completion_date" id="completion_date"
                                             aria-describedby="help" placeholder="Enter Form Completion Date">
@@ -774,7 +782,6 @@
     });
 
     if($('#onset_date_bak').val() == ''){
-        console.log('1');
         if($('#close_ref_period_from_np_bak').val() == ''){
             $('#close_ref_period_from_np').val(getPastDate($('#sample_collection_date').val(), 10));
         }
@@ -783,8 +790,6 @@
         }
     }
     else{
-
-
         if($('#close_ref_period_from_np_bak').val() == ''){
             $('#close_ref_period_from_np').val(getOnsetPastDate($('#onset_date_bak').val(), 2));
         }
@@ -852,6 +857,19 @@
         }
     }
 
+    vaccineJohnsonCheck();
+    $('#dose_one_name').on('change', function() {
+        vaccineJohnsonCheck();
+    });
+    function vaccineJohnsonCheck() {
+        if($('#dose_one_name').val() == '6'){
+            $('.not-jonson').hide();
+        }
+        else {
+            $('.not-jonson').show();
+        }
+    }
+
     travel_vehicle();
     $('.travel_vehicle').on('change', function() {
         travel_vehicle();
@@ -914,7 +932,7 @@
         for(var i=0; i<7; i++){
             result += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
-        result = org_id + '-' + result;
+        result = org_id + '-' + '{{ Carbon\Carbon::now()->format("ymd") }}' + '-' + result;
         return result;
     }
     
@@ -1039,6 +1057,97 @@
         }
         var $this = $(this);
         $this.parents(".table-school-reference-tr").remove();
+    });
+
+
+
+    $(function () {
+        $.validator.addMethod("nameCustom", function (value, element) {
+            return this.optional(element) || /^[a-zA-Z\.\'\-]{2,50}(?: [a-zA-Z\.\'\-]{2,50})+$/i.test(value);
+        }, "Name is invalid: Please enter a valid name.");
+
+        $.validator.addMethod("ageCustom", function (value, element) {
+            return this.optional(element) || /^(12[0-7]|1[01][0-9]|[1-9]?[0-9])$/i.test(value);
+        }, "Age is invalid: Please enter a valid age.");
+
+        $.validator.addMethod("phoneCustom", function (value, element) {
+            return this.optional(element) || /^((984|985|986|974|975|980|981|982|961|988|972|963)\d{7})|((097|095|081|053|084|083|029|056|096|089|093|010|026|041|068|049|094|064|079|027|046|087|091|076|061|036|025|066|077|099|044|057|023|021|069|055|037|075|024|067|051|086|082|071|033|031|092|047|038|063|035)(4|5|6)\d{5})|(01)(4|5|6)\d{6}$/i.test(value);
+        }, "Contact number is invalid: Please enter a valid phone number.");
+        $("form[name='createCase']").validate({
+            // Define validation rules
+            rules: {
+                sars_cov2_vaccinated: {
+                    required: true
+                },
+                close_ref_period_from_np: {
+                    required: true
+                },
+                close_ref_period_to_np: {
+                    required: true
+                },
+                household_count: {
+                    required: true,
+                    digits: true,
+                },
+                "household_details_name[]": {
+                    nameCustom: true
+                },
+                "household_details_age[]": {
+                    digits: true,
+                    maxlength: 3,
+                },
+                "household_details_phone[]": {
+                    digits: true,
+                    minlength: 7,
+                    maxlength: 10,
+                },
+                travel_vehicle: {
+                    required: true
+                },
+                "travel_vehicle_details_name[]": {
+                    nameCustom: true
+                },
+                "travel_vehicle_details_age[]": {
+                    digits: true,
+                    maxlength: 3,
+                },
+                "travel_vehicle_details_phone[]": {
+                    digits: true,
+                    minlength: 7,
+                    maxlength: 10,
+                },
+                other_direct_care: {
+                    required: true
+                },
+                "other_direct_care_details_name[]": {
+                    nameCustom: true
+                },
+                "other_direct_care_details_age[]": {
+                    digits: true,
+                    maxlength: 3,
+                },
+                "other_direct_care_details_phone[]": {
+                    digits: true,
+                    minlength: 7,
+                    maxlength: 10,
+                },
+                other_attend_social: {
+                    required: true
+                },
+                completion_date: {
+                    required: true
+                }
+            },
+            // Specify validation error messages
+            messages: {
+                name: "Please provide a valid name.",
+                age: "Please provide a valid age.",
+
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
     });
 
     </script>

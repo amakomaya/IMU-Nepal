@@ -24,4 +24,9 @@ class CictFollowUp extends Model
         'date_of_follow_up_10', 'no_symptoms_10', 'fever_10', 'runny_nose_10', 'cough_10', 'sore_throat_10', 'breath_10', 'symptoms_other_10',
         'high_exposure', 'completion_date'
     ];
+
+    public function checkedBy()
+    {
+        return $this->belongsTo(OrganizationMember::class, 'checked_by', 'token');
+    }
 }
