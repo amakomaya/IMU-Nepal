@@ -236,7 +236,7 @@ Route::get('/admin/cict-tracing/report/{case_id}', 'Backend\CictTracingControlle
 
 
 Route::get('/admin/sid-search', 'AdminController@sidSearch')->name('admin.sid.search');
-Route::get('/admin/sid-search/update', 'AdminController@sidUpdate')->name('admin.sid.update');
+Route::post('/admin/sid-search/update/{id}', 'AdminController@sidUpdate')->name('admin.sid.update');
 Route::get('/admin/remaining-beds', 'Backend\WomanController@getRemainingBeds');
 
 
