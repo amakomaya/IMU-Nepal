@@ -6,7 +6,9 @@
     Request::segment(2) == 'positive-patients' || Request::segment(2) == 'positive-patients-old' ||
     Request::segment(2) == 'negative-patients-antigen' || Request::segment(2) == 'negative-patients-antigen-old' ||
     Request::segment(2) == 'negative-patients' || Request::segment(2) == 'negative-patients-old' ||
-    Request::segment(2) == 'situation-report')
+    Request::segment(2) == 'situation-report' ||
+    Request::segment(2) == 'district-wise-cases-overview'
+    )
     class="active" @endif>
     <a href="#">
         <i class="fa fa-users" aria-hidden="true"></i>

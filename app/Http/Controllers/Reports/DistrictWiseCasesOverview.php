@@ -38,15 +38,24 @@ class DistrictWiseCasesOverview extends Controller
             }
 
             $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->province_id;
-
-            $data = DB::select(DB::raw("SELECT districts.district_name, ancs.result, ancs.service_for, ancs.sample_test_date_en, COUNT(*) as total FROM `women` 
+            $province_id = 3;
+            $reports = DB::select(DB::raw("SELECT districts.district_name, ancs.result, ancs.service_for FROM `women` 
 LEFT JOIN ancs ON women.token = ancs.woman_token
 LEFT JOIN districts on women.district_id = districts.id
-WHERE women.province_id = :province_id AND ancs.result in (3,4)
-GROUP BY districts.district_name, ancs.result, ancs.service_for, ancs.sample_test_date_en"), array(
+WHERE women.province_id = :province_id AND ancs.result in (3,4) and ancs.reporting_date_en = :date"), array(
                 'province_id' => $province_id,
+                'date' => $date_chosen
             ));
-            return view('backend.reports.district-wise', compact('data'));
+            $reports = collect($reports)->groupBy('district_name');
+            $data = [];
+            foreach($reports as $key => $report) {
+                $data[$key]['district_name'] = $key;
+                $data[$key]['pcr_postive_cases_count'] = $report->where('service_for', '1')->where('result', 3)->count();
+                $data[$key]['pcr_negative_cases_count'] = $report->where('service_for', '1')->where('result', 4)->count();
+                $data[$key]['antigen_postive_cases_count'] = $report->where('service_for', '2')->where('result', 3)->count();
+                $data[$key]['antigen_negative_cases_count'] = $report->where('service_for', '2')->where('result', 4)->count();
+            }
+            return view('backend.sample.report.district-wise', compact('data'));
         }
         return redirect()->back();
     }
