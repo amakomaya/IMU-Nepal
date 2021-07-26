@@ -1094,6 +1094,15 @@
     });
 
 
+    // var household_details = $('input[name^="household_details"]');
+    // household_details.filter('input[name$="[name]"]').each(function() {
+    //     $(this).rules("add", {
+    //         required: true,
+    //         messages: {
+    //             required: "Name is Mandatory"
+    //         }
+    //     });
+    // });
 
     $(function () {
         $.validator.addMethod("nameCustom", function (value, element) {
