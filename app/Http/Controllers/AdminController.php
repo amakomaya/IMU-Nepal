@@ -189,10 +189,12 @@ class AdminController extends Controller
                 $response = FilterRequest::filter($request);
                 $hpCodes = GetHealthpostCodes::filter($response);
 
-                $ancs = SampleCollection::with('woman', 'labreport')
+                $ancs = SampleCollection::with('woman')
                     ->whereIn('hp_code', $hpCodes)
                     ->where('token', $request->sid)
                     ->first();
+
+                // dd($ancs);
 
             } else {
                 $ancs = [1];
@@ -205,7 +207,8 @@ class AdminController extends Controller
         }
     }
 
-    public function sidUpdate(Request $request) {
+    public function sidUpdate(Request $request, $id) {
+        // dd($request->all());
         // if(Auth::user()->role == 'main' || Auth::user()->role == 'province') {
             $reson_for_testing = $request->reson_for_testing ? "[" . implode(', ', $request->reson_for_testing) . "]" : '[]';
             if($request->symptoms_recent == 1) {
@@ -259,9 +262,10 @@ class AdminController extends Controller
                     'symptoms_comorbidity' => $symptoms_comorbidity,
                     'symptoms_comorbidity_specific' => $symptoms_comorbidity_specific
                 ]);
+        // dd($id);
                 
                 if($request->sample_recv_date != null && $request->remaining_token != null) {
-                    SampleCollection::where('token', $request->sid)->first()->update([
+                    SampleCollection::where('token', $id)->first()->update([
                       'result' => $request->sample_test_result,
                       'received_date_np' => $request->sample_recv_date,
                       'received_date_en' => $sample_recv_date_en,
@@ -269,14 +273,16 @@ class AdminController extends Controller
                       'sample_test_date_en' => $sample_test_date_en,
                       'lab_token' => $request->lab_tests_token
                     ]);
-                    $lab_id = LabTest::where('sample_token', $request->sid)->first()->id;
-                    LabTest::where('id', $lab_id)->update([
-                        'sample_recv_date' => $request->sample_recv_date,
-                        'sample_test_date' => $request->sample_test_date,
-                        'sample_test_time' => $request->sample_test_time,
-                        'sample_test_result' => $request->sample_test_result,
-                        'token' => $request->lab_tests_token
-                    ]);
+                    $lab_id = LabTest::where('sample_token', $id)->first();
+                    if($lab_id){
+                        $lab_id->update([
+                            'sample_recv_date' => $request->sample_recv_date,
+                            'sample_test_date' => $request->sample_test_date,
+                            'sample_test_time' => $request->sample_test_time,
+                            'sample_test_result' => $request->sample_test_result,
+                            'token' => $request->lab_tests_token
+                        ]);
+                    }
                 }
 
                 $request->session()->flash('message', 'Data updated successfully');
