@@ -570,7 +570,7 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
         foreach ($organiation_member_tokens as $item) {
             array_push($labTokens, $item."-".$value['token']);
         }
-        $find_test = LabTest::whereIn('token', $labTokens)->last();
+        $find_test = LabTest::whereIn('token', $labTokens)->latest()->first();
 
 //        $value['token'] = auth()->user()->token . '-' . $value['token'];
 //        $find_test = LabTest::where('token', $value['token'])->first();
