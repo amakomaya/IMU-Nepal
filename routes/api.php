@@ -555,8 +555,12 @@ Route::post('/v1/received-in-lab', function (Request $request) {
 Route::post('/v1/result-in-lab-from-web', function (Request $request) {
     $value = $request->all();
     $user = auth()->user();
+    $sample_test_date_np_array = explode("-", $value['sample_test_date']);
+    $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDayNepToEng();
+    $reporting_date_en = explode("-", Carbon::now()->format('Y-m-d'));
+    $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
+
     try {
-<<<<<<< HEAD
         $userToken = auth()->user()->token;
         $healthWorker = OrganizationMember::where('token', $userToken)->first();
         $hpCode = $healthWorker->hp_code;
@@ -566,22 +570,14 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
         foreach ($organiation_member_tokens as $item) {
             array_push($labTokens, $item."-".$value['token']);
         }
-        $find_test = LabTest::whereIn('token', $labTokens)->first();
+        $find_test = LabTest::whereIn('token', $labTokens)->last();
 
 //        $value['token'] = auth()->user()->token . '-' . $value['token'];
 //        $find_test = LabTest::where('token', $value['token'])->first();
-        $value['token'] = $find_test->token;
-=======
-        $value['token'] = auth()->user()->token . '-' . $value['token'];
-        $find_test = LabTest::where('token', $value['token'])->latest()->get();
->>>>>>> origin/master
-        $sample_test_date_np_array = explode("-", $value['sample_test_date']);
-        $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDayNepToEng();
-
-        $reporting_date_en = explode("-", Carbon::now()->format('Y-m-d'));
-        $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
         if ($find_test) {
-          //
+
+            $value['token'] = $find_test->token;
+            //
             SampleCollection::where('token', $find_test->sample_token)
             ->update([
                 'result' => $value['sample_test_result'],
