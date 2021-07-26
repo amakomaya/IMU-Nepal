@@ -211,9 +211,12 @@ Route::get('/v1/client', function (Request $request) {
 
         $response['nationality'] = $row->nationality ?? '';
         $response['id_card_detail'] = $row->id_card_detail ?? '';
+        $response['id_card_type'] = $row->id_card_type ?? '';
+        $response['id_card_type_other'] = $row->id_card_type_other ?? '';
         $response['id_card_issue'] = $row->id_card_issue ?? '';
         $response['name_of_poe'] = $row->name_of_poe ?? '';
         $response['covid_vaccination_details'] = $row->covid_vaccination_details ?? '';
+        $response['dose_details'] = $row->dose_details ?? '';
         $response['nearest_contact'] = $row->nearest_contact ?? '';
 
         if ($response['result'] == '3') {
@@ -1088,3 +1091,8 @@ Route::get('/v1/server-date', 'Data\Api\DateController@index');
 Route::post('/v1/suspected-case-delete/{id}', 'Data\Api\WomenController@deleteSuspectedCase');
 Route::post('/v1/lab-suspected-case-delete/{id}', 'Data\Api\WomenController@deleteLabSuspectedCase');
 Route::post('/v1/lab-sample-delete/{id}', 'Data\Api\WomenController@deleteLabSample');
+
+Route::get('/v1/vaccines', function(){
+    $response = \App\Models\Vaccine::get();
+    return response()->json($response);
+});
