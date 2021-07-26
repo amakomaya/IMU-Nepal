@@ -42,7 +42,7 @@ class DistrictWiseCasesOverview extends Controller
             $reports = DB::select(DB::raw("SELECT districts.district_name, ancs.result, ancs.service_for FROM `women` 
 LEFT JOIN ancs ON women.token = ancs.woman_token
 LEFT JOIN districts on women.district_id = districts.id
-WHERE women.province_id = :province_id AND ancs.result in (3,4) and ancs.reporting_date_en = :date"), array(
+WHERE women.province_id = :province_id AND ancs.result in (3,4) and Date(ancs.reporting_date_en) = :date"), array(
                 'province_id' => $province_id,
                 'date' => $date_chosen
             ));
