@@ -581,7 +581,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label">test result</label>
+                                        <label class="control-label">Test result</label>
                                         <div class="control-group">
                                             <label class="radio-inline">
                                                 <input type="radio" name="test_type" class="test_type"
@@ -599,7 +599,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label>test Result Date </label><br>
+                                        <label>Test Result Date </label><br>
                                         <input type="text" class="form-control" value="{{ isset($data) ? $data->result_date : '' }}" name="result_date"
                                                 aria-describedby="help" placeholder="Enter test Result Date" id="result_date"
                                         >
@@ -616,6 +616,11 @@
                                 <h4>Data Collector information</h4><br>
 
                                 <div class="form-group">
+                                    <h4>Data collector information</h4><br>
+                                    <b>Name:</b> {{ isset($data) && $data->checkedBy ? $data->checkedBy->name : '' }}<br>
+                                    <b>Telephone Number:</b> {{ isset($data) && $data->checkedBy ? $data->checkedBy->phone : '' }}<br>
+                                    <b>Instituton:</b> {{ isset($data) && $data->checkedBy ? $data->checkedBy->getHealthpost($data->hp_code) : '' }}<br>
+                                    <b>Email:</b> {{ isset($data) && $data->checkedBy ? $data->checkedBy->user->email : '' }}<br>
                                     <label>Form Completion Date </label><br>
                                     <input type="text" class="form-control" value="{{ isset($data) ? $data->completion_date : '' }}" name="completion_date"
                                             aria-describedby="help" placeholder="Enter Form Completion Date" id="completion_date"

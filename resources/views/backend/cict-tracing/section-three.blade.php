@@ -701,6 +701,10 @@
                             <div class="part-three">
                                 <div class="form-group">
                                     <h4>Data collector information</h4><br>
+                                    <b>Name:</b> {{ $data->checkedBy ? $data->checkedBy->name : '' }}<br>
+                                    <b>Telephone Number:</b> {{ $data->checkedBy ? $data->checkedBy->phone : '' }}<br>
+                                    <b>Instituton:</b> {{ $data->checkedBy ? $data->checkedBy->getHealthpost($data->hp_code) : '' }}<br>
+                                    <b>Email:</b> {{ $data->checkedBy ? $data->checkedBy->user->email : '' }}<br>
                                     <label>Form completion date</label><br>
                                     <input type="text" class="form-control" value="{{ $data ? $data->completion_date : '' }}" name="completion_date" id="completion_date"
                                             aria-describedby="help" placeholder="Enter Form Completion Date">

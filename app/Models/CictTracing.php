@@ -57,4 +57,9 @@ class CictTracing extends Model
         return $this->belongsTo(SuspectedCase::class, 'woman_token', 'token');
     }
 
+    public function checkedBy()
+    {
+        return $this->belongsTo(OrganizationMember::class, 'checked_by', 'token');
+    }
+
 }

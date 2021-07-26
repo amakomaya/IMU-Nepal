@@ -25,4 +25,9 @@ class CictContact extends Model
         'test_status', 'collection_date', 'test_type', 'result_date',
         'completion_date'
     ];
+
+    public function checkedBy()
+    {
+        return $this->belongsTo(OrganizationMember::class, 'checked_by', 'token');
+    }
 }

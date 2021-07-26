@@ -284,7 +284,7 @@ class CictTracingController extends Controller
     {
         $vaccines = Vaccine::get();
         if($request->case_id){
-            $data = CictTracing::with(['suspectedCase' => function($q){
+            $data = CictTracing::with(['checkedBy', 'suspectedCase' => function($q){
                     $q->with('ancs', 'latestAnc');
                 }])->where('case_id', $request->case_id)->first();
             if($data){
@@ -469,7 +469,7 @@ class CictTracingController extends Controller
     {
         $vaccines = Vaccine::get();
         if($request->case_id){
-            $data = CictContact::where('case_id', $request->case_id)->first();
+            $data = CictContact::with('checkedBy')->where('case_id', $request->case_id)->first();
             if($data){
                 return view('backend.cict-tracing.b-one-form.part-two', compact('data', 'vaccines'));
             } else{
@@ -502,7 +502,7 @@ class CictTracingController extends Controller
     }
 
     public function followUp(Request $request){
-        $cict_follow_up = CictFollowUp::where('case_id', $request->case_id)->first();
+        $cict_follow_up = CictFollowUp::with('checkedBy')->where('case_id', $request->case_id)->first();
         $cict_contact = CictContact::where('case_id', $request->case_id)->first();
         $cict_tracing = CictTracing::where('case_id', $request->parent_case_id)->first();
         if($cict_follow_up){
