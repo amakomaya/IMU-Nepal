@@ -147,6 +147,15 @@
                         <span class="label label-info pull-right" title="Lab"> Lab </span>
                     </a>
                 </li>
+                @if(auth()->user()->role == 'province')
+                <li>
+                    <a href="{{ route('report.district-wise-cases-overview') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        District Wise
+                        <span class="label label-primary pull-right" title="Lab"> Lab </span>
+                    </a>
+                </li>
+                @endif
             </ul>
         </li>
     </ul>
