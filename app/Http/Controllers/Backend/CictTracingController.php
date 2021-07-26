@@ -12,6 +12,7 @@ use App\Models\SuspectedCase;
 use App\Models\SampleCollection;
 use App\Models\OrganizationMember;
 use App\Models\Vaccine;
+use Carbon\Carbon;
 
 class CictTracingController extends Controller
 {
@@ -321,7 +322,7 @@ class CictTracingController extends Controller
                     if($request->household_details_case_id[$i]){
                         $household_details['case_id'] = $request->household_details_case_id[$i];
                     }else{
-                        $household_details['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id . '-' . strtoupper(bin2hex(random_bytes(3)));
+                        $household_details['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id .'-' . Carbon::now()->format('ymd') . '-' . strtoupper(bin2hex(random_bytes(3)));
                     }
                     array_push($household_details_array, $household_details);
                 }

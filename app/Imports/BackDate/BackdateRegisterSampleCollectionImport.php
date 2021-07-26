@@ -127,7 +127,7 @@ class BackdateRegisterSampleCollectionImport implements ToModel, WithChunkReadin
           'swab_collection_conformation' => '1',
           'cases' => '0',
           'case_type' => '1',
-          'case_id' => $this->healthWorker->id . '-' . strtoupper(bin2hex(random_bytes(3))),
+          'case_id' => $this->healthWorker->id . '-' . Carbon::now()->format('ymd') . '-' . strtoupper(bin2hex(random_bytes(3))),
           'register_date_en' => $backDateEn,
           'register_date_np' => $backDateNp
         ]);
