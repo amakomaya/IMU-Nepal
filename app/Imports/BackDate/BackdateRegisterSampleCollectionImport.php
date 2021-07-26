@@ -37,10 +37,10 @@ class BackdateRegisterSampleCollectionImport implements ToModel, WithChunkReadin
           return Province::select(['id', 'province_name'])->get();
         });
         $districtList = Cache::remember('district-list', 48*60*60, function () {
-          return District::select(['id', 'district_name'])->get();
+          return District::select(['id', 'district_name', 'province_id' ])->get();
         });
         $municipalityList = Cache::remember('municipality-list', 48*60*60, function () {
-          return Municipality::select(['id', 'municipality_name'])->get();
+          return Municipality::select(['id', 'municipality_name', 'province_id', 'district_id', 'municipality_name_np', 'type', 'total_no_of_wards'])->get();
         });
         $provinces = $districts = $municipalities = [];
         $provinceList->map(function ($province) use (&$provinces) {
@@ -94,6 +94,16 @@ class BackdateRegisterSampleCollectionImport implements ToModel, WithChunkReadin
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
         $backDateEn = $row['date_of_sample_collectionyyyy_mm_dd_ad'];
+        $isValidDateEn = $this->testValidEnDate($backDateEn);
+        if (!$isValidDateEn) {
+          $error = ['date_of_sample_collectionyyyy_mm_dd_ad' => 'Invalid Date. Date must be in AD & YYYY-MM-DD Format'];
+            $failures[] = new Failure(1, 'date_of_sample_collectionyyyy_mm_dd_ad', $error, $row);
+            throw new ValidationException(
+                \Illuminate\Validation\ValidationException::withMessages($error),
+                $failures
+            );
+            return;
+        }
         list($bdYearEn, $bdMonthEn, $bdDayEn) = explode('-', $backDateEn);
         $backDateNp = Calendar::eng_to_nep($bdYearEn,$bdMonthEn,$bdDayEn)->getYearMonthDay();
         $suspectedCase = SuspectedCase::create([
@@ -138,6 +148,7 @@ class BackdateRegisterSampleCollectionImport implements ToModel, WithChunkReadin
         ];
         $id = $this->healthWorker->id;
         $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber)->format('H:i:s'));
+        $swabId = generate_unique_sid($swabId);
         $sampleCollectionData['token'] = $swabId;
         if ($sampleCollectionData['service_for'] === '1')
             $sampleCollectionData['sample_type'] = $row['sample_type'];
@@ -145,6 +156,24 @@ class BackdateRegisterSampleCollectionImport implements ToModel, WithChunkReadin
         return;
     }
   
+    private function testValidEnDate($date){
+      if($date) {
+        if (preg_match ("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/", $date, $parts))
+        {
+          $year = $parts[1];
+          $month = $parts[2];
+          $day = $parts[3];
+          if (checkdate($month ,$day, $year)) {
+            if((int)$year <= Carbon::now()->year) {
+              return true;
+            }
+          }
+
+        }
+      }
+      return false;
+    }
+
     private function convertTimeToSecond(string $time): int
     {
         $d = explode(':', $time);

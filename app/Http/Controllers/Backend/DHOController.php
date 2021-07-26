@@ -14,7 +14,7 @@ use App\Http\Requests\DHORequest;
 use App\Models\DistrictInfo;
 use App\User;
 use Auth;
-
+use Illuminate\Support\Facades\Cache;
 class DHOController extends Controller
 {
     public function __construct()
@@ -45,7 +45,9 @@ class DHOController extends Controller
         //     return redirect('/admin');
         // }
 
-        $districts = District::all();
+        $districts = Cache::remember('district-list', 48*60*60, function () {
+          return District::select(['id', 'district_name', 'province_id' ])->get();
+        });
 
         if (Auth::user()->role == "province") {
             $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
@@ -107,7 +109,9 @@ class DHOController extends Controller
 
         $data = $this->findModel($id);
         $user = $this->findModelUser($data->token);
-        $districts = District::all();
+        $districts = Cache::remember('district-list', 48*60*60, function () {
+          return District::select(['id', 'district_name', 'province_id' ])->get();
+        });
         if (Auth::user()->role == "province") {
             $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
             $districts = $districts->where('province_id', $province_id);

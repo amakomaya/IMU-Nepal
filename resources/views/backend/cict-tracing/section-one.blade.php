@@ -165,7 +165,9 @@
                                         <select name="province_id" class="form-control"
                                                 onchange="provinceOnchange($(this).val())">
                                                 <option value="">-- Select Province --</option>
-                                            @foreach(App\Models\Province::all() as $province)
+                                            @foreach(\Illuminate\Support\Facades\Cache::remember('province-list', 48*60*60, function () {
+                                              return Province::select(['id', 'province_name'])->get();
+                                            }) as $province)
                                                 @if($province_id == $province->id)
                                                     @php($selectedProvince = "selected")
                                                 @else

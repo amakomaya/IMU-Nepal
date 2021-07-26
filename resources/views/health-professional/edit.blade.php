@@ -158,7 +158,9 @@
                                         <div class="form-group col-sm-3" id="province">
                                             <select name="province_id" id="province_id" class="form-control"
                                                     onchange="cProvinceOnchange($(this).val())">
-                                                @foreach(App\Models\province::all() as $province)
+                                                @foreach(\Illuminate\Support\Facades\Cache::remember('province-list', 48*60*60, function () {
+                                                  return Province::select(['id', 'province_name'])->get();
+                                                }) as $province)
                                                     @if($data->province_id == $province->id)
                                                         @php($selectedProvince = "selected")
                                                     @else
@@ -242,7 +244,9 @@
                                         <div class="form-group col-sm-3" id="perm_province">
                                             <select name="perm_province_id" id="perm_province_id" class="form-control"
                                                     onchange="pProvinceOnchange($(this).val(),false)">
-                                                @foreach(App\Models\province::all() as $province)
+                                                @foreach(\Illuminate\Support\Facades\Cache::remember('province-list', 48*60*60, function () {
+                                                  return Province::select(['id', 'province_name'])->get();
+                                                }) as $province)
                                                     @if($data->perm_province_id==$province->id)
                                                         @php($selectedPermProvince = "selected")
                                                     @else

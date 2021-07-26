@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\District;
+use Illuminate\Support\Facades\Cache;
 
 class DistrictController extends Controller
 {
@@ -15,7 +16,9 @@ class DistrictController extends Controller
           $district = District::where('province_id', $province_id)->get();
           return response()->json($district);
         } else {
-          $district = District::all();
+          $district = Cache::remember('district-list', 48*60*60, function () {
+            return District::select(['id', 'district_name', 'province_id' ])->get();
+          });
           return response()->json($district);
         }
     }

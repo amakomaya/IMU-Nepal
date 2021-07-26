@@ -335,6 +335,7 @@
         <button v-on:click="isHealthConditionAddHidden = false" type="button" class="btn btn-primary btn-sm pull-right"><i class="fa fa-plus" aria-hidden="true"></i>
           Add</button>
       </div>
+      <div class="clearfix visible-md visible-sm visible-xs"></div>
       <div class="form-group col-lg-4" :class="{ 'has-error': $v.data.self_free.$error }">
         <label class="control-label">Payment Provision *</label><br>
         <input type="radio" id="self" v-model.trim="data.self_free" value="1">
