@@ -66,7 +66,9 @@
                 <div class="form-group col-sm-3" id="province">
                     <select name="province_id" class="form-control" onchange="provinceOnchange($(this).val())">
                         <option value="">Select All Provinces</option>
-                        @foreach(\App\Models\province::all() as $province)
+                        @foreach(\Illuminate\Support\Facades\Cache::remember('province-list', 48*60*60, function () {
+                          return Province::select(['id', 'province_name'])->get();
+                        }) as $province)
 
                             <option value="{{$province->id}}" @if(request()->province_id == $province->id) selected @endif >{{$province->province_name}}</option>
                         @endforeach

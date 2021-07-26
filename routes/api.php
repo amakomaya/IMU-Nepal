@@ -519,6 +519,7 @@ Route::post('/v1/received-in-lab', function (Request $request) {
     $data = $request->all();
     $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
     $data['token'] = auth()->user()->token . '-' . $data['token'];
+    $data['token'] = generate_unique_lab_id_web($data['token']);
     $data['hp_code'] = $healthworker->hp_code;
     $data['checked_by_name'] = $healthworker->name;
     $data['checked_by'] = $healthworker->token;
@@ -552,17 +553,31 @@ Route::post('/v1/received-in-lab', function (Request $request) {
 });
 
 Route::post('/v1/result-in-lab-from-web', function (Request $request) {
-    $user = auth()->user();
     $value = $request->all();
-    try {
-        $value['token'] = auth()->user()->token . '-' . $value['token'];
-        $find_test = LabTest::where('token', $value['token'])->first();
-        $sample_test_date_np_array = explode("-", $value['sample_test_date']);
-        $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDayNepToEng();
+    $user = auth()->user();
+    $sample_test_date_np_array = explode("-", $value['sample_test_date']);
+    $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDayNepToEng();
+    $reporting_date_en = explode("-", Carbon::now()->format('Y-m-d'));
+    $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
 
-        $reporting_date_en = explode("-", Carbon::now()->format('Y-m-d'));
-        $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
+    try {
+        $userToken = auth()->user()->token;
+        $healthWorker = OrganizationMember::where('token', $userToken)->first();
+        $hpCode = $healthWorker->hp_code;
+
+        $organiation_member_tokens = OrganizationMember::where('hp_code', $hpCode)->pluck('token');
+        $labTokens = [];
+        foreach ($organiation_member_tokens as $item) {
+            array_push($labTokens, $item."-".$value['token']);
+        }
+        $find_test = LabTest::whereIn('token', $labTokens)->latest()->first();
+
+//        $value['token'] = auth()->user()->token . '-' . $value['token'];
+//        $find_test = LabTest::where('token', $value['token'])->first();
         if ($find_test) {
+
+            $value['token'] = $find_test->token;
+            //
             SampleCollection::where('token', $find_test->sample_token)
             ->update([
                 'result' => $value['sample_test_result'],
@@ -615,6 +630,7 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
   $value = $request->all();
   try {
       $value['token'] = $user->token . '-' . $value['token'];
+      $value['token'] = generate_unique_lab_id_web($value['token']);
       $sample_collection = SampleCollection::where('token', $value['sample_token'])->get()->first();
 
       $sample_test_date_np_array = explode("-", $value['sample_test_date']);
@@ -894,7 +910,7 @@ Route::get('/v1/ext/district', 'External\ExtDistrictController@index');
 Route::get('/v1/ext/municipality', 'External\ExtMunicipalityController@index');
 Route::get('/v1/ext/province', 'External\ExtProvinceController@index');
 
-Route::get('/v1/ext/cases', 'External\ExtCaseController@index');
+// Route::get('/v1/ext/cases', 'External\ExtCaseController@index');
 Route::post('/v1/ext/cases', 'External\ExtCaseController@store');
 Route::get('/v1/ext/get-case-detail', 'External\ExtCaseController@getCaseDetailBySample');
 Route::get('/v1/federal-info', 'PublicDataController@federalInfo');
@@ -992,7 +1008,7 @@ Route::post('/v1/cases-search-by-lab-and-id', function (Request $request) {
         ->leftJoin('ancs', 'lab_tests.sample_token', '=', 'ancs.token')
         ->leftJoin('women', 'ancs.woman_token', '=', 'women.token')
         ->leftJoin('municipalities', 'women.municipality_id', '=', 'municipalities.id')
-        ->select('ancs.service_for', \DB::raw('DATE(ancs.updated_at) AS date_of_positive'), 'women.name', 'women.age', 'women.age_unit', 'women.province_id', 'women.district_id', 'women.municipality_id', 'women.emergency_contact_one', 'women.sex', 'municipalities.municipality_name', 'women.tole', 'women.ward')->first();
+        ->select('ancs.service_for', \DB::raw('DATE(ancs.sample_test_date_np) AS date_of_positive'), 'women.name', 'women.age', 'women.age_unit', 'women.province_id', 'women.district_id', 'women.municipality_id', 'women.emergency_contact_one', 'women.sex', 'municipalities.municipality_name', 'women.tole', 'women.ward')->first();
 
     if(count($response_data) == 0){
         return response()->json(['message' => 'error']);

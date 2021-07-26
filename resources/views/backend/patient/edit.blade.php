@@ -53,7 +53,7 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <form action="{{ route('patient.update',$data->id) }}" method="POST" name="updateCase">
+                        <form action="{{ route('patient.update',$data->id) }}" method="POST" name="updateCase" id="updateCase" onsubmit="disableSubmit()">
                             @csrf
                             @method('PUT')
                             <h4>1. Personal Information </h4>
@@ -150,7 +150,9 @@
 {{--                                                @if(Auth::user()->role!="province" && Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")--}}
                                                     <option value="">Select All Provinces</option>
 {{--                                                @endif--}}
-                                                @foreach(App\Models\Province::all() as $province)
+                                                @foreach(\Illuminate\Support\Facades\Cache::remember('province-list', 48*60*60, function () {
+                                                  return Province::select(['id', 'province_name'])->get();
+                                                }) as $province)
                                                     @if($data->province_id == $province->id)
                                                         @php($selectedProvince = "selected")
                                                     @else
@@ -166,7 +168,9 @@
 {{--                                                @if(Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")--}}
                                                     <option value="">Select All Districts</option>
 {{--                                                @endif--}}
-                                                @foreach(App\Models\District::all() as $district)
+                                                @foreach(\Illuminate\Support\Facades\Cache::remember('district-list', 48*60*60, function () {
+                                                    return District::select(['id', 'district_name', 'province_id' ])->get();
+                                                  }) as $district)
                                                     @if($data->district_id==$district->id)
                                                         @php($selectedDistrict = "selected")
                                                     @else
@@ -183,7 +187,9 @@
 {{--                                                @if(Auth::user()->role!="municipality" && Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")--}}
                                                     <option value="">Select All Municipalities</option>
 {{--                                                @endif--}}
-                                                @foreach(\App\Models\Municipality::all() as $municipality)
+                                                @foreach(\Illuminate\Support\Facades\Cache::remember('municipality-list', 48*60*60, function () {
+                                                    return Municipality::select(['id', 'municipality_name', 'province_id', 'district_id', 'municipality_name_np', 'type', 'total_no_of_wards'])->get();
+                                                  }) as $municipality)
                                                     @if($data->municipality_id==$municipality->id)
                                                         @php($selectedMunicipality = "selected")
                                                     @else
@@ -521,9 +527,8 @@
                                     </table>
                                 </div>
                             @endif
-                            {!! rcForm::close('post') !!}
-
-                        </form>
+                            <button type="submit" id="submit-form" class="btn btn-primary btn-sm btn-block ">SAVE</button>
+                          </form>
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
@@ -657,7 +662,10 @@
                     },
                     occupation: {
                         required: true,
-                    }
+                    },
+                    // reson_for_testing: {
+                    //   required: true,
+                    // }
                 },
                 // Specify validation error messages
                 messages: {
@@ -667,8 +675,23 @@
                 },
                 submitHandler: function (form) {
                     form.submit();
+                },
+                errorPlacement: function(error, element) {
+                  enableSubmit();
                 }
             });
         });
+
+        function disableSubmit() {
+          $("#submit-form").prop('disabled', true);
+          $("#submit-form").html("SAVING...");
+          return false;
+        }
+
+        function enableSubmit() {
+          $("#submit-form").prop('disabled', false);
+          $("#submit-form").html("SAVE");
+          return false;
+        }
     </script>
 @endsection

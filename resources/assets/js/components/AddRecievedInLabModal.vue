@@ -41,9 +41,12 @@
       </div>
       <div class="help-block" v-if="!$v.data.token.required">Field is required.</div>
       <br>
-      <button class="btn btn-primary btn-sm btn-block"
-              @click.prevent="submitLabIdToSampleId()">
+       <button v-if="!isSubmitting" class="btn btn-primary btn-sm btn-block"
+               @click.prevent="submitLabIdToSampleId()">
         Submit
+      </button>
+      <button v-else class="btn btn-primary btn-sm btn-block" disabled>
+        Submitting...
       </button>
 
     </div>
@@ -62,6 +65,7 @@ export default {
   },
   data() {
     return {
+      isSubmitting: false,
       sample_lot_id: String,
       isShow: false,
       name: '',
@@ -92,11 +96,13 @@ export default {
       if (this.$v.$invalid) {
         return false;
       }
+      this.isSubmitting = true;
       this.data.sample_token = this.sample_lot_id + '-' + this.data.unique_id
       const payload = {
         'sample_token': this.data.sample_token,
         'token': this.data.token
       }
+      
       axios.post('/api/v1/received-in-lab', payload)
           .then((response) => {
             if (response.data === 'success') {
@@ -113,7 +119,9 @@ export default {
               })
               this.$v.$reset()
               this.data = {};
+              this.isSubmitting = false;
             } else {
+              this.isSubmitting = false;
               this.$swal({
                 title: 'Oops. Something went wrong. \n Already received Swab ID : ' + this.data.sample_token + ' \n\t or Lab Unique ID : ' + this.data.token,
                 type: 'error',

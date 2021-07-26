@@ -775,7 +775,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
     <script type="text/javascript">
         function getProvinceName(id) {
-            $.get("{{ route("admin.district-value") }}?id=" + id, function (data) {
+            $.get("{{ route('admin.district-value') }}?id=" + id, function (data) {
                 console.log(data);
             })
         }

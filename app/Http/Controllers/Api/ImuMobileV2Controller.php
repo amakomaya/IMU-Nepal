@@ -16,7 +16,7 @@ class ImuMobileV2Controller extends Controller
 {
     private function generateUniqueLabId($labId, $prefix = '', $index = '') {
       $prefixedLabId = $labId.$prefix.$index;
-      $existsLabTest = LabTest::where('token', $prefixedLabId);
+      $existsLabTest = SampleCollection::where('lab_token', $prefixedLabId);
       if($existsLabTest->count() > 0){
         $index =  $index==''?0:$index;
         $prefixedLabId = $this->generateUniqueLabId($labId, '_mdup_', $index+1);

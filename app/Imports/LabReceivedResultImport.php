@@ -60,7 +60,16 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
         $sId = $row['sid'];
-        $labId = $row['patient_lab_id'];
+        $patientLabId = $this->userToken.'-'.$row['patient_lab_id'];
+        if(lab_id_exists($patientLabId)) {
+          $error = ['patient_lab_id' => 'The test with the given Patient Lab ID already exists in the system.'];
+          $failures[] = new Failure($currentRowNumber, 'patient_lab_id', $error, $row);
+          throw new ValidationException(
+              \Illuminate\Validation\ValidationException::withMessages($error),
+              $failures
+          );
+          return;
+        }
         $labResult = $row['result'];
         $sampleTestTime = $this->todayDateEn->format('g : i A');
         $ancs = $this->getAncsBySid($sId);
@@ -85,7 +94,7 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
           //check if sid exists
           try {
             LabTest::create([
-              'token' => $this->userToken.'-'.$labId,
+              'token' => $patientLabId,
               'hp_code' => $this->hpCode,
               'status' => 1,
               'sample_recv_date' =>  $this->todayDateNp,
@@ -115,7 +124,7 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
               'received_by_hp_code' => $this->hpCode,
               'received_date_en' => $this->todayDateEn,
               'received_date_np' => $this->todayDateNp,
-              'lab_token' => $this->userToken.'-'.$labId,
+              'lab_token' => $patientLabId,
               'reporting_date_en' => $this->todayDateEn,
               'reporting_date_np' => $this->todayDateNp
           ]);
