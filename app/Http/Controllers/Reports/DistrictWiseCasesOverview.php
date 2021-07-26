@@ -38,7 +38,6 @@ class DistrictWiseCasesOverview extends Controller
             }
 
             $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->province_id;
-            $province_id = 3;
             $reports = DB::select(DB::raw("SELECT districts.district_name, ancs.result, ancs.service_for FROM `women` 
 LEFT JOIN ancs ON women.token = ancs.woman_token
 LEFT JOIN districts on women.district_id = districts.id
@@ -46,7 +45,7 @@ WHERE women.province_id = :province_id AND ancs.result in (3,4) and Date(ancs.re
                 'province_id' => $province_id,
                 'date' => $date_chosen
             ));
-            $reports = collect($reports)->groupBy('district_name');
+            $reports = collect($reports)->sortBy('district_name')->groupBy('district_name');
             $data = [];
             foreach($reports as $key => $report) {
                 $data[$key]['district_name'] = $key;
