@@ -434,7 +434,7 @@ class WomanController extends Controller
         $row['case_where'] = '0';
         $row['end_case'] = '0';
         $row['payment'] = '0';
-        $row['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id . '-' . strtoupper(bin2hex(random_bytes(3)));
+        $row['case_id'] = OrganizationMember::where('token', auth()->user()->token)->first()->id . '-' . Carbon::now()->format('ymd') . '-' . strtoupper(bin2hex(random_bytes(3)));
         $row['registered_device'] = 'web';
         $row['register_date_en'] = Carbon::now()->format('Y-m-d');
 

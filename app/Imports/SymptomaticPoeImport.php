@@ -77,8 +77,8 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
           'relationship_with_the_contact_person' => ['family'=>0,'friend'=>1,'neighbour'=>2,'relative'=>3,'other'=>4],
           'result' => ['positive'=>1, 'negative'=>0],
           'comorbidity' => [ '1' => 'diabetes', 2 => 'htn', 3 => 'hermodialysis','4' => 'immunocompromised','6' => 'maternity','7' => 'heart disease, including hypertension',
-            '8' => 'liver disease', '9' => 'nerve related diseases', '10' => 'kidney diseases', '11' => 'malnutrition', '12' => 'autoimmune diseases', '13' => 'immunodeficiency, including hiv', '14' => 'malignancy', '15' => 'chric lung disesase/asthma/artery]'
-          ];
+            '8' => 'liver disease', '9' => 'nerve related diseases', '10' => 'kidney diseases', '11' => 'malnutrition', '12' => 'autoimmune diseases', '13' => 'immunodeficiency, including hiv', '14' => 'malignancy', '15' => 'chric lung disesase/asthma/artery'
+          ]
         );
         $this->todayDateEn = Carbon::now();
         $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();
@@ -126,7 +126,7 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
           'swab_collection_conformation' => '1',
           'cases' => '0',
           'case_type' => '3',
-          'case_id' => $this->healthWorker->id . '-' . strtoupper(bin2hex(random_bytes(3))),
+          'case_id' => $this->healthWorker->id . '-' . Carbon::now()->format('ymd') . '-' . strtoupper(bin2hex(random_bytes(3))),
           'register_date_en' => $this->todayDateEn,
           'register_date_np' => $this->todayDateNp,
           'symptoms_recent' => $row['covid_19_symptoms'],
