@@ -552,11 +552,23 @@ Route::post('/v1/received-in-lab', function (Request $request) {
 });
 
 Route::post('/v1/result-in-lab-from-web', function (Request $request) {
-    $user = auth()->user();
     $value = $request->all();
+    $user = auth()->user();
     try {
-        $value['token'] = auth()->user()->token . '-' . $value['token'];
-        $find_test = LabTest::where('token', $value['token'])->first();
+        $userToken = auth()->user()->token;
+        $healthWorker = OrganizationMember::where('token', $userToken)->first();
+        $hpCode = $healthWorker->hp_code;
+
+        $organiation_member_tokens = OrganizationMember::where('hp_code', $hpCode)->pluck('token');
+        $labTokens = [];
+        foreach ($organiation_member_tokens as $item) {
+            array_push($labTokens, $item."-".$value['token']);
+        }
+        $find_test = LabTest::whereIn('token', $labTokens)->first();
+
+//        $value['token'] = auth()->user()->token . '-' . $value['token'];
+//        $find_test = LabTest::where('token', $value['token'])->first();
+        $value['token'] = $find_test->token;
         $sample_test_date_np_array = explode("-", $value['sample_test_date']);
         $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDayNepToEng();
 
