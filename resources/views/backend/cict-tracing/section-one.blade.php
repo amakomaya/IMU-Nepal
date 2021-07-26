@@ -85,11 +85,11 @@
                                 <label for="age">Age</label>
                                 <input type="text" id="age" value="{{ $data ? $data->age : '' }}" class="form-control col-xs-9" name="age" placeholder="Enter Age" ><br>
                                 <input type="radio" name="age_unit"
-                                       {{ $data && $data->age_unit == "0" ? 'checked' : '' }} value="0" data-rel="earning">Years
+                                       {{ $data && $data->age_unit == "0" ? 'checked' : '' }} value="0" data-rel="earning"> Years
                                 <input type="radio" name="age_unit"
-                                       {{ $data && $data->age_unit == "1" ? 'checked' : '' }} value="1" data-rel="earning">Months
+                                       {{ $data && $data->age_unit == "1" ? 'checked' : '' }} value="1" data-rel="earning"> Months
                                 <input type="radio" name="age_unit"
-                                       {{ $data && $data->age_unit == "2" ? 'checked' : '' }} value="2" data-rel="earning">Days
+                                       {{ $data && $data->age_unit == "2" ? 'checked' : '' }} value="2" data-rel="earning"> Days
                                 <br>
                                 @if ($errors->has('age'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('age') }}</small>
@@ -165,7 +165,9 @@
                                         <select name="province_id" class="form-control"
                                                 onchange="provinceOnchange($(this).val())">
                                                 <option value="">-- Select Province --</option>
-                                            @foreach(App\Models\Province::all() as $province)
+                                            @foreach(\Illuminate\Support\Facades\Cache::remember('province-list', 48*60*60, function () {
+                                              return Province::select(['id', 'province_name'])->get();
+                                            }) as $province)
                                                 @if($province_id == $province->id)
                                                     @php($selectedProvince = "selected")
                                                 @else
@@ -299,10 +301,29 @@
                                     <small id="help" class="form-text text-danger">{{ $errors->first('case_managed_at') }}</small>
                                 @endif
                             </div>
+                            
+                            <div class="case_managed_at_hospital_class">
+                                <div class="form-group">
+                                    <label for="case_managed_at_hospital">Case Managed At</label>
+                                    <select name="case_managed_at_hospital" class="form-control" id="case_managed_at_hospital">
+                                        <option value="" {{ $data && $data->case_managed_at_hospital == '' ? "selected" : "" }}>-- Select Option --</option>
+                                        <option {{ $data && $data->case_managed_at_hospital == '1' ? "selected" : "" }} value="1">In Ward</option>
+                                        <option {{ $data && $data->case_managed_at_hospital == '2' ? "selected" : "" }} value="2">In ICU</option>
+                                        <option {{ $data && $data->case_managed_at_hospital == '3' ? "selected" : "" }} value="3">On Ventlator</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="case_managed_at_other">Date of Admission</label>
+                                    <input type="text" class="form-control" value="{{ $data ? $data->case_managed_at_hospital_date : '' }}" name="case_managed_at_hospital_date" aria-describedby="help" placeholder="Enter Date of Admission" id="case_managed_at_hospital_date">
+                                    @if ($errors->has('case_managed_at_hospital_date'))
+                                        <small id="help" class="form-text text-danger">{{ $errors->first('case_managed_at_hospital_date') }}</small>
+                                    @endif
+                                </div>
+                            </div>
 
                             <div class="form-group case_managed_at_other_class {{ $errors->has('case_managed_at_other') ? 'has-error' : '' }}">
                                 <label for="case_managed_at_other">Please specify other case managed at</label>
-                                <input type="text" class="form-control" value="{{ $data ? $data->case_managed_at_other : '' }}" name="case_managed_at_other" aria-describedby="help" placeholder="Enter other case managed at" >
+                                <input type="text" class="form-control" value="{{ $data ? $data->case_managed_at_other : '' }}" name="case_managed_at_other" aria-describedby="help" placeholder="Enter other case managed at" id="case_managed_at_other">
                                 @if ($errors->has('case_managed_at_other'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('case_managed_at_other') }}</small>
                                 @endif
@@ -351,7 +372,11 @@
                 $("#municipality").html(data);
             });
         }
-
+        var currentDate = NepaliFunctions.ConvertDateFormat(NepaliFunctions.GetCurrentBsDate(), "YYYY-MM-DD");
+        $('#case_managed_at_hospital_date').nepaliDatePicker({
+            language: 'english',
+        });
+        
         otherRelationship();
         $('.informant_relation').on('change', function() {
             otherRelationship();
@@ -372,10 +397,20 @@
         function otherCaseManagedAt(){
             if($('.case_managed_at').val() == '0'){
                 $('.case_managed_at_other_class').show();
+                $('.case_managed_at_hospital_class').hide();
+                $('#case_managed_at_hospital').val("");
+                $('#case_managed_at_hospital_date').val("");
+            }else if($('.case_managed_at').val() == '4'){
+                $('.case_managed_at_hospital_class').show();
+                $('.case_managed_at_other_class').hide();
+                $('#case_managed_at_other').val("");
             }else{
+                $('.case_managed_at_hospital_class').hide();
                 $('.case_managed_at_other_class').hide();
             }
         }
+
+        
 
         otherNationality();
         $('.nationality').on('change', function() {

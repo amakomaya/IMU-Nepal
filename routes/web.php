@@ -141,7 +141,9 @@ Route::resource('admin/profile', 'Backend\ProfileController');
 Route::get('/api/district', 'Api\DistrictController@index')->name('api.district.index');
 Route::get('/api/municipality', 'Api\MunicipalityController@index')->name('api.municiplaity.index');
 Route::get('/api/province', function () {
-    return \App\Models\Province::all();
+    return \Illuminate\Support\Facades\Cache::remember('province-list', 48*60*60, function () {
+        return \App\Models\Province::select(['id', 'province_name'])->get();
+      });
 });
 
 Route::get('/admin/overview-data', 'Backend\OverviewController@index')->name('admin.overview');
@@ -234,7 +236,7 @@ Route::get('/admin/cict-tracing/report/{case_id}', 'Backend\CictTracingControlle
 
 
 Route::get('/admin/sid-search', 'AdminController@sidSearch')->name('admin.sid.search');
-Route::get('/admin/sid-search/update', 'AdminController@sidUpdate')->name('admin.sid.update');
+Route::post('/admin/sid-search/update/{id}', 'AdminController@sidUpdate')->name('admin.sid.update');
 Route::get('/admin/remaining-beds', 'Backend\WomanController@getRemainingBeds');
 
 

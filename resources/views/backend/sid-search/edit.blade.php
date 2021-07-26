@@ -52,7 +52,7 @@
                     </div>
                     @else
                     <div class="panel-body">
-                        <form action="{{ route('admin.sid.update') }}" method="POST" id="all_form">
+                        <form action="{{ route('admin.sid.update', $ancs->token) }}" method="POST" id="all_form">
                         @csrf
                         <h2>Patient Data</h2>
                         <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
@@ -343,7 +343,7 @@
                         <h2>Lab Data</h2>
                         <div class="form-group">
                             <label for="name">Sample Received Date</label>
-                            <input type="text" id="sample_recv_date" class="form-control" value="{{ isset($ancs->labreport) ? $ancs->labreport->sample_recv_date : '' }}" name="sample_recv_date"
+                            <input type="text" id="sample_recv_date" class="form-control" value="{{ $ancs->received_date_np ?? '' }}" name="sample_recv_date"
                                    aria-describedby="help" placeholder="Enter Sample Received Date">
                             @if ($errors->has('sample_recv_date'))
                                 <small id="help" class="form-text text-danger">{{ $errors->first('sample_recv_date') }}</small>
@@ -351,7 +351,7 @@
                         </div>
                         <div class="form-group">
                             <label for="name">Sample Test Date</label>
-                            <input type="text" id="sample_test_date" class="form-control" value="{{ isset($ancs->labreport) ? $ancs->labreport->sample_test_date : '' }}" name="sample_test_date"
+                            <input type="text" id="sample_test_date" class="form-control" value="{{ $ancs->sample_test_date_np ?? '' }}" name="sample_test_date"
                                    aria-describedby="help" placeholder="Enter Sample Test Date">
                             @if ($errors->has('sample_test_date'))
                                 <small id="help" class="form-text text-danger">{{ $errors->first('sample_test_date') }}</small>
@@ -359,7 +359,7 @@
                         </div>
                         <div class="form-group">
                             <label for="name">Sample Test Time</label>
-                            <input type="text" id="sample_test_time" class="form-control" value="{{ isset($ancs->labreport) ? $ancs->labreport->sample_test_time : '' }}" name="sample_test_time"
+                            <input type="text" id="sample_test_time" class="form-control" value="{{ $ancs->sample_test_time ?? '' }}" name="sample_test_time"
                                    aria-describedby="help" placeholder="Enter Sample Test Time">
                             @if ($errors->has('sample_test_time'))
                                 <small id="help" class="form-text text-danger">{{ $errors->first('sample_test_time') }}</small>
@@ -369,12 +369,12 @@
                             <label for="name">Sample Test Result</label>
                             <select name="sample_test_result" class="form-control">
                                 <option value="" disabled selected>Select Sample Test Result</option>
-                                <option {{ isset($ancs->labreport) && $ancs->labreport->sample_test_result == '3' ? "selected" : "" }} value="3">Positive</option>
-                                <option {{ isset($ancs->labreport) && $ancs->labreport->sample_test_result == '4' ? "selected" : "" }} value="4">Negative</option>
-                                <option {{ isset($ancs->labreport) && $ancs->labreport->sample_test_result == '9' ? "selected" : "" }}  value="9">Received</option>
-                                @php if(isset($ancs->labreport) && $ancs->labreport->sample_test_result != 3 && $ancs->labreport->sample_test_result != 4 && $ancs->labreport->sample_test_result != 9) {
+                                <option {{ $ancs->result == '3' ? "selected" : "" }} value="3">Positive</option>
+                                <option {{ $ancs->result == '4' ? "selected" : "" }} value="4">Negative</option>
+                                <option {{ $ancs->result == '9' ? "selected" : "" }}  value="9">Received</option>
+                                @php if($ancs->result != 3 && $ancs->result != 4 && $ancs->result != 9) {
                                     $is_select = 'selected';
-                                    $is_value = $ancs->labreport->sample_test_result;
+                                    $is_value = $ancs->result;
                                 } else {
                                     $is_select = '';
                                     $is_value = '';
@@ -387,8 +387,8 @@
                             @endif
                         </div>
                         @php
-                            if(isset($ancs->labreport)) {
-                                $s_token = explode('-', $ancs->labreport->token);
+                            if($ancs->lab_token) {
+                                $s_token = explode('-', $ancs->lab_token);
                                 $initial_token = $s_token[0];
                                 array_shift($s_token);
                                 $remaining_token = implode('-', $s_token);
@@ -406,9 +406,8 @@
                             </div>
                         </div>
 
-                        <input type="hidden" id="lab_tests_token" name="lab_tests_token" value="{{ isset($ancs->labreport) ? $ancs->labreport->token : '' }}" class="form-control">
+                        <input type="hidden" id="lab_tests_token" name="lab_tests_token" value="{{ $ancs->lab_token ?? '' }}" class="form-control">
                         <input type="hidden" name="woman_token" value="{{ $ancs->woman_token }}" class="form-control">
-                        <input type="hidden" name="sid" value="{{ request()->get('sid') }}" class="form-control">
 
                         {!! rcForm::close('post') !!}
                     </div>
@@ -420,6 +419,15 @@
 @endsection
 @section('script')
 <script>
+    var currentDate = NepaliFunctions.ConvertDateFormat(NepaliFunctions.GetCurrentBsDate(), "YYYY-MM-DD");
+    $('#sample_recv_date').nepaliDatePicker({
+        language: 'english'
+    });
+    $('#sample_test_date').nepaliDatePicker({
+        language: 'english'
+    });
+
+
     var tok = {!! json_encode($initial_token) !!};
     if(tok != ''){
         tok = tok + '-';

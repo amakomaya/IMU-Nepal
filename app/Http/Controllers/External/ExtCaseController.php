@@ -171,6 +171,7 @@ class ExtCaseController extends Controller
                 ];
                 $id = OrganizationMember::where('token', $user->token)->first()->id;
                 $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($index)->format('H:i:s'));
+                $swab_id = generate_unique_sid($swab_id);
                 $update = false;
                 $existingSampleCollection = $existingSuspectedCase = $existingLabTest = '';
                 
@@ -227,8 +228,8 @@ class ExtCaseController extends Controller
                 }
                 $randomLetter = substr(str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, 2);
                 $singleRandomLabId = (int)$randomLabId+$index+1;
-                $lab_id = array_key_exists('lab_id', $value) && $value['lab_id']?$value['lab_id']:str_pad($singleRandomLabId, 6, '0', STR_PAD_LEFT).'-'.$randomLetter;
-
+                $lab_id = array_key_exists('lab_id', $value) && $value['lab_id']?$value['lab_id']:Carbon::now()->format('ymd').'-'.str_pad($singleRandomLabId, 6, '0', STR_PAD_LEFT).'-'.$randomLetter;
+                $lab_id = generate_unique_lab_id_api($user->token.'-'.$lab_id);
                 $reporting_date_en = explode("-", Carbon::now()->toDateString());
                 $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
                 
@@ -247,7 +248,7 @@ class ExtCaseController extends Controller
                     'checked_by_name' => $healthworker->name,
                     'status' => 1,
                     'regdev' => 'api',
-                    'lab_token' => $user->token.'-'.$lab_id,
+                    'lab_token' => $lab_id,
                     'received_date_en' => $value['lab_received_date'],
                     'received_date_np' => $this->ad2bs($value['lab_received_date']),
                     'sample_test_date_en' => $value['lab_test_date'],
@@ -255,11 +256,11 @@ class ExtCaseController extends Controller
                     'sample_test_time' => $value['lab_test_time'],
                     'received_by' => $healthworker->token,
                     'received_by_hp_code' => $healthworker->hp_code,
-                    'reporting_date_en' => Carbon::now()->toDateTimeString(),
+                    'reporting_date_en' => Carbon::now(),
                     'reporting_date_np' => $reporting_date_np
                 ];
                 $lab_test = [
-                    'token' => $user->token.'-'.$lab_id,
+                    'token' => $lab_id,
                     'sample_token' => $swab_id,
                     'sample_recv_date' => $this->ad2bs($value['lab_received_date']),
                     'sample_test_date' => $this->ad2bs($value['lab_test_date']),

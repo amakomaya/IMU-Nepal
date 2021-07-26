@@ -33,11 +33,10 @@ class SuspectedCase extends Model
         'cases', 'case_where', 'end_case', 'payment', 'result', 'case_id', 'parent_case_id',
         'symptoms_recent', 'symptoms_within_four_week', 'symptoms_date', 'case_reason',
         'temperature', 'date_of_onset_of_first_symptom', 'reson_for_testing', 'case_type',
-
         'nationality','id_card_detail', 'id_card_issue', 'name_of_poe','covid_vaccination_details',
         'nearest_contact' ,
-
-        'register_date_en' , 'register_date_np', 'malaria'
+        'register_date_en' , 'register_date_np', 'malaria',
+        'id_card_type', 'id_card_type_other', 'dose_details'
     ];
     protected $dates = ['deleted_at'];
     protected $allowedFilters = [

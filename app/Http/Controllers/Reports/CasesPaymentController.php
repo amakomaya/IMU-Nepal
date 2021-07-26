@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yagiten\Nepalicalendar\Calendar;
+use App\Helpers\GetHealthpostCodes;
 
 use App\Models\District;
 use App\Models\Municipality;
@@ -483,6 +484,7 @@ class CasesPaymentController extends Controller
 
     public function situationReport(Request $request){
         $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
         foreach ($response as $key => $value) {
             $$key = $value;
         }
@@ -502,6 +504,7 @@ class CasesPaymentController extends Controller
             ->leftjoin('provinces', 'provinces.id', '=', 'healthposts.province_id')
             ->leftjoin('districts', 'districts.id', '=', 'healthposts.district_id')
             ->leftjoin('municipalities', 'municipalities.id', '=', 'healthposts.municipality_id');
+            // ->whereIn('payment_cases.hp_code', $hpCodes);
 
         if ($response['province_id'] !== null){
             $data = $data->where('payment_cases.province_id', $response['province_id']);

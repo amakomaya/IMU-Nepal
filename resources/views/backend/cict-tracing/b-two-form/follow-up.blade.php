@@ -141,11 +141,17 @@
                                     </table>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <p>* Follow-up should start from the day it has been since last contact with the case. For e.g., if the contact has not been in contact with the case
+                                    since 12 days, the follow-up should start from the 12th day in the column “Days to follow up”
+                                </p>
+                                <p>** Please select None for No symptoms. If no symptoms are experienced, then consider the entry comple</p>
+                            </div>
 
                             <label class="control-label"><h4>Final Contact Classification at final follow-up</h4></label>
                             <div class="form-group">
                                 <select name="high_exposure" class="form-control high_exposure">
-                                    <option value=""  {{ isset($data->high_exposure) && $data->high_exposure == "" ? 'selected' : "" }}>Select Final Contact Classification at final follow-up</option>
+                                    <option value="" {{ isset($data->high_exposure) && $data->high_exposure == "" ? 'selected' : "" }}>Select Final Contact Classification at final follow-up</option>
                                     <option value="1" {{ isset($data->high_exposure) && $data->high_exposure == "1" ? 'selected' : "" }}>Never ill/not a case</option>
                                     <option value="2" {{ isset($data->high_exposure) && $data->high_exposure == "2" ? 'selected' : "" }}>Confirmed Secondary Case</option>
                                     <option value="3" {{ isset($data->high_exposure) && $data->high_exposure == "3" ? 'selected' : "" }}>Lost to follow-up</option>
@@ -159,6 +165,11 @@
                                 <h4>Data Collector information</h4><br>
 
                                 <div class="form-group">
+                                    <h4>Data collector information</h4><br>
+                                    <b>Name:</b> {{ isset($data->checkedBy) && $data->checkedBy ? $data->checkedBy->name : '' }}<br>
+                                    <b>Telephone Number:</b> {{ isset($data->checkedBy) && $data->checkedBy ? $data->checkedBy->phone : '' }}<br>
+                                    <b>Instituton:</b> {{ isset($data->checkedBy) && $data->checkedBy ? $data->checkedBy->getHealthpost($data->hp_code) : '' }}<br>
+                                    <b>Email:</b> {{ isset($data->checkedBy) && $data->checkedBy ? $data->checkedBy->user->email : '' }}<br>
                                     <label>Form Completion Date </label><br>
                                     <input type="text" class="form-control" value="{{ isset($data->completion_date) ? $data->completion_date : '' }}" name="completion_date"
                                             aria-describedby="help" placeholder="Enter Form Completion Date" id="completion_date"

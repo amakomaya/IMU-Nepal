@@ -389,6 +389,7 @@ class WomanController extends Controller
 
     public function store(Request $request)
     {
+        $uniqueLabId = '';
         $customMessages = [
             'required' => 'The :attribute field is required.',
         ];
@@ -444,6 +445,9 @@ class WomanController extends Controller
         unset($row['symptoms_comorbidity_trimester']);
 
         if($request->case_type == '3') {
+            if($request->temperature_type == 2){
+                $row['temperature'] = ($request->temperature * 9/5) + 32;
+            }
             $row['register_date_np'] = $request->register_date_np;
             $register_np_array = explode("-", $request->register_date_np);
             $row['register_date_en'] = Calendar::nep_to_eng($register_np_array[0], $register_np_array[1], $register_np_array[2])->getYearMonthDayNepToEng();
@@ -465,11 +469,25 @@ class WomanController extends Controller
     
             $vaccine_status = $request->vaccine_status ?? '0';
             $vaccination_card = $request->vaccination_card ?? '0';
-            $vaccination_dosage_complete = $request->vaccination_dosage_complete ?? '0';
+            if($request->vaccine_name == 6){
+                if($request->dose_one_date){
+                    $vaccination_dosage_complete = '1';
+                }else{
+                    $vaccination_dosage_complete = '0';
+                }
+            }
+            else{
+                if($request->dose_one_date && $request->dose_two_date){
+                    $vaccination_dosage_complete = '1';
+                }else{
+                    $vaccination_dosage_complete = '0';
+                }
+            }
             $vaccine_dosage_count = $request->vaccine_dosage_count ?? '0';
             $vaccine_name = $request->vaccine_name ?? '10';
     
             $row['covid_vaccination_details'] = "[" . $vaccine_status . ", " . $vaccination_card . ", " . $vaccination_dosage_complete . ", " . $vaccine_dosage_count . ", " . $vaccine_name . ", " . $request->vaccine_name_other . "]";
+            $row['dose_details'] = '[{"type":"1","date":"' . $request->dose_one_date . '"},{"type":"2","date":"' . $request->dose_two_date . '"}]';
         }
 
         SuspectedCase::create($row);
@@ -511,9 +529,10 @@ class WomanController extends Controller
                     $sample_row['sample_type'] = "[" . implode(', ', $request->sample_type) . "]";
 
                 if($request->service_for == '2') {
+                    $uniqueLabId = generate_unique_lab_id_web(auth()->user()->token . '-' . Carbon::now()->format('ymd') . '-' . $request->lab_token);
                     $sample_row['sample_type'] = "[]";
                     $sample_row['result'] = 9;
-                    $sample_row['lab_token'] = auth()->user()->token . '-' . Carbon::now()->format('ymd') . '-' . $request->lab_token;
+                    $sample_row['lab_token'] = $uniqueLabId;
                     $sample_row['received_date_en'] = $sample_row['collection_date_en'];
                     $sample_row['received_date_np'] = $sample_row['collection_date_np'];
                     $sample_row['received_by'] = $sample_row['checked_by'];
@@ -534,7 +553,9 @@ class WomanController extends Controller
             }
         }
         if($request->service_for == '2') {
-            $request->session()->flash('message', 'Data Inserted successfully. Created Lab ID is " ' . $request->lab_token . ' "');
+            $responseLabId = explode('-', $uniqueLabId);
+            array_shift($responseLabId);
+            $request->session()->flash('message', 'Data Inserted successfully. Created Lab ID is " ' . join("-",$responseLabId) . ' "');
         } else {
             $request->session()->flash('message', 'Data Inserted successfully');
         }
@@ -551,6 +572,7 @@ class WomanController extends Controller
      {
          $id = OrganizationMember::where('token', auth()->user()->token)->first()->id;
          $swab_id = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->format('H:i:s'));
+         $swab_id = generate_unique_sid($swab_id);
          return view('backend.patient.sample-create', compact('token', 'swab_id'));
      }
 
@@ -562,6 +584,7 @@ class WomanController extends Controller
 
     public function sampleCollectionStore(Request $request)
     {
+        $uniqueLabId = '';
         $customMessages = [
             'required' => 'The :attribute field is required.',
         ];
@@ -597,9 +620,11 @@ class WomanController extends Controller
         }
         
         if($request->service_for == '2') {
+            $uniqueLabId = generate_unique_lab_id_web(auth()->user()->token . '-' . Carbon::now()->format('ymd') . '-' . $request->lab_token);
+
             $row['sample_type'] = "[]";
             $row['result'] = 9;
-            $row['lab_token'] = auth()->user()->token . '-' . Carbon::now()->format('ymd') . '-' . $request->lab_token;
+            $row['lab_token'] = $uniqueLabId;
             $row['received_date_en'] = $row['collection_date_en'];
             $row['received_date_np'] = $row['collection_date_np'];
             $row['received_by'] = $row['hp_code'];
@@ -619,7 +644,9 @@ class WomanController extends Controller
 
         SampleCollection::create($row);
         if($request->service_for == '2') {
-            $request->session()->flash('message', 'Data Inserted successfully. Created Lab ID is " ' . $request->lab_token . ' "');
+          $responseLabId = explode('-', $uniqueLabId);
+          array_shift($responseLabId);
+            $request->session()->flash('message', 'Data Inserted successfully. Created Lab ID is " ' . join("-",$responseLabId) . ' "');
         } else {
             $request->session()->flash('message', 'Data Inserted successfully');
         }

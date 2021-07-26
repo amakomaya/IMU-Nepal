@@ -20,7 +20,7 @@
       </thead>
       <tr slot-scope="{item, removeItemOnSuccess}">
         <td>
-          <div v-if="checkForPositiveOnly(item.latest_anc)" title="Case ID">C ID : {{ item.case_id }}</div>
+          <div title="Case ID">C ID : {{ item.case_id }}</div>
           <div v-if="item.parent_case_id !== null" title="Parent Case ID">PC ID : {{ item.parent_case_id }}</div>
         </td>
         <td>{{ roleVisibility(item.name)}}</td>
@@ -58,7 +58,10 @@
             <i class="fa fa-hospital-o"></i> |
           </button>
           <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Move Patient Data">
-            <i class="fa fa-trash"></i>
+            <i class="fa fa-trash"></i> |
+          </button>
+          <button v-on:click="sendToCict(item.case_id)" title="Add to Cict Form">
+            <i class="fa fa-users"></i>
           </button>
         </td>
       </tr>
@@ -183,6 +186,12 @@ export default {
           municipalities: this.municipalities
         },
       })
+    },
+    sendToCict(case_id) {
+      window.open(
+      '/admin/cict-tracing/search?case_id=' + case_id,
+          '_blank'
+      );
     },
 
     deletePatientData: function (item, removeItemOnSuccess) {
@@ -333,14 +342,14 @@ export default {
       if (value === 0 || value == null || value === '') {
         return ''
       } else {
-        return this.districts.find(x => x.id === value).district_name;
+        return this.districts.find(x => x.id == value).district_name;
       }
     },
     checkMunicipality: function (value) {
       if (value === 0 || value == null || value === '') {
         return ''
       } else {
-        return this.municipalities.find(x => x.id === value).municipality_name;
+        return this.municipalities.find(x => x.id == value).municipality_name;
       }
     },
     checkForPositiveOnly: function (value) {

@@ -53,7 +53,8 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        {!! rcForm::open('POST', route('woman.store'), ['name' => 'createCase']) !!}
+                        <form class="form-group" role="form" action="{{route('woman.store')}}" enctype="multipart/form-data" method="POST" name="createCase" id="createCase" novalidate="novalidate" onsubmit="disableSubmit()">
+                          @csrf
                         <div class="panel-body">
                             <div class="form-group">
                                 <label class="control-label">Currently symptomatic?</label>
@@ -133,23 +134,20 @@
                             <div class="form-group">
                                 <label class="control-label" for="occupation">Occupation</label>
                                 <select name="occupation" class="form-control">
-                                    <option {{ old('occupation') == '' ? "selected" : "" }} value="">Select Occupation
-                                    </option>
-                                    <option {{ old('occupation') == '1' ? "selected" : "" }} value="1">Front Line Health
-                                        Worker
-                                    </option>
+                                    <option {{ old('occupation') == '' ? "selected" : "" }} value="">Select Occupation</option>
+                                    <option {{ old('occupation') == '1' ? "selected" : "" }} value="1">Front Line Health Worker</option>
                                     <option {{ old('occupation') == '2' ? "selected" : "" }} value="2">Doctor</option>
                                     <option {{ old('occupation') == '3' ? "selected" : "" }} value="3">Nurse</option>
                                     <option {{ old('occupation') == '4' ? "selected" : "" }} value="4">Police/Army</option>
                                     <option {{ old('occupation') == '5' ? "selected" : "" }} value="5">Business/Industry</option>
                                     <option {{ old('occupation') == '6' ? "selected" : "" }} value="6">Teacher/Student/Education</option>
-                                    <option {{ old('occupation') == '7' ? "selected" : "" }} value="7">Journalist</option>
-                                    <option {{ old('occupation') == '8' ? "selected" : "" }} value="8">Agriculture</option>
-                                    <option {{ old('occupation') == '9' ? "selected" : "" }} value="9">Transport/Delivery</option>
-                                    <option {{ old('occupation') == '11' ? "selected" : "" }} value="11">Tourist</option>
-                                    <option {{ old('occupation') == '12' ? "selected" : "" }} value="12">Migrant Worker</option>
-                                    <option {{ old('occupation') == '13' ? "selected" : "" }} value="13">Civil Servant</option>
-                                    <option {{ old('occupation') == '10' ? "selected" : "" }} value="10">Other</option>
+                                    <option {{ old('occupation') == '8' ? "selected" : "" }} value="7">Civil Servant</option>
+                                    <option {{ old('occupation') == '8' ? "selected" : "" }} value="8">Journalist</option>
+                                    <option {{ old('occupation') == '9' ? "selected" : "" }} value="9">Agriculture</option>
+                                    <option {{ old('occupation') == '10' ? "selected" : "" }} value="10">Transport/Delivery</option>
+                                    <option {{ old('occupation') == '12' ? "selected" : "" }} value="12">Tourist</option>
+                                    <option {{ old('occupation') == '13' ? "selected" : "" }} value="13">Migrant Worker</option>
+                                    <option {{ old('occupation') == '11' ? "selected" : "" }} value="11">Other</option>
                                 </select>
                                 @if ($errors->has('occupation'))
                                     <small id="help"
@@ -169,133 +167,42 @@
                                     <small id="help" class="form-text text-danger">{{ $errors->first('nationality') }}</small>
                                 @endif
                             </div>
+                            <div class="form-group {{ $errors->has('id_card_type') ? 'has-error' : '' }}">
+                                <label for="id_card_type">ID Card Type</label>
+                                <select name="id_card_type" class="form-control id_card_type">
+                                    <option {{ old('id_card_type') == '' ? "selected" : "" }} value="">Select ID Card Type</option>
+                                    <option {{ old('id_card_type') == '1' ? "selected" : "" }} value="1">Citizenship</option>
+                                    <option {{ old('id_card_type') == '2' ? "selected" : "" }} value="2">License</option>
+                                    <option {{ old('id_card_type') == '3' ? "selected" : "" }} value="3">Voter Card</option>
+                                    <option {{ old('id_card_type') == '4' ? "selected" : "" }} value="4">Passport</option>
+                                    <option {{ old('id_card_type') == '0' ? "selected" : "" }} value="0">Other</option>
+                                </select>
+                                @if ($errors->has('id_card_type'))
+                                    <small id="help" class="form-text text-danger">{{ $errors->first('id_card_type') }}</small>
+                                @endif
+                            </div>
+                            <div class="form-group id_card_type_other {{ $errors->has('id_card_type_other') ? 'has-error' : '' }}">
+                                <label for="id_card_type_other">Other ID Card Type</label>
+                                <input type="text" id="id_card_type_other" class="form-control" value="{{ old('id_card_type_other') }}" name="id_card_type_other"
+                                       aria-describedby="help" placeholder="Enter Other ID Card Type">
+                                @if ($errors->has('id_card_type_other'))
+                                    <small id="help" class="form-text text-danger">{{ $errors->first('id_card_type_other') }}</small>
+                                @endif
+                            </div>
                             <div class="form-group {{ $errors->has('id_card_detail') ? 'has-error' : '' }}">
-                                <label for="id_card_detail">Citizenship/Passport/Voter's ID Card</label>
+                                <label for="id_card_detail">ID Card No.</label>
                                 <input type="text" id="id_card_detail" class="form-control" value="{{ old('id_card_detail') }}" name="id_card_detail"
-                                       aria-describedby="help" placeholder="Enter Citizenship/Passport/Voter's ID Card">
+                                       aria-describedby="help" placeholder="Enter ID Card No.">
                                 @if ($errors->has('id_card_detail'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('id_card_detail') }}</small>
                                 @endif
                             </div>
                             <div class="form-group {{ $errors->has('id_card_issue') ? 'has-error' : '' }}">
-                                <label for="id_card_issue">Country/District of Issue (Citizenship/Passport)</label>
+                                <label for="id_card_issue">Country/District of Issue (ID Card)</label>
                                 <input type="text" id="id_card_issue" class="form-control" value="{{ old('id_card_issue') }}" name="id_card_issue"
-                                       aria-describedby="help" placeholder="Enter Country/District of Issue (Citizenship/Passport)">
+                                       aria-describedby="help" placeholder="Enter Country/District of Issue (ID Card)">
                                 @if ($errors->has('id_card_issue'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('id_card_issue') }}</small>
-                                @endif
-                            </div>
-                            <div class="form-group {{ $errors->has('travelled_where') ? 'has-error' : '' }}">
-                                <label for="travelled_where">Travelled From (Country)</label>
-                                <select name="travelled_where" class="form-control">
-                                    <option {{ old('travelled_where') == '' ? "selected" : "" }} value="">Select Travelled From (Country)</option>
-                                    <option {{ old('travelled_where') == '167' ? "selected" : "" }} value="167">Nepal</option>
-                                    <option {{ old('travelled_where') == '104' ? "selected" : "" }} value="104">India</option>
-                                    <option {{ old('travelled_where') == '47' ? "selected" : "" }} value="47">China</option>
-                                    <option {{ old('travelled_where') == '300' ? "selected" : "" }} value="300">Other</option>
-                                </select>
-                                @if ($errors->has('travelled_where'))
-                                    <small id="help" class="form-text text-danger">{{ $errors->first('travelled_where') }}</small>
-                                @endif
-                            </div>
-                            <div class="form-group {{ $errors->has('travelled_city') ? 'has-error' : '' }}">
-                                <label for="travelled_city">Travelled From (City)</label>
-                                <input type="text" id="travelled_city" class="form-control" value="{{ old('travelled_city') }}" name="travelled_city"
-                                       aria-describedby="help" placeholder="Travelled From (City)">
-                                @if ($errors->has('travelled_city'))
-                                    <small id="help" class="form-text text-danger">{{ $errors->first('travelled_city') }}</small>
-                                @endif
-                            </div>
-                            <div class="form-group {{ $errors->has('travelled_date') ? 'has-error' : '' }}">
-                                <label for="travelled_date">Date of Travel</label>
-                                <input type="text" id="travelled_date" class="form-control" value="{{ old('travelled_date') }}" name="travelled_date"
-                                       aria-describedby="help" placeholder="Enter Date of Travel" readonly>
-                                @if ($errors->has('travelled_date'))
-                                    <small id="help" class="form-text text-danger">{{ $errors->first('travelled_date') }}</small>
-                                @endif
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="company">Destination in Nepal</label>
-                                <div class="row">
-                                    <div class="form-group col-sm-3" id="province">
-                                        <select name="province_id" class="form-control"
-                                                onchange="provinceOnchange($(this).val())">
-                                            @if(Auth::user()->role!="province" && Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
-                                                <option value="">Select All Provinces</option>
-                                            @endif
-                                            @foreach(App\Models\province::all() as $province)
-                                                @if($province_id==$province->id || old('province_id')==$province->id)
-                                                    @php($selectedProvince = "selected")
-                                                @else
-                                                    @php($selectedProvince = "")
-                                                @endif
-                                                <option value="{{$province->id}}" {{$selectedProvince}}>{{$province->province_name}}</option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('province_id'))
-                                            <small id="help"
-                                                   class="form-text text-danger">{{ $errors->first('province_id') }}</small>
-                                        @endif
-                                    </div>
-                                    <div class="form-group  col-sm-3" id="district">
-                                        <select name="district_id" class="form-control"
-                                                onchange="districtOnchange($(this).val())">
-                                            @if(Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
-                                                <option value="">Select All Districts</option>
-                                            @endif
-                                            @foreach(App\Models\District::where('province_id', $province_id)->get() as $district)
-                                                @if($district_id==$district->id || old('district_id')==$district->id)
-                                                    @php($selectedDistrict = "selected")
-                                                @else
-                                                    @php($selectedDistrict = "")
-                                                @endif
-                                                <option value="{{$district->id}}" {{$selectedDistrict}}>{{$district->district_name}}</option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('district_id'))
-                                            <small id="help"
-                                                   class="form-text text-danger">{{ $errors->first('district_id') }}</small>
-                                        @endif
-                                    </div>
-                                    <div class="form-group  col-sm-3" id="municipality">
-                                        <select name="municipality_id" class="form-control"
-                                                onchange="municipalityOnchange($(this).val())"
-                                                id="municipality_id">
-                                            @if(Auth::user()->role!="municipality" && Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
-                                                <option value="">Select All Municipalities</option>
-                                            @endif
-                                            @foreach(\App\Models\Municipality::where('district_id', $district_id)->get() as $municipality)
-                                                @if($municipality_id==$municipality->id  || old('municipality_id')==$municipality->id)
-                                                    @php($selectedMunicipality = "selected")
-                                                @else
-                                                    @php($selectedMunicipality = "")
-                                                @endif
-                                                <option value="{{$municipality->id}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('municipality_id'))
-                                            <small id="help"
-                                                   class="form-text text-danger">{{ $errors->first('municipality_id') }}</small>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group {{ $errors->has('ward') ? 'has-error' : '' }}">
-                                <label for="ward">Destination in Nepal (Ward No)</label>
-                                <input type="text" class="form-control" value="{{ old('ward') }}" name="ward"
-                                       aria-describedby="help" placeholder="Enter Ward No"
-                                >
-                                @if ($errors->has('ward'))
-                                    <small id="help" class="form-text text-danger">{{ $errors->first('ward') }}</small>
-                                @endif
-                            </div>
-                            <div class="form-group {{ $errors->has('tole') ? 'has-error' : '' }}">
-                                <label for="tole">Destination in Nepal (Tole)</label>
-                                <input type="text" class="form-control" value="{{ old('tole') }}" name="tole"
-                                       aria-describedby="help" placeholder="Enter Tole"
-                                >
-                                @if ($errors->has('tole'))
-                                    <small id="help" class="form-text text-danger">{{ $errors->first('tole') }}</small>
                                 @endif
                             </div>
                             <div class="form-group {{ $errors->has('emergency_contact_one') ? 'has-error' : '' }}">
@@ -309,55 +216,173 @@
                                            class="form-text text-danger">{{ $errors->first('emergency_contact_one') }}</small>
                                 @endif
                             </div>
-                            <div class="form-group {{ $errors->has('nearest_contact') ? 'has-error' : '' }}">
-                                <label for="name">Nearest Contact person in Nepal (Full Name)</label>
-                                <input type="text" class="form-control" value="{{ old('nearest_contact') }}"
-                                       name="nearest_contact" aria-describedby="help"
-                                       placeholder="Nearest Contact person in Nepal"
-                                >
-                                @if ($errors->has('nearest_contact'))
-                                    <small id="help"
-                                           class="form-text text-danger">{{ $errors->first('nearest_contact') }}</small>
-                                @endif
+                            <div class="card" style="background: white">
+                                <div class="" style="padding: 20px;">
+                                    <h4>Travelled From</h4>
+                                    <div class="row">
+                                        <div class="form-group col-md-6 {{ $errors->has('travelled_where') ? 'has-error' : '' }}">
+                                            <label for="travelled_where">Country</label>
+                                            <select name="travelled_where" class="form-control">
+                                                <option {{ old('travelled_where') == '' ? "selected" : "" }} value="">Select Travelled From (Country)</option>
+                                                <option {{ old('travelled_where') == '167' ? "selected" : "" }} value="167">Nepal</option>
+                                                <option {{ old('travelled_where') == '104' ? "selected" : "" }} value="104">India</option>
+                                                <option {{ old('travelled_where') == '47' ? "selected" : "" }} value="47">China</option>
+                                                <option {{ old('travelled_where') == '300' ? "selected" : "" }} value="300">Other</option>
+                                            </select>
+                                            @if ($errors->has('travelled_where'))
+                                                <small id="help" class="form-text text-danger">{{ $errors->first('travelled_where') }}</small>
+                                            @endif
+                                        </div>
+                                        <div class="form-group col-md-6 {{ $errors->has('travelled_city') ? 'has-error' : '' }}">
+                                            <label for="travelled_city">City</label>
+                                            <input type="text" id="travelled_city" class="form-control" value="{{ old('travelled_city') }}" name="travelled_city"
+                                                aria-describedby="help" placeholder="Travelled From (City)">
+                                            @if ($errors->has('travelled_city'))
+                                                <small id="help" class="form-text text-danger">{{ $errors->first('travelled_city') }}</small>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            
-                            <div class="form-group {{ $errors->has('emergency_contact_two') ? 'has-error' : '' }}">
-                                <label for="name">Contact of nearest person (Phone)</label>
-                                <input type="text" class="form-control" value="{{ old('emergency_contact_two') }}"
-                                       name="emergency_contact_two" aria-describedby="help"
-                                       placeholder="Enter Contact of nearest person (Phone)">
-                                @if ($errors->has('emergency_contact_two'))
-                                    <small id="help"
-                                           class="form-text text-danger">{{ $errors->first('emergency_contact_two') }}</small>
-                                @endif
+                            <div class="card" style="background: white; margin-top:10px;">
+                                <div class="" style="padding: 20px;">
+                                    <h4>Place of stay in Nepal</h4>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="form-group col-sm-4" id="province">
+                                                <select name="province_id" class="form-control"
+                                                        onchange="provinceOnchange($(this).val())">
+                                                    @if(Auth::user()->role!="province" && Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
+                                                        <option value="">Select All Provinces</option>
+                                                    @endif
+                                                    @foreach(\Illuminate\Support\Facades\Cache::remember('province-list', 48*60*60, function () {
+                                              return Province::select(['id', 'province_name'])->get();
+                                            }) as $province)
+                                                        @if($province_id==$province->id || old('province_id')==$province->id)
+                                                            @php($selectedProvince = "selected")
+                                                        @else
+                                                            @php($selectedProvince = "")
+                                                        @endif
+                                                        <option value="{{$province->id}}" {{$selectedProvince}}>{{$province->province_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                @if ($errors->has('province_id'))
+                                                    <small id="help"
+                                                        class="form-text text-danger">{{ $errors->first('province_id') }}</small>
+                                                @endif
+                                            </div>
+                                            <div class="form-group col-sm-4" id="district">
+                                                <select name="district_id" class="form-control"
+                                                        onchange="districtOnchange($(this).val())">
+                                                    @if(Auth::user()->role!="dho" && Auth::user()->role!="municipality" &&Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
+                                                        <option value="">Select All Districts</option>
+                                                    @endif
+                                                    @foreach(App\Models\District::where('province_id', $province_id)->get() as $district)
+                                                        @if($district_id==$district->id || old('district_id')==$district->id)
+                                                            @php($selectedDistrict = "selected")
+                                                        @else
+                                                            @php($selectedDistrict = "")
+                                                        @endif
+                                                        <option value="{{$district->id}}" {{$selectedDistrict}}>{{$district->district_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                @if ($errors->has('district_id'))
+                                                    <small id="help"
+                                                        class="form-text text-danger">{{ $errors->first('district_id') }}</small>
+                                                @endif
+                                            </div>
+                                            <div class="form-group col-sm-4" id="municipality">
+                                                <select name="municipality_id" class="form-control"
+                                                        onchange="municipalityOnchange($(this).val())"
+                                                        id="municipality_id">
+                                                    @if(Auth::user()->role!="municipality" && Auth::user()->role!="ward" && Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
+                                                        <option value="">Select All Municipalities</option>
+                                                    @endif
+                                                    @foreach(\App\Models\Municipality::where('district_id', $district_id)->get() as $municipality)
+                                                        @if($municipality_id==$municipality->id  || old('municipality_id')==$municipality->id)
+                                                            @php($selectedMunicipality = "selected")
+                                                        @else
+                                                            @php($selectedMunicipality = "")
+                                                        @endif
+                                                        <option value="{{$municipality->id}}" {{$selectedMunicipality}}>{{$municipality->municipality_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                @if ($errors->has('municipality_id'))
+                                                    <small id="help"
+                                                        class="form-text text-danger">{{ $errors->first('municipality_id') }}</small>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-md-6 {{ $errors->has('ward') ? 'has-error' : '' }}">
+                                                <label for="ward">Ward No</label>
+                                                <input type="text" class="form-control" value="{{ old('ward') }}" name="ward"
+                                                    aria-describedby="help" placeholder="Enter Ward No"
+                                                >
+                                                @if ($errors->has('ward'))
+                                                    <small id="help" class="form-text text-danger">{{ $errors->first('ward') }}</small>
+                                                @endif
+                                            </div>
+                                            <div class="form-group col-md-6 {{ $errors->has('tole') ? 'has-error' : '' }}">
+                                                <label for="tole">Tole</label>
+                                                <input type="text" class="form-control" value="{{ old('tole') }}" name="tole"
+                                                    aria-describedby="help" placeholder="Enter Tole"
+                                                >
+                                                @if ($errors->has('tole'))
+                                                    <small id="help" class="form-text text-danger">{{ $errors->first('tole') }}</small>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            
-                            <div class="form-group {{ $errors->has('contact_relationship') ? 'has-error' : '' }}">
-                                <label for="contact_relationship">Relationship with the contact person</label>
-                                <select name="contact_relationship" class="form-control">
-                                    <option {{ old('contact_relationship') == '' ? "selected" : "" }} value="">Select Relationship with the contact person</option>
-                                    <option {{ old('contact_relationship') == '1' ? "selected" : "" }} value="1">Family</option>
-                                    <option {{ old('contact_relationship') == '2' ? "selected" : "" }} value="2">Friend</option>
-                                    <option {{ old('contact_relationship') == '3' ? "selected" : "" }} value="3">Neighbour</option>
-                                    <option {{ old('contact_relationship') == '4' ? "selected" : "" }} value="4">Relative</option>
-                                    <option {{ old('contact_relationship') == '4' ? "selected" : "" }} value="5">Other</option>
-                                </select>
-                                @if ($errors->has('contact_relationship'))
-                                    <small id="help"
-                                           class="form-text text-danger">{{ $errors->first('contact_relationship') }}</small>
-                                @endif
+                            <div class="card" style="background: white; margin-top:10px;">
+                                <div class="" style="padding: 20px;">
+                                    <h4>Nearest Contact person in Nepal</h4>
+                                    <div class="row">
+                                        <div class="form-group col-md-6 {{ $errors->has('nearest_contact') ? 'has-error' : '' }}">
+                                            <label for="name">Full Name</label>
+                                            <input type="text" class="form-control" value="{{ old('nearest_contact') }}"
+                                                name="nearest_contact" aria-describedby="help"
+                                                placeholder="Full Name"
+                                            >
+                                            @if ($errors->has('nearest_contact'))
+                                                <small id="help"
+                                                    class="form-text text-danger">{{ $errors->first('nearest_contact') }}</small>
+                                            @endif
+                                        </div>
+                                        
+                                        <div class="form-group col-md-6 {{ $errors->has('emergency_contact_two') ? 'has-error' : '' }}">
+                                            <label for="name">Phone</label>
+                                            <input type="text" class="form-control" value="{{ old('emergency_contact_two') }}"
+                                                name="emergency_contact_two" aria-describedby="help"
+                                                placeholder="Phone">
+                                            @if ($errors->has('emergency_contact_two'))
+                                                <small id="help"
+                                                    class="form-text text-danger">{{ $errors->first('emergency_contact_two') }}</small>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="form-group {{ $errors->has('temperature') ? 'has-error' : '' }}">
-                                <label for="name">Body Temperature (In Fahrenheit)</label>
+                            <div class="form-group {{ $errors->has('temperature') ? 'has-error' : '' }}" style="margin-top:10px;">
+                                <label for="name">Body Temperature</label><br>
+
+                                <input type="radio" name="temperature_type"
+                                       {{ old('temperature_type') == "1" ? 'checked' : '' }} value="1" checked> Fahrenheit 
+                                <input type="radio" name="temperature_type"
+                                       {{ old('temperature_type') == "2" ? 'checked' : '' }} value="2"> Celsius<br>
+
                                 <input type="number" class="form-control" value="{{ old('temperature') }}"
-                                           name="temperature" aria-describedby="help"
-                                           placeholder="Body Temperature (In Fahrenheit)">
-                                    @if ($errors->has('temperature'))
-                                    <small id="help"
-                                    class="form-text text-danger">{{ $errors->first('temperature') }}</small>
-                                    @endif
-                                </div>
+                                        name="temperature" aria-describedby="help"
+                                        placeholder="Body Temperature">
+                                @if ($errors->has('temperature'))
+                                <small id="help"
+                                class="form-text text-danger">{{ $errors->first('temperature') }}</small>
+                                @endif
+                            </div>
                             <div class="asymptomatic">
                                 <div class="form-group {{ $errors->has('fever') ? 'has-error' : '' }}">
                                     <label for="name">Fever (>38 C/100.4F)</label>
@@ -568,28 +593,10 @@
                                                {{ old('vaccine_status') == "1" ? 'checked' : '' }} name="vaccine_status"
                                                value="1" class="vaccine_status">Yes
                                     </label>
-
                                 </div>
                             </div>
 
-                            <div class="form-group vaccine-status">
-                                <label class="control-label">Do you have a vaccination card?</label>
-                                <div class="control-group">
-                                    <label class="radio-inline">
-                                        <input type="radio"
-                                               {{ old('vaccination_card') == "0" ? 'checked' : '' }} name="vaccination_card"
-                                               value="0" class="vaccination_card">No
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio"
-                                               {{ old('vaccination_card') == "1" ? 'checked' : '' }} name="vaccination_card"
-                                               value="1" class="vaccination_card">Yes
-                                    </label>
-
-                                </div>
-                            </div>
-
-                            <div class="form-group vaccine-status">
+                            {{-- <div class="form-group vaccine-status">
                                 <label class="control-label">Vaccination doses complete?</label>
                                 <div class="control-group">
                                     <label class="radio-inline">
@@ -604,9 +611,9 @@
                                     </label>
 
                                 </div>
-                            </div>
+                            </div> --}}
 
-                            <div class="form-group vaccine-status">
+                            {{-- <div class="form-group vaccine-status">
                                 <label class="control-label">How many dosages of vaccine you have received?</label>
                                 <div class="control-group">
                                     <label class="radio-inline">
@@ -621,19 +628,19 @@
                                     </label>
 
                                 </div>
-                            </div>
+                            </div> --}}
 
-                            <div class="form-group vaccine-status {{ $errors->has('vaccine_dosage') ? 'has-error' : '' }}">
+                            <div class="form-group vaccine-status {{ $errors->has('vaccine_name') ? 'has-error' : '' }}">
                                 <label for="vaccine_name">Name of Vaccine</label>
-                                <select name="vaccine_dosage" class="form-control" id="vaccine_dosage">
-                                    <option {{ old('vaccine_dosage') == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
-                                    <option {{ old('vaccine_dosage') == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
-                                    <option {{ old('vaccine_dosage') == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
-                                    <option {{ old('vaccine_dosage') == '3' ? "selected" : "" }} value="3">Pfizer</option>
-                                    <option {{ old('vaccine_dosage') == '4' ? "selected" : "" }} value="4">Moderna</option>
-                                    <option {{ old('vaccine_dosage') == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
-                                    <option {{ old('vaccine_dosage') == '6' ? "selected" : "" }} value="6">Johnson & Johnson</option>
-                                    <option {{ old('vaccine_dosage') == '10' ? "selected" : "" }} value="10">Other</option>
+                                <select name="vaccine_name" class="form-control" id="vaccine_name">
+                                    <option {{ old('vaccine_name') == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
+                                    <option {{ old('vaccine_name') == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
+                                    <option {{ old('vaccine_name') == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
+                                    <option {{ old('vaccine_name') == '3' ? "selected" : "" }} value="3">Pfizer</option>
+                                    <option {{ old('vaccine_name') == '4' ? "selected" : "" }} value="4">Moderna</option>
+                                    <option {{ old('vaccine_name') == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
+                                    <option {{ old('vaccine_name') == '6' ? "selected" : "" }} value="6">Johnson & Johnson</option>
+                                    <option {{ old('vaccine_name') == '10' ? "selected" : "" }} value="10">Other</option>
                                 </select>
                             </div>
                             <div class="form-group vaccine-other {{ $errors->has('vaccine_name_other') ? 'has-error' : '' }}">
@@ -645,8 +652,35 @@
                                     <small id="help" class="form-text text-danger">{{ $errors->first('vaccine_name_other') }}</small>
                                 @endif
                             </div>
+                            <div class="row">
+                            <div class="form-group col-md-6 vaccine-status">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td></td>
+                                        <td>Vaccination Date</td>
+                                    </tr>
+                                    <tr class="table-sars-cov-tr">
+                                        <td>
+                                            1st Dose
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="dose_one_date" id="dose_one_date">
+                                        </td>
+                                    </tr>
+                                    <tr class="not-jonson">
+                                        <td>
+                                            2nd Dose
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="dose_two_date" id="dose_two_date">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            </div>
+                            <br>
                             
-                            <div class="form-group collect-swab-now">
+                            <div class="form-group">
                                 <label class="control-label">Are you collecting COVID -19 swab now ?</label>
                                 <div class="control-group">
                                     <label class="radio-inline">
@@ -665,7 +699,9 @@
 
                             <input type="hidden" name="case_type" value="3">
 
-                            {!! rcForm::close('post') !!}
+                            <button type="submit" id="submit-form" class="btn btn-primary btn-sm btn-block ">SAVE</button>
+
+                          </form>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -709,6 +745,22 @@
             });
         }
 
+
+        var currentDate = NepaliFunctions.ConvertDateFormat(NepaliFunctions.GetCurrentBsDate(), "YYYY-MM-DD");
+
+        $('#register_date_np').nepaliDatePicker({
+            language: 'english',
+            disableAfter: currentDate,
+        });
+        $('#dose_one_date').nepaliDatePicker({
+            language: 'english',
+            disableAfter: currentDate
+        });
+        $('#dose_two_date').nepaliDatePicker({
+            language: 'english',
+            disableAfter: currentDate
+        });
+
         symptomaticCheck();
         $('.symptoms_recent').on('change', function() {
             symptomaticCheck();
@@ -716,13 +768,26 @@
         function symptomaticCheck() {
             if($('.symptoms_recent:checked').val() == '1'){
                 $('.asymptomatic').show();
-                $('.collect-swab-now').show();
             }
             else {
                 $('.asymptomatic').hide();
-                $('.collect-swab-now').hide();
             }
         }
+
+        
+        idCardType();
+        $('.id_card_type').on('change', function() {
+            idCardType();
+        });
+        function idCardType() {
+            if($('.id_card_type').val() == '0'){
+                $('.id_card_type_other').show();
+            }
+            else {
+                $('.id_card_type_other').hide();
+            }
+        }
+
 
         feverCheck();
         $('.fever').on('change', function() {
@@ -803,29 +868,23 @@
         }
 
         vaccineOtherCheck();
-        $('#vaccine_dosage').on('change', function() {
+        $('#vaccine_name').on('change', function() {
             vaccineOtherCheck();
         });
         function vaccineOtherCheck() {
-            if($('#vaccine_dosage').val() == '10'){
+            if($('#vaccine_name').val() == '10'){
                 $('.vaccine-other').show();
+                $('.not-jonson').show();
+            }else if($('#vaccine_name').val() == '6'){
+                $('.vaccine-other').hide();
+                $('.not-jonson').hide();
             }
             else {
                 $('.vaccine-other').hide();
+                $('.not-jonson').show();
             }
         }
 
-        var currentDate = NepaliFunctions.ConvertDateFormat(NepaliFunctions.GetCurrentBsDate(), "YYYY-MM-DD");
-
-        $('#travelled_date').nepaliDatePicker({
-            language: 'english',
-            disableAfter: currentDate,
-        });
-
-        $('#register_date_np').nepaliDatePicker({
-            language: 'english',
-            disableAfter: currentDate,
-        });
 
         $(function () {
             $.validator.addMethod("nameCustom", function (value, element) {
@@ -969,7 +1028,7 @@
                             return $(".vaccine_status:checked").val() == "1";
                         }
                     },
-                    vaccine_dosage: {
+                    vaccine_name: {
                         required: function () {
                             return $(".vaccine_status:checked").val() == "1";
                         }
@@ -983,8 +1042,23 @@
                 },
                 submitHandler: function (form) {
                     form.submit();
+                },
+                errorPlacement: function(error, element) {
+                  enableSubmit();
                 }
             });
         });
+
+        function disableSubmit() {
+          $("#submit-form").prop('disabled', true);
+          $("#submit-form").html("SAVING...");
+          return false;
+        }
+
+        function enableSubmit() {
+          $("#submit-form").prop('disabled', false);
+          $("#submit-form").html("SAVE");
+          return false;
+        }
     </script>
 @endsection

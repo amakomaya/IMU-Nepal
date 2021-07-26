@@ -76,7 +76,7 @@ class CaseDetailController extends Controller
             $woman = SuspectedCaseOld::find($id);
         }
         $row = $request->all();
-        $row['reson_for_testing'] = $row['reson_for_testing'] ? "[".implode(', ', $row['reson_for_testing'])."]" : '[]';
+        $row['reson_for_testing'] = $request->reson_for_testing ? "[".implode(', ', $request->reson_for_testing)."]" : '[]';
         if($request->symptoms_recent == 1) {
             $request->symptoms_comorbidity = $request->symptoms_comorbidity ?? [];
             if($request->symptoms_comorbidity_trimester) {
