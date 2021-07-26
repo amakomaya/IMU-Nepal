@@ -932,7 +932,7 @@
         for(var i=0; i<7; i++){
             result += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
-        result = org_id + '-' + result;
+        result = org_id + '-' + '{{ Carbon\Carbon::now()->format("ymd") }}' + '-' + result;
         return result;
     }
     

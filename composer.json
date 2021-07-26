@@ -50,7 +50,8 @@
         "files": [
             "app/Helpers/ConvertToNepali.php",
             "app/Helpers/Classes/rcForm.php",
-            "app/Helpers/duplicate.php"
+            "app/Helpers/duplicate.php",
+            "app/Helpers/FindTests.php"
         ]
 
     },
