@@ -181,7 +181,7 @@
                                                 @foreach($data->closeContacts->where('contact_type', 1) as $key => $sub_data)
                                                 <tr class="table-close-contact-info-tr" data-row-id="0">
                                                     <td width="95px">
-                                                        <button type="button" class="btn btn-danger btn-sm btn-remove-close-contact-info mt-1"><i class="fa fa-trash"></i></button>
+                                                        <button type="button" class="btn btn-danger btn-sm btn-remove-close-contact-info mt-1"  data-close-contact-info-id="{{ $sub_data->case_id }}"><i class="fa fa-trash"></i></button>
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="household_details[{{$key + 200}}][name]" value="{{ $sub_data->name }}">
@@ -315,16 +315,16 @@
                                                 @foreach($data->closeContacts->where('contact_type', 2) as $key => $sub_data)
                                                 <tr class="table-travel-public-tr">
                                                     <td width="95px">
-                                                        <button type="button" class="btn btn-danger btn-sm btn-remove-travel-public mt-1"><i class="fa fa-trash"></i></button>
+                                                        <button type="button" class="btn btn-danger btn-sm btn-remove-travel-public mt-1"  data-travel-public-id="{{ $sub_data->case_id }}"><i class="fa fa-trash"></i></button>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="travel_vehicle_details[{{$key + 200}}][name]" value="{{ $sub_data->name }}">
+                                                        <input type="text" class="form-control" name="travel_vehicle_details[{{$key + 400}}][name]" value="{{ $sub_data->name }}">
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="travel_vehicle_details[{{$key + 200}}][age]" value="{{ $sub_data->age }}">
+                                                        <input type="text" class="form-control" name="travel_vehicle_details[{{$key + 400}}][age]" value="{{ $sub_data->age }}">
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details[{{$key + 200}}][age_unit]" class="form-control">
+                                                        <select name="travel_vehicle_details[{{$key + 400}}][age_unit]" class="form-control">
                                                             <option value="">Select Age Unit</option>
                                                             <option value="0" {{ $sub_data->age_unit == '0' ? 'selected' : '' }}>Years</option>
                                                             <option value="1" {{ $sub_data->age_unit == '1' ? 'selected' : '' }}>Months</option>
@@ -332,7 +332,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details[{{$key + 200}}][sex]" class="form-control">
+                                                        <select name="travel_vehicle_details[{{$key + 400}}][sex]" class="form-control">
                                                             <option value="" selected>Select Gender</option>
                                                             <option value="1" {{ $sub_data->sex == '1' ? 'selected' : '' }}>Male</option>
                                                             <option value="2" {{ $sub_data->sex == '2' ? 'selected' : '' }}>Female</option>
@@ -340,7 +340,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details[{{$key + 200}}][relationship]" class="form-control travel_vehicle_details_relationship">
+                                                        <select name="travel_vehicle_details[{{$key + 400}}][relationship]" class="form-control travel_vehicle_details_relationship">
                                                             <option value="" selected>Select Relationship</option>
                                                             <option value="1" {{ $sub_data->relationship == '1' ? 'selected' : '' }}>Family</option>
                                                             <option value="2" {{ $sub_data->relationship == '2' ? 'selected' : '' }}>Friend</option>
@@ -349,12 +349,12 @@
                                                             <option value="0" {{ $sub_data->relationship == '0' ? 'selected' : '' }}>Others</option>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control travel_vehicle_details_relationship_others" name="travel_vehicle_details[{{$key + 200}}][relationship_others]"  value="{{ $sub_data->relationship_others }}" @if( $sub_data->relationship != '0') readonly @endif>
+                                                        <input type="text" class="form-control travel_vehicle_details_relationship_others" name="travel_vehicle_details[{{$key + 400}}][relationship_others]"  value="{{ $sub_data->relationship_others }}" @if( $sub_data->relationship != '0') readonly @endif>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="travel_vehicle_details[{{$key + 200}}][phone]" value="{{ $sub_data->phone }}">
-                                                        <input type="hidden" name="travel_vehicle_details[{{$key + 200}}][contact_type]" class="travel_vehicle_details_contact_type" value="2">
-                                                        <input type="hidden" name="travel_vehicle_details[{{$key + 200}}][case_id]" class="travel_vehicle_details_case_id" value="{{ $sub_data->case_id }}">
+                                                        <input type="text" class="form-control" name="travel_vehicle_details[{{$key + 400}}][phone]" value="{{ $sub_data->phone }}">
+                                                        <input type="hidden" name="travel_vehicle_details[{{$key + 400}}][contact_type]" class="travel_vehicle_details_contact_type" value="2">
+                                                        <input type="hidden" name="travel_vehicle_details[{{$key + 400}}][case_id]" class="travel_vehicle_details_case_id" value="{{ $sub_data->case_id }}">
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -449,16 +449,16 @@
                                                 @foreach($data->closeContacts->where('contact_type', 3) as $key => $sub_data)
                                                 <tr class="table-direct-care-any-tr">
                                                     <td width="95px">
-                                                        <button type="button" class="btn btn-danger btn-sm btn-remove-direct-care-any mt-1"><i class="fa fa-trash"></i></button>
+                                                        <button type="button" class="btn btn-danger btn-sm btn-remove-direct-care-any mt-1" data-direct-care-any-id="{{ $sub_data->case_id }}"><i class="fa fa-trash"></i></button>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="other_direct_care_details[{{$key + 200}}][name]" value="{{ $sub_data->name }}">
+                                                        <input type="text" class="form-control" name="other_direct_care_details[{{$key + 800}}][name]" value="{{ $sub_data->name }}">
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="other_direct_care_details[{{$key + 200}}][age]" value="{{ $sub_data->age }}">
+                                                        <input type="text" class="form-control" name="other_direct_care_details[{{$key + 800}}][age]" value="{{ $sub_data->age }}">
                                                     </td>
                                                     <td>
-                                                        <select name="other_direct_care_details[{{$key + 200}}][age_unit]" class="form-control">
+                                                        <select name="other_direct_care_details[{{$key + 800}}][age_unit]" class="form-control">
                                                             <option value="">Select Age Unit</option>
                                                             <option value="0" {{ $sub_data->age_unit == '0' ? 'selected' : '' }}>Years</option>
                                                             <option value="1" {{ $sub_data->age_unit == '1' ? 'selected' : '' }}>Months</option>
@@ -466,7 +466,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="other_direct_care_details[{{$key + 200}}][sex]" class="form-control">
+                                                        <select name="other_direct_care_details[{{$key + 800}}][sex]" class="form-control">
                                                             <option value="" selected>Select Gender</option>
                                                             <option value="1" {{ $sub_data->sex == '1' ? 'selected' : '' }}>Male</option>
                                                             <option value="2" {{ $sub_data->sex == '2' ? 'selected' : '' }}>Female</option>
@@ -474,7 +474,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="other_direct_care_details[{{$key + 200}}][relationship]" class="form-control other_direct_care_details_relationship">
+                                                        <select name="other_direct_care_details[{{$key + 800}}][relationship]" class="form-control other_direct_care_details_relationship">
                                                             <option value="" selected>Select Relationship</option>
                                                             <option value="1" {{ $sub_data->relationship == '1' ? 'selected' : '' }}>Family</option>
                                                             <option value="2" {{ $sub_data->relationship == '2' ? 'selected' : '' }}>Friend</option>
@@ -483,12 +483,12 @@
                                                             <option value="0" {{ $sub_data->relationship == '0' ? 'selected' : '' }}>Others</option>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control other_direct_care_details_relationship_others" name="other_direct_care_details[{{$key + 200}}][relationship_others]"  value="{{ $sub_data->relationship_others }}" @if( $sub_data->relationship != '0') readonly @endif>
+                                                        <input type="text" class="form-control other_direct_care_details_relationship_others" name="other_direct_care_details[{{$key + 800}}][relationship_others]"  value="{{ $sub_data->relationship_others }}" @if( $sub_data->relationship != '0') readonly @endif>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="other_direct_care_details[{{$key + 200}}][phone]" value="{{ $sub_data->phone }}">
-                                                        <input type="hidden" name="other_direct_care_details[{{$key + 200}}][contact_type]" class="other_direct_care_details_contact_type" value="3">
-                                                        <input type="hidden" name="other_direct_care_details[{{$key + 200}}][case_id]" class="other_direct_care_details_case_id" value="{{ $sub_data->case_id }}">
+                                                        <input type="text" class="form-control" name="other_direct_care_details[{{$key + 800}}][phone]" value="{{ $sub_data->phone }}">
+                                                        <input type="hidden" name="other_direct_care_details[{{$key + 800}}][contact_type]" class="other_direct_care_details_contact_type" value="3">
+                                                        <input type="hidden" name="other_direct_care_details[{{$key + 800}}][case_id]" class="other_direct_care_details_case_id" value="{{ $sub_data->case_id }}">
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -924,7 +924,7 @@
         for(var i=0; i<7; i++){
             result += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
-        result = org_id + '-' + result;
+        result = org_id + '-' + '{{ Carbon\Carbon::now()->format("ymd") }}' + '-' + result;
         return result;
     }
     
@@ -953,6 +953,7 @@
 		new_row.find("input, select").each(function(){
 			$(this).attr("name", $(this).attr("name").replace(/\d+/, contact_count_row) );
 		});
+		new_row.find('.btn-remove-close-contact-info').removeAttr('data-close-contact-info-id');
 		new_row.find(".btn-remove-close-contact-info").show();
         new_row.find(".household_details_relationship_others").prop('readonly', true);
 	});
@@ -962,7 +963,22 @@
             return;
         }
         var $this = $(this);
-        $this.parents(".table-close-contact-info-tr").remove();
+		var close_contact_id = $this.data('close-contact-info-id');
+
+		if(close_contact_id) {
+			$.ajax({
+				type: 'GET',
+				url: '/admin/cict-tracing/close-contact/' + close_contact_id + '/delete',
+				success: function (res) {
+					$this.parents(".table-close-contact-info-tr").remove();
+				},
+				error: function (data) {
+					console.error('Error:', data);
+				}
+			});
+		} else {
+			$this.parents(".table-close-contact-info-tr").remove();
+		}
     });
 
     
@@ -991,6 +1007,7 @@
 		new_row.find("input, select").each(function(){
 			$(this).attr("name", $(this).attr("name").replace(/\d+/, travel_count_row) );
 		});
+		new_row.find('.btn-remove-travel-public').removeAttr('data-travel-public-id');
         new_row.find(".btn-remove-travel-public").show();
         new_row.find(".travel_vehicle_details_relationship_others").prop('readonly', true);
     });
@@ -1000,7 +1017,22 @@
             return;
         }
         var $this = $(this);
-        $this.parents(".table-travel-public-tr").remove();
+		var travel_public_id = $this.data('travel-public-id');
+
+		if(travel_public_id) {
+			$.ajax({
+				type: 'GET',
+				url: '/admin/cict-tracing/close-contact/' + travel_public_id + '/delete',
+				success: function (res) {
+					$this.parents(".table-travel-public-tr").remove();
+				},
+				error: function (data) {
+					console.error('Error:', data);
+				}
+			});
+		} else {
+			$this.parents(".table-travel-public-tr").remove();
+		}
     });
 
     
@@ -1012,18 +1044,6 @@
             $(this).parent().next().find(".other_direct_care_details_relationship_others").prop('readonly', true);
         }
     });
-
-
-	// var count_direct_care = {{ ($data->closeContacts->where('contact_type', 3)->count() == 0) ? 1 : $data->closeContacts->where('contact_type', 3) }}
-	// show_hide_direct_care_remove_btn();
-	// function show_hide_direct_care_remove_btn() {
-	// 	console.log(count_direct_care);
-	// 	if(count_direct_care <= 1) {
-	// 		$('.btn-remove-member').hide();
-	// 	} else {
-	// 		$('.btn-remove-member').show();
-	// 	}
-	// }
 
     $('.btn-add-direct-care-any').on('click', function() {
         var tr = $(".table-direct-care-any-tr").last();
@@ -1041,6 +1061,7 @@
 		new_row.find("input, select").each(function(){
 			$(this).attr("name", $(this).attr("name").replace(/\d+/, direct_count_row) );
 		});
+		new_row.find('.btn-remove-direct-care-any').removeAttr('data-direct-care-any-id');
         new_row.find(".btn-remove-direct-care-any").show();
         new_row.find(".other_direct_care_details_relationship_others").prop('readonly', true);
     });
@@ -1050,9 +1071,7 @@
             return;
         }
         var $this = $(this);
-		var direct_case_id = $this.find(".other_direct_care_details_case_id").val();
-		// direct_count_row--;
-		// show_hide_direct_care_remove_btn();
+		var direct_case_id = $this.data('direct-care-any-id');
 
 		if(direct_case_id) {
 			$.ajax({

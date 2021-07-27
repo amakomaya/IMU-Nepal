@@ -27,7 +27,8 @@ class FixEmptyCaseId extends Command
     }
 
     public function generateCaseId($caseData) {
-      $caseId = OrganizationMember::where('token', $caseData->created_by)->first()->id . '-' . strtoupper(bin2hex(random_bytes(3)));
+      $dateCode = Carbon::now()->format('ymd');
+      $caseId = OrganizationMember::where('token', $caseData->created_by)->first()->id . '-' . $dateCode . '-' . strtoupper(bin2hex(random_bytes(3)));
       return $caseId;
     }
 

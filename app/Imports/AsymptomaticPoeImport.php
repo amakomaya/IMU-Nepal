@@ -126,7 +126,7 @@ class AsymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidatio
           'swab_collection_conformation' => '1',
           'cases' => '0',
           'case_type' => '3',
-          'case_id' => $this->healthWorker->id . '-' . strtoupper(bin2hex(random_bytes(3))),
+          'case_id' => $this->healthWorker->id .'-' . Carbon::now()->format('ymd') . '-' . strtoupper(bin2hex(random_bytes(3))),
           'register_date_en' => $this->todayDateEn,
           'register_date_np' => $this->todayDateNp,
           'symptoms_recent' => '0',

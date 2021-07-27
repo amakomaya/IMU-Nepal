@@ -13,6 +13,7 @@ use App\Models\SuspectedCase;
 use App\Models\SampleCollection;
 use App\Models\OrganizationMember;
 use App\Models\Vaccine;
+use Carbon\Carbon;
 
 class CictTracingController extends Controller
 {

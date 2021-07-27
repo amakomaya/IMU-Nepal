@@ -96,8 +96,7 @@ export default {
       if (this.$v.$invalid) {
         return false;
       }
-      
-      if(this.item) data.sample_token = this.item.token;
+      if(this.item) data.sample_token = this.item.latest_anc.token;
       this.isSubmitting = true;
       axios.post('/api/v1/result-in-lab-from-web', data)
           .then((response) => {
@@ -136,7 +135,6 @@ export default {
     },
     ad2bs: function (date) {
       var dateObject = new Date(date);
-      console.log(dateObject);
       var dateFormat = dateObject.getFullYear()  + "/"  + (dateObject.getMonth()+1) + "/" + dateObject.getDate();
       let dateConverter = DataConverter.ad2bs(dateFormat);
       return dateConverter.en.year+'-'+dateConverter.en.month+'-'+dateConverter.en.day;

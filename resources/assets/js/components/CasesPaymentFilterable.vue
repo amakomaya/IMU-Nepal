@@ -341,8 +341,6 @@ export default {
             }
           })
               .then((response) => {
-                console.log(this.file);
-                console.log(response.data);
               })
               .catch((error) => {
                 console.error(error)
