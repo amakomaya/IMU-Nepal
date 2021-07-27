@@ -503,20 +503,8 @@ class CasesPaymentController extends Controller
         $data = PaymentCase::join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
             ->leftjoin('provinces', 'provinces.id', '=', 'healthposts.province_id')
             ->leftjoin('districts', 'districts.id', '=', 'healthposts.district_id')
-            ->leftjoin('municipalities', 'municipalities.id', '=', 'healthposts.municipality_id');
-            // ->whereIn('payment_cases.hp_code', $hpCodes);
-
-        if ($response['province_id'] !== null){
-            $data = $data->where('payment_cases.province_id', $response['province_id']);
-        }
-
-        if ($response['district_id'] !== null){
-            $data = $data->where('payment_cases.district_id', $response['district_id']);
-        }
-
-        if ($response['municipality_id'] !== null){
-            $data = $data->where('payment_cases.municipality_id', $response['municipality_id']);
-        }
+            ->leftjoin('municipalities', 'municipalities.id', '=', 'healthposts.municipality_id')
+             ->whereIn('payment_cases.hp_code', $hpCodes);
 
         if ($response['hospital_type'] !== null){
             $data = $data->where('healthposts.hospital_type', $response['hospital_type']);

@@ -9,4 +9,3 @@
 @include('layouts.backend.navigation.html.cases-payment')
 @include('layouts.backend.navigation.html.swab')
 @include('layouts.backend.navigation.html.bulk-upload')
-

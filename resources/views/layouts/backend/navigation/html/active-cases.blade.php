@@ -6,7 +6,9 @@
     Request::segment(2) == 'positive-patients' || Request::segment(2) == 'positive-patients-old' ||
     Request::segment(2) == 'negative-patients-antigen' || Request::segment(2) == 'negative-patients-antigen-old' ||
     Request::segment(2) == 'negative-patients' || Request::segment(2) == 'negative-patients-old' ||
-    Request::segment(2) == 'situation-report')
+    Request::segment(2) == 'situation-report' ||
+    Request::segment(2) == 'district-wise-cases-overview'
+    )
     class="active" @endif>
     <a href="#">
         <i class="fa fa-users" aria-hidden="true"></i>
@@ -147,6 +149,15 @@
                         <span class="label label-info pull-right" title="Lab"> Lab </span>
                     </a>
                 </li>
+                @if(auth()->user()->role == 'province')
+                <li>
+                    <a href="{{ route('report.district-wise-cases-overview') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        District Wise
+                        <span class="label label-primary pull-right" title="Lab"> Lab </span>
+                    </a>
+                </li>
+                @endif
             </ul>
         </li>
     </ul>
