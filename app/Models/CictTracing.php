@@ -57,6 +57,11 @@ class CictTracing extends Model
         return $this->belongsTo(SuspectedCase::class, 'woman_token', 'token');
     }
 
+	public function closeContacts()
+    {
+		return $this->hasMany('App\Models\CictCloseContact', 'cict_id');
+	}
+
     public function checkedBy()
     {
         return $this->belongsTo(OrganizationMember::class, 'checked_by', 'token');
