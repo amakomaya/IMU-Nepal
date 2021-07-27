@@ -17,8 +17,8 @@ class CreateCictCloseContactsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('cict_id')->unsigned();
             $table->foreign('cict_id')->references('id')->on('cict_tracings')->onDelete('cascade');
-            $table->string('case_id', 12);
-            $table->string('parent_case_id', 12);
+            $table->string('case_id', 50);
+            $table->string('parent_case_id', 50);
             $table->string('hp_code', 16)->nullable();
             $table->string('checked_by', 50)->nullable();
             $table->string('name', 64)->nullable();

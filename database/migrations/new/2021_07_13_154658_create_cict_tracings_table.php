@@ -15,7 +15,7 @@ class CreateCictTracingsTable extends Migration
     {
         Schema::create('cict_tracings', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('case_id', 12);
+            $table->string('case_id', 50);
             $table->string('token', 50);
             $table->string('woman_token', 50)->nullable();
             $table->string('hp_code', 16)->nullable();
@@ -41,6 +41,8 @@ class CreateCictTracingsTable extends Migration
             $table->string('informant_phone', 10)->nullable();
             $table->string('case_managed_at', 3)->nullable();
             $table->string('case_managed_at_other', 64)->nullable();
+            $table->string('case_managed_at_hospital', '3')->nullable();
+            $table->string('case_managed_at_hospital_date', '10')->nullable();
             
             $table->enum('symptoms_recent', ['0', '1'])->nullable();
             $table->enum('symptoms_two_weeks', ['0', '1'])->nullable();

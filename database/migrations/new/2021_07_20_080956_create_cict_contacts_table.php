@@ -15,7 +15,7 @@ class CreateCictContactsTable extends Migration
     {
         Schema::create('cict_contacts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('case_id', 12);
+            $table->string('case_id', 50);
             $table->string('token', 50);
             $table->string('parent_case_id', 12);
             $table->string('woman_token', 50)->nullable();
