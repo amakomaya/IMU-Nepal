@@ -509,19 +509,21 @@ class CasesPaymentController extends Controller
         if ($response['hospital_type'] !== null){
             $data = $data->where('healthposts.hospital_type', $response['hospital_type']);
         }
-
         $running_period_cases = $data
             ->where(function ($query) use ($filter_date){
-                $query->whereBetween('payment_cases.register_date_en', [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
-                    ->where(function($q) use ($filter_date) {
-                        $q->whereDate('payment_cases.date_of_outcome_en', '>=', $filter_date['from_date']->toDateString())
-                            ->orWhereNull('payment_cases.date_of_outcome_en');
-                        })
-                ->orWhereDate('payment_cases.register_date_en', '<=', $filter_date['from_date']->toDateString())
-                    ->where(function($q2) use ($filter_date) {
-                        $q2->whereDate('payment_cases.date_of_outcome_en', '>=', $filter_date['from_date']->toDateString())
-                            ->orWhereNull('payment_cases.date_of_outcome_en');
-                    });
+                    $query->whereNull('date_of_outcome_en')
+                        ->orWhereDate('date_of_outcome_en','>=' ,$filter_date['from_date']->toDateString())
+                        ->whereDate('register_date_en', '<=' ,$filter_date['to_date']->toDateString());
+//                $query->whereBetween('payment_cases.register_date_en', [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
+//                    $query->where(function($q) use ($filter_date) {
+//                        $q->whereDate('payment_cases.date_of_outcome_en', '>=', $filter_date['from_date']->toDateString())
+//                            ->orWhereNull('payment_cases.date_of_outcome_en');
+//                        })
+//                ->orWhereDate('payment_cases.register_date_en', '<=', $filter_date['from_date']->toDateString())
+//                    ->where(function($q2) use ($filter_date) {
+//                        $q2->whereDate('payment_cases.date_of_outcome_en', '>=', $filter_date['from_date']->toDateString())
+//                            ->orWhereNull('payment_cases.date_of_outcome_en');
+//                    });
             })
             ->select([
                 'payment_cases.health_condition',
