@@ -165,7 +165,6 @@
                                 <h4>Data Collector information</h4><br>
 
                                 <div class="form-group">
-                                    <h4>Data collector information</h4><br>
                                     <b>Name:</b> {{ isset($data->checkedBy) && $data->checkedBy ? $data->checkedBy->name : '' }}<br>
                                     <b>Telephone Number:</b> {{ isset($data->checkedBy) && $data->checkedBy ? $data->checkedBy->phone : '' }}<br>
                                     <b>Instituton:</b> {{ isset($data->checkedBy) && $data->checkedBy ? $data->checkedBy->getHealthpost($data->hp_code) : '' }}<br>
