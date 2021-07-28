@@ -191,20 +191,14 @@
                             <div class="form-group">
                                 <h4>Occupation</h4><br>
                                 <select name="occupation" class="form-control occupation">
-                                    <option {{ isset($data) && $data->occupation == '' ? "selected" : "" }} value="">Select Occupation
-                                    </option>
-                                    <option {{ isset($data) && $data->occupation == '1' ? "selected" : "" }} value="1">Health care worker
-                                    </option>
+                                    <option {{ isset($data) && $data->occupation == '' ? "selected" : "" }} value="">Select Occupation</option>
+                                    <option {{ isset($data) && $data->occupation == '1' ? "selected" : "" }} value="1">Health care worker</option>
                                     <option {{ isset($data) && $data->occupation == '14' ? "selected" : "" }} value="14">Working with animals</option>
                                     <option {{ isset($data) && $data->occupation == '6' ? "selected" : "" }} value="6">Student/Teacher</option>
-                                    <option {{ isset($data) && $data->occupation == '16' ? "selected" : "" }} value="16">Security Personnel
-                                    </option>
-                                    <option {{ isset($data) && $data->occupation == '17' ? "selected" : "" }} value="17">Waste Management Worker
-                                    </option>
-                                    <option {{ isset($data) && $data->occupation == '18' ? "selected" : "" }} value="18">Hotel/Restaurants/Bars
-                                    </option>
-                                    <option {{ isset($data) && $data->occupation == '19' ? "selected" : "" }} value="19">Bank and Finance worker
-                                    </option>
+                                    <option {{ isset($data) && $data->occupation == '16' ? "selected" : "" }} value="16">Security Personnel</option>
+                                    <option {{ isset($data) && $data->occupation == '17' ? "selected" : "" }} value="17">Waste Management Worker</option>
+                                    <option {{ isset($data) && $data->occupation == '18' ? "selected" : "" }} value="18">Hotel/Restaurants/Bars</option>
+                                    <option {{ isset($data) && $data->occupation == '19' ? "selected" : "" }} value="19">Bank and Finance worker</option>
                                     <option {{ isset($data) && $data->occupation == '0' ? "selected" : "" }} value="0">Others</option>
                                 </select>
                                 @if ($errors->has('occupation'))
@@ -247,8 +241,7 @@
                                     <select name="healthworker_station" class="form-control healthworker_station">
                                         <option {{ isset($data) && $data->healthworker_station == '' ? "selected" : "" }} value="">Select Station
                                         </option>
-                                        <option {{ isset($data) && $data->healthworker_station == '1' ? "selected" : "" }} value="1">Fever Clinic
-                                        </option>
+                                        <option {{ isset($data) && $data->healthworker_station == '1' ? "selected" : "" }} value="1">Fever Clinic</option>
                                         <option {{ isset($data) && $data->healthworker_station == '2' ? "selected" : "" }} value="2">Isolation Ward</option>
                                         <option {{ isset($data) && $data->healthworker_station == '3' ? "selected" : "" }} value="3">ICU/Ventilator</option>
                                         <option {{ isset($data) && $data->healthworker_station == '4' ? "selected" : "" }} value="4">Lab
@@ -593,7 +586,7 @@
                                             </label>
                                             <label class="radio-inline">
                                                 <input type="radio" name="test_type" class="test_type"
-                                                    {{ isset($data) && $data->test_type == "0" ? 'checked' : '' }} value="1">Unknown
+                                                    {{ isset($data) && $data->test_type == "0" ? 'checked' : '' }} value="0">Unknown
                                             </label>
                                         </div>
                                     </div>

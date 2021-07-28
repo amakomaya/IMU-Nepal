@@ -301,7 +301,7 @@
                                                             <option class="form-control" value="1" {{ $sub_data->travel_mode == '1' ? 'selected' : '' }}>Air</option>
                                                             <option class="form-control" value="2" {{ $sub_data->travel_mode == '2' ? 'selected' : '' }}>Public Transport</option>
                                                             <option class="form-control" value="3" {{ $sub_data->travel_mode == '3' ? 'selected' : '' }}>Private Vehicle</option>
-                                                            <option class="form-control" value="3" {{ $sub_data->travel_mode == '0' ? 'selected' : '' }}>Other</option>
+                                                            <option class="form-control" value="0" {{ $sub_data->travel_mode == '0' ? 'selected' : '' }}>Other</option>
                                                         </select>
                                                     </td>
                                                     <td>

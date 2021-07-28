@@ -304,12 +304,12 @@
                             
                             <div class="case_managed_at_hospital_class">
                                 <div class="form-group">
-                                    <label for="case_managed_at_hospital">Case Managed At</label>
+                                    <label for="case_managed_at_hospital">Case Managed At Hospital</label>
                                     <select name="case_managed_at_hospital" class="form-control" id="case_managed_at_hospital">
                                         <option value="" {{ $data && $data->case_managed_at_hospital == '' ? "selected" : "" }}>-- Select Option --</option>
                                         <option {{ $data && $data->case_managed_at_hospital == '1' ? "selected" : "" }} value="1">In Ward</option>
                                         <option {{ $data && $data->case_managed_at_hospital == '2' ? "selected" : "" }} value="2">In ICU</option>
-                                        <option {{ $data && $data->case_managed_at_hospital == '3' ? "selected" : "" }} value="3">On Ventlator</option>
+                                        <option {{ $data && $data->case_managed_at_hospital == '3' ? "selected" : "" }} value="3">On Ventilator</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
