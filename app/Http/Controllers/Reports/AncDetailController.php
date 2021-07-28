@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Auth;
+use DB;
 use App\Helpers\GetHealthpostCodes;
 use App\Reports\FilterRequest;
 use Yagiten\Nepalicalendar\Calendar;
@@ -264,23 +265,23 @@ class AncDetailController extends Controller
             $return = [];
             $return['key'] = $lab[0]->healthpost_name;
             $return['healthpost_token'] = $lab[0]->healthpost_token;
-            $return['pcr_postive_today'] = $lab->where('service_for', '1')->where('result', '3')->where('collection_date_en', Carbon::now()->toDateString())->count();
-            $return['pcr_negative_today'] = $lab->where('service_for', '1')->where('result', '4')->where('collection_date_en', Carbon::now()->toDateString())->count();
-            $return['antigen_positive_today'] = $lab->where('service_for', '2')->where('result', '3')->where('collection_date_en', Carbon::now()->toDateString())->count();
-            $return['antigen_negative_today'] = $lab->where('service_for', '2')->where('result', '4')->where('collection_date_en', Carbon::now()->toDateString())->count();
+            $return['pcr_postive_today'] = $lab->where('service_for', '1')->where('result', '3')->where('sample_test_date_en', Carbon::now()->toDateString())->count();
+            $return['pcr_negative_today'] = $lab->where('service_for', '1')->where('result', '4')->where('sample_test_date_en', Carbon::now()->toDateString())->count();
+            $return['antigen_positive_today'] = $lab->where('service_for', '2')->where('result', '3')->where('sample_test_date_en', Carbon::now()->toDateString())->count();
+            $return['antigen_negative_today'] = $lab->where('service_for', '2')->where('result', '4')->where('sample_test_date_en', Carbon::now()->toDateString())->count();
 
-            $return['pcr_postive_yesterday'] = $lab->where('service_for', '1')->where('result', '3')->where('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
-            $return['pcr_negative_yesterday'] = $lab->where('service_for', '1')->where('result', '4')->where('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
-            $return['antigen_positive_yesterday'] = $lab->where('service_for', '2')->where('result', '3')->where('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
-            $return['antigen_negative_yesterday'] = $lab->where('service_for', '2')->where('result', '4')->where('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
+            $return['pcr_postive_yesterday'] = $lab->where('service_for', '1')->where('result', '3')->where('sample_test_date_en', Carbon::now()->subDays(1)->toDateString())->count();
+            $return['pcr_negative_yesterday'] = $lab->where('service_for', '1')->where('result', '4')->where('sample_test_date_en', Carbon::now()->subDays(1)->toDateString())->count();
+            $return['antigen_positive_yesterday'] = $lab->where('service_for', '2')->where('result', '3')->where('sample_test_date_en', Carbon::now()->subDays(1)->toDateString())->count();
+            $return['antigen_negative_yesterday'] = $lab->where('service_for', '2')->where('result', '4')->where('sample_test_date_en', Carbon::now()->subDays(1)->toDateString())->count();
             
-            $api_data_today = $lab->where('regdev', 'api')->where('collection_date_en', Carbon::now()->toDateString())->count();
+            $api_data_today = $lab->where('regdev', 'api')->where('sample_test_date_en', Carbon::now()->toDateString())->count();
             if($api_data_today > 0) {
                 $return['api_today'] = 'Yes';
             } else {
                 $return['api_today'] = 'No';
             }
-            $api_data_yesterday = $lab->where('regdev', 'api')->where('collection_date_en', Carbon::now()->subDays(1)->toDateString())->count();
+            $api_data_yesterday = $lab->where('regdev', 'api')->where('sample_test_date_en', Carbon::now()->subDays(1)->toDateString())->count();
             if($api_data_yesterday > 0) {
                 $return['api_yesterday'] = 'Yes';
             } else {
@@ -320,14 +321,33 @@ class AncDetailController extends Controller
         }
 
         $organizations = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
-            ->select('ancs.*', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token')
+            ->select('ancs.hp_code', 'ancs.regdev', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token')
             ->whereIn('ancs.hp_code', $hpCodes)
             ->whereDate('collection_date_en', $date_chosen)
             ->get()
             ->groupBy('hp_code');
+
+
+// dd($organizations);
+        // $return = [];
+        // foreach($organizations as $key => $lab){
+
+        //     dd($lab->whereNull('regdev')->count());
+        //     $return[$key]['key'] = $lab->first()->healthpost_name;
+        //     $return[$key]['healthpost_token'] = $lab->first()->healthpost_token;
+        //     $return[$key]['web_count'] = $lab->where('regdev', 'web')->count();
+        //     $return[$key]['mobile_count'] = $lab->where(function($q) {
+        //         $q->whereNull('regdev')
+        //             ->orWhere('regdev', 'mobile');
+        //     })->count();
+        //     $return[$key]['api_count'] = $lab->where('regdev', 'api')->count();
+        //     $return[$key]['excel_count'] = $lab->where('regdev', 'like', '%' . 'excel' . '%')->count();
+        // }
+
+        // dd($return);
         
+        $return = [];
         $mapped_data = $organizations->map(function ($lab, $key) {
-            $return = [];
             $return['key'] = $lab[0]->healthpost_name;
             $return['healthpost_token'] = $lab[0]->healthpost_token;
             $return['web_count'] = $lab->where('regdev', 'web')->count();
@@ -341,6 +361,8 @@ class AncDetailController extends Controller
         })->values();
 
         $data = $mapped_data;
+
+        // dd($data);
 
         return view('backend.sample.report.regdev', compact('data'));
 
