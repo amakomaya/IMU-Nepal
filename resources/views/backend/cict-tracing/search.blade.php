@@ -71,7 +71,7 @@
 <script>
 
 $('#btnSubmit').on('click', function() {
-	if (confirm("Are you sure?")){
+	if (confirm("Are you sure you want to create A form?")){
         $('form#createCict').submit();
     }
 });

@@ -23,10 +23,11 @@
                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
+                                        <th>ID</th>
                                         <th>Name</th>
                                         <th>Age</th>
                                         <th title="Gender">Sex</th>
-                                        {{-- <th title="Relationship">Relationship</th> --}}
+                                        <th title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
                                         <th title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
                                     </tr>
                                 </thead>
@@ -42,15 +43,35 @@
                                                 $sex = "O";
                                             }
                                             ?>
+                                            <td>{{ ++$key }}</td>
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->age }}</td>
                                             <td>{{ $sex }}</td>
-                                            {{-- <td>{{ $item->sex }}</td> --}}
                                             <td>
+                                                @if($item->contact)
+                                                @if($item->contact->completion_date)
+                                                <span class="text-success">Complete <i class="fa fa-check" aria-hidden="true"></i></span>
+                                                @else
+                                                <span class="text-danger">Incomplete <i class="fa fa-times" aria-hidden="true"></i></span>
+                                                @endif
+                                                @else
+                                                <span class="text-warning">N/A</span>
+                                                @endif
                                                 <form method="GET" action="{{ route('b-one-form.part-one') }}">
                                                     <input type="hidden" name="case_id" value="{{ $item->case_id }}">
                                                     <button class="btn btn-sm btn-success" type="submit"><i class="fa fa-plus" aria-hidden="true"></i> B1 Form</button>
                                                 </form>
+                                            </td>
+                                            <td>
+                                                @if($item->followUp)
+                                                @if($item->followUp->completion_date)
+                                                <span class="text-success">Complete <i class="fa fa-check" aria-hidden="true"></i></span>
+                                                @else
+                                                <span class="text-info">In Progress <i class="fa fa-spinner" aria-hidden="true"></i></span>
+                                                @endif
+                                                @else
+                                                <span class="text-warning">N/A</span>
+                                                @endif
                                                 <form method="GET" action="{{ route('b-two-form.follow-up') }}">
                                                     <input type="hidden" name="case_id" value="{{ $item->case_id }}">
                                                     <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-plus" aria-hidden="true"></i> B2 Form</button>

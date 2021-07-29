@@ -973,7 +973,7 @@
 	});
 
     $('body').on('click', '.btn-remove-close-contact-info', function() {
-        if(!confirm('Are you sure?')){
+        if(!confirm('Are you sure you want to delete?')){
             return;
         }
         var $this = $(this);
@@ -1042,7 +1042,7 @@
     });
 
     $('body').on('click', '.btn-remove-travel-public', function() {
-        if(!confirm('Are you sure?')){
+        if(!confirm('Are you sure you want to delete?')){
             return;
         }
         var $this = $(this);
@@ -1110,7 +1110,7 @@
     });
 
     $('body').on('click', '.btn-remove-direct-care-any', function() {
-        if(!confirm('Are you sure?')){
+        if(!confirm('Are you sure you want to delete?')){
             return;
         }
         var $this = $(this);
@@ -1148,7 +1148,7 @@
     });
 
     $('body').on('click', '.btn-remove-school-reference', function() {
-        if(!confirm('Are you sure?')){
+        if(!confirm('Are you sure you want to delete?')){
             return;
         }
         var $this = $(this);

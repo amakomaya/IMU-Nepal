@@ -89,13 +89,13 @@
                                 </div>
                                 
                                 <div class="is-symptomatic">
-                                    <div class="form-group {{ $errors->has('date_of_onset_of_first_symptom_np') ? 'has-error' : '' }}">
-                                        <label for="date_of_onset_of_first_symptom_np">Date of onset of first symptom:</label>
-                                        <input type="text" class="form-control" id="date_of_onset_of_first_symptom_np"
-                                            name="date_of_onset_of_first_symptom_np" value="{{ isset($data) ? $data->date_of_onset_of_first_symptom : '' }}" aria-describedby="help">
-                                        @if ($errors->has('date_of_onset_of_first_symptom_np'))
+                                    <div class="form-group {{ $errors->has('date_of_onset_of_first_symptom') ? 'has-error' : '' }}">
+                                        <label for="date_of_onset_of_first_symptom">Date of onset of first symptom:</label>
+                                        <input type="text" class="form-control" id="date_of_onset_of_first_symptom"
+                                            name="date_of_onset_of_first_symptom" value="{{ isset($data) ? $data->date_of_onset_of_first_symptom : '' }}" aria-describedby="help">
+                                        @if ($errors->has('date_of_onset_of_first_symptom'))
                                             <small id="help"
-                                                class="form-text text-danger">{{ $errors->first('date_of_onset_of_first_symptom_np') }}</small>
+                                                class="form-text text-danger">{{ $errors->first('date_of_onset_of_first_symptom') }}</small>
                                         @endif
                                     </div>
 
@@ -664,7 +664,7 @@
         if($('.symptoms_recent:checked').val() == '0'){
             $('.symptoms_two_weeks_class').show();
             $('.is-symptomatic').hide();
-            $('#date_of_onset_of_first_symptom_np').val("");
+            $('#date_of_onset_of_first_symptom').val("");
         }
         else {
             $('.symptoms_two_weeks_class').hide();
@@ -815,7 +815,7 @@
     
     
     var currentDate = NepaliFunctions.ConvertDateFormat(NepaliFunctions.GetCurrentBsDate(), "YYYY-MM-DD");
-    $('#date_of_onset_of_first_symptom_np').nepaliDatePicker({
+    $('#date_of_onset_of_first_symptom').nepaliDatePicker({
         language: 'english',
         disableAfter: currentDate
     });

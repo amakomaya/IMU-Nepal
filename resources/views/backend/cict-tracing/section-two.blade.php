@@ -1018,7 +1018,7 @@
 	});
 
     $('body').on('click', '.btn-remove-fourteen-days', function() {
-        if(!confirm('Are you sure?')){
+        if(!confirm('Are you sure you want to delete?')){
             return;
         }
         var $this = $(this);
@@ -1040,7 +1040,7 @@
     });
 
     $('body').on('click', '.btn-remove-same-household', function() {
-        if(!confirm('Are you sure?')){
+        if(!confirm('Are you sure you want to delete?')){
             return;
         }
         var $this = $(this);
@@ -1062,7 +1062,7 @@
     });
 
     $('body').on('click', '.btn-remove-close-contact', function() {
-        if(!confirm('Are you sure?')){
+        if(!confirm('Are you sure you want to delete?')){
             return;
         }
         var $this = $(this);
@@ -1084,7 +1084,7 @@
     });
 
     $('body').on('click', '.btn-remove-direct-care', function() {
-        if(!confirm('Are you sure?')){
+        if(!confirm('Are you sure you want to delete?')){
             return;
         }
         var $this = $(this);
@@ -1106,7 +1106,7 @@
     });
 
     $('body').on('click', '.btn-remove-school-attend', function() {
-        if(!confirm('Are you sure?')){
+        if(!confirm('Are you sure you want to delete?')){
             return;
         }
         var $this = $(this);

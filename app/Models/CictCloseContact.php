@@ -13,4 +13,15 @@ class CictCloseContact extends Model
         'name', 'age', 'age_unit', 'sex',
         'phone', 'relationship', 'relationship_others', 'contact_type'
     ];
+
+	public function contact()
+    {
+		return $this->hasOne('App\Models\CictContact', 'case_id', 'case_id');
+	}
+
+	public function followUp()
+    {
+		return $this->hasOne('App\Models\CictFollowUp', 'case_id', 'case_id');
+	}
+
 }
