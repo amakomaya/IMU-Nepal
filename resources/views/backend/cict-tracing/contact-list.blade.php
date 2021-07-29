@@ -27,8 +27,8 @@
                                         <th>Name</th>
                                         <th>Age</th>
                                         <th title="Gender">Sex</th>
-                                        <th title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
-                                        <th title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
+                                        <th title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i> B1 Form</th>
+                                        <th title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i> B2 Form</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-sars-cov-tbody text-center">
@@ -48,6 +48,7 @@
                                             <td>{{ $item->age }}</td>
                                             <td>{{ $sex }}</td>
                                             <td>
+                                                Status: 
                                                 @if($item->contact)
                                                 @if($item->contact->completion_date)
                                                 <span class="text-success">Complete <i class="fa fa-check" aria-hidden="true"></i></span>
@@ -63,6 +64,7 @@
                                                 </form>
                                             </td>
                                             <td>
+                                                Status: 
                                                 @if($item->followUp)
                                                 @if($item->followUp->completion_date)
                                                 <span class="text-success">Complete <i class="fa fa-check" aria-hidden="true"></i></span>
