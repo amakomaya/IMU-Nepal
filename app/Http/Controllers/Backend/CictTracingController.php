@@ -145,7 +145,7 @@ class CictTracingController extends Controller
         $cict_tracing = CictTracing::where('case_id', $case_id)->first();
         $cict_tracing->update($data);
             
-        $request->session()->flash('message', 'Data Inserted successfully');
+        $request->session()->flash('message', 'CICT A Form (1 of 3) Inserted successfully');
         return redirect()->route('cict-tracing.section-two', ['case_id' => $case_id]);
     }
 
@@ -275,7 +275,7 @@ class CictTracingController extends Controller
             $cict_tracing = CictTracing::where('case_id', $request->case_id)->first();
             $cict_tracing->update($data);
             
-            $request->session()->flash('message', 'Data Inserted successfully');
+            $request->session()->flash('message', 'CICT A Form (2 of 3) Inserted successfully');
             return redirect()->route('cict-tracing.section-three', ['case_id' => $case_id]);
         }catch(exception $e){
 
@@ -431,7 +431,7 @@ class CictTracingController extends Controller
                 }
             }
             
-            $request->session()->flash('message', 'Data Inserted successfully');
+            $request->session()->flash('message', 'CICT A Form Inserted successfully');
             return redirect()->route('cict-tracing.index');
         }catch(exception $e){
 
@@ -476,7 +476,7 @@ class CictTracingController extends Controller
             $cict_contact = CictContact::create($data);
         }
             
-        $request->session()->flash('message', 'Data Inserted successfully');
+        $request->session()->flash('message', 'Contact Interview Form (1 of 2) Inserted successfully');
         return redirect()->route('b-one-form.part-two', ['case_id' => $case_id]);
     }
 
@@ -512,7 +512,7 @@ class CictTracingController extends Controller
         $cict_contact = CictContact::where('case_id', $case_id)->first();
         $cict_contact->update($data);
             
-        $request->session()->flash('message', 'Data Inserted successfully');
+        $request->session()->flash('message', 'Contact Interview Form Inserted successfully');
         return redirect()->route('cict-tracing.contact-list', $cict_contact->parent_case_id);
     }
 

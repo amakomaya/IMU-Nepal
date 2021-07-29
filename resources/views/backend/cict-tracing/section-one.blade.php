@@ -49,7 +49,7 @@
                 @endif
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">
-                        <strong>CICT Form (1 of 3)</strong>
+                        <strong>CICT A Form (1 of 3)</strong>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">

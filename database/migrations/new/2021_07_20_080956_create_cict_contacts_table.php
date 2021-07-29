@@ -84,6 +84,7 @@ class CreateCictContactsTable extends Migration
             $table->string('test_status', 3)->nullable();
             $table->string('collection_date', 10)->nullable();
             $table->string('test_type', 3)->nullable();
+            $table->string('test_result', 3)->nullable();
             $table->string('result_date', 10)->nullable();
             $table->string('completion_date', 10)->nullable();
             

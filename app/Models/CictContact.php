@@ -22,7 +22,7 @@ class CictContact extends Model
         'contact_status', 'contact_last_date', 'contact_social_status', 'contact_social_last_date',
         'sars_cov2_vaccinated', 'dose_one_name', 'dose_one_date', 'dose_two_name', 'dose_two_date',
         'measures_taken', 'measures_taken_other', 'measures_referral_date', 'measures_hospital_name',
-        'test_status', 'collection_date', 'test_type', 'result_date',
+        'test_status', 'collection_date', 'test_type', 'test_result', 'result_date',
         'completion_date'
     ];
 

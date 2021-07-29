@@ -501,9 +501,7 @@
                                         <small id="help" class="form-text text-danger">{{ $errors->first('measures_taken_other') }}</small>
                                     @endif
                                 </div>
-
-                                <div class="form-group measures_taken_hospital_class">
-                                    <label>If referred to hospital/quarantine facility:</label>
+                                <div class="measures_taken_hospital_class">
                                     <div class="form-group">
                                         <label>Referral Date</label><br>
                                         <input type="text" class="form-control" value="{{ isset($data) ? $data->measures_referral_date : '' }}" name="measures_referral_date" id="measures_referral_date"
@@ -512,7 +510,8 @@
                                         @if ($errors->has('measures_referral_date'))
                                             <small id="help" class="form-text text-danger">{{ $errors->first('measures_referral_date') }}</small>
                                         @endif
-
+                                    </div>
+                                    <div class="form-group">
                                         <label>Name of hospital/quarantine center </label><br>
                                         <input type="text" class="form-control" value="{{ isset($data) ? $data->measures_hospital_name : '' }}" name="measures_hospital_name"
                                                 aria-describedby="help" placeholder="Enter Name of hospital/quarantine center"
@@ -577,16 +576,16 @@
                                         <label class="control-label">Test result</label>
                                         <div class="control-group">
                                             <label class="radio-inline">
-                                                <input type="radio" name="test_type" class="test_type"
-                                                    {{ isset($data) && $data->test_type == "1" ? 'checked' : '' }} value="1">Positive
+                                                <input type="radio" name="test_result" class="test_result"
+                                                    {{ isset($data) && $data->test_result == "1" ? 'checked' : '' }} value="1">Positive
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="test_type" class="test_type"
-                                                    {{ isset($data) && $data->test_type == "2" ? 'checked' : '' }} value="2">Negative
+                                                <input type="radio" name="test_result" class="test_result"
+                                                    {{ isset($data) && $data->test_result == "2" ? 'checked' : '' }} value="2">Negative
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="test_type" class="test_type"
-                                                    {{ isset($data) && $data->test_type == "0" ? 'checked' : '' }} value="0">Unknown
+                                                <input type="radio" name="test_result" class="test_result"
+                                                    {{ isset($data) && $data->test_result == "0" ? 'checked' : '' }} value="0">Unknown
                                             </label>
                                         </div>
                                     </div>
@@ -609,7 +608,6 @@
                                 <h4>Data Collector information</h4><br>
 
                                 <div class="form-group">
-                                    <h4>Data collector information</h4><br>
                                     <b>Name:</b> {{ isset($data) && $data->checkedBy ? $data->checkedBy->name : '' }}<br>
                                     <b>Telephone Number:</b> {{ isset($data) && $data->checkedBy ? $data->checkedBy->phone : '' }}<br>
                                     <b>Instituton:</b> {{ isset($data) && $data->checkedBy ? $data->checkedBy->getHealthpost($data->hp_code) : '' }}<br>
@@ -666,6 +664,7 @@
         if($('.symptoms_recent:checked').val() == '0'){
             $('.symptoms_two_weeks_class').show();
             $('.is-symptomatic').hide();
+            $('#date_of_onset_of_first_symptom_np').val("");
         }
         else {
             $('.symptoms_two_weeks_class').hide();

@@ -49,7 +49,7 @@
                 @endif
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">
-                        <strong>CICT Form (2 of 3)</strong>
+                        <strong>CICT A Form (2 of 3)</strong>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -140,7 +140,7 @@
 
                                     <div class="form-group symptoms_other_class {{ $errors->has('symptoms_specific') ? 'has-error' : '' }}">
                                         <label for="symptoms_specific">If other, specify</label>
-                                        <input type="text" class="form-control" value="{{ $data ? $data->symptoms_specific : '' }}" name="symptoms_specific"
+                                        <input type="text" class="form-control" value="{{ $data ? $data->symptoms_specific : '' }}" name="symptoms_specific" id="symptoms_specific"
                                             aria-describedby="help" placeholder="Enter other symptoms"
                                         >
                                         @if ($errors->has('symptoms_specific'))
@@ -162,13 +162,16 @@
                                 ?>
                                 <div class="form-group" id="symptoms_comorbidity">
                                     <label class="control-label" for="symptoms_comorbidity">(Check any that apply)</label><br>
-                                    <div style="padding: 10px;">
+                                    <div class="form-group col-md-6">
                                         Pregnancy (Trimester)<br>
-                                        <input type="radio" name="symptoms_comorbidity_trimester" value="5" @if(in_array(5, $symptoms_comorbidity)) checked @endif> First<br>
-                                        <input type="radio" name="symptoms_comorbidity_trimester" value="16" @if(in_array(16, $symptoms_comorbidity)) checked @endif> Second<br>
-                                        <input type="radio" name="symptoms_comorbidity_trimester" value="17" @if(in_array(17, $symptoms_comorbidity)) checked @endif> Third<br>
-                                        <input type="radio" name="symptoms_comorbidity_trimester" value=""> No<br>
+                                        <select name="symptoms_comorbidity_trimester" class="form-control">
+                                            <option value="">-- Select Option --</option>
+                                            <option value="5" @if(in_array(5, $symptoms_comorbidity)) selected @endif>First</option>
+                                            <option value="16" @if(in_array(16, $symptoms_comorbidity)) selected @endif>Second</option>
+                                            <option value="17" @if(in_array(17, $symptoms_comorbidity)) selected @endif>Third</option>
+                                        </select>
                                     </div>
+                                    <div class="clearfix"></div>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="18" @if(in_array(18, $symptoms_comorbidity)) checked @endif> Post delivery (< 6 weeks)<br>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="7" @if(in_array(7, $symptoms_comorbidity)) checked @endif> Cardiovascular disease or hypertension<br>
                                     <input type="checkbox" name="symptoms_comorbidity[]" value="1" @if(in_array(1, $symptoms_comorbidity)) checked @endif> Diabetes<br>
@@ -870,6 +873,8 @@
             $('#symptoms_two_weeks').prop('required', true);
             $('.is-symptomatic').hide();
             $('#date_of_onset_of_first_symptom').prop('required', false);
+            $('#date_of_onset_of_first_symptom').val("");
+            $('#symptoms_specific').val("");
 
             if($('#exposure_ref_period_from_np_bak').val() == ''){
                 $('#exposure_ref_period_from_np').val(collectionDate($('#sample_collection_date').val()));

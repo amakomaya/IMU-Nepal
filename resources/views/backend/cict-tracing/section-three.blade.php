@@ -49,7 +49,7 @@
                 @endif
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">
-                        <strong>CICT Form (3 of 3)</strong>
+                        <strong>CICT A Form (3 of 3)</strong>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -184,13 +184,13 @@
                                                         <button type="button" class="btn btn-danger btn-sm btn-remove-close-contact-info mt-1"  data-close-contact-info-id="{{ $sub_data->case_id }}"><i class="fa fa-trash"></i></button>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="household_details[{{$key + 200}}][name]" value="{{ $sub_data->name }}">
+                                                        <input type="text" class="form-control household_details_name" name="household_details[{{$key + 200}}][name]" value="{{ $sub_data->name }}" required>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="household_details[{{$key + 200}}][age]" value="{{ $sub_data->age }}">
+                                                        <input type="text" class="form-control household_details_age" name="household_details[{{$key + 200}}][age]" value="{{ $sub_data->age }}" required>
                                                     </td>
                                                     <td>
-                                                        <select name="household_details[{{$key + 200}}][age_unit]" class="form-control">
+                                                        <select name="household_details[{{$key + 200}}][age_unit]" class="form-control" required>
                                                             <option value="">Select Age Unit</option>
                                                             <option value="0" {{ $sub_data->age_unit == '0' ? 'selected' : '' }}>Years</option>
                                                             <option value="1" {{ $sub_data->age_unit == '1' ? 'selected' : '' }}>Months</option>
@@ -198,7 +198,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="household_details[{{$key + 200}}][sex]" class="form-control">
+                                                        <select name="household_details[{{$key + 200}}][sex]" class="form-control" required>
                                                             <option value="" selected>Select Gender</option>
                                                             <option value="1" {{ $sub_data->sex == '1' ? 'selected' : '' }}>Male</option>
                                                             <option value="2" {{ $sub_data->sex == '2' ? 'selected' : '' }}>Female</option>
@@ -206,7 +206,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="household_details[{{$key + 200}}][relationship]" class="form-control household_details_relationship">
+                                                        <select name="household_details[{{$key + 200}}][relationship]" class="form-control household_details_relationship" required>
                                                             <option value="" selected>Select Relationship</option>
                                                             <option value="1" {{ $sub_data->relationship == '1' ? 'selected' : '' }}>Family</option>
                                                             <option value="2" {{ $sub_data->relationship == '2' ? 'selected' : '' }}>Friend</option>
@@ -218,7 +218,7 @@
                                                         <input type="text" class="form-control household_details_relationship_others" name="household_details[{{$key + 200}}][relationship_others]"  value="{{ $sub_data->relationship_others }}" @if( $sub_data->relationship != '0') readonly @endif>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="household_details[{{$key + 200}}][phone]" value="{{ $sub_data->phone }}">
+                                                        <input type="text" class="form-control household_details_phone" name="household_details[{{$key + 200}}][phone]" value="{{ $sub_data->phone }}" required>
                                                         <input type="hidden" name="household_details[{{$key + 200}}][contact_type]" class="household_details_contact_type" value="1">
                                                         <input type="hidden" name="household_details[{{$key + 200}}][case_id]" class="household_details_case_id" value="{{ $sub_data->case_id }}">
                                                     </td>
@@ -230,13 +230,13 @@
                                                         <button type="button" class="btn btn-danger btn-sm btn-remove-close-contact-info mt-1" style="display: none;"><i class="fa fa-trash"></i></button>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="household_details[0][name]">
+                                                        <input type="text" class="form-control household_details_name" name="household_details[0][name]" required>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="household_details[0][age]">
+                                                        <input type="text" class="form-control household_details_age" name="household_details[0][age]" required>
                                                     </td>
                                                     <td>
-                                                        <select name="household_details[0][age_unit]" class="form-control">
+                                                        <select name="household_details[0][age_unit]" class="form-control" required>
                                                             <option value="">Select Age Unit</option>
                                                             <option value="0">Years</option>
                                                             <option value="1">Months</option>
@@ -244,7 +244,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="household_details[0][sex]" class="form-control">
+                                                        <select name="household_details[0][sex]" class="form-control" required>
                                                             <option value="" selected>Select Gender</option>
                                                             <option value="1">Male</option>
                                                             <option value="2">Female</option>
@@ -252,7 +252,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="household_details[0][relationship]" class="form-control household_details_relationship">
+                                                        <select name="household_details[0][relationship]" class="form-control household_details_relationship" required>
                                                             <option value="" selected>Select Relationship</option>
                                                             <option value="1">Family</option>
                                                             <option value="2">Friend</option>
@@ -265,7 +265,7 @@
                                                         <input type="text" class="form-control household_details_relationship_others" name="household_details[0][relationship_others]" readonly>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="household_details[0][phone]">
+                                                        <input type="text" class="form-control household_details_phone" name="household_details[0][phone]" required>
                                                         <input type="hidden" name="household_details[0][contact_type]" class="household_details_contact_type" value="1">
                                                         <input type="hidden" name="household_details[0][case_id]" class="household_details_case_id" value="">
                                                     </td>
@@ -313,18 +313,18 @@
                                             <tbody class="table-travel-public-tbody text-center">
                                                 @if($data->closeContacts->count() && $data->closeContacts->where('contact_type', 2)->count())
                                                 @foreach($data->closeContacts->where('contact_type', 2) as $key => $sub_data)
-                                                <tr class="table-travel-public-tr">
+                                                <tr class="table-travel-public-tr" data-row-id="0">
                                                     <td width="95px">
                                                         <button type="button" class="btn btn-danger btn-sm btn-remove-travel-public mt-1"  data-travel-public-id="{{ $sub_data->case_id }}"><i class="fa fa-trash"></i></button>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="travel_vehicle_details[{{$key + 400}}][name]" value="{{ $sub_data->name }}">
+                                                        <input type="text" class="form-control travel_vehicle_details_name" name="travel_vehicle_details[{{$key + 400}}][name]" value="{{ $sub_data->name }}" required>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="travel_vehicle_details[{{$key + 400}}][age]" value="{{ $sub_data->age }}">
+                                                        <input type="text" class="form-control travel_vehicle_details_age" name="travel_vehicle_details[{{$key + 400}}][age]" value="{{ $sub_data->age }}" required>
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details[{{$key + 400}}][age_unit]" class="form-control">
+                                                        <select name="travel_vehicle_details[{{$key + 400}}][age_unit]" class="form-control" required>
                                                             <option value="">Select Age Unit</option>
                                                             <option value="0" {{ $sub_data->age_unit == '0' ? 'selected' : '' }}>Years</option>
                                                             <option value="1" {{ $sub_data->age_unit == '1' ? 'selected' : '' }}>Months</option>
@@ -332,7 +332,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details[{{$key + 400}}][sex]" class="form-control">
+                                                        <select name="travel_vehicle_details[{{$key + 400}}][sex]" class="form-control" required>
                                                             <option value="" selected>Select Gender</option>
                                                             <option value="1" {{ $sub_data->sex == '1' ? 'selected' : '' }}>Male</option>
                                                             <option value="2" {{ $sub_data->sex == '2' ? 'selected' : '' }}>Female</option>
@@ -340,7 +340,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details[{{$key + 400}}][relationship]" class="form-control travel_vehicle_details_relationship">
+                                                        <select name="travel_vehicle_details[{{$key + 400}}][relationship]" class="form-control travel_vehicle_details_relationship" required>
                                                             <option value="" selected>Select Relationship</option>
                                                             <option value="1" {{ $sub_data->relationship == '1' ? 'selected' : '' }}>Family</option>
                                                             <option value="2" {{ $sub_data->relationship == '2' ? 'selected' : '' }}>Friend</option>
@@ -352,7 +352,7 @@
                                                         <input type="text" class="form-control travel_vehicle_details_relationship_others" name="travel_vehicle_details[{{$key + 400}}][relationship_others]"  value="{{ $sub_data->relationship_others }}" @if( $sub_data->relationship != '0') readonly @endif>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="travel_vehicle_details[{{$key + 400}}][phone]" value="{{ $sub_data->phone }}">
+                                                        <input type="text" class="form-control travel_vehicle_details_phone" name="travel_vehicle_details[{{$key + 400}}][phone]" value="{{ $sub_data->phone }}" required>
                                                         <input type="hidden" name="travel_vehicle_details[{{$key + 400}}][contact_type]" class="travel_vehicle_details_contact_type" value="2">
                                                         <input type="hidden" name="travel_vehicle_details[{{$key + 400}}][case_id]" class="travel_vehicle_details_case_id" value="{{ $sub_data->case_id }}">
                                                     </td>
@@ -364,13 +364,13 @@
                                                         <button type="button" class="btn btn-danger btn-sm btn-remove-travel-public mt-1" style="display: none;"><i class="fa fa-trash"></i></button>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="travel_vehicle_details[0][name]">
+                                                        <input type="text" class="form-control travel_vehicle_details_name" name="travel_vehicle_details[0][name]" required>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="travel_vehicle_details[0][age]">
+                                                        <input type="text" class="form-control travel_vehicle_details_age" name="travel_vehicle_details[0][age]" required>
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details[0][age_unit]" class="form-control">
+                                                        <select name="travel_vehicle_details[0][age_unit]" class="form-control" required>
                                                             <option value="">Select Age Unit</option>
                                                             <option value="0">Years</option>
                                                             <option value="1">Months</option>
@@ -378,7 +378,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details[0][sex]" class="form-control">
+                                                        <select name="travel_vehicle_details[0][sex]" class="form-control" required>
                                                             <option value="" selected>Select Gender</option>
                                                             <option value="1">Male</option>
                                                             <option value="2">Female</option>
@@ -386,7 +386,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details[0][relationship]" class="form-control travel_vehicle_details_relationship">
+                                                        <select name="travel_vehicle_details[0][relationship]" class="form-control travel_vehicle_details_relationship" required>
                                                             <option value="" selected>Select Relationship</option>
                                                             <option value="1">Family</option>
                                                             <option value="2">Friend</option>
@@ -399,7 +399,7 @@
                                                         <input type="text" class="form-control travel_vehicle_details_relationship_others" name="travel_vehicle_details[0][relationship_others]" readonly>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="travel_vehicle_details[0][phone]">
+                                                        <input type="text" class="form-control travel_vehicle_details_phone" name="travel_vehicle_details[0][phone]" required>
                                                         <input type="hidden" name="travel_vehicle_details[0][contact_type]" class="travel_vehicle_details_contact_type" value="2">
                                                         <input type="hidden" name="travel_vehicle_details[0][case_id]" class="travel_vehicle_details_case_id" value="">
                                                     </td>
@@ -447,18 +447,18 @@
                                             <tbody class="table-direct-care-any-tbody text-center">
                                                 @if($data->closeContacts->count() && $data->closeContacts->where('contact_type', 3)->count())
                                                 @foreach($data->closeContacts->where('contact_type', 3) as $key => $sub_data)
-                                                <tr class="table-direct-care-any-tr">
+                                                <tr class="table-direct-care-any-tr" data-row-id="0">
                                                     <td width="95px">
                                                         <button type="button" class="btn btn-danger btn-sm btn-remove-direct-care-any mt-1" data-direct-care-any-id="{{ $sub_data->case_id }}"><i class="fa fa-trash"></i></button>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="other_direct_care_details[{{$key + 800}}][name]" value="{{ $sub_data->name }}">
+                                                        <input type="text" class="form-control other_direct_care_details_name" name="other_direct_care_details[{{$key + 800}}][name]" value="{{ $sub_data->name }}" required>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="other_direct_care_details[{{$key + 800}}][age]" value="{{ $sub_data->age }}">
+                                                        <input type="text" class="form-control other_direct_care_details_age" name="other_direct_care_details[{{$key + 800}}][age]" value="{{ $sub_data->age }}" required>
                                                     </td>
                                                     <td>
-                                                        <select name="other_direct_care_details[{{$key + 800}}][age_unit]" class="form-control">
+                                                        <select name="other_direct_care_details[{{$key + 800}}][age_unit]" class="form-control" required>
                                                             <option value="">Select Age Unit</option>
                                                             <option value="0" {{ $sub_data->age_unit == '0' ? 'selected' : '' }}>Years</option>
                                                             <option value="1" {{ $sub_data->age_unit == '1' ? 'selected' : '' }}>Months</option>
@@ -466,7 +466,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="other_direct_care_details[{{$key + 800}}][sex]" class="form-control">
+                                                        <select name="other_direct_care_details[{{$key + 800}}][sex]" class="form-control" required>
                                                             <option value="" selected>Select Gender</option>
                                                             <option value="1" {{ $sub_data->sex == '1' ? 'selected' : '' }}>Male</option>
                                                             <option value="2" {{ $sub_data->sex == '2' ? 'selected' : '' }}>Female</option>
@@ -474,7 +474,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="other_direct_care_details[{{$key + 800}}][relationship]" class="form-control other_direct_care_details_relationship">
+                                                        <select name="other_direct_care_details[{{$key + 800}}][relationship]" class="form-control other_direct_care_details_relationship" required>
                                                             <option value="" selected>Select Relationship</option>
                                                             <option value="1" {{ $sub_data->relationship == '1' ? 'selected' : '' }}>Family</option>
                                                             <option value="2" {{ $sub_data->relationship == '2' ? 'selected' : '' }}>Friend</option>
@@ -486,7 +486,7 @@
                                                         <input type="text" class="form-control other_direct_care_details_relationship_others" name="other_direct_care_details[{{$key + 800}}][relationship_others]"  value="{{ $sub_data->relationship_others }}" @if( $sub_data->relationship != '0') readonly @endif>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="other_direct_care_details[{{$key + 800}}][phone]" value="{{ $sub_data->phone }}">
+                                                        <input type="text" class="form-control other_direct_care_details_phone" name="other_direct_care_details[{{$key + 800}}][phone]" value="{{ $sub_data->phone }}" required>
                                                         <input type="hidden" name="other_direct_care_details[{{$key + 800}}][contact_type]" class="other_direct_care_details_contact_type" value="3">
                                                         <input type="hidden" name="other_direct_care_details[{{$key + 800}}][case_id]" class="other_direct_care_details_case_id" value="{{ $sub_data->case_id }}">
                                                     </td>
@@ -498,13 +498,13 @@
                                                         <button type="button" class="btn btn-danger btn-sm btn-remove-direct-care-any mt-1" style="display: none;"><i class="fa fa-trash"></i></button>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="other_direct_care_details[0][name]">
+                                                        <input type="text" class="form-control other_direct_care_details_name" name="other_direct_care_details[0][name]" required>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="other_direct_care_details[0][age]">
+                                                        <input type="text" class="form-control other_direct_care_details_age" name="other_direct_care_details[0][age]" required>
                                                     </td>
                                                     <td>
-                                                        <select name="other_direct_care_details[0][age_unit]" class="form-control">
+                                                        <select name="other_direct_care_details[0][age_unit]" class="form-control" required>
                                                             <option value="">Select Age Unit</option>
                                                             <option value="0">Years</option>
                                                             <option value="1">Months</option>
@@ -512,7 +512,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="other_direct_care_details[0][sex]" class="form-control">
+                                                        <select name="other_direct_care_details[0][sex]" class="form-control" required>
                                                             <option value="" selected>Select Gender</option>
                                                             <option value="1">Male</option>
                                                             <option value="2">Female</option>
@@ -520,7 +520,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="other_direct_care_details[0][relationship]" class="form-control other_direct_care_details_relationship">
+                                                        <select name="other_direct_care_details[0][relationship]" class="form-control other_direct_care_details_relationship" required>
                                                             <option value="" selected>Select Relationship</option>
                                                             <option value="1">Family</option>
                                                             <option value="2">Friend</option>
@@ -533,7 +533,7 @@
                                                         <input type="text" class="form-control other_direct_care_details_relationship_others" name="other_direct_care_details[0][relationship_others]" readonly>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" name="other_direct_care_details[0][phone]">
+                                                        <input type="text" class="form-control other_direct_care_details_phone" name="other_direct_care_details[0][phone]" required>
                                                         <input type="hidden" name="other_direct_care_details[0][contact_type]" class="other_direct_care_details_contact_type" value="3">
                                                         <input type="hidden" name="other_direct_care_details[0][case_id]" class="other_direct_care_details_case_id" value="">
                                                     </td>
@@ -956,6 +956,20 @@
 		new_row.find('.btn-remove-close-contact-info').removeAttr('data-close-contact-info-id');
 		new_row.find(".btn-remove-close-contact-info").show();
         new_row.find(".household_details_relationship_others").prop('readonly', true);
+        new_row.find(".household_details_name").rules("add", {
+            required: true,
+            nameCustom: true
+        });
+        new_row.find(".household_details_age").rules("add", {
+            required: true,
+            digits: true
+        });
+        new_row.find(".household_details_phone").rules("add", {
+            required: true,
+            digits: true,
+            minlength: 7,
+            maxlength: 10,
+        });
 	});
 
     $('body').on('click', '.btn-remove-close-contact-info', function() {
@@ -994,6 +1008,7 @@
     $('.btn-add-travel-public').on('click', function() {
         var tr = $(".table-travel-public-tr").last();
         var travel_count_row = tr.data("row-id");
+        console.log(travel_count_row);
         travel_count_row++;
 
         var new_row = tr.clone()
@@ -1010,6 +1025,20 @@
 		new_row.find('.btn-remove-travel-public').removeAttr('data-travel-public-id');
         new_row.find(".btn-remove-travel-public").show();
         new_row.find(".travel_vehicle_details_relationship_others").prop('readonly', true);
+        new_row.find(".travel_vehicle_details_name").rules("add", {
+            required: true,
+            nameCustom: true
+        });
+        new_row.find(".travel_vehicle_details_age").rules("add", {
+            required: true,
+            digits: true
+        });
+        new_row.find(".travel_vehicle_details_phone").rules("add", {
+            required: true,
+            digits: true,
+            minlength: 7,
+            maxlength: 10,
+        });
     });
 
     $('body').on('click', '.btn-remove-travel-public', function() {
@@ -1064,6 +1093,20 @@
 		new_row.find('.btn-remove-direct-care-any').removeAttr('data-direct-care-any-id');
         new_row.find(".btn-remove-direct-care-any").show();
         new_row.find(".other_direct_care_details_relationship_others").prop('readonly', true);
+        new_row.find(".other_direct_care_details_name").rules("add", {
+            required: true,
+            nameCustom: true
+        });
+        new_row.find(".other_direct_care_details_age").rules("add", {
+            required: true,
+            digits: true
+        });
+        new_row.find(".other_direct_care_details_phone").rules("add", {
+            required: true,
+            digits: true,
+            minlength: 7,
+            maxlength: 10,
+        });
     });
 
     $('body').on('click', '.btn-remove-direct-care-any', function() {
@@ -1112,17 +1155,6 @@
         $this.parents(".table-school-reference-tr").remove();
     });
 
-
-    // var household_details = $('input[name^="household_details"]');
-    // household_details.filter('input[name$="[name]"]').each(function() {
-    //     $(this).rules("add", {
-    //         required: true,
-    //         messages: {
-    //             required: "Name is Mandatory"
-    //         }
-    //     });
-    // });
-
     $(function () {
         $.validator.addMethod("nameCustom", function (value, element) {
             return this.optional(element) || /^[a-zA-Z\.\'\-]{2,50}(?: [a-zA-Z\.\'\-]{2,50})+$/i.test(value);
@@ -1151,47 +1183,11 @@
                     required: true,
                     digits: true,
                 },
-                "household_details_name[]": {
-                    nameCustom: true
-                },
-                "household_details_age[]": {
-                    digits: true,
-                    maxlength: 3,
-                },
-                "household_details_phone[]": {
-                    digits: true,
-                    minlength: 7,
-                    maxlength: 10,
-                },
                 travel_vehicle: {
                     required: true
                 },
-                "travel_vehicle_details_name[]": {
-                    nameCustom: true
-                },
-                "travel_vehicle_details_age[]": {
-                    digits: true,
-                    maxlength: 3,
-                },
-                "travel_vehicle_details_phone[]": {
-                    digits: true,
-                    minlength: 7,
-                    maxlength: 10,
-                },
                 other_direct_care: {
                     required: true
-                },
-                "other_direct_care_details_name[]": {
-                    nameCustom: true
-                },
-                "other_direct_care_details_age[]": {
-                    digits: true,
-                    maxlength: 3,
-                },
-                "other_direct_care_details_phone[]": {
-                    digits: true,
-                    minlength: 7,
-                    maxlength: 10,
                 },
                 other_attend_social: {
                     required: true
@@ -1209,6 +1205,69 @@
             submitHandler: function (form) {
                 form.submit();
             }
+        });
+        var household_details = $('input[name^="household_details"]');
+        household_details.filter('input[name$="[name]"]').each(function() {
+            $(this).rules("add", {
+                required: true,
+                nameCustom: true
+            });
+        });
+        household_details.filter('input[name$="[age]"]').each(function() {
+            $(this).rules("add", {
+                required: true,
+                digits: true
+            });
+        });
+        household_details.filter('input[name$="[phone]"]').each(function() {
+            $(this).rules("add", {
+                required: true,
+                digits: true,
+                minlength: 7,
+                maxlength: 10,
+            });
+        });
+        var travel_vehicle_details = $('input[name^="travel_vehicle_details"]');
+        travel_vehicle_details.filter('input[name$="[name]"]').each(function() {
+            $(this).rules("add", {
+                required: true,
+                nameCustom: true
+            });
+        });
+        travel_vehicle_details.filter('input[name$="[age]"]').each(function() {
+            $(this).rules("add", {
+                required: true,
+                digits: true
+            });
+        });
+        travel_vehicle_details.filter('input[name$="[phone]"]').each(function() {
+            $(this).rules("add", {
+                required: true,
+                digits: true,
+                minlength: 7,
+                maxlength: 10,
+            });
+        });
+        var other_direct_care_details = $('input[name^="other_direct_care_details"]');
+        other_direct_care_details.filter('input[name$="[name]"]').each(function() {
+            $(this).rules("add", {
+                required: true,
+                nameCustom: true
+            });
+        });
+        other_direct_care_details.filter('input[name$="[age]"]').each(function() {
+            $(this).rules("add", {
+                required: true,
+                digits: true
+            });
+        });
+        other_direct_care_details.filter('input[name$="[phone]"]').each(function() {
+            $(this).rules("add", {
+                required: true,
+                digits: true,
+                minlength: 7,
+                maxlength: 10,
+            });
         });
     });
 
