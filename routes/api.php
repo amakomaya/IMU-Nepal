@@ -195,6 +195,7 @@ Route::get('/v1/client', function (Request $request) {
 
         $response['age_unit'] = $row->age_unit ?? 0;
         $response['occupation'] = $row->occupation ?? '';
+        $response['occupation_other'] = $row->occupation_other ?? '';
 
         $response['symptoms_specific'] = $row->symptoms_specific ?? '';
         $response['symptoms_comorbidity'] = $row->symptoms_comorbidity ?? '';
@@ -217,6 +218,7 @@ Route::get('/v1/client', function (Request $request) {
         $response['name_of_poe'] = $row->name_of_poe ?? '';
         $response['covid_vaccination_details'] = $row->covid_vaccination_details ?? '';
         $response['dose_details'] = $row->dose_details ?? '';
+        $response['malaria'] = $row->malaria ?? '';
         $response['nearest_contact'] = $row->nearest_contact ?? '';
 
         if ($response['result'] == '3') {
