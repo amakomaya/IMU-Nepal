@@ -12,7 +12,8 @@ class CictTracing extends Model
     use Dataviewer;
 
     protected $fillable = [
-        'case_id', 'token', 'woman_token', 'hp_code', 'checked_by', 'case_what', 'name', 'age', 'age_unit', 'sex',
+        'case_id', 'token', 'woman_token', 'hp_code', 'checked_by', 'case_what', 'case_received_date', 'cict_initiated_date',
+        'name', 'age', 'age_unit', 'sex',
         'emergency_contact_one', 'emergency_contact_two', 'nationality', 'nationality_other', 
         'province_id', 'district_id', 'municipality_id', 'tole', 'ward',
         'informant_name', 'informant_relation', 'informant_relation_other', 'informant_phone', 
@@ -57,6 +58,11 @@ class CictTracing extends Model
     {
         return $this->belongsTo(SuspectedCase::class, 'woman_token', 'token');
     }
+
+	public function contact()
+    {
+		return $this->hasMany('App\Models\CictContact', 'parent_case_id', 'case_id');
+	}
 
 	public function closeContacts()
     {

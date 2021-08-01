@@ -14,7 +14,8 @@
         <th width="15%">Case</th>
         <th width="10%" title="Test Date">Test Date</th>
         <th width="10%" title="Sample Collection Details">Sample</th>
-        <th width="8%" title="Latest Lab Result">Result</th>
+        <th width="4%" title="Latest Lab Result">Result</th>
+        <th width="4%" title="CICT Status">CICT Status</th>
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
       </tr>
       </thead>
@@ -46,6 +47,7 @@
           </div>
           <div>{{ labToken(item.latest_anc.lab_token) }}</div>
         </td>
+        <td v-html="checkCictStatus(item.cict_tracing)">
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
             <i class="fa fa-file" aria-hidden="true"></i> |
@@ -419,6 +421,13 @@ export default {
           return 'F';
         default:
           return 'O';
+      }
+    },
+    checkCictStatus(value){
+      if(value){
+        return '<span class="label label-success"><i class="fa fa-check" aria-hidden="true"></i></span>';
+      }else{
+        return '<span class="label label-danger"><i class="fa fa-times" aria-hidden="true"></i></spa>';
       }
     },
     checkPermission(value) {

@@ -30,4 +30,9 @@ class CictContact extends Model
     {
         return $this->belongsTo(OrganizationMember::class, 'checked_by', 'token');
     }
+
+	public function followUp()
+    {
+		return $this->hasOne('App\Models\CictFollowUp', 'case_id', 'case_id');
+	}
 }

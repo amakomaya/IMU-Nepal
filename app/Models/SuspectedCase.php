@@ -124,6 +124,11 @@ class SuspectedCase extends Model
         return $this->hasOne('App\Models\SampleCollection', 'woman_token', 'token')->latest()->with('labreport');
     }
 
+    public function cictTracing()
+    {
+        return $this->hasOne('App\Models\CictTracing', 'woman_token', 'token');
+    }
+
     public function caseManagement()
     {
         return $this->hasOne('App\Models\CaseManagement', 'woman_token', 'token');

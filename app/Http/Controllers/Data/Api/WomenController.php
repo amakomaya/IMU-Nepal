@@ -238,7 +238,7 @@ class WomenController extends Controller
                 $q->where('service_for', '!=' , "2")->where('result', '=', 3);
             })->with(['ancs','healthpost' => function($q) {
                 $q->select('name', 'hp_code');
-            }, 'latestAnc', 'district', 'municipality']);
+            }, 'latestAnc', 'district', 'municipality', 'cictTracing']);
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -270,7 +270,7 @@ class WomenController extends Controller
                     $q->where('service_for', "2")->where('result', 3);
                 });
             })
-            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs', 'cictTracing',
                 'healthpost' => function($q) {
                     $q->select('name', 'hp_code');
                 }]);

@@ -49,7 +49,7 @@
                 @endif
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">
-                        <strong>CICT A Form (1 of 3)</strong>
+                        <strong>Case Investigation (A Form) (1 of 3)</strong>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -69,6 +69,24 @@
                                 </div>
                                 @if ($errors->has('case_what'))
                                     <small id="help" class="form-text text-danger">{{ $errors->first('case_what') }}</small>
+                                @endif
+                            </div>
+
+                            <div class="form-group {{ $errors->has('case_received_date') ? 'has-error' : '' }}">
+                                <label for="case_received_date">Date of case received by health authority</label>
+                                <input type="text" id="case_received_date" class="form-control" value="{{ $data ? $data->case_received_date : '' }}" name="case_received_date"
+                                       aria-describedby="help" placeholder="Enter Date of case received by health authority">
+                                @if ($errors->has('case_received_date'))
+                                    <small id="help" class="form-text text-danger">{{ $errors->first('name') }}</small>
+                                @endif
+                            </div>
+
+                            <div class="form-group {{ $errors->has('cict_initiated_date') ? 'has-error' : '' }}">
+                                <label for="cict_initiated_date">Date of CICT Initiated</label>
+                                <input type="text" id="cict_initiated_date" class="form-control" value="{{ $data ? $data->cict_initiated_date : '' }}" name="cict_initiated_date"
+                                       aria-describedby="help" placeholder="Enter Date of CICT Initiated">
+                                @if ($errors->has('cict_initiated_date'))
+                                    <small id="help" class="form-text text-danger">{{ $errors->first('cict_initiated_date') }}</small>
                                 @endif
                             </div>
 
@@ -373,6 +391,12 @@
             });
         }
         var currentDate = NepaliFunctions.ConvertDateFormat(NepaliFunctions.GetCurrentBsDate(), "YYYY-MM-DD");
+        $('#case_received_date').nepaliDatePicker({
+            language: 'english',
+        });
+        $('#cict_initiated_date').nepaliDatePicker({
+            language: 'english',
+        });
         $('#case_managed_at_hospital_date').nepaliDatePicker({
             language: 'english',
         });

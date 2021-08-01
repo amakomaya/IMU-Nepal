@@ -71,7 +71,7 @@
 <script>
 
 $('#btnSubmit').on('click', function() {
-	if (confirm("Are you sure you want to create A form?")){
+	if (confirm("Are you sure you want to perform Case Investigation and Contact Tracing?")){
         $('form#createCict').submit();
     }
 });

@@ -49,7 +49,7 @@
                 @endif
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">
-                        <strong>Contact Follow Up Form</strong>
+                        <strong>Contact Follow Up Form (B2 Form)</strong>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">

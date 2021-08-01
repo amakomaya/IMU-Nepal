@@ -22,6 +22,9 @@ class CreateCictTracingsTable extends Migration
             $table->string('checked_by', 50)->nullable();
 
             $table->enum('case_what', ['1', '2'])->nullable();
+            $table->string('case_received_date', '10')->nullable();
+            $table->string('cict_initiated_date', '10')->nullable();
+
             $table->string('name', 64)->nullable();
             $table->tinyInteger('age')->nullable();
             $table->enum('age_unit', ['0', '1', '2', '3'])->nullable();

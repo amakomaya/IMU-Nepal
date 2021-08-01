@@ -18,8 +18,9 @@
         <th width="15%">Case</th>
         <th width="8%" title="Date">Test Date</th>
         <th width="8%" title="Sample Collection Details">Sample</th>
-        <th width="8%" title="Latest Lab Result">Result</th>
+        <th width="4%" title="Latest Lab Result">Result</th>
         <th width="4%" title="Infection Type">Type</th>
+        <th width="4%" title="CICT Status">CICT Status</th>
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
       </tr>
       </thead>
@@ -53,6 +54,8 @@
         </td>
         <td>
           {{ checkInfectionType(item.latest_anc.infection_type) }}
+        </td>
+        <td v-html="checkCictStatus(item.cict_tracing)">
         </td>
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
@@ -436,6 +439,13 @@ export default {
           return 'Symptomatic';
         default:
           return "N/A";
+      }
+    },
+    checkCictStatus(value){
+      if(value){
+        return '<span class="label label-success"><i class="fa fa-check" aria-hidden="true"></i></span>';
+      }else{
+        return '<span class="label label-danger"><i class="fa fa-times" aria-hidden="true"></i></spa>';
       }
     },
     checkPermission(value) {
