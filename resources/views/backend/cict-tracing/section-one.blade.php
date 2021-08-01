@@ -72,6 +72,12 @@
                                 @endif
                             </div>
 
+                            @if(isset($data) && isset($data->suspectedCase))
+                                @if(isset($data->suspectedCase->latestAnc))
+                                    <input type="hidden" id="sample_test_date_np" value="{{ $data->suspectedCase->latestAnc->sample_test_date_np }}">
+                                @endif
+                            @endif
+
                             <div class="form-group {{ $errors->has('case_received_date') ? 'has-error' : '' }}">
                                 <label for="case_received_date">Date of case received by health authority</label>
                                 <input type="text" id="case_received_date" class="form-control" value="{{ $data ? $data->case_received_date : '' }}" name="case_received_date"
@@ -393,14 +399,26 @@
         var currentDate = NepaliFunctions.ConvertDateFormat(NepaliFunctions.GetCurrentBsDate(), "YYYY-MM-DD");
         $('#case_received_date').nepaliDatePicker({
             language: 'english',
+            disableAfter: currentDate
         });
         $('#cict_initiated_date').nepaliDatePicker({
             language: 'english',
+            disableAfter: currentDate
         });
         $('#case_managed_at_hospital_date').nepaliDatePicker({
             language: 'english',
+            disableAfter: currentDate
         });
-        
+
+        if($('#cict_initiated_date').val() == ''){
+            $('#cict_initiated_date').val(currentDate);
+        }
+
+        var sample_test_date_np = $('$case_received_date').val();
+        if($('#case_received_date').val() == ''){
+            $('#case_received_date').val(sample_test_date_np);
+        }
+
         otherRelationship();
         $('.informant_relation').on('change', function() {
             otherRelationship();

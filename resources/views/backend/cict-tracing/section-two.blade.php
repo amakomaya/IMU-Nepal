@@ -76,7 +76,7 @@
 
                                 @if(isset($data->suspectedCase))
                                     @if(isset($data->suspectedCase->latestAnc))
-                                        <input type="hidden" id="sample_collection_date" value="{{ $data->data->suspectedCase->latestAnc->collection_date_en ?? date('Y-m-d') }}">
+                                        <input type="hidden" id="sample_collection_date" value="{{ $data->suspectedCase->latestAnc->collection_date_en ?? date('Y-m-d') }}">
                                     @else
 
                                     <input type="hidden" id="sample_collection_date" value="{{ date('Y-m-d') }}">
