@@ -39,6 +39,7 @@ class CictTracingController extends Controller
                 ->where('case_id', $request->case_id)->first();
 
             if($patient){
+                $request->session()->flash('message', 'Case Found.');
                 return view('backend.cict-tracing.search', compact('patient'));
             }
             else{
