@@ -444,7 +444,7 @@
                                     @endif
                                 </div>
                                 
-                                <div class="form-group fever-status {{ $errors->has('antigen_test_status') ? 'has-error' : '' }}">
+                                {{-- <div class="form-group fever-status {{ $errors->has('antigen_test_status') ? 'has-error' : '' }}">
                                     <label for="name">Antigen Test for Covid-19 swab collected ?</label>
                                     <div class="control-group">
                                         <label class="radio-inline">
@@ -493,7 +493,7 @@
                                         <small id="help"
                                             class="form-text text-danger">{{ $errors->first('antigen_isolation') }}</small>
                                     @endif
-                                </div>
+                                </div> --}}
 
                                 <div class="form-group" id="symptomatic-patient">
                                     <label class="control-label" for="symptoms">Covid-19 Symptoms:</label><br>
@@ -828,31 +828,31 @@
             }
         }
 
-        antigenCheck();
-        $('.antigen_test_status').on('change', function() {
-            antigenCheck();
-        });
-        function antigenCheck() {
-            if($('.antigen_test_status:checked').val() == '1'){
-                $('.antigen-status').show();
-            }
-            else {
-                $('.antigen-status').hide();
-            }
-        }
+        // antigenCheck();
+        // $('.antigen_test_status').on('change', function() {
+        //     antigenCheck();
+        // });
+        // function antigenCheck() {
+        //     if($('.antigen_test_status:checked').val() == '1'){
+        //         $('.antigen-status').show();
+        //     }
+        //     else {
+        //         $('.antigen-status').hide();
+        //     }
+        // }
 
-        antigenResultCheck();
-        $('.antigen_result').on('change', function() {
-            antigenResultCheck();
-        });
-        function antigenResultCheck() {
-            if($('.antigen_result:checked').val() == '1'){
-                $('.antigen-result-status').show();
-            }
-            else {
-                $('.antigen-result-status').hide();
-            }
-        }
+        // antigenResultCheck();
+        // $('.antigen_result').on('change', function() {
+        //     antigenResultCheck();
+        // });
+        // function antigenResultCheck() {
+        //     if($('.antigen_result:checked').val() == '1'){
+        //         $('.antigen-result-status').show();
+        //     }
+        //     else {
+        //         $('.antigen-result-status').hide();
+        //     }
+        // }
 
         vaccineStatusCheck();
         $('.vaccine_status').on('change', function() {
@@ -1003,16 +1003,16 @@
                             return $(".malaria_test_status:checked").val() == "1";
                         }
                     },
-                    antigen_test_status: {
-                        required: function () {
-                            return $(".fever:checked").val() == "1";
-                        }
-                    },
-                    antigen_result: {
-                        required: function () {
-                            return $(".antigen_test_status:checked").val() == "1";
-                        }
-                    },
+                    // antigen_test_status: {
+                    //     required: function () {
+                    //         return $(".fever:checked").val() == "1";
+                    //     }
+                    // },
+                    // antigen_result: {
+                    //     required: function () {
+                    //         return $(".antigen_test_status:checked").val() == "1";
+                    //     }
+                    // },
                     vaccination_card: {
                         required: function () {
                             return $(".vaccine_status:checked").val() == "1";
