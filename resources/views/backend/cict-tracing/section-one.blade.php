@@ -60,7 +60,7 @@
                                 <div class="control-group">
                                     <label class="radio-inline">
                                         <h4>Confirmed case</h4>
-                                        <input type="radio" name="case_what" value="1" class="case_what" style="top: 7px;" {{ $data && $data->case_what == "1" ? 'checked' : '' }}>
+                                        <input type="radio" name="case_what" value="1" class="case_what" style="top: 7px;" {{ $data && $data->case_what == "1" ? 'checked' : '' }} checked>
                                     </label>
                                     <label class="radio-inline" style="padding-right: 60px;">
                                         <h4>Probable case</h4>

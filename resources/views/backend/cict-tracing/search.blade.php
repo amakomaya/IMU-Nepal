@@ -40,7 +40,7 @@
                                 <tr>
                                     <th>Case ID</th>
                                     <th>Name</th>
-                                    <th>Action</th>
+                                    <th>Action (CICT)</th>
                                 </tr>
                             </thead>
                             <tr>
