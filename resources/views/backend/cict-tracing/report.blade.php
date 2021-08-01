@@ -32,12 +32,14 @@
             <p style="padding-left: 0.5em;">(*Please see Page 4 for Case Definitions)</p>
         </form>
         <div class="info">
-            <p>Date of case received by health authority: <u></u></p>
-            <p>Date of CICT initiated: <u></u></p>
-            <p>Name and Address of the reporting Institution: <u></u></p>
+            <p>Date of case received by health authority: <u>{{ $data ? $data->case_received_date : '' }}</u></p>
+            <p>Date of CICT initiated: <u>{{ $data ? $data->cict_initiated_date : '' }}</u></p>
+            <p>Name and Address of the reporting Institution: <u>{{ $data ? $data->checkedBy->getHealthpost($data->hp_code) : '' }}</u></p>
         </div>
+
         <section class="section-1">
             <h5>Section 1: Personal Information</h5>
+
             <div class="info-personal">
                 <div class="pi-1">
                     <p>Unique Identifier (Case Epi Id): <u>{{ $data ? $data->case_id : '' }}</u></p>
@@ -96,6 +98,7 @@
                     <p>Alternate contact number: <u>{{ $data ? $data->emergency_contact_two : '' }}</u></p>
                 </div>
             </div>
+
             <sub-section>
                 <h5>Current Address</h5>
                 <table>
@@ -168,8 +171,10 @@
                 </table>
             </sub-section>
         </section>
+
         <section class="section-2">
             <h5>Section 2: Clinical and Epidemiological Information</h5>
+
             <p>I. Symptoms</p>
             <div class="symptoms">
                 <p>
@@ -265,6 +270,7 @@
                     </div>
                 </div>
             </div>
+
             <p>II. Underlying medical conditions or disease / comorbidity (check all that apply):</p>
             <div class="comorbidity"> 
                 <?php
@@ -319,6 +325,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="high-exposures">
                 <span>&nbsp; </span>
                 <div class="high-exposure-title">
@@ -442,9 +449,9 @@
                                 <tr>
                                     <th style="background-color:#d8e3e7">Place of Departure from </th>
                                     <th style="background-color:#d8e3e7">Place of arrival to</th>
-                                    <th style="background-color:#f0e3ca">Date of Departure from or to the place [dd/mm/yyyy]
+                                    <th style="background-color:#f0e3ca">Date of Departure from or to the place
                                     </th>
-                                    <th style="background-color:#f0e3ca">Date of Arrival in Nepal or Current place of Residence [dd/mm/yyyy]
+                                    <th style="background-color:#f0e3ca">Date of Arrival in Nepal or Current place of Residence
                                     </th>
                                     <th style="background-color:#f0e3ca">Mode of travel [ Air, Public Transport,Private Vehicle]</th>
                                     <th style="background-color:#f0e3ca">Flight/Vehicle No./ Bus Route / Driver Contact No.</th>
@@ -498,7 +505,7 @@
                 <div class="box">
                     <div class="box-head">
                         <b>Identify the following categories of persons who the case might have contracted the infection from, upto 14 days before the development of the symptoms OR 24 days prior to the date of sample collection in case of asymptomatic Reference
-                            period: From {{ $data ? $data->exposure_ref_period_from_np : "" }} (dd/mm/yyyy) To{{ $data ? $data->exposure_ref_period_to_np : '' }} (dd/mm/yyyy)
+                            period: From <u>{{ $data ? $data->exposure_ref_period_from_np : "" }}</u> To <u>{{ $data ? $data->exposure_ref_period_to_np : '' }}</u>
                         </b>
                     </div>
                     <div class="box-body">
@@ -539,8 +546,9 @@
                             <?php 
                                 $sub_data_array = json_decode($data->same_household_details);
                             ?>
-                            @foreach($sub_data_array as $sub_data)
+                            @foreach($sub_data_array as $key_sub => $sub_data)
                             <tr>
+                                <td>{{ ++$key_sub }}</td>
                                 <td>{{ $sub_data->name }}</td>
                                 <td>{{ $sub_data->age }}</td>
                                 <?php
@@ -554,7 +562,7 @@
                                     }
                                 ?>
                                 <td>{{ $gender }}</td>
-                                <td>{{ $sub_data->phone }}"</td>
+                                <td>{{ $sub_data->phone }}</td>
                             </tr>
                             @endforeach
                             @else
@@ -604,8 +612,9 @@
                             <?php 
                                 $sub_data_array = json_decode($data->close_contact_details);
                             ?>
-                            @foreach($sub_data_array as $sub_data)
+                            @foreach($sub_data_array as $key_sub => $sub_data)
                             <tr>
+                                <td>{{ ++$key_sub }}</td>
                                 <td>{{ $sub_data->name }}</td>
                                 <td>{{ $sub_data->age }}</td>
                                 <?php
@@ -619,7 +628,7 @@
                                     }
                                 ?>
                                 <td>{{ $gender }}</td>
-                                <td>{{ $sub_data->phone }}"</td>
+                                <td>{{ $sub_data->phone }}</td>
                             </tr>
                             @endforeach
                             @else
@@ -668,8 +677,9 @@
                             <?php 
                                 $sub_data_array = json_decode($data->direct_care_details);
                             ?>
-                            @foreach($sub_data_array as $sub_data)
+                            @foreach($sub_data_array as $key_sub => $sub_data)
                             <tr>
+                                <td>{{ ++$key_sub }}</td>
                                 <td>{{ $sub_data->name }}</td>
                                 <td>{{ $sub_data->age }}</td>
                                 <?php
@@ -683,7 +693,7 @@
                                     }
                                 ?>
                                 <td>{{ $gender }}</td>
-                                <td>{{ $sub_data->phone }}"</td>
+                                <td>{{ $sub_data->phone }}</td>
                             </tr>
                             @endforeach
                             @else
@@ -736,9 +746,9 @@
                                 <?php 
                                     $sub_data_array = json_decode($data->attend_social_details);
                                 ?>
-                                @foreach($sub_data_array as $sub_data)
+                                @foreach($sub_data_array as $key_sub => $sub_data)
                                 <tr>
-                                    <td>{{ $iteration->loop }}</td>
+                                    <td>{{ ++$key_sub }}</td>
                                     <td>{{ $sub_data->name }}</td>
                                     <td>{{ $sub_data->phone }}</td>
                                     <td>{{ $sub_data->remarks }}</td>
@@ -756,6 +766,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="vaccination-status">
                 <div class="vacc-status-title">
                     <p>VI. Vaccination Status</p>
@@ -788,7 +799,7 @@
                         </tr>
                         <tr>
                             <td colspan="2" rowspan="2">If <b>Yes,</b>Name of the Vaccine(Product/Brand name)</td>
-                            <th rowspan="2">Date of Vaccination(dd/mm/yyyy)</th>
+                            <th rowspan="2">Date of Vaccination</th>
                             <td colspan="4">Source of Information (check multiple options if needed)</td>
                         </tr>
                         <tr>
@@ -799,7 +810,7 @@
                         </tr>
                         <tr>
                             <td width="5%">Dose 1</td>
-                            <td></td>
+                            <td>{{ $data->dose_one_name ? $data->vaccine->name : '' }}</td>
                             <td>{{ $data->dose_one_date }}</td>
                             <td style="display: flex; justify-content: center;"> 
                                 <span>
@@ -844,7 +855,7 @@
                         </tr>
                         <tr>
                             <td>Dose 2</td>
-                            <td></td>
+                            <td>{{ $data->dose_one_name ? $data->vaccine->name : '' }}</td>
                             <td>{{ $data->dose_two_date }}</td>
                             <td style="display: flex; border: none; justify-content: center; ">
                                 <span>
@@ -890,6 +901,7 @@
                     </table>
                 </div>
             </div>
+            
             <div class="information">
                 <div class="information-head">
                     <p>VII. Information on Close Contact(s) of Case under Investigation</p>
@@ -898,10 +910,9 @@
                     <div style="display: flex; flex-direction: column;" class="box-head">
                         <b>Identify and list the following categories of persons who were exposed upto 2 days before and 10 days of the development of
                             the symptoms OR 10 days before and 10 days after the date of sample collection in case of asymptomatic
-                            Reference period: From ______________ (dd/mm/yyyy) To _______________ (dd/mm/yyyy
                         </b><br>
                         <div>
-                            <b>Reference period: From {{ $data->close_ref_period_from_np }} To {{ $data->close_ref_period_to_np }}</b>
+                            <b>Reference period: From <u>{{ $data->close_ref_period_from_np }}</u> To <u>{{ $data->close_ref_period_to_np }}</u></b>
                         </div>
                     </div>
                     <hr style="margin: 0; padding: 0;">
@@ -925,11 +936,11 @@
                                 <th>Health / COVID Test Status</th>
                                 <th>Contact Number</th>
                             </tr>
-
                             @if($data->closeContacts->count() && $data->closeContacts->where('contact_type', 1)->count())
-                            @foreach($data->closeContacts->where('contact_type', 1) as $key => $sub_data)
+                            @php $count = 0 @endphp
+                            @foreach($data->closeContacts->where('contact_type', 1) as $key_sub => $sub_data)
                             <tr>
-                                <td></td>
+                                <td>{{ ++$count }}</td>
                                 <td>{{ $sub_data->name }}</td>
                                 <td>{{ $sub_data->age }}</td>
                                 <?php
@@ -1011,9 +1022,10 @@
                             </tr>
 
                             @if($data->closeContacts->count() && $data->closeContacts->where('contact_type', 2)->count())
-                            @foreach($data->closeContacts->where('contact_type', 2) as $key => $sub_data)
+                            @php $count = 0 @endphp
+                            @foreach($data->closeContacts->where('contact_type', 2) as $key_sub => $sub_data)
                             <tr>
-                                <td></td>
+                                <td>{{ ++$count }}</td>
                                 <td>{{ $sub_data->name }}</td>
                                 <td>{{ $sub_data->age }}</td>
                                 <?php
@@ -1095,9 +1107,10 @@
                             </tr>
 
                             @if($data->closeContacts->count() && $data->closeContacts->where('contact_type', 3)->count())
-                            @foreach($data->closeContacts->where('contact_type', 3) as $key => $sub_data)
+                            @php $count = 0 @endphp
+                            @foreach($data->closeContacts->where('contact_type', 3) as $key_sub => $sub_data)
                             <tr>
-                                <td></td>
+                                <td>{{ ++$count }}</td>
                                 <td>{{ $sub_data->name }}</td>
                                 <td>{{ $sub_data->age }}</td>
                                 <?php
@@ -1179,23 +1192,26 @@
                             <?php 
                                 $sub_data_array = json_decode($data->other_attend_social_details);
                             ?>
-                            @foreach($sub_data_array as $sub_data)
+                            @foreach($sub_data_array as $key_sub => $sub_data)
                             <tr>
-                                <td></td>
+                                <td>{{ ++$key_sub }}</td>
                                 <td>{{ $sub_data->name }}</td>
                                 <td>{{ $sub_data->details }}</td>
                             </tr>
                             @endforeach
+                            @else
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                             </tr>
+                            @endif
                         </table>
                     </div>
                 </div>
             </div>
         </section>
+
         <section class="section-3">
             <h5>Section 3: Laboratory information</h5>
             <table>
@@ -1241,6 +1257,7 @@
                 </tr>
             </table>
         </section>
+
         <section class="section-4">
             <h5>Section 4: Data collector information</h5>
             <table>
@@ -1253,12 +1270,13 @@
                     <td>Email: {{ $data->checkedBy ? $data->checkedBy->user->email : '' }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2">Form completion date (dd/mm/yyyy): <u>{{ $data ? $data->completion_date : '' }}</u></td>
+                    <td colspan="2">Form completion date: <u>{{ $data ? $data->completion_date : '' }}</u></td>
                 </tr>
             </table>
         </section>
 
         @if($data->contact && $data->contact->count())
+        @php $follow_count = 0; @endphp
         @foreach($data->contact as $key => $contact)
         <div class="form-b1">
             <h4>Form B1 - Contact Interview Form {{ ++$key }}</h4>
@@ -1378,7 +1396,7 @@
                         }elseif($contact->informant_relation == 4){
                             $relation = 'Relative';
                         }else{
-                            $relation = '';
+                            $relation = $contact->informant_relation_other;
                         }
                     ?>
                     <td>Relationship to the contact: {{ $relation }}</td>
@@ -1388,6 +1406,7 @@
                     <td>Mobile no. {{ $contact->informant_phone }}</td>
                 </tr>
             </table>
+
             <table style="margin-top: 1em;">
                 <tr>
                     <th colspan="2" style="background-color:#8eaadb">3. Contacts clinical Information</th>
@@ -1417,7 +1436,7 @@
                             </p>
                             <div style="display: flex; flex-direction: row;">
                                 <div style="padding-left: 1em;">
-                                    <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="" @if($contact->symptoms_two_weeks == 0) checked readonly @else disabled @endif>
+                                    <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="" @if($contact->symptoms_two_weeks == 1) checked readonly @else disabled @endif>
                                     <label for="Yes"> Yes</label>
                                 </div>
                                 <div style="padding-left: 1em;">
@@ -1431,7 +1450,7 @@
                 <tr>
                     <td colspan="2">
                         <b>If answer to 3.1 or 3.2 is Yes,</b><br>
-                        <b>Date of Onset of First set of Symptoms [dd/mm/yyyy]: {{ $contact->date_of_onset_of_first_symptom }}</b><br>
+                        <b>Date of Onset of First set of Symptoms: {{ $contact->date_of_onset_of_first_symptom }}</b><br>
                         <b>Check any and all applicable symptoms listed below</b>
                         <div>
                             <?php
@@ -1500,8 +1519,8 @@
                                             <label for= "Recent loss of taste">Recent loss of taste</label>
                                         </div>
                                         <div>
-                                            <input type="checkbox" id="specify" name="specify" value="" @if(!is_null($data->symptoms_specific)) checked @endif readonly/>
-                                            <label for="specify"> Others, specify: <span style="font-weight: 500 !important;">{{ $data ? $data->symptoms_specific : '' }}</span></label>
+                                            <input type="checkbox" id="specify" name="specify" value="" @if(!is_null($contact->symptoms_specific)) checked @endif readonly/>
+                                            <label for="specify"> Others, specify: <span style="font-weight: 500 !important;">{{ $contact ? $contact->symptoms_specific : '' }}</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -1510,6 +1529,7 @@
                     </td>
                 </tr>
             </table>
+
             <table>
                 <tr>
                     <th colspan="2" style="background-color:#8eaadb">4. Contact pre-existing condition(s)</th>
@@ -1561,8 +1581,8 @@
                                         <label for="Chronic-Kidney-Diseases"> Chronic Kidney Diseases</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="malignancy" name="malignancy" value="" @if(!is_null($data->symptoms_comorbidity_specific)) checked @endif readonly/>
-                                        <label for="malignancy"> Others, specify: <span style="font-weight: 500 !important;">{{ $data ? $data->symptoms_comorbidity_specific : '' }}</span></label>
+                                        <input type="checkbox" id="malignancy" name="malignancy" value="" @if(!is_null($contact->symptoms_comorbidity_specific)) checked @endif readonly/>
+                                        <label for="malignancy"> Others, specify: <span style="font-weight: 500 !important;">{{ $contact ? $contact->symptoms_comorbidity_specific : '' }}</span></label>
                                     </div>
                                 </div>
                             </div>
@@ -1570,6 +1590,7 @@
                     </td>
                 </tr>
             </table>
+
             <table style="margin-top: 1em;">
                 <tr>
                     <th style="background-color:#8eaadb">5. Occupation</th>
@@ -1614,7 +1635,7 @@
                                 <label for="security-personnel"> Transport/Delivery</label>
                             </div>
                             <div style="padding-left: 1em;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="security-personnel" name="security-personnel" value="" @if($contact->occupation == '10') checked @endif>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="security-personnel" name="security-personnel" value="" @if($contact->occupation == '0') checked @endif>
                                 <label for="security-personnel"> Other</label>
                             </div>
                             <div style="padding-left: 1em;">
@@ -1624,6 +1645,7 @@
                     </td>
                 </tr>
             </table>
+
             <table>
                 <tr>
                     <th colspan="2" class style="background-color:#8eaadb">6. General exposure information</th>
@@ -1633,7 +1655,7 @@
                     <td width="50%">
                         <div>
                             <div class="col-md-2" style="padding-left: 0.5;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="yes" name="yes" value=""  @if($contact->travelled_14_days == 0) checked readonly @else disabled @endif>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="yes" name="yes" value=""  @if($contact->travelled_14_days == 1) checked readonly @else disabled @endif>
                                 <label for="yes"> Yes</label>
                             </div>
                             <div class="col-md-2" style="padding-left: 0.5;">
@@ -1641,10 +1663,10 @@
                                 <label for="no"> No</label>
                             </div>
                             <div class="col-md-8" style="padding-left: 0.5;">
-                                <input style="padding-left: 0.5em;" type="checkbox" id="unknown" name="unknown" value=""  @if($contact->travelled_14_days == 0) checked readonly @else disabled @endif>
+                                <input style="padding-left: 0.5em;" type="checkbox" id="unknown" name="unknown" value=""  @if($contact->travelled_14_days == 2) checked readonly @else disabled @endif>
                                 <label for="unknown"> Unknown</label>
                             </div>
-                            <p>If Yes, dates of travel (dd/mm/yyyy): {{ $contact->date_14_days }}</p>
+                            <p>If Yes, dates of travel: {{ $contact->date_14_days }}</p>
                             <?php
                                 $modes_of_travel = '';
                                 if( $contact->modes_of_travel == '1'){
@@ -1712,6 +1734,7 @@
                     </td>
                 </tr>
             </table>
+
             <table style="margin-top: 1em;">
                 <tr>
                     <th colspan="2" style="background-color:#8eaadb">7. Exposure information (only fill the section if the contact is a health care worker)</th>
@@ -1766,8 +1789,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Date of first contact (dd/mm/yy):</td>
-                    <td>Date of last contact (dd/mm/yy): {{ $contact->healthworker_last_date }}</td>
+                    <td>Date of first contact:</td>
+                    <td>Date of last contact: {{ $contact->healthworker_last_date }}</td>
                 </tr>
                 <tr>
                     <td colspan="2">Any relevant narrative: {{ $contact->healthworker_narrative }}</td>
@@ -1786,6 +1809,7 @@
                     </td>
                 </tr>
             </table>
+
             <table style="margin-top: 1em;">
                 <tbody>
                 <tr>
@@ -1816,7 +1840,7 @@
                 </tr>
                 <tr>
                     <td width="2%">Dose 1</td>
-                    <td></td>
+                    <td>{{ $contact->dose_one_name ? $contact->vaccine->name : '' }}</td>
                     <td>{{ $contact->dose_one_date }}</td>
                     <td style="display: flex; justify-content: center;">
                         <span>
@@ -1861,7 +1885,7 @@
                 </tr>
                 <tr>
                     <td>Dose 2</td>
-                    <td></td>
+                    <td>{{ $contact->dose_one_name ? $contact->vaccine->name : '' }}</td>
                     <td>{{ $contact->dose_two_date }}</td>
                     <td style="display: flex; border: none; justify-content: center; ">
                         <span>
@@ -1906,6 +1930,7 @@
                 </tr>
                 </tbody>
             </table>
+
             <table style="margin-top: 1em;">
                 <tbody>
                 <tr>
@@ -1963,6 +1988,7 @@
                 </tr>
                 </tbody>
             </table>
+
             <table>
                 <tr>
                     <th style="background-color:#8eaadb">8. Test Status of the Contact</th>
@@ -2000,28 +2026,28 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <p>If yes, date of swab collection(dd/mm/yy):{{ $contact->collection_date }}</p>
+                            <p>If yes, date of swab collection: <b>{{ $contact->collection_date }}</b></p>
                             <div>
                                 <div class="col-md-2" style="padding-left: 0.5em;">
                                     <input style="padding-left: 0.5em;" type="checkbox" id="test-result" name="test-result" value="">
                                     <label for="test-result"> Test Results:</label>
                                 </div>
                                 <div class="col-md-2" style="padding-left: 0.5em;">
-                                    <input style="padding-left: 0.5em;" type="checkbox" id="RT-PCR" name="RT-PCR" value="">
+                                    <input style="padding-left: 0.5em;" type="checkbox" id="RT-PCR" name="RT-PCR" value="" @if($contact->test_type == 1) checked readonly @else disabled @endif>
                                     <label for="RT-PCR"> RT-PCR</label>
                                 </div>
                                 <div class="col-md-2" style="padding-left: 0.5em;">
-                                    <input style="padding-left: 0.5em;" type="checkbox" id="RDT- Antigen " name="RDT- Antigen " value="">
+                                    <input style="padding-left: 0.5em;" type="checkbox" id="RDT- Antigen " name="RDT- Antigen " value="" @if($contact->test_type == 2) checked readonly @else disabled @endif>
                                     <label for="RDT- Antigen "> RDT- Antigen test</label>
                                 </div>
                                 <div class="col-md-2" style="padding-left: 0.5em;">
-                                    <input style="padding-left: 0.5em;" type="checkbox" id="unknown" name="unknown" value="">
+                                    <input style="padding-left: 0.5em;" type="checkbox" id="unknown" name="unknown" value="" @if($contact->test_type == 0) checked readonly @else disabled @endif>
                                     <label for="unknown"> Unknown</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <p>If positive, test result date (dd/mm/yy) {{ $contact->result_date }}</p>
+                            <p>If positive, test result date: <b>{{ $contact->result_date }}</b></p>
                         </div>
                     </td>
                 </tr>
@@ -2073,21 +2099,21 @@
                     <td>Email: {{ $contact->checkedBy ? $contact->checkedBy->user->email : '' }}</td>
                 </tr>
                 <tr>
-                    <td>Form completion date(dd/mm/yyyy): {{ $contact->completion_date }}</td>
+                    <td>Form completion date: {{ $contact->completion_date }}</td>
                     <td></td>
                 </tr>
             </table>
         </div>
         @if($contact->followUp && $contact->followUp->count())
         <div class="form-b2">
-            <h4>Annex 3: Form B2 – Contact Follow-up Form/Symptoms Diary {{ ++$key }}</h4>
+            <h4>Annex 3: Form B2 – Contact Follow-up Form/Symptoms Diary {{ ++$follow_count }}</h4>
             <table style="margin-top: 1em;">
                 <tr>
                     <th colspan="2" style="background-color:#8eaadb">1. Case Information</th>
                 </tr>
                 <tr>
-                    <td>Name of the case: <u>{{ $tracing->name }}</u></td>
-                    <td>EPID ID ______</td>
+                    <td>Name of the case: <u>{{ $data->name }}</u></td>
+                    <td>EPID ID: <u>{{ $data->case_id }}</u></td>
                 </tr>
             </table>
             <table>
@@ -2095,8 +2121,8 @@
                     <th colspan="2" style="background-color:#8eaadb">2. Contact Information</th>
                 </tr>
                 <tr>
-                    <td width="75%">Name {{ $tracing->name }}</td>
-                    <td width="25%">EPID ID ______</td>
+                    <td width="75%">Name {{ $contact->followUp->name }}</td>
+                    <td width="25%">EPID ID  <u>{{ $contact->followUp->case_id }}</u></td>
                 </tr>
             </table>
             <table style="margin-top: 1em; ">
@@ -2115,721 +2141,75 @@
                     <th>Shortness of breath</th>
                     <th>Other symptoms: specify</th>
                 </tr>
+                <?php 
+                for($i=0; $i<11; $i++){
+                ?>
                 <tr>
-                    <td style="text-align: center;">0</td>
+                    <td style="text-align: center;">{{ $i }}</td>
                     <td style="text-align: center;">
-                        <p>10</p>
+                        <p>{{ 10 - $i }}</p>
                         <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
                     </td>
-                    <td></td>
+                    <td>{{ $contact->followUp->{'date_of_follow_up_'.$i} }}</td>
                     <td>
                         <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="" @if($contact->followUp->{'no_symptoms_'.$i} == '1') checked readonly @else disabled @endif>
                             <label for="none"> None</label>
                         </div>
                     </td>
                     <td>
                         <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="" @if($contact->followUp->{'fever_'.$i} == '1') checked readonly @else disabled @endif>
                             <label for="Yes"> Yes</label>
                         </div>
                         <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="" @if($contact->followUp->{'fever_'.$i} == '0') checked readonly @else disabled @endif>
                             <label for="No"> No</label>
                         </div>
                     </td>
                     <td>
                         <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="" @if($contact->followUp->{'runny_nose_'.$i} == '1') checked readonly @else disabled @endif>
                             <label for="Yes"> Yes</label>
                         </div>
                         <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="" @if($contact->followUp->{'runny_nose_'.$i} == '0') checked readonly @else disabled @endif>
                             <label for="No"> No</label>
                         </div>
                     </td>
                     <td width="7%">
                         <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="" @if($contact->followUp->{'cough_'.$i} == '1') checked readonly @else disabled @endif>
                             <label for="Yes"> Yes</label>
                         </div>
                         <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="" @if($contact->followUp->{'cough_'.$i} == '0') checked readonly @else disabled @endif>
                             <label for="No"> No</label>
                         </div>
                     </td>
                     <td>
                         <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="" @if($contact->followUp->{'sore_throat_'.$i} == '1') checked readonly @else disabled @endif>
                             <label for="Yes"> Yes</label>
                         </div>
                         <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="" @if($contact->followUp->{'sore_throat_'.$i} == '0') checked readonly @else disabled @endif>
                             <label for="No"> No</label>
                         </div>
                     </td>
                     <td>
                         <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="" @if($contact->followUp->{'breath_'.$i} == '1') checked readonly @else disabled @endif>
                             <label for="Yes"> Yes</label>
                         </div>
                         <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
+                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="" @if($contact->followUp->{'breath_'.$i} == '0') checked readonly @else disabled @endif>
                             <label for="No"> No</label>
                         </div>
                     </td>
-                    <td></td>
+                    <td>{{ $contact->followUp->{'symptoms_other_'.$i} }}</td>
                 </tr>
-                <tr>
-                    <td style="text-align: center;">1</td>
-                    <td style="text-align: center;">
-                        <p>9</p>
-                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                    </td>
-                    <td></td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                            <label for="none"> None</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td width="7%">
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">2</td>
-                    <td style="text-align: center;">
-                        <p>8</p>
-                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                    </td>
-                    <td></td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                            <label for="none"> None</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td width="7%">
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">3</td>
-                    <td style="text-align: center;">
-                        <p>7</p>
-                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                    </td>
-                    <td></td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                            <label for="none"> None</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td width="7%">
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">4</td>
-                    <td style="text-align: center;">
-                        <p>6</p>
-                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                    </td>
-                    <td></td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                            <label for="none"> None</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td width="7%">
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">5</td>
-                    <td style="text-align: center;">
-                        <p>5</p>
-                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                    </td>
-                    <td></td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                            <label for="none"> None</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td width="7%">
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">6</td>
-                    <td style="text-align: center;">
-                        <p>4</p>
-                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                    </td>
-                    <td></td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                            <label for="none"> None</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td width="7%">
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">7</td>
-                    <td style="text-align: center;">
-                        <p>3</p>
-                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                    </td>
-                    <td></td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                            <label for="none"> None</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td width="7%">
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">8</td>
-                    <td style="text-align: center;">
-                        <p>2</p>
-                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                    </td>
-                    <td></td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                            <label for="none"> None</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td width="7%">
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">9</td>
-                    <td style="text-align: center;">
-                        <p>1</p>
-                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                    </td>
-                    <td></td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                            <label for="none"> None</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td width="7%">
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">10</td>
-                    <td style="text-align: center;">
-                        <p>0</p>
-                        <img style="margin-left: -8em;" width="100px"height="20px" class="arrow-img" src="{{ asset('images/arrow.png') }}" alt="">
-                    </td>
-                    <td></td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="none" name="none" value="">
-                            <label for="none"> None</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td width="7%">
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="Yes" name="Yes" value="">
-                            <label for="Yes"> Yes</label>
-                        </div>
-                        <div style="padding-left: 0.5em;">
-                            <input style="padding-left: 0.5em;" type="checkbox" id="No" name="No" value="">
-                            <label for="No"> No</label>
-                        </div>
-                    </td>
-                    <td></td>
-                </tr>
+                <?php } ?>
             </table>
             <div style="margin-top: 0.5em; margin-bottom: 1em;" class="col-md-12">
                 <p>* Follow-up should start from the day it has been since last contact with the case. For e.g., if the contact has not been in contact with the case
@@ -2839,6 +2219,7 @@
             </div>
         </div>
         @endif
+
         @endforeach
         @endif
     </div>

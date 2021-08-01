@@ -26,6 +26,21 @@ class CictContact extends Model
         'completion_date'
     ];
 
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class);
+    }
+
+    public function municipality()
+    {
+        return $this->belongsTo(Municipality::class);
+    }
+
     public function checkedBy()
     {
         return $this->belongsTo(OrganizationMember::class, 'checked_by', 'token');
@@ -35,4 +50,9 @@ class CictContact extends Model
     {
 		return $this->hasOne('App\Models\CictFollowUp', 'case_id', 'case_id');
 	}
+
+    public function vaccine()
+    {
+        return $this->belongsTo(Vaccine::class, 'dose_one_name', 'id');
+    }
 }

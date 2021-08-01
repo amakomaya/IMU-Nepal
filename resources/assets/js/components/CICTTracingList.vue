@@ -27,6 +27,9 @@
             <button v-on:click="contactList(item.case_id)" class="btn btn-secondary btn-sm" title="Contact List">
               <i class="fa fa-list" aria-hidden="true"> Contact List</i>
             </button>
+            <button v-on:click="cictReport(item.case_id)" class="btn btn-success btn-sm" title="CICT Report">
+              <i class="fa fa-file-pdf-o" aria-hidden="true"> CICT Report</i>
+            </button>
             <button v-on:click="deletePatientData(item, removeItemOnSuccess)" class="btn btn-danger btn-sm" title="Delete Data">
               <i class="fa fa-trash" aria-hidden="true"> Delete</i>
             </button>
@@ -77,6 +80,12 @@ export default {
     contactList : function (id){
       window.open(
           '/admin/cict-tracing/contact-list/' + id,
+          '_self'
+      );
+    },
+    cictReport : function (id){
+      window.open(
+          '/admin/cict-tracing/report/' + id,
           '_self'
       );
     },

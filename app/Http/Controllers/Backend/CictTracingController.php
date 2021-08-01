@@ -559,13 +559,13 @@ class CictTracingController extends Controller
         $data = CictTracing::with(['contact' => function($q){
                 $q->with('followUp');
             },
-            'closeContacts', 'checkedBy', 
+            'closeContacts', 'checkedBy', 'vaccine',
             'suspectedCase' => function($q){
                 $q->with('ancs', 'latestAnc');
             }])->where('case_id', $case_id)->first();
 
         // dd($data);
-        return view('backend.cict-tracing.report', compact($data));
+        return view('backend.cict-tracing.report', compact('data'));
     }
 
     /**
