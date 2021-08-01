@@ -16,6 +16,7 @@ use App\Models\Province;
 use App\Models\VaccineVial;
 use App\Models\SuspectedCase;
 use App\Models\PaymentCase;
+use App\Models\Country;
 use App\Reports\FilterRequest;
 use App\User;
 use Carbon\Carbon;
@@ -380,10 +381,12 @@ class WomanController extends Controller
         foreach ($response as $key => $value) {
             $$key = $value;
         }
+
+        $countries = Country::get();
         if(Auth::user()->can('poe-registration')){
-            return view('backend.patient.create-poe', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id'));
+            return view('backend.patient.create-poe', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id', 'countries'));
         } else {
-            return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id'));
+            return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id', 'countries'));
         }
     }
 
