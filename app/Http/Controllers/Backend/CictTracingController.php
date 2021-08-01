@@ -10,6 +10,7 @@ use App\Models\CictContact;
 use App\Models\CictFollowUp;
 use App\Models\CictCloseContact;
 use App\Models\SuspectedCase;
+use App\Models\SuspectedCaseOld;
 use App\Models\SampleCollection;
 use App\Models\OrganizationMember;
 use App\Models\Vaccine;
@@ -37,6 +38,10 @@ class CictTracingController extends Controller
             }
             $patient = SuspectedCase::with('province', 'district', 'municipality', 'ancs', 'latestAnc')
                 ->where('case_id', $request->case_id)->first();
+            if(empty($patient)){
+                $patient = SuspectedCaseOld::with('province', 'district', 'municipality', 'ancs', 'latestAnc')
+                    ->where('case_id', $request->case_id)->first();
+            }
 
             if($patient){
                 $request->session()->flash('message', 'Case Found.');
