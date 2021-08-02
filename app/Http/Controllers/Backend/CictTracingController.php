@@ -129,7 +129,9 @@ class CictTracingController extends Controller
     public function sectionOne(Request $request)
     {
         if($request->case_id){
-            $data = CictTracing::where('case_id', $request->case_id)->first();
+            $data = CictTracing::with(['suspectedCase' => function($q){
+                    $q->with('ancs', 'latestAnc');
+                }])->where('case_id', $request->case_id)->first();
             if($data){
                 return view('backend.cict-tracing.section-one', compact('data'));
             } else{
