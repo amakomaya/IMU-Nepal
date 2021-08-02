@@ -636,14 +636,10 @@
                             <div class="form-group vaccine-status {{ $errors->has('vaccine_name') ? 'has-error' : '' }}">
                                 <label for="vaccine_name">Name of Vaccine</label>
                                 <select name="vaccine_name" class="form-control" id="vaccine_name">
-                                    <option {{ old('vaccine_name') == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
-                                    <option {{ old('vaccine_name') == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
-                                    <option {{ old('vaccine_name') == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
-                                    <option {{ old('vaccine_name') == '3' ? "selected" : "" }} value="3">Pfizer</option>
-                                    <option {{ old('vaccine_name') == '4' ? "selected" : "" }} value="4">Moderna</option>
-                                    <option {{ old('vaccine_name') == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
-                                    <option {{ old('vaccine_name') == '6' ? "selected" : "" }} value="6">Johnson & Johnson</option>
-                                    <option {{ old('vaccine_name') == '10' ? "selected" : "" }} value="10">Other</option>
+                                    <option {{ old('vaccine_name') == '' ? "selected" : "" }} value="">-- Select Name of Vaccine --</option>
+                                    @foreach($vaccines as $vaccine)
+                                        <option value="{{ $vaccine->id }}" {{ old('vaccine_name') == $vaccine->id ? "selected" : "" }}>{{ $vaccine->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="form-group vaccine-other {{ $errors->has('vaccine_name_other') ? 'has-error' : '' }}">

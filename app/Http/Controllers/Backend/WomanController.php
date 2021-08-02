@@ -17,6 +17,7 @@ use App\Models\VaccineVial;
 use App\Models\SuspectedCase;
 use App\Models\PaymentCase;
 use App\Models\Country;
+use App\Models\Vaccine;
 use App\Reports\FilterRequest;
 use App\User;
 use Carbon\Carbon;
@@ -383,8 +384,9 @@ class WomanController extends Controller
         }
 
         if(Auth::user()->can('poe-registration')){
+            $vaccines = Vaccine::get();
             $countries = Country::get();
-            return view('backend.patient.create-poe', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id', 'countries'));
+            return view('backend.patient.create-poe', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id', 'countries', 'vaccines'));
         } else {
             return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id'));
         }
