@@ -525,8 +525,12 @@ class CictTracingController extends Controller
     }
 
     public function followUp(Request $request){
-        $cict_follow_up = CictFollowUp::with('checkedBy')->where('case_id', $request->case_id)->first();
         $cict_contact = CictContact::where('case_id', $request->case_id)->first();
+        if(empty($cict_contact)){
+            $request->session()->flash('message', 'Please fill B1 form first.');
+            return redirect()->back();
+        }
+        $cict_follow_up = CictFollowUp::with('checkedBy')->where('case_id', $request->case_id)->first();
         $cict_tracing = CictTracing::where('case_id', $cict_contact->parent_case_id)->first();
         if($cict_follow_up){
             $data = $cict_follow_up;

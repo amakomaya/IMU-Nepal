@@ -165,10 +165,17 @@
                                 <h4>Data Collector information</h4><br>
 
                                 <div class="form-group">
+                                    @if(isset($data->checkedBy))
                                     <b>Name:</b> {{ isset($data->checkedBy) && $data->checkedBy ? $data->checkedBy->name : '' }}<br>
                                     <b>Telephone Number:</b> {{ isset($data->checkedBy) && $data->checkedBy ? $data->checkedBy->phone : '' }}<br>
                                     <b>Instituton:</b> {{ isset($data->checkedBy) && $data->checkedBy ? $data->checkedBy->getHealthpost($data->hp_code) : '' }}<br>
                                     <b>Email:</b> {{ isset($data->checkedBy) && $data->checkedBy ? $data->checkedBy->user->email : '' }}<br>
+                                    @else
+                                    <b>Name:</b> {{ isset($cict_contact->checkedBy) && $cict_contact->checkedBy ? $cict_contact->checkedBy->name : '' }}<br>
+                                    <b>Telephone Number:</b> {{ isset($cict_contact->checkedBy) && $cict_contact->checkedBy ? $cict_contact->checkedBy->phone : '' }}<br>
+                                    <b>Instituton:</b> {{ isset($cict_contact->checkedBy) && $cict_contact->checkedBy ? $cict_contact->checkedBy->getHealthpost($cict_contact->hp_code) : '' }}<br>
+                                    <b>Email:</b> {{ isset($cict_contact->checkedBy) && $cict_contact->checkedBy ? $cict_contact->checkedBy->user->email : '' }}<br>
+                                    @endif
                                     <label>Form Completion Date </label><br>
                                     <input type="text" class="form-control" value="{{ isset($data->completion_date) ? $data->completion_date : '' }}" name="completion_date"
                                             aria-describedby="help" placeholder="Enter Form Completion Date" id="completion_date"

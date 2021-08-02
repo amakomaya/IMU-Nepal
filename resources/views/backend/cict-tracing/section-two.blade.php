@@ -203,7 +203,7 @@
 
                                 <div class="form-group">
                                     <select name="high_exposure" class="form-control high_exposure">
-                                        <option value="" {{$data && $data->high_exposure == "" ? 'selected' : "" }}>Select High Exposure</option>
+                                        <option value="" {{$data && $data->high_exposure == "" ? 'selected' : "" }}>-- Select High Exposure Category --</option>
                                         <option value="1" {{$data && $data->high_exposure == "1" ? 'selected' : "" }}>Health Care Work (any type, level & facility, including cleaning staff</option>
                                         <option value="2" {{$data && $data->high_exposure == "2" ? 'selected' : "" }}>Community Health / Immunization Clinic Volunteer</option>
                                         <option value="3" {{$data && $data->high_exposure == "3" ? 'selected' : "" }}>Sanitary / Waste Collection / Management Worker / Transport Driver / Helper</option>

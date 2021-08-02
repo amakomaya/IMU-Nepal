@@ -123,7 +123,7 @@
                             <div class="form-group">
                                 <label class="control-label" for="company">Gender</label>
                                 <select name="sex" class="form-control">
-                                    <option value="" disabled selected>Select Gender</option>
+                                    <option {{ $data && $data->sex == '' ? "disabled selected" : "" }} value="">Select Gender</option>
                                     <option {{ $data && $data->sex == '1' ? "selected" : "" }} value="1">Male</option>
                                     <option {{ $data && $data->sex == '2' ? "selected" : "" }} value="2">Female</option>
                                     <option {{ $data && $data->sex == '3' ? "selected" : "" }}  value="3">Other</option>
@@ -158,7 +158,7 @@
 
                             <div class="form-group {{ $errors->has('nationality') ? 'has-error' : '' }}">
                                 <label for="name">Nationality</label>
-                                <select name="nationality" class="form-control nationality">
+                                <select name="nationality" class="form-control nationality" id="nationality">
                                     <option {{ $data && $data->nationality == '167' ? "selected" : "" }} value="167">Nepal</option>
                                     <option {{ $data && $data->nationality == '104' ? "selected" : "" }} value="104">India</option>
                                     <option {{ $data && $data->nationality == '47' ? "selected" : "" }} value="47">China</option>
@@ -280,7 +280,7 @@
                             <div class="form-group {{ $errors->has('informant_relation') ? 'has-error' : '' }}">
                                 <label for="informant_relation">Relationship with Informant</label>
                                 <select name="informant_relation" class="form-control informant_relation">
-                                    <option value="" disabled selected>-- Select Relation --</option>
+                                    <option {{ $data && $data->informant_relation == '' ? "selected" : "" }} value="">-- Select Relationship --</option>
                                     <option {{ $data && $data->informant_relation == '1' ? "selected" : "" }} value="1">Family</option>
                                     <option {{ $data && $data->informant_relation == '2' ? "selected" : "" }} value="2">Friends</option>
                                     <option {{ $data && $data->informant_relation == '3' ? "selected" : "" }} value="3">Neighbour</option>
@@ -314,7 +314,7 @@
                             <div class="form-group {{ $errors->has('case_managed_at') ? 'has-error' : '' }}">
                                 <label for="case_managed_at">Case Managed At</label>
                                 <select name="case_managed_at" class="form-control case_managed_at">
-                                    <option value="" disabled selected>-- Select Option --</option>
+                                    <option {{ $data && $data->case_managed_at == '' ? "selected" : "" }} value="">-- Select Option --</option>
                                     <option {{ $data && $data->case_managed_at == '1' ? "selected" : "" }} value="1">Home Isolation</option>
                                     <option {{ $data && $data->case_managed_at == '2' ? "selected" : "" }} value="2">Hotel Isolation</option>
                                     <option {{ $data && $data->case_managed_at == '3' ? "selected" : "" }} value="3">Institutional Isolation</option>
