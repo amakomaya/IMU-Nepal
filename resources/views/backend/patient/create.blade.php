@@ -365,7 +365,7 @@
                                     <option {{ old('occupation') == '4' ? "selected" : "" }} value="4">Police/Army</option>
                                     <option {{ old('occupation') == '5' ? "selected" : "" }} value="5">Business/Industry</option>
                                     <option {{ old('occupation') == '6' ? "selected" : "" }} value="6">Teacher/Student/Education</option>
-                                    <option {{ old('occupation') == '8' ? "selected" : "" }} value="7">Civil Servant</option>
+                                    <option {{ old('occupation') == '7' ? "selected" : "" }} value="7">Civil Servant</option>
                                     <option {{ old('occupation') == '8' ? "selected" : "" }} value="8">Journalist</option>
                                     <option {{ old('occupation') == '9' ? "selected" : "" }} value="9">Agriculture</option>
                                     <option {{ old('occupation') == '10' ? "selected" : "" }} value="10">Transport/Delivery</option>
