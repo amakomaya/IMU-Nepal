@@ -1061,3 +1061,7 @@ Route::get('/v1/vaccines', function(){
     $response = \App\Models\Vaccine::get();
     return response()->json($response);
 });
+Route::get('/v1/countries', function(){
+    $response = \App\Models\Country::get();
+    return response()->json($response);
+});
