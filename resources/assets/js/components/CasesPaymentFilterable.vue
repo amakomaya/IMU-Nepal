@@ -586,6 +586,7 @@ export default {
 $color-error: #e75650;
 $color-primary: #3aa3e3;
 $color-secondary: #2c405a;
+$color-success: #5cb85c;
 $text-color: #484746;
 $bg-color: #fafafa;
 $bg-color-light: #fcfcfc;
@@ -771,6 +772,12 @@ select {
     background: $color-secondary;
     color: #fff;
     border-bottom: 1px solid darken($color-secondary, 10%);
+  }
+
+  &-success {
+    background: $color-success;
+    color : #fff;
+    border-bottom: 1px solid darken($color-success, 10%);
   }
 
   &-danger {
