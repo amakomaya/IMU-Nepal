@@ -2095,7 +2095,7 @@
                     <td width="50%">Institution: {{ $contact->checkedBy ? $contact->checkedBy->getHealthpost($contact->hp_code) : '' }}</td>
                 </tr>
                 <tr>
-                    <td>Telepphone number:{{ $contact->checkedBy ? $contact->checkedBy->phone : '' }}</td>
+                    <td>Telephone number:{{ $contact->checkedBy ? $contact->checkedBy->phone : '' }}</td>
                     <td>Email: {{ $contact->checkedBy ? $contact->checkedBy->user->email : '' }}</td>
                 </tr>
                 <tr>
@@ -2121,7 +2121,7 @@
                     <th colspan="2" style="background-color:#8eaadb">2. Contact Information</th>
                 </tr>
                 <tr>
-                    <td width="75%">Name {{ $contact->name }}</td>
+                    <td width="75%">Name <u>{{ $contact->name }}</u></td>
                     <td width="25%">EPID ID  <u>{{ $contact->followUp->case_id }}</u></td>
                 </tr>
             </table>
