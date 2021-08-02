@@ -414,7 +414,7 @@
             $('#cict_initiated_date').val(currentDate);
         }
 
-        var sample_test_date_np = $('$case_received_date').val();
+        var sample_test_date_np = $('#case_received_date').val();
         if($('#case_received_date').val() == ''){
             $('#case_received_date').val(sample_test_date_np);
         }
