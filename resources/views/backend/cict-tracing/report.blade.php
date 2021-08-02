@@ -2121,7 +2121,7 @@
                     <th colspan="2" style="background-color:#8eaadb">2. Contact Information</th>
                 </tr>
                 <tr>
-                    <td width="75%">Name {{ $contact->followUp->name }}</td>
+                    <td width="75%">Name {{ $contact->name }}</td>
                     <td width="25%">EPID ID  <u>{{ $contact->followUp->case_id }}</u></td>
                 </tr>
             </table>
