@@ -1,5 +1,6 @@
 @extends('layouts.backend.app')
 @section('style')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         .earning {
             display: none;
@@ -122,7 +123,7 @@
                             <div class="form-group">
                                 <label class="control-label" for="company">Gender</label>
                                 <select name="sex" class="form-control">
-                                    <option value="" disabled selected>Select Gender</option>
+                                    <option {{ old('sex') == '' ? "selected" : "" }} value="">-- Select Gender --</option>
                                     <option {{ old('sex') == '1' ? "selected" : "" }} value="1">Male</option>
                                     <option {{ old('sex') == '2' ? "selected" : "" }} value="2">Female</option>
                                     <option {{ old('sex') == '3' ? "selected" : "" }}  value="3">Other</option>
@@ -133,8 +134,8 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="occupation">Occupation</label>
-                                <select name="occupation" class="form-control">
-                                    <option {{ old('occupation') == '' ? "selected" : "" }} value="">Select Occupation</option>
+                                <select name="occupation" class="form-control" id="occupation">
+                                    <option {{ old('occupation') == '' ? "selected" : "" }} value="">-- Select Occupation --</option>
                                     <option {{ old('occupation') == '1' ? "selected" : "" }} value="1">Front Line Health Worker</option>
                                     <option {{ old('occupation') == '2' ? "selected" : "" }} value="2">Doctor</option>
                                     <option {{ old('occupation') == '3' ? "selected" : "" }} value="3">Nurse</option>
@@ -156,11 +157,12 @@
                             </div>
                             <div class="form-group {{ $errors->has('nationality') ? 'has-error' : '' }}">
                                 <label for="nationality">Nationality</label>
-                                <select name="nationality" class="form-control">
-                                    <option {{ old('nationality') == '' ? "selected" : "" }} value="">Select Nationality</option>
-                                    <option {{ old('nationality') == '167' ? "selected" : "" }} value="167">Nepal</option>
-                                    <option {{ old('nationality') == '104' ? "selected" : "" }} value="104">India</option>
-                                    <option {{ old('nationality') == '47' ? "selected" : "" }} value="47">China</option>
+                                <select name="nationality" class="form-control" id="nationality">
+                                    <option {{ old('nationality') == '' ? "selected" : "" }} value="">-- Select Nationality --</option>
+                                    @foreach ($countries as $country)
+                                        <option value="{{ $country->country_id }}" 
+                                            {{ old('nationality') == $country->country_id ? "selected" : "" }}>{{ $country->name }}</option>
+                                    @endforeach
                                     <option {{ old('nationality') == '300' ? "selected" : "" }} value="300">Other</option>
                                 </select>
                                 @if ($errors->has('nationality'))
@@ -170,7 +172,7 @@
                             <div class="form-group {{ $errors->has('id_card_type') ? 'has-error' : '' }}">
                                 <label for="id_card_type">ID Card Type</label>
                                 <select name="id_card_type" class="form-control id_card_type">
-                                    <option {{ old('id_card_type') == '' ? "selected" : "" }} value="">Select ID Card Type</option>
+                                    <option {{ old('id_card_type') == '' ? "selected" : "" }} value="">-- Select ID Card Type --</option>
                                     <option {{ old('id_card_type') == '1' ? "selected" : "" }} value="1">Citizenship</option>
                                     <option {{ old('id_card_type') == '2' ? "selected" : "" }} value="2">License</option>
                                     <option {{ old('id_card_type') == '3' ? "selected" : "" }} value="3">Voter Card</option>
@@ -222,11 +224,12 @@
                                     <div class="row">
                                         <div class="form-group col-md-6 {{ $errors->has('travelled_where') ? 'has-error' : '' }}">
                                             <label for="travelled_where">Country</label>
-                                            <select name="travelled_where" class="form-control">
-                                                <option {{ old('travelled_where') == '' ? "selected" : "" }} value="">Select Travelled From (Country)</option>
-                                                <option {{ old('travelled_where') == '167' ? "selected" : "" }} value="167">Nepal</option>
-                                                <option {{ old('travelled_where') == '104' ? "selected" : "" }} value="104">India</option>
-                                                <option {{ old('travelled_where') == '47' ? "selected" : "" }} value="47">China</option>
+                                            <select name="travelled_where" class="form-control" id="travelled_where">
+                                                <option {{ old('travelled_where') == '' ? "selected" : "" }} value="">-- Select Travelled From (Country) --</option>
+                                                @foreach ($countries as $country)
+                                                    <option value="{{ $country->country_id }}" 
+                                                        {{ old('travelled_where') == $country->country_id ? "selected" : "" }}>{{ $country->name }}</option>
+                                                @endforeach
                                                 <option {{ old('travelled_where') == '300' ? "selected" : "" }} value="300">Other</option>
                                             </select>
                                             @if ($errors->has('travelled_where'))
@@ -716,6 +719,8 @@
 @endsection
 @section('script')
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script type="text/javascript">
         // import DataConverter from "ad-bs-converter";
         // console.log(NepaliFunctions.GetCurrentBsDate())
@@ -1048,6 +1053,10 @@
                 }
             });
         });
+        
+        if($('#nationality').val() == ''){
+            $('#nationality').val('167');
+        }
 
         function disableSubmit() {
           $("#submit-form").prop('disabled', true);
@@ -1060,5 +1069,16 @@
           $("#submit-form").html("SAVE");
           return false;
         }
+
+        function loadSelect2() {
+            $('#nationality, #travelled_where').select2({
+                // placeholder: "-- Select --",
+                allowClear: true
+            });
+        }
+
+        $(document).ready(function() {
+            loadSelect2();
+        });
     </script>
 @endsection

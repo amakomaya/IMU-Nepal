@@ -382,11 +382,11 @@ class WomanController extends Controller
             $$key = $value;
         }
 
-        $countries = Country::get();
         if(Auth::user()->can('poe-registration')){
+            $countries = Country::get();
             return view('backend.patient.create-poe', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id', 'countries'));
         } else {
-            return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id', 'countries'));
+            return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id'));
         }
     }
 
