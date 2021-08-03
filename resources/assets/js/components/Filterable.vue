@@ -222,7 +222,7 @@ export default {
       apiresponce : false,
       appliedFilters: [],
       filterCandidates: [],
-      title_of_switch: 'Click for older data',
+      title_of_switch: 'Click for old data',
       query: {
         order_column: 'created_at',
         order_direction: 'desc',
@@ -523,7 +523,7 @@ export default {
         this.title_of_switch = 'Click for latest data'
       } else {
         this.initialApiParam = {},
-        this.title_of_switch = 'Click for data older than 15 days'
+        this.title_of_switch = 'Click for old data'
 
       }
       this.fetch()
