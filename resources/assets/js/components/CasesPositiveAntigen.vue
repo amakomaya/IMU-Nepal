@@ -434,9 +434,9 @@ export default {
     checkInfectionType(value) {
       switch (value) {
         case '2':
-          return 'Asymptomatic';
+          return 'A';
         case '1':
-          return 'Symptomatic';
+          return 'S';
         default:
           return "N/A";
       }

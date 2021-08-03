@@ -19,6 +19,7 @@
               <th width="10%" title="Test Date">Test Date</th>
               <th width="10%" title="Sample Collection Details">Sample</th>
               <th width="10%" title="Latest Lab Result">Result</th>
+              <th width="4%" title="Infection Type">Type</th>
               <th width="10%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
             </tr>
             </thead>
@@ -41,6 +42,9 @@
                 <td><span class="label label-success"> Negative</span>
                   <div>{{ labToken(item.latest_anc.lab_token) }}</div>
                 </td>
+              <td>
+                {{ checkInfectionType(item.latest_anc.infection_type) }}
+              </td>
                 <td>
                   <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
                     <i class="fa fa-file" aria-hidden="true"></i> |
@@ -235,6 +239,16 @@
                     .finally(() => {
                     })
             },
+          checkInfectionType : function(value) {
+            switch (value) {
+              case '2':
+                return 'A';
+              case '1':
+                return 'S';
+              default:
+                return "N/A";
+            }
+          },
 
             ad2bs: function (date) {
                 var dateObject = new Date(date);

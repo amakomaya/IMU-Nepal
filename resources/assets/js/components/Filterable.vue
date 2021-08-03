@@ -124,7 +124,7 @@
           </download-excel>
 
         </div>
-        <!-- <div class="btn btn-secondary">
+        <div class="btn btn-secondary">
           <download-excel
               :fetch   = "exportToExcelForDolphins"
               :fields = "json_fields_for_dolphins"
@@ -133,7 +133,7 @@
             Download Data for Dolphins
             <i class="fa fa-file-excel-o" aria-hidden="true"></i>
           </download-excel>
-        </div> -->
+        </div>
         <!--        <button @click="exportToCSV()">Export</button>-->
 
       <div>
@@ -222,7 +222,7 @@ export default {
       apiresponce : false,
       appliedFilters: [],
       filterCandidates: [],
-      title_of_switch: 'Click for data older than 15 days',
+      title_of_switch: 'Click for older data',
       query: {
         order_column: 'created_at',
         order_direction: 'desc',
@@ -248,6 +248,7 @@ export default {
         'Swab ID' : 'swab_id',
         'Lab ID' : 'lab_id',
         'Result' : 'result',
+        'Infection Type' : 'infection_type',
         'Date' : 'date',
         'Created At' : 'created_at'
       },
@@ -369,6 +370,13 @@ export default {
           var date = data.register_date_np;
           if(data.latest_anc){
             exportableData.swab_id = data.latest_anc.token;
+            if(data.latest_anc.infection_type === "2") {
+              exportableData.infection_type = "A";
+            }else if(data.latest_anc.infection_type === "1") {
+              exportableData.infection_type = "S";
+            }else{
+              exportableData.infection_type = "N/A";
+            }
             date = data.latest_anc.collection_date_np;
             if(data.latest_anc.lab_token){
               exportableData.lab_id = data.latest_anc.formated_token;

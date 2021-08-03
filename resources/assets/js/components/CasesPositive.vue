@@ -15,6 +15,7 @@
         <th width="10%" title="Test Date">Test Date</th>
         <th width="10%" title="Sample Collection Details">Sample</th>
         <th width="4%" title="Latest Lab Result">Result</th>
+        <th width="4%" title="Infection Type">Type</th>
         <th width="4%" title="CICT Status">CICT Status</th>
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
       </tr>
@@ -46,6 +47,9 @@
             <span class="label label-danger"> Positive</span>
           </div>
           <div>{{ labToken(item.latest_anc.lab_token) }}</div>
+        </td>
+        <td>
+          {{ checkInfectionType(item.latest_anc.infection_type) }}
         </td>
         <td v-html="checkCictStatus(item.cict_tracing)">
         <td>
@@ -238,6 +242,17 @@ export default {
           this.$swal("Cancelled", "Data not moved :)", "error");
         }
       })
+    },
+
+    checkInfectionType : function(value) {
+      switch (value) {
+        case '2':
+          return 'A';
+        case '1':
+          return 'S';
+        default:
+          return "N/A";
+      }
     },
 
     fetch() {
