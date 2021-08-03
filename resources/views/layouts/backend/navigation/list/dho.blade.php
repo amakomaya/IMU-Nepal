@@ -21,4 +21,3 @@
 @include('layouts.backend.navigation.html.close-cases')
 
 @include('layouts.backend.navigation.html.cases-payment')
-@include('layouts.backend.navigation.html.map')
