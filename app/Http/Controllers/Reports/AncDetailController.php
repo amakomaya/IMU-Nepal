@@ -251,7 +251,9 @@ class AncDetailController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        $healthposts = Organization::whereIn('hp_code', $hpCodes)->get()->toArray();
+        $healthposts = Organization::whereIn('hp_code', $hpCodes)
+            ->whereIn('hospital_type', [2, 3])
+            ->get()->toArray();
         $lab_organizations = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
             ->select('ancs.*', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token')
             ->whereIn('ancs.hp_code', $hpCodes)
