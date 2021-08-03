@@ -323,10 +323,13 @@ class AncDetailController extends Controller
             }
         }
 
-        $healthposts = Organization::whereIn('hp_code', $hpCodes)->get()->toArray();
+        $healthposts = Organization::whereIn('hp_code', $hpCodes)
+            ->whereIn('hospital_type', [1, 2, 3, 5, 6])
+            ->get()->toArray();
         $samples = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
-            ->select('ancs.hp_code', 'ancs.regdev', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token')
+            ->select('ancs.hp_code', 'ancs.regdev', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token', 'healthposts.hospital_type')
             ->whereIn('ancs.hp_code', $hpCodes)
+            ->whereIn('healthposts.hospital_type', [1, 2, 3, 5, 6])
             ->whereDate('collection_date_en', $date_chosen);
         
         $web_count = $samples->where('regdev', 'web')->get()->groupBy('hp_code');
