@@ -387,16 +387,12 @@ input:focus ~ div{
                                     @php($list = (new \App\Models\Organization())->array_organization_type)
                                     <div class="col-md-7">
                                         <select id="status" class="form-control" name="hospital_type" >
-                                            @if(auth()->user()->role == 'municipality')
-                                            <option value="8">Vaccination Center</option>
-                                            @else
                                             <option value="" hidden>Select Organization Type</option>
                                             @foreach ($list as $key => $value )
                                                 <option value="{{ $key }}" @if($hospital_type=="$key") {{ 'selected' }} @endif >
                                                     {{ $value }}
                                                 </option>
                                             @endforeach
-                                            @endif
                                         </select>
 
                                         @if ($errors->has('hospital_type'))

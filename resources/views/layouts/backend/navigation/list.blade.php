@@ -49,7 +49,8 @@
             </form>
         </li>
         @endif
-        @if(Request::session()->get('user_token') === '5a4425')
+            {{-- @if(Request::session()->get('user_token') === '5a4425') --}}
+            @if(Auth::user()->role=="main" || Auth::user()->role=="province" || Auth::user()->role=="municipality")
                 <li>
                     <a href="{{ route('backup-restore.index') }}">
                         <i class="fa fa-undo" aria-hidden="true"></i> {{ trans('sidebar.backup_restore') }}

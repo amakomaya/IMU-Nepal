@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-show="permissionId==1" class="checkbox-slider">
+    <div v-show="permissionId==1" class="checkbox-slider checkbox-slider-bulk">
       <input type="checkbox" id="checkbox" @click="switchValue($event)">
       <label for="checkbox" class="slider"></label>
       <label for="checkbox">{{ bulkMode }}</label>
