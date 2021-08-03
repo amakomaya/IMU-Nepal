@@ -321,51 +321,21 @@ class AncDetailController extends Controller
             }
         }
 
-        $organizations = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
+        $healthposts = Organization::whereIn('hp_code', $hpCodes)->get()->toArray();
+        $samples = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
             ->select('ancs.hp_code', 'ancs.regdev', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token')
             ->whereIn('ancs.hp_code', $hpCodes)
-            ->whereDate('collection_date_en', $date_chosen)
-            ->get()
-            ->groupBy('hp_code');
-
-
-// dd($organizations);
-        // $return = [];
-        // foreach($organizations as $key => $lab){
-
-        //     dd($lab->whereNull('regdev')->count());
-        //     $return[$key]['key'] = $lab->first()->healthpost_name;
-        //     $return[$key]['healthpost_token'] = $lab->first()->healthpost_token;
-        //     $return[$key]['web_count'] = $lab->where('regdev', 'web')->count();
-        //     $return[$key]['mobile_count'] = $lab->where(function($q) {
-        //         $q->whereNull('regdev')
-        //             ->orWhere('regdev', 'mobile');
-        //     })->count();
-        //     $return[$key]['api_count'] = $lab->where('regdev', 'api')->count();
-        //     $return[$key]['excel_count'] = $lab->where('regdev', 'like', '%' . 'excel' . '%')->count();
-        // }
-
-        // dd($return);
+            ->whereDate('collection_date_en', $date_chosen);
         
-        $return = [];
-        $mapped_data = $organizations->map(function ($lab, $key) {
-            $return['key'] = $lab[0]->healthpost_name;
-            $return['healthpost_token'] = $lab[0]->healthpost_token;
-            $return['web_count'] = $lab->where('regdev', 'web')->count();
-            $mob_count = $lab->where('regdev', 'mobile')->count();
-            $null_count = $lab->where('regdev', null)->count();
-            $return['mobile_count'] = $mob_count + $null_count;
-            $return['api_count'] = $lab->where('regdev', 'api')->count();
-            $return['excel_count'] = $lab->where('regdev', 'excel')->count();
+        $web_count = $samples->where('regdev', 'web')->get()->groupBy('hp_code');
+        $mobile_count = $samples->where(function($q) {
+                $q->whereNull('regdev')
+                    ->orWhere('regdev', 'mobile');
+            })->get()->groupBy('hp_code');
+        $api_count = $samples->where('regdev', 'api')->get()->groupBy('hp_code');
+        $excel_count = $samples->where('regdev', 'like', '%' . 'excel' . '%')->get()->groupBy('hp_code');
 
-            return $return;
-        })->values();
-
-        $data = $mapped_data;
-
-        // dd($data);
-
-        return view('backend.sample.report.regdev', compact('data'));
+        return view('backend.sample.report.regdev', compact('healthposts', 'web_count', 'mobile_count', 'api_count', 'excel_count'));
 
     }
 

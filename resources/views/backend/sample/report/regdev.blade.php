@@ -40,13 +40,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($data as $datum)
+                                @foreach($healthposts as $healthpost)
                                     <tr>
-                                        <td> {{ $datum['key'] }}</td>
-                                        <td> {{ $datum['web_count'] }}</td>
-                                        <td> {{ $datum['mobile_count'] }}</td>
-                                        <td> {{ $datum['api_count'] }}</td>
-                                        <td> {{ $datum['excel_count'] }}</td>
+                                        <td>
+                                            {{ $healthpost['name'] }}
+                                        </td>
+                                        <td>
+                                            {{ isset($web_count[$healthpost['hp_code']]) ? $web_count[$healthpost['hp_code']]->count() : 0 }}
+                                        </td>
+                                        <td>
+                                            {{ isset($mobile_count[$healthpost['hp_code']]) ? $mobile_count[$healthpost['hp_code']]->count() : 0 }}
+                                        </td>
+                                        <td>
+                                            {{ isset($api_count[$healthpost['hp_code']]) ? $api_count[$healthpost['hp_code']]->count() : 0 }}
+                                        </td>
+                                        <td>
+                                            {{ isset($excel_count[$healthpost['hp_code']]) ? $excel_count[$healthpost['hp_code']]->count() : 0 }}
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -64,7 +74,6 @@
 @endsection
 
 @section('Style')
-    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('css/datatable/jquery.dataTables.min.css') }}"> --}}
     <link rel="stylesheet" type="text/css" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
 
 @endsection
