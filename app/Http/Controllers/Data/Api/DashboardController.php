@@ -397,80 +397,89 @@ class DashboardController extends Controller
             }
         }
 
-        $antigen_positive = SampleCollection::whereIn('hp_code', $hpCodes)
-            ->where('service_for', '2')->where('result', '3')
-            ->where(function($q) use($date_chosen){
-                $q->where(function($q2) use($date_chosen) {
-                    $q2->whereDate('created_at', $date_chosen)
-                    ->whereNull('received_date_en');
-                })->orWhereDate('reporting_date_en', $date_chosen);
-            })
-            ->active()
-            ->get()->count();
-
-        $antigen_negative = SampleCollection::whereIn('hp_code', $hpCodes)
-            ->where('service_for', '2')->where('result', '4')
-            ->where(function($q) use($date_chosen){
-                $q->where(function($q2) use($date_chosen) {
-                    $q2->whereDate('created_at', $date_chosen)
-                    ->whereNull('received_date_en');
-                })->orWhereDate('reporting_date_en', $date_chosen);
-            })
-            ->active()
-            ->get()->count();
-
-        $pcr_positive = SampleCollection::whereIn('hp_code', $hpCodes)
-            ->where('service_for', '1')->where('result', '3')
-            ->where(function($q) use($date_chosen){
-                $q->where(function($q2) use($date_chosen) {
-                    $q2->whereDate('created_at', $date_chosen)
-                    ->whereNull('received_date_en');
-                })->orWhereDate('reporting_date_en', $date_chosen);
-            })
-            ->active()
-            ->get()->count();
-
-        $pcr_negative = SampleCollection::whereIn('hp_code', $hpCodes)
-            ->where('service_for', '1')->where('result', '4')
-            ->where(function($q) use($date_chosen){
-                $q->where(function($q2) use($date_chosen) {
-                    $q2->whereDate('created_at', $date_chosen)
-                    ->whereNull('received_date_en');
-                })->orWhereDate('reporting_date_en', $date_chosen);
-            })
-            ->active()
-            ->get()->count();
-
-        $hospital_admission = PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
-            ->select('payment_cases.*', 'healthposts.hospital_type')
-            ->whereIn('payment_cases.hp_code', $hpCodes)
-            ->whereDate('register_date_en', $date_chosen)
-            ->whereIn('healthposts.hospital_type', [3,5,6])
-            ->count();
-
-        $hospital_active_cases = PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
-            ->select('payment_cases.*', 'healthposts.hospital_type')
-            ->whereIn('payment_cases.hp_code', $hpCodes)
-            ->where(function($q) use ($date_chosen) {
-                $q->whereNull('payment_cases.date_of_outcome_en')
-                    ->orWhereDate('payment_cases.date_of_outcome_en', '>=', $date_chosen)
-                    ->whereDate('register_date_en', '<=', $date_chosen);
+        $antigen_positive = Cache::remember('antigen_positive-' . $date_chosen . '-' . auth()->user()->token, 60 * 60, function () use ($date_chosen, $hpCodes) {
+            return SampleCollection::whereIn('hp_code', $hpCodes)
+                ->where('service_for', '2')->where('result', '3')
+                ->where(function($q) use($date_chosen){
+                    $q->where(function($q2) use($date_chosen) {
+                        $q2->whereDate('created_at', $date_chosen)
+                        ->whereNull('received_date_en');
+                    })->orWhereDate('reporting_date_en', $date_chosen);
                 })
-            ->count();
-
-        $hospital_discharge = PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
-            ->select('payment_cases.*', 'healthposts.hospital_type')
-            ->whereIn('payment_cases.hp_code', $hpCodes)
-            ->where('is_death', 1)
-            ->whereDate('date_of_outcome_en', $date_chosen)
-            ->count();
-
-        $hospital_death = PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
+                ->active()
+                ->get()->count();
+        });
+        $antigen_negative = Cache::remember('antigen_negative-' . $date_chosen . '-' . auth()->user()->token, 60 * 60, function () use ($date_chosen, $hpCodes) {
+            return SampleCollection::whereIn('hp_code', $hpCodes)
+                ->where('service_for', '2')->where('result', '4')
+                ->where(function($q) use($date_chosen){
+                    $q->where(function($q2) use($date_chosen) {
+                        $q2->whereDate('created_at', $date_chosen)
+                        ->whereNull('received_date_en');
+                    })->orWhereDate('reporting_date_en', $date_chosen);
+                })
+                ->active()
+                ->get()->count();
+        });
+        $pcr_positive = Cache::remember('pcr_positive-' . $date_chosen . '-' . auth()->user()->token, 60 * 60, function () use ($date_chosen, $hpCodes) {
+            return SampleCollection::whereIn('hp_code', $hpCodes)
+                ->where('service_for', '1')->where('result', '3')
+                ->where(function($q) use($date_chosen){
+                    $q->where(function($q2) use($date_chosen) {
+                        $q2->whereDate('created_at', $date_chosen)
+                        ->whereNull('received_date_en');
+                    })->orWhereDate('reporting_date_en', $date_chosen);
+                })
+                ->active()
+                ->get()->count();
+        });
+        $pcr_negative = Cache::remember('pcr_negative-' . $date_chosen . '-' . auth()->user()->token, 60 * 60, function () use ($date_chosen, $hpCodes) {
+            return SampleCollection::whereIn('hp_code', $hpCodes)
+                ->where('service_for', '1')->where('result', '4')
+                ->where(function($q) use($date_chosen){
+                    $q->where(function($q2) use($date_chosen) {
+                        $q2->whereDate('created_at', $date_chosen)
+                        ->whereNull('received_date_en');
+                    })->orWhereDate('reporting_date_en', $date_chosen);
+                })
+                ->active()
+                ->get()->count();
+        });
+        $hospital_admission= Cache::remember('hospital_admission-' . $date_chosen . '-' . auth()->user()->token, 60 * 60, function () use ($date_chosen, $hpCodes) {
+            return PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
+                ->select('payment_cases.*', 'healthposts.hospital_type')
+                ->whereIn('payment_cases.hp_code', $hpCodes)
+                ->whereDate('register_date_en', $date_chosen)
+                ->whereIn('healthposts.hospital_type', [3,5,6])
+                ->count();
+        });
+        $hospital_active_cases = Cache::remember('hospital_active_cases-' . $date_chosen . '-' . auth()->user()->token, 60 * 60, function () use ($date_chosen, $hpCodes) {
+            return PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
+                ->select('payment_cases.*', 'healthposts.hospital_type')
+                ->whereIn('payment_cases.hp_code', $hpCodes)
+                ->where(function($q) use ($date_chosen) {
+                    $q->whereNull('payment_cases.date_of_outcome_en')
+                        ->orWhereDate('payment_cases.date_of_outcome_en', '>=', $date_chosen)
+                        ->whereDate('register_date_en', '<=', $date_chosen);
+                    })
+                ->count();
+        });
+        $hospital_discharge = Cache::remember('hospital_discharge-' . $date_chosen . '-' . auth()->user()->token, 60 * 60, function () use ($date_chosen, $hpCodes) {
+            return PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
+                ->select('payment_cases.*', 'healthposts.hospital_type')
+                ->whereIn('payment_cases.hp_code', $hpCodes)
+                ->where('is_death', 1)
+                ->whereDate('date_of_outcome_en', $date_chosen)
+                ->count();
+        });
+        $hospital_death = Cache::remember('hospital_death-' . $date_chosen . '-' . auth()->user()->token, 60 * 60, function () use ($date_chosen, $hpCodes) {
+            return PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
             ->select('payment_cases.*', 'healthposts.hospital_type')
             ->whereIn('payment_cases.hp_code', $hpCodes)
             ->where('is_death', 2)
             ->whereDate('date_of_outcome_en', $date_chosen)
             ->count();
+        });
 
         $data = [
             'antigen_positive' => $antigen_positive,
