@@ -278,7 +278,7 @@ export default {
     },
 
     formattedDate(data) {
-      if(data === null) {
+      if(data == null) {
         return '';
       }else {
         var date_array = data.split('-');
