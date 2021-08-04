@@ -253,6 +253,7 @@ class AncDetailController extends Controller
 
         $healthposts = Organization::whereIn('hp_code', $hpCodes)
             ->whereIn('hospital_type', [2, 3])
+            ->where('status', 1)
             ->get()->toArray();
         $lab_organizations = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
             ->select('ancs.*', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token')
@@ -325,6 +326,7 @@ class AncDetailController extends Controller
 
         $healthposts = Organization::whereIn('hp_code', $hpCodes)
             ->whereIn('hospital_type', [1, 2, 3, 5, 6])
+            ->where('status', 1)
             ->get()->toArray();
         $samples = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
             ->select('ancs.hp_code', 'ancs.regdev', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token', 'healthposts.hospital_type')
