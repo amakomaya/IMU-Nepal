@@ -19,5 +19,6 @@
 </li>
 @include('layouts.backend.navigation.html.active-cases')
 @include('layouts.backend.navigation.html.close-cases')
+@include('layouts.backend.navigation.html.cict-tracing')
 
 @include('layouts.backend.navigation.html.cases-payment')

@@ -14,6 +14,14 @@ use App\Models\SuspectedCaseOld;
 use App\Models\SampleCollection;
 use App\Models\OrganizationMember;
 use App\Models\Vaccine;
+use App\Models\ProvinceInfo;
+use App\Models\District;
+use App\Models\DistrictInfo;
+use App\Models\Municipality;
+
+use App\Reports\FilterRequest;
+use App\Helpers\GetHealthpostCodes;
+use Yagiten\Nepalicalendar\Calendar;
 use Carbon\Carbon;
 
 class CictTracingController extends Controller
@@ -641,5 +649,73 @@ class CictTracingController extends Controller
         catch (Exception $e) {
             return response()->json(['message' => 'error']);
         }
+    }
+
+    private function dataFromOnly(Request $request)
+    {
+        if (!empty($request['from_date'])) {
+            $from_date_array = explode("-", $request['from_date']);
+            $from_date_eng = Carbon::parse(Calendar::nep_to_eng($from_date_array[0], $from_date_array[1], $from_date_array[2])->getYearMonthDay())->startOfDay();
+        }
+
+        return [
+            'from_date' =>  $from_date_eng ?? Carbon::now()->startOfDay(),
+        ];
+    }
+
+    public function provinceReport(Request $request){
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        foreach ($response as $key => $value) {
+            $$key = $value;
+        }
+
+        $filter_date = $this->dataFromOnly($request);
+        
+        $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->id;
+        $locations = District::where('province_id', $province_id)->get();
+
+        $cict_tracings = CictTracing::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_tracings.hp_code')
+            ->select('cict_tracings.token', 'healthposts.district_id')
+            ->whereDate('cict_tracings.created_at', $filter_date['from_date']->toDateString())
+            ->whereIn('cict_tracings.hp_code', $hpCodes)->get()->groupBy('district_id');
+        $contacts = CictContact::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_contacts.hp_code')
+            ->select('cict_contacts.token', 'healthposts.district_id')
+            ->whereDate('cict_contacts.created_at', $filter_date['from_date']->toDateString())
+            ->whereIn('cict_contacts.hp_code', $hpCodes)->get()->groupBy('district_id');
+        $follow_ups = CictFollowUp::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_follow_ups.hp_code')
+            ->select('cict_follow_ups.token', 'healthposts.district_id')
+            ->whereDate('cict_follow_ups.created_at', $filter_date['from_date']->toDateString())
+            ->whereIn('cict_follow_ups.hp_code', $hpCodes)->get()->groupBy('district_id');
+
+        return view('backend.cict-tracing.reports.province-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date'));
+    }
+
+    public function districtReport(Request $request){
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        foreach ($response as $key => $value) {
+            $$key = $value;
+        }
+
+        $filter_date = $this->dataFromOnly($request);
+        
+        $district_id = DistrictInfo::where('token', auth()->user()->token)->first()->id;
+        $locations = Municipality::where('district_id', $district_id)->get();
+
+        $cict_tracings = CictTracing::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_tracings.hp_code')
+            ->select('cict_tracings.token', 'healthposts.municipality_id')
+            ->whereDate('cict_tracings.created_at', $filter_date['from_date']->toDateString())
+            ->whereIn('cict_tracings.hp_code', $hpCodes)->get()->groupBy('municipality_id');
+        $contacts = CictContact::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_contacts.hp_code')
+            ->select('cict_contacts.token', 'healthposts.municipality_id')
+            ->whereDate('cict_contacts.created_at', $filter_date['from_date']->toDateString())
+            ->whereIn('cict_contacts.hp_code', $hpCodes)->get()->groupBy('municipality_id');
+        $follow_ups = CictFollowUp::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_follow_ups.hp_code')
+            ->select('cict_follow_ups.token', 'healthposts.municipality_id')
+            ->whereDate('cict_follow_ups.created_at', $filter_date['from_date']->toDateString())
+            ->whereIn('cict_follow_ups.hp_code', $hpCodes)->get()->groupBy('municipality_id');
+
+        return view('backend.cict-tracing.reports.district-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date'));
     }
 }

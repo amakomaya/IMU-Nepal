@@ -183,6 +183,32 @@ class AdminController extends Controller
         ";
     }
 
+    public function selectFromOnly(Request $request)
+    {
+        $from_date = ($request->get('from_date')) ? $request->get('from_date') : ViewHelper::convertEnglishToNepali(Carbon::now()->format('Y-m-d'));
+        echo "
+        <script src=\"" . asset('bower_components/jquery/dist/jquery.min.js') . "\"></script> 
+        <script type=\"text/javascript\" src=\"" . asset('js/nepali.datepicker.v2.2.min.js') . "\"></script>
+
+        <link rel=\"stylesheet\" type=\"text/css\" href=\"" . asset('css/nepali.datepicker.v2.2.min.css') . "\" />
+
+        <script type=\"text/javascript\">
+           $(document).ready(function(){
+                $('#from_date').nepaliDatePicker({
+                    npdMonth: true,
+                    npdYear: true,
+                    npdYearCount: 10
+                });
+            });
+        </script>
+
+        <div class=\"form-group col-sm-3\" id=\"from\">
+            <input class=\"form-control\" name=\"from_date\" id=\"from_date\" value=\"$from_date\" placeholder=\"\">
+        </div>
+
+        ";
+    }
+
     public function sidSearch(Request $request) {
         if((Auth::user()->role == 'main' || Auth::user()->role == 'province' || Auth::user()->role == 'municipality' || Auth::user()->role == 'healthpost') && session()->get('permission_id') == 1) {
             if($request->sid) {
