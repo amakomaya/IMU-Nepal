@@ -196,7 +196,7 @@ class DashboardController extends Controller
             }),
             'todays_community_death' => Cache::remember('todays_community_death-' . auth()->user()->token, 60 * 60, function () use ($date_to, $date_from, $hpCodes) {
                 return CommunityDeath::whereIn('hp_code', $hpCodes)
-                    ->whereBetween('created_at', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
+                    ->whereBetween('created_at', array($date_from->toDateTimeString(), $date_to->toDateTimeString()))
                     ->count();
             }),
 
