@@ -164,7 +164,8 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             'reg_dev' => 'excel',
             'province_id' => $row['province'],
             'district_id' => $row['district'],
-            'municipality_id' => $row['municipality']
+            'municipality_id' => $row['municipality'],
+            'ward' => $row['ward']
         ]);
     }
 
@@ -252,6 +253,11 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
                    $onFailure('Invalid Municipality');
               }
             },
+            'ward' => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Invalid Ward');
+              }
+            }
         ];
     }
 

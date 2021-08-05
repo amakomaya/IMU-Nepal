@@ -179,7 +179,8 @@ class BackdateCasesPaymentImport implements ToModel, WithChunkReading, WithValid
             'reg_dev' => 'excel-bd',
             'province_id' => $row['province'],
             'district_id' => $row['district'],
-            'municipality_id' => $row['municipality']
+            'municipality_id' => $row['municipality'],
+            'ward' => $row['ward']
         ]);
     }
 
@@ -290,6 +291,12 @@ class BackdateCasesPaymentImport implements ToModel, WithChunkReading, WithValid
                    $onFailure('Invalid Case Entry Date');
               }
             },
+            'ward' => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Invalid Ward');
+              }
+            }
+
         ];
     }
 
