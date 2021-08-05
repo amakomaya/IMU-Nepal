@@ -252,7 +252,7 @@
 
                             <hr>
 
-                            <label class="control-label"><h4>Intervew respondent information</h4></label>
+                            <label class="control-label"><h4>Interview respondent information</h4></label>
 
                             <div class="form-group {{ $errors->has('informant_name') ? 'has-error' : '' }}">
                                 <label for="informant_name">Name of the Informant</label>
