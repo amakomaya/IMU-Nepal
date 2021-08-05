@@ -70,7 +70,8 @@
                                             <td>
                                                 Status: 
                                                 @if($item->followUp)
-                                                @if($item->followUp->completion_date)
+                                                @if($item->followUp->completion_date && $item->followUp->date_of_follow_up_3 && 
+                                                $item->followUp->date_of_follow_up_7 && $item->followUp->date_of_follow_up_10)
                                                 <span class="text-success">Complete <i class="fa fa-check" aria-hidden="true"></i></span>
                                                 @else
                                                 <span class="text-info">In Progress <i class="fa fa-spinner" aria-hidden="true"></i></span>
