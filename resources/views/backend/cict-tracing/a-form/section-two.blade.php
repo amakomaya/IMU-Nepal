@@ -243,7 +243,7 @@
                             <hr>
 
                             <div class="part-four">
-                                <h4>IV. Travel during 14 days before OR aftersymptom onset or date of sample collection for testing</h4><br>
+                                <h4>IV. Travel during 14 days before OR after symptom onset or date of sample collection for testing</h4><br>
 
                                 <div class="form-group">
                                     <div class="control-group">
@@ -410,7 +410,7 @@
                                             <thead style="background: #fff;">
                                                 <tr>
                                                     <th></th>
-                                                    <th>Name</th>
+                                                    <th>Name of source</th>
                                                     <th>Age</th>
                                                     <th>Age Unit</th>
                                                     <th>Sex</th>
@@ -519,7 +519,7 @@
                                             <thead style="background: #fff;">
                                                 <tr>
                                                     <th></th>
-                                                    <th>Name</th>
+                                                    <th>Name of source</th>
                                                     <th>Age</th>
                                                     <th>Age Unit</th>
                                                     <th>Sex</th>
@@ -625,7 +625,7 @@
                                             <thead style="background: #fff;">
                                                 <tr>
                                                     <th></th>
-                                                    <th>Name</th>
+                                                    <th>Name of source</th>
                                                     <th>Age</th>
                                                     <th>Age Unit</th>
                                                     <th>Sex</th>

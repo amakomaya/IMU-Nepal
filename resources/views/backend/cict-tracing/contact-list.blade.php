@@ -19,12 +19,16 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
+                        <div class="col-12">
+                            Name of Case: <b>{{ $cict_tracing->name }}</b><br>
+                            Parent Case ID: <b>{{ $cict_tracing->case_id }}</b>
+                        </div>
                         <div class="col-12 table-responsive">
                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Name</th>
+                                        <th>Name of contacts</th>
                                         <th>Age</th>
                                         <th title="Gender">Sex</th>
                                         <th title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i> B1 Form</th>

@@ -14,6 +14,11 @@ class CictCloseContact extends Model
         'phone', 'relationship', 'relationship_others', 'contact_type'
     ];
 
+	public function parentCase()
+    {
+		return $this->belongsTo('App\Models\CictTracing', 'parent_case_id', 'case_id');
+	}
+
 	public function contact()
     {
 		return $this->hasOne('App\Models\CictContact', 'case_id', 'case_id');

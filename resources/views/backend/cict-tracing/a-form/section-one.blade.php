@@ -266,8 +266,8 @@
                             </div>
 
                             <hr>
-
-                            <label class="control-label"><h4>Informant Details</h4>(If provided)</label>
+                            <h4>Informant Details</h4>
+                            <p>(If information is given by other than case)</p>
 
                             <div class="form-group {{ $errors->has('informant_name') ? 'has-error' : '' }}">
                                 <label for="informant_name">Name of the Informant</label>

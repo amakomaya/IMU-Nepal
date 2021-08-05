@@ -167,7 +167,7 @@
                                             <thead style="background: #fff;">
                                                 <tr>
                                                     <th></th>
-                                                    <th>Name</th>
+                                                    <th>Name of contact</th>
                                                     <th>Age</th>
                                                     <th>Age Unit</th>
                                                     <th>Sex</th>
@@ -301,7 +301,7 @@
                                             <thead style="background: #fff;">
                                                 <tr>
                                                     <th></th>
-                                                    <th>Name</th>
+                                                    <th>Name of contact</th>
                                                     <th>Age</th>
                                                     <th>Age Unit</th>
                                                     <th>Sex</th>
@@ -321,10 +321,10 @@
                                                         <input type="text" class="form-control travel_vehicle_details_name" name="travel_vehicle_details[{{$key + 400}}][name]" value="{{ $sub_data->name }}" required>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control travel_vehicle_details_age" name="travel_vehicle_details[{{$key + 400}}][age]" value="{{ $sub_data->age }}" required>
+                                                        <input type="text" class="form-control travel_vehicle_details_age" name="travel_vehicle_details[{{$key + 400}}][age]" value="{{ $sub_data->age }}">
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details[{{$key + 400}}][age_unit]" class="form-control" required>
+                                                        <select name="travel_vehicle_details[{{$key + 400}}][age_unit]" class="form-control">
                                                             <option value="">Select Age Unit</option>
                                                             <option value="0" {{ $sub_data->age_unit == '0' ? 'selected' : '' }}>Years</option>
                                                             <option value="1" {{ $sub_data->age_unit == '1' ? 'selected' : '' }}>Months</option>
@@ -340,7 +340,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details[{{$key + 400}}][relationship]" class="form-control travel_vehicle_details_relationship" required>
+                                                        <select name="travel_vehicle_details[{{$key + 400}}][relationship]" class="form-control travel_vehicle_details_relationship">
                                                             <option value="" selected>Select Relationship</option>
                                                             <option value="1" {{ $sub_data->relationship == '1' ? 'selected' : '' }}>Family</option>
                                                             <option value="2" {{ $sub_data->relationship == '2' ? 'selected' : '' }}>Friend</option>
@@ -367,10 +367,10 @@
                                                         <input type="text" class="form-control travel_vehicle_details_name" name="travel_vehicle_details[0][name]" required>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control travel_vehicle_details_age" name="travel_vehicle_details[0][age]" required>
+                                                        <input type="text" class="form-control travel_vehicle_details_age" name="travel_vehicle_details[0][age]">
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details[0][age_unit]" class="form-control" required>
+                                                        <select name="travel_vehicle_details[0][age_unit]" class="form-control">
                                                             <option value="">Select Age Unit</option>
                                                             <option value="0">Years</option>
                                                             <option value="1">Months</option>
@@ -386,7 +386,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details[0][relationship]" class="form-control travel_vehicle_details_relationship" required>
+                                                        <select name="travel_vehicle_details[0][relationship]" class="form-control travel_vehicle_details_relationship">
                                                             <option value="" selected>Select Relationship</option>
                                                             <option value="1">Family</option>
                                                             <option value="2">Friend</option>
@@ -435,7 +435,7 @@
                                             <thead style="background: #fff;">
                                                 <tr>
                                                     <th></th>
-                                                    <th>Name</th>
+                                                    <th>Name of contact</th>
                                                     <th>Age</th>
                                                     <th>Age Unit</th>
                                                     <th>Sex</th>
@@ -1030,7 +1030,6 @@
             nameCustom: true
         });
         new_row.find(".travel_vehicle_details_age").rules("add", {
-            required: true,
             digits: true
         });
         new_row.find(".travel_vehicle_details_phone").rules("add", {
@@ -1236,7 +1235,6 @@
         });
         travel_vehicle_details.filter('input[name$="[age]"]').each(function() {
             $(this).rules("add", {
-                required: true,
                 digits: true
             });
         });

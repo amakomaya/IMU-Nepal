@@ -455,9 +455,10 @@ class CictTracingController extends Controller
     }
 
     public function aFormContactList($case_id){
+        $cict_tracing = CictTracing::select('name', 'case_id')->where('case_id', $case_id)->first();
         $contact_list = CictCloseContact::with('contact', 'followUp')->where('parent_case_id', $case_id)->get();
         
-        return view('backend.cict-tracing.contact-list', compact('contact_list'));
+        return view('backend.cict-tracing.contact-list', compact('cict_tracing', 'contact_list'));
     }
 
     public function partOne(Request $request){

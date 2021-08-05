@@ -4,7 +4,7 @@
         Contact Tracing<span class="fa arrow"></span>
     </a>
     <ul class="nav nav-second-level">
-        @if(auth()->user()->role == 'healthpost')
+        @if(auth()->user()->role == 'healthworker')
         <li>
             <a href="{{ route('cict-tracing.search') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
