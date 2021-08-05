@@ -332,15 +332,16 @@ class AncDetailController extends Controller
             ->select('ancs.hp_code', 'ancs.regdev', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token', 'healthposts.hospital_type')
             ->whereIn('ancs.hp_code', $hpCodes)
             ->whereIn('healthposts.hospital_type', [1, 2, 3, 5, 6])
-            ->whereDate('collection_date_en', $date_chosen);
-        
-        $web_count = $samples->where('regdev', 'web')->get()->groupBy('hp_code');
+            ->whereDate('collection_date_en', $date_chosen)
+            ->get();
+
+        $web_count = $samples->where('regdev', 'web')->groupBy('hp_code');
         $mobile_count = $samples->where(function($q) {
                 $q->whereNull('regdev')
                     ->orWhere('regdev', 'mobile');
-            })->get()->groupBy('hp_code');
-        $api_count = $samples->where('regdev', 'api')->get()->groupBy('hp_code');
-        $excel_count = $samples->where('regdev', 'like', '%' . 'excel' . '%')->get()->groupBy('hp_code');
+            })->groupBy('hp_code');
+        $api_count = $samples->where('regdev', 'api')->groupBy('hp_code');
+        $excel_count = $samples->where('regdev', 'like', '%' . 'excel' . '%')->groupBy('hp_code');
 
         return view('backend.sample.report.regdev', compact('healthposts', 'web_count', 'mobile_count', 'api_count', 'excel_count'));
 
