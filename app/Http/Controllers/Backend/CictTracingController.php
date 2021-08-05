@@ -141,7 +141,7 @@ class CictTracingController extends Controller
                     $q->with('ancs', 'latestAnc');
                 }])->where('case_id', $request->case_id)->first();
             if($data){
-                return view('backend.cict-tracing.section-one', compact('data'));
+                return view('backend.cict-tracing.a-form.section-one', compact('data'));
             } else{
                 $request->session()->flash('message', 'Case Id not found');
                 return redirect()->route('cict-tracing.search');
@@ -172,7 +172,7 @@ class CictTracingController extends Controller
                     $q->with('ancs', 'latestAnc');
                 }])->where('case_id', $request->case_id)->first();
             if($data){
-                return view('backend.cict-tracing.section-two', compact('data'));
+                return view('backend.cict-tracing.a-form.section-two', compact('data'));
             } else{
                 $request->session()->flash('message', 'Case Id not found');
                 return redirect()->route('cict-tracing.search');
@@ -307,7 +307,7 @@ class CictTracingController extends Controller
                 }])->where('case_id', $request->case_id)->first();
             if($data){
                 $org_id = OrganizationMember::where('token', auth()->user()->token)->first()->id;
-                return view('backend.cict-tracing.section-three', compact('data', 'org_id', 'vaccines'));
+                return view('backend.cict-tracing.a-form.section-three', compact('data', 'org_id', 'vaccines'));
             } else{
                 $request->session()->flash('message', 'Case Id not found');
                 return redirect()->route('cict-tracing.search');
@@ -584,7 +584,7 @@ class CictTracingController extends Controller
             }])->where('case_id', $case_id)->first();
 
         // dd($data);
-        return view('backend.cict-tracing.report', compact('data'));
+        return view('backend.cict-tracing.reports.report', compact('data'));
     }
 
     /**
