@@ -66,14 +66,16 @@
             <i class="fa fa-medkit" aria-hidden="true"></i> |
           </button>
           <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
-            <i class="fa fa-hospital-o"></i> |
+            <i class="fa fa-hospital-o"></i>
           </button>
           <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Move Patient Data">
-            <i class="fa fa-trash"></i> |
+             | <i class="fa fa-trash"></i>
           </button>
-          <button v-on:click="sendToCict(item.case_id)" title="Add to Cict Form">
-            <i class="fa fa-users"></i>
-          </button>
+          <div v-show="checkCictButton()">
+             | <button v-on:click="sendToCict(item.case_id)" title="Add to Cict Form">
+              <i class="fa fa-users"></i>
+            </button>
+          </div>
         </td>
       </tr>
     </filterable>
@@ -488,6 +490,9 @@ export default {
           '/admin/patient?token=' + token,
           '_blank'
       );
+    },
+    checkCictButton(){
+      return this.$userRole === 'healthworker';
     }
   }
 }
