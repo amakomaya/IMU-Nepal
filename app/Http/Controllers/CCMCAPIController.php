@@ -44,7 +44,7 @@ class CCMCAPIController extends Controller
         return response(['data' => $data]);
     }
 
-    public function testData()
+    public function vaccinationData()
     {
         if (request()->query->get('ccmcApiKey') != env('CCMCAPIKEY', 'eJj7DU8ctQy6qeap'))
             abort('401', 'Incorrect api key');
