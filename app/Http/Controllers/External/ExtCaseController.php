@@ -355,8 +355,8 @@ class ExtCaseController extends Controller
                 $response['sample_type'] = $this->sampleType($row->sample_type);
                 $response['sample_collected_date'] = $row->sample_created_at ?? '';
                 $response['infection_type'] = $row->infection_type ?? '';
-                $response['lab_received_date'] = $this->bs2ad($row->sample_recv_date);
-                $response['lab_test_date'] = $this->bs2ad($row->sample_test_date);
+                $response['lab_received_date'] = $row->sample_recv_date;
+                $response['lab_test_date'] = $row->sample_test_date;
                 $response['lab_test_time'] = $row->sample_test_time ?? '';
                 $response['lab_result'] = $row->sample_test_result ?? '';
 
