@@ -215,23 +215,27 @@ Route::get('/admin/sample/remove/{token}', 'Reports\AncDetailController@delete')
 
 //Route::resource('/observation-cases', 'Backend\ObservationCasesController');
 Route::resource('/admin/cases-payment-observation', 'Backend\ObservationCasesController', ['names' => 'observation-cases']);
-Route::get('/admin/cict-tracing/search', 'Backend\CictTracingController@search')->name('cict-tracing.search');
-Route::get('/admin/cict-tracing/section-one', 'Backend\CictTracingController@sectionOne')->name('cict-tracing.section-one');
-Route::put('/admin/cict-tracing/section-one-update/{case_id}', 'Backend\CictTracingController@sectionOneUpdate')->name('cict-tracing.section-one.update');
-Route::get('/admin/cict-tracing/section-two', 'Backend\CictTracingController@sectionTwo')->name('cict-tracing.section-two');
-Route::put('/admin/cict-tracing/section-two-update/{case_id}', 'Backend\CictTracingController@sectionTwoUpdate')->name('cict-tracing.section-two.update');
-Route::get('/admin/cict-tracing/section-three', 'Backend\CictTracingController@sectionThree')->name('cict-tracing.section-three');
-Route::put('/admin/cict-tracing/section-three-update/{case_id}', 'Backend\CictTracingController@sectionThreeUpdate')->name('cict-tracing.section-three.update');
+
+Route::group(['middleware' => ['role-control:healthworker']], function() {
+    Route::get('/admin/cict-tracing/search', 'Backend\CictTracingController@search')->name('cict-tracing.search');
+    Route::get('/admin/cict-tracing/section-one', 'Backend\CictTracingController@sectionOne')->name('cict-tracing.section-one');
+    Route::put('/admin/cict-tracing/section-one-update/{case_id}', 'Backend\CictTracingController@sectionOneUpdate')->name('cict-tracing.section-one.update');
+    Route::get('/admin/cict-tracing/section-two', 'Backend\CictTracingController@sectionTwo')->name('cict-tracing.section-two');
+    Route::put('/admin/cict-tracing/section-two-update/{case_id}', 'Backend\CictTracingController@sectionTwoUpdate')->name('cict-tracing.section-two.update');
+    Route::get('/admin/cict-tracing/section-three', 'Backend\CictTracingController@sectionThree')->name('cict-tracing.section-three');
+    Route::put('/admin/cict-tracing/section-three-update/{case_id}', 'Backend\CictTracingController@sectionThreeUpdate')->name('cict-tracing.section-three.update');
+    
+    Route::get('/admin/cict-tracing/b-one-form/part-one', 'Backend\CictTracingController@partOne')->name('b-one-form.part-one');
+    Route::put('/admin/cict-tracing/b-one-form/part-one-update/{case_id}', 'Backend\CictTracingController@partOneUpdate')->name('b-one-form.part-one.update');
+    Route::get('/admin/cict-tracing/b-one-form/part-two', 'Backend\CictTracingController@partTwo')->name('b-one-form.part-two');
+    Route::put('/admin/cict-tracing/b-one-form/part-two-update/{case_id}', 'Backend\CictTracingController@partTwoUpdate')->name('b-one-form.part-two.update');
+    
+    Route::get('/admin/cict-tracing/b-two-form', 'Backend\CictTracingController@followUp')->name('b-two-form.follow-up');
+    Route::put('/admin/cict-tracing/b-two-form-update/{case_id}', 'Backend\CictTracingController@followUpUpdate')->name('b-two-form.update');
+    Route::get('/admin/cict-tracing/close-contact/{case_id}/delete', 'Backend\CictTracingController@destroyCloseContact');
+});
+
 Route::get('/admin/cict-tracing/contact-list/{case_id}', 'Backend\CictTracingController@aFormContactList')->name('cict-tracing.contact-list');
-
-Route::get('/admin/cict-tracing/b-one-form/part-one', 'Backend\CictTracingController@partOne')->name('b-one-form.part-one');
-Route::put('/admin/cict-tracing/b-one-form/part-one-update/{case_id}', 'Backend\CictTracingController@partOneUpdate')->name('b-one-form.part-one.update');
-Route::get('/admin/cict-tracing/b-one-form/part-two', 'Backend\CictTracingController@partTwo')->name('b-one-form.part-two');
-Route::put('/admin/cict-tracing/b-one-form/part-two-update/{case_id}', 'Backend\CictTracingController@partTwoUpdate')->name('b-one-form.part-two.update');
-
-Route::get('/admin/cict-tracing/b-two-form', 'Backend\CictTracingController@followUp')->name('b-two-form.follow-up');
-Route::put('/admin/cict-tracing/b-two-form-update/{case_id}', 'Backend\CictTracingController@followUpUpdate')->name('b-two-form.update');
-Route::get('/admin/cict-tracing/close-contact/{case_id}/delete', 'Backend\CictTracingController@destroyCloseContact');
 Route::get('/admin/cict-tracing/report/{case_id}', 'Backend\CictTracingController@report')->name('cict-tracing.report');
 Route::get('/admin/cict-tracing/province-report', 'Backend\CictTracingController@provinceReport')->name('cict-tracing.province-report');
 Route::get('/admin/cict-tracing/district-report', 'Backend\CictTracingController@districtReport')->name('cict-tracing.district-report');

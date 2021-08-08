@@ -21,23 +21,17 @@
         <td>{{item.municipality.municipality_name}}</td>
 
         <td>
-            <button v-on:click="cictUpdateDate(item.case_id)" class="btn btn-primary btn-sm" title="CICT Update Data">
-              <i class="fa fa-edit" aria-hidden="true"> CICT Update</i>
+            <button v-on:click="cictUpdateDate(item.case_id)" class="btn btn-primary btn-sm" title="CICT Edit">
+              <i class="fa fa-edit" aria-hidden="true"> Edit</i>
             </button>
             <button v-on:click="contactList(item.case_id)" class="btn btn-secondary btn-sm" title="Contact List">
               <i class="fa fa-list" aria-hidden="true"> Contact List</i>
             </button>
             <button v-on:click="cictReport(item.case_id)" class="btn btn-success btn-sm" title="CICT Report">
-              <i class="fa fa-file-pdf-o" aria-hidden="true"> CICT Report</i>
-            </button>
-            <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" class="btn btn-danger btn-sm" title="Delete Data">
-              <i class="fa fa-trash" aria-hidden="true"> Delete</i>
+              <i class="fa fa-file-pdf-o" aria-hidden="true"> Report</i>
             </button>
         </td>
-        <!-- </div>             -->
       </tr>
-      <!--            <span>Selected Ids: {{ item }}</span>-->
-
     </filterable>
   </div>
 </template>
