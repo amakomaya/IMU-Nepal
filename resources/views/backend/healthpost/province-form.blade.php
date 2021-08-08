@@ -148,7 +148,7 @@ input:focus ~ div{
                                         {{trans('create.healthpost_code')}}</label>
                                          
                                         <div class="col-md-7">
-                                            <input id="hp_code" type="text" class="form-control" name="hp_code" value="{{ Auth::user()->id }}-{{ $districts[0]['id'] }}-{{ $municipalities[0]['id'] }}-{{ Illuminate\Support\Str::upper(Illuminate\Support\Str::random(2)) }}" placeholder="eg. {{ Auth::user()->id }}-{{ $districts[0]['id'] }}-{{ $municipalities[0]['id'] }}-{{ Illuminate\Support\Str::upper(Illuminate\Support\Str::random(2)) }}" readonly>
+                                            <input id="hp_code" type="text" class="form-control" name="hp_code" value="{{ Auth::user()->id }}-{{ $districts[0]['id'] }}-{{ $municipalities[0]['id'] }}-{{ Illuminate\Support\Str::upper(Illuminate\Support\Str::random(4)) }}" placeholder="eg. {{ Auth::user()->id }}-{{ $districts[0]['id'] }}-{{ $municipalities[0]['id'] }}-{{ Illuminate\Support\Str::upper(Illuminate\Support\Str::random(4)) }}" readonly>
 
                                             @if ($errors->has('hp_code'))
                                                 <span class="help-block">

@@ -147,26 +147,28 @@ input:focus ~ div{
                                 @else
                                 <div>
                                 @endif
-                                    @if (!isset($data))
-                                    
-                                    <div class="form-group{{ $errors->has('hp_code') ? ' has-error' : '' }} form-item">
-                                        <label for="hp_code" class="col-md-3 control-label"><i data-toggle="tooltip" title="यहाँ तपाईले प्रान्तको कोड -जिल्लाको कोड-नगरपालिकाको कोड-स्वास्थ्य चौकीको कोड लेख्नुहोस्। "class="fa fa-info-circle" aria-hidden="true"></i>
-                                        {{trans('create.healthpost_code')}}</label>
-                                         
-                                        <div class="col-md-7">
-                                            <input id="hp_code" type="text" class="form-control" name="hp_code" value="{{ $provinces[0]['id'] }}-{{ $districts[0]['id'] }}-{{ $municipalities->id }}-{{ Illuminate\Support\Str::upper(Illuminate\Support\Str::random(2)) }}" placeholder="eg. {{ $provinces[0]['id'] }}-{{ $districts[0]['id'] }}-{{ $municipalities->id }}-{{ Illuminate\Support\Str::upper(Illuminate\Support\Str::random(2)) }}" readonly>
 
-                                            @if ($errors->has('hp_code'))
-                                                <span class="help-block">
-                                                    <strong>{{ $errors->first('hp_code') }}</strong>
-                                                </span>
-                                            @endif
-                                            <p class="text-danger hint">This paragraph is styled with class "text-danger".</p>            
+                                @if (!isset($data))
+                                
+                                <div class="form-group{{ $errors->has('hp_code') ? ' has-error' : '' }} form-item" style="display: none">
+                                    <label for="hp_code" class="col-md-3 control-label"><i data-toggle="tooltip" title="यहाँ तपाईले प्रान्तको कोड -जिल्लाको कोड-नगरपालिकाको कोड-स्वास्थ्य चौकीको कोड लेख्नुहोस्। "class="fa fa-info-circle" aria-hidden="true"></i>
+                                    {{trans('create.healthpost_code')}}</label>
+                                        
+                                    <div class="col-md-7">
+                                        <input id="hp_code" type="text" class="form-control" name="hp_code" value="{{ $provinces[0]['id'] }}-{{ $districts[0]['id'] }}-{{ $municipalities->id }}-{{ Illuminate\Support\Str::upper(Illuminate\Support\Str::random(4)) }}" placeholder="eg. {{ $provinces[0]['id'] }}-{{ $districts[0]['id'] }}-{{ $municipalities->id }}-{{ Illuminate\Support\Str::upper(Illuminate\Support\Str::random(4)) }}" readonly>
 
-                                        </div>
+                                        @if ($errors->has('hp_code'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('hp_code') }}</strong>
+                                            </span>
+                                        @endif
+                                        <p class="text-danger hint">This paragraph is styled with class "text-danger".</p>            
 
                                     </div>
-                                    @endif
+
+                                </div>
+                                @endif
+
                                 </div>
                                     <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
                                         <label for="phone" class="col-md-3 control-label"><i data-toggle="tooltip" title=" स्वास्थ्य चौेेकीको फोन नंम्बर हाल्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i>
