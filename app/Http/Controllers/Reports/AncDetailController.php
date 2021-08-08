@@ -328,20 +328,42 @@ class AncDetailController extends Controller
             ->whereIn('hospital_type', [1, 2, 3, 5, 6])
             ->where('status', 1)
             ->get()->toArray();
-        $samples = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
+            
+        $web_count = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
             ->select('ancs.hp_code', 'ancs.regdev', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token', 'healthposts.hospital_type')
             ->whereIn('ancs.hp_code', $hpCodes)
             ->whereIn('healthposts.hospital_type', [1, 2, 3, 5, 6])
             ->whereDate('collection_date_en', $date_chosen)
-            ->get();
-
-        $web_count = $samples->where('regdev', 'web')->groupBy('hp_code');
-        $mobile_count = $samples->where(function($q) {
+            ->where('regdev', 'web')
+            ->get()
+            ->groupBy('hp_code');
+        $mobile_count = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
+            ->select('ancs.hp_code', 'ancs.regdev', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token', 'healthposts.hospital_type')
+            ->whereIn('ancs.hp_code', $hpCodes)
+            ->whereIn('healthposts.hospital_type', [1, 2, 3, 5, 6])
+            ->whereDate('collection_date_en', $date_chosen)
+            ->where(function($q) {
                 $q->whereNull('regdev')
                     ->orWhere('regdev', 'mobile');
-            })->groupBy('hp_code');
-        $api_count = $samples->where('regdev', 'api')->groupBy('hp_code');
-        $excel_count = $samples->where('regdev', 'like', '%' . 'excel' . '%')->groupBy('hp_code');
+            })
+            ->get()
+            ->groupBy('hp_code');
+        $api_count = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
+            ->select('ancs.hp_code', 'ancs.regdev', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token', 'healthposts.hospital_type')
+            ->whereIn('ancs.hp_code', $hpCodes)
+            ->whereIn('healthposts.hospital_type', [1, 2, 3, 5, 6])
+            ->whereDate('collection_date_en', $date_chosen)
+            ->where('regdev', 'api')
+            ->get()
+            ->groupBy('hp_code');
+        $excel_count = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
+            ->select('ancs.hp_code', 'ancs.regdev', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token', 'healthposts.hospital_type')
+            ->whereIn('ancs.hp_code', $hpCodes)
+            ->whereIn('healthposts.hospital_type', [1, 2, 3, 5, 6])
+            ->whereDate('collection_date_en', $date_chosen)
+            ->where('regdev', 'like', '%' . 'excel' . '%')
+            ->get()
+            ->groupBy('hp_code');
 
         return view('backend.sample.report.regdev', compact('healthposts', 'web_count', 'mobile_count', 'api_count', 'excel_count'));
 
