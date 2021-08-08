@@ -8,22 +8,18 @@
             <a href="{{ route('organization.overview.search') }}" title="Search and Edit Organizations">Search</a>
         </li>
         @endif
-        @if(auth()->user()->role == 'municipality')
-            <li>
-                <a href="{{ route('healthpost.index') }}">List</a>
-            </li>
-            @endif
         @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main' || auth()->user()->role == 'province')
         <li>
             <a href="{{ route('healthpost.create') }}">Create</a>
         </li>
-        @else
-            <li>
-                <a href="{{ route('healthpost.index') }}">
-                    <i class="fa fa-building-o"></i>
-                    Hospitals / CICT Teams
-                </a>
-            </li>
+        @endif
+        @if(auth()->user()->role == 'municipality')
+        <li>
+            <a href="{{ route('healthpost.index') }}">
+                <i class="fa fa-building-o"></i>
+                Hospitals / CICT Teams
+            </a>
+        </li>
         @endif
         @if(auth()->user()->role == 'main' || auth()->user()->role == 'center' || auth()->user()->role == 'dho' || auth()->user()->role == 'province')
         <li>
