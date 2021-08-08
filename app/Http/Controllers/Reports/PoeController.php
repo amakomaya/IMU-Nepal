@@ -93,13 +93,14 @@ class PoeController extends Controller
             ->count();
             
             $data[$key]['total_test'] = $report->count()??0;
-           
+            
             //municipality
             $data[$key]['antigen_pending_received'] = $report->where('service_for', '2')->where('result', 2)->count()??0+$report->where('service_for', '2')->where('result', 9)->count()??0;
             
             $data[$key]['antigen_postive_cases_count'] = $report->where('service_for', '2')->where('result', 3)->count()??0;
             $data[$key]['antigen_negative_cases_count'] = $report->where('service_for', '2')->where('result', 4)->count()??0;
-            $data[$key]['positivity_rate'] = ($data[$key]['antigen_postive_cases_count']/($data[$key]['antigen_postive_cases_count']+$data[$key]['antigen_negative_cases_count'])*100).'%'??'-';
+            $pr = round(($data[$key]['antigen_postive_cases_count']/($data[$key]['antigen_postive_cases_count']+$data[$key]['antigen_negative_cases_count'])*100), 2);
+            $data[$key]['positivity_rate'] = $pr?$pr.'%':'-';
             // $data[$key]['malaria_tested'] = $report->where('service_for', '2')->where('result', 4)->count();
             // $data[$key]['last_tested_date'] = '2078-02-10';
             // $data[$key]['last_positive_date'] = '2078-02-10';
