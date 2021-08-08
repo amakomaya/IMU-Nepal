@@ -50,9 +50,9 @@ class AdminController extends Controller
         return view('admin');
       }
       switch($organizationType) {
-        // case 7:
-        //   return view('admin-poe');
-        //   break;
+        case 7:
+          return view('admin-poe');
+          break;
         default:
           return view('admin'); 
       }

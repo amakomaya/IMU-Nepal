@@ -9,4 +9,7 @@
          Update Vaccination center
     </a>
 </li>
+
+
 @include('layouts.backend.navigation.html.case-result-report')
+@include('layouts.backend.navigation.html.monitoring')

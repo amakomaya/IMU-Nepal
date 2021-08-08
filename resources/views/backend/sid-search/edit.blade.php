@@ -83,14 +83,14 @@
                         <div class="form-group">
                             <label class="control-label" for="caste">Ethnicity</label>
                             <select name="caste" class="form-control">
-                                <option {{ $ancs->woman->caste == '6' ? "selected" : "" }} value="6">Don't Know</option>
-                                <option {{ $ancs->woman->caste == '0' ? "selected" : "" }} value="0">Dalit</option>
-                                <option {{ $ancs->woman->caste == '1' ? "selected" : "" }} value="1">Janajati</option>
-                                <option {{ $ancs->woman->caste == '2' ? "selected" : "" }} value="2">Madheshi</option>
-                                <option {{ $ancs->woman->caste == '3' ? "selected" : "" }} value="3">Muslim</option>
-                                <option {{ $ancs->woman->caste == '4' ? "selected" : "" }} value="4">Brahmin/Chhetri
+                                <option {{ $ancs->woman->caste == '7' ? "selected" : "" }} value="7">Don't Know</option>
+                                <option {{ $ancs->woman->caste == '1' ? "selected" : "" }} value="1">Dalit</option>
+                                <option {{ $ancs->woman->caste == '2' ? "selected" : "" }} value="2">Janajati</option>
+                                <option {{ $ancs->woman->caste == '3' ? "selected" : "" }} value="3">Madheshi</option>
+                                <option {{ $ancs->woman->caste == '4' ? "selected" : "" }} value="4">Muslim</option>
+                                <option {{ $ancs->woman->caste == '5' ? "selected" : "" }} value="5">Brahmin/Chhetri
                                 </option>
-                                <option {{ $ancs->woman->caste == '5' ? "selected" : "" }} value="5">Other</option>
+                                <option {{ $ancs->woman->caste == '6' ? "selected" : "" }} value="6">Other</option>
                             </select>
                         </div>
                         <div class="form-group">

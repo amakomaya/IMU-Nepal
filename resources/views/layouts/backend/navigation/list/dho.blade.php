@@ -22,3 +22,5 @@
 @include('layouts.backend.navigation.html.cict-tracing')
 
 @include('layouts.backend.navigation.html.cases-payment')
+
+@include('layouts.backend.navigation.html.monitoring')
