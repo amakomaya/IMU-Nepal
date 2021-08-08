@@ -323,15 +323,17 @@ class ExtCaseController extends Controller
         if (!empty($user)) {
             $record = DB::table('ancs')->where('ancs.token', $sample_token)
                 ->join('women', 'women.token', '=', 'ancs.woman_token')
-                ->join('lab_tests', 'lab_tests.sample_token', '=', 'ancs.token')
+//                ->leftJoin('lab_tests', 'lab_tests.sample_token', '=', 'ancs.token')
                 ->select('women.token','women.name','women.age','women.age_unit','women.sex','women.caste','women.province_id','women.district_id','women.municipality_id','women.ward',
                     'women.tole','women.emergency_contact_one','women.travelled','women.occupation','women.created_at'
                     ,'ancs.token as sample_token', 'ancs.service_for', 'ancs.service_type','ancs.sample_type',
-                    'ancs.infection_type','ancs.created_at as sample_created_at','lab_tests.sample_recv_date', 'lab_tests.sample_test_date','lab_tests.sample_test_time',
-                    'lab_tests.sample_test_result')
+                    'ancs.infection_type','ancs.collection_date_en as sample_created_at',
+                    'ancs.received_date_en as sample_recv_date', 'ancs.sample_test_date_en as sample_test_date','ancs.sample_test_time',
+                    'ancs.result as sample_test_result'
+                )
                 ->get();
             $data = collect($record)->map(function ($row) {
-                $response['token'] = $row->token;
+//                $response['token'] = $row->token;
                 $response['name'] = $row->name ?? '';
                 $response['age'] = $row->age ?? '';
                 $response['age_unit'] = $row->age_unit ?? 0;
@@ -353,8 +355,8 @@ class ExtCaseController extends Controller
                 $response['sample_type'] = $this->sampleType($row->sample_type);
                 $response['sample_collected_date'] = $row->sample_created_at ?? '';
                 $response['infection_type'] = $row->infection_type ?? '';
-                $response['lab_received_date'] = $this->bs2ad($row->sample_recv_date);
-                $response['lab_test_date'] = $this->bs2ad($row->sample_test_date);
+                $response['lab_received_date'] = $row->sample_recv_date;
+                $response['lab_test_date'] = $row->sample_test_date;
                 $response['lab_test_time'] = $row->sample_test_time ?? '';
                 $response['lab_result'] = $row->sample_test_result ?? '';
 
