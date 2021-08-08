@@ -4,6 +4,13 @@
       <div class="col-lg-6">
         <h3>{{ headingTitle }}'s Update</h3>
       </div>
+      <div class="form-group col-sm-6" style="padding-top: 20px">
+          
+          <i>*Total Screened: No. of total person registered in the POE</i> <br />
+          <i>*Registered Only: No. of registered person who are not tested</i><br />
+          <i>*Pending/Lab Received: No. of tested person whose results are not entered</i><br />
+          <i>*Positivity Rate(in %): PR = Total Positve Case/(Total Positive Case + Total Negative Case) * 100 </i><br />
+      </div>
       <div class="col-lg-12" style="margin-bottom: 20px;">
         <div class="col-md-3">
           <div class="panel panel-danger">
@@ -42,7 +49,7 @@
                     />
                   </div>
                   <div class="huge">{{ report.total_registered_all }}</div>
-                  <div>Total</div>
+                  <div>Total Screened</div>
                 </div>
               </div>
             </div>
@@ -76,8 +83,8 @@
       <div class="col-lg-6">
         <h3 class="text-center" style="padding-bottom: 10px;">
           Antigen 
-          <span v-if="Object.keys(report).length !== 0">
-            (TPR: {{report.tpr}})
+          <span style="font-size: 14px;" v-if="Object.keys(report).length !== 0">
+            (Positivity Rate: {{report.pr}})
           </span>
         </h3>
         <div class="col-lg-6 col-md-6">
@@ -142,10 +149,36 @@
       </div>
       
       <div class="clearfix"></div>
+      <div class="col-lg-3">
+        <h3 class="text-center" style="padding-bottom: 10px;">Registrations</h3>
+        <div class="col-lg-12 col-md-12">
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <div class="row">
+                <div class="col-xs-3">
+                  <i class="fa fa-plus-square-o fa-3x"></i>
+                </div>
+                <div class="col-xs-9 text-right">
+                  <div v-if="Object.keys(report).length === 0">
+                    <loading-progress
+                        :progress="progress"
+                        :indeterminate="indeterminate"
+                        shape="line"
+                        size="30"
+                    />
+                  </div>
+                  <div class="huge">{{ totalReport.registered }}</div>
+                  <div>Total Screened</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       
-      <div class="col-lg-6">
+      <div class="col-lg-9">
         <h3 class="text-center" style="padding-bottom: 10px;">Antigen</h3>
-        <div class="col-lg-6 col-md-6">
+        <div class="col-lg-4 col-md-4">
           <div class="panel panel-danger">
             <div class="panel-heading">
               <div class="row">
@@ -166,15 +199,15 @@
                 </div>
               </div>
             </div>
-            <a href="/admin/download/positive-list-poe">
+            <!-- <a href="/admin/download/positive-list-poe">
               <div class="panel-footer">
                 <span class="pull-left"><i class="fa fa-download"></i> Download</span>
                 <div class="clearfix"></div>
               </div>
-            </a>
+            </a> -->
           </div>
         </div>
-        <div class="col-lg-6 col-md-6">
+        <div class="col-lg-4 col-md-4">
           <div class="panel panel-success">
             <div class="panel-heading">
               <div class="row">
@@ -198,33 +231,6 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-6">
-        <h3 class="text-center" style="padding-bottom: 10px;">Registrations</h3>
-        <div class="col-lg-6 col-md-6">
-          <div class="panel panel-danger">
-            <div class="panel-heading">
-              <div class="row">
-                <div class="col-xs-3">
-                  <i class="fa fa-plus-square-o fa-3x"></i>
-                </div>
-                <div class="col-xs-9 text-right">
-                  <div v-if="Object.keys(report).length === 0">
-                    <loading-progress
-                        :progress="progress"
-                        :indeterminate="indeterminate"
-                        shape="line"
-                        size="30"
-                    />
-                  </div>
-                  <div class="huge">{{ totalReport.registered }}</div>
-                  <div>Total</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="clearfix"></div>
     </div>
   </div>
 </template>
