@@ -3,7 +3,7 @@
     <filterable v-bind="filterable">
       <thead slot="thead">
       <tr>
-        <th width="10px">Parent Case ID</th>
+        <th>Parent Case ID</th>
         <th>Name</th>
         <th>Age</th>
         <th>Sex</th>
@@ -13,26 +13,26 @@
       </tr>
       </thead>
       <tr slot-scope="{item}">
-        <td>{{ item.case_id}}</td>
-        <td>{{item.name}}</td>
-        <td>{{item.age}}</td>
-        <td>{{sex(item.sex)}}</td>
-        <td>{{item.district.district_name}}</td>
-        <td>{{item.municipality.municipality_name}}</td>
+        <td>{{ item.case_id }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.age }}</td>
+        <td>{{ sex(item.sex )}}</td>
+        <td>{{ item.district.district_name }}</td>
+        <td>{{ item.municipality.municipality_name }}</td>
 
         <td>
-            <button v-on:click="cictUpdateDate(item.case_id)" class="btn btn-primary btn-sm" title="CICT Edit">
-              <i class="fa fa-edit" aria-hidden="true"> Edit</i>
-            </button>
-            <button v-on:click="contactList(item.case_id)" class="btn btn-secondary btn-sm" title="Contact List">
-              <i class="fa fa-list" aria-hidden="true"> Contact List</i>
-            </button>
-            <button v-on:click="cictReport(item.case_id)" class="btn btn-success btn-sm" title="CICT Report">
-              <i class="fa fa-file-pdf-o" aria-hidden="true"> Report</i>
-            </button>
-            <!-- <button v-on:click="deletePatientData(item, removeItemOnSuccess)" class="btn btn-danger btn-sm" title="Delete Data">
-              <i class="fa fa-trash" aria-hidden="true"> Delete</i>
-            </button> -->
+          <button v-on:click="cictUpdateDate(item.case_id)" class="btn btn-primary btn-sm" title="CICT Edit">
+            <i class="fa fa-edit" aria-hidden="true"> Edit</i>
+          </button>
+          <button v-on:click="contactList(item.case_id)" class="btn btn-secondary btn-sm" title="Contact List">
+            <i class="fa fa-list" aria-hidden="true"> Contact List</i>
+          </button>
+          <button v-on:click="cictReport(item.case_id)" class="btn btn-success btn-sm" title="CICT Report">
+            <i class="fa fa-file-pdf-o" aria-hidden="true"> Report</i>
+          </button>
+          <!-- <button v-on:click="deletePatientData(item, removeItemOnSuccess)" class="btn btn-danger btn-sm" title="Delete Data">
+            <i class="fa fa-trash" aria-hidden="true"> Delete</i>
+          </button> -->
         </td>
       </tr>
     </filterable>
@@ -126,7 +126,7 @@ export default {
                 }
               })
         } else {
-          this.$swal("Cancelled", "Data not moved :)", "error");
+          this.$swal("Cancelled", "Data not deleted :)", "error");
         }
       })
     },
