@@ -148,7 +148,7 @@
     </div>
      <div class="row">
         <div v-show="data.gender=='2'" class="form-group col-lg-4" :class="{ 'has-error': $v.data.pregnant_status.$error }">
-            <label class="control-label" for="age">Pregnent? *</label><br />
+            <label class="control-label" for="age">Pregnant? *</label><br />
             <input type="radio" id="preg_yes" v-model.trim="data.pregnant_status" value="1">
             <label class="control-label" for="preg_yes">Yes</label> &nbsp; &nbsp;
             <input type="radio" id="preg_no" v-model.trim="data.pregnant_status" value="0">
