@@ -338,7 +338,7 @@ class DashboardController extends Controller
         $total_registered_all = SuspectedCase::whereIn('hp_code', $hpCodes)
         ->where(function($q) use($date_chosen){
           $q->whereDate('created_at', $date_chosen);
-        })  
+        })
         ->active()
         ->count();
         // $antigen_not_tested = SampleCollection::whereIn('hp_code', $hpCodes)
@@ -354,18 +354,18 @@ class DashboardController extends Controller
             
         $total_tested = $antigen_positive+$antigen_negative;
 
-        $tpr = $antigen_positive/($antigen_negative+$antigen_positive);
-        if (is_nan($tpr)) {
-          $tpr = 'N/A';
+        $pr = $antigen_positive/($antigen_negative+$antigen_positive);
+        if (is_nan($pr)) {
+          $pr = 'N/A';
         } else {
-          $tpr = number_format($tpr*100, 2).'%';
+          $pr = number_format($pr*100, 2).'%';
         }
         $data = [
             'antigen_positive' => $antigen_positive,
             'antigen_negative' => $antigen_negative,
             'total_registered_only' => $total_registered_only,
             'total_registered_all' => $total_registered_all,
-            'tpr' => $tpr
+            'pr' => $pr
         ];
 
         return response()->json($data);
