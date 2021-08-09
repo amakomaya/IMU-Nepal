@@ -707,6 +707,7 @@
                             </div>
 
                             <input type="hidden" id="onset_date_bak" value="{{ $data->date_of_onset_of_first_symptom }}">
+                            <input type="hidden" id="cict_initiated_date_bak" value="{{ $data->cict_initiated_date }}">
 
                             @if(isset($data->suspectedCase))
                                 @if(isset($data->suspectedCase->latestAnc))
@@ -770,6 +771,7 @@
     });
     $('#completion_date').nepaliDatePicker({
         language: 'english',
+        disableBefore: $('#cict_initiated_date_bak').val(),
         disableAfter: currentDate
     });
 
