@@ -281,7 +281,7 @@
                                                 <?php 
                                                     $sub_data_array = json_decode($data->travelled_14_days_details);
                                                 ?>
-                                                @foreach($sub_data_array as $sub_data)
+                                                @foreach($sub_data_array as $key => $sub_data)
                                                 <tr class="table-fourteen-days-tr">
                                                     <td width="95px">
                                                         <button type="button" class="btn btn-danger btn-sm btn-remove-fourteen-days mt-1"><i class="fa fa-trash"></i></button>
@@ -293,10 +293,10 @@
                                                         <input type="text" class="form-control" name="travelled_14_days_details_arrival_to[]" value="{{ $sub_data->arrival_to }}">
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control nep-date-departure" name="travelled_14_days_details_departure_date_np[]" value="{{ $sub_data->departure_date }}">
+                                                        <input type="text" id="departure_date_{{ $key }}" class="form-control nep-date-departure" name="travelled_14_days_details_departure_date_np[]" value="{{ $sub_data->departure_date }}">
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control nep-date-arrival" name="travelled_14_days_details_arrival_date_np[]" value="{{ $sub_data->arrival_date }}">
+                                                        <input type="text" id="arrival_date_{{ $key }}" class="form-control nep-date-arrival" name="travelled_14_days_details_arrival_date_np[]" value="{{ $sub_data->arrival_date }}">
                                                     </td>
                                                     <td>
                                                         <select class="form-control travelled_14_days_details_travel_mode" name="travelled_14_days_details_travel_mode[]">
