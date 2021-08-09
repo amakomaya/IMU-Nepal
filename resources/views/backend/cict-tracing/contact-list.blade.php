@@ -62,10 +62,12 @@
                                                 @else
                                                 <span class="text-warning">N/A</span>
                                                 @endif
+                                                @if(auth()->user()->role == 'healthworker')
                                                 <form method="GET" action="{{ route('b-one-form.part-one') }}">
                                                     <input type="hidden" name="case_id" value="{{ $item->case_id }}">
                                                     <button class="btn btn-sm btn-success" type="submit"><i class="fa fa-plus" aria-hidden="true"></i> B1 Form</button>
                                                 </form>
+                                                @endif
                                             </td>
                                             <td>
                                                 Status: 
@@ -79,10 +81,12 @@
                                                 @else
                                                 <span class="text-warning">N/A</span>
                                                 @endif
+                                                @if(auth()->user()->role == 'healthworker')
                                                 <form method="GET" action="{{ route('b-two-form.follow-up') }}">
                                                     <input type="hidden" name="case_id" value="{{ $item->case_id }}">
                                                     <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-plus" aria-hidden="true"></i> B2 Form</button>
                                                 </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

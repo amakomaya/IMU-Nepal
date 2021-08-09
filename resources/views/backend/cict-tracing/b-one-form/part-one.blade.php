@@ -432,7 +432,8 @@
                     },
                     ward: {
                         required: true,
-                        digits: true
+                        digits: true,
+                        range: [1, 35]
                     },
                     tole: {
                         required: true,

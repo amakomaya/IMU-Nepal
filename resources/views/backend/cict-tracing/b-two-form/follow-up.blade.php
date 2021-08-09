@@ -76,11 +76,11 @@
                                     <table class="table table-bordered">
                                         <thead style="background: #fff;">
                                             <tr>
-                                                <th rowspan="2">Days since last contact with the case</th>
-                                                <th rowspan="2">Days to follow up</th>
-                                                <th rowspan="2">Date of follow up</th>
-                                                <th colspan="7">Symptoms</th>
-                                                <th rowspan="2"></th>
+                                                <th rowspan="2" width="5%">Days since last contact with the case</th>
+                                                <th rowspan="2" width="5%">Days to follow up</th>
+                                                <th rowspan="2" width="30%">Date of follow up</th>
+                                                <th colspan="7" width="57%">Symptoms</th>
+                                                <th rowspan="2" width="3%"></th>
                                             </tr>
                                             <tr>
                                                 <th>No Symptoms</th>
@@ -101,33 +101,33 @@
                                                 <td>{{ $i }}</td>
                                                 <td>{{ 10 - $i }}</td>
                                                 <td>
-                                                    <input type="text" class="form-control" name="date_of_follow_up_{{$i}}" id="date_of_follow_up_{{$i}}" value="{{ isset($data->{'date_of_follow_up_'.$i}) ? $data->{'date_of_follow_up_'.$i} : '' }}">
+                                                    <input type="text" class="form-control date_of_follow_up" data-id="{{ $i }}" name="date_of_follow_up_{{$i}}" id="date_of_follow_up_{{$i}}" value="{{ isset($data->{'date_of_follow_up_'.$i}) ? $data->{'date_of_follow_up_'.$i} : '' }}">
                                                 </td>
                                                 <td>
-                                                    <input type="checkbox" value="1" name="no_symptoms_{{$i}}" {{ isset($data->{'no_symptoms_'.$i}) && $data->{'no_symptoms_'.$i} == 1 ? 'checked' : '' }}> None
+                                                    <input type="checkbox" class="no_symptoms" data-id="{{ $i }}" id="no_symptoms_{{$i}}" value="1" name="no_symptoms_{{$i}}" {{ isset($data->{'no_symptoms_'.$i}) && $data->{'no_symptoms_'.$i} == 1 ? 'checked' : '' }}> None
                                                 </td>
                                                 <td>
-                                                    <input type="radio" value="1" name="fever_{{$i}}" {{ isset($data->{'fever_'.$i}) && $data->{'fever_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
-                                                    <input type="radio" value="0" name="fever_{{$i}}" {{ isset($data->{'fever_'.$i}) && $data->{'fever_'.$i} == 0 ? 'checked' : '' }}> No
+                                                    <input type="radio" class="fever_{{$i}}" value="1" name="fever_{{$i}}" {{ isset($data->{'fever_'.$i}) && $data->{'fever_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
+                                                    <input type="radio" class="fever_{{$i}}" value="0" name="fever_{{$i}}" {{ isset($data->{'fever_'.$i}) && $data->{'fever_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
-                                                    <input type="radio" value="1" name="runny_nose_{{$i}}" {{ isset($data->{'runny_nose_'.$i}) && $data->{'runny_nose_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
-                                                    <input type="radio" value="0" name="runny_nose_{{$i}}" {{ isset($data->{'runny_nose_'.$i}) && $data->{'runny_nose_'.$i} == 0 ? 'checked' : '' }}> No
+                                                    <input type="radio" class="runny_nose_{{$i}}" value="1" name="runny_nose_{{$i}}" {{ isset($data->{'runny_nose_'.$i}) && $data->{'runny_nose_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
+                                                    <input type="radio" class="runny_nose_{{$i}}" value="0" name="runny_nose_{{$i}}" {{ isset($data->{'runny_nose_'.$i}) && $data->{'runny_nose_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
-                                                    <input type="radio" value="1" name="cough_{{$i}}" {{ isset($data->{'cough_'.$i}) && $data->{'cough_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
-                                                    <input type="radio" value="0" name="cough_{{$i}}" {{ isset($data->{'cough_'.$i}) && $data->{'cough_'.$i} == 0 ? 'checked' : '' }}> No
+                                                    <input type="radio" class="cough_{{$i}}" value="1" name="cough_{{$i}}" {{ isset($data->{'cough_'.$i}) && $data->{'cough_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
+                                                    <input type="radio" class="cough_{{$i}}" value="0" name="cough_{{$i}}" {{ isset($data->{'cough_'.$i}) && $data->{'cough_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
-                                                    <input type="radio" value="1" name="sore_throat_{{$i}}" {{ isset($data->{'sore_throat_'.$i}) && $data->{'sore_throat_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
-                                                    <input type="radio" value="0" name="sore_throat_{{$i}}" {{ isset($data->{'sore_throat_'.$i}) && $data->{'sore_throat_'.$i} == 0 ? 'checked' : '' }}> No
+                                                    <input type="radio" class="sore_throat_{{$i}}" value="1" name="sore_throat_{{$i}}" {{ isset($data->{'sore_throat_'.$i}) && $data->{'sore_throat_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
+                                                    <input type="radio" class="sore_throat_{{$i}}" value="0" name="sore_throat_{{$i}}" {{ isset($data->{'sore_throat_'.$i}) && $data->{'sore_throat_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
-                                                    <input type="radio" value="1" name="breath_{{$i}}" {{ isset($data->{'breath_'.$i}) && $data->{'breath_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
-                                                    <input type="radio" value="0" name="breath_{{$i}}" {{ isset($data->{'breath_'.$i}) && $data->{'breath_'.$i} == 0 ? 'checked' : '' }}> No
+                                                    <input type="radio" class="breath_{{$i}}" value="1" name="breath_{{$i}}" {{ isset($data->{'breath_'.$i}) && $data->{'breath_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
+                                                    <input type="radio" class="breath_{{$i}}" value="0" name="breath_{{$i}}" {{ isset($data->{'breath_'.$i}) && $data->{'breath_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" name="symptoms_other_{{$i}}" id="symptoms_other_{{$i}}" value="{{ isset($data->{'symptoms_other_'.$i}) ?? '' }}">
+                                                    <input type="text" class="form-control symptoms_other_{{$i}}" name="symptoms_other_{{$i}}" id="symptoms_other_{{$i}}" value="{{ isset($data->{'symptoms_other_'.$i}) ?? '' }}">
                                                 </td>
                                                 @if($i == 5)
                                                 <td style="background-color: red; color:white">
@@ -214,11 +214,116 @@
             disableAfter: currentDate
         });
 
+        $('.date_of_follow_up').each(function() {
+            var $this = $(this);
+            $this.on("click", function () {
+                var id = $(this).data('id');
+                if(id > 0){
+                    if($('#date_of_follow_up_' + (id-1)).val() != ''){
+                        $("#date_of_follow_up_" + id).nepaliDatePicker({
+                            language: 'english',
+                            disableBefore: getOneDayAfter($('#date_of_follow_up_' + (id-1)).val()),
+                            disableAfter: currentDate,
+                            onChange: function() {
+                                if(id < 10){
+                                    dateSetting(id)
+                                }
+                            }
+                        });
+                    }else {
+                        $('#date_of_follow_up_' + id).nepaliDatePicker({
+                            language: 'english',
+                            disableAfter: currentDate,
+                            onChange: function() {
+                                if(id < 10){
+                                    dateSetting(id)
+                                }
+                            }
+                        });
+
+                    }
+                }else{
+                    $('#date_of_follow_up_' + id).nepaliDatePicker({
+                        language: 'english',
+                        disableAfter: currentDate,
+                        onChange: function() {
+                            dateSetting(id)
+                        }
+                    });
+
+                }
+            })
+        });
+
+        function dateSetting(id){
+            $('#date_of_follow_up_' + (id+1)).nepaliDatePicker({
+                language: 'english',
+                disableAfter: currentDate,
+                disableBefore: getOneDayAfter($('#date_of_follow_up_' + id).val()),
+            })
+        }
+        
         var i;
         for (i = 0; i < 11; ++i) {
-            $("#date_of_follow_up_" + i).nepaliDatePicker({
-                language: 'english',
-            });
+            if(i > 0){
+                if($('#date_of_follow_up_' + (i-1)).val() != ''){
+                    $("#date_of_follow_up_" + i).nepaliDatePicker({
+                        language: 'english',
+                        disableBefore: getOneDayAfter($('#date_of_follow_up_' + (i-1)).val()),
+                        disableAfter: currentDate
+                    });
+                }else {
+                    $("#date_of_follow_up_" + i).nepaliDatePicker({
+                        language: 'english',
+                        disableAfter: currentDate
+                    });
+                }
+            }
+
+            if ($("#no_symptoms_" + i).is(':checked')){
+                $('input[name=fever_' + i + ']').prop('checked', false).prop("disabled",true);
+                $('input[name=runny_nose_' + i + ']').prop('checked', false).prop("disabled",true);
+                $('input[name=cough_' + i + ']').prop('checked', false).prop("disabled",true);
+                $('input[name=sore_throat_' + i + ']').prop('checked', false).prop("disabled",true);
+                $('input[name=breath_' + i + ']').prop('checked', false).prop("disabled",true);
+                $('input[name=symptoms_other_' + i + ']').val("").prop("readonly",true);
+            }
         }
+    
+        function getOneDayAfter(cur_date){
+            var np_date_obj = NepaliFunctions.ConvertToDateObject(cur_date, "YYYY-MM-DD");
+            var en_date_obj = NepaliFunctions.BS2AD(np_date_obj);
+            var en_date = NepaliFunctions.ConvertDateFormat(en_date_obj, "YYYY-MM-DD");
+            var en_date = new Date(en_date);
+            en_date.setDate(en_date.getDate() + 1);
+            var en_11_date = en_date.getFullYear() + "-" + (en_date.getMonth() +1) + "-" + en_date.getDate();
+            var en_11_date_obj = NepaliFunctions.ConvertToDateObject(en_11_date, "YYYY-MM-DD");
+            en_11_date_obj = NepaliFunctions.AD2BS(en_11_date_obj);
+            var en_11_date_final = NepaliFunctions.ConvertDateFormat(en_11_date_obj, "YYYY-MM-DD");
+            return en_11_date_final;
+        }
+        
+        $('.no_symptoms').each(function() {
+            var $this = $(this);
+            $this.on("click", function () {
+                var id = $(this).data('id');
+                if(this.checked) {
+                    $('input[name=fever_' + id + ']').prop('checked', false).prop("disabled",true);
+                    $('input[name=runny_nose_' + id + ']').prop('checked', false).prop("disabled",true);
+                    $('input[name=cough_' + id + ']').prop('checked', false).prop("disabled",true);
+                    $('input[name=sore_throat_' + id + ']').prop('checked', false).prop("disabled",true);
+                    $('input[name=breath_' + id + ']').prop('checked', false).prop("disabled",true);
+                    $('input[name=symptoms_other_' + id + ']').val("").prop("readonly",true);
+                }else {
+                    $('input[name=fever_' + id + ']').prop("disabled",false);
+                    $('input[name=runny_nose_' + id + ']').prop("disabled",false);
+                    $('input[name=cough_' + id + ']').prop("disabled",false);
+                    $('input[name=sore_throat_' + id + ']').prop("disabled",false);
+                    $('input[name=breath_' + id + ']').prop("disabled",false);
+                    $('input[name=symptoms_other_' + id + ']').prop("readonly",false);
+                }
+            });
+            
+        });
     </script>
 @endsection

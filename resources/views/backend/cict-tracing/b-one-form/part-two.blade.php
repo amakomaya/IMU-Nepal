@@ -374,7 +374,7 @@
                                     <div class="control-group">
                                         <label class="radio-inline">
                                             <input type="radio" name="contact_status" class="contact_status"
-                                            {{ $data && $data->contact_status == "1" ? 'checked' : '' }} value="1">Yes
+                                            {{ $data && $data->contact_status == "1" ? 'checked' : '' }} value="1" checked>Yes
                                         </label>
                                         <label class="radio-inline">
                                             <input type="radio" name="contact_status" class="contact_status"
@@ -821,33 +821,43 @@
     });
     $('#date_14_days').nepaliDatePicker({
         language: 'english',
+        disableAfter: currentDate
     });
     $('#contact_last_date').nepaliDatePicker({
         language: 'english',
+        disableAfter: currentDate
     });
     $('#contact_social_last_date').nepaliDatePicker({
         language: 'english',
+        disableAfter: currentDate
     });
     $('#dose_one_date').nepaliDatePicker({
         language: 'english',
+        disableAfter: currentDate
     });
     $('#dose_two_date').nepaliDatePicker({
         language: 'english',
+        disableAfter: currentDate
     });
     $('#measures_referral_date').nepaliDatePicker({
         language: 'english',
+        disableAfter: currentDate
     });
     $('#collection_date').nepaliDatePicker({
         language: 'english',
+        disableAfter: currentDate
     });
     $('#result_date').nepaliDatePicker({
         language: 'english',
+        disableAfter: currentDate
     });
     $('#completion_date').nepaliDatePicker({
         language: 'english',
+        disableAfter: currentDate
     });
     $('#healthworker_last_date').nepaliDatePicker({
         language: 'english',
+        disableAfter: currentDate
     });
 
     

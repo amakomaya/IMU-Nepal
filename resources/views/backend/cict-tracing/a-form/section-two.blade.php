@@ -120,7 +120,7 @@
                                         <label class="control-label" for="symptoms">(Check any that apply):</label><br>
                                         <input type="checkbox" class="symptoms" name="symptoms[]" value="4" @if(in_array(4, $symptoms)) checked @endif> Fever<br>
                                         <input type="checkbox" class="symptoms" name="symptoms[]" value="6" @if(in_array(6, $symptoms)) checked @endif> Cough<br>
-                                        <input type="checkbox" class="symptoms" name="symptoms[]" value="5" @if(in_array(5, $symptoms)) checked @endif> General weakness / Tiredess<br>
+                                        <input type="checkbox" class="symptoms" name="symptoms[]" value="5" @if(in_array(5, $symptoms)) checked @endif> General weakness / Tiredness<br>
                                         <input type="checkbox" class="symptoms" name="symptoms[]" value="19" @if(in_array(19, $symptoms)) checked @endif> Headache<br>
                                         <input type="checkbox" class="symptoms" name="symptoms[]" value="13" @if(in_array(13, $symptoms)) checked @endif> Pain in the muscles<br>
                                         <input type="checkbox" class="symptoms" name="symptoms[]" value="7" @if(in_array(7, $symptoms)) checked @endif> Sore Throat<br>
@@ -822,6 +822,11 @@
             $('#exposure_ref_period_to_np').val($('#date_of_onset_of_first_symptom').val());
         }
     });
+
+    // $('.nep-date-departure .nep-date-arrival').nepaliDatePicker({
+    //     language: 'english',
+    //     disableAfter: currentDate
+    // });
     
     function getFourteenDays(cur_date){
         var np_date_obj = NepaliFunctions.ConvertToDateObject($('#date_of_onset_of_first_symptom').val(), "YYYY-MM-DD");
@@ -857,10 +862,11 @@
 
     $('#exposure_ref_period_from_np').nepaliDatePicker({
         language: 'english',
+        disableAfter: currentDate
     });
 
     $('#exposure_ref_period_to_np').nepaliDatePicker({
-        language: 'english',
+        language: 'english'
     });
 
     symptomsTwoWeeks();
@@ -1003,18 +1009,18 @@
 		new_row.find(".btn-remove-fourteen-days").show();
         new_row.find(".nep-date-departure").attr('id', 'departure_date_' + random).nepaliDatePicker({
 			language: 'english',
-            disableAfter: currentDate
+            disableAfter: currentDate,
+            onChange: function(e) {
+                $('#arrival_date_' + random).nepaliDatePicker({
+                    language: 'english',
+                    disableBefore: $('#departure_date_' + random).val(),
+                    disableAfter: currentDate
+                });
+                $('#arrival_date_' + random).prop('readonly', false);
+            }
 		});
-        new_row.find(".nep-date-arrival").attr('id', 'arrival_date_' + random).nepaliDatePicker({
-			language: 'english',
-            disableAfter: currentDate
-		});
+        new_row.find(".nep-date-arrival").attr('id', 'arrival_date_' + random).prop('readonly', true);
         new_row.find(".travelled_14_days_details_travel_mode_other").prop('readonly', true);
-        
-		// new_row.find(".nep-date-picker").nepaliDatePicker({
-		// 	language: 'english',
-        //     disableAfter: currentDate
-		// });
 	});
 
     $('body').on('click', '.btn-remove-fourteen-days', function() {
