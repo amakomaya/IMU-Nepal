@@ -211,7 +211,8 @@
                                                             <option value="1" {{ $sub_data->relationship == '1' ? 'selected' : '' }}>Family</option>
                                                             <option value="2" {{ $sub_data->relationship == '2' ? 'selected' : '' }}>Friend</option>
                                                             <option value="3" {{ $sub_data->relationship == '3' ? 'selected' : '' }}>Neighbour</option>
-                                                            <option value="4" {{ $sub_data->relationship == '4' ? 'selected' : '' }}>Co-Worker</option>
+                                                            <option value="4" {{ $sub_data->relationship == '4' ? 'selected' : '' }}>Relative</option>
+                                                            <option value="5" {{ $sub_data->relationship == '5' ? 'selected' : '' }}>Co-Worker</option>
                                                             <option value="0" {{ $sub_data->relationship == '0' ? 'selected' : '' }}>Others</option>
                                                     </td>
                                                     <td>
@@ -257,7 +258,8 @@
                                                             <option value="1">Family</option>
                                                             <option value="2">Friend</option>
                                                             <option value="3">Neighbour</option>
-                                                            <option value="4">Co-Worker</option>
+                                                            <option value="4">Relative</option>
+                                                            <option value="5">Co-Worker</option>
                                                             <option value="0">Others</option>
                                                         </select>
                                                     </td>
@@ -345,7 +347,8 @@
                                                             <option value="1" {{ $sub_data->relationship == '1' ? 'selected' : '' }}>Family</option>
                                                             <option value="2" {{ $sub_data->relationship == '2' ? 'selected' : '' }}>Friend</option>
                                                             <option value="3" {{ $sub_data->relationship == '3' ? 'selected' : '' }}>Neighbour</option>
-                                                            <option value="4" {{ $sub_data->relationship == '4' ? 'selected' : '' }}>Co-Worker</option>
+                                                            <option value="4" {{ $sub_data->relationship == '4' ? 'selected' : '' }}>Relative</option>
+                                                            <option value="5" {{ $sub_data->relationship == '5' ? 'selected' : '' }}>Co-Worker</option>
                                                             <option value="0" {{ $sub_data->relationship == '0' ? 'selected' : '' }}>Others</option>
                                                     </td>
                                                     <td>
@@ -391,7 +394,8 @@
                                                             <option value="1">Family</option>
                                                             <option value="2">Friend</option>
                                                             <option value="3">Neighbour</option>
-                                                            <option value="4">Co-Worker</option>
+                                                            <option value="4">Relative</option>
+                                                            <option value="5">Co-Worker</option>
                                                             <option value="0">Others</option>
                                                         </select>
                                                     </td>
@@ -479,7 +483,8 @@
                                                             <option value="1" {{ $sub_data->relationship == '1' ? 'selected' : '' }}>Family</option>
                                                             <option value="2" {{ $sub_data->relationship == '2' ? 'selected' : '' }}>Friend</option>
                                                             <option value="3" {{ $sub_data->relationship == '3' ? 'selected' : '' }}>Neighbour</option>
-                                                            <option value="4" {{ $sub_data->relationship == '4' ? 'selected' : '' }}>Co-Worker</option>
+                                                            <option value="4" {{ $sub_data->relationship == '4' ? 'selected' : '' }}>Relative</option>
+                                                            <option value="5" {{ $sub_data->relationship == '5' ? 'selected' : '' }}>Co-Worker</option>
                                                             <option value="0" {{ $sub_data->relationship == '0' ? 'selected' : '' }}>Others</option>
                                                     </td>
                                                     <td>
@@ -525,7 +530,8 @@
                                                             <option value="1">Family</option>
                                                             <option value="2">Friend</option>
                                                             <option value="3">Neighbour</option>
-                                                            <option value="4">Co-Worker</option>
+                                                            <option value="4">Relative</option>
+                                                            <option value="5">Co-Worker</option>
                                                             <option value="0">Others</option>
                                                         </select>
                                                     </td>
