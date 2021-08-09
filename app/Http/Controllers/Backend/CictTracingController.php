@@ -561,6 +561,11 @@ class CictTracingController extends Controller
         
         for($i=0; $i<11; $i++){
             $data['no_symptoms_' . $i] = $request->{'no_symptoms_'.$i} ?? 0;
+            $data['fever_' . $i] = $request->{'fever_'.$i} ?? null;
+            $data['runny_nose_' . $i] = $request->{'runny_nose_'.$i} ?? null;
+            $data['cough_' . $i] = $request->{'cough_'.$i} ?? null;
+            $data['sore_throat_' . $i] = $request->{'sore_throat_'.$i} ?? null;
+            $data['breath_' . $i] = $request->{'breath_'.$i} ?? null;
         }
         if($cict_follow_up){
             $cict_follow_up->update($data);

@@ -76,11 +76,11 @@
                                     <table class="table table-bordered">
                                         <thead style="background: #fff;">
                                             <tr>
-                                                <th rowspan="2">Days since last contact with the case</th>
-                                                <th rowspan="2">Days to follow up</th>
-                                                <th rowspan="2">Date of follow up</th>
-                                                <th colspan="7">Symptoms</th>
-                                                <th rowspan="2"></th>
+                                                <th rowspan="2" width="5%">Days since last contact with the case</th>
+                                                <th rowspan="2" width="5%">Days to follow up</th>
+                                                <th rowspan="2" width="30%">Date of follow up</th>
+                                                <th colspan="7" width="57%">Symptoms</th>
+                                                <th rowspan="2" width="3%"></th>
                                             </tr>
                                             <tr>
                                                 <th>No Symptoms</th>
@@ -104,30 +104,30 @@
                                                     <input type="text" class="form-control" name="date_of_follow_up_{{$i}}" id="date_of_follow_up_{{$i}}" value="{{ isset($data->{'date_of_follow_up_'.$i}) ? $data->{'date_of_follow_up_'.$i} : '' }}">
                                                 </td>
                                                 <td>
-                                                    <input type="checkbox" value="1" name="no_symptoms_{{$i}}" {{ isset($data->{'no_symptoms_'.$i}) && $data->{'no_symptoms_'.$i} == 1 ? 'checked' : '' }}> None
+                                                    <input type="checkbox" class="no_symptoms" data-id="{{ $i }}" id="no_symptoms_{{$i}}" value="1" name="no_symptoms_{{$i}}" {{ isset($data->{'no_symptoms_'.$i}) && $data->{'no_symptoms_'.$i} == 1 ? 'checked' : '' }}> None
                                                 </td>
                                                 <td>
-                                                    <input type="radio" value="1" name="fever_{{$i}}" {{ isset($data->{'fever_'.$i}) && $data->{'fever_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
-                                                    <input type="radio" value="0" name="fever_{{$i}}" {{ isset($data->{'fever_'.$i}) && $data->{'fever_'.$i} == 0 ? 'checked' : '' }}> No
+                                                    <input type="radio" class="fever_{{$i}}" value="1" name="fever_{{$i}}" {{ isset($data->{'fever_'.$i}) && $data->{'fever_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
+                                                    <input type="radio" class="fever_{{$i}}" value="0" name="fever_{{$i}}" {{ isset($data->{'fever_'.$i}) && $data->{'fever_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
-                                                    <input type="radio" value="1" name="runny_nose_{{$i}}" {{ isset($data->{'runny_nose_'.$i}) && $data->{'runny_nose_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
-                                                    <input type="radio" value="0" name="runny_nose_{{$i}}" {{ isset($data->{'runny_nose_'.$i}) && $data->{'runny_nose_'.$i} == 0 ? 'checked' : '' }}> No
+                                                    <input type="radio" class="runny_nose_{{$i}}" value="1" name="runny_nose_{{$i}}" {{ isset($data->{'runny_nose_'.$i}) && $data->{'runny_nose_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
+                                                    <input type="radio" class="runny_nose_{{$i}}" value="0" name="runny_nose_{{$i}}" {{ isset($data->{'runny_nose_'.$i}) && $data->{'runny_nose_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
-                                                    <input type="radio" value="1" name="cough_{{$i}}" {{ isset($data->{'cough_'.$i}) && $data->{'cough_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
-                                                    <input type="radio" value="0" name="cough_{{$i}}" {{ isset($data->{'cough_'.$i}) && $data->{'cough_'.$i} == 0 ? 'checked' : '' }}> No
+                                                    <input type="radio" class="cough_{{$i}}" value="1" name="cough_{{$i}}" {{ isset($data->{'cough_'.$i}) && $data->{'cough_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
+                                                    <input type="radio" class="cough_{{$i}}" value="0" name="cough_{{$i}}" {{ isset($data->{'cough_'.$i}) && $data->{'cough_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
-                                                    <input type="radio" value="1" name="sore_throat_{{$i}}" {{ isset($data->{'sore_throat_'.$i}) && $data->{'sore_throat_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
-                                                    <input type="radio" value="0" name="sore_throat_{{$i}}" {{ isset($data->{'sore_throat_'.$i}) && $data->{'sore_throat_'.$i} == 0 ? 'checked' : '' }}> No
+                                                    <input type="radio" class="sore_throat_{{$i}}" value="1" name="sore_throat_{{$i}}" {{ isset($data->{'sore_throat_'.$i}) && $data->{'sore_throat_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
+                                                    <input type="radio" class="sore_throat_{{$i}}" value="0" name="sore_throat_{{$i}}" {{ isset($data->{'sore_throat_'.$i}) && $data->{'sore_throat_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
-                                                    <input type="radio" value="1" name="breath_{{$i}}" {{ isset($data->{'breath_'.$i}) && $data->{'breath_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
-                                                    <input type="radio" value="0" name="breath_{{$i}}" {{ isset($data->{'breath_'.$i}) && $data->{'breath_'.$i} == 0 ? 'checked' : '' }}> No
+                                                    <input type="radio" class="breath_{{$i}}" value="1" name="breath_{{$i}}" {{ isset($data->{'breath_'.$i}) && $data->{'breath_'.$i} == 1 ? 'checked' : '' }}> Yes<br>
+                                                    <input type="radio" class="breath_{{$i}}" value="0" name="breath_{{$i}}" {{ isset($data->{'breath_'.$i}) && $data->{'breath_'.$i} == 0 ? 'checked' : '' }}> No
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" name="symptoms_other_{{$i}}" id="symptoms_other_{{$i}}" value="{{ isset($data->{'symptoms_other_'.$i}) ?? '' }}">
+                                                    <input type="text" class="form-control symptoms_other_{{$i}}" name="symptoms_other_{{$i}}" id="symptoms_other_{{$i}}" value="{{ isset($data->{'symptoms_other_'.$i}) ?? '' }}">
                                                 </td>
                                                 @if($i == 5)
                                                 <td style="background-color: red; color:white">
@@ -218,7 +218,40 @@
         for (i = 0; i < 11; ++i) {
             $("#date_of_follow_up_" + i).nepaliDatePicker({
                 language: 'english',
+                disableAfter: currentDate
             });
+
+            if ($("#no_symptoms_" + i).is(':checked')){
+                $('input[name=fever_' + i + ']').prop('checked', false).prop("disabled",true);
+                $('input[name=runny_nose_' + i + ']').prop('checked', false).prop("disabled",true);
+                $('input[name=cough_' + i + ']').prop('checked', false).prop("disabled",true);
+                $('input[name=sore_throat_' + i + ']').prop('checked', false).prop("disabled",true);
+                $('input[name=breath_' + i + ']').prop('checked', false).prop("disabled",true);
+                $('input[name=symptoms_other_' + i + ']').val("").prop("readonly",true);
+            }
         }
+        
+        $('.no_symptoms').each(function() {
+            var $this = $(this);
+            $this.on("click", function () {
+                var id = $(this).data('id');
+                if(this.checked) {
+                    $('input[name=fever_' + id + ']').prop('checked', false).prop("disabled",true);
+                    $('input[name=runny_nose_' + id + ']').prop('checked', false).prop("disabled",true);
+                    $('input[name=cough_' + id + ']').prop('checked', false).prop("disabled",true);
+                    $('input[name=sore_throat_' + id + ']').prop('checked', false).prop("disabled",true);
+                    $('input[name=breath_' + id + ']').prop('checked', false).prop("disabled",true);
+                    $('input[name=symptoms_other_' + id + ']').val("").prop("readonly",true);
+                }else {
+                    $('input[name=fever_' + id + ']').prop("disabled",false);
+                    $('input[name=runny_nose_' + id + ']').prop("disabled",false);
+                    $('input[name=cough_' + id + ']').prop("disabled",false);
+                    $('input[name=sore_throat_' + id + ']').prop("disabled",false);
+                    $('input[name=breath_' + id + ']').prop("disabled",false);
+                    $('input[name=symptoms_other_' + id + ']').prop("readonly",false);
+                }
+            });
+            
+        });
     </script>
 @endsection
