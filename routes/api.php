@@ -1066,6 +1066,8 @@ Route::get('/v1/countries', function(){
     return response()->json($response);
 });
 
+
+//Cict APis
 Route::get('/v1/cict-tracing', function(Request $request) {
     $hp_code = $request->hp_code;
     $response = \App\Models\CictTracing::where('hp_code', $hp_code)->get();
@@ -1086,3 +1088,52 @@ Route::get('/v1/cict-follow-up', function(Request $request) {
     $response = \App\Models\CictFollowUp::where('hp_code', $hp_code)->get();
     return response()->json($response);
 });
+
+Route::post('/v1/cict-tracing', function (Request $request) {
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            \App\Models\CictTracing::create($value);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Something went wrong, Please try again.']);
+        }
+    }
+    return response()->json(['message' => 'Data Successfully Sync']);
+});
+
+Route::post('/v1/cict-close-contact', function (Request $request) {
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            \App\Models\CictCloseContact::create($value);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Something went wrong, Please try again.']);
+        }
+    }
+    return response()->json(['message' => 'Data Successfully Sync']);
+});
+
+Route::post('/v1/cict-contact', function (Request $request) {
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            \App\Models\CictContact::create($value);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Something went wrong, Please try again.']);
+        }
+    }
+    return response()->json(['message' => 'Data Successfully Sync']);
+});
+
+Route::post('/v1/cict-follow-up', function (Request $request) {
+    $data = $request->json()->all();
+    foreach ($data as $value) {
+        try {
+            \App\Models\CictFollowUp::create($value);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Something went wrong, Please try again.']);
+        }
+    }
+    return response()->json(['message' => 'Data Successfully Sync']);
+});
+//End of Cict APis
