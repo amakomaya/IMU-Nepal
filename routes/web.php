@@ -237,8 +237,8 @@ Route::group(['middleware' => ['role-control:healthworker']], function() {
 
 Route::get('/admin/cict-tracing/contact-list/{case_id}', 'Backend\CictTracingController@aFormContactList')->name('cict-tracing.contact-list');
 Route::get('/admin/cict-tracing/report/{case_id}', 'Backend\CictTracingController@report')->name('cict-tracing.report');
-Route::get('/admin/cict-tracing/province-report', 'Backend\CictTracingController@provinceReport')->name('cict-tracing.province-report');
-Route::get('/admin/cict-tracing/district-report', 'Backend\CictTracingController@districtReport')->name('cict-tracing.district-report');
+Route::get('/admin/cict-tracing/province-report', 'Backend\CictTracingController@provinceReport')->name('cict-tracing.province-report')->middleware('role-control:province');
+Route::get('/admin/cict-tracing/district-report', 'Backend\CictTracingController@districtReport')->name('cict-tracing.district-report')->middleware('role-control:dho');
 Route::resource('/admin/cict-tracing', 'Backend\CictTracingController', ['names' => 'cict-tracing']);
 
 
