@@ -16,8 +16,8 @@
             <a href="{{ route('cict-tracing.index') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                 List
-                <span class="label label-danger pull-right">List</span>
-
+                <span class="label label-success pull-right">List</span>
+                
             </a>
         </li>
         @endif
