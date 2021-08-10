@@ -81,6 +81,8 @@
 
                                     <input type="hidden" id="sample_collection_date" value="{{ date('Y-m-d') }}">
                                     @endif
+                                @else
+                                <input type="hidden" id="sample_collection_date" value="{{ date('Y-m-d') }}">
                                 @endif
 
                                 <div class="form-group symptoms_two_weeks_class">
