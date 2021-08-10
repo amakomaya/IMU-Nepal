@@ -1093,7 +1093,12 @@ Route::post('/v1/cict-tracing', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
-            \App\Models\CictTracing::create($value);
+            $cict = \App\Models\CictTracing::where('case_id', $value['case_id'])->first();
+            if($cict){
+                $cict->update($value);
+            }else{
+                \App\Models\CictTracing::create($value);
+            }
         } catch (\Exception $e) {
             return response()->json(['message' => 'Something went wrong, Please try again.']);
         }
@@ -1105,7 +1110,12 @@ Route::post('/v1/cict-close-contact', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
-            \App\Models\CictCloseContact::create($value);
+            $cict = \App\Models\CictCloseContact::where('case_id', $value['case_id'])->first();
+            if($cict){
+                $cict->update($value);
+            }else{
+                \App\Models\CictCloseContact::create($value);
+            }
         } catch (\Exception $e) {
             return response()->json(['message' => 'Something went wrong, Please try again.']);
         }
@@ -1117,7 +1127,12 @@ Route::post('/v1/cict-contact', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
-            \App\Models\CictContact::create($value);
+            $cict = \App\Models\CictContact::where('case_id', $value['case_id'])->first();
+            if($cict){
+                $cict->update($value);
+            }else{
+                \App\Models\CictContact::create($value);
+            }
         } catch (\Exception $e) {
             return response()->json(['message' => 'Something went wrong, Please try again.']);
         }
@@ -1129,7 +1144,12 @@ Route::post('/v1/cict-follow-up', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
-            \App\Models\CictFollowUp::create($value);
+            $cict = \App\Models\CictContact::where('case_id', $value['case_id'])->first();
+            if($cict){
+                $cict->update($value);
+            }else{
+                \App\Models\CictFollowUp::create($value);
+            }
         } catch (\Exception $e) {
             return response()->json(['message' => 'Something went wrong, Please try again.']);
         }
