@@ -50,5 +50,5 @@ Route::get('api/antigen', 'Data\Api\AggregateController@antigen');
 
 
 Route::get('api/ccmc/get-recovered-cases', 'CCMCAPIController@getRecoveredCases');
-Route::get('api/ccmc/vaccination-data', 'CCMCAPIController@vaccinationData');
+Route::get('api/ccmc/vaccination-data', 'CCMCAPIController@testCases');
 Route::get('api/ccmc/hospital-data', 'CCMCAPIController@hospitalData');
