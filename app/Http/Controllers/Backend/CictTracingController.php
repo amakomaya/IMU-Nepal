@@ -726,4 +726,12 @@ class CictTracingController extends Controller
 
         return view('backend.cict-tracing.reports.district-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date'));
     }
+
+    public function oldCictReport()
+    {
+        $contact_tracing_new = ContactTracing::count();
+        $contact_tracing_old = ContactTracingOld::count();
+        $contact_tracing = $contact_tracing_new + $contact_tracing_old;
+
+    }
 }
