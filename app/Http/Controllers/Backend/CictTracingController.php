@@ -382,7 +382,7 @@ class CictTracingController extends Controller
                     $household['sex'] = $details['sex'];
                     $household['relationship'] = $details['relationship'];
                     $household['relationship_others'] = $details['relationship_others'];
-                    $household['phone'] = $details['phone'];
+                    $household['emergency_contact_one'] = $details['emergency_contact_one'];
                     $household['contact_type'] = $details['contact_type'];
                     $household['hp_code'] = $healthworker->hp_code;
                     $household['checked_by'] = $healthworker->token;
@@ -407,7 +407,7 @@ class CictTracingController extends Controller
                     $travel_vehicle['sex'] = $details['sex'];
                     $travel_vehicle['relationship'] = $details['relationship'];
                     $travel_vehicle['relationship_others'] = $details['relationship_others'];
-                    $travel_vehicle['phone'] = $details['phone'];
+                    $travel_vehicle['emergency_contact_one'] = $details['emergency_contact_one'];
                     $travel_vehicle['contact_type'] = $details['contact_type'];
                     $travel_vehicle['hp_code'] = $healthworker->hp_code;
                     $travel_vehicle['checked_by'] = $healthworker->token;
@@ -432,7 +432,7 @@ class CictTracingController extends Controller
                     $other_direct_care['sex'] = $details['sex'];
                     $other_direct_care['relationship'] = $details['relationship'];
                     $other_direct_care['relationship_others'] = $details['relationship_others'];
-                    $other_direct_care['phone'] = $details['phone'];
+                    $other_direct_care['emergency_contact_one'] = $details['emergency_contact_one'];
                     $other_direct_care['contact_type'] = $details['contact_type'];
                     $other_direct_care['hp_code'] = $healthworker->hp_code;
                     $other_direct_care['checked_by'] = $healthworker->token;
@@ -471,7 +471,7 @@ class CictTracingController extends Controller
             $close_contact = CictCloseContact::where('case_id', $request->case_id)->first();
             $contact_tracing = CictTracing::where('case_id', $close_contact->parent_case_id)->first();
             $data = $close_contact;
-            $data->emergency_contact_two = $close_contact->phone;
+            $data->emergency_contact_two = $close_contact->emergency_contact_one;
             $data->parent_case_name = $contact_tracing->name;
             $data->cict_token = $contact_tracing->token;
         }

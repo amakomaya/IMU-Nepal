@@ -219,7 +219,7 @@
                                                         <input type="text" class="form-control household_details_relationship_others" name="household_details[{{$key + 200}}][relationship_others]"  value="{{ $sub_data->relationship_others }}" @if( $sub_data->relationship != '0') readonly @endif>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control household_details_phone" name="household_details[{{$key + 200}}][phone]" value="{{ $sub_data->phone }}" required>
+                                                        <input type="text" class="form-control household_details_phone" name="household_details[{{$key + 200}}][emergency_contact_one]" value="{{ $sub_data->emergency_contact_one }}" required>
                                                         <input type="hidden" name="household_details[{{$key + 200}}][contact_type]" class="household_details_contact_type" value="1">
                                                         <input type="hidden" name="household_details[{{$key + 200}}][case_id]" class="household_details_case_id" value="{{ $sub_data->case_id }}">
                                                     </td>
@@ -267,7 +267,7 @@
                                                         <input type="text" class="form-control household_details_relationship_others" name="household_details[0][relationship_others]" readonly>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control household_details_phone" name="household_details[0][phone]" required>
+                                                        <input type="text" class="form-control household_details_phone" name="household_details[0][emergency_contact_one]" required>
                                                         <input type="hidden" name="household_details[0][contact_type]" class="household_details_contact_type" value="1">
                                                         <input type="hidden" name="household_details[0][case_id]" class="household_details_case_id" value="">
                                                     </td>
@@ -355,7 +355,7 @@
                                                         <input type="text" class="form-control travel_vehicle_details_relationship_others" name="travel_vehicle_details[{{$key + 400}}][relationship_others]"  value="{{ $sub_data->relationship_others }}" @if( $sub_data->relationship != '0') readonly @endif>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control travel_vehicle_details_phone" name="travel_vehicle_details[{{$key + 400}}][phone]" value="{{ $sub_data->phone }}" required>
+                                                        <input type="text" class="form-control travel_vehicle_details_phone" name="travel_vehicle_details[{{$key + 400}}][emergency_contact_one]" value="{{ $sub_data->emergency_contact_one }}" required>
                                                         <input type="hidden" name="travel_vehicle_details[{{$key + 400}}][contact_type]" class="travel_vehicle_details_contact_type" value="2">
                                                         <input type="hidden" name="travel_vehicle_details[{{$key + 400}}][case_id]" class="travel_vehicle_details_case_id" value="{{ $sub_data->case_id }}">
                                                     </td>
@@ -403,7 +403,7 @@
                                                         <input type="text" class="form-control travel_vehicle_details_relationship_others" name="travel_vehicle_details[0][relationship_others]" readonly>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control travel_vehicle_details_phone" name="travel_vehicle_details[0][phone]" required>
+                                                        <input type="text" class="form-control travel_vehicle_details_phone" name="travel_vehicle_details[0][emergency_contact_one]" required>
                                                         <input type="hidden" name="travel_vehicle_details[0][contact_type]" class="travel_vehicle_details_contact_type" value="2">
                                                         <input type="hidden" name="travel_vehicle_details[0][case_id]" class="travel_vehicle_details_case_id" value="">
                                                     </td>
@@ -491,7 +491,7 @@
                                                         <input type="text" class="form-control other_direct_care_details_relationship_others" name="other_direct_care_details[{{$key + 800}}][relationship_others]"  value="{{ $sub_data->relationship_others }}" @if( $sub_data->relationship != '0') readonly @endif>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control other_direct_care_details_phone" name="other_direct_care_details[{{$key + 800}}][phone]" value="{{ $sub_data->phone }}" required>
+                                                        <input type="text" class="form-control other_direct_care_details_phone" name="other_direct_care_details[{{$key + 800}}][emergency_contact_one]" value="{{ $sub_data->emergency_contact_one }}" required>
                                                         <input type="hidden" name="other_direct_care_details[{{$key + 800}}][contact_type]" class="other_direct_care_details_contact_type" value="3">
                                                         <input type="hidden" name="other_direct_care_details[{{$key + 800}}][case_id]" class="other_direct_care_details_case_id" value="{{ $sub_data->case_id }}">
                                                     </td>
@@ -539,7 +539,7 @@
                                                         <input type="text" class="form-control other_direct_care_details_relationship_others" name="other_direct_care_details[0][relationship_others]" readonly>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control other_direct_care_details_phone" name="other_direct_care_details[0][phone]" required>
+                                                        <input type="text" class="form-control other_direct_care_details_phone" name="other_direct_care_details[0][emergency_contact_one]" required>
                                                         <input type="hidden" name="other_direct_care_details[0][contact_type]" class="other_direct_care_details_contact_type" value="3">
                                                         <input type="hidden" name="other_direct_care_details[0][case_id]" class="other_direct_care_details_case_id" value="">
                                                     </td>
@@ -1226,7 +1226,7 @@
                 digits: true
             });
         });
-        household_details.filter('input[name$="[phone]"]').each(function() {
+        household_details.filter('input[name$="[emergency_contact_one]"]').each(function() {
             $(this).rules("add", {
                 required: true,
                 digits: true,
@@ -1246,7 +1246,7 @@
                 digits: true
             });
         });
-        travel_vehicle_details.filter('input[name$="[phone]"]').each(function() {
+        travel_vehicle_details.filter('input[name$="[emergency_contact_one]"]').each(function() {
             $(this).rules("add", {
                 required: true,
                 digits: true,
@@ -1267,7 +1267,7 @@
                 digits: true
             });
         });
-        other_direct_care_details.filter('input[name$="[phone]"]').each(function() {
+        other_direct_care_details.filter('input[name$="[emergency_contact_one]"]').each(function() {
             $(this).rules("add", {
                 required: true,
                 digits: true,

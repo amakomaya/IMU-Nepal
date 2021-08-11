@@ -77,11 +77,8 @@ class CreateCictTracingsTable extends Migration
             $table->string('close_ref_period_from_np', 10)->nullable();
             $table->string('close_ref_period_to_np', 10)->nullable();
             $table->tinyInteger('household_count')->nullable();
-            $table->text('household_details')->nullable();
             $table->enum('travel_vehicle', ['0', '1', '2'])->nullable();
-            $table->text('travel_vehicle_details')->nullable();
             $table->enum('other_direct_care', ['0', '1', '2'])->nullable();
-            $table->text('other_direct_care_details')->nullable();
             $table->enum('other_attend_social', ['0', '1', '2'])->nullable();
             $table->text('other_attend_social_details')->nullable();
 

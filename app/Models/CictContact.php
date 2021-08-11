@@ -12,7 +12,7 @@ class CictContact extends Model
     protected $fillable = [
         'case_id', 'token', 'parent_case_id', 'woman_token', 'hp_code', 'checked_by', 'name', 'age', 'age_unit', 'sex',
         'emergency_contact_one', 'emergency_contact_two', 'nationality', 'nationality_other', 
-        'realtionship', 'province_id', 'district_id', 'municipality_id', 'tole', 'ward',
+        'relationship', 'relationship_others', 'province_id', 'district_id', 'municipality_id', 'tole', 'ward',
         'informant_name', 'informant_relation', 'informant_relation_other', 'informant_phone',
         'symptoms_recent', 'date_of_onset_of_first_symptom', 'symptoms_two_weeks', 'symptoms', 'symptoms_specific', 
         'symptoms_comorbidity', 'symptoms_comorbidity_specific', 'occupation', 'occupaton_other',

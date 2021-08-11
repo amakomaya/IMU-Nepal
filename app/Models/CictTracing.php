@@ -25,8 +25,8 @@ class CictTracing extends Model
         'close_contact', 'close_contact_details', 'direct_care', 'direct_care_details',
         'attend_social', 'attend_social_details',
         'sars_cov2_vaccinated', 'dose_one_name', 'dose_one_date', 'dose_two_name', 'dose_two_date',
-        'close_ref_period_from_np', 'close_ref_period_to_np', 'household_count', 'household_details',
-        'travel_vehicle', 'travel_vehicle_details', 'other_direct_care', 'other_direct_care_details',
+        'close_ref_period_from_np', 'close_ref_period_to_np', 'household_count',
+        'travel_vehicle', 'other_direct_care',
         'other_attend_social', 'other_attend_social_details',
         'completion_date'
     ];

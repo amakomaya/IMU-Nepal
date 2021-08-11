@@ -28,9 +28,11 @@ class CreateCictContactsTable extends Migration
             $table->enum('sex', ['1', '2', '3'])->nullable();
             $table->string('emergency_contact_one', 10)->nullable();
             $table->string('emergency_contact_two', 10)->nullable();
+            $table->string('relationship', 3)->nullable();
+            $table->string('relationship_others', 40)->nullable();
             $table->string('nationality', 4)->nullable();
             $table->string('nationality_other', 30)->nullable();
-            $table->string('guardian_name', 64)->nullable();
+            
             $table->tinyInteger('province_id')->nullable();
             $table->tinyInteger('district_id')->nullable();
             $table->integer('municipality_id')->nullable();
