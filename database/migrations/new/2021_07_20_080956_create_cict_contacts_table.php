@@ -20,6 +20,7 @@ class CreateCictContactsTable extends Migration
             $table->string('parent_case_id', 50);
             $table->string('hp_code', 16)->nullable();
             $table->string('checked_by', 50)->nullable();
+            $table->string('regdev', 10)->nullable();
 
             $table->string('name', 64)->nullable();
             $table->tinyInteger('age')->nullable();
@@ -60,7 +61,7 @@ class CreateCictContactsTable extends Migration
             $table->text('healthworker_narrative')->nullable();
 
             $table->string('travelled_14_days', 3)->nullable();
-            $table->string('date_14_days', 10)->nullable();
+            $table->string('travelled_date', 10)->nullable();
             $table->string('travel_type', 3)->nullable();
             $table->string('modes_of_travel', 3)->nullable();
             $table->string('modes_of_travel_other', 64)->nullable();

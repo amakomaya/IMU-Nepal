@@ -20,6 +20,7 @@ class CreateCictTracingsTable extends Migration
             $table->string('woman_token', 50)->nullable();
             $table->string('hp_code', 16)->nullable();
             $table->string('checked_by', 50)->nullable();
+            $table->string('regdev', 10)->nullable();
 
             $table->enum('case_what', ['1', '2'])->nullable();
             $table->string('case_received_date', '10')->nullable();

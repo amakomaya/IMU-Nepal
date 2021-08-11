@@ -10,7 +10,7 @@ class CictFollowUp extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'case_id', 'token', 'parent_case_id', 'woman_token', 'hp_code', 'checked_by',
+        'case_id', 'token', 'parent_case_id', 'woman_token', 'hp_code', 'checked_by', 'regdev',
         'date_of_follow_up_0', 'no_symptoms_0', 'fever_0', 'runny_nose_0', 'cough_0', 'sore_throat_0', 'breath_0', 'symptoms_other_0',
         'date_of_follow_up_1', 'no_symptoms_1', 'fever_1', 'runny_nose_1', 'cough_1', 'sore_throat_1', 'breath_1', 'symptoms_other_1',
         'date_of_follow_up_2', 'no_symptoms_2', 'fever_2', 'runny_nose_2', 'cough_2', 'sore_throat_2', 'breath_2', 'symptoms_other_2',

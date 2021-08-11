@@ -99,6 +99,7 @@ class CictTracingController extends Controller
                     $data['woman_token'] = $patient->token;
                     $data['hp_code'] = $healthworker->hp_code;
                     $data['checked_by'] = $healthworker->token;
+                    $data['regdev'] = 'web';
                     $data['name'] = $patient->name;
                     $data['age'] = $patient->age;
                     $data['age_unit'] = $patient->age_unit;
@@ -491,6 +492,7 @@ class CictTracingController extends Controller
             $data['token'] = md5(microtime(true) . mt_Rand());
             $data['hp_code'] = $healthworker->hp_code;
             $data['checked_by'] = $healthworker->token;
+            $data['regdev'] = 'web';
             $cict_contact = CictContact::create($data);
         }
             
@@ -548,8 +550,6 @@ class CictTracingController extends Controller
             $test['case_id'] = $request->case_id;
             $test['parent_case_id'] = $cict_contact->parent_case_id;
             $data = (object) $test;
-            // $data->case_id = $request->case_id;
-            // $data->parent_case_id = $request->parent_case_id;
         }
         
         return view('backend.cict-tracing.b-two-form.follow-up', compact('cict_contact', 'cict_tracing', 'data'));
@@ -574,6 +574,7 @@ class CictTracingController extends Controller
             $data['token'] = md5(microtime(true) . mt_Rand());
             $data['hp_code'] = $healthworker->hp_code;
             $data['checked_by'] = $healthworker->token;
+            $data['regdev'] = 'web';
             $cict_follow_up = CictFollowUp::create($data);
         }
 

@@ -21,6 +21,8 @@ class CreateCictFollowUpsTable extends Migration
             $table->string('woman_token', 50)->nullable();
             $table->string('hp_code', 16)->nullable();
             $table->string('checked_by', 50)->nullable();
+            $table->string('regdev', 10)->nullable();
+            
             $table->string('completion_date', 10)->nullable();
             $table->string('high_exposure', 3)->nullable();
             

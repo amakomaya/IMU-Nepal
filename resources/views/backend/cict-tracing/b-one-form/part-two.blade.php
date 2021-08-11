@@ -318,12 +318,12 @@
 
                                 <div class="travelled_14_days_yes_class">
                                     <div class="form-group">
-                                        <label for="date_14_days">Date of travel</label>
-                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->date_14_days : '' }}" name="date_14_days"
-                                            aria-describedby="help" placeholder="Enter Date of travel" id="date_14_days"
+                                        <label for="travelled_date">Date of travel</label>
+                                        <input type="text" class="form-control" value="{{ isset($data) ? $data->travelled_date : '' }}" name="travelled_date"
+                                            aria-describedby="help" placeholder="Enter Date of travel" id="travelled_date"
                                         >
-                                        @if ($errors->has('date_14_days'))
-                                            <small id="help" class="form-text text-danger">{{ $errors->first('date_14_days') }}</small>
+                                        @if ($errors->has('travelled_date'))
+                                            <small id="help" class="form-text text-danger">{{ $errors->first('travelled_date') }}</small>
                                         @endif
                                     </div>
 
@@ -819,7 +819,7 @@
         language: 'english',
         disableAfter: currentDate
     });
-    $('#date_14_days').nepaliDatePicker({
+    $('#travelled_date').nepaliDatePicker({
         language: 'english',
         disableAfter: currentDate
     });
