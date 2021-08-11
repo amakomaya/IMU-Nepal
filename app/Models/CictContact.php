@@ -10,7 +10,7 @@ class CictContact extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'case_id', 'token', 'parent_case_id', 'woman_token', 'hp_code', 'checked_by', 'name', 'age', 'age_unit', 'sex',
+        'case_id', 'token', 'parent_case_id', 'hp_code', 'checked_by', 'name', 'age', 'age_unit', 'sex',
         'emergency_contact_one', 'emergency_contact_two', 'nationality', 'nationality_other', 
         'relationship', 'relationship_others', 'province_id', 'district_id', 'municipality_id', 'tole', 'ward',
         'informant_name', 'informant_relation', 'informant_relation_other', 'informant_phone',

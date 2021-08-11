@@ -18,7 +18,6 @@ class CreateCictContactsTable extends Migration
             $table->string('case_id', 50);
             $table->string('token', 50);
             $table->string('parent_case_id', 50);
-            $table->string('woman_token', 50)->nullable();
             $table->string('hp_code', 16)->nullable();
             $table->string('checked_by', 50)->nullable();
 
