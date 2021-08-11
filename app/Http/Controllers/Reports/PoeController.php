@@ -22,7 +22,7 @@ use Carbon\Carbon;
 class PoeController extends Controller
 {
 
-    private function dataFromAndTo(Request $request)
+    private function dataFromAndTo(Request $request, $subDaysDefault = 1)
     {
         if (!empty($request['from_date'])) {
             $from_date_array = explode("-", $request['from_date']);
@@ -34,8 +34,9 @@ class PoeController extends Controller
         }
 
         return [
-            'from_date' =>  $from_date_eng ?? Carbon::now()->subMonth(1)->startOfDay(),
-            'to_date' => $to_date_eng ?? Carbon::now()->endOfDay()
+            'from_date' =>  $from_date_eng ?? Carbon::now()->subDays($subDaysDefault)->startOfDay(),
+            'to_date' => $to_date_eng ?? Carbon::now()->endOfDay(),
+            'default_from_date' => Carbon::now()->subDays(1)->startOfDay()
         ];
     }
 
@@ -44,14 +45,14 @@ class PoeController extends Controller
         $response = FilterRequest::filter($request);
         $response['hospital_type'] = 7;
         $hpCodes = GetHealthpostCodes::filter($response);
-
+        
         $filter_date = $this->dataFromAndTo($request);
+        
         $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']) + 1;
-
+        $default_from_date = $filter_date['default_from_date'];
         foreach ($response as $key => $value) {
             $$key = $value;
         }
-
         $reports = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
             ->whereIn('ancs.hp_code', $hpCodes)
             ->whereIn('ancs.result', [3, 4, 2, 9])
@@ -76,6 +77,7 @@ class PoeController extends Controller
             // dd($reports);
         
         $data = [];
+        
         foreach($reports as $key => $report) {
             // $district_name = District::where('id', $report[0]->district_id)->pluck('district_name')[0];
             $province_name = Province::where('id', $report[0]->province_id)->pluck('province_name')[0];
@@ -107,6 +109,6 @@ class PoeController extends Controller
 
 
         }
-        return view('backend.sample.report.poe-report', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+        return view('backend.sample.report.poe-report', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days', 'default_from_date'));
     }
 }
