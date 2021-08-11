@@ -137,29 +137,10 @@ Route::post('/v2/client', function (Request $request) {
 Route::get('/v1/client', function (Request $request) {
     $hp_code = $request->hp_code;
 
-    // $record = \DB::table('women')
-    //     ->leftJoin('ancs', 'ancs.woman_token', '=', 'women.token')
-    //     ->where('women.hp_code', $hp_code)
-    //     ->where('women.end_case', '0')
-    //     ->select('women.*', 'ancs.result as sample_result')
-    //     ->where('women.created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
-    //     ->where(function ($query) {
-    //         $query->where('ancs.result', '!=', '4')
-    //             ->orWhere('women.created_at', '>=', Carbon::now()->subDays(2)->toDateTimeString());
-    //     })
-    //     ->get();
-        
     $record = SuspectedCase::with('ancs')
         ->where('hp_code', $hp_code)
         ->where('created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
         ->active()
-
-        // ->where(function ($query) {
-        //     $query->whereHas('ancs', function($q){
-        //         $q->where('result', '!=', 4)
-        //             ->orWhere('women.created_at', '>=', Carbon::now()->subDays(2)->toDateTimeString());
-        //     })->orDoesntHave('ancs');
-        // })
         ->get();
 
     $data = collect($record)->map(function ($row) {
@@ -289,6 +270,7 @@ Route::get('/v1/client-tests', function (Request $request) {
       'checked_by',
       'hp_code',
       'status',
+      'created_at',
       'updated_at',
       'checked_by_name',
       'sample_type',
@@ -309,8 +291,7 @@ Route::get('/v1/client-tests', function (Request $request) {
       'sample_test_time',
       'lab_token',
       'reporting_date_en',
-      'reporting_date_np',
-      DB::raw('DATE_FORMAT(created_at,"%Y-%m-%d %H:%I:%S") as created_at')
+      'reporting_date_np'
 
     )
     ->where('hp_code', $hp_code)
@@ -324,7 +305,7 @@ Route::get('/v1/client-tests', function (Request $request) {
       $response['checked_by'] = $row->checked_by ?? '';
       $response['hp_code'] = $row->hp_code ?? '';
       $response['status'] = $row->status ?? '';
-      $response['created_at'] = Carbon::parse($row->created_at)->format('yyyy-mm-dd hh:mm:ss')??'';
+      $response['created_at'] = $row->created_at??'';
       $response['updated_at'] = $row->updated_at ?? '';
       $response['checked_by_name'] = $row->checked_by_name ?? '';
       $response['sample_type'] = $row->sample_type ?? '';
@@ -366,7 +347,7 @@ Route::get('/v1/lab-test', function (Request $request) {
       'checked_by',
       'checked_by_name',
       'sample_token',
-      DB::raw('DATE_FORMAT(created_at,"%Y-%m-%d %H:%I:%S") as created_at')
+      'created_at'
     )->where('hp_code', $hp_code)
     ->where('created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
     ->get();
