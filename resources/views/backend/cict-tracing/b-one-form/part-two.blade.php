@@ -484,7 +484,7 @@
                                 <div class="form-group">
                                     <label>Measures taken</label><br>
                                     <select name="measures_taken" class="form-control measures_taken">
-                                        <option value="" disabled selected>Select Measures Taken</option>
+                                        <option value="" {{ isset($data) && $data->measures_taken == "" ? 'selected' : "" }}>Select Measures Taken</option>
                                         <option value="1" {{ isset($data) && $data->measures_taken == "1" ? 'selected' : "" }}>Home quarantine</option>
                                         <option value="2" {{ isset($data) && $data->measures_taken == "2" ? 'selected' : "" }}>Referred to Quarantine center</option>
                                         <option value="3" {{ isset($data) && $data->measures_taken == "3" ? 'selected' : "" }}>Contact admitted to hospital</option>

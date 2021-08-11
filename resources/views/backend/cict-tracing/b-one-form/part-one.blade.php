@@ -93,7 +93,7 @@
                             <div class="form-group">
                                 <label class="control-label" for="company">Gender</label>
                                 <select name="sex" class="form-control">
-                                    <option value="" disabled selected>Select Gender</option>
+                                    <option {{ $data && $data->sex == '' ? "selected" : "" }} value="">Select Gender</option>
                                     <option {{ $data && $data->sex == '1' ? "selected" : "" }} value="1">Male</option>
                                     <option {{ $data && $data->sex == '2' ? "selected" : "" }} value="2">Female</option>
                                     <option {{ $data && $data->sex == '3' ? "selected" : "" }}  value="3">Other</option>
@@ -273,7 +273,7 @@
                             <div class="form-group {{ $errors->has('informant_relation') ? 'has-error' : '' }}">
                                 <label for="informant_relation">Relationship with Informant</label>
                                 <select name="informant_relation" class="form-control informant_relation">
-                                    <option value="" disabled selected>-- Select Relation --</option>
+                                    <option {{ isset($data->informant_relation) && $data->informant_relation == '' ? "selected" : "" }} value="">-- Select Relation --</option>
                                     <option {{ isset($data->informant_relation) && $data->informant_relation == '1' ? "selected" : "" }} value="1">Family</option>
                                     <option {{ isset($data->informant_relation) && $data->informant_relation == '2' ? "selected" : "" }} value="2">Friends</option>
                                     <option {{ isset($data->informant_relation) && $data->informant_relation == '3' ? "selected" : "" }} value="3">Neighbour</option>

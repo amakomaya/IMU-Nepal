@@ -123,7 +123,7 @@
                             <div class="form-group">
                                 <label class="control-label" for="company">Gender</label>
                                 <select name="sex" class="form-control">
-                                    <option {{ $data && $data->sex == '' ? "disabled selected" : "" }} value="">Select Gender</option>
+                                    <option {{ $data && $data->sex == '' ? "selected" : "" }} value="">Select Gender</option>
                                     <option {{ $data && $data->sex == '1' ? "selected" : "" }} value="1">Male</option>
                                     <option {{ $data && $data->sex == '2' ? "selected" : "" }} value="2">Female</option>
                                     <option {{ $data && $data->sex == '3' ? "selected" : "" }}  value="3">Other</option>
