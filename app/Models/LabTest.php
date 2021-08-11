@@ -29,4 +29,8 @@ class LabTest extends Model
     {
         return explode('-', $this->token,2)[1] ?? $this->token;
     }
+
+    public function getCreatedAtAttribute($date){
+      return $date;
+    }
 }

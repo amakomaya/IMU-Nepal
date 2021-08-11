@@ -294,4 +294,8 @@ class SuspectedCase extends Model
     public function scopeCasesDeathList($query){
         return $query->where('end_case', '2');
     }
+
+    public function getCreatedAtAttribute($date){
+      return $date;
+    }
 }
