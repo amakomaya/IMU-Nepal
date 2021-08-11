@@ -165,6 +165,14 @@
                                            class="form-text text-danger">{{ $errors->first('relationship') }}</small>
                                 @endif
                             </div>
+
+                            <div class="form-group relationship_others_class {{ $errors->has('relationship_others') ? 'has-error' : '' }}">
+                                <label for="relationship_others">Please specify other relationship</label>
+                                <input type="text" class="form-control" value="{{ $data ? $data->relationship_others : '' }}" name="relationship_others" aria-describedby="help" placeholder="Enter other relationship" >
+                                @if ($errors->has('relationship_others'))
+                                    <small id="help" class="form-text text-danger">{{ $errors->first('relationship_others') }}</small>
+                                @endif
+                            </div>
                             
                             <div class="form-group">
                                 <label class="control-label" for="company">Current Address</label>
@@ -338,6 +346,19 @@
             $.get("{{route("municipality-select-district")}}?id=" + id, function (data) {
                 $("#municipality").html(data);
             });
+        }
+
+        relationship();
+        $('.relationship').on('change', function() {
+            relationship();
+        });
+        function relationship(){
+            if($('.relationship').val() == '0'){
+                $('.relationship_others_class').show();
+            }
+            else {
+                $('.relationship_others_class').hide();
+            }
         }
 
         otherRelationship();

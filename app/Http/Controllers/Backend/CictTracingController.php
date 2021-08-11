@@ -472,6 +472,7 @@ class CictTracingController extends Controller
             $contact_tracing = CictTracing::where('case_id', $close_contact->parent_case_id)->first();
             $data = $close_contact;
             $data->emergency_contact_two = $close_contact->emergency_contact_one;
+            $data->emergency_contact_one = '';
             $data->parent_case_name = $contact_tracing->name;
             $data->cict_token = $contact_tracing->token;
         }
