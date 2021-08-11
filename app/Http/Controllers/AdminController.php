@@ -149,14 +149,11 @@ class AdminController extends Controller
 
     public function selectFromTo(Request $request)
     {
-        $from_date = ($request->get('from_date')) ? $request->get('from_date') : ViewHelper::convertEnglishToNepali(Carbon::now()->subMonth()->format('Y-m-d'));
+      // dd($request);
+        $defaultFromDate = $request->get('default_from_date') ? ViewHelper::convertEnglishToNepali(Carbon::parse($request->get('default_from_date'))->format('Y-m-d')) : ViewHelper::convertEnglishToNepali(Carbon::now()->subMonth()->format('Y-m-d'));
+        $from_date = ($request->get('from_date')) ? $request->get('from_date') : $defaultFromDate;
         $to_date = ($request->get('to_date')) ? $request->get('to_date') : ViewHelper::convertEnglishToNepali(Carbon::now()->format('Y-m-d'));
         echo "
-        <script src=\"" . asset('bower_components/jquery/dist/jquery.min.js') . "\"></script> 
-        <script type=\"text/javascript\" src=\"" . asset('js/nepali.datepicker.v2.2.min.js') . "\"></script>
-
-        <link rel=\"stylesheet\" type=\"text/css\" href=\"" . asset('css/nepali.datepicker.v2.2.min.css') . "\" />
-
         <script type=\"text/javascript\">
            $(document).ready(function(){
                 $('#from_date').nepaliDatePicker({
