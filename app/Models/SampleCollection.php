@@ -64,6 +64,10 @@ class SampleCollection extends Model
 
     }
 
+    public function getCreatedAtAttribute($date){
+      return $date;
+    }
+
     public function getFormattedResultAttribute(){
         switch($this->result){
             case 2:
