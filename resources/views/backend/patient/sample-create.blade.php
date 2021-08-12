@@ -114,17 +114,6 @@
                                 @endif
                             </div>
 
-                            <div class="form-group antigen-part">
-                                <label for="name">Isolation Center Referred To</label>
-                                <input type="text" class="form-control" value="{{ old('antigen_isolation') }}"
-                                    name="antigen_isolation" aria-describedby="help"
-                                    placeholder="Isolation Center Referred To (Antigen)">
-                                @if ($errors->has('antigen_isolation'))
-                                    <small id="help"
-                                        class="form-text text-danger">{{ $errors->first('antigen_isolation') }}</small>
-                                @endif
-                            </div>
-
                             <div class="panel panel-danger">
                                 <div class="panel-heading"><strong>Auto Generated Sample ID is :</strong></div>
                                 <div class="panel-body text-center"><h3>{{ $swab_id }}</h3></div>

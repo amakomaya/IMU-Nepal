@@ -652,10 +652,6 @@ class WomanController extends Controller
             $responseLabId = explode('-', $uniqueLabId);
             array_shift($responseLabId);
 
-            $patient = SuspectedCase::where('token', $request->woman_token)->first();
-            $case_reason = "[1, 0, " . $request->antigen_isolation . "]";
-            $patient->update(['case_reason' => $case_reason]);
-
             $request->session()->flash('message', 'Data Inserted successfully. Created Lab ID is " ' . join("-",$responseLabId) . ' "');
         } else {
             $request->session()->flash('message', 'Data Inserted successfully');
