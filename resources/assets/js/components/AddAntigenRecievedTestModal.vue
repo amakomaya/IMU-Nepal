@@ -50,7 +50,7 @@
           <div class="input-group"><span class="input-group-addon"><i
               class="fa fa-hospital-o"></i></span>
               <input id="antigen_isolation" type="text" placeholder="Isolation Center Referred To" 
-              name="antigen_isolation" class="form-control"  v-model="data.antigen_isolation"/>
+              name="" class="form-control"  v-model="data.antigen_isolation"/>
           </div>
         </div>
       </div>
