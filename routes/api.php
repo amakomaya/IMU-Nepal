@@ -604,6 +604,7 @@ Route::post('/v1/received-in-lab', function (Request $request) {
 
 Route::post('/v1/result-in-lab-from-web', function (Request $request) {
     $value = $request->all();
+    // dd($value);
     $user = auth()->user();
     $sample_test_date_np_array = explode("-", $value['sample_test_date']);
     $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDayNepToEng();
@@ -629,6 +630,12 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
                 'sample_test_time' => $value['sample_test_time'],
                 'sample_test_result' => $value['sample_test_result'],
             ]);
+
+            if(isset($request->antigen_isolation) && $request->antigen_isolation){
+                $patient = SuspectedCase::where('token', $sample->woman_token)->first();
+                $case_reason = "[1, 0, " . $request->antigen_isolation . "]";
+                $patient->update(['case_reason' => $case_reason]);
+            }
             return response()->json('success');
         }
 
@@ -653,33 +660,39 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
       $reporting_date_en = explode("-", Carbon::now()->format('Y-m-d'));
       $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
 
-      $sample_collection->update([
-           'result' => $value['sample_test_result'],
-           'sample_test_date_en' => $sample_test_date_en,
-           'sample_test_date_np' => $value['sample_test_date'],
-           'sample_test_time' => $value['sample_test_time'],
-           'received_by' => $user->token,
-           'received_by_hp_code' => $healthWorker->hp_code,
-           'received_date_en' => $sample_test_date_en,
-           'received_date_np' => $value['sample_test_date'],
-           'lab_token' => $value['token'],
-          'reporting_date_en' => Carbon::now()->toDateTimeString(),
-          'reporting_date_np' => $reporting_date_np
-      ]);
+        $sample_collection->update([
+            'result' => $value['sample_test_result'],
+            'sample_test_date_en' => $sample_test_date_en,
+            'sample_test_date_np' => $value['sample_test_date'],
+            'sample_test_time' => $value['sample_test_time'],
+            'received_by' => $user->token,
+            'received_by_hp_code' => $healthWorker->hp_code,
+            'received_date_en' => $sample_test_date_en,
+            'received_date_np' => $value['sample_test_date'],
+            'lab_token' => $value['token'],
+            'reporting_date_en' => Carbon::now()->toDateTimeString(),
+            'reporting_date_np' => $reporting_date_np
+        ]);
 
-            LabTest::create([
-              'token' => $value['token'],
-              'hp_code' => $healthWorker->hp_code,
-              'status' => 1,
-              'sample_recv_date' => $value['sample_test_date'],
-              'sample_test_date' => $value['sample_test_date'],
-              'sample_test_time' => $value['sample_test_time'],
-              'sample_test_result' => $value['sample_test_result'],
-              'checked_by' => $user->token,
-              'checked_by_name' => $healthWorker->name,
-              'sample_token' => $sample_collection->token,
-              'regdev' => 'web'
-            ]);
+        LabTest::create([
+            'token' => $value['token'],
+            'hp_code' => $healthWorker->hp_code,
+            'status' => 1,
+            'sample_recv_date' => $value['sample_test_date'],
+            'sample_test_date' => $value['sample_test_date'],
+            'sample_test_time' => $value['sample_test_time'],
+            'sample_test_result' => $value['sample_test_result'],
+            'checked_by' => $user->token,
+            'checked_by_name' => $healthWorker->name,
+            'sample_token' => $sample_collection->token,
+            'regdev' => 'web'
+        ]);
+
+        if(isset($request->antigen_isolation) && $request->antigen_isolation){
+            $patient = SuspectedCase::where('token', $sample_collection->woman_token)->first();
+            $case_reason = "[1, 0, " . $request->antigen_isolation . "]";
+            $patient->update(['case_reason' => $case_reason]);
+        }
       return response()->json('success');
   } catch (\Exception $e) {
       return response()->json(['error'=> $e->getMessage()]);

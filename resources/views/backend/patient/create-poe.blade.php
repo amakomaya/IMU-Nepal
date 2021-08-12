@@ -199,14 +199,6 @@
                                     <small id="help" class="form-text text-danger">{{ $errors->first('id_card_detail') }}</small>
                                 @endif
                             </div>
-                            <div class="form-group {{ $errors->has('id_card_issue') ? 'has-error' : '' }}">
-                                <label for="id_card_issue">Country/District of Issue (ID Card)</label>
-                                <input type="text" id="id_card_issue" class="form-control" value="{{ old('id_card_issue') }}" name="id_card_issue"
-                                       aria-describedby="help" placeholder="Enter Country/District of Issue (ID Card)">
-                                @if ($errors->has('id_card_issue'))
-                                    <small id="help" class="form-text text-danger">{{ $errors->first('id_card_issue') }}</small>
-                                @endif
-                            </div>
                             <div class="form-group {{ $errors->has('emergency_contact_one') ? 'has-error' : '' }}">
                                 <label for="name">Contact phone number in Nepal</label>
                                 <input type="text" class="form-control" value="{{ old('emergency_contact_one') }}"
@@ -928,9 +920,6 @@
                     id_card_detail: {
                         required: true,
                         maxlength: 30,
-                    },
-                    id_card_issue: {
-                        required: true,
                     },
                     travelled_where: {
                         required: true,
