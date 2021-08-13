@@ -18,6 +18,12 @@ use App\Models\ProvinceInfo;
 use App\Models\District;
 use App\Models\DistrictInfo;
 use App\Models\Municipality;
+use App\Models\ContactTracing;
+use App\Models\ContactTracingOld;
+use App\Models\ContactDetail;
+use App\Models\ContactDetailOld;
+use App\Models\ContactFollowUp;
+use App\Models\ContactFollowUpOld;
 
 use App\Reports\FilterRequest;
 use App\Helpers\GetHealthpostCodes;
@@ -727,11 +733,28 @@ class CictTracingController extends Controller
         return view('backend.cict-tracing.reports.district-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date'));
     }
 
-    public function oldCictReport()
+    public function oldCictTotalData()
     {
-        $contact_tracing_new = ContactTracing::count();
-        $contact_tracing_old = ContactTracingOld::count();
-        $contact_tracing = $contact_tracing_new + $contact_tracing_old;
+        $contact_tracing_current = ContactTracing::count();
+        $contact_tracing_dump = ContactTracingOld::count();
+        $contact_tracing = $contact_tracing_current + $contact_tracing_dump;
 
+        $contact_details_current = ContactDetail::count();
+        $contact_details_dump = ContactDetailOld::count();
+        $contact_details = $contact_details_current + $contact_details_dump;
+
+        $contact_followup_current = ContactFollowUp::count();
+        $contact_followup_dump = ContactFollowUpOld::count();
+        $contact_followup = $contact_followup_current + $contact_followup_dump;
+
+        return response()->json([
+            'contact_tracing' => $contact_tracing,
+            'contact_details' => $contact_details,
+            'contact_followup' => $contact_followup
+        ]);
+    }
+
+    public function oldCictReport(Request $request){
+        $data_chosen = $request->date ?? date('Y-m-d');
     }
 }

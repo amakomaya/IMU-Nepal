@@ -1214,4 +1214,6 @@ Route::post('/v1/cict-follow-up', function (Request $request) {
     }
     return response()->json(['message' => 'Data Successfully Sync']);
 });
+
+Route::get('/v1/old-cict-total', 'Backend\CictTracingController@oldCictTotalData');
 //End of Cict APis
