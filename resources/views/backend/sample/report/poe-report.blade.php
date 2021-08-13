@@ -26,7 +26,7 @@
 
 
         $(document).ready(function(){
-            $.get( "{{route("admin.select-from-to")}}?from_date={{$from_date}}&to_date={{$to_date}}",function(data){
+            $.get( "{{route("admin.select-from-to")}}?from_date={{$from_date}}&to_date={{$to_date}}&default_from_date={{$default_from_date}}",function(data){
                 $("#from_to").html(data);
             });
         });
@@ -34,7 +34,6 @@
         function validateform(){
             var from_date = document.forms["info"]["from_date"].value;
             var to_date = document.forms["info"]["to_date"].value;
-
             if(from_date=="" && to_date!=""){
                 alert('Both From Date and To Date is rerquired');
                 return false;
@@ -140,6 +139,7 @@
                                 <tr>
                                     <th rowspan="2">S.N</th>
                                     <th rowspan="2">Organization Name</th>
+                                    <th rowspan="2">Total Screened</th>
                                     <th rowspan="2">Not Tested</th>
                                     <th colspan="3">Antigen Test</th>
                                     <th rowspan="2">Positivity Rate (%)</th>

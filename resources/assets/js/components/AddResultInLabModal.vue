@@ -41,6 +41,16 @@
         <input v-model="data.sample_test_result" value="3" type="radio" >Positive
         <input v-model="data.sample_test_result" value="5" type="radio" >Don't Know
       </div>
+      <div v-if="checkPermission('poe-registration')" v-show="data.sample_test_result=='3'" class="form-group">
+        <label class="control-label">Isolation Center Referred To</label>
+        <div class="inputGroupContainer">
+          <div class="input-group"><span class="input-group-addon"><i
+              class="fa fa-hospital-o"></i></span>
+              <input id="antigen_isolation" type="text" placeholder="Isolation Center Referred To" 
+              name="antigen_isolation" class="form-control"  v-model="data.antigen_isolation"/>
+          </div>
+        </div>
+      </div>
       <button v-if="!isSubmitting" class="btn btn-primary btn-sm btn-block"
               @click.prevent="submitLabIdToSampleId(data)">
         Submit
@@ -69,6 +79,7 @@ export default {
         sample_test_result: null,
         sample_test_date: null,
         sample_test_time: null,
+        antigen_isolation: null,
         token: null
       },
     }
@@ -170,6 +181,10 @@ export default {
           self.data.sample_test_date = $('#sample_test_np').val()
         }
       });
+    },
+    checkPermission(value){
+      var arr = this.$userPermissions.split(',');
+      return arr.includes(value);
     },
   },
   created(){

@@ -199,14 +199,6 @@
                                     <small id="help" class="form-text text-danger">{{ $errors->first('id_card_detail') }}</small>
                                 @endif
                             </div>
-                            <div class="form-group {{ $errors->has('id_card_issue') ? 'has-error' : '' }}">
-                                <label for="id_card_issue">Country/District of Issue (ID Card)</label>
-                                <input type="text" id="id_card_issue" class="form-control" value="{{ old('id_card_issue') }}" name="id_card_issue"
-                                       aria-describedby="help" placeholder="Enter Country/District of Issue (ID Card)">
-                                @if ($errors->has('id_card_issue'))
-                                    <small id="help" class="form-text text-danger">{{ $errors->first('id_card_issue') }}</small>
-                                @endif
-                            </div>
                             <div class="form-group {{ $errors->has('emergency_contact_one') ? 'has-error' : '' }}">
                                 <label for="name">Contact phone number in Nepal</label>
                                 <input type="text" class="form-control" value="{{ old('emergency_contact_one') }}"
@@ -406,97 +398,49 @@
                                             class="form-text text-danger">{{ $errors->first('fever') }}</small>
                                     @endif
                                 </div>
+
+                                <div class="fever-status">
                                 
-                                <div class="form-group fever-status {{ $errors->has('malaria') ? 'has-error' : '' }}">
-                                    <label for="name">RDT-Malaria Test performed?</label>
-                                    <div class="control-group">
-                                        <label class="radio-inline">
-                                            <input type="radio"
-                                                {{ old('malaria_test_status') == "0" ? 'checked' : '' }} name="malaria_test_status"
-                                                value="0" class="malaria_test_status">No
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio"
-                                                {{ old('malaria_test_status') == "1" ? 'checked' : '' }} name="malaria_test_status"
-                                                value="1" class="malaria_test_status">Yes
-                                        </label>
+                                    <div class="form-group {{ $errors->has('malaria') ? 'has-error' : '' }}">
+                                        <label for="name">RDT-Malaria Test performed?</label>
+                                        <div class="control-group">
+                                            <label class="radio-inline">
+                                                <input type="radio"
+                                                    {{ old('malaria_test_status') == "0" ? 'checked' : '' }} name="malaria_test_status"
+                                                    value="0" class="malaria_test_status">No
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio"
+                                                    {{ old('malaria_test_status') == "1" ? 'checked' : '' }} name="malaria_test_status"
+                                                    value="1" class="malaria_test_status">Yes
+                                            </label>
+                                        </div>
+                                        @if ($errors->has('malaria_test_status'))
+                                            <small id="help"
+                                                class="form-text text-danger">{{ $errors->first('malaria') }}</small>
+                                        @endif
                                     </div>
-                                    @if ($errors->has('malaria_test_status'))
-                                        <small id="help"
-                                            class="form-text text-danger">{{ $errors->first('malaria') }}</small>
-                                    @endif
-                                </div>
-                                
-                                <div class="form-group malaria-status {{ $errors->has('malaria_result') ? 'has-error' : '' }}">
-                                    <label for="name">Malaria Test Result</label>
-                                    <div class="control-group">
-                                        <label class="radio-inline">
-                                            <input type="radio"
-                                                {{ old('malaria_result') == "0" ? 'checked' : '' }} name="malaria_result"
-                                                value="0" class="malaria_result">Negative
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio"
-                                                {{ old('malaria_result') == "1" ? 'checked' : '' }} name="malaria_result"
-                                                value="1" class="malaria_result">Positive
-                                        </label>
+                                    
+                                    <div class="form-group malaria-status {{ $errors->has('malaria_result') ? 'has-error' : '' }}">
+                                        <label for="name">Malaria Test Result</label>
+                                        <div class="control-group">
+                                            <label class="radio-inline">
+                                                <input type="radio"
+                                                    {{ old('malaria_result') == "0" ? 'checked' : '' }} name="malaria_result"
+                                                    value="0" class="malaria_result">Negative
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio"
+                                                    {{ old('malaria_result') == "1" ? 'checked' : '' }} name="malaria_result"
+                                                    value="1" class="malaria_result">Positive
+                                            </label>
+                                        </div>
+                                        @if ($errors->has('malaria_result'))
+                                            <small id="help"
+                                                class="form-text text-danger">{{ $errors->first('malaria_result') }}</small>
+                                        @endif
                                     </div>
-                                    @if ($errors->has('malaria_result'))
-                                        <small id="help"
-                                            class="form-text text-danger">{{ $errors->first('malaria_result') }}</small>
-                                    @endif
                                 </div>
-                                
-                                {{-- <div class="form-group fever-status {{ $errors->has('antigen_test_status') ? 'has-error' : '' }}">
-                                    <label for="name">Antigen Test for Covid-19 swab collected ?</label>
-                                    <div class="control-group">
-                                        <label class="radio-inline">
-                                            <input type="radio"
-                                                {{ old('antigen_test_status') == "0" ? 'checked' : '' }} name="antigen_test_status"
-                                                value="0" class="antigen_test_status">No
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio"
-                                                {{ old('antigen_test_status') == "1" ? 'checked' : '' }} name="antigen_test_status"
-                                                value="1" class="antigen_test_status">Yes
-                                        </label>
-                                    </div>
-                                    @if ($errors->has('antigen_test_status'))
-                                        <small id="help"
-                                            class="form-text text-danger">{{ $errors->first('antigen_test_status') }}</small>
-                                    @endif
-                                </div>
-                                
-                                <div class="form-group antigen-status {{ $errors->has('antigen_result') ? 'has-error' : '' }}">
-                                    <label for="name">Antigen Result</label>
-                                    <div class="control-group">
-                                        <label class="radio-inline">
-                                            <input type="radio"
-                                                {{ old('antigen_result') == "0" ? 'checked' : '' }} name="antigen_result"
-                                                value="0" class="antigen_result">Negative
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio"
-                                                {{ old('antigen_result') == "1" ? 'checked' : '' }} name="antigen_result"
-                                                value="1" class="antigen_result">Positive
-                                        </label>
-                                    </div>
-                                    @if ($errors->has('antigen_result'))
-                                        <small id="help"
-                                            class="form-text text-danger">{{ $errors->first('antigen_result') }}</small>
-                                    @endif
-                                </div>
-                                
-                                <div class="form-group antigen-result-status {{ $errors->has('antigen_isolation') ? 'has-error' : '' }}">
-                                    <label for="name">Isolation Center Referred To</label>
-                                    <input type="text" class="form-control" value="{{ old('antigen_isolation') }}"
-                                        name="antigen_isolation" aria-describedby="help"
-                                        placeholder="Isolation Center Referred To (Antigen)">
-                                    @if ($errors->has('antigen_isolation'))
-                                        <small id="help"
-                                            class="form-text text-danger">{{ $errors->first('antigen_isolation') }}</small>
-                                    @endif
-                                </div> --}}
 
                                 <div class="form-group" id="symptomatic-patient">
                                     <label class="control-label" for="symptoms">Covid-19 Symptoms:</label><br>
@@ -928,9 +872,6 @@
                     id_card_detail: {
                         required: true,
                         maxlength: 30,
-                    },
-                    id_card_issue: {
-                        required: true,
                     },
                     travelled_where: {
                         required: true,

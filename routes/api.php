@@ -137,29 +137,10 @@ Route::post('/v2/client', function (Request $request) {
 Route::get('/v1/client', function (Request $request) {
     $hp_code = $request->hp_code;
 
-    // $record = \DB::table('women')
-    //     ->leftJoin('ancs', 'ancs.woman_token', '=', 'women.token')
-    //     ->where('women.hp_code', $hp_code)
-    //     ->where('women.end_case', '0')
-    //     ->select('women.*', 'ancs.result as sample_result')
-    //     ->where('women.created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
-    //     ->where(function ($query) {
-    //         $query->where('ancs.result', '!=', '4')
-    //             ->orWhere('women.created_at', '>=', Carbon::now()->subDays(2)->toDateTimeString());
-    //     })
-    //     ->get();
-        
     $record = SuspectedCase::with('ancs')
         ->where('hp_code', $hp_code)
         ->where('created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
         ->active()
-
-        // ->where(function ($query) {
-        //     $query->whereHas('ancs', function($q){
-        //         $q->where('result', '!=', 4)
-        //             ->orWhere('women.created_at', '>=', Carbon::now()->subDays(2)->toDateTimeString());
-        //     })->orDoesntHave('ancs');
-        // })
         ->get();
 
     $data = collect($record)->map(function ($row) {
@@ -283,46 +264,110 @@ Route::post('/v1/client-tests', function (Request $request) {
 
 Route::get('/v1/client-tests', function (Request $request) {
     $hp_code = $request->hp_code;
-    $record = SampleCollection::where('hp_code', $hp_code)->get();
+    $record = SampleCollection::select(
+      'token',
+      'woman_token',
+      'checked_by',
+      'hp_code',
+      'status',
+      'created_at',
+      'updated_at',
+      'checked_by_name',
+      'sample_type',
+      'sample_type_specific',
+      'sample_identification_type',
+      'service_type',
+      'result',
+      'infection_type',
+      'service_for',
+      'collection_date_en',
+      'collection_date_np',
+      'received_by',
+      'received_by_hp_code',
+      'received_date_en',
+      'received_date_np',
+      'sample_test_date_en',
+      'sample_test_date_np',
+      'sample_test_time',
+      'lab_token',
+      'reporting_date_en',
+      'reporting_date_np'
+
+    )
+    ->where('hp_code', $hp_code)
+    ->where('created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
+    ->get();
+    //TODO: Optimization, check null in mobile and remove collect code
     $data = collect($record)->map(function ($row) {
-        $response = [];
-        $response['token'] = $row->token;
-        $response['woman_token'] = $row->woman_token ?? '';
-        $response['checked_by'] = $row->checked_by ?? '';
-        $response['hp_code'] = $row->hp_code ?? '';
-        $response['status'] = $row->status ?? '';
-        $response['created_at'] = $row->created_at ?? '';
-        $response['updated_at'] = $row->updated_at ?? '';
-        $response['checked_by_name'] = $row->checked_by_name ?? '';
-        $response['sample_type'] = $row->sample_type ?? '';
-        $response['sample_type_specific'] = $row->sample_type_specific ?? '';
-        $response['sample_case_specific'] = $row->sample_case_specific ?? '';
-        $response['sample_case'] = $row->sample_case ?? '';
-        $response['sample_identification_type'] = $row->sample_identification_type ?? '';
-        $response['service_type'] = $row->service_type ?? '';
-        $response['result'] = $row->result ?? '';
-        $response['infection_type'] = $row->infection_type ?? '';
-        $response['service_for'] = $row->service_for ?? '';
-        $response['collection_date_en'] = $row->collection_date_en ?? '';
-        $response['collection_date_np'] = $row->collection_date_np ?? '';
-        $response['received_by'] = $row->received_by ?? '';
-        $response['received_by_hp_code'] = $row->received_by_hp_code ?? '';
-        $response['received_date_en'] = $row->received_date_en ?? '';
-        $response['received_date_np'] = $row->received_date_np ?? '';
-        $response['sample_test_date_en'] = $row->sample_test_date_en ?? '';
-        $response['sample_test_date_np'] = $row->sample_test_date_np ?? '';
-        $response['sample_test_time'] = $row->sample_test_time ?? '';
-        $response['lab_token'] = $row->lab_token ?? '';
-        $response['reporting_date_en'] = $row->reporting_date_en ?? '';
-        $response['reporting_date_np'] = $row->reporting_date_np ?? '';
-        return $response;
-    })->values();
+      $response = [];
+      $response['token'] = $row->token;
+      $response['woman_token'] = $row->woman_token ?? '';
+      $response['checked_by'] = $row->checked_by ?? '';
+      $response['hp_code'] = $row->hp_code ?? '';
+      $response['status'] = $row->status ?? '';
+      $response['created_at'] = $row->created_at??'';
+      $response['updated_at'] = $row->updated_at ?? '';
+      $response['checked_by_name'] = $row->checked_by_name ?? '';
+      $response['sample_type'] = $row->sample_type ?? '';
+      $response['sample_type_specific'] = $row->sample_type_specific ?? '';
+      
+      $response['sample_identification_type'] = $row->sample_identification_type ?? '';
+      $response['service_type'] = $row->service_type ?? '';
+      $response['result'] = $row->result ?? '';
+      $response['infection_type'] = $row->infection_type ?? '';
+      $response['service_for'] = $row->service_for ?? '';
+      $response['collection_date_en'] = $row->collection_date_en ?? '';
+      $response['collection_date_np'] = $row->collection_date_np ?? '';
+      $response['received_by'] = $row->received_by ?? '';
+      $response['received_by_hp_code'] = $row->received_by_hp_code ?? '';
+      $response['received_date_en'] = $row->received_date_en ?? '';
+      $response['received_date_np'] = $row->received_date_np ?? '';
+      $response['sample_test_date_en'] = $row->sample_test_date_en ?? '';
+      $response['sample_test_date_np'] = $row->sample_test_date_np ?? '';
+      $response['sample_test_time'] = $row->sample_test_time ?? '';
+      $response['lab_token'] = $row->lab_token ?? '';
+      $response['reporting_date_en'] = $row->reporting_date_en ?? '';
+      $response['reporting_date_np'] = $row->reporting_date_np ?? '';
+      return $response;
+    });
     return response()->json($data);
 });
 
 Route::get('/v1/lab-test', function (Request $request) {
     $hp_code = $request->hp_code;
-    $data = LabTest::where('hp_code', $hp_code)->get();
+    $record = LabTest::select(
+      'id',
+      'token',
+      'hp_code',
+      'status',
+      'sample_recv_date',
+      'sample_test_date',
+      'sample_test_time',
+      'sample_test_result',
+      'checked_by',
+      'checked_by_name',
+      'sample_token',
+      'created_at'
+    )->where('hp_code', $hp_code)
+    ->where('created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
+    ->get();
+    //TODO: Optimization, check null in mobile and remove collect code
+    $data = collect($record)->map(function ($row) {
+      $response = [];
+      $response['id'] = $row->id;
+      $response['token'] = $row->token ?? '';
+      $response['hp_code'] = $row->hp_code ?? '';
+      $response['status'] = $row->status ?? '';
+      $response['sample_recv_date'] = $row->sample_recv_date ?? '';
+      $response['sample_test_date'] = $row->sample_test_date ?? '';
+      $response['sample_test_time'] = $row->sample_test_time ?? '';
+      $response['sample_test_result'] = $row->sample_test_result ?? '';
+      $response['checked_by'] = $row->checked_by ?? '';
+      $response['checked_by_name'] = $row->checked_by_name ?? '';
+      $response['sample_token'] = $row->sample_token ?? '';
+      $response['created_at'] = $row->created_at ?? '';
+      return $response;
+    });
     return response()->json($data);
 });
 
@@ -559,6 +604,7 @@ Route::post('/v1/received-in-lab', function (Request $request) {
 
 Route::post('/v1/result-in-lab-from-web', function (Request $request) {
     $value = $request->all();
+    // dd($value);
     $user = auth()->user();
     $sample_test_date_np_array = explode("-", $value['sample_test_date']);
     $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDayNepToEng();
@@ -584,6 +630,12 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
                 'sample_test_time' => $value['sample_test_time'],
                 'sample_test_result' => $value['sample_test_result'],
             ]);
+
+            if(isset($request->antigen_isolation) && $request->antigen_isolation){
+                $patient = SuspectedCase::where('token', $sample->woman_token)->first();
+                $case_reason = "[1, 0, " . $request->antigen_isolation . "]";
+                $patient->update(['case_reason' => $case_reason]);
+            }
             return response()->json('success');
         }
 
@@ -608,33 +660,39 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
       $reporting_date_en = explode("-", Carbon::now()->format('Y-m-d'));
       $reporting_date_np = Calendar::eng_to_nep($reporting_date_en[0], $reporting_date_en[1], $reporting_date_en[2])->getYearMonthDayEngToNep();
 
-      $sample_collection->update([
-           'result' => $value['sample_test_result'],
-           'sample_test_date_en' => $sample_test_date_en,
-           'sample_test_date_np' => $value['sample_test_date'],
-           'sample_test_time' => $value['sample_test_time'],
-           'received_by' => $user->token,
-           'received_by_hp_code' => $healthWorker->hp_code,
-           'received_date_en' => $sample_test_date_en,
-           'received_date_np' => $value['sample_test_date'],
-           'lab_token' => $value['token'],
-          'reporting_date_en' => Carbon::now()->toDateTimeString(),
-          'reporting_date_np' => $reporting_date_np
-      ]);
+        $sample_collection->update([
+            'result' => $value['sample_test_result'],
+            'sample_test_date_en' => $sample_test_date_en,
+            'sample_test_date_np' => $value['sample_test_date'],
+            'sample_test_time' => $value['sample_test_time'],
+            'received_by' => $user->token,
+            'received_by_hp_code' => $healthWorker->hp_code,
+            'received_date_en' => $sample_test_date_en,
+            'received_date_np' => $value['sample_test_date'],
+            'lab_token' => $value['token'],
+            'reporting_date_en' => Carbon::now()->toDateTimeString(),
+            'reporting_date_np' => $reporting_date_np
+        ]);
 
-            LabTest::create([
-              'token' => $value['token'],
-              'hp_code' => $healthWorker->hp_code,
-              'status' => 1,
-              'sample_recv_date' => $value['sample_test_date'],
-              'sample_test_date' => $value['sample_test_date'],
-              'sample_test_time' => $value['sample_test_time'],
-              'sample_test_result' => $value['sample_test_result'],
-              'checked_by' => $user->token,
-              'checked_by_name' => $healthWorker->name,
-              'sample_token' => $sample_collection->token,
-              'regdev' => 'web'
-            ]);
+        LabTest::create([
+            'token' => $value['token'],
+            'hp_code' => $healthWorker->hp_code,
+            'status' => 1,
+            'sample_recv_date' => $value['sample_test_date'],
+            'sample_test_date' => $value['sample_test_date'],
+            'sample_test_time' => $value['sample_test_time'],
+            'sample_test_result' => $value['sample_test_result'],
+            'checked_by' => $user->token,
+            'checked_by_name' => $healthWorker->name,
+            'sample_token' => $sample_collection->token,
+            'regdev' => 'web'
+        ]);
+
+        if(isset($request->antigen_isolation) && $request->antigen_isolation){
+            $patient = SuspectedCase::where('token', $sample_collection->woman_token)->first();
+            $case_reason = "[1, 0, " . $request->antigen_isolation . "]";
+            $patient->update(['case_reason' => $case_reason]);
+        }
       return response()->json('success');
   } catch (\Exception $e) {
       return response()->json(['error'=> $e->getMessage()]);
