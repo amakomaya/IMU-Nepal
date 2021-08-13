@@ -1172,7 +1172,11 @@ Route::post('/v1/cict-close-contact', function (Request $request) {
             if($cict){
                 $cict->update($value);
             }else{
-                \App\Models\CictCloseContact::create($value);
+                $parent_case = \App\Models\CictTracing::where('case_id', $value['parent_case_id'])->first();
+                if($parent_case){
+                    $value['cict_id'] = $parent_case->id;
+                    \App\Models\CictCloseContact::create($value);
+                }
             }
         } catch (\Exception $e) {
             return response()->json(['message' => 'Something went wrong, Please try again.']);
