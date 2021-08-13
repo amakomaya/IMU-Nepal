@@ -189,7 +189,7 @@ class AncDetailController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $filter_date = $this->dataFromAndTo($request);
-        $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']) +1;
+        $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']) + 1;
 
         foreach ($response as $key => $value) {
             $$key = $value;
@@ -199,21 +199,8 @@ class AncDetailController extends Controller
         $reports = SampleCollection::leftjoin('healthposts', 'ancs.received_by_hp_code', '=', 'healthposts.hp_code')
             ->whereIn('ancs.received_by_hp_code', $hpCodes)
             ->whereIn('ancs.result', ['3', '4'])
-            ->whereBetween(\DB::raw('DATE(ancs.sample_test_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
-
-
-        if ($response['province_id'] !== null){
-            $reports = $reports->where('healthposts.province_id', $response['province_id']);
-        }
-
-        if($response['district_id'] !== null){
-            $reports = $reports->where('healthposts.district_id', $response['district_id']);
-        }
-        if($response['municipality_id'] !== null){
-            $reports = $reports->where('healthposts.municipality_id', $response['municipality_id']);
-        }
-
-        $reports = $reports->get()
+            ->whereBetween(\DB::raw('DATE(ancs.sample_test_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
+            ->get()
             ->groupBy('hp_code');
         
         $data = [];
