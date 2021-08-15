@@ -11,7 +11,8 @@ class CictCloseContact extends Model
     protected $fillable = [
         'cict_id', 'case_id', 'parent_case_id', 'hp_code', 'checked_by', 
         'name', 'age', 'age_unit', 'sex',
-        'emergency_contact_one', 'relationship', 'relationship_others', 'contact_type'
+        'emergency_contact_one', 'relationship', 'relationship_others', 'contact_type',
+        'created_at', 'updated_at'
     ];
 
 	public function parentCase()

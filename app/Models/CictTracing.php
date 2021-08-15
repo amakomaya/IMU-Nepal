@@ -29,7 +29,7 @@ class CictTracing extends Model
         'close_ref_period_from_np', 'close_ref_period_to_np', 'household_count',
         'travel_vehicle', 'other_direct_care',
         'other_attend_social', 'other_attend_social_details',
-        'completion_date'
+        'completion_date', 'created_at', 'updated_at'
     ];
 
     protected $allowedFilters = [

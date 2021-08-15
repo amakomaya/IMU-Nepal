@@ -1141,11 +1141,14 @@ Route::get('/v1/cict-contact', function(Request $request) {
     $response = \App\Models\CictContact::where('hp_code', $hp_code)->get();
     return response()->json($response);
 });
-Route::get('/v1/cict-follow-up', function(Request $request) {
-    $hp_code = $request->hp_code;
-    $response = \App\Models\CictFollowUp::where('hp_code', $hp_code)->get();
-    return response()->json($response);
-});
+// Route::get('/v1/cict-follow-up', function(Request $request) {
+//     $hp_code = $request->hp_code;
+//     $follow_ups = \App\Models\CictFollowUp::where('hp_code', $hp_code)->get();
+//     if($follow_ups){
+
+//     }
+//     return response()->json($response);
+// });
 
 Route::post('/v1/cict-tracing', function (Request $request) {
     $data = $request->json()->all();
@@ -1206,10 +1209,47 @@ Route::post('/v1/cict-follow-up', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
-            $cict = \App\Models\CictContact::where('case_id', $value['case_id'])->first();
+            $day = $value['contact_with_case_day'];
+            $value['date_of_follow_up_'. $day] = $value['follow_up_date'];
+            if($value['symptoms']){
+                $symptoms = json_decode($value['symptoms']);
+                if(count($symptoms) > 0){
+                    foreach($symptoms as $symptom){
+                        if($symptom == 4){
+                            $value['fever_'. $day] = 1;
+                        }elseif($symptom == 8){
+                            $value['runny_nose_'. $day] = 1;
+                        }elseif($symptom == 6){
+                            $value['cough_'. $day] = 1;
+                        }elseif($symptom == 7){
+                            $value['sore_throat_'. $day] = 1;
+                        }elseif($symptom == 9){
+                            $value['breath_'. $day] = 1;
+                        }else{
+                            $value['symptoms_other_'. $day] = $value['symptoms_other'];
+                        }
+                    }
+                }else {
+                    $value['no_symptoms_'. $day] = 1;
+                }
+            }
+            $mobile_date = $value['created_at'];
+            unset($value['contact_with_case_day']);
+            unset($value['follow_up_day']);
+            unset($value['follow_up_date']);
+            unset($value['symptoms']);
+            unset($value['symptoms_other']);
+            unset($value['checked_by_name']);
+            unset($value['created_at']);
+
+            $cict = \App\Models\CictFollowUp::where('case_id', $value['case_id'])->first();
             if($cict){
+                if(!$value['updated_at']){
+                    $value['updated_at'] = $mobile_date;
+                }
                 $cict->update($value);
             }else{
+                $value['created_at'] = $value['updated_at'] = $mobile_date;
                 \App\Models\CictFollowUp::create($value);
             }
         } catch (\Exception $e) {
