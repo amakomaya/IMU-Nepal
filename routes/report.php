@@ -30,3 +30,5 @@ Route::get('organization-contact-tracing', 'Reports\AncDetailController@organiza
 Route::get('district-wise-cases-overview', 'Reports\DistrictWiseCasesOverview@all')->name('report.district-wise-cases-overview');
 
 Route::get('poe-report', 'Reports\PoeController@poeReport')->name('report.poe');
+
+Route::get('cict-old-report', 'Backend\CictTracingController@oldCictReport')->name('report.cict-old-report');

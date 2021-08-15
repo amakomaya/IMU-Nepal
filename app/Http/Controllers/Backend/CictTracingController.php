@@ -12,6 +12,7 @@ use App\Models\CictCloseContact;
 use App\Models\SuspectedCase;
 use App\Models\SuspectedCaseOld;
 use App\Models\SampleCollection;
+use App\Models\SampleCollectionOld;
 use App\Models\OrganizationMember;
 use App\Models\Vaccine;
 use App\Models\ProvinceInfo;
@@ -734,8 +735,17 @@ class CictTracingController extends Controller
         return view('backend.cict-tracing.reports.district-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date'));
     }
 
+    public function oldCictReport()
+    {
+        return view('backend.cict-tracing.old-report.report');
+    }
+
     public function oldCictTotalData()
     {
+        $positive_current = SampleCollection::where('result', '3')->count();
+        $positive_dump = SampleCollectionOld::where('result', '3')->count();
+        $positive = $positive_current + $positive_dump;
+
         $case_mgmt = CaseManagement::count();
 
         $contact_tracing_current = ContactTracing::count();
@@ -749,6 +759,7 @@ class CictTracingController extends Controller
         $contact_followup = $contact_followup_current + $contact_followup_dump;
 
         return response()->json([
+            'positive' => $positive,
             'case_mgmt' => $case_mgmt,
             'contact_tracing' => $contact_tracing,
             'contact_followup' => $contact_followup
@@ -758,6 +769,10 @@ class CictTracingController extends Controller
     public function oldCictDatewiseReport(Request $request){
         $data_chosen_from = $request->date_from ?? date('Y-m-d');
         $data_chosen_to = $request->date_to ?? date('Y-m-d');
+
+        $positive_current_count = SampleCollection::whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
+        $positive_dump_count = SampleCollectionOld::whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
+        $positive_count = $positive_current_count + $positive_dump_count;
 
         $case_mgmt_count = CaseManagement::whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
 
@@ -770,9 +785,12 @@ class CictTracingController extends Controller
         $contact_followup_count = $contact_followup_current_count + $contact_followup_dump_count;
 
         return response()->json([
+            'positive_count' => $positive_count,
             'case_mgmt_count' => $case_mgmt_count,
             'contact_tracing_count' => $contact_tracing_count,
-            'contact_followup_count' => $contact_followup_count
+            'contact_followup_count' => $contact_followup_count,
+            'date_from' => $data_chosen_from,
+            'date_to' => $data_chosen_to
         ]);
     }
 }

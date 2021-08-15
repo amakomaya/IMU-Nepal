@@ -71,6 +71,7 @@ import CommunityDeathCreate from "./components/CommunityDeathCreate"
 import CommunityDeathList from "./components/CommunityDeathList"
 
 import CICTTracing from "./components/CICTTracingList"
+import CICTOldReport from "./components/CICTOldReport"
 
 
 import VueTimepicker from 'vue2-timepicker';
@@ -153,6 +154,7 @@ Vue.component('community-deaths-create', CommunityDeathCreate);
 Vue.component('community-deaths-list', CommunityDeathList);
 
 Vue.component('cict-tracing-list', CICTTracing);
+Vue.component('cict-old-report', CICTOldReport);
 
 const app = new Vue({
     el: '#app',
