@@ -24,6 +24,7 @@ use App\Models\ContactDetail;
 use App\Models\ContactDetailOld;
 use App\Models\ContactFollowUp;
 use App\Models\ContactFollowUpOld;
+use App\Models\CaseManagement;
 
 use App\Reports\FilterRequest;
 use App\Helpers\GetHealthpostCodes;
@@ -735,26 +736,43 @@ class CictTracingController extends Controller
 
     public function oldCictTotalData()
     {
+        $case_mgmt = CaseManagement::count();
+
         $contact_tracing_current = ContactTracing::count();
         $contact_tracing_dump = ContactTracingOld::count();
         $contact_tracing = $contact_tracing_current + $contact_tracing_dump;
 
-        $contact_details_current = ContactDetail::count();
-        $contact_details_dump = ContactDetailOld::count();
-        $contact_details = $contact_details_current + $contact_details_dump;
+        // $contact_details_current = ContactDetail::count();
 
         $contact_followup_current = ContactFollowUp::count();
         $contact_followup_dump = ContactFollowUpOld::count();
         $contact_followup = $contact_followup_current + $contact_followup_dump;
 
         return response()->json([
+            'case_mgmt' => $case_mgmt,
             'contact_tracing' => $contact_tracing,
-            'contact_details' => $contact_details,
             'contact_followup' => $contact_followup
         ]);
     }
 
-    public function oldCictReport(Request $request){
-        $data_chosen = $request->date ?? date('Y-m-d');
+    public function oldCictDatewiseReport(Request $request){
+        $data_chosen_from = $request->date_from ?? date('Y-m-d');
+        $data_chosen_to = $request->date_to ?? date('Y-m-d');
+
+        $case_mgmt_count = CaseManagement::whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
+
+        $contact_tracing_current_count = ContactTracing::whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
+        $contact_tracing_dump_count = ContactTracingOld::whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
+        $contact_tracing_count = $contact_tracing_current_count + $contact_tracing_dump_count;
+
+        $contact_followup_current_count = ContactFollowUp::whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
+        $contact_followup_dump_count = ContactFollowUpOld::whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
+        $contact_followup_count = $contact_followup_current_count + $contact_followup_dump_count;
+
+        return response()->json([
+            'case_mgmt_count' => $case_mgmt_count,
+            'contact_tracing_count' => $contact_tracing_count,
+            'contact_followup_count' => $contact_followup_count
+        ]);
     }
 }

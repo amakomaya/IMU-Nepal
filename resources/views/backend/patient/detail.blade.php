@@ -234,7 +234,6 @@
                         <tr>
                             <td>Created At :</td>
                             <?php
-                                // dd($data->created_at);
                                 $created_en = explode("-", Carbon\Carbon::parse($data->created_at)->format('Y-m-d'));
                                 $created_np = Yagiten\Nepalicalendar\Calendar::eng_to_nep($created_en[0], $created_en[1], $created_en[2])->getYearMonthDay();
                             ?>
