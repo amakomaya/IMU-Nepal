@@ -45,12 +45,7 @@
                     </div>
                     <hr>
                     @php $initial_token = '' @endphp
-                    @if($ancs == [1])
-                    @elseif($ancs == null)
-                    <div class="panel-body">
-                        <h3>No Records Found</h3>
-                    </div>
-                    @else
+                    @if(isset($ancs))
                     <div class="panel-body">
                         <form action="{{ route('admin.sid.update', $ancs->token) }}" method="POST" id="all_form">
                         @csrf
@@ -278,29 +273,20 @@
                         <div class="form-group">
                             <label class="control-label" for="caste">Occupation</label>
                             <select name="occupation" class="form-control">
-                                <option {{ $ancs->woman->occupation == '' ? "selected" : "" }} value="">Select Occupation
-                                </option>
-                                <option {{ $ancs->woman->occupation == '1' ? "selected" : "" }} value="1">Front Line Health
-                                    Worker
-                                </option>
+                                <option {{ $ancs->woman->occupation == '' ? "selected" : "" }} value="">Select Occupation</option>
+                                <option {{ $ancs->woman->occupation == '1' ? "selected" : "" }} value="1">Front Line Health Worker</option>
                                 <option {{ $ancs->woman->occupation == '2' ? "selected" : "" }} value="2">Doctor</option>
                                 <option {{ $ancs->woman->occupation == '3' ? "selected" : "" }} value="3">Nurse</option>
-                                <option {{ $ancs->woman->occupation == '4' ? "selected" : "" }} value="4">Police/Army
-                                </option>
-                                <option {{ $ancs->woman->occupation == '5' ? "selected" : "" }} value="5">
-                                    Business/Industry
-                                </option>
-                                <option {{ $ancs->woman->occupation == '6' ? "selected" : "" }} value="6">
-                                    Teacher/Student/Education
-                                </option>
-                                <option {{ $ancs->woman->occupation == '7' ? "selected" : "" }} value="7">Journalist
-                                </option>
-                                <option {{ $ancs->woman->occupation == '8' ? "selected" : "" }} value="8">Agriculture
-                                </option>
-                                <option {{ $ancs->woman->occupation == '9' ? "selected" : "" }} value="9">
-                                    Transport/Delivery
-                                </option>
-                                <option {{ $ancs->woman->occupation == '10' ? "selected" : "" }} value="10">Other</option>
+                                <option {{ $ancs->woman->occupation == '4' ? "selected" : "" }} value="4">Police/Army</option>
+                                <option {{ $ancs->woman->occupation == '5' ? "selected" : "" }} value="5">Business/Industry</option>
+                                <option {{ $ancs->woman->occupation == '6' ? "selected" : "" }} value="6">Teacher/Student/Education</option>
+                                <option {{ $ancs->woman->occupation == '7' ? "selected" : "" }} value="7">Civil servant</option>
+                                <option {{ $ancs->woman->occupation == '8' ? "selected" : "" }} value="8">Journalist</option>
+                                <option {{ $ancs->woman->occupation == '9' ? "selected" : "" }} value="9">Agriculture</option>
+                                <option {{ $ancs->woman->occupation == '10' ? "selected" : "" }} value="10">Transport/Delivery</option>
+                                <option {{ $ancs->woman->occupation == '12' ? "selected" : "" }} value="12">Tourist</option>
+                                <option {{ $ancs->woman->occupation == '13' ? "selected" : "" }} value="13">Migrant Worker</option>
+                                <option {{ $ancs->woman->occupation == '11' ? "selected" : "" }} value="11">Other</option>
                             </select>
                             @if ($errors->has('occupation'))
                                 <small id="help"

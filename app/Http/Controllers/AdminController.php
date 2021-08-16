@@ -209,22 +209,23 @@ class AdminController extends Controller
     public function sidSearch(Request $request) {
         if((Auth::user()->role == 'main' || Auth::user()->role == 'province' || Auth::user()->role == 'municipality' || Auth::user()->role == 'healthpost') && session()->get('permission_id') == 1) {
             if($request->sid) {
+                // dd($request->sid);
                 $response = FilterRequest::filter($request);
                 $hpCodes = GetHealthpostCodes::filter($response);
 
-                $ancs = SampleCollection::with('woman')
-                    ->whereIn('hp_code', $hpCodes)
-                    ->where('token', $request->sid)
-                    ->first();
-
+                $ancs = SampleCollection::with('woman')->where('token', $request->sid)
+                    ->whereIn('hp_code', $hpCodes)->first();
                 // dd($ancs);
 
-            } else {
-                $ancs = [1];
+                if($ancs){
+                    $request->session()->flash('message', 'Record Found');
+                    return view('backend.sid-search.edit', compact('ancs'));
+                }else{
+                    $request->session()->flash('message', 'Record Not Found');
+                    return redirect()->route('admin.sid.search');
+                }
             }
-            $dateToday = Carbon::now()->format('Y-d-m');
-    
-            return view('backend.sid-search.edit', compact('ancs', 'dateToday'));
+            return view('backend.sid-search.edit');
         } else {
             return redirect('/admin');
         }
