@@ -372,6 +372,17 @@
                                 <small id="help" class="form-text text-danger">{{ $errors->first('sample_test_result') }}</small>
                             @endif
                         </div>
+                        <div class="form-group">
+                            <label for="name">Test Type</label>
+                            <select name="service_for" class="form-control">
+                                <option {{ $ancs->service_for == '' ? "selected" : "" }} value="1">Select Test Type</option>
+                                <option {{ $ancs->service_for == '1' ? "selected" : "" }} value="1">PCR</option>
+                                <option {{ $ancs->service_for == '2' ? "selected" : "" }} value="2">Antigen</option>
+                            </select>
+                            @if ($errors->has('service_for'))
+                                <small id="help" class="form-text text-danger">{{ $errors->first('service_for') }}</small>
+                            @endif
+                        </div>
                         @php
                             if($ancs->lab_token) {
                                 $s_token = explode('-', $ancs->lab_token);

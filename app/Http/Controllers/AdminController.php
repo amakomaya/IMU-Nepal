@@ -286,11 +286,11 @@ class AdminController extends Controller
                     'symptoms_comorbidity' => $symptoms_comorbidity,
                     'symptoms_comorbidity_specific' => $symptoms_comorbidity_specific
                 ]);
-        // dd($id);
                 
                 if($request->sample_recv_date != null && $request->remaining_token != null) {
                     SampleCollection::where('token', $id)->first()->update([
                       'result' => $request->sample_test_result,
+                      'service_for' => $request->service_for,
                       'received_date_np' => $request->sample_recv_date,
                       'received_date_en' => $sample_recv_date_en,
                       'sample_test_date_np' => $request->sample_test_date,
