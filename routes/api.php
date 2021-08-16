@@ -1141,14 +1141,61 @@ Route::get('/v1/cict-contact', function(Request $request) {
     $response = \App\Models\CictContact::where('hp_code', $hp_code)->get();
     return response()->json($response);
 });
-// Route::get('/v1/cict-follow-up', function(Request $request) {
-//     $hp_code = $request->hp_code;
-//     $follow_ups = \App\Models\CictFollowUp::where('hp_code', $hp_code)->get();
-//     if($follow_ups){
-
-//     }
-//     return response()->json($response);
-// });
+Route::get('/v1/cict-follow-up', function(Request $request) {
+    $hp_code = $request->hp_code;
+    $follow_ups = \App\Models\CictFollowUp::where('hp_code', $hp_code)->get();
+    $data = [];
+    if($follow_ups){
+        foreach($follow_ups as $key => $follow_up){
+            for($i=0; $i<11; $i++){
+                if($follow_up->{'date_of_follow_up_'.$i}){
+                    $data[$key.'_'.$i]['token'] = $follow_up->token ?? '';
+                    $data[$key.'_'.$i]['case_id'] = $follow_up->case_id ?? '';
+                    $data[$key.'_'.$i]['parent_case_id'] = $follow_up->parent_case_id ?? '';
+                    $data[$key.'_'.$i]['hp_code'] = $follow_up->hp_code ?? '';
+                    $data[$key.'_'.$i]['checked_by'] = $follow_up->checked_by ?? '';
+                    $data[$key.'_'.$i]['regdev'] = $follow_up->regdev ?? '';
+                    $data[$key.'_'.$i]['high_exposure'] = $follow_up->high_exposure ?? '';
+                    $data[$key.'_'.$i]['completion_date'] = $follow_up->completion_date ?? '';
+                    $data[$key.'_'.$i]['created_at'] = $follow_up->created_at ? $follow_up->created_at->format('Y-m-d H:i:s') : '';
+                    $data[$key.'_'.$i]['updated_at'] = $follow_up->updated_at ? $follow_up->updated_at->format('Y-m-d H:i:s') : '';
+                    $data[$key.'_'.$i]['contact_with_case_day'] = (string)$i;
+                    $data[$key.'_'.$i]['follow_up_day'] = (string)(10 - $i);
+                    $data[$key.'_'.$i]['follow_up_date'] = $follow_up->{'date_of_follow_up_'.$i} ?? '';
+                    
+                    if($follow_up->{'no_symptoms_'.$i} == 1){
+                        $data[$key.'_'.$i]['symptoms'] = "[]";
+                        $data[$key.'_'.$i]['symptoms_other'] = "";
+                    }else{
+                        $symptoms_string = '';
+                        if($follow_up->{'fever_'.$i}){
+                            $symptoms_string .= '4,';
+                        }
+                        if($follow_up->{'runny_nose_'.$i}){
+                            $symptoms_string .= '8,';
+                        }
+                        if($follow_up->{'cough_'.$i}){
+                            $symptoms_string .= '6,';
+                        }
+                        if($follow_up->{'sore_throat'.$i}){
+                            $symptoms_string .= '7,';
+                        }
+                        if($follow_up->{'breath_'.$i}){
+                            $symptoms_string .= '9,';
+                        }
+                        if($follow_up->{'symptoms_other_'.$i}){
+                            $symptoms_string .= '0';
+                        }
+                        
+                        $data[$key.'_'.$i]['symptoms'] = "[" . $symptoms_string . "]";
+                        $data[$key.'_'.$i]['symptoms_other'] = $follow_up->{'symptoms_other_'.$i} ?? '';
+                    }
+                }
+            }
+        }
+    }
+    return response()->json($data);
+});
 
 Route::post('/v1/cict-tracing', function (Request $request) {
     $data = $request->json()->all();
