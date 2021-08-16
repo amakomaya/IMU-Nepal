@@ -742,8 +742,8 @@ class CictTracingController extends Controller
 
     public function oldCictTotalData()
     {
-        $positive_current = SampleCollection::where('result', '3')->count();
-        $positive_dump = SampleCollectionOld::where('result', '3')->count();
+        $positive_current = SampleCollection::where('result', '3')->active()->count();
+        $positive_dump = SampleCollectionOld::where('result', '3')->where('status', 1)->count();
         $positive = $positive_current + $positive_dump;
 
         $case_mgmt = CaseManagement::count();
@@ -772,8 +772,10 @@ class CictTracingController extends Controller
         $data_chosen_from = Carbon::parse($data_chosen_from)->startOfDay()->toDateTimeString();
         $data_chosen_to = Carbon::parse($data_chosen_to)->endOfDay()->toDateTimeString();
 
-        $positive_current_count = SampleCollection::where('result', '3')->whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
-        $positive_dump_count = SampleCollectionOld::where('result', '3')->whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
+        $positive_current_count = SampleCollection::where('result', '3')->whereBetween('created_at', [$data_chosen_from, $data_chosen_to])
+            ->active()->count();
+        $positive_dump_count = SampleCollectionOld::where('result', '3')->whereBetween('created_at', [$data_chosen_from, $data_chosen_to])
+            ->where('status', 1)->count();
         $positive_count = $positive_current_count + $positive_dump_count;
 
         $case_mgmt_count = CaseManagement::whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
