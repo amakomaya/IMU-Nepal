@@ -769,6 +769,8 @@ class CictTracingController extends Controller
     public function oldCictDatewiseReport(Request $request){
         $data_chosen_from = $request->date_from ?? date('Y-m-d');
         $data_chosen_to = $request->date_to ?? date('Y-m-d');
+        $data_chosen_from = Carbon::parse($data_chosen_from)->startOfDay()->toDateTimeString();
+        $data_chosen_to = Carbon::parse($data_chosen_to)->endOfDay()->toDateTimeString();
 
         $positive_current_count = SampleCollection::where('result', '3')->whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
         $positive_dump_count = SampleCollectionOld::where('result', '3')->whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
