@@ -770,8 +770,8 @@ class CictTracingController extends Controller
         $data_chosen_from = $request->date_from ?? date('Y-m-d');
         $data_chosen_to = $request->date_to ?? date('Y-m-d');
 
-        $positive_current_count = SampleCollection::whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
-        $positive_dump_count = SampleCollectionOld::whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
+        $positive_current_count = SampleCollection::where('result', '3')->whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
+        $positive_dump_count = SampleCollectionOld::where('result', '3')->whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
         $positive_count = $positive_current_count + $positive_dump_count;
 
         $case_mgmt_count = CaseManagement::whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
