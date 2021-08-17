@@ -1194,7 +1194,8 @@ Route::get('/v1/cict-follow-up', function(Request $request) {
             }
         }
     }
-    return response()->json($data);
+    $response = array_values($data);
+    return response()->json($response);
 });
 
 Route::post('/v1/cict-tracing', function (Request $request) {
