@@ -28,6 +28,7 @@ class PaymentCase extends Model
 
     protected $allowedFilters = [
         'name', 'age',
+        'hospital_register_id',
         'created_at',
         'register_date_en',
         'phone',

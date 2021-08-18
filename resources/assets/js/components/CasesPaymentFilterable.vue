@@ -230,6 +230,7 @@ export default {
       json_fields: {
         'S.N': 'serial_number',
         'Register Date' : 'register_date_np',
+        'Hospital ID' : 'hospital_register_id',
         'Name': 'name',
         'Age': 'age',
         'Gender': 'gender',
@@ -387,6 +388,7 @@ export default {
           let formattedTreatmentOutcomeObject = {1:"Discharge", 2:"Death"};
           exportableData.serial_number = key +1;
           exportableData.register_date_np = data.register_date_np;
+          exportableData.hospital_register_id = data.hospital_register_id;
           exportableData.name = data.name;
           exportableData.age = data.age;
           exportableData.gender = formattedGenderObject[data.gender];
