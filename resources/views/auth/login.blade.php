@@ -266,17 +266,22 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">सूचना ! सूचना!! सूचना!!!</h4> <strong class="pull-right">२५ असार २०७८, शुक्रवार</strong>
+                                    <h4 class="modal-title">सूचना ! सूचना!! सूचना!!!</h4>
+                                    <strong class="pull-right">
+                                        {{-- २५ असार २०७८, शुक्रवार --}}
+                                        Bhadra 2, 2078, Wednesday
+                                    </strong>
                                 </div>
                                 <div class="modal-body">
-                                    <ol>IMU को mobile एपमा अपडेट भएको छ।
+                                    IMU system will be temporarily down in the coming Saturday (Bhadra 5, 2078) from 7 am to 10 am for maintenance.
+                                    {{-- <ol>IMU को mobile एपमा अपडेट भएको छ।
                                         कृपय तलको बिधि अनुसार आफ्नो IMU App अपडेट गर्नु होस!
                                         <li>IMU App मा भएको सबै डाटा Data सर्भरमा पठाउनुहोस र सर्भरमा पुगेको निश्चय गर्नुहोस।</li>
                                         <li>Data Backup गर्नुहोस र Backup File कपि गरि अर्को स्थानमा सुरक्षित गर्नुहोस।</li>
                                         <li>Clear Cache, Clear Data गर्नुहोस।</li>
                                         <li>अब एप अपडेट गर्नुहोस।</li>
                                         <li>पुनः लगईन गर्नुहोस र सर्भरबाट डाटा डाउनलोड गर्नुहोस।</li>
-                                    </ol>
+                                    </ol> --}}
                                     <hr>
 {{--                                    <ol>अहिले गरिएको अपडेट निम्न अनुसार गरिएको छ।--}}
 {{--                                        <li>एन्टिजेन टेस्टको लागि नेगेटिभ र पोजेटिभ रिजल्ट एप मै देखिने सर्भरमा पठाउनु नपर्ने।</li>--}}
