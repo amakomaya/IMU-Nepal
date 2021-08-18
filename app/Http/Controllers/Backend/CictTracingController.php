@@ -165,8 +165,8 @@ class CictTracingController extends Controller
     public function sectionOneUpdate(Request $request, $case_id)
     {
         $data = $request->all();
-        unset($data['_token']);
-        unset($data['_method']);
+        $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
+        $data['checked_by'] = $healthworker->token;
         $cict_tracing = CictTracing::where('case_id', $case_id)->first();
         $cict_tracing->update($data);
             
@@ -746,6 +746,12 @@ class CictTracingController extends Controller
         $positive_dump = SampleCollectionOld::where('result', '3')->where('status', 1)->count();
         $positive = $positive_current + $positive_dump;
 
+        $positive_pcr_current = SampleCollection::where('service_for', '1')->where('result', '3')->active()->count();
+        $positive_pcr_dump = SampleCollectionOld::where('service_for', '1')->where('result', '3')->where('status', 1)->count();
+        $positive_pcr = $positive_pcr_current + $positive_pcr_dump;
+
+        $positive_antigen = $positive - $positive_pcr;
+
         $case_mgmt = CaseManagement::count();
 
         $contact_tracing_current = ContactTracing::count();
@@ -760,6 +766,8 @@ class CictTracingController extends Controller
 
         return response()->json([
             'positive' => $positive,
+            'positive_pcr' => $positive_pcr,
+            'positive_antigen' => $positive_antigen,
             'case_mgmt' => $case_mgmt,
             'contact_tracing' => $contact_tracing,
             'contact_followup' => $contact_followup
@@ -778,6 +786,14 @@ class CictTracingController extends Controller
             ->where('status', 1)->count();
         $positive_count = $positive_current_count + $positive_dump_count;
 
+        $positive_pcr_current_count = SampleCollection::where('service_for', '1')->where('result', '3')->whereBetween('created_at', [$data_chosen_from, $data_chosen_to])
+            ->active()->count();
+        $positive_pcr_dump_count = SampleCollectionOld::where('service_for', '1')->where('result', '3')->whereBetween('created_at', [$data_chosen_from, $data_chosen_to])
+            ->where('status', 1)->count();
+        $positive_pcr_count = $positive_pcr_current_count + $positive_pcr_dump_count;
+
+        $positive_antigen_count = $positive_count - $positive_pcr_count;
+
         $case_mgmt_count = CaseManagement::whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
 
         $contact_tracing_current_count = ContactTracing::whereBetween('created_at', [$data_chosen_from, $data_chosen_to])->count();
@@ -790,11 +806,57 @@ class CictTracingController extends Controller
 
         return response()->json([
             'positive_count' => $positive_count,
+            'positive_pcr_count' => $positive_pcr_count,
+            'positive_antigen_count' => $positive_antigen_count,
             'case_mgmt_count' => $case_mgmt_count,
             'contact_tracing_count' => $contact_tracing_count,
             'contact_followup_count' => $contact_followup_count,
             'date_from' => $data_from,
             'date_to' => $data_to
         ]);
+    }
+
+    public function cictTransfer(Request $request){
+        $data = json_decode($request->getContent(), true);
+
+        $check_if_exists = CictTracing::where('case_id', $data['case_id'])->first();
+        if($check_if_exists){
+            return response()->json('1');
+        }else{
+            $patient = SuspectedCase::with('ancs', 'latestAnc')
+                ->where('case_id', $data['case_id'])->first();
+            if($patient){
+                $data['token'] = md5(microtime(true) . mt_Rand());
+                $data['case_id'] = $data['case_id'];
+                $data['woman_token'] = $patient->token;
+                $data['hp_code'] = $data['hp_code'];
+                $data['checked_by'] = '';
+                $data['regdev'] = 'web';
+                $data['name'] = $patient->name;
+                $data['age'] = $patient->age;
+                $data['age_unit'] = $patient->age_unit;
+                $data['sex'] = $patient->sex;
+                $data['emergency_contact_one'] = $patient->emergency_contact_one;
+                $data['emergency_contact_two'] = $patient->emergency_contact_two;
+                $data['nationality'] = $patient->nationality;
+                $data['province_id'] = $patient->province_id;
+                $data['district_id'] = $patient->district_id;
+                $data['municipality_id'] = $patient->municipality_id;
+                $data['ward'] = $patient->ward;
+                $data['tole'] = $patient->tole;
+                $data['symptoms_recent'] = $patient->latestAnc ? $patient->latestAnc->infection_type : null;
+                $data['date_of_onset_of_first_symptom_np'] = $patient->date_of_onset_of_first_symptom;
+                $data['symptoms'] = $patient->symptoms;
+                $data['symptoms_specific'] = $patient->symptoms_specific;
+                $data['symptoms_comorbidity'] = $patient->symptoms_comorbidity;
+                $data['symptoms_comorbidity_specific'] = $patient->symptoms_comorbidity_specific;
+
+                $cict_tracing = CictTracing::create($data);
+
+                return response()->json($data['case_id']);
+            }else {
+                return response()->json('0');
+            }
+        }
     }
 }

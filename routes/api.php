@@ -505,6 +505,8 @@ Route::post('/v1/patient-transfer', function (Request $request) {
     return response()->json($data['token']);
 });
 
+Route::post('/v1/cict-transfer', 'Backend\CictTracingController@cictTransfer');
+
 Route::post('/v1/patient-symptoms', function (Request $request) {
     $data = $request->json()->all();
     try {

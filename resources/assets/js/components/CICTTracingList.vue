@@ -21,11 +21,11 @@
         <td>{{ item.municipality.municipality_name }}</td>
 
         <td>
-          <div v-show="checkEditButton()">
+          <span v-show="checkEditButton()">
             <button v-on:click="cictUpdateDate(item.case_id)" class="btn btn-primary btn-sm" title="CICT Edit">
               <i class="fa fa-edit" aria-hidden="true"> Edit</i>
             </button>
-          </div>
+          </span>
           <button v-on:click="contactList(item.case_id)" class="btn btn-secondary btn-sm" title="Contact List">
             <i class="fa fa-list" aria-hidden="true"> Contact List</i>
           </button>

@@ -12,6 +12,7 @@
                 <span class="label label-warning pull-right"> Create </span>
             </a>
         </li>
+        @endif
         <li>
             <a href="{{ route('cict-tracing.index') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
@@ -20,7 +21,6 @@
                 
             </a>
         </li>
-        @endif
         @if(auth()->user()->role == 'province')
         <li>
             <a href="{{ route('cict-tracing.province-report') }}">

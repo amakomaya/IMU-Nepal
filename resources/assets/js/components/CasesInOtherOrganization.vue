@@ -50,10 +50,15 @@
             <i class="fa fa-file" aria-hidden="true"></i> |
           </button>
           <span v-if="item.latest_anc">
-            <button v-on:click="receivePatientData(item)" title="Receive Patient from other Hospital">
+            <button v-on:click="receiveCictData(item)" title="Receive Patient from other Hospital">
               <i class="fa fa-hospital-o"></i>
             </button>
           </span>
+          <!-- <span v-if="item.latest_anc">
+            <button v-on:click="receivePatientData(item)" title="Receive Patient from other Hospital">
+              <i class="fa fa-hospital-o"></i>
+            </button>
+          </span> -->
         </td>
         <!-- </div>             -->
       </tr>
@@ -69,6 +74,7 @@ import axios from 'axios'
 import ViewLabResultReportModel from './ViewLabResultReportModel.vue'
 import SendPatientDataModel from './SendPatientDataModel.vue'
 import ReceivePatientDataModel from './ReceivePatientDataModel.vue'
+import ReceiveCictDataModel from './ReceiveCictDataModel.vue'
 import viewConfirmReportFormModel from './viewConfirmReportFormModel.vue'
 import fab from 'vue-fab'
 
@@ -139,9 +145,23 @@ export default {
     },
 
 
-    receivePatientData: function (item) {
-      this.$dlg.modal(ReceivePatientDataModel, {
-        title: 'Do you want to receive '+item.name+' \'s patients data ?',
+    // receivePatientData: function (item) {
+    //   this.$dlg.modal(ReceivePatientDataModel, {
+    //     title: 'Do you want to receive '+item.name+' \'s patients data ?',
+    //     height : 600,
+    //     width : 700,
+    //     params: {
+    //       data : item,
+    //       provinces : this.provinces,
+    //       districts : this.districts,
+    //       municipalities : this.municipalities
+    //     },
+    //   })
+    // },
+
+    receiveCictData: function (item) {
+      this.$dlg.modal(ReceiveCictDataModel, {
+        title: 'Do you want to receive '+item.name+' \'s patients data for CICT?',
         height : 600,
         width : 700,
         params: {

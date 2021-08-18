@@ -487,7 +487,11 @@ class WomenController extends Controller
         $request = FilterRequest::filter($request);
         $hp_codes = Organization::where('municipality_id', $request['municipality_id'])->pluck('hp_code');
         $woman = SuspectedCase::where('municipality_id', $request['municipality_id'])
-            ->whereNotIn('hp_code', $hp_codes)->has('ancs')
+            ->whereNotIn('hp_code', $hp_codes)
+            ->whereHas('ancs', function($q){
+                $q->where('result', '3');
+            })
+            ->whereDoesntHave('cictTracing')
             ->active()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
