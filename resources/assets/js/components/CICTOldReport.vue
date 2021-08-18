@@ -39,6 +39,10 @@
                     />
                   </div>
                   <div class="huge">{{ report.positive_count }}</div>
+                  <div>
+                    RAT : {{ report.positive_antigen_count }} <br>
+                    PCR : {{ report.positive_pcr_count }}
+                  </div>
                   <div>Positive</div>
                 </div>
               </div>
@@ -118,7 +122,7 @@
       <div class="clearfix"></div>
       <hr>
       <div class="col-lg-12">
-        <h3 class="text-center" style="padding-bottom: 10px;">OVERALL REPORTING</h3>
+        <h3 class="text-center" style="padding-bottom: 10px;">OVERALL REPORTING (* CICT data from July 4, 2021 till today)</h3>
       </div>
       <div class="col-lg-12">
         <div class="col-lg-3 col-md-6">
@@ -131,6 +135,10 @@
                 <div class="col-xs-9 text-right">
                   <div class="huge">{{ totalReport.positive }}</div>
                   <div>Positive</div>
+                  <div>
+                    RAT : {{ totalReport.positive_antigen }} <br>
+                    PCR : {{ totalReport.positive_pcr }}
+                  </div>
                 </div>
               </div>
             </div>
