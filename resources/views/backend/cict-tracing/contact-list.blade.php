@@ -28,11 +28,12 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Name of contacts</th>
-                                        <th>Age</th>
-                                        <th title="Gender">Sex</th>
-                                        <th title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i> B1 Form</th>
-                                        <th title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i> B2 Form</th>
+                                        <th title="Name of contacts">Name of contacts</th>
+                                        <th title="Age">Age</th>
+                                        <th title="Sex">Sex</th>
+                                        <th title="B1 Form Actions"><i class="fa fa-cogs" aria-hidden="true"></i> B1 Form</th>
+                                        <th title="B2 Form Actions"><i class="fa fa-cogs" aria-hidden="true"></i> B2 Form</th>
+                                        <th>Do you want to collect sample?</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-sars-cov-tbody text-center">
@@ -88,6 +89,7 @@
                                                 </form>
                                                 @endif
                                             </td>
+                                            <td></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
