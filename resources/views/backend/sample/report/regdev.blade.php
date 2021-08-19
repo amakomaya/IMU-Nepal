@@ -46,13 +46,13 @@
                                             {{ $healthpost['name'] }}
                                         </td>
                                         <td>
-                                            {{ isset($web_count[$healthpost['hp_code']]) ? $web_count[$healthpost['hp_code']]->count() : 0 }}
+                                            {{ isset($data[$healthpost['hp_code']]) ? $data[$healthpost['hp_code']]['web_count'] : 0 }}
                                         </td>
                                         <td>
-                                            {{ isset($mobile_count[$healthpost['hp_code']]) ? $mobile_count[$healthpost['hp_code']]->count() : 0 }}
+                                            {{ isset($data[$healthpost['hp_code']]) ? $data[$healthpost['hp_code']]['mobile_count'] : 0 }}
                                         </td>
                                         <td>
-                                            {{ isset($api_count[$healthpost['hp_code']]) ? $api_count[$healthpost['hp_code']]->count() : 0 }}
+                                            {{ isset($data[$healthpost['hp_code']]) ? $data[$healthpost['hp_code']]['api_count'] : 0 }}
                                         </td>
                                         <td>
                                             {{ isset($excel_count[$healthpost['hp_code']]) ? $excel_count[$healthpost['hp_code']]->count() : 0 }}
