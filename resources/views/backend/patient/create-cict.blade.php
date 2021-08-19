@@ -135,7 +135,7 @@
                                                 <option value="">Select All Provinces</option>
                                             @endif
                                             @foreach(\Illuminate\Support\Facades\Cache::remember('province-list', 48*60*60, function () {
-                                              return Province::select(['id', 'province_name'])->get();
+                                              return App\Models\Province::select(['id', 'province_name'])->get();
                                             }) as $province)
                                                 @if($data->province_id==$province->id)
                                                     @php($selectedProvince = "selected")
