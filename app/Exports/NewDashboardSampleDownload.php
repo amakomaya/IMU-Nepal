@@ -49,10 +49,18 @@ class NewDashboardSampleDownload implements FromCollection, WithHeadings
             ->active()->get()->pluck('woman_token');
             
 
-        $data = SuspectedCase::whereIn('token', $tokens)->with('district', 'municipality', 'latestAnc')->get();
+        $data = SuspectedCase::with('district', 'municipality', 'latestAnc');
+            if(auth()->user()->can('poe-registration')){
+                $data = $data->where('case_type', '3');
+            }
+        $data = $data->whereIn('token', $tokens)->get();
 
         if($tokens->count() > $data->count()){
-            $dump_data = SuspectedCaseOld::whereIn('token', $tokens)->with('district', 'municipality', 'latestAnc')->get();
+            $dump_data = SuspectedCaseOld::with('district', 'municipality', 'latestAnc');
+            if(auth()->user()->can('poe-registration')){
+                $data = $data->where('case_type', '3');
+            }
+        $data = $data->whereIn('token', $tokens)->get();
             $data = $dump_data->merge($data);
         }
 
