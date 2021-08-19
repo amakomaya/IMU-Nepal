@@ -155,6 +155,8 @@
                                     <tr>
                                         <td> {{ $loop->iteration }}</td>
                                         <td> {{ $datum['healthpost_name'] }}</td>
+                                        <td>{{ $datum['not_tested'] + $datum['antigen_pending_received'] + 
+                                        $datum['antigen_postive_cases_count'] + $datum['antigen_negative_cases_count'] }}</td>
                                         <td> {{ $datum['not_tested'] }}</td>
                                         <td> {{ $datum['antigen_pending_received'] }}</td>
                                         <td> {{ $datum['antigen_postive_cases_count'] }}</td>
