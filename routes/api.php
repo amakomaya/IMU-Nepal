@@ -940,7 +940,9 @@ Route::get('/v1/ext/province', 'External\ExtProvinceController@index');
 
 // Route::get('/v1/ext/cases', 'External\ExtCaseController@index');
 Route::post('/v1/ext/cases', 'External\ExtCaseController@store');
+Route::post('/v2/ext/cases', 'External\ExtCaseController@storeV2');
 Route::get('/v1/ext/get-case-detail', 'External\ExtCaseController@getCaseDetailBySample');
+Route::get('/v2/ext/get-case-detail', 'External\ExtCaseController@getCaseDetailBySampleV2');
 Route::get('/v1/federal-info', 'PublicDataController@federalInfo');
 
 
