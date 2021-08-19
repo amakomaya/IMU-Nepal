@@ -14,13 +14,13 @@
                   <span class="label label-success pull-right">LV</span>
               </a>
           </li>
-          {{-- <li>
+          <li>
               <a href="{{ route('report.regdev') }}">
                   <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                   Registered Device
                   <span class="label label-warning pull-right">RD</span>
               </a>
-          </li> --}}
+          </li>
         @endif
         <li>
             <a href="{{ route('report.poe') }}">
