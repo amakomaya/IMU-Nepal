@@ -154,6 +154,7 @@
                                     <th>Municipality</th>
                                     <th>Organization</th>
                                     <th>Name</th>
+                                    <th title="Hospital Register ID">H.R. ID</th>
                                     <th>Age</th>
                                     <th>gender</th>
                                     <th>Phone No</th>
@@ -177,6 +178,7 @@
                                         <td >{{ $case['municipality_name'] }}</td>
                                         <td >{{ $case['healthpost_name'] }} </td>
                                         <td >{{ $case['name'] }} </td>
+                                        <td >{{ $case['hospital_register_id'] }} </td>
                                         <td>{{ $case['age'] }} </td>
                                         <td>{{ $case['gender'] }} </td>
                                         <td>{{ $case['phone'] }} </td>

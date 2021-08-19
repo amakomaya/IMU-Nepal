@@ -68,6 +68,7 @@ class CasesPaymentController extends Controller
                     });
             })->select([
                 'payment_cases.name as name',
+                'payment_cases.hospital_register_id',
                 'payment_cases.age',
                 'payment_cases.gender',
                 'payment_cases.guardian_name',
@@ -92,6 +93,7 @@ class CasesPaymentController extends Controller
             $return = [];
             $return['name'] = $item->name;
             $return['age'] = $item->age;
+            $return['hospital_register_id'] = $item->hospital_register_id;
             $return['gender'] = $this->genderParse($item->gender);
             $return['guardian_name'] = $item->guardian_name;
             $return['phone'] = $item->phone;
