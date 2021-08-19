@@ -430,11 +430,11 @@ class WomanController extends Controller
         } else{
             $row['case_type'] = '1';
         }
-//        if($request->token){
-//            $row['token'] = $request->case_token;
-//        }else {
+        if($request->case_token){
+            $row['token'] = $request->case_token;
+        }else {
             $row['token'] = md5(microtime(true) . mt_Rand());
-//        }
+        }
         $row['status'] = 1;
         $row['created_by'] = auth()->user()->token;
         $row['symptoms_comorbidity'] = [];
