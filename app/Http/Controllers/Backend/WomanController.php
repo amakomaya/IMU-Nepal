@@ -27,6 +27,7 @@ use GMaps;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yagiten\Nepalicalendar\Calendar;
+use Illuminate\Support\Facades\Cache;
 use DB;
 
 class WomanController extends Controller
@@ -391,7 +392,9 @@ class WomanController extends Controller
 
         if(Auth::user()->can('poe-registration')){
             $vaccines = Vaccine::get();
-            $countries = Country::get();
+            $countries = Cache::remember('country-list', 48*60*60, function () {
+              return Country::get();
+            });
             return view('backend.patient.create-poe', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id', 'countries', 'vaccines'));
         } else {
             return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id'));

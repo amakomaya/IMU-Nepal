@@ -5,6 +5,11 @@
       <label for="checkbox" class="slider"></label>
       <label for="checkbox">{{ bulkMode }}</label>
     </div>
+    <!-- <div class="checkbox-slider checkbox-slider-bulk">
+      <input type="checkbox" id="lang-chk" @click="switchLang($event)">
+      <label for="lang-chk" class="slider"></label>
+      <label for="checkbox">{{ dateMode }}</label>
+    </div> -->
     <h2>Bulk Upload</h2>
     <table class="table table-striped">
       <thead>
@@ -63,8 +68,9 @@ export default {
       bulk_file_registration_sample_collection_lab_test: "",
       isUploading: false,
       bulkMode: 'new',
-      tableData: this.getTableData('new'),
-      permissionId: this.$permissionId
+      permissionId: this.$permissionId,
+      dateMode: 'en',
+      tableData: this.getTableData()
     };
   },
   watch: {
@@ -73,29 +79,39 @@ export default {
       $('#uploading-modal').modal(modalAction);
     },
     bulkMode(mode) {
-      this.tableData = this.getTableData(mode);
+      this.tableData = this.getTableData();
+    },
+    dateMode(mode) {
+      this.tableData = this.getTableData();
     }
   },
   methods: {
-    getTableData(mode) {
+    getTableData() {
+      let mode = this.bulkMode||'new';
+      let dateMode = this.dateMode||'en';
       if(mode=='new') {
         if(this.checkPermission('poe-registration')){
-          return ([
-            {
-                name: 'Asymptomatic POE Registration',
-                templateLocation: '/downloads/excel/Asymptomatic_PoE_Bulk_Upload.xlsx',
-                hasPermission: this.checkPermission('poe-registration'),
-                slug: 'bulk_file_asymptomtic_poe',
-                description: 'Register Asymptomatic POE Registration.',
-              },
-              {
-                name: 'Symptomatic POE Registration',
-                templateLocation: '/downloads/excel/Symptomatic_PoE_Bulk_Upload.xlsx',
-                hasPermission: this.checkPermission('poe-registration'),
-                slug: 'bulk_file_symptomtic_poe',
-                description: 'Register Symptomatic POE Registration.',
-              }
-          ]);
+          if(dateMode == 'en'){
+            return ([
+                {
+                  name: 'POE Registration in AD Date.',
+                  templateLocation: '/downloads/excel/PoE_Bulk_Upload.xlsx',
+                  hasPermission: this.checkPermission('poe-registration'),
+                  slug: 'bulk_file_poe',
+                  description: 'POE Registration.',
+                }
+            ]);
+          } else {
+            return ([
+                {
+                  name: 'POE Registration in BS Date.',
+                  templateLocation: '/downloads/excel/PoE_Bulk_Upload.xlsx',
+                  hasPermission: this.checkPermission('poe-registration'),
+                  slug: 'bulk_file_poe_np',
+                  description: 'POE Registration.',
+                }
+            ]);
+          }
         }
         return ([
               {
@@ -137,6 +153,8 @@ export default {
           ]
         );
       } else {
+        if(dateMode == 'en'){
+            
          return ([
               {
                 name: 'Backdate Cases Payment',
@@ -183,6 +201,55 @@ export default {
               }
           ]
         );
+          } else {
+            
+         return ([
+              {
+                name: 'Backdate Cases Payment',
+                templateLocation: '/downloads/excel/backdate/cases_payment_import_template_backdate.xlsx',
+                hasPermission: this.checkBackDatePermission(), // change to this.checkPermission('cases-payment') && this.checkBackDatePermission(),
+                slug: 'bulk_file_case_payment_bd',
+                description: 'Create Cases Payment',
+              },
+              {
+                name: 'Backdate Lab Received(PCR/Antigen)',
+                templateLocation: '/downloads/excel/backdate/lab_received_template_backdate.xlsx',
+                hasPermission: this.checkPermission('lab-received') && this.checkBackDatePermission(),
+                slug: 'bulk_file_lab_received_bd',
+                description: 'Create Lab Received(PCR/Antigen) by entering SID (15 digit IMU genereted code) & Patient Lab ID(Unique ID for your patient for external/own reference.)',
+
+              },
+              {
+                name: 'Backdate Lab Results (PCR/Antigen)',
+                templateLocation: '/downloads/excel/backdate/lab_result_template_backdate.xlsx',
+                hasPermission: (this.checkPermission('lab-result')||this.checkPermission('antigen-result')) && this.checkBackDatePermission(),
+                slug: 'bulk_file_lab_result_bd',
+                description: 'Update Lab Results of existing "Lab Received" by entering Patient Lab ID (Unique ID for your patient for external/own reference) & Result (Positive/Negative)',
+              },
+              {
+                name: 'Backdate Lab Received & Results',
+                templateLocation: '/downloads/excel/backdate/lab_received_result_template_backdate.xlsx',
+                hasPermission: ((this.checkPermission('antigen-result') || this.checkPermission('lab-result')) && this.checkPermission('lab-received')) && this.checkBackDatePermission(),
+                slug: 'bulk_file_lab_received_result_bd',
+                description: 'Create new "Lab Received"(PCR/Antigen) & update "Lab Results"(PCR/Antigen).',
+              },
+              {
+                name: 'Backdate Registration & Sample Collection',
+                templateLocation: '/downloads/excel/backdate/registration_sample_collection_template_backdate.xlsx',
+                hasPermission: (this.checkPermission('sample-collection') && this.checkPermission('cases-registration')) && this.checkBackDatePermission(),
+                slug: 'bulk_file_registration_sample_collection_bd',
+                description: 'Register new "Pending case" & with "sample collection" (you will get an imu generated 15 digit code).',
+              },
+              {
+                name: 'Backdate Registration, Sample Collection & Lab Received/Results(PCR/Antigen)',
+                templateLocation: '/downloads/excel/backdate/registration_sample_collection_lab_tests_template_backdate.xlsx',
+                hasPermission: ((this.checkPermission('antigen-result') || this.checkPermission('lab-result')) && this.checkPermission('lab-received') && this.checkPermission('sample-collection') && this.checkPermission('cases-registration')) && this.checkBackDatePermission(),
+                slug: 'bulk_file_registration_sample_collection_lab_test_bd',
+                description: 'Register new "New Case"(Case Type will vary according to the Lab Received), create "Sample Collection" ,create "Lab Received"(PCR/Antigen) & update "Lab Results"(PCR/Antigen).',
+              }
+          ]
+        );
+          }
       }
     },
     checkBackDatePermission() {
@@ -199,6 +266,13 @@ export default {
         this.bulkMode = 'old';
       } else {
         this.bulkMode = 'new';
+      }
+    },
+    switchLang(event){
+      if(event.target.checked === true) {
+        this.dateMode = 'np';
+      } else {
+        this.dateMode = 'en';
       }
     },
     handleFileUpload(slug) {
