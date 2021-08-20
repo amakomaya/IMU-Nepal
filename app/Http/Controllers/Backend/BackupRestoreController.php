@@ -297,9 +297,10 @@ class BackupRestoreController extends Controller
     }
 
     public function apkUpload(Request $request){
-        $folder_path = 'mobile-apk/apk/';
+        $folder_path = 'mobile-apk/';
         if($request->hasFile('apk_file')) {
-            File::deleteDirectory($folder_path);
+
+            File::cleanDirectory($folder_path);
             $file = $request->file('apk_file');
             $extension = $file->getClientOriginalExtension();
             $fileName = 'IMU_test_app_' . date('Y-m-d') . '.' . $extension;

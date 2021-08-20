@@ -406,7 +406,7 @@
         </div>
         <div class="col-md-4">
             <?php
-                $check_file = glob('mobile-apk/apk/*.apk');
+                $check_file = glob('mobile-apk/*.apk');
                 if($check_file){
                     $file_name = $check_file[0];
                 }else {
