@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use Carbon\Carbon;
 use App\Models\SampleCollection;
+use App\Models\Country;
 use App\Models\LabTest;
 use App\Models\Province;
 use App\Models\District;
@@ -24,9 +25,10 @@ use Maatwebsite\Excel\Validators\ValidationException;
 use Maatwebsite\Excel\Validators\Failure;
 use Illuminate\Support\Facades\Cache;
 
+
 use App\User;
 
-class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
+class PoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadingRow, ShouldQueue
 {
     use Importable, RemembersRowNumber;
 
@@ -34,17 +36,19 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
     public function __construct(User $importedBy)
     {
         ini_set('max_execution_time', '300');
-        
-        // $provinceList = Cache::remember('province-list', 48*60*60, function () {
-          $provinceList =  Province::select(['id', 'province_name'])->get();
-          // });
-        // $districtList = Cache::remember('district-list', 48*60*60, function () {
-          $districtList = District::select(['id', 'district_name', 'province_id' ])->get();
-        // });
-        // $municipalityList = Cache::remember('municipality-list', 48*60*60, function () {
-          $municipalityList =  Municipality::select(['id', 'municipality_name', 'province_id', 'district_id', 'municipality_name_np', 'type', 'total_no_of_wards'])->get();
-        // });
-        $provinces = $districts = $municipalities = [];
+        $provinceList = Cache::remember('province-list', 48*60*60, function () {
+          return Province::select(['id', 'province_name'])->get();
+        });
+        $districtList = Cache::remember('district-list', 48*60*60, function () {
+          return District::select(['id', 'district_name', 'province_id' ])->get();
+        });
+        $municipalityList = Cache::remember('municipality-list', 48*60*60, function () {
+          return Municipality::select(['id', 'municipality_name', 'province_id', 'district_id', 'municipality_name_np', 'type', 'total_no_of_wards'])->get();
+        });
+        $countriesList = Cache::remember('country-list', 48*60*60, function () {
+          return Country::get();
+        });
+        $provinces = $districts = $municipalities = $countries = [];
         $provinceList->map(function ($province) use (&$provinces) {
           $provinces[strtolower(trim($province->province_name))] = $province->id;
           return;
@@ -57,6 +61,10 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
           $municipalities[strtolower(trim($municipality->municipality_name))] = $municipality->id;
           return;
         });
+        $countriesList->map(function ($country) use (&$countries) {
+          $countries[utf8_encode(strtolower(trim($country->name)))] = $country->country_id;
+          return;
+        });
         $userToken = auth()->user()->token;
         $healthWorker = \App\Models\OrganizationMember::where('token', $userToken)->first();
         $hpCode = $healthWorker->hp_code;
@@ -67,20 +75,24 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
         $this->healthWorker = $healthWorker;
         $this->enums = array(
           'gender'=> array( 'male' => '1', 'female' => '2', 'other' => '3' ),
-          'occupation' => array(),
           'destination_in_nepal_province' => $provinces,
           'destination_in_nepal_district' => $districts,
           'destination_in_nepal_municipality' => $municipalities,
-          'countries' => ['nepal'=>167, 'india'=>104, 'china'=>47, 'other'=>300],
+          'countries' => $countries,
           'yes_no' => ['yes'=>'1', 'no'=>'0'],
           'how_many_dosages_of_vaccine_you_have_received' => ['1st dose' => 1,'2nd (final) dose'=>2],
           // 'name_of_vaccine' => ['verocell (sinopharm)'=> '1', 'covishield (the serum institute of india)'=>'2', 'pfizer' => '3', 'moderna' => '4', 'astrazeneca' => '5', 'other' => '10'],
-          'occupation' => ['1' =>'front line health worker', '2' =>'doctor','3' => 'nurse','4' =>'police/army', '5' =>'business/industry', '6' =>'teacher/student(education)', '7' =>'civil servant', '8' =>'journalist', '9' =>'agriculture', '10' =>'transport/delivery', '11' =>'Tourist', '12' =>'migrant worker'],
+          'occupation' => [ 'front line health worker' =>'1', 'doctor' =>'2','nurse' => '3','police/army' =>'4', 'business/industry' =>'5', 'teacher/student(education)' =>'6', 'civil servant' =>'7', 'journalist' =>'8', 'agriculture' =>'9', 'transport/delivery' =>'10', 'tourist' =>'11', 'migrant worker' =>'12'],
           'relationship_with_the_contact_person' => ['family'=>0,'friend'=>1,'neighbour'=>2,'relative'=>3,'other'=>4],
-          'result' => ['positive'=>1, 'negative'=>0],
-          'comorbidity' => [ '1' => 'diabetes', 2 => 'htn', 3 => 'hermodialysis','4' => 'immunocompromised','6' => 'maternity','7' => 'heart disease, including hypertension',
-            '8' => 'liver disease', '9' => 'nerve related diseases', '10' => 'kidney diseases', '11' => 'malnutrition', '12' => 'autoimmune diseases', '13' => 'immunodeficiency, including hiv', '14' => 'malignancy', '15' => 'chric lung disesase/asthma/artery'
+          'result' => ['positive'=>3, 'negative'=>4],
+          'comorbidity' => [
+            'diabetes' => '1', 'htn' => '2', 'hermodialysis' => '3','immunocompromised' => '4','maternity' => '6','heart disease, including hypertension' => '7',
+            'liver disease' => '8', 'nerve related diseases' => '9', 'kidney diseases' => '10', 'malnutrition' => '11', 'autoimmune diseases' => '12', 'immunodeficiency, including hiv' => '13', 'malignancy' => '14', 'chric lung disesase/asthma/artery' => '15'
+          ],
+          'id_card_type' => [
+            'citizenship'  => '1', 'license' => '2', 'voter card' => '3', 'passport', 'other' => '0'
           ]
+
         );
         $this->todayDateEn = Carbon::now();
         $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();
@@ -97,9 +109,27 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
 
     public function model(array $row)
     {
+      
         if(!array_filter($row)) { return null;} //Ignore empty rows.
         self::$importedRowCount++;
         $currentRowNumber = $this->getRowNumber();
+        $regDateEn = $row['date_of_entering_poe_yyyy_mm_dd_ad'];
+        if(!$regDateEn) { //If empty automatic today reg date
+          $regDateEn = $this->todayDateEn->format('Y-m-d');
+        }
+        $regDateEn = $this->returnValidEnDate($regDateEn);
+        if (!$regDateEn) {
+          $error = ['date_of_entering_poe_yyyy_mm_dd_ad' => 'Invalid Entry Date. Date must be in AD & YYYY-MM-DD Format'];
+            $failures[] = new Failure(1, 'date_of_entering_poe_yyyy_mm_dd_ad', $error, $row);
+            throw new ValidationException(
+                \Illuminate\Validation\ValidationException::withMessages($error),
+                $failures
+            );
+            return;
+        }
+        $dateArray = explode("-", $regDateEn);
+        $regDateNp = Calendar::eng_to_nep($dateArray[0],$dateArray[1],$dateArray[2])->getYearMonthDay();
+       
         $suspectedCase = SuspectedCase::create([
           'name' => $row['full_name'],
           'age' => $row['age'],
@@ -107,9 +137,11 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
           'sex' => $row['gender'],
           'occupation' => $row['occupation'],
           'nationality' => $row['nationality'],
-          'id_card_detail' => $row['passportnationality_number'],
+          'id_card_type' => $row['id_card_type'],
+          'id_card_type_other' => $row['if_other_id_card_type'],
+          'id_card_detail' => $row['id_card_no'],
           'travelled' => '1',
-          'travelled_date' => $row['travel_date'],
+          // 'travelled_date' => $row['travel_date'],
           'travelled_where' => '['.$row['travel_from_country'].','.$row['travelled_from_city'].']',
           'province_id' => $row['destination_in_nepal_province'],
           'district_id' => $row['destination_in_nepal_district'],
@@ -120,26 +152,28 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
           'created_by' => $this->userToken,
           'registered_device' => 'excel',
           'nearest_contact' => '['.$row['nearest_contact_person_in_nepal'].','.$row['relationship_with_the_contact_person'].','.$row['contact_of_nearest_person_phone'].']',
-          'temprature' => $row['body_temperaturein_fahrenheit'],
+          'temperature' => (int)$row['body_temperaturein_fahrenheit'],
           'covid_vaccination_details' => '['.$row['have_you_ever_received_covid_19_vaccine'].','.$row['do_you_have_a_vaccination_card'].','.$row['vaccination_doses_complete'].','.$row['how_many_dosages_of_vaccine_you_have_received'].','.$row['name_of_vaccine'].']',
           'status' => 1,
           'token' => 'e-' . md5(microtime(true) . mt_Rand()),
           'emergency_contact_one' => $row['contact_of_nearest_person_phone'],
+          'caste' => 7,
           'swab_collection_conformation' => '1',
           'cases' => '0',
           'case_type' => '3',
           'case_id' => $this->healthWorker->id . '-' . Carbon::now()->format('ymd') . '-' . strtoupper(bin2hex(random_bytes(3))),
-          'register_date_en' => $this->todayDateEn,
-          'register_date_np' => $this->todayDateNp,
+          'register_date_en' => $regDateEn,
+          'register_date_np' => $regDateNp,
           'symptoms_recent' => $row['covid_19_symptoms'],
           'symptoms_within_four_week' => $row['covid_19_symptoms'],
           'malaria' => '['.$row['if_fever_malaria_test_done'].','.$row['malaria_test_result'].','.$row['if_malaria_positive_isolation_center_referred_to'].']',
-          'symptoms_comorbidity' => '['.$row['comorbidity'].']', //TODO replace with ID
-          'case_reason' => $row['covid_19_symptoms']?'['.$row['if_fever_covid_19_antigen_test_done'].','.$row['antigen_result'].','.$row['if_antigen_positive_isolation_center_referred_to'].']':null,
+          'symptoms_comorbidity' => '['.$row['comorbidity'].']',
+          'case_reason' => '['.$row['if_fever_covid_19_antigen_test_done'].','.$row['antigen_result'].','.$row['if_antigen_positive_isolation_center_referred_to'].']',
         ]);
-        if($row['covid_19_symptoms']) {
+        // dd($row['antigen_result']);
+        if($row['antigen_result']) {
           $sampleTestTime = $this->todayDateEn->format('g : i A');
-          $labResult = $row['antigen_result']==0?'4':'3';
+          $labResult = $row['antigen_result'];
           $sampleCollectionData = [
             'service_for' => '2',
             'checked_by' => $this->userToken,
@@ -152,50 +186,43 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
             'regdev' => 'excel',
             'woman_token' => $suspectedCase->token,
             'infection_type' => '1',
-            'sample_test_date_en' => $this->todayDateEn,
-            'sample_test_date_np' => $this->todayDateNp,
+            'sample_test_date_en' => $regDateEn,
+            'sample_test_date_np' => $regDateNp,
             'sample_test_time' => $sampleTestTime,
             'received_by' => $this->userToken,
             'received_by_hp_code' => $this->hpCode,
             'received_by' => $this->userToken,
             'received_by_hp_code' => $this->hpCode,
-            'received_date_en' => $this->todayDateEn,
-            'received_date_np' => $this->todayDateNp,
-            'collection_date_en' => $this->todayDateEn,
-            'collection_date_np' => $this->todayDateNp,
+            'received_date_en' => $regDateEn,
+            'received_date_np' => $regDateNp,
+            'collection_date_en' => $regDateEn,
+            'collection_date_np' => $regDateNp,
             'reporting_date_en' => $this->todayDateEn,
             'reporting_date_np' => $this->todayDateNp
           ];
           $id = $this->healthWorker->id;
-          $patientLabId = Carbon::now()->format('ymd'). '-' .'-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber+1)->format('H:i:s'));
+          $patientLabId = Carbon::now()->format('ymd'). '-'. $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber+1)->format('H:i:s'));
           $swabId = str_pad($id, 4, '0', STR_PAD_LEFT) . '-' . Carbon::now()->format('ymd') . '-' . $this->convertTimeToSecond(Carbon::now()->addSeconds($currentRowNumber+1)->format('H:i:s'));
           $swabId = generate_unique_sid($swabId);
           $sampleCollectionData['token'] = $swabId;
           $sampleCollectionData['lab_token'] = $this->userToken.'-'.$patientLabId;
+          $uniqueLabId = generate_unique_lab_id_excel($sampleCollectionData['lab_token']);
+          $sampleCollectionData['lab_token'] = $uniqueLabId;
+          
           $sampleCollection = SampleCollection::create($sampleCollectionData);
-          try {
-            LabTest::create([
-              'token' => $this->userToken.'-'.$patientLabId,
-              'hp_code' => $this->hpCode,
-              'status' => 1,
-              'sample_recv_date' =>  $this->todayDateNp,
-              'sample_test_date' => $this->todayDateNp,
-              'sample_test_time' => $sampleTestTime,
-              'sample_test_result' => $labResult,
-              'checked_by' => $this->userToken,
-              'checked_by_name' => $this->healthWorker->name,
-              'sample_token' => $sampleCollection->token,
-              'regdev' => 'excel'
-            ]);
-          } catch (\Illuminate\Database\QueryException $e) {
-            $error = ['patient_lab_id' => 'The test with the given Patient Lab ID already exists in the system.'];
-            $failures[] = new Failure($currentRowNumber, 'patient_lab_id', $error, $row);
-            throw new ValidationException(
-                \Illuminate\Validation\ValidationException::withMessages($error),
-                $failures
-            );
-            return;
-          }
+          LabTest::create([
+            'token' => $sampleCollectionData['lab_token'],
+            'hp_code' => $this->hpCode,
+            'status' => 1,
+            'sample_recv_date' =>  $regDateEn,
+            'sample_test_date' => $regDateNp,
+            'sample_test_time' => $sampleTestTime,
+            'sample_test_result' => $labResult,
+            'checked_by' => $this->userToken,
+            'checked_by_name' => $this->healthWorker->name,
+            'sample_token' => $sampleCollection->token,
+            'regdev' => 'excel'
+          ]);
         }
         return;
     }
@@ -220,7 +247,37 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
       }
       return $data;
     }
-  
+
+    private function returnValidEnDate($date){
+      try{
+        //TODO: stop future date
+        if($date) {
+          if (preg_match ("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/", $date, $parts))
+          {
+            $year = $parts[1];
+            $month = $parts[2];
+            $day = $parts[3];
+            if (checkdate($month ,$day, $year)) {
+              if((int)$year <= Carbon::now()->year) {
+                return $date;
+              }
+            }
+          } else {
+            $parsedDate = Date::excelToDateTimeObject($date);
+            $carbonDate = Carbon::instance($parsedDate);
+            $year = $carbonDate->year;
+            $month = $carbonDate->month;
+            $day = $carbonDate->day;
+            if($year>2000 && $year <= Carbon::now()->year) {
+              return $carbonDate->format('Y-m-d');
+            }
+          }
+        }
+      } catch(\Exception $e){
+        return false;
+      } 
+    }
+
     public function prepareForValidation($data, $index)
     {
       $data = $this->filterEmptyRow($data);
@@ -245,8 +302,7 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
         $data['comorbidity'] = $this->enums['comorbidity'][strtolower(trim($data['comorbidity']))] ?? null;
         $data['if_fever_covid_19_antigen_test_done'] = $this->enums['yes_no'][strtolower(trim($data['if_fever_covid_19_antigen_test_done']))] ?? null;
         $data['antigen_result'] = $this->enums['result'][strtolower(trim($data['antigen_result']))] ?? null;
-        
-        // $data[] = 
+        $data['id_card_type'] = $this->enums['id_card_type'][strtolower(trim($data['id_card_type']))] ?? null;
       }
       return $data;
     }
@@ -295,14 +351,14 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
             //        $onFailure('Invalid Ward');
             //   }
             // },
-            'passportnationality_number' => function($attribute, $value, $onFailure) {
+            'id_card_type' => function($attribute, $value, $onFailure) {
               if ($value === '' || $value === null) {
-                   $onFailure('Invalid Id No.');
+                   $onFailure('Invalid Id Card Type');
               }
             },
-            'contact_of_nearest_person_phone' => function($attribute, $value, $onFailure) {
-               if ($value === '' || $value === null) {
-                   $onFailure('Invalid Mobile No.');
+            'id_card_detail' => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                   $onFailure('Invalid Id Card No.');
               }
             },
             'travel_date' => function($attribute, $value, $onFailure) {
@@ -327,11 +383,8 @@ class SymptomaticPoeImport  implements ToModel, WithChunkReading, WithValidation
               }
             },
            'body_temperaturein_fahrenheit' => function($attribute, $value, $onFailure) {
-            if ($value === '' || $value === null) {
-                $onFailure('Temprature must be entered in valid Fahrenheit unit.');
-            }
             if($value && ((float)$value>110 || (float)$value<80)){
-              $onFailure('Temprature must be entered in valid Fahrenheit unit.');
+              $onFailure('Temeprature must be entered in valid Fahrenheit unit.');
             }
          },
         ];
