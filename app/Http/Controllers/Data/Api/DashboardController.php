@@ -38,6 +38,10 @@ class DashboardController extends Controller
         //     $customRecDate = 'received_date_en';
         // }
 
+        //switch role
+        //if reporting fetch/store from related reporting_id
+        //if normal sore on h=_code
+
         $date_from = Carbon::today()->startOfDay();
         $date_to = Carbon::now();
         if (auth()->user()->role == 'healthworker' || auth()->user()->role == 'healthpost') {

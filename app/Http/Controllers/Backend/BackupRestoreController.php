@@ -297,7 +297,7 @@ class BackupRestoreController extends Controller
     }
 
     public function apkUpload(Request $request){
-        $folder_path = 'mobile_apk/';
+        $folder_path = 'mobile-apk/apk/';
         if($request->hasFile('apk_file')) {
             File::deleteDirectory($folder_path);
             $file = $request->file('apk_file');
