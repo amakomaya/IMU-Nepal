@@ -33,7 +33,7 @@
                                         <th title="Sex">Sex</th>
                                         <th title="B1 Form Actions"><i class="fa fa-cogs" aria-hidden="true"></i> B1 Form</th>
                                         <th title="B2 Form Actions"><i class="fa fa-cogs" aria-hidden="true"></i> B2 Form</th>
-                                        <th>Do you want to register patient and collect sample?</th>
+{{--                                        <th>Do you want to register patient and collect sample?</th>--}}
                                     </tr>
                                 </thead>
                                 <tbody class="table-sars-cov-tbody text-center">
@@ -89,13 +89,13 @@
                                                 </form>
                                                 @endif
                                             </td>
-                                            <td>
-                                                @if($item->contact && $item->contact->completion_date)
-                                                <a class="btn btn-sm btn-info" href="{{ route('woman.create', ['case_id' => $item->case_id]) }}" target="_blank"><i class="fa fa-flask" aria-hidden="true"></i> Register and Collect Sample</a>
-                                                @else
-                                                Please complete B1 form first
-                                                @endif
-                                            </td>
+{{--                                            <td>--}}
+{{--                                                @if($item->contact && $item->contact->completion_date)--}}
+{{--                                                <a class="btn btn-sm btn-info" href="{{ route('woman.create', ['case_id' => $item->case_id]) }}" target="_blank"><i class="fa fa-flask" aria-hidden="true"></i> Register and Collect Sample</a>--}}
+{{--                                                @else--}}
+{{--                                                Please complete B1 form first--}}
+{{--                                                @endif--}}
+{{--                                            </td>--}}
                                         </tr>
                                     @endforeach
                                 </tbody>

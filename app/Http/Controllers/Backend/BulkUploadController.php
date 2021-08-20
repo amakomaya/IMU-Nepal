@@ -16,8 +16,7 @@ use App\Imports\BackDate\BackdateLabReceivedResultImport;
 use App\Imports\BackDate\BackdateRegisterSampleCollectionImport;
 use App\Imports\BackDate\BackdateRegisterSampleCollectionLabImport;
 use App\Imports\BackDate\BackdateCasesPaymentImport;
-use App\Imports\AsymptomaticPoeImport;
-use App\Imports\SymptomaticPoeImport;
+use App\Imports\PoeImport;
 class BulkUploadController extends Controller
 {
 
@@ -51,14 +50,15 @@ class BulkUploadController extends Controller
               $import = new RegisterSampleCollectionLabImport(auth()->user());
               $successMessage = "Sample Collection Data with Lab Test created successfully";
               break;
-            case 'bulk_file_asymptomtic_poe':
-              $import = new AsymptomaticPoeImport(auth()->user());
-              $successMessage = "Asymptomatic POE data registered successfully";
+            case 'bulk_file_poe':
+              $import = new PoeImport(auth()->user());
+              $successMessage = "POE data registered successfully";
               break;
-            case 'bulk_file_symptomtic_poe':
-              $import = new SymptomaticPoeImport(auth()->user());
-              $successMessage = "Symptomatic POE data registered successfully";
-              break;
+            
+            // case 'bulk_file_poe_np':
+            //   $import = new PoeNPImport(auth()->user());
+            //   $successMessage = "POE data registered successfully";
+            //   break;
 
             case 'bulk_file_case_payment_bd':
               //todo pass bed status
@@ -92,6 +92,7 @@ class BulkUploadController extends Controller
           }
           
           Excel::queueImport($import, $bulk_file);
+          
           $importedRowCount = $import->getImportedRowCount();
           if($importedRowCount == 0) {
             return response()->json([
