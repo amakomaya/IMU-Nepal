@@ -227,16 +227,8 @@
                 ><i
                             class="fa fa-shield" aria-hidden="true"> भ्याक्सिन सेवा प्राप्त गर्नको लागि, कृपया यहाँ दर्ता गर्नुहोस्</i>
                     </a>
-
-                <div class="row">
-                    <div class="col-md-9">
                         <a target="_blank" href="https://play.google.com/store/apps/details?id=com.aamakomaya.hamrosurvey"><img
                             class="img-responsive center-block" src="{{ asset('images/google-play-badge.png') }}"></a>
-                    </div>
-                    <div class="col-md-3">
-                        <a class="btn btn-primary" href="{{ asset('mobile_apk/IMU_app.apk') }}" target="_blank" style="margin-top: 15px;">Download Apk File</a>
-                    </div>  
-                </div>
 
             </div>
         </div>
@@ -413,8 +405,17 @@
             <a data-toggle="modal" data-target="#myModal2">IHMIS, IMU, WHO Contact list</a>
         </div>
         <div class="col-md-4">
-                    NTC No.: <a href="tel:+977-9841208827">+977-9841208827</a> <br>
-                    NCELL No.: <a href="tel:+977-9808066194">+977-9808066194</a>
+            <?php
+                $check_file = glob('mobile_apk/*.apk');
+                if($check_file){
+                    $file_name = $check_file[0];
+                }else {
+                    $file_name = 'no-file-found.apk';
+                }
+            ?>
+            <a class="btn btn-primary" href="{{ $file_name }}" target="_blank">
+                Download IMU Beta Test app
+            </a>
         </div>
         <div class="col-md-4">
             <i class="fa fa-envelope" aria-hidden="true"></i> Email : <a href="mailto: imucovidnepal@gmail.com">imucovidnepal@gmail.com</a>

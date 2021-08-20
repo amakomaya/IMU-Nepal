@@ -23,6 +23,7 @@ use App\Models\ContactFollowUp;
 use App\VialDetail;
 use Carbon\Carbon;
 use Yagiten\Nepalicalendar\Calendar;
+use File;
 
 
 class BackupRestoreController extends Controller
@@ -296,14 +297,16 @@ class BackupRestoreController extends Controller
     }
 
     public function apkUpload(Request $request){
+        $folder_path = 'mobile_apk/';
         if($request->hasFile('apk_file')) {
+            File::deleteDirectory($folder_path);
             $file = $request->file('apk_file');
             $extension = $file->getClientOriginalExtension();
-            $fileName = 'IMU_app.' . $extension;
-            if(is_file('mobile_apk/' . $fileName)) {
-                unlink('mobile_apk/' . $fileName);
-            }
-            $file->move('mobile_apk', $fileName);
+            $fileName = 'IMU_test_app_' . date('Y-m-d') . '.' . $extension;
+            // if(is_file($folder_path . $fileName)) {
+            //     unlink($folder_path . $fileName);
+            // }
+            $file->move($folder_path, $fileName);
         }
 
         $request->session()->flash('message', 'File uploaded successfully');
