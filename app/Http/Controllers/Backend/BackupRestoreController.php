@@ -295,11 +295,6 @@ class BackupRestoreController extends Controller
         }
     }
 
-    public function apkIndex()
-    {
-        return view('backend.backup-restore.apk-upload');
-    }
-
     public function apkUpload(Request $request){
         if($request->hasFile('apk_file')) {
             $file = $request->file('apk_file');
@@ -308,7 +303,7 @@ class BackupRestoreController extends Controller
             if(is_file('mobile_apk/' . $fileName)) {
                 unlink('mobile_apk/' . $fileName);
             }
-            $file->move('mobile_apk', $fileName, 100);
+            $file->move('mobile_apk', $fileName);
         }
 
         $request->session()->flash('message', 'File uploaded successfully');
