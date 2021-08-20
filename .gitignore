@@ -3,6 +3,7 @@
 /public/storage
 /public/files
 /public/photos
+/public/mobile_apk
 /database/backups
 /storage/*.key
 /vendor

@@ -228,8 +228,16 @@
                             class="fa fa-shield" aria-hidden="true"> भ्याक्सिन सेवा प्राप्त गर्नको लागि, कृपया यहाँ दर्ता गर्नुहोस्</i>
                     </a>
 
-                <a target="_blank" href="https://play.google.com/store/apps/details?id=com.aamakomaya.hamrosurvey"><img
+                <div class="row">
+                    <div class="col-md-9">
+                        <a target="_blank" href="https://play.google.com/store/apps/details?id=com.aamakomaya.hamrosurvey"><img
                             class="img-responsive center-block" src="{{ asset('images/google-play-badge.png') }}"></a>
+                    </div>
+                    <div class="col-md-3">
+                        <a class="btn btn-primary" href="{{ asset('mobile_apk/IMU_app.apk') }}" target="_blank" style="margin-top: 15px;">Download Apk File</a>
+                    </div>  
+                </div>
+
             </div>
         </div>
 

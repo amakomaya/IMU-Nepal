@@ -160,6 +160,7 @@ Route::get('/admin/organization-overview-poe', 'Backend\OverviewController@poe')
 
 Route::resource('/admin/download-dev-apks', 'Backend\DownloadApksController');
 
+Route::post('/admin/apk-upload-store', 'Backend\BackupRestoreController@apkUpload')->name('apk-upload.store');
 Route::resource('/admin/backup-restore', 'Backend\BackupRestoreController');
 
 Route::resource('admin/community-deaths', 'Backend\CommunityDeathController');

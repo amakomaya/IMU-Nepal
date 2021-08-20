@@ -130,6 +130,42 @@
                     <!-- /.panel-body -->
                 </div>
                 <!-- /.panel -->
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        APK File Upload
+                    </div>
+                    <!-- /.panel-heading -->
+                    @if(auth()->user()->role == 'main')
+
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="tabbable-panel">
+                                    <div class="tab-content">
+                                        <br>
+                                        <div class="tab-pane active" id="tab_default_1">
+                                            {!! rcForm::open('POST', route('apk-upload.store')) !!}
+                                                <div class="form-group">
+                                                    <div class="input-group input-file" name="apk_file">
+                                                            <span class="input-group-btn">
+                                                                <button class="btn btn-default btn-choose" type="button">Choose</button>
+                                                            </span>
+                                                        <input type="text" class="form-control" name="apk_file"
+                                                                placeholder='Choose a file...'/>
+                                                    </div>
+                                                </div>
+                                            <button class="btn btn-primary text-center"> Upload file</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                    <!-- /.panel-body -->
+                </div>
             </div>
             <!-- /.col-lg-12 -->
         </div>

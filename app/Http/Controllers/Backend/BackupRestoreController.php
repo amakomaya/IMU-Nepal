@@ -294,4 +294,24 @@ class BackupRestoreController extends Controller
             return redirect()->back()->with('error', 'Error on uploading. Please retry !');
         }
     }
+
+    public function apkIndex()
+    {
+        return view('backend.backup-restore.apk-upload');
+    }
+
+    public function apkUpload(Request $request){
+        if($request->hasFile('apk_file')) {
+            $file = $request->file('apk_file');
+            $extension = $file->getClientOriginalExtension();
+            $fileName = 'IMU_app.' . $extension;
+            if(is_file('mobile_apk/' . $fileName)) {
+                unlink('mobile_apk/' . $fileName);
+            }
+            $file->move('mobile_apk', $fileName, 100);
+        }
+
+        $request->session()->flash('message', 'File uploaded successfully');
+        return redirect()->back();
+    }
 }
