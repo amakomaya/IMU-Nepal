@@ -180,8 +180,9 @@ Route::get('/admin/activity-log', 'Backend\ActivityLogController@index')->name('
 Route::resource('admin/notice-board', 'NoticeBoardController');
 
 Route::get('/artisan-clear', function () {
-    Artisan::call('cache:clear');
     Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+   
     Artisan::call('config:cache');
     Artisan::call('view:clear');
     return "Cleared!";
