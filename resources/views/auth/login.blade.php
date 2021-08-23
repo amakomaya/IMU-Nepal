@@ -269,7 +269,7 @@
                                     <h4 class="modal-title">सूचना ! सूचना!! सूचना!!!</h4> <strong class="pull-right">२ भाद्र २०७८, बुधवार</strong>
                                 </div>
                                 <div class="modal-body">
-                                    IMU प्रणाली आउँदो शनिबार (भाद्र ५, २०७८) बिहान ७ बजेदेखि १० बजेसम्म मर्मतका लागि बन्द हुने जानकारी गराउदछाैँ।
+                                    IMU प्रणाली आउँदो सोमबार (भाद्र ७, २०७८) साँझ ६ बजेदेखि ७ बजेसम्म मर्मतका लागि बन्द हुने जानकारी गराउदछाैँ।
                                     {{-- <ol>IMU को mobile एपमा अपडेट भएको छ।
                                         कृपय तलको बिधि अनुसार आफ्नो IMU App अपडेट गर्नु होस!
                                         <li>IMU App मा भएको सबै डाटा Data सर्भरमा पठाउनुहोस र सर्भरमा पुगेको निश्चय गर्नुहोस।</li>
@@ -394,7 +394,7 @@
         $(window).on('load', function () {
             $('#myModal').modal('hide');
             $('#myModal2').modal('hide');
-            // $('#myUpdateModal').modal('show');
+            $('#myUpdateModal').modal('show');
         });
     </script>
 </div>
