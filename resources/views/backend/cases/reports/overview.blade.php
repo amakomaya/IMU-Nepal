@@ -116,7 +116,7 @@
                             </div>
                         </form>
                         <div class="row col-md-12" style="padding-left: 30px;">
-                            Reporting Days: {{ $reporting_days }}
+                            Reporting Days: {{ $reporting_days + 1 }}
                         </div>
                         <div class="clearfix"></div>
                         @if(Request::session()->has('message'))
@@ -151,15 +151,15 @@
                                 @foreach($final_data as $datum)
                                     <tr>
                                         <td> {{ $loop->iteration }}</td>
-                                        <td> {{ $datum['name'] }}</td>
-                                        <td> {{ $datum['province_name'] }}</td>
-                                        <td> {{ $datum['district_name'] }}</td>
-                                        <td> {{ $datum['municipality_name'] }}</td>
+                                        <td> {{ $datum['healthpost_name'] }}</td>
+                                        <td> {{ $datum['province_id'] }}</td>
+                                        <td> {{ $datum['district_id'] }}</td>
+                                        <td> {{ $datum['municipality_id'] }}</td>
                                         <td> {{ $datum['general_count'] }}</td>
                                         <td> {{ $datum['hdu_count'] }}</td>
                                         <td> {{ $datum['icu_count'] }}</td>
                                         <td> {{ $datum['ventilator_count'] }}</td>
-                                        <td>{{ $datum['total_cost'] }}</td>
+                                        <td>{{ $datum['general_count'] + $datum['hdu_count'] + $datum['icu_count'] + $datum['ventilator_count'] }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>

@@ -133,7 +133,7 @@
                             </div>
                         </form>
                         <div class="row col-md-12" style="padding-left: 30px;">
-                            Reporting Days: {{ $reporting_days }}
+                            Reporting Days: {{ $reporting_days + 1 }}
                         </div>
                         <div class="clearfix"></div>
                         @if(Request::session()->has('message'))
@@ -171,28 +171,53 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($data as $key => $case)
+                                @foreach($final_data as $key => $case)
+                                    <?php
+                                        if($case['gender'] == '1'){
+                                            $gender = 'M';
+                                        }elseif($case['gender'] == '2'){
+                                            $gender = 'F';
+                                        }else {
+                                            $gender = 'O';
+                                        }
+
+                                        if($case['self_free'] == '1'){
+                                            $paid_free = 'Paid';
+                                        }elseif($case['self_free'] == '2'){
+                                            $paid_free = 'Free';
+                                        }else {
+                                            $paid_free = '';
+                                        }
+
+                                        if($case['outcome_status'] == '1'){
+                                            $outcome_status = 'Discharge';
+                                        }elseif($case['outcome_status'] == '2'){
+                                            $outcome_status = 'Death';
+                                        }else {
+                                            $outcome_status = 'Under Treatment';
+                                        }
+                                    ?>
                                     <tr>
-                                        <td>{{ $key + 1 }}</td>
-                                        <td >{{$district_name }}</td>
-                                        <td >{{ $case['municipality_name'] }}</td>
-                                        <td >{{ $case['healthpost_name'] }} </td>
-                                        <td >{{ $case['name'] }} </td>
-                                        <td >{{ $case['hospital_register_id'] }} </td>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $case['district_name'] }}</td>
+                                        <td>{{ $case['municipality_name'] }}</td>
+                                        <td>{{ $case['healthpost_name'] }} </td>
+                                        <td>{{ $case['name'] }} </td>
+                                        <td>{{ $case['hospital_register_id'] }} </td>
                                         <td>{{ $case['age'] }} </td>
-                                        <td>{{ $case['gender'] }} </td>
+                                        <td>{{ $gender }} </td>
                                         <td>{{ $case['phone'] }} </td>
                                         <td>{{ $case['guardian_name'] }} </td>
-                                        <td>{{ $case['paid_free'] }} </td>
-                                        <td>{{ $case['no_of_days_in_general_bed'] }} </td>
-                                        <td>{{ $case['no_of_days_in_hdu_bed'] }} </td>
-                                        <td>{{ $case['no_of_days_in_icu_bed'] }} </td>
-                                        <td>{{ $case['no_of_days_in_ventilator'] }} </td>
-                                        <td>{{ $case['total_no_of_days'] }} </td>
+                                        <td>{{ $paid_free }} </td>
+                                        <td>{{ $case['general_count'] }} </td>
+                                        <td>{{ $case['hdu_count'] }} </td>
+                                        <td>{{ $case['icu_count'] }} </td>
+                                        <td>{{ $case['ventilator_count'] }} </td>
+                                        <td>{{ $case['general_count'] + $case['hdu_count'] + $case['icu_count'] + $case['ventilator_count'] }} </td>
 
-                                        <td>{{ $case['outcome_status'] }} </td>
-                                        <td>{{ $case['register_date_en'] }} </td>
-                                        <td>{{ $case['date_of_outcome_en'] }} </td>
+                                        <td>{{ $outcome_status }} </td>
+                                        <td>{{ $case['register_date'] }} </td>
+                                        <td>{{ $case['date_of_outcome'] }} </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
