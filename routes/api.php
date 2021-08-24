@@ -1132,22 +1132,22 @@ Route::get('/v1/countries', function(){
 //Cict APis
 Route::get('/v1/cict-tracing', function(Request $request) {
     $hp_code = $request->hp_code;
-    $response = \App\Models\CictTracing::where('hp_code', $hp_code)->get();
+    $response = \App\Models\CictTracing::where('hp_code', $hp_code)->where('regdev', 'mobile')->get();
     return response()->json($response);
 });
 Route::get('/v1/cict-close-contact', function(Request $request) {
     $hp_code = $request->hp_code;
-    $response = \App\Models\CictCloseContact::where('hp_code', $hp_code)->get();
+    $response = \App\Models\CictCloseContact::where('hp_code', $hp_code)->where('regdev', 'mobile')->get();
     return response()->json($response);
 });
 Route::get('/v1/cict-contact', function(Request $request) {
     $hp_code = $request->hp_code;
-    $response = \App\Models\CictContact::where('hp_code', $hp_code)->get();
+    $response = \App\Models\CictContact::where('hp_code', $hp_code)->where('regdev', 'mobile')->get();
     return response()->json($response);
 });
 Route::get('/v1/cict-follow-up', function(Request $request) {
     $hp_code = $request->hp_code;
-    $follow_ups = \App\Models\CictFollowUp::where('hp_code', $hp_code)->get();
+    $follow_ups = \App\Models\CictFollowUp::where('hp_code', $hp_code)->where('regdev', 'mobile')->get();
     $data = [];
     if($follow_ups){
         foreach($follow_ups as $key => $follow_up){
