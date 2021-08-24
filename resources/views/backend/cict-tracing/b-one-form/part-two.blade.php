@@ -419,7 +419,7 @@
                             <div class="part-four">
                                 <h4>Vaccination Status</h4><br>
                                 <div class="form-group">
-                                    <label class="control-label">Has the Case under Investigation received SARS-CoV-2 vaccine (COVID-19 vaccine)?</label>
+                                    <label class="control-label">Has the Case under Investigation (contact) received SARS-CoV-2 vaccine (COVID-19 vaccine)?</label>
                                     <div class="control-group">
                                         <label class="radio-inline">
                                             <input type="radio" name="sars_cov2_vaccinated" class="sars_cov2_vaccinated"

@@ -28,6 +28,7 @@ class CreateCictCloseContactsTable extends Migration
             $table->string('emergency_contact_one', 10)->nullable();
             $table->string('relationship', 3)->nullable();
             $table->string('relationship_others', 40)->nullable();
+            $table->string('vehicle_no', 40)->nullable();
             $table->string('contact_type', 3)->nullable();
             $table->softDeletes();
             $table->timestamps();

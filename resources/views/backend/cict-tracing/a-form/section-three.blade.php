@@ -310,6 +310,7 @@
                                                     <th>Relationship</th>
                                                     <th>Other Relationship</th>
                                                     <th>Phone no.</th>
+                                                    <th>Vehicle no. (eg. Bus No, Plane No)</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="table-travel-public-tbody text-center">
@@ -334,7 +335,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details[{{$key + 400}}][sex]" class="form-control" required>
+                                                        <select name="travel_vehicle_details[{{$key + 400}}][sex]" class="form-control">
                                                             <option value="" selected>Select Gender</option>
                                                             <option value="1" {{ $sub_data->sex == '1' ? 'selected' : '' }}>Male</option>
                                                             <option value="2" {{ $sub_data->sex == '2' ? 'selected' : '' }}>Female</option>
@@ -355,9 +356,12 @@
                                                         <input type="text" class="form-control travel_vehicle_details_relationship_others" name="travel_vehicle_details[{{$key + 400}}][relationship_others]"  value="{{ $sub_data->relationship_others }}" @if( $sub_data->relationship != '0') readonly @endif>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control travel_vehicle_details_phone" name="travel_vehicle_details[{{$key + 400}}][emergency_contact_one]" value="{{ $sub_data->emergency_contact_one }}" required>
+                                                        <input type="text" class="form-control travel_vehicle_details_phone" name="travel_vehicle_details[{{$key + 400}}][emergency_contact_one]" value="{{ $sub_data->emergency_contact_one }}">
                                                         <input type="hidden" name="travel_vehicle_details[{{$key + 400}}][contact_type]" class="travel_vehicle_details_contact_type" value="2">
                                                         <input type="hidden" name="travel_vehicle_details[{{$key + 400}}][case_id]" class="travel_vehicle_details_case_id" value="{{ $sub_data->case_id }}">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control travel_vehicle_details_vehicle_no" name="travel_vehicle_details[{{$key + 400}}][vehicle_no]" value="{{ $sub_data->vehicle_no }}">
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -381,7 +385,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="travel_vehicle_details[0][sex]" class="form-control" required>
+                                                        <select name="travel_vehicle_details[0][sex]" class="form-control">
                                                             <option value="" selected>Select Gender</option>
                                                             <option value="1">Male</option>
                                                             <option value="2">Female</option>
@@ -403,9 +407,12 @@
                                                         <input type="text" class="form-control travel_vehicle_details_relationship_others" name="travel_vehicle_details[0][relationship_others]" readonly>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control travel_vehicle_details_phone" name="travel_vehicle_details[0][emergency_contact_one]" required>
+                                                        <input type="text" class="form-control travel_vehicle_details_phone" name="travel_vehicle_details[0][emergency_contact_one]">
                                                         <input type="hidden" name="travel_vehicle_details[0][contact_type]" class="travel_vehicle_details_contact_type" value="2">
                                                         <input type="hidden" name="travel_vehicle_details[0][case_id]" class="travel_vehicle_details_case_id" value="">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control travel_vehicle_details_vehicle_no" name="travel_vehicle_details[0][vehicle_no]">
                                                     </td>
                                                 </tr>
                                                 @endif
@@ -1041,7 +1048,6 @@
             digits: true
         });
         new_row.find(".travel_vehicle_details_phone").rules("add", {
-            required: true,
             digits: true,
             minlength: 7,
             maxlength: 10,
@@ -1248,7 +1254,6 @@
         });
         travel_vehicle_details.filter('input[name$="[emergency_contact_one]"]').each(function() {
             $(this).rules("add", {
-                required: true,
                 digits: true,
                 minlength: 7,
                 maxlength: 10,

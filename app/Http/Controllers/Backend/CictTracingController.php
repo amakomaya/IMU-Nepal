@@ -417,6 +417,7 @@ class CictTracingController extends Controller
                     $travel_vehicle['relationship'] = $details['relationship'];
                     $travel_vehicle['relationship_others'] = $details['relationship_others'];
                     $travel_vehicle['emergency_contact_one'] = $details['emergency_contact_one'];
+                    $travel_vehicle['vehicle_no'] = $details['vehicle_no'];
                     $travel_vehicle['contact_type'] = $details['contact_type'];
                     $travel_vehicle['hp_code'] = $healthworker->hp_code;
                     $travel_vehicle['checked_by'] = $healthworker->token;
