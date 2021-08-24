@@ -261,10 +261,11 @@
         <select class="form-control show-arrow" v-model.trim="data.vaccine_type" id="vaccine_type">
           <option value="" selected="selected">Please Select Vaccine</option>
           <option value="1">Verocell (Sinopharm)</option>
-          <option value="2">Covishield (The Serum Institute of India)</option>
+          <option value="2">Covishield (Serum)</option>
           <option value="3">Pfizer</option>
           <option value="4">Moderna</option>
           <option value="5">AstraZeneca</option>
+          <option value="6">Janssen (Johnson &amp; Johnson)</option>
           <option value="10">Other</option>
         </select>
       </div>
@@ -662,6 +663,14 @@ export default {
           this.entry_health_conditions = hcEnum;
           this.bed_status = res.remaining_beds;
       });
+    },
+
+    vaccineList() {
+      axios.get('/api/v1/vaccines')
+        .then((response) => {
+          let vaccines = response
+          console.log(vaccines);
+        });
     },
   
     handleFileUpload(){
