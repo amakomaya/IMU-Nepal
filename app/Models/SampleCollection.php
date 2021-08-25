@@ -105,4 +105,9 @@ class SampleCollection extends Model
     {
         return explode('-', $this->lab_token,2)[1] ?? $this->lab_token;
     }
+
+    public function getOrganization()
+    {
+        return $this->hasOne('App\Models\Organization', 'hp_code', 'hp_code');
+    }
 }

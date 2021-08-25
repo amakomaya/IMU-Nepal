@@ -17,8 +17,9 @@
               <th width="4%" title="Ward No">Ward</th>
 <!--              <th width="15%">Case</th>-->
               <th width="10%" title="Test Date">Test Date</th>
-              <th width="10%" title="Sample Collection Details">Sample</th>
-              <th width="10%" title="Latest Lab Result">Result</th>
+              <th width="8%" title="Sample Collection Details">Sample</th>
+              <th width="8%" title="Latest Lab Result">Result</th>
+              <th width="4%" title="Tested By">Tested By</th>
               <th width="4%" title="Infection Type">Type</th>
               <th width="10%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
             </tr>
@@ -39,9 +40,14 @@
               <td><span class="label label-info"> {{ item.ancs.length }}</span>
                 <div title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
               </td>
-                <td><span class="label label-success"> Negative</span>
-                  <div>{{ labToken(item.latest_anc.lab_token) }}</div>
-                </td>
+              <td><span class="label label-success"> Negative</span>
+                <div>{{ labToken(item.latest_anc.lab_token) }}</div>
+              </td>
+              <td>
+                <div v-if="item.ancs.length > 0">
+                  {{ item.latest_anc.get_organization.name }}
+                </div>
+              </td>
               <td>
                 {{ checkInfectionType(item.latest_anc.infection_type) }}
               </td>

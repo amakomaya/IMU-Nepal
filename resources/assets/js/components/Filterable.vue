@@ -244,10 +244,12 @@ export default {
         'Ward' : 'ward',
         'Emergency Contact One' : 'emergency_contact_one',
         'Emergency Contact Two'	: 'emergency_contact_two',
+        'Occupation' : 'occupation',
         'Current Hospital' : 'current_hospital',
         'Swab ID' : 'swab_id',
         'Lab ID' : 'lab_id',
         'Result' : 'result',
+        'Tested By' : 'tested_by',
         'Infection Type' : 'infection_type',
         'Date' : 'date',
         'Created At' : 'created_at'
@@ -366,6 +368,46 @@ export default {
           exportableData.district = data.district.district_name;
           exportableData.municipality = data.municipality.municipality_name;
           exportableData.ward = data.ward;
+          if(data.occupation == '1'){
+            exportableData.occupation = "Front Line Health Worker";
+          }
+          else if(data.occupation == "2"){
+            exportableData.occupation = "Doctor";
+          }
+          else if(data.occupation == "3"){
+            exportableData.occupation = "Nurse";
+          }
+          else if(data.occupation == "4"){
+            exportableData.occupation = "Police/Army";
+          }
+          else if(data.occupation == "5"){
+            exportableData.occupation = "Business/Industry";
+          }
+          else if(data.occupation == "6"){
+            exportableData.occupation = "Teacher/Student/Education";
+          }
+          else if(data.occupation == "7"){
+            exportableData.occupation = "Civil Servant";
+          }
+          else if(data.occupation == "8"){
+            exportableData.occupation = "Journalist";
+          }
+          else if(data.occupation == "9"){
+            exportableData.occupation = "Agriculture";
+          }
+          else if(data.occupation == "10"){
+            exportableData.occupation = "Transport/Delivery";
+          }
+          else if(data.occupation == "12"){
+            exportableData.occupation = "Tourist";
+          }
+          else if(data.occupation == "13"){
+            exportableData.occupation = "Migrant Worker";
+          }
+          else{
+            exportableData.occupation = "Other";
+          }
+
           exportableData.current_hospital = data.healthpost ? data.healthpost.name : '';
           var date = data.register_date_np;
           if(data.latest_anc){
@@ -383,6 +425,7 @@ export default {
               date = data.latest_anc.sample_test_date_np;
             }
             exportableData.result = data.latest_anc.formatted_result;
+            exportableData.tested_by = data.latest_anc.get_organization ? data.latest_anc.get_organization.name : '';
           }
           exportableData.date = date;
           exportableData.created_at = data.created_at;

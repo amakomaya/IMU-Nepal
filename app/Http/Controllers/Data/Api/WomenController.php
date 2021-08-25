@@ -171,10 +171,15 @@ class WomenController extends Controller
             ->whereHas('ancs', function($q){
                 $q->where('service_for', '!=' , "2")->where('result', '=', 4);
             })
-            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+            ->with([
+                'province', 'district', 'municipality', 'ancs',
+                'latestAnc' => function($q) {
+                    $q->with('getOrganization');
+                },
                 'healthpost' => function($q) {
                     $q->select('name', 'hp_code');
-                }]);
+                }
+            ]);
 
         return response()->json([
             'collection' => $woman->advancedFilter()
@@ -204,10 +209,15 @@ class WomenController extends Controller
             ->whereHas('ancs', function($q){
                 $q->where('service_for', "2")->where('result', '=', 4);
             })
-            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+            ->with([
+                'province', 'district', 'municipality', 'ancs',
+                'latestAnc' => function($q) {
+                    $q->with('getOrganization');
+                },
                 'healthpost' => function($q) {
                     $q->select('name', 'hp_code');
-                }]);
+                }
+            ]);
 
         return response()->json([
             'collection' => $woman->advancedFilter()
@@ -236,9 +246,15 @@ class WomenController extends Controller
 
         $woman->whereIn('hp_code', $hpCodes)->whereHas('ancs', function($q){
                 $q->where('service_for', '!=' , "2")->where('result', '=', 3);
-            })->with(['ancs','healthpost' => function($q) {
-                $q->select('name', 'hp_code');
-            }, 'latestAnc', 'district', 'municipality', 'cictTracing']);
+            })->with([
+                'ancs','healthpost' => function($q) {
+                    $q->select('name', 'hp_code');
+                }, 
+                'latestAnc' => function($q) {
+                    $q->with('getOrganization');
+                }, 
+                'district', 'municipality', 'cictTracing'
+            ]);
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -270,7 +286,10 @@ class WomenController extends Controller
                     $q->where('service_for', "2")->where('result', 3);
                 });
             })
-            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs', 'cictTracing',
+            ->with(['province', 'district', 'municipality', 'ancs', 'cictTracing',
+                'latestAnc' => function($q) {
+                    $q->with('getOrganization');
+                },
                 'healthpost' => function($q) {
                     $q->select('name', 'hp_code');
                 }]);

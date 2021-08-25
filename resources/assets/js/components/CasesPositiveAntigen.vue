@@ -10,15 +10,15 @@
         <th width="6%">ID</th>
         <th width="10%">Name</th>
         <th width="4%">Age</th>
-        <th width="6%" title="Gender">G</th>
+        <th width="4%" title="Gender">G</th>
         <th width="7%" title="Emergency Contact Number">Phone</th>
-        <!-- <th>District</th> -->
-        <th width="10%" title="Municipality">Municipality</th>
+        <th width="8%" title="Municipality">Municipality</th>
         <th width="4%" title="Ward No">Ward</th>
         <th width="15%">Case</th>
-        <th width="8%" title="Date">Test Date</th>
-        <th width="8%" title="Sample Collection Details">Sample</th>
-        <th width="4%" title="Latest Lab Result">Result</th>
+        <th width="7%" title="Date">Test Date</th>
+        <th width="7%" title="Sample Collection Details">Sample</th>
+        <th width="6%" title="Latest Lab Result">Result</th>
+        <th width="4%" title="Tested By">Tested By</th>
         <th width="4%" title="Infection Type">Type</th>
         <th width="4%" title="CICT Status">CICT Status</th>
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
@@ -51,6 +51,11 @@
             <span class="label label-danger"> Positive</span>
           </div>
           <div>{{ labToken(item.latest_anc.lab_token) }}</div>
+        </td>
+        <td>
+          <div v-if="item.ancs.length > 0">
+            {{ item.latest_anc.get_organization.name }}
+          </div>
         </td>
         <td>
           {{ checkInfectionType(item.latest_anc.infection_type) }}
