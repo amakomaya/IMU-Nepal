@@ -28,9 +28,9 @@ class CasesPaymentController extends Controller
         if ($response['province_id'] == null ||
             $response['district_id'] == null
         ){
-            $data = [];
+            $final_data = [];
             $request->session()->flash('message', 'Please select all the above filters to view the line listing data of the selected organization within the selected date range.');
-            return view('backend.cases.reports.monthly-line-listing', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+            return view('backend.cases.reports.monthly-line-listing', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
         }
 
         // $municipality = Mun
@@ -162,6 +162,7 @@ class CasesPaymentController extends Controller
             ->leftjoin('provinces', 'provinces.id', '=', 'healthposts.province_id')
             ->leftjoin('districts', 'districts.id', '=', 'healthposts.district_id')
             ->leftjoin('municipalities', 'municipalities.id', '=', 'healthposts.municipality_id')
+            ->where('payment_cases.self_free', 2)
             ->whereIn('payment_cases.hp_code', $hpCodes)
             ->whereIn('healthposts.hospital_type', [3,5,6])
             ->where(function ($query) use ($filter_date){
