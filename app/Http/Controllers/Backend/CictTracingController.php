@@ -396,6 +396,7 @@ class CictTracingController extends Controller
                     $household['hp_code'] = $healthworker->hp_code;
                     $household['checked_by'] = $healthworker->token;
                     $household['parent_case_id'] = $cict_tracing->case_id;
+                    $household['regdev'] = 'web';
                     $close_contact = CictCloseContact::where('case_id', $details['case_id'])->where('cict_id', $cict_tracing->id)
                         ->where('contact_type', '1')->first();
                     if($close_contact){
@@ -422,6 +423,7 @@ class CictTracingController extends Controller
                     $travel_vehicle['hp_code'] = $healthworker->hp_code;
                     $travel_vehicle['checked_by'] = $healthworker->token;
                     $travel_vehicle['parent_case_id'] = $cict_tracing->case_id;
+                    $travel_vehicle['regdev'] = 'web';
                     $close_contact = CictCloseContact::where('case_id', $details['case_id'])->where('cict_id', $cict_tracing->id)
                         ->where('contact_type', '2')->first();
                     if($close_contact){
@@ -447,6 +449,7 @@ class CictTracingController extends Controller
                     $other_direct_care['hp_code'] = $healthworker->hp_code;
                     $other_direct_care['checked_by'] = $healthworker->token;
                     $other_direct_care['parent_case_id'] = $cict_tracing->case_id;
+                    $other_direct_care['regdev'] = 'web';
                     $close_contact = CictCloseContact::where('case_id', $details['case_id'])->where('cict_id', $cict_tracing->id)
                         ->where('contact_type', '3')->first();
                     if($close_contact){
