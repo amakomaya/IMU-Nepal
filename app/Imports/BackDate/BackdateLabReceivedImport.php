@@ -86,10 +86,10 @@ class BackdateLabReceivedImport implements ToModel, WithChunkReading, WithValida
             return;
           }
           $backDateEn = $row['date_of_lab_receivedyyyy_mm_dd_ad'];
-          $isValidDateEn = $this->testValidEnDate($backDateEn);
-          if (!$isValidDateEn) {
+          $backDateEn = $this->returnValidEnDate($backDateEn);
+          if (!$backDateEn) {
             $error = ['date_of_lab_receivedyyyy_mm_dd_ad' => 'Invalid Date. Date must be in AD & YYYY-MM-DD Format'];
-              $failures[] = new Failure(1, 'v', $error, $row);
+              $failures[] = new Failure($currentRowNumber, 'date_of_lab_receivedyyyy_mm_dd_ad', $error, $row);
               throw new ValidationException(
                   \Illuminate\Validation\ValidationException::withMessages($error),
                   $failures
@@ -133,22 +133,36 @@ class BackdateLabReceivedImport implements ToModel, WithChunkReading, WithValida
         return;
     }
     
-    private function testValidEnDate($date){
-      if($date) {
-        if (preg_match ("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/", $date, $parts))
-        {
-          $year = $parts[1];
-          $month = $parts[2];
-          $day = $parts[3];
-          if (checkdate($month ,$day, $year)) {
-            if((int)$year <= Carbon::now()->year) {
-              return true;
+    private function returnValidEnDate($date){
+      try{
+        //TODO: stop future date
+        if($date) {
+          if (preg_match ("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/", $date, $parts))
+          {
+            $year = $parts[1];
+            $month = $parts[2];
+            $day = $parts[3];
+            if (checkdate($month ,$day, $year)) {
+              if((int)$year <= Carbon::now()->year) {
+                return $date;
+              }
+            }
+          } else {
+            $parsedDate = Date::excelToDateTimeObject($date);
+            $carbonDate = Carbon::instance($parsedDate);
+            $year = $carbonDate->year;
+            $month = $carbonDate->month;
+            $day = $carbonDate->day;
+            if($year>2000 && $year <= Carbon::now()->year) {
+              return $carbonDate->format('Y-m-d');
             }
           }
-
+        } else {
+          return false;
         }
-      }
-      return false;
+      } catch(\Exception $e){
+        return false;
+      } 
     }
     
     private function getAncsBySid ($sId) {
