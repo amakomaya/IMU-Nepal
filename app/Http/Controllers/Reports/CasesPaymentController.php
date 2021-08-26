@@ -104,7 +104,9 @@ class CasesPaymentController extends Controller
                 
 
                 if(($current_date >= $from_date_np) && ($current_date <= $to_date_np)){
-                    if($next_date_check){}
+                    if($next_date_check){
+                        $final_data[$key][$health_type_returned] += Carbon::parse($current_date)->diffInDays($all_health_condition[$key_3 + 1]['date']);
+                    }
                     else{
                         if($item->is_death) {
                             if(($outcome_date >= $from_date_np) && ($outcome_date <= $to_date_np)){
@@ -115,13 +117,15 @@ class CasesPaymentController extends Controller
                         }
                     }
                 }else{
-                    if($next_date_check){}
+                    if($next_date_check){
+                        $final_data[$key][$health_type_returned] += Carbon::parse($from_date_np)->diffInDays($all_health_condition[$key_3 + 1]['date']);
+                    }
                     else{
                         if($item->is_death) {
                             if(($outcome_date >= $from_date_np) && ($outcome_date <= $to_date_np)){
-                                $final_data[$key][$health_type_returned] += Carbon::parse($current_date)->diffInDays($outcome_date);
+                                $final_data[$key][$health_type_returned] += Carbon::parse($from_date_np)->diffInDays($outcome_date);
                             }elseif($outcome_date > $to_date_np){
-                                $final_data[$key][$health_type_returned] += Carbon::parse($current_date)->diffInDays($to_date_np);
+                                $final_data[$key][$health_type_returned] += Carbon::parse($from_date_np)->diffInDays($to_date_np);
                             }
                         }else{
                             if(strtotime($from_date_np) > strtotime($current_date)){
@@ -129,15 +133,12 @@ class CasesPaymentController extends Controller
                             }else {
                                 $start_date = $from_date_np;
                             }
-                            $final_data[$key][$health_type_returned] += Carbon::parse($current_date)->diffInDays($to_date_np);
+                            $final_data[$key][$health_type_returned] += Carbon::parse($start_date)->diffInDays($to_date_np);
                         }
                     }
                 }
             }
         }
-
-        // dd($final_data);
-
         
         return view('backend.cases.reports.monthly-line-listing', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
 
@@ -233,22 +234,22 @@ class CasesPaymentController extends Controller
                         }
                     }else{
                         if($next_date_check){
-                            if($from_date_np > $current_date){
-                                $start_date = $current_date;
-                            }else {
-                                $start_date = $from_date_np;
-                            }
-                            $final_data[$key][$health_type_returned] += Carbon::parse($start_date)->diffInDays($all_health_condition[$key_3 + 1]['date']);
+                            $final_data[$key][$health_type_returned] += Carbon::parse($from_date_np)->diffInDays($all_health_condition[$key_3 + 1]['date']);
                         }
                         else{
                             if($item->is_death) {
                                 if(($outcome_date >= $from_date_np) && ($outcome_date <= $to_date_np)){
-                                    $final_data[$key][$health_type_returned] += Carbon::parse($current_date)->diffInDays($outcome_date);
+                                    $final_data[$key][$health_type_returned] += Carbon::parse($from_date_np)->diffInDays($outcome_date);
                                 }elseif($outcome_date > $to_date_np){
-                                    $final_data[$key][$health_type_returned] += Carbon::parse($current_date)->diffInDays($to_date_np);
+                                    $final_data[$key][$health_type_returned] += Carbon::parse($from_date_np)->diffInDays($to_date_np);
                                 }
                             }else{
-                                $final_data[$key][$health_type_returned] += Carbon::parse($current_date)->diffInDays($to_date_np);
+                                if(strtotime($from_date_np) > strtotime($current_date)){
+                                    $start_date = $current_date;
+                                }else {
+                                    $start_date = $from_date_np;
+                                }
+                                $final_data[$key][$health_type_returned] += Carbon::parse($start_date)->diffInDays($to_date_np);
                             }
                         }
                     }
