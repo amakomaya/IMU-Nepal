@@ -49,6 +49,9 @@ class CasesPaymentController extends Controller
             $request->session()->flash('message', 'Please select all the above filters to view the line listing data of the selected organization within the selected date range.');
             return view('backend.cases.reports.monthly-line-listing', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
         }
+     
+        $from_date_en = Carbon::parse($filter_date['from_date'])->toDateString();
+        $to_date_en = Carbon::parse($filter_date['to_date'])->toDateString();
 
         $data = PaymentCase::join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
             ->leftjoin('provinces', 'provinces.id', '=', 'healthposts.province_id')
@@ -56,10 +59,10 @@ class CasesPaymentController extends Controller
             ->leftjoin('municipalities', 'municipalities.id', '=', 'healthposts.municipality_id')
             ->whereIn('payment_cases.hp_code', $hpCodes)
             ->whereIn('healthposts.hospital_type', [3,5,6])
-            ->whereDate('register_date_en', '<=' ,$filter_date['to_date']->toDateString())
-            ->where(function ($query) use ($filter_date){
+            ->whereDate('register_date_en', '<=', $to_date_en)
+            ->where(function ($query) use ($from_date_en){
                 $query->whereNull('date_of_outcome_en')
-                    ->orWhereDate('date_of_outcome_en','>=' ,$filter_date['from_date']->toDateString());
+                    ->orWhereDate('date_of_outcome_en', '>=', $from_date_en);
             })->select([
                 'payment_cases.name as name',
                 'payment_cases.hospital_register_id',
@@ -68,7 +71,6 @@ class CasesPaymentController extends Controller
                 'payment_cases.guardian_name',
                 'payment_cases.phone',
                 'payment_cases.self_free',
-
                 'payment_cases.health_condition',
                 'payment_cases.is_death',
                 'payment_cases.health_condition_update',
@@ -78,16 +80,13 @@ class CasesPaymentController extends Controller
                 'payment_cases.date_of_outcome',
                 'districts.district_name',
                 'municipalities.municipality_name',
-
                 'healthposts.name as healthpost_name',
                 'healthposts.municipality_id as municipality_id'
             ])
             ->orderBy('healthposts.name', 'asc')
             ->get();
         // dd(\Illuminate\Support\Str::replaceArray('?', $data->getBindings(), $data->toSql()));
-     
-        $from_date_en = $filter_date['from_date']->toDateString();
-        $to_date_en = $filter_date['to_date']->toDateString();
+
         $final_data = [];
         $hc_precedence = [
             '5' => 0,
@@ -99,7 +98,7 @@ class CasesPaymentController extends Controller
 
         foreach($data as $key => $item) {
             $reg_date = Carbon::parse($item->register_date_en)->toDateString();
-            $outcome_date = Carbon::parse($item->date_of_outcome_en)->toDateString();
+            $outcome_date = $item->date_of_outcome_en ? Carbon::parse($item->date_of_outcome_en)->toDateString() : null;
             $final_data[$key]['general_count'] = $final_data[$key]['hdu_count'] = $final_data[$key]['icu_count'] = 
                 $final_data[$key]['ventilator_count'] = 0;
             $final_data[$key]['name'] = $item->name;
@@ -120,7 +119,7 @@ class CasesPaymentController extends Controller
             $final_data[$key]['date_conditon_array'] = [];
 
             //From Registration Date or from date
-            $check_date = Carbon::parse($reg_date)->toDateString();
+            $check_date = $reg_date;
 
             if($this->filterValidDate($from_date_en, $to_date_en, $check_date, $reg_date, $outcome_date)){
                 $final_data[$key]['date_conditon_array'][$check_date] = strval($item->health_condition);
@@ -131,10 +130,9 @@ class CasesPaymentController extends Controller
             //From HC Update
             $updated_health_condition = $item->health_condition_update ? json_decode($item->health_condition_update, true) : [];
             foreach($updated_health_condition as $key_3 => $condition){
-                $check_date = $condition['date'];
+                $check_date = Carbon::parse($condition['date'])->toDateString();
                 if($this->filterValidDate($from_date_en, $to_date_en, $check_date, $reg_date, $outcome_date)){
                     if(array_key_exists($check_date, $final_data[$key]['date_conditon_array'])) {
-                      
                         if($hc_precedence[$condition['id']] < $hc_precedence[$final_data[$key]['date_conditon_array'] [$check_date]]) {
                             $final_data[$key]['date_conditon_array'][$check_date] = strval($condition['id']);
                         }
@@ -168,8 +166,8 @@ class CasesPaymentController extends Controller
             $last_health_conditon_date = end($last_health_conditon_date);
 
             //Calculate Bed usage 
-            foreach( $final_data[$key]['date_conditon_array'] as $date => $condition) {
-                $hc =  $condition;
+            foreach($final_data[$key]['date_conditon_array'] as $date => $condition) {
+                $hc = $condition;
                 if($beforeDateCondition) {
                     //calculation logic
                     $parsedDate = Carbon::parse($date);
@@ -248,6 +246,9 @@ class CasesPaymentController extends Controller
             $request->session()->flash('message', 'Please select the above filters to view the data within the selected date range.');
             return view('backend.cases.reports.overview', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
         }
+     
+        $from_date_en = Carbon::parse($filter_date['from_date'])->toDateString();
+        $to_date_en = Carbon::parse($filter_date['to_date'])->toDateString();
 
         $data = PaymentCase::join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
             ->leftjoin('provinces', 'provinces.id', '=', 'healthposts.province_id')
@@ -256,20 +257,19 @@ class CasesPaymentController extends Controller
             ->where('payment_cases.self_free', 2)
             ->whereIn('payment_cases.hp_code', $hpCodes)
             ->whereIn('healthposts.hospital_type', [3,5,6])
-            ->whereDate('register_date_en', '<=' ,$filter_date['to_date']->toDateString())
-            ->where(function ($query) use ($filter_date){
+            ->whereDate('register_date_en', '<=', $to_date_en)
+            ->where(function ($query) use ($from_date_en){
                 $query->whereNull('date_of_outcome_en')
-                    ->orWhereDate('date_of_outcome_en','>=' ,$filter_date['from_date']->toDateString());
+                    ->orWhereDate('date_of_outcome_en', '>=', $from_date_en);
             })
             ->select([
                 'healthposts.name as name',
                 'healthposts.id as healthpost_id',
+                'healthposts.phone',
+                'healthposts.hp_code as hp_code',
                 'provinces.province_name',
                 'districts.district_name',
                 'municipalities.municipality_name',
-                'healthposts.phone',
-                'healthposts.hp_code as hp_code',
-
                 'payment_cases.health_condition',
                 'payment_cases.is_death',
                 'payment_cases.health_condition_update',
@@ -280,13 +280,11 @@ class CasesPaymentController extends Controller
             ->get()
             ->groupBy('healthpost_id');
 
-        $from_date_en = $filter_date['from_date']->toDateString();
-        $to_date_en = $filter_date['to_date']->toDateString();
         $final_data = [];
         $sub_final_data = [];
         $hc_precedence = [
             '5' => 0,
-            '4'=> 1,
+            '4' => 1,
             '3' => 2,
             '2' => 3,
             '1' => 4
@@ -303,24 +301,41 @@ class CasesPaymentController extends Controller
 
             foreach($item_arrays as $key_2 => $item) {
                 $reg_date = Carbon::parse($item->register_date_en)->toDateString();
-                $outcome_date = Carbon::parse($item->date_of_outcome_en)->toDateString();
-    
+                $outcome_date = $item->date_of_outcome_en ? Carbon::parse($item->date_of_outcome_en)->toDateString() : null;
+                $sub_final_data[$key_2]['general_count'] = $sub_final_data[$key_2]['hdu_count'] = $sub_final_data[$key_2]['icu_count'] = 
+                    $sub_final_data[$key_2]['ventilator_count'] = 0;
+                $sub_final_data[$key_2]['name'] = $item->name;
+                $sub_final_data[$key_2]['district_name'] = $item->district_name;
+                $sub_final_data[$key_2]['municipality_name'] = $item->municipality_name;
+                $sub_final_data[$key_2]['healthpost_name'] = $item->healthpost_name;
+                $sub_final_data[$key_2]['hospital_register_id'] = $item->hospital_register_id;
+                $sub_final_data[$key_2]['age'] = $item->age;
+                $sub_final_data[$key_2]['gender'] = $item->gender;
+                $sub_final_data[$key_2]['phone'] = $item->phone;
+                $sub_final_data[$key_2]['guardian_name'] = $item->guardian_name;
+                $sub_final_data[$key_2]['self_free'] = $item->self_free;
+                $sub_final_data[$key_2]['outcome_status'] = $item->is_death;
+                $sub_final_data[$key_2]['register_date'] = $item->register_date_np;
+                $sub_final_data[$key_2]['date_of_outcome'] = $item->date_of_outcome;
+                $sub_final_data[$key_2]['register_date_en'] = $item->register_date_en;
+                $sub_final_data[$key_2]['date_of_outcome_en'] = $item->date_of_outcome_en;
+                $sub_final_data[$key_2]['date_conditon_array'] = [];
+
                 //From Registration Date or from date
-                $check_date = Carbon::parse($reg_date)->toDateString();
-    
+                $check_date = $reg_date;
+
                 if($this->filterValidDate($from_date_en, $to_date_en, $check_date, $reg_date, $outcome_date)){
                     $sub_final_data[$key_2]['date_conditon_array'][$check_date] = strval($item->health_condition);
                 } else {
                     $sub_final_data[$key_2]['date_conditon_array'][$from_date_en] = strval($item->health_condition);
                 }
-
+                //TODO Make all hc update in yyyy-mm-dd format to avoid key conflict
                 //From HC Update
                 $updated_health_condition = $item->health_condition_update ? json_decode($item->health_condition_update, true) : [];
                 foreach($updated_health_condition as $key_3 => $condition){
-                    $check_date = $condition['date'];
+                    $check_date = Carbon::parse($condition['date'])->toDateString();
                     if($this->filterValidDate($from_date_en, $to_date_en, $check_date, $reg_date, $outcome_date)){
                         if(array_key_exists($check_date, $sub_final_data[$key_2]['date_conditon_array'])) {
-                            
                             if($hc_precedence[$condition['id']] < $hc_precedence[$sub_final_data[$key_2]['date_conditon_array'] [$check_date]]) {
                                 $sub_final_data[$key_2]['date_conditon_array'][$check_date] = strval($condition['id']);
                             }
@@ -329,13 +344,13 @@ class CasesPaymentController extends Controller
                         }
                     }
                 }
-    
+
                 //From Outcome date or last to date
                 ksort($sub_final_data[$key_2]['date_conditon_array']);
                 $last_health_conditon_key = array_keys($sub_final_data[$key_2]['date_conditon_array']);
                 $last_health_conditon_key = end($last_health_conditon_key);
                 $last_health_conditon_value = $sub_final_data[$key_2]['date_conditon_array'][$last_health_conditon_key];
-                
+            
                 $check_date = $outcome_date?Carbon::parse($outcome_date)->toDateString(): null;
                 if($check_date) {
                     if($this->filterValidDate($from_date_en, $to_date_en, $check_date, $reg_date, $outcome_date)){
@@ -352,7 +367,7 @@ class CasesPaymentController extends Controller
                 ksort($sub_final_data[$key_2]['date_conditon_array']);
                 $last_health_conditon_date = array_keys($sub_final_data[$key_2]['date_conditon_array']);
                 $last_health_conditon_date = end($last_health_conditon_date);
-    
+
                 //Calculate Bed usage 
                 foreach($sub_final_data[$key_2]['date_conditon_array'] as $date => $condition) {
                     $hc = $condition;
@@ -361,7 +376,7 @@ class CasesPaymentController extends Controller
                         $parsedDate = Carbon::parse($date);
                         $parsedDateBefore = Carbon::parse($beforeDateCondition['date']);
                         $totalDays = $parsedDateBefore->diffInDays($parsedDate);
-    
+
                         switch($beforeDateCondition['condition']) {
                             case '1':
                                 $final_data[$key]['general_count'] += $totalDays;
@@ -381,9 +396,9 @@ class CasesPaymentController extends Controller
                             default:
                                 break;
                         }
-    
+
                     }
-    
+
                     if($date == $last_health_conditon_date) {
                         $totalDays = 1;
                         switch($condition) {
@@ -410,12 +425,10 @@ class CasesPaymentController extends Controller
                         'date' => $date,
                         'condition' => $condition
                     );
-                    
+                
                 }
-            }
+            }                
         }
-        // dd($final_data);
-
 
         return view('backend.cases.reports.overview', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
     }
