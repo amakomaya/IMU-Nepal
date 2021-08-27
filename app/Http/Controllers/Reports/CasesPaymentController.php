@@ -50,7 +50,6 @@ class CasesPaymentController extends Controller
             return view('backend.cases.reports.monthly-line-listing', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
         }
 
-        // $municipality = Mun
         $data = PaymentCase::join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
             ->leftjoin('provinces', 'provinces.id', '=', 'healthposts.province_id')
             ->leftjoin('districts', 'districts.id', '=', 'healthposts.district_id')
@@ -257,10 +256,10 @@ class CasesPaymentController extends Controller
             ->where('payment_cases.self_free', 2)
             ->whereIn('payment_cases.hp_code', $hpCodes)
             ->whereIn('healthposts.hospital_type', [3,5,6])
+            ->whereDate('register_date_en', '<=' ,$filter_date['to_date']->toDateString())
             ->where(function ($query) use ($filter_date){
                 $query->whereNull('date_of_outcome_en')
-                    ->orWhereDate('date_of_outcome_en','>=' ,$filter_date['from_date']->toDateString())
-                    ->whereDate('register_date_en', '<=' ,$filter_date['to_date']->toDateString());
+                    ->orWhereDate('date_of_outcome_en','>=' ,$filter_date['from_date']->toDateString());
             })
             ->select([
                 'healthposts.name as name',
