@@ -96,7 +96,7 @@
                       filters: [
                         {title: 'Name', name: 'name', type: 'string'},
                         {title: 'Age', name: 'age', type: 'numeric'},
-                        {title: 'Phone Number', name: 'emergency_contact_one', type: 'text'},
+                        {title: 'Phone Number', name: 'emergency_contact_one', type: 'string'},
                         {title: 'Case Created At', name: 'register_date_en', type: 'datetime'},
                       ]
                     },
