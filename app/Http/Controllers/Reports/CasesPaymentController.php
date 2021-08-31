@@ -70,6 +70,7 @@ class CasesPaymentController extends Controller
                 'payment_cases.gender',
                 'payment_cases.guardian_name',
                 'payment_cases.phone',
+                'payment_cases.address',
                 'payment_cases.self_free',
                 'payment_cases.health_condition',
                 'payment_cases.is_death',
@@ -109,6 +110,7 @@ class CasesPaymentController extends Controller
             $final_data[$key]['age'] = $item->age;
             $final_data[$key]['gender'] = $item->gender;
             $final_data[$key]['phone'] = $item->phone;
+            $final_data[$key]['address'] = $item->address;
             $final_data[$key]['guardian_name'] = $item->guardian_name;
             $final_data[$key]['self_free'] = $item->self_free;
             $final_data[$key]['outcome_status'] = $item->is_death;

@@ -158,6 +158,7 @@
                                     <th>Age</th>
                                     <th>gender</th>
                                     <th>Phone No</th>
+                                    <th>Address</th>
                                     <th>Guardian Name</th>
                                     <th>Paid / Free</th>
                                     <th title="No. of days in General Bed">General</th>
@@ -207,6 +208,7 @@
                                         <td>{{ $case['age'] }} </td>
                                         <td>{{ $gender }} </td>
                                         <td>{{ $case['phone'] }} </td>
+                                        <td>{{ $case['address'] }} </td>
                                         <td>{{ $case['guardian_name'] }} </td>
                                         <td>{{ $paid_free }} </td>
                                         <td>{{ $case['general_count'] }} </td>
