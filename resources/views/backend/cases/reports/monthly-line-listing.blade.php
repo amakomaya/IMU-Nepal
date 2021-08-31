@@ -161,8 +161,8 @@
                                     <th>Address</th>
                                     <th>Guardian Name</th>
                                     <th>Paid / Free</th>
-                                    <th title="No Symptoms">No Symptoms</th>
-                                    <th title="No. of days in General Bed">General</th>
+                                    <th title="No Symptoms">General Bed (No Symptoms)</th>
+                                    <th title="No. of days in General Bed">General Bed (Mild)</th>
                                     <th title="No. days in HDU bed">HDU</th>
                                     <th title="No. of Days in ICU Bed">ICU</th>
                                     <th title="No. of Days in Ventilator">Ventilator</th>
