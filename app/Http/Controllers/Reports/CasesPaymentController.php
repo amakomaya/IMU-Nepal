@@ -305,7 +305,7 @@ class CasesPaymentController extends Controller
 
         foreach($data as $key => $item_arrays){
             $final_data[$key]['general_count'] = $final_data[$key]['hdu_count'] = $final_data[$key]['icu_count'] = 
-                $final_data[$key]['ventilator_count'] = 0;
+                $final_data[$key]['ventilator_count'] = $final_data[$key]['no_symptoms_count'] = 0;
             $final_data[$key]['healthpost_name'] = $item_arrays->first()->name;
             $final_data[$key]['healthpost_id'] = $item_arrays->first()->healthpost_id;
             $final_data[$key]['province_id'] = $item_arrays->first()->province_name;
@@ -376,7 +376,7 @@ class CasesPaymentController extends Controller
 
                         switch($beforeDateCondition['condition']) {
                             case '1':
-                                $final_data[$key]['general_count'] += $totalDays;
+                                $final_data[$key]['no_symptoms_count'] += $totalDays;
                                 break;
                             case '2':
                                 $final_data[$key]['general_count'] += $totalDays;
@@ -399,7 +399,7 @@ class CasesPaymentController extends Controller
                         $totalDays = 1;
                         switch($condition) {
                             case '1':
-                                $final_data[$key]['general_count'] += $totalDays;
+                                $final_data[$key]['no_symptoms_count'] += $totalDays;
                                 break;
                             case '2':
                                 $final_data[$key]['general_count'] += $totalDays;

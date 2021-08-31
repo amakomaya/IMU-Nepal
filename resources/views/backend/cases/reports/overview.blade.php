@@ -141,6 +141,7 @@
                                     <th rowspan="2">Total Cost</th>
                                 </tr>
                                 <tr>
+                                    <th>No Symptoms</th>
                                     <th>General Bed</th>
                                     <th>HDU</th>
                                     <th>ICU</th>
@@ -155,11 +156,12 @@
                                         <td> {{ $datum['province_id'] }}</td>
                                         <td> {{ $datum['district_id'] }}</td>
                                         <td> {{ $datum['municipality_id'] }}</td>
+                                        <td> {{ $datum['no_symptoms_count'] }}</td>
                                         <td> {{ $datum['general_count'] }}</td>
                                         <td> {{ $datum['hdu_count'] }}</td>
                                         <td> {{ $datum['icu_count'] }}</td>
                                         <td> {{ $datum['ventilator_count'] }}</td>
-                                        <td>{{ $datum['general_count'] + $datum['hdu_count'] + $datum['icu_count'] + $datum['ventilator_count'] }}</td>
+                                        <td>{{ $datum['no_symptoms_count'] + $datum['general_count'] + $datum['hdu_count'] + $datum['icu_count'] + $datum['ventilator_count'] }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
