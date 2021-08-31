@@ -137,12 +137,12 @@
                                     <th rowspan="2">Province</th>
                                     <th rowspan="2">District</th>
                                     <th rowspan="2">Municipality</th>
-                                    <th colspan="4">Facility</th>
+                                    <th colspan="5">Facility</th>
                                     <th rowspan="2">Total Cost</th>
                                 </tr>
                                 <tr>
-                                    <th>No Symptoms</th>
-                                    <th>General Bed</th>
+                                    <th>General Bed (No Symptoms)</th>
+                                    <th>General Bed (Mild)</th>
                                     <th>HDU</th>
                                     <th>ICU</th>
                                     <th>Ventilator</th>
