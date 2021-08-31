@@ -108,6 +108,6 @@ class SampleCollection extends Model
 
     public function getOrganization()
     {
-        return $this->hasOne('App\Models\Organization', 'hp_code', 'hp_code');
+        return $this->hasOne('App\Models\Organization', 'hp_code', 'received_by_hp_code');
     }
 }

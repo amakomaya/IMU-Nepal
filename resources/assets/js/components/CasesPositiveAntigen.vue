@@ -54,7 +54,7 @@
         </td>
         <td>
           <div v-if="item.ancs.length > 0">
-            {{ item.latest_anc.get_organization.name }}
+            {{ item.latest_anc.get_organization ? item.latest_anc.get_organization.name : '' }}
           </div>
         </td>
         <td>
