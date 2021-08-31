@@ -158,8 +158,10 @@
                                     <th>Age</th>
                                     <th>gender</th>
                                     <th>Phone No</th>
+                                    <th>Address</th>
                                     <th>Guardian Name</th>
                                     <th>Paid / Free</th>
+                                    <th title="No Symptoms">No Symptoms</th>
                                     <th title="No. of days in General Bed">General</th>
                                     <th title="No. days in HDU bed">HDU</th>
                                     <th title="No. of Days in ICU Bed">ICU</th>
@@ -168,6 +170,7 @@
                                     <th title="Outcome Status">Status</th>
                                     <th title="Date of Registry">Reg. Date</th>
                                     <th title="Date of Outcome">Out. Date</th>
+                                    <th>Health Update Dates</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -207,17 +210,20 @@
                                         <td>{{ $case['age'] }} </td>
                                         <td>{{ $gender }} </td>
                                         <td>{{ $case['phone'] }} </td>
+                                        <td>{{ $case['address'] }} </td>
                                         <td>{{ $case['guardian_name'] }} </td>
                                         <td>{{ $paid_free }} </td>
+                                        <td>{{ $case['no_symptoms_count'] }} </td>
                                         <td>{{ $case['general_count'] }} </td>
                                         <td>{{ $case['hdu_count'] }} </td>
                                         <td>{{ $case['icu_count'] }} </td>
                                         <td>{{ $case['ventilator_count'] }} </td>
-                                        <td>{{ $case['general_count'] + $case['hdu_count'] + $case['icu_count'] + $case['ventilator_count'] }} </td>
+                                        <td>{{ $case['no_symptoms_count'] + $case['general_count'] + $case['hdu_count'] + $case['icu_count'] + $case['ventilator_count'] }} </td>
 
                                         <td>{{ $outcome_status }} </td>
                                         <td>{{ $case['register_date'] }} </td>
                                         <td>{{ $case['date_of_outcome'] }} </td>
+                                        <td>{!! $case['all_dates'] !!} </td>
                                     </tr>
                                 @endforeach
                                 </tbody>

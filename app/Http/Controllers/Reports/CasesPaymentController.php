@@ -70,6 +70,7 @@ class CasesPaymentController extends Controller
                 'payment_cases.gender',
                 'payment_cases.guardian_name',
                 'payment_cases.phone',
+                'payment_cases.address',
                 'payment_cases.self_free',
                 'payment_cases.health_condition',
                 'payment_cases.is_death',
@@ -90,7 +91,7 @@ class CasesPaymentController extends Controller
         $final_data = [];
         $hc_precedence = [
             '5' => 0,
-            '4'=> 1,
+            '4' => 1,
             '3' => 2,
             '2' => 3,
             '1' => 4
@@ -100,7 +101,7 @@ class CasesPaymentController extends Controller
             $reg_date = Carbon::parse($item->register_date_en)->toDateString();
             $outcome_date = $item->date_of_outcome_en ? Carbon::parse($item->date_of_outcome_en)->toDateString() : null;
             $final_data[$key]['general_count'] = $final_data[$key]['hdu_count'] = $final_data[$key]['icu_count'] = 
-                $final_data[$key]['ventilator_count'] = 0;
+                $final_data[$key]['ventilator_count'] = $final_data[$key]['no_symptoms_count'] = 0;
             $final_data[$key]['name'] = $item->name;
             $final_data[$key]['district_name'] = $item->district_name;
             $final_data[$key]['municipality_name'] = $item->municipality_name;
@@ -109,6 +110,7 @@ class CasesPaymentController extends Controller
             $final_data[$key]['age'] = $item->age;
             $final_data[$key]['gender'] = $item->gender;
             $final_data[$key]['phone'] = $item->phone;
+            $final_data[$key]['address'] = $item->address;
             $final_data[$key]['guardian_name'] = $item->guardian_name;
             $final_data[$key]['self_free'] = $item->self_free;
             $final_data[$key]['outcome_status'] = $item->is_death;
@@ -117,6 +119,7 @@ class CasesPaymentController extends Controller
             $final_data[$key]['register_date_en'] = $item->register_date_en;
             $final_data[$key]['date_of_outcome_en'] = $item->date_of_outcome_en;
             $final_data[$key]['date_conditon_array'] = [];
+            $final_data[$key]['all_dates'] = '';
 
             //From Registration Date or from date
             $check_date = $reg_date;
@@ -167,7 +170,10 @@ class CasesPaymentController extends Controller
             $last_health_conditon_date = end($last_health_conditon_date);
 
             //Calculate Bed usage 
+            $date_array_count = count($final_data[$key]['date_conditon_array']);
+
             foreach($final_data[$key]['date_conditon_array'] as $date => $condition) {
+
                 $hc = $condition;
                 if($beforeDateCondition) {
                     //calculation logic
@@ -177,7 +183,7 @@ class CasesPaymentController extends Controller
 
                     switch($beforeDateCondition['condition']) {
                         case '1':
-                            $final_data[$key]['general_count'] += $totalDays;
+                            $final_data[$key]['no_symptoms_count'] += $totalDays;
                             break;
                         case '2':
                             $final_data[$key]['general_count'] += $totalDays;
@@ -194,13 +200,15 @@ class CasesPaymentController extends Controller
                         default:
                             break;
                     }
+
                 }
+
 
                 if($date == $last_health_conditon_date) {
                     $totalDays = 1;
                     switch($condition) {
                         case '1':
-                            $final_data[$key]['general_count'] += $totalDays;
+                            $final_data[$key]['no_symptoms_count'] += $totalDays;
                             break;
                         case '2':
                             $final_data[$key]['general_count'] += $totalDays;
@@ -217,11 +225,16 @@ class CasesPaymentController extends Controller
                         default:
                             break;
                     }
+                        $final_data[$key]['all_dates'] .= '(Last Date) ' . $this->engToNep($date) . ' (' . $this->allHealth($condition) . ')'; 
+
+                }else {
+                    $final_data[$key]['all_dates'] .= $this->engToNep($date) . ' (' . $this->allHealth($condition) . ')<br>';
                 }
                 $beforeDateCondition = array(
                     'date' => $date,
                     'condition' => $condition
                 );
+
                
             }
         }
@@ -600,6 +613,8 @@ class CasesPaymentController extends Controller
 
         if ($response['hospital_type'] !== null){
             $data = $data->where('healthposts.hospital_type', $response['hospital_type']);
+        }else {
+            $data = $data->whereIn('healthposts.hospital_type', [3,5,6]);
         }
         $running_period_cases = $data
             ->whereDate('register_date_en', '<=', $to_date_en)
@@ -635,8 +650,19 @@ class CasesPaymentController extends Controller
         $to_date_np = $filter_date['to_date']->toDateString();
             
         $final_data = [];
+        $hc_precedence = [
+            '5' => 0,
+            '4' => 1,
+            '3' => 2,
+            '2' => 3,
+            '1' => 4
+        ];
+
+        // var_dump($running_period_cases);
+        
         foreach($running_period_cases as $key => $item_arrays){
-            $final_data[$key]['general_count'] = $final_data[$key]['hdu_count'] = $final_data[$key]['icu_count'] = $final_data[$key]['ventilator_count'] = $final_data[$key]['death_count'] = $final_data[$key]['discharge_count'] = 0;
+            $final_data[$key]['general_count'] = $final_data[$key]['hdu_count'] = $final_data[$key]['icu_count'] = 
+                $final_data[$key]['ventilator_count'] = $final_data[$key]['death_count'] = $final_data[$key]['discharge_count'] = 0;
             $final_data[$key]['healthpost_name'] = $item_arrays->first()->healthpost_name;
             $final_data[$key]['healthpost_id'] = $item_arrays->first()->healthpost_id;
             $final_data[$key]['province_id'] = $item_arrays->first()->province_name;
@@ -671,11 +697,11 @@ class CasesPaymentController extends Controller
                                 $sub_final_data[$key_2]['date_conditon_array'][$check_date] = strval($condition['id']);
                             }
                         } else {
-                            $sub_final_data[$key_2]['date_conditon_array'] [$check_date] = strval($condition['id']);
+                            $sub_final_data[$key_2]['date_conditon_array'][$check_date] = strval($condition['id']);
                         }
                     }
                 }
-
+                
                 //From Outcome date or last to date
                 ksort($sub_final_data[$key_2]['date_conditon_array']);
                 $last_health_conditon_key = array_keys($sub_final_data[$key_2]['date_conditon_array']);
@@ -686,7 +712,7 @@ class CasesPaymentController extends Controller
                 if($check_date) {
                     if($this->filterValidDate($from_date_en, $to_date_en, $check_date, $reg_date, $outcome_date)){
                         if(!array_key_exists($check_date, $sub_final_data[$key_2]['date_conditon_array'])) {
-                            $sub_final_data[$key_2]['date_conditon_array'][$check_date] = $last_health_conditon_value;
+                            $sub_final_data[$key_2]['date_conditon_array'] [$check_date] = $last_health_conditon_value;
                         }
                         if($item->is_death == '1'){
                             $final_data[$key]['discharge_count']++;
@@ -694,77 +720,48 @@ class CasesPaymentController extends Controller
                             $final_data[$key]['death_count']++;
                         }
                     } else {
-                        $sub_final_data[$key_2]['date_conditon_array'][$to_date_en] = $last_health_conditon_value;
+                        $sub_final_data[$key_2]['date_conditon_array'] [$to_date_en] = $last_health_conditon_value;
                     }
                 } else {
-                    $sub_final_data[$key_2]['date_conditon_array'][$to_date_en] = $last_health_conditon_value;
+                    $sub_final_data[$key_2]['date_conditon_array'] [$to_date_en] = $last_health_conditon_value;
                 }
 
-                $beforeDateCondition = null;
                 ksort($sub_final_data[$key_2]['date_conditon_array']);
                 $last_health_conditon_date = array_keys($sub_final_data[$key_2]['date_conditon_array']);
                 $last_health_conditon_date = end($last_health_conditon_date);
 
+                // dd($sub_final_data[$key_2]['date_conditon_array']);
+
                 //Calculate Bed usage 
                 foreach($sub_final_data[$key_2]['date_conditon_array'] as $date => $condition) {
-                    $hc = $condition;
-                    if($beforeDateCondition) {
-                        //calculation logic
-                        $parsedDate = Carbon::parse($date);
-                        $parsedDateBefore = Carbon::parse($beforeDateCondition['date']);
-                        $totalDays = $parsedDateBefore->diffInDays($parsedDate);
+                    //calculation logic
+                    // echo $condition .'<br>';
 
-                        switch($beforeDateCondition['condition']) {
-                            case '1':
-                                $final_data[$key]['general_count']++;
-                                break;
-                            case '2':
-                                $final_data[$key]['general_count']++;
-                                break;
-                            case '3':
-                                $final_data[$key]['hdu_count']++;
-                                break;
-                            case '4':
-                                $final_data[$key]['icu_count']++;
-                                break;
-                            case '5':
-                                $final_data[$key]['ventilator_count']++;
-                                break;
-                            default:
-                                break;
-                        }
+                    switch($condition) {
+                        case '1':
+                            $final_data[$key]['general_count']++;
+                            break;
+                        case '2':
+                            $final_data[$key]['general_count']++;
+                            break;
+                        case '3':
+                            $final_data[$key]['hdu_count']++;
+                            break;
+                        case '4':
+                            $final_data[$key]['icu_count']++;
+                            break;
+                        case '5':
+                            $final_data[$key]['ventilator_count']++;
+                            break;
+                        default:
+                            break;
                     }
-
-                    if($date == $last_health_conditon_date) {
-                        $totalDays = 1;
-                        switch($condition) {
-                            case '1':
-                                $final_data[$key]['general_count']++;
-                                break;
-                            case '2':
-                                $final_data[$key]['general_count']++;
-                                break;
-                            case '3':
-                                $final_data[$key]['hdu_count']++;
-                                break;
-                            case '4':
-                                $final_data[$key]['icu_count']++;
-                                break;
-                            case '5':
-                                $final_data[$key]['ventilator_count']++;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    $beforeDateCondition = array(
-                        'date' => $date,
-                        'condition' => $condition
-                    );
                 
                 }
-            } 
+            }
         }
+
+        // dd($final_data);
 
         return view('backend.cases.reports.situation-report', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
 
@@ -848,5 +845,30 @@ class CasesPaymentController extends Controller
             default:
                 return 'Under Treatment';
         }
+    }
+
+    private function allHealth($condition_id)
+    {
+        switch ($condition_id){
+            case '1':
+                return 'Normal';
+            case '2':
+                return 'General';
+            case '3':
+                return 'HDU';
+            case '4':
+                return 'ICU';
+            case '5':
+                return 'Ventilator';
+            default:
+                break;
+        }
+    }
+
+    private function engToNep($date)
+    {
+        $date_en = explode("-", Carbon::parse($date)->format('Y-m-d'));
+        $date_np = Calendar::eng_to_nep($date_en[0], $date_en[1], $date_en[2])->getYearMonthDayEngToNep();
+        return $date_np;
     }
 }
