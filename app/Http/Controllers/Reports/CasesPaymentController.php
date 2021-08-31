@@ -851,7 +851,7 @@ class CasesPaymentController extends Controller
     {
         switch ($condition_id){
             case '1':
-                return 'Normal';
+                return 'No Symptoms';
             case '2':
                 return 'General';
             case '3':
