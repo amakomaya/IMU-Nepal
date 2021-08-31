@@ -54,7 +54,7 @@
         </td>
         <td>
           <div v-if="item.ancs.length > 0">
-            {{ item.latest_anc.get_organization.name }}
+            {{ checkValidOrganization(item.latest_anc) }}
           </div>
         </td>
         <td>
@@ -498,6 +498,15 @@ export default {
     },
     checkCictButton(){
       return this.$userRole === 'healthworker';
+    },
+    checkValidOrganization(latest_anc){
+      var ret = '';
+      try {
+        ret = latest_anc.get_organization.name;
+      }catch (e){
+        ret = '';
+      }
+      return ret;
     }
   }
 }

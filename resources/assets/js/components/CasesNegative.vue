@@ -45,7 +45,7 @@
               </td>
               <td>
                 <div v-if="item.ancs.length > 0">
-                  {{ item.latest_anc.get_organization.name }}
+                  {{ checkValidOrganization(item.latest_anc) }}
                 </div>
               </td>
               <td>
@@ -385,6 +385,15 @@
                 '/admin/patient?token=' + token,
                 '_blank'
             );
+          },
+          checkValidOrganization(latest_anc){
+            var ret = '';
+            try {
+              ret = latest_anc.get_organization.name;
+            }catch (e){
+              ret = '';
+            }
+            return ret;
           }
         }
     }
