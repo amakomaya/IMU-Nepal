@@ -225,9 +225,7 @@ class CasesPaymentController extends Controller
                         default:
                             break;
                     }
-                    if($date_array_count == 1){
-                        $final_data[$key]['all_dates'] .= '' . $this->engToNep($date) . ' (' . $this->allHealth($condition) . ')'; 
-                    }
+                        $final_data[$key]['all_dates'] .= '(Last Date) ' . $this->engToNep($date) . ' (' . $this->allHealth($condition) . ')'; 
 
                 }else {
                     $final_data[$key]['all_dates'] .= $this->engToNep($date) . ' (' . $this->allHealth($condition) . ')<br>';
