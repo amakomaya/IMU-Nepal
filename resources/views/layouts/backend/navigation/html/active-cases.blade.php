@@ -158,6 +158,15 @@
                     </a>
                 </li>
                 @endif
+                @if(auth()->user()->role == 'dho')
+                <li>
+                    <a href="{{ route('report.municipality-wise-cases-overview') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Municipality Wise
+                        <span class="label label-primary pull-right" title="Lab"> Lab </span>
+                    </a>
+                </li>
+                @endif
             </ul>
         </li>
     </ul>
