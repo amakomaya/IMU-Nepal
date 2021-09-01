@@ -822,6 +822,11 @@ class CictTracingController extends Controller
 
     public function cictTransfer(Request $request){
         $data = json_decode($request->getContent(), true);
+        if($data['platform'] == '2'){
+            $regdev = 'mobile';
+        } else {
+            $regdev = 'web';
+        }
 
         $check_if_exists = CictTracing::where('case_id', $data['case_id'])->first();
         if($check_if_exists){
@@ -835,7 +840,7 @@ class CictTracingController extends Controller
                 $data['woman_token'] = $patient->token;
                 $data['hp_code'] = $data['hp_code'];
                 $data['checked_by'] = '';
-                $data['regdev'] = 'web';
+                $data['regdev'] = $regdev;
                 $data['name'] = $patient->name;
                 $data['age'] = $patient->age;
                 $data['age_unit'] = $patient->age_unit;

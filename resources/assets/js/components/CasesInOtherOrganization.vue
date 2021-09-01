@@ -50,7 +50,7 @@
             <i class="fa fa-file" aria-hidden="true"></i> |
           </button>
           <span v-if="item.latest_anc">
-            <button v-on:click="receiveCictData(item)" title="Receive Patient from other Hospital">
+            <button v-on:click="receiveCictData(item)" title="Receive CICT Patient Data from other Hospital">
               <i class="fa fa-hospital-o"></i>
             </button>
           </span>
