@@ -53,6 +53,9 @@ class PoeController extends Controller
         foreach ($response as $key => $value) {
             $$key = $value;
         }
+
+        $healthposts = Organization::whereIn('hp_code', $hpCodes)->where('hospital_type', 7)->get();
+
         $reports = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
             ->whereIn('ancs.hp_code', $hpCodes)
             ->whereIn('ancs.result', [3, 4, 2, 9])
@@ -77,7 +80,8 @@ class PoeController extends Controller
             // dd($reports);
         
         $data = [];
-        
+        $total_data['all_total_screened'] = $total_data['all_total_tested'] = $total_data['all_antigen_postive_cases_count'] = 
+            $total_data['all_antigen_negative_cases_count'] = $total_data['all_positivity_rate'] = 0;
         foreach($reports as $key => $report) {
             // $district_name = District::where('id', $report[0]->district_id)->pluck('district_name')[0];
             $province_name = Province::where('id', $report[0]->province_id)->pluck('province_name')[0];
@@ -97,18 +101,30 @@ class PoeController extends Controller
             $data[$key]['total_test'] = $report->count()??0;
             
             //municipality
-            $data[$key]['antigen_pending_received'] = $report->where('service_for', '2')->where('result', 2)->count()??0+$report->where('service_for', '2')->where('result', 9)->count()??0;
+            $data[$key]['antigen_pending_received'] = $report->where('service_for', '2')->where('result', 2)->count() ?? 0+$report->where('service_for', '2')->where('result', 9)->count()??0;
             
-            $data[$key]['antigen_postive_cases_count'] = $report->where('service_for', '2')->where('result', 3)->count()??0;
-            $data[$key]['antigen_negative_cases_count'] = $report->where('service_for', '2')->where('result', 4)->count()??0;
-            $pr = round(($data[$key]['antigen_postive_cases_count']/($data[$key]['antigen_postive_cases_count']+$data[$key]['antigen_negative_cases_count'])*100), 2);
+            $data[$key]['antigen_postive_cases_count'] = $report->where('service_for', '2')->where('result', 3)->count() ?? 0;
+            $data[$key]['antigen_negative_cases_count'] = $report->where('service_for', '2')->where('result', 4)->count() ?? 0;
+            $data[$key]['total_screened'] = $data[$key]['not_tested'] + $data[$key]['antigen_pending_received'] +
+                $data[$key]['antigen_postive_cases_count'] + $data[$key]['antigen_negative_cases_count'];
+            $data[$key]['total_tested'] = $data[$key]['antigen_pending_received'] +
+                $data[$key]['antigen_postive_cases_count'] + $data[$key]['antigen_negative_cases_count'];
+            $pr = round(($data[$key]['antigen_postive_cases_count'] / $data[$key]['total_tested'] * 100), 2);
             $data[$key]['positivity_rate'] = $pr?$pr.'%':'-';
             // $data[$key]['malaria_tested'] = $report->where('service_for', '2')->where('result', 4)->count();
             // $data[$key]['last_tested_date'] = '2078-02-10';
             // $data[$key]['last_positive_date'] = '2078-02-10';
 
-
+            $total_data['all_total_screened'] += $data[$key]['total_screened'];
+            $total_data['all_total_tested'] += $data[$key]['total_tested'];
+            $total_data['all_antigen_postive_cases_count'] += $data[$key]['antigen_postive_cases_count'];
+            $total_data['all_antigen_negative_cases_count'] += $data[$key]['antigen_negative_cases_count'];
         }
-        return view('backend.sample.report.poe-report', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days', 'default_from_date'));
+
+        $all_pr = round(($total_data['all_antigen_postive_cases_count'] / $total_data['all_total_tested'] * 100), 2);
+        $total_data['all_positivity_rate'] = $all_pr ? $all_pr . '%' : '-';
+
+        // dd($data);
+        return view('backend.sample.report.poe-report', compact('data', 'total_data', 'provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days', 'default_from_date'));
     }
 }
