@@ -122,7 +122,11 @@ class PoeController extends Controller
         }
 
         $all_pr = round(($total_data['all_antigen_postive_cases_count'] / $total_data['all_total_tested'] * 100), 2);
-        $total_data['all_positivity_rate'] = $all_pr ? $all_pr . '%' : '-';
+        if($total_data['all_antigen_postive_cases_count'] == 0){
+            $total_data['all_positivity_rate'] = 'N/A';
+        }else{
+            $total_data['all_positivity_rate'] = $all_pr ? $all_pr . '%' : '-';
+        }
 
         // dd($data);
         return view('backend.sample.report.poe-report', compact('data', 'total_data', 'provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days', 'default_from_date'));

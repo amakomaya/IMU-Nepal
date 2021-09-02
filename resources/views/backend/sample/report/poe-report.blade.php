@@ -131,40 +131,40 @@
                             <table class="table table-striped table-bordered table-hover" id="dataTable" style="width: 100%;">
                                 <thead>
                                 <tr>
-                                    <th rowspan="2">S.N</th>
+                                    <th class="text-center" rowspan="2">S.N</th>
                                     <th rowspan="2">Organization Name</th>
-                                    <th rowspan="2">Total Screened</th>
-                                    <th rowspan="2">Total Tested</th>
-                                    <th colspan="2">Antigen Test</th>
-                                    <th rowspan="2">Positivity Rate</th>
+                                    <th class="text-center" rowspan="2">Total Screened</th>
+                                    <th class="text-center" colspan="3">Antigen Test</th>
+                                    <th class="text-center" rowspan="2">Positivity Rate</th>
                                 </tr>
                                 <tr>
-                                    <th>Positive</th>
-                                    <th>Negative</th>
+                                    <th class="text-center">Total Tested</th>
+                                    <th class="text-center">Positive</th>
+                                    <th class="text-center">Negative</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach ($healthposts as $item)
                                     <tr>
-                                        <td> {{ $loop->iteration }}</td>
+                                        <td class="text-center"> {{ $loop->iteration }}</td>
                                         <td> {{ $item->name }} </td>
-                                        <td> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['total_screened'] : 'N/A' }} </td>
-                                        <td> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['total_tested'] : 'N/A' }} </td>
-                                        <td> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['antigen_postive_cases_count'] : 'N/A' }} </td>
-                                        <td> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['antigen_negative_cases_count'] : 'N/A' }} </td>
-                                        <td> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['positivity_rate'] : 'N/A' }} </td>
+                                        <td class="text-center"> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['total_screened'] : 'N/A' }} </td>
+                                        <td class="text-center"> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['total_tested'] : 'N/A' }} </td>
+                                        <td class="text-center"> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['antigen_postive_cases_count'] : 'N/A' }} </td>
+                                        <td class="text-center"> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['antigen_negative_cases_count'] : 'N/A' }} </td>
+                                        <td class="text-center"> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['positivity_rate'] : 'N/A' }} </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <td></td>
-                                        <td>Total</td>
-                                        <td>{{ $total_data['all_total_screened'] }}</td>
-                                        <td>{{ $total_data['all_total_tested'] }}</td>
-                                        <td>{{ $total_data['all_antigen_postive_cases_count'] }}</td>
-                                        <td>{{ $total_data['all_antigen_negative_cases_count'] }}</td>
-                                        <td>{{ $total_data['all_positivity_rate'] }}</td>
+                                        <td><b>Total</b></td>
+                                        <td class="text-center"><b>{{ $total_data['all_total_screened'] }}</b></td>
+                                        <td class="text-center"><b>{{ $total_data['all_total_tested'] }}</b></td>
+                                        <td class="text-center"><b>{{ $total_data['all_antigen_postive_cases_count'] }}</b></td>
+                                        <td class="text-center"><b>{{ $total_data['all_antigen_negative_cases_count'] }}</b></td>
+                                        <td class="text-center"><b>{{ $total_data['all_positivity_rate'] }}</b></td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -172,7 +172,7 @@
                         <div class="form-group col-sm-12">
                             <h5>Note:</h5>
                             <i>*Total Screened: No. of total person registered in the POE</i> <br />
-                            <i>*Positivity Rate: PR = Total no of Positve Case / Total no of test * 100 </i><br />
+                            <i>*Positivity Rate: PR = Total Positve Cases / Total Tests * 100 </i><br />
                             <i>*HD: Health Desk</i><br>
                             <i>*PoE: Point of Entry</i>
                         </div>
