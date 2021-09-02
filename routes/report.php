@@ -28,6 +28,7 @@ Route::get('regdev-data', 'Reports\AncDetailController@organizationRegdevCount')
 Route::get('organization-contact-tracing', 'Reports\AncDetailController@organizationContactTracing')->name('organization.contact.tracing');
 
 Route::get('district-wise-cases-overview', 'Reports\DistrictWiseCasesOverview@all')->name('report.district-wise-cases-overview');
+Route::get('municipality-wise-cases-overview', 'Reports\DistrictWiseCasesOverview@municipalityReport')->name('report.municipality-wise-cases-overview');
 
 Route::get('poe-report', 'Reports\PoeController@poeReport')->name('report.poe');
 

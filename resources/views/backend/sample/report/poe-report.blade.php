@@ -113,12 +113,6 @@
                             <div class="form-group col-sm-4">
                                 <button type="submit" class="btn btn-success">Submit</button>
                             </div>
-                            <div class="form-group col-sm-12">
-                               <i>*Total Screened: No. of total person registered in the POE</i> <br />
-                               <i>*Registered Only: No. of registered person who are not tested</i><br />
-                               <i>*Pending/Lab Received: No. of tested person whose results are not entered</i><br />
-                               <i>*Positivity Rate(in %): PR = Total Positve Case/(Total Positive Case + Total Negative Case) * 100 </i><br />
-                            </div>
                         </form>
                         <div class="row col-md-12" style="padding-left: 30px;">
                             Reporting Days: {{ $reporting_days }}
@@ -137,35 +131,50 @@
                             <table class="table table-striped table-bordered table-hover" id="dataTable" style="width: 100%;">
                                 <thead>
                                 <tr>
-                                    <th rowspan="2">S.N</th>
+                                    <th class="text-center" rowspan="2">S.N</th>
                                     <th rowspan="2">Organization Name</th>
-                                    <th rowspan="2">Total Screened</th>
-                                    <th rowspan="2">Not Tested</th>
-                                    <th colspan="3">Antigen Test</th>
-                                    <th rowspan="2">Positivity Rate (%)</th>
+                                    <th class="text-center" rowspan="2">Total Screened</th>
+                                    <th class="text-center" colspan="3">Antigen Test</th>
+                                    <th class="text-center" rowspan="2">Positivity Rate</th>
                                 </tr>
                                 <tr>
-                                    <th>Pending/Lab Received</th>
-                                    <th>Positive</th>
-                                    <th>Negative</th>
+                                    <th class="text-center">Total Tested</th>
+                                    <th class="text-center">Positive</th>
+                                    <th class="text-center">Negative</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($data as $datum)
+                                @foreach ($healthposts as $item)
                                     <tr>
-                                        <td> {{ $loop->iteration }}</td>
-                                        <td> {{ $datum['healthpost_name'] }}</td>
-                                        <td>{{ $datum['not_tested'] + $datum['antigen_pending_received'] + 
-                                        $datum['antigen_postive_cases_count'] + $datum['antigen_negative_cases_count'] }}</td>
-                                        <td> {{ $datum['not_tested'] }}</td>
-                                        <td> {{ $datum['antigen_pending_received'] }}</td>
-                                        <td> {{ $datum['antigen_postive_cases_count'] }}</td>
-                                        <td> {{ $datum['antigen_negative_cases_count'] }}</td>
-                                        <td> {{ $datum['positivity_rate'] }} </td>
+                                        <td class="text-center"> {{ $loop->iteration }}</td>
+                                        <td> {{ $item->name }} </td>
+                                        <td class="text-center"> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['total_screened'] : 'N/A' }} </td>
+                                        <td class="text-center"> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['total_tested'] : 'N/A' }} </td>
+                                        <td class="text-center"> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['antigen_postive_cases_count'] : 'N/A' }} </td>
+                                        <td class="text-center"> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['antigen_negative_cases_count'] : 'N/A' }} </td>
+                                        <td class="text-center"> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['positivity_rate'] : 'N/A' }} </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td></td>
+                                        <td><b>Total</b></td>
+                                        <td class="text-center"><b>{{ $total_data['all_total_screened'] }}</b></td>
+                                        <td class="text-center"><b>{{ $total_data['all_total_tested'] }}</b></td>
+                                        <td class="text-center"><b>{{ $total_data['all_antigen_postive_cases_count'] }}</b></td>
+                                        <td class="text-center"><b>{{ $total_data['all_antigen_negative_cases_count'] }}</b></td>
+                                        <td class="text-center"><b>{{ $total_data['all_positivity_rate'] }}</b></td>
+                                    </tr>
+                                </tfoot>
                             </table>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <h5>Note:</h5>
+                            <i>*Total Screened: No. of total person registered in the POE</i> <br />
+                            <i>*Positivity Rate: PR = Total Positve Cases / Total Tests * 100 </i><br />
+                            <i>*HD: Health Desk</i><br>
+                            <i>*PoE: Point of Entry</i>
                         </div>
                     </div>
                     <!-- /.panel-body -->

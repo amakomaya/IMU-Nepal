@@ -9,20 +9,20 @@
                         <td>{{ data.case_id }}</td>
                     </tr>
                     <tr>
-                        <td>Name : </td>
-                        <td>{{ data.name }}</td>
+                        <td>Name / Age : </td>
+                        <td>
+                            {{ data.name }} / 
+                            {{ data.age }} ( <span v-if="data.age_unit == 1">Months</span>
+                            <span v-if="data.age_unit == 2">Days</span><span v-if="data.age_unit == 0">Years</span> )
+                        </td>
                     </tr>
                     <tr>
-                        <td>Age : </td>
-                        <td>{{ data.age }} / <span v-if="data.age_unit == 1">Months</span><span v-if="data.age_unit == 2">Days</span><span v-if="data.age_unit == 0">Years</span></td>
-                    </tr>
-                    <tr>
-                        <td>Gender : </td>
-                        <td><span v-if="data.sex == 1">Male</span><span v-if="data.sex == 2">Female</span><span v-if="data.sex == 3">Other</span></td>
-                    </tr>
-                    <tr>
-                        <td>Emergency Phone : </td>
-                        <td>One : {{ data.emergency_contact_one }} <br> Two : {{ data.emergency_contact_two }}</td>
+                        <td>Gender / Emergency Phone: </td>
+                        <td>
+                            <span v-if="data.sex == 1">Male</span><span v-if="data.sex == 2">Female</span>
+                            <span v-if="data.sex == 3">Other</span> / 
+                            {{ data.emergency_contact_one }}
+                        </td>
                     </tr>
                     <tr>
                         <td>Case : </td>
@@ -33,19 +33,20 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Test Type : </td>
+                        <td>Test Type / Result Date : </td>
                         <td>
-                            {{ checkTestType(data.latest_anc.service_for) }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Result Date : </td>
-                        <td>
+                            {{ checkTestType(data.latest_anc.service_for) }} / 
                             {{ data.latest_anc.sample_test_date_np }}
                         </td>
                     </tr>
                 </tbody>
             </table>
+
+            <h4>Which platform would be used for CICT?</h4>
+            <input type="radio" v-model="platform" value="1" id="web">
+            <label class="font-weight-normal" for="web">Web</label>&nbsp;
+            <input type="radio" v-model="platform" value="2" id="mobile">
+            <label class="font-weight-normal" for="mobile">Mobile</label>
 
         	<h4>Where do you want to receive this patient, Please search </h4>
 
@@ -71,7 +72,7 @@
             </v-select> 
 			
 			<br>
-            <button class="btn btn-primary btn-lg btn-block" v-on:click="receivePatient(healthpostSelected, data.case_id)" title="Receive Patient">
+            <button class="btn btn-primary btn-lg btn-block" v-on:click="receivePatient(healthpostSelected, data.case_id, platform)" title="Receive Patient">
             <i class="fa fa-send"> Receive Patient for CICT</i>
         </button>     
         </div>
@@ -93,6 +94,7 @@
             return {
                 options: [],
                 healthpostSelected : null,
+                platform : '1',
             }
         },
         methods: {
@@ -114,7 +116,7 @@
                         })
                 }, 350),
 
-            receivePatient: async function (healthpost, case_id) {
+            receivePatient: async function (healthpost, case_id, platform) {
                 if (!healthpost) {
                     this.$dlg.toast('Please Select Hospital !', {
 					  messageType: 'warning',
@@ -128,6 +130,7 @@
                 var payload = {
                     case_id: case_id,
                     hp_code: healthpost.hp_code,
+                    platform: platform
                 };
 
                 this.$swal({
@@ -273,6 +276,9 @@
 
 .swal2-container {
   z-index: 10000;
+}
+.font-weight-normal {
+    font-weight: normal;
 }
 
 </style>

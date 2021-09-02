@@ -613,9 +613,8 @@ class CasesPaymentController extends Controller
 
         if ($response['hospital_type'] !== null){
             $data = $data->where('healthposts.hospital_type', $response['hospital_type']);
-        }else {
-            $data = $data->whereIn('healthposts.hospital_type', [3,5,6]);
         }
+        
         $running_period_cases = $data
             ->whereDate('register_date_en', '<=', $to_date_en)
             ->where(function ($query) use ($from_date_en){
@@ -635,6 +634,8 @@ class CasesPaymentController extends Controller
                 'healthposts.province_id',
                 'healthposts.district_id',
                 'healthposts.municipality_id',
+                'healthposts.hospital_type',
+                'healthposts.sector',
                 'healthposts.no_of_beds',
                 'healthposts.no_of_hdu',
                 'healthposts.no_of_icu',
@@ -658,7 +659,7 @@ class CasesPaymentController extends Controller
             '1' => 4
         ];
 
-        // var_dump($running_period_cases);
+        // dd($running_period_cases);
         
         foreach($running_period_cases as $key => $item_arrays){
             $final_data[$key]['general_count'] = $final_data[$key]['hdu_count'] = $final_data[$key]['icu_count'] = 
@@ -668,6 +669,8 @@ class CasesPaymentController extends Controller
             $final_data[$key]['province_id'] = $item_arrays->first()->province_name;
             $final_data[$key]['district_id'] = $item_arrays->first()->district_name;
             $final_data[$key]['municipality_id'] = $item_arrays->first()->municipality_name;
+            $final_data[$key]['hospital_type'] = $this->healthpostTypeParse($item_arrays->first()->hospital_type);
+            $final_data[$key]['sector'] = $this->healthpostSectorParse($item_arrays->first()->sector);
             $final_data[$key]['no_of_beds'] = $item_arrays->first()->no_of_beds;
             $final_data[$key]['no_of_hdu'] = $item_arrays->first()->no_of_hdu;
             $final_data[$key]['no_of_icu'] = $item_arrays->first()->no_of_icu;
@@ -703,39 +706,21 @@ class CasesPaymentController extends Controller
                 }
                 
                 //From Outcome date or last to date
-                ksort($sub_final_data[$key_2]['date_conditon_array']);
-                $last_health_conditon_key = array_keys($sub_final_data[$key_2]['date_conditon_array']);
-                $last_health_conditon_key = end($last_health_conditon_key);
-                $last_health_conditon_value = $sub_final_data[$key_2]['date_conditon_array'][$last_health_conditon_key];
             
                 $check_date = $outcome_date;
                 if($check_date) {
                     if($this->filterValidDate($from_date_en, $to_date_en, $check_date, $reg_date, $outcome_date)){
-                        if(!array_key_exists($check_date, $sub_final_data[$key_2]['date_conditon_array'])) {
-                            $sub_final_data[$key_2]['date_conditon_array'] [$check_date] = $last_health_conditon_value;
-                        }
                         if($item->is_death == '1'){
                             $final_data[$key]['discharge_count']++;
                         }elseif($item->is_death == '2'){
                             $final_data[$key]['death_count']++;
                         }
-                    } else {
-                        $sub_final_data[$key_2]['date_conditon_array'] [$to_date_en] = $last_health_conditon_value;
                     }
-                } else {
-                    $sub_final_data[$key_2]['date_conditon_array'] [$to_date_en] = $last_health_conditon_value;
                 }
-
-                ksort($sub_final_data[$key_2]['date_conditon_array']);
-                $last_health_conditon_date = array_keys($sub_final_data[$key_2]['date_conditon_array']);
-                $last_health_conditon_date = end($last_health_conditon_date);
-
-                // dd($sub_final_data[$key_2]['date_conditon_array']);
 
                 //Calculate Bed usage 
                 foreach($sub_final_data[$key_2]['date_conditon_array'] as $date => $condition) {
                     //calculation logic
-                    // echo $condition .'<br>';
 
                     switch($condition) {
                         case '1':
@@ -760,8 +745,6 @@ class CasesPaymentController extends Controller
                 }
             }
         }
-
-        // dd($final_data);
 
         return view('backend.cases.reports.situation-report', compact('final_data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
 
@@ -870,5 +853,39 @@ class CasesPaymentController extends Controller
         $date_en = explode("-", Carbon::parse($date)->format('Y-m-d'));
         $date_np = Calendar::eng_to_nep($date_en[0], $date_en[1], $date_en[2])->getYearMonthDayEngToNep();
         return $date_np;
+    }
+
+    private function healthpostTypeParse($temp)
+    {
+        switch ($temp){
+            case '1':
+                return 'HOME Isolation & CICT';
+            case '2':
+                return 'PCR Lab Test Only';
+            case '3':
+                return 'PCR Lab & Treatment (Hospital)';
+            case '5':
+                return 'Institutional Isolation';
+            case '6':
+                return 'Hospital without PCR Lab';
+            case '7':
+                return 'Point of Entry (PoE)';
+            case '8':
+                return 'Vaccination Center';
+            default:
+                return '-';
+        }
+    }
+
+    private function healthpostSectorParse($temp)
+    {
+        switch ($temp){
+            case '1':
+                return 'Public';
+            case '2':
+                return 'Private';
+            default:
+                return '-';
+        }
     }
 }

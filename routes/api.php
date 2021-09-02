@@ -201,13 +201,7 @@ Route::get('/v1/client', function (Request $request) {
         $response['dose_details'] = $row->dose_details ?? '';
         $response['malaria'] = $row->malaria ?? '';
         $response['nearest_contact'] = $row->nearest_contact ?? '';
-
-        if ($response['result'] == '3') {
-            $response['case_id'] = $row->case_id ?? '';
-        } else {
-            $response['case_id'] = '';
-        }
-
+        $response['case_id'] = $row->case_id ?? '';
         $response['parent_case_id'] = $row->parent_case_id ?? '';
 
         $response['symptoms_recent'] = $row->symptoms_recent ?? '';
