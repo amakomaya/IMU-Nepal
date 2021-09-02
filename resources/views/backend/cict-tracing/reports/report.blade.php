@@ -34,7 +34,7 @@
         <div class="info">
             <p>Date of case received by health authority: <u>{{ $data ? $data->case_received_date : '' }}</u></p>
             <p>Date of CICT initiated: <u>{{ $data ? $data->cict_initiated_date : '' }}</u></p>
-            <p>Name and Address of the reporting Institution: <u>{{ $data ? $data->checkedBy->getHealthpost($data->hp_code) : '' }}</u></p>
+            <p>Name and Address of the reporting Institution: <u>{{ $data && $data->checkedBy ? $data->checkedBy->getHealthpost($data->hp_code) : '' }}</u></p>
         </div>
 
         <section class="section-1">
