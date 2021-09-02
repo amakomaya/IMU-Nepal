@@ -635,6 +635,7 @@ class CasesPaymentController extends Controller
                 'healthposts.district_id',
                 'healthposts.municipality_id',
                 'healthposts.hospital_type',
+                'healthposts.sector',
                 'healthposts.no_of_beds',
                 'healthposts.no_of_hdu',
                 'healthposts.no_of_icu',
@@ -669,6 +670,7 @@ class CasesPaymentController extends Controller
             $final_data[$key]['district_id'] = $item_arrays->first()->district_name;
             $final_data[$key]['municipality_id'] = $item_arrays->first()->municipality_name;
             $final_data[$key]['hospital_type'] = $this->healthpostTypeParse($item_arrays->first()->hospital_type);
+            $final_data[$key]['sector'] = $this->healthpostSectorParse($item_arrays->first()->sector);
             $final_data[$key]['no_of_beds'] = $item_arrays->first()->no_of_beds;
             $final_data[$key]['no_of_hdu'] = $item_arrays->first()->no_of_hdu;
             $final_data[$key]['no_of_icu'] = $item_arrays->first()->no_of_icu;
@@ -862,14 +864,28 @@ class CasesPaymentController extends Controller
                 return 'PCR Lab Test Only';
             case '3':
                 return 'PCR Lab & Treatment (Hospital)';
-            case '4':
-                return 'Normal';
             case '5':
                 return 'Institutional Isolation';
             case '6':
                 return 'Hospital without PCR Lab';
+            case '7':
+                return 'Point of Entry (PoE)';
+            case '8':
+                return 'Vaccination Center';
             default:
-                return 'N/A';
+                return '-';
+        }
+    }
+
+    private function healthpostSectorParse($temp)
+    {
+        switch ($temp){
+            case '1':
+                return 'Public';
+            case '2':
+                return 'Private';
+            default:
+                return '-';
         }
     }
 }

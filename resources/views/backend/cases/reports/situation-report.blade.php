@@ -152,6 +152,7 @@
                                     <th>District</th>
                                     <th>Municipality</th>
                                     <th>Hospital Type</th>
+                                    <th>Public/Private</th>
                                     <th>No of General Beds</th>
                                     <th>No of General Beds Occupied</th>
                                     <th>No of HDU Beds</th>
@@ -175,6 +176,7 @@
                                         <td>{{ $case['district_id'] }} </td>
                                         <td>{{ $case['municipality_id'] }} </td>
                                         <td>{{ $case['hospital_type'] }} </td>
+                                        <td>{{ $case['sector'] }} </td>
                                         <td>{{ $case['no_of_beds'] }} </td>
                                         <td>{{ $case['general_count'] }}</td>
                                         <td>{{ $case['no_of_hdu'] }} </td>
