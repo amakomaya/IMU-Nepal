@@ -123,9 +123,9 @@ class PoeController extends Controller
 
         $all_pr = round(($total_data['all_antigen_postive_cases_count'] / $total_data['all_total_tested'] * 100), 2);
         if($total_data['all_antigen_postive_cases_count'] == 0){
-            $total_data['all_positivity_rate'] = 'N/A';
+            $total_data['all_positivity_rate'] = '0%';
         }else{
-            $total_data['all_positivity_rate'] = $all_pr ? $all_pr . '%' : '-';
+            $total_data['all_positivity_rate'] = $all_pr ? $all_pr . '%' : '0%';
         }
 
         // dd($data);
