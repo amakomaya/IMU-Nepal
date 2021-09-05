@@ -379,9 +379,37 @@ class DashboardController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
+        $federal_info = json_decode($request->federal_info);
 
-        if(auth()->user()->role == 'healthworker'){
-            $temp_name = $hpCodes[0];
+        if(auth()->user()->role == 'healthpost' || auth()->user()->role == 'healthworker'){
+            $temp_name = 'hp-' . $hpCodes[0];
+        }
+        elseif(auth()->user()->role == 'main' || auth()->user()->role == 'center'){
+            $temp_name = 'main';
+        }
+        elseif(auth()->user()->role == 'province'){
+            if($federal_info->province_id == ""){
+                $temp_name = auth()->user()->token;
+            }
+            else{
+                $temp_name = 'pro-' . $federal_info->province_id;
+            }
+        }
+        elseif(auth()->user()->role == 'dho'){
+            if($federal_info->district_id == ""){
+                $temp_name = auth()->user()->token;
+            }
+            else{
+                $temp_name = 'dho-' . $federal_info->district_id;
+            }
+        }
+        elseif(auth()->user()->role == 'municipality'){
+            if($federal_info->municipality_id == ""){
+                $temp_name = auth()->user()->token;
+            }
+            else{
+                $temp_name = 'mun-' . $federal_info->municipality_id;
+            }
         }else{
             $temp_name = auth()->user()->token;
         }
