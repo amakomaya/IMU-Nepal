@@ -127,6 +127,36 @@ class PoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadi
             );
             return;
         }
+        $date_of_first_vacc = $row['date_of_first_vaccination_yyyy_mm_dd_ad'];
+        $date_of_second_vacc = $row['date_of_second_vaccination_yyyy_mm_dd_ad'];
+        if($date_of_first_vacc) {
+          $date_of_first_vacc = $this->returnValidEnDate($date_of_first_vacc);
+          if (!$date_of_first_vacc) {
+            $error = ['date_of_first_vaccination_yyyy_mm_dd_ad' => 'Invalid Date. Date must be in AD & YYYY-MM-DD Format'];
+              $failures[] = new Failure(1, 'date_of_first_vaccination_yyyy_mm_dd_ad', $error, $row);
+              throw new ValidationException(
+                  \Illuminate\Validation\ValidationException::withMessages($error),
+                  $failures
+              );
+              return;
+          }
+          $dateArray = explode("-", $date_of_first_vacc);
+          $date_of_first_vacc = Calendar::eng_to_nep($dateArray[0],$dateArray[1],$dateArray[2])->getYearMonthDay();
+        }
+        if($date_of_second_vacc) {
+          $date_of_second_vacc = $this->returnValidEnDate($date_of_second_vacc);
+          if (!$date_of_second_vacc) {
+            $error = ['date_of_second_vaccination_yyyy_mm_dd_ad' => 'Invalid Date. Date must be in AD & YYYY-MM-DD Format'];
+              $failures[] = new Failure(1, 'date_of_second_vaccination_yyyy_mm_dd_ad', $error, $row);
+              throw new ValidationException(
+                  \Illuminate\Validation\ValidationException::withMessages($error),
+                  $failures
+              );
+              return;
+          }
+          $dateArray = explode("-", $date_of_second_vacc);
+          $date_of_second_vacc = Calendar::eng_to_nep($dateArray[0],$dateArray[1],$dateArray[2])->getYearMonthDay();
+        }
         $dateArray = explode("-", $regDateEn);
         $regDateNp = Calendar::eng_to_nep($dateArray[0],$dateArray[1],$dateArray[2])->getYearMonthDay();
        
@@ -151,12 +181,14 @@ class PoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadi
           'ward' => $row['destination_in_nepal_ward_no'],
           'created_by' => $this->userToken,
           'registered_device' => 'excel',
-          'nearest_contact' => '['.$row['nearest_contact_person_in_nepal'].','.$row['relationship_with_the_contact_person'].','.$row['contact_of_nearest_person_phone'].']',
+          'nearest_contact' => '['.$row['nearest_contact_person_in_nepal'].',null,'.$row['contact_of_nearest_person_phone'].']',
           'temperature' => (int)$row['body_temperaturein_fahrenheit'],
-          'covid_vaccination_details' => '['.$row['have_you_ever_received_covid_19_vaccine'].','.$row['do_you_have_a_vaccination_card'].','.$row['vaccination_doses_complete'].','.$row['how_many_dosages_of_vaccine_you_have_received'].','.$row['name_of_vaccine'].']',
+          'covid_vaccination_details' => '['.$row['have_you_ever_received_covid_19_vaccine'].',null,null,null,'.$row['name_of_vaccine'].','.$row['if_other_name_of_vaccine'].']',
+          'dose_details' => '[{"type":"1","date":"' . $date_of_first_vacc??'' . '"},{"type":"2","date":"' . $date_of_second_vacc??'' . '"}]',
           'status' => 1,
           'token' => 'e-' . md5(microtime(true) . mt_Rand()),
-          'emergency_contact_one' => $row['contact_of_nearest_person_phone'],
+          'emergency_contact_one' => $row['contact_phone_number_in_nepal'],
+          'emergency_contact_two' => $row['contact_of_nearest_person_phone'],
           'caste' => 7,
           'swab_collection_conformation' => '1',
           'cases' => '0',
@@ -289,13 +321,8 @@ class PoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadi
         $data['occupation'] = $this->enums['occupation'][strtolower(trim($data['occupation']))] ?? null;
         $data['nationality'] = $this->enums['countries'][strtolower(trim($data['nationality']))] ?? null;
         $data['have_you_ever_received_covid_19_vaccine'] = $this->enums['yes_no'][strtolower(trim($data['have_you_ever_received_covid_19_vaccine']))] ?? null;
-        $data['do_you_have_a_vaccination_card'] = $this->enums['yes_no'][strtolower(trim($data['do_you_have_a_vaccination_card']))] ?? null;
-        $data['vaccination_doses_complete'] = $this->enums['yes_no'][strtolower(trim($data['vaccination_doses_complete']))] ?? null;
-        $data['how_many_dosages_of_vaccine_you_have_received'] = $this->enums['how_many_dosages_of_vaccine_you_have_received'][strtolower(trim($data['how_many_dosages_of_vaccine_you_have_received']))] ?? null;
-        // $data['name_of_vaccine'] = $this->enums['name_of_vaccine'][strtolower(trim($data['name_of_vaccine']))] ?? null;
+        
         $data['travel_from_country'] = $this->enums['countries'][strtolower(trim($data['travel_from_country']))] ?? null;
-        $data['relationship_with_the_contact_person'] = $this->enums['relationship_with_the_contact_person'][strtolower(trim($data['relationship_with_the_contact_person']))] ?? null;
-
         $data['covid_19_symptoms'] = $this->enums['yes_no'][strtolower(trim($data['covid_19_symptoms']))] ?? null;
         $data['if_fever_malaria_test_done'] = $this->enums['yes_no'][strtolower(trim($data['if_fever_malaria_test_done']))] ?? null;
         $data['malaria_test_result'] = $this->enums['result'][strtolower(trim($data['malaria_test_result']))] ?? null;

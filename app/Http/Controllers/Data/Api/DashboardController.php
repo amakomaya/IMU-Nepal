@@ -357,16 +357,10 @@ class DashboardController extends Controller
         //     ->count();
             
         $total_tested = $antigen_positive+$antigen_negative;
-
-        try{
-            $pr = $antigen_positive/($antigen_negative+$antigen_positive);
-            if (is_nan($pr)) {
-                $pr = 'N/A';
-            } else {
-                $pr = number_format($pr*100, 2).'%';
-            }
-        }catch (\Exception $e){
-            $pr = 'N/A';
+        $pr = '-';
+        if ($total_tested != 0) {
+          $pr = $antigen_positive/($antigen_negative+$antigen_positive);
+          $pr = number_format($pr*100, 2).'%';
         }
 
         $data = [
