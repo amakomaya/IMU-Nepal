@@ -30,7 +30,6 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
     public static $importedRowCount = 0;
     public function __construct(User $importedBy, $bed_status)
     {
-
         ini_set('max_execution_time', '300');
         $provinceList = Cache::remember('province-list', 48*60*60, function () {
           return Province::select(['id', 'province_name'])->get();
@@ -51,7 +50,7 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
           return;
         });
         $municipalityList->map(function ($municipality) use (&$municipalities) {
-          $municipalities[strtolower(trim($municipality->municipality_name))] = $municipality->id;
+            $municipalities[strtolower(trim($municipality->district_id.$municipality->municipality_name))] = $municipality->id;
           return;
         });
         $hpCode = '';
@@ -195,7 +194,7 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
           $data['method_of_diagnosis'] = $this->enums['method_of_diagnosis'][strtolower(trim($data['method_of_diagnosis']))] ?? null;
           $data['province'] = $this->enums['province'][strtolower(trim($data['province']))] ?? null;
           $data['district'] = $this->enums['district'][strtolower(trim($data['district']))] ?? null;
-          $data['municipality'] = $this->enums['municipality'][strtolower(trim($data['municipality']))] ?? null;
+          $data['municipality'] = $this->enums['municipality'][strtolower(trim($data['district'].$data['municipality']))] ?? null;
         }
         return $data;
     }
