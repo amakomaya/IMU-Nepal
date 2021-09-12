@@ -377,7 +377,7 @@
             
                                             <input type="number" class="form-control" value="{{ old('temperature') }}"
                                                     name="temperature" aria-describedby="help"
-                                                    placeholder="Body Temperature">
+                                                    placeholder="Body Temperature" style="margin-top: 10px;">
                                             @if ($errors->has('temperature'))
                                             <small id="help"
                                             class="form-text text-danger">{{ $errors->first('temperature') }}</small>
