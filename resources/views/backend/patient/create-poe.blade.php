@@ -57,23 +57,6 @@
                         <form class="form-group" role="form" action="{{route('woman.store')}}" enctype="multipart/form-data" method="POST" name="createCase" id="createCase" novalidate="novalidate" onsubmit="disableSubmit()">
                           @csrf
                         <div class="panel-body">
-                            <div class="form-group">
-                                <label class="control-label">Currently symptomatic?</label>
-                                <div class="control-group">
-                                    <label class="radio-inline">
-                                        <h5>Symptomatic</h5>
-                                        <input type="radio" name="symptoms_recent" value="1" id="symptoms_recent" class="symptoms_recent" style="bottom: 12px;" required>
-                                    </label>
-                                    <label class="radio-inline">
-                                        <h5>Asymptomatic</h5>
-                                        <input type="radio" name="symptoms_recent" value="0" class="symptoms_recent" style="bottom: 12px;">
-                                    </label>
-                                </div>
-                                @if ($errors->has('symptoms_recent'))
-                                    <small id="help"
-                                           class="form-text text-danger">{{ $errors->first('symptoms_recent') }}</small>
-                                @endif
-                            </div>
                             <div class="form-group {{ $errors->has('register_date_np') ? 'has-error' : '' }}">
                                 <label for="register_date_np">Date of persons entering Nepal through land-crossings (LC)/Point of Entry (POE)</label>
                                 <input type="text" id="register_date_np" class="form-control" value="{{ old('register_date_np') }}" name="register_date_np"
@@ -362,7 +345,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group {{ $errors->has('temperature') ? 'has-error' : '' }}" style="margin-top:10px;">
+                            <div class="form-group {{ $errors->has('temperature') ? 'has-error' : '' }}" style="margin-top:15px;">
                                 <label for="name">Body Temperature</label><br>
 
                                 <input type="radio" name="temperature_type"
@@ -378,6 +361,25 @@
                                 class="form-text text-danger">{{ $errors->first('temperature') }}</small>
                                 @endif
                             </div>
+                            
+                            <div class="form-group">
+                                <label class="control-label">Currently symptomatic?</label>
+                                <div class="control-group">
+                                    <label class="radio-inline">
+                                        <h5>Symptomatic</h5>
+                                        <input type="radio" name="symptoms_recent" value="1" id="symptoms_recent" class="symptoms_recent" style="bottom: 12px;" required>
+                                    </label>
+                                    <label class="radio-inline">
+                                        <h5>Asymptomatic</h5>
+                                        <input type="radio" name="symptoms_recent" value="0" class="symptoms_recent" style="bottom: 12px;">
+                                    </label>
+                                </div>
+                                @if ($errors->has('symptoms_recent'))
+                                    <small id="help"
+                                           class="form-text text-danger">{{ $errors->first('symptoms_recent') }}</small>
+                                @endif
+                            </div>
+
                             <div class="asymptomatic">
                                 <div class="form-group {{ $errors->has('fever') ? 'has-error' : '' }}">
                                     <label for="name">Fever (>38 C/100.4F)</label>
@@ -921,11 +923,6 @@
                         required: true,
                     },
                     "symptoms[]": {
-                        required: function () {
-                            return $(".symptoms_recent:checked").val() == "1";
-                        }
-                    },
-                    "symptoms_comorbidity[]": {
                         required: function () {
                             return $(".symptoms_recent:checked").val() == "1";
                         }
