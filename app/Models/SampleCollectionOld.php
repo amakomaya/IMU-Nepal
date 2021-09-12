@@ -99,4 +99,9 @@ class SampleCollectionOld extends Model
         }
 
     }
+
+    public function getOrganization()
+    {
+        return $this->setConnection('mysql')->hasOne('App\Models\Organization', 'hp_code', 'received_by_hp_code');
+    }
 }
