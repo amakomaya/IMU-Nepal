@@ -57,23 +57,6 @@
                         <form class="form-group" role="form" action="{{route('woman.store')}}" enctype="multipart/form-data" method="POST" name="createCase" id="createCase" novalidate="novalidate" onsubmit="disableSubmit()">
                           @csrf
                         <div class="panel-body">
-                            <div class="form-group">
-                                <label class="control-label">Currently symptomatic?</label>
-                                <div class="control-group">
-                                    <label class="radio-inline">
-                                        <h5>Symptomatic</h5>
-                                        <input type="radio" name="symptoms_recent" value="1" id="symptoms_recent" class="symptoms_recent" style="bottom: 12px;" required>
-                                    </label>
-                                    <label class="radio-inline">
-                                        <h5>Asymptomatic</h5>
-                                        <input type="radio" name="symptoms_recent" value="0" class="symptoms_recent" style="bottom: 12px;">
-                                    </label>
-                                </div>
-                                @if ($errors->has('symptoms_recent'))
-                                    <small id="help"
-                                           class="form-text text-danger">{{ $errors->first('symptoms_recent') }}</small>
-                                @endif
-                            </div>
                             <div class="form-group {{ $errors->has('register_date_np') ? 'has-error' : '' }}">
                                 <label for="register_date_np">Date of persons entering Nepal through land-crossings (LC)/Point of Entry (POE)</label>
                                 <input type="text" id="register_date_np" class="form-control" value="{{ old('register_date_np') }}" name="register_date_np"
@@ -361,171 +344,223 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="form-group {{ $errors->has('temperature') ? 'has-error' : '' }}" style="margin-top:10px;">
-                                <label for="name">Body Temperature</label><br>
-
-                                <input type="radio" name="temperature_type"
-                                       {{ old('temperature_type') == "1" ? 'checked' : '' }} value="1" checked> Fahrenheit 
-                                <input type="radio" name="temperature_type"
-                                       {{ old('temperature_type') == "2" ? 'checked' : '' }} value="2"> Celsius<br>
-
-                                <input type="number" class="form-control" value="{{ old('temperature') }}"
-                                        name="temperature" aria-describedby="help"
-                                        placeholder="Body Temperature">
-                                @if ($errors->has('temperature'))
-                                <small id="help"
-                                class="form-text text-danger">{{ $errors->first('temperature') }}</small>
+                            
+                            <div class="form-group" style="margin-top:15px;">
+                                <label class="control-label">Currently symptomatic?</label>
+                                <div class="control-group">
+                                    <label class="radio-inline">
+                                        <h5>Symptomatic</h5>
+                                        <input type="radio" name="symptoms_recent" value="1" id="symptoms_recent" class="symptoms_recent" style="bottom: 12px;" required>
+                                    </label>
+                                    <label class="radio-inline">
+                                        <h5>Asymptomatic</h5>
+                                        <input type="radio" name="symptoms_recent" value="0" class="symptoms_recent" style="bottom: 12px;">
+                                    </label>
+                                </div>
+                                @if ($errors->has('symptoms_recent'))
+                                    <small id="help"
+                                           class="form-text text-danger">{{ $errors->first('symptoms_recent') }}</small>
                                 @endif
                             </div>
+                            
+                            
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="{{ $errors->has('temperature') ? 'has-error' : '' }}">
+                                            <label for="name">Body Temperature</label><br>
+            
+                                            <input type="radio" name="temperature_type" class="temperature_type"
+                                                {{ old('temperature_type') == "1" ? 'checked' : '' }} value="1" checked> Fahrenheit 
+                                            <input type="radio" name="temperature_type" class="temperature_type"
+                                                {{ old('temperature_type') == "2" ? 'checked' : '' }} value="2"> Celsius<br>
+            
+                                            <input type="number" class="form-control temperature" value="{{ old('temperature') }}"
+                                                    name="temperature" aria-describedby="help"
+                                                    placeholder="Body Temperature" style="margin-top: 10px;">
+                                            @if ($errors->has('temperature'))
+                                            <small id="help"
+                                            class="form-text text-danger">{{ $errors->first('temperature') }}</small>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 asymptomatic">
+                                        <div class="{{ $errors->has('fever') ? 'has-error' : '' }}">
+                                            <label for="name">Fever (>38 C/100.4F)</label>
+                                            <div class="control-group">
+                                                <label class="radio-inline">
+                                                    <input type="radio"
+                                                        {{ old('fever') == "0" ? 'checked' : '' }} name="fever"
+                                                        value="0" class="fever" id="fever_no">No
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio"
+                                                        {{ old('fever') == "1" ? 'checked' : '' }} name="fever"
+                                                        value="1" class="fever" id="fever_yes">Yes
+                                                </label>
+                                            </div>
+                                            @if ($errors->has('fever'))
+                                                <small id="help"
+                                                    class="form-text text-danger">{{ $errors->first('fever') }}</small>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="asymptomatic">
+                                            <div class="fever-status">
+                                                <div class="{{ $errors->has('malaria') ? 'has-error' : '' }}">
+                                                    <label for="name">RDT-Malaria Test performed?</label>
+                                                    <div class="control-group">
+                                                        <label class="radio-inline">
+                                                            <input type="radio"
+                                                                {{ old('malaria_test_status') == "0" ? 'checked' : '' }} name="malaria_test_status"
+                                                                value="0" class="malaria_test_status">No
+                                                        </label>
+                                                        <label class="radio-inline">
+                                                            <input type="radio"
+                                                                {{ old('malaria_test_status') == "1" ? 'checked' : '' }} name="malaria_test_status"
+                                                                value="1" class="malaria_test_status">Yes
+                                                        </label>
+                                                    </div>
+                                                    @if ($errors->has('malaria_test_status'))
+                                                        <small id="help"
+                                                            class="form-text text-danger">{{ $errors->first('malaria') }}</small>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="asymptomatic">
+                                            <div class="fever-status">
+                                                <div class="malaria-status">
+                                                    <div class="{{ $errors->has('malaria_result') ? 'has-error' : '' }}">
+                                                        <label for="name">Malaria Test Result</label>
+                                                        <div class="control-group">
+                                                            <label class="radio-inline">
+                                                                <input type="radio"
+                                                                    {{ old('malaria_result') == "0" ? 'checked' : '' }} name="malaria_result"
+                                                                    value="0" class="malaria_result">Negative
+                                                            </label>
+                                                            <label class="radio-inline">
+                                                                <input type="radio"
+                                                                    {{ old('malaria_result') == "1" ? 'checked' : '' }} name="malaria_result"
+                                                                    value="1" class="malaria_result">Positive
+                                                            </label>
+                                                        </div>
+                                                        @if ($errors->has('malaria_result'))
+                                                            <small id="help"
+                                                                class="form-text text-danger">{{ $errors->first('malaria_result') }}</small>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="asymptomatic">
-                                <div class="form-group {{ $errors->has('fever') ? 'has-error' : '' }}">
-                                    <label for="name">Fever (>38 C/100.4F)</label>
-                                    <div class="control-group">
-                                        <label class="radio-inline">
-                                            <input type="radio"
-                                                {{ old('fever') == "0" ? 'checked' : '' }} name="fever"
-                                                value="0" class="fever">No
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio"
-                                                {{ old('fever') == "1" ? 'checked' : '' }} name="fever"
-                                                value="1" class="fever">Yes
-                                        </label>
-                                    </div>
-                                    @if ($errors->has('fever'))
-                                        <small id="help"
-                                            class="form-text text-danger">{{ $errors->first('fever') }}</small>
-                                    @endif
-                                </div>
-
-                                <div class="fever-status">
-                                
-                                    <div class="form-group {{ $errors->has('malaria') ? 'has-error' : '' }}">
-                                        <label for="name">RDT-Malaria Test performed?</label>
-                                        <div class="control-group">
-                                            <label class="radio-inline">
-                                                <input type="radio"
-                                                    {{ old('malaria_test_status') == "0" ? 'checked' : '' }} name="malaria_test_status"
-                                                    value="0" class="malaria_test_status">No
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio"
-                                                    {{ old('malaria_test_status') == "1" ? 'checked' : '' }} name="malaria_test_status"
-                                                    value="1" class="malaria_test_status">Yes
-                                            </label>
-                                        </div>
-                                        @if ($errors->has('malaria_test_status'))
-                                            <small id="help"
-                                                class="form-text text-danger">{{ $errors->first('malaria') }}</small>
-                                        @endif
-                                    </div>
-                                    
-                                    <div class="form-group malaria-status {{ $errors->has('malaria_result') ? 'has-error' : '' }}">
-                                        <label for="name">Malaria Test Result</label>
-                                        <div class="control-group">
-                                            <label class="radio-inline">
-                                                <input type="radio"
-                                                    {{ old('malaria_result') == "0" ? 'checked' : '' }} name="malaria_result"
-                                                    value="0" class="malaria_result">Negative
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio"
-                                                    {{ old('malaria_result') == "1" ? 'checked' : '' }} name="malaria_result"
-                                                    value="1" class="malaria_result">Positive
-                                            </label>
-                                        </div>
-                                        @if ($errors->has('malaria_result'))
-                                            <small id="help"
-                                                class="form-text text-danger">{{ $errors->first('malaria_result') }}</small>
-                                        @endif
-                                    </div>
-                                </div>
-
                                 <div class="form-group" id="symptomatic-patient">
-                                    <label class="control-label" for="symptoms">Covid-19 Symptoms:</label><br>
-                                    <input type="checkbox" name="symptoms[]" value="1">Pneumonia<br>
-                                    <input type="checkbox" name="symptoms[]" value="2">ARDS<br>
-                                    <input type="checkbox" name="symptoms[]" value="3">Influenza-like illness<br>
-                                    <input type="checkbox" name="symptoms[]" value="4">History of fever/chills<br>
-                                    <input type="checkbox" name="symptoms[]" value="5">General weakness<br>
-                                    <input type="checkbox" name="symptoms[]" value="6">Cough<br>
-                                    <input type="checkbox" name="symptoms[]" value="7">Sore Throat<br>
-                                    <input type="checkbox" name="symptoms[]" value="8">Running nose<br>
-                                    <input type="checkbox" name="symptoms[]" value="9">Shortness of breath<br>
-                                    <input type="checkbox" name="symptoms[]" value="10">Irritability/Confusion<br>
-                                    <input type="checkbox" name="symptoms[]" value="11">Loss of taste<br>
-                                    <input type="checkbox" name="symptoms[]" value="12">Loss of smell<br>
-                                    <div style="padding: 10px;">
-                                        <label>Pain</label><br>
-                                        <input type="checkbox" name="symptoms[]" value="13">Muscular<br>
-                                        <input type="checkbox" name="symptoms[]" value="14">Chest<br>
-                                        <input type="checkbox" name="symptoms[]" value="15">Abdominal<br>
-                                        <input type="checkbox" name="symptoms[]" value="16">Joint<br>
-                                    </div>
-                                    <input type="checkbox" name="symptoms[]" value="17">Diarrhea<br>
-                                    <input type="checkbox" name="symptoms[]" value="18">Nausea/vomiting<br>
-                                    <input type="checkbox" name="symptoms[]" value="19">Headache<br>
-                                    <input type="checkbox" name="symptoms[]" value="20">Pharyngeal exudate<br>
-                                    <input type="checkbox" name="symptoms[]" value="21">Conjunctival injection(eye)<br>
-                                    <input type="checkbox" name="symptoms[]" value="22">Seizure<br>
-                                    <input type="checkbox" name="symptoms[]" value="23">Coma<br>
-                                    <input type="checkbox" name="symptoms[]" value="24">Dyspnea/tachynea(DB/Fast breathing)<br>
-                                    <input type="checkbox" name="symptoms[]" value="25">Abnormal lung auscultation<br>
-                                    <input type="checkbox" name="symptoms[]" value="26">Abnormal lung x-ray/CT scan findings<br>
-                                    @if ($errors->has('symptoms'))
+                                    <label class="control-label" for="symptoms">Covid-19 Symptoms:</label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <input type="checkbox" name="symptoms[]" value="1"> Pneumonia<br>
+                                            <input type="checkbox" name="symptoms[]" value="2"> ARDS<br>
+                                            <input type="checkbox" name="symptoms[]" value="3"> Influenza-like illness<br>
+                                            <input type="checkbox" name="symptoms[]" value="4"> History of fever/chills<br>
+                                            <input type="checkbox" name="symptoms[]" value="5"> General weakness<br>
+                                            <input type="checkbox" name="symptoms[]" value="6"> Cough<br>
+                                            <input type="checkbox" name="symptoms[]" value="7"> Sore Throat<br>
+                                            <input type="checkbox" name="symptoms[]" value="8"> Running nose<br>
+                                            <input type="checkbox" name="symptoms[]" value="9"> Shortness of breath<br>
+                                            <input type="checkbox" name="symptoms[]" value="10"> Irritability/Confusion<br>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="checkbox" name="symptoms[]" value="11"> Loss of taste<br>
+                                            <input type="checkbox" name="symptoms[]" value="12"> Loss of smell<br>
+                                            <input type="checkbox" name="symptoms[]" value="17"> Diarrhea<br>
+                                            <input type="checkbox" name="symptoms[]" value="18"> Nausea/vomiting<br>
+                                            <input type="checkbox" name="symptoms[]" value="19"> Headache<br>
+                                            <input type="checkbox" name="symptoms[]" value="20"> Pharyngeal exudate<br>
+                                            <input type="checkbox" name="symptoms[]" value="21"> Conjunctival injection(eye)<br>
+                                            <input type="checkbox" name="symptoms[]" value="22"> Seizure<br>
+                                            <input type="checkbox" name="symptoms[]" value="23"> Coma<br>
+                                            <input type="checkbox" name="symptoms[]" value="24"> Dyspnea/tachynea(DB/Fast breathing)<br>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="checkbox" name="symptoms[]" value="25"> Abnormal lung auscultation<br>
+                                            <input type="checkbox" name="symptoms[]" value="26"> Abnormal lung x-ray/CT scan findings<br>
+                                            <div style="padding-top: 10px;">
+                                                <label>Pain</label><br>
+                                                <input type="checkbox" name="symptoms[]" value="13"> Muscular<br>
+                                                <input type="checkbox" name="symptoms[]" value="14"> Chest<br>
+                                                <input type="checkbox" name="symptoms[]" value="15"> Abdominal<br>
+                                                <input type="checkbox" name="symptoms[]" value="16"> Joint<br>
+                                            </div>
+                                            <div class="{{ $errors->has('symptoms_specific') ? 'has-error' : '' }}" style="padding-top: 10px;">
+                                                <label for="symptoms_specific">If other specify</label>
+                                                <input type="text" class="form-control" value="{{ old('symptoms_specific') }}" name="symptoms_specific"
+                                                        aria-describedby="help" placeholder="Enter other symptoms"
+                                                >
+                                                @if ($errors->has('symptoms_specific'))
+                                                    <small id="help" class="form-text text-danger">{{ $errors->first('symptoms_specific') }}</small>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        @if ($errors->has('symptoms'))
                                         <small id="help"
                                             class="form-text text-danger">{{ $errors->first('symptoms') }}</small>
-                                    @endif
-                                </div>
-                                <div class="form-group {{ $errors->has('symptoms_specific') ? 'has-error' : '' }}">
-                                    <label for="symptoms_specific">If other specify</label>
-                                    <input type="text" class="form-control" value="{{ old('symptoms_specific') }}" name="symptoms_specific"
-                                            aria-describedby="help" placeholder="Enter other symptoms"
-                                    >
-                                    @if ($errors->has('symptoms_specific'))
-                                        <small id="help" class="form-text text-danger">{{ $errors->first('symptoms_specific') }}</small>
-                                    @endif
-                                </div>
-                                <div class="form-group " id="symptoms_comorbidity">
-                                    <label class="control-label" for="symptoms_comorbidity">Comorbidity:</label><br>
-                                    <input type="checkbox" name="symptoms_comorbidity[]" value="1">Diabetes<br>
-                                    <input type="checkbox" name="symptoms_comorbidity[]" value="2">HTN<br>
-                                    <input type="checkbox" name="symptoms_comorbidity[]" value="3">Hermodialysis<br>
-                                    <input type="checkbox" name="symptoms_comorbidity[]" value="4">Immunocompromised<br>
-                                    <div style="padding: 10px;">
-                                        <label>Pregnancy(Trimester)</label><br>
-                                        <input type="radio" name="symptoms_comorbidity_trimester" value="5">First<br>
-                                        <input type="radio" name="symptoms_comorbidity_trimester" value="16">Second<br>
-                                        <input type="radio" name="symptoms_comorbidity_trimester" value="17">Third<br>
-                                        <input type="radio" name="symptoms_comorbidity_trimester" value="">No<br>
+                                        @endif
                                     </div>
-                                    <input type="checkbox" name="symptoms_comorbidity[]" value="6">Maternity<br>
-                                    <input type="checkbox" name="symptoms_comorbidity[]" value="7">Heart disease, including hypertension<br>
-                                    <input type="checkbox" name="symptoms_comorbidity[]" value="8">Liver disease<br>
-                                    <input type="checkbox" name="symptoms_comorbidity[]" value="9">Nerve related diseases<br>
-                                    <input type="checkbox" name="symptoms_comorbidity[]" value="10">Kidney diseases<br>
-                                    <input type="checkbox" name="symptoms_comorbidity[]" value="11">Malnutrition<br>
-                                    <input type="checkbox" name="symptoms_comorbidity[]" value="12">Autoimmune diseases<br>
-                                    <input type="checkbox" name="symptoms_comorbidity[]" value="13">Immunodeficiency, including HIV<br>
-                                    <input type="checkbox" name="symptoms_comorbidity[]" value="14">Malignancy<br>
-                                    <input type="checkbox" name="symptoms_comorbidity[]" value="15">Chric lung disesase/asthma/artery<br>
+                                </div>
+
+                                <div class="form-group " id="symptoms_comorbidity">
+                                    <label class="control-label" for="symptoms_comorbidity">Comorbidity:</label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <input type="checkbox" name="symptoms_comorbidity[]" value="1"> Diabetes<br>
+                                            <input type="checkbox" name="symptoms_comorbidity[]" value="2"> HTN<br>
+                                            <input type="checkbox" name="symptoms_comorbidity[]" value="3"> Hermodialysis<br>
+                                            <input type="checkbox" name="symptoms_comorbidity[]" value="4"> Immunocompromised<br>
+                                            <input type="checkbox" name="symptoms_comorbidity[]" value="7"> Heart disease, including hypertension<br>
+                                            <input type="checkbox" name="symptoms_comorbidity[]" value="8"> Liver disease<br>
+                                            <input type="checkbox" name="symptoms_comorbidity[]" value="9"> Nerve related diseases<br>
+                                            <input type="checkbox" name="symptoms_comorbidity[]" value="10"> Kidney diseases<br>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Pregnancy(Trimester)</label><br>
+                                            <div style="padding-left: 10px; padding-bottom: 10px;">
+                                                <input type="radio" name="symptoms_comorbidity_trimester" value="5"> First<br>
+                                                <input type="radio" name="symptoms_comorbidity_trimester" value="16"> Second<br>
+                                                <input type="radio" name="symptoms_comorbidity_trimester" value="17"> Third<br>
+                                                <input type="radio" name="symptoms_comorbidity_trimester" value=""> No<br>
+                                            </div>
+                                            <input type="checkbox" name="symptoms_comorbidity[]" value="6"> Maternity<br>
+                                            <input type="checkbox" name="symptoms_comorbidity[]" value="11"> Malnutrition<br>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="checkbox" name="symptoms_comorbidity[]" value="12"> Autoimmune diseases<br>
+                                            <input type="checkbox" name="symptoms_comorbidity[]" value="13"> Immunodeficiency, including HIV<br>
+                                            <input type="checkbox" name="symptoms_comorbidity[]" value="14"> Malignancy<br>
+                                            <input type="checkbox" name="symptoms_comorbidity[]" value="15"> Chric lung disesase/asthma/artery<br>
+                                            <div class="{{ $errors->has('symptoms_comorbidity_specific') ? 'has-error' : '' }}" style="padding-top:10px;">
+                                                <label for="symptoms_comorbidity_specific">If other specify</label>
+                                                <input type="text" class="form-control" value="{{ old('symptoms_comorbidity_specific') }}" name="symptoms_comorbidity_specific"
+                                                        aria-describedby="help" placeholder="Enter other comorbidity"
+                                                >
+                                                @if ($errors->has('symptoms_comorbidity_specific'))
+                                                    <small id="help" class="form-text text-danger">{{ $errors->first('symptoms_comorbidity_specific') }}</small>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
                                     @if ($errors->has('symptoms_comorbidity'))
                                         <small id="help"
                                                 class="form-text text-danger">{{ $errors->first('symptoms_comorbidity') }}</small>
                                     @endif
                                 </div>
-                                <div class="form-group {{ $errors->has('symptoms_comorbidity_specific') ? 'has-error' : '' }}">
-                                    <label for="symptoms_comorbidity_specific">If other specify</label>
-                                    <input type="text" class="form-control" value="{{ old('symptoms_comorbidity_specific') }}" name="symptoms_comorbidity_specific"
-                                            aria-describedby="help" placeholder="Enter other symptoms"
-                                    >
-                                    @if ($errors->has('symptoms_comorbidity_specific'))
-                                        <small id="help" class="form-text text-danger">{{ $errors->first('symptoms_comorbidity_specific') }}</small>
-                                    @endif
-                                </div>
                             </div>
-
 
                             <div class="form-group">
                                 <label class="control-label">Have you ever received Covid-19 vaccine?</label>
@@ -706,6 +741,7 @@
             disableAfter: currentDate
         });
 
+
         symptomaticCheck();
         $('.symptoms_recent').on('change', function() {
             symptomaticCheck();
@@ -713,6 +749,26 @@
         function symptomaticCheck() {
             if($('.symptoms_recent:checked').val() == '1'){
                 $('.asymptomatic').show();
+
+                $('.temperature').keyup(function(){
+                    if($('.temperature_type:checked').val() == '1'){
+                        if($('.temperature').val() >= 100.4){
+                            $('#fever_yes').prop("checked", true);
+                        }else {
+                            $('#fever_no').prop("checked", true);
+                        }
+                    }
+                    else if($('.temperature_type:checked').val() == '2'){
+                        if($('.temperature').val() >= 38){
+                            $('#fever_yes').prop("checked", true);
+                        }else {
+                            $('#fever_no').prop("checked", true);
+                        }
+                    }
+                    $('input[name="fever"]:not(:checked)').attr('disabled', true);
+                    $('input[name="fever"]:checked').attr('disabled', false);
+                    feverCheck();
+                });
             }
             else {
                 $('.asymptomatic').hide();
@@ -921,11 +977,6 @@
                         required: true,
                     },
                     "symptoms[]": {
-                        required: function () {
-                            return $(".symptoms_recent:checked").val() == "1";
-                        }
-                    },
-                    "symptoms_comorbidity[]": {
                         required: function () {
                             return $(".symptoms_recent:checked").val() == "1";
                         }

@@ -477,7 +477,7 @@ class WomanController extends Controller
             $row['travelled_where'] = "[" . $request->travelled_where . ", " . $request->travelled_city ."]";
 
             $contact_relationship = $request->contact_relationship ?? '5';
-            $row['nearest_contact'] = "[-, " . $contact_relationship . ", " . $request->emergency_contact_two . "]";
+            $row['nearest_contact'] = "[" . $request->nearest_contact . ", " . $contact_relationship . ", " . $request->emergency_contact_two . "]";
 
             $malaria_test_status = $request->malaria_test_status ?? '0';
             $malaria_result = $request->malaria_result ?? '0';
