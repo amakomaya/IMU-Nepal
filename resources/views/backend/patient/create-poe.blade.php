@@ -370,12 +370,12 @@
                                         <div class="{{ $errors->has('temperature') ? 'has-error' : '' }}">
                                             <label for="name">Body Temperature</label><br>
             
-                                            <input type="radio" name="temperature_type"
+                                            <input type="radio" name="temperature_type" class="temperature_type"
                                                 {{ old('temperature_type') == "1" ? 'checked' : '' }} value="1" checked> Fahrenheit 
-                                            <input type="radio" name="temperature_type"
+                                            <input type="radio" name="temperature_type" class="temperature_type"
                                                 {{ old('temperature_type') == "2" ? 'checked' : '' }} value="2"> Celsius<br>
             
-                                            <input type="number" class="form-control" value="{{ old('temperature') }}"
+                                            <input type="number" class="form-control temperature" value="{{ old('temperature') }}"
                                                     name="temperature" aria-describedby="help"
                                                     placeholder="Body Temperature" style="margin-top: 10px;">
                                             @if ($errors->has('temperature'))
@@ -391,12 +391,12 @@
                                                 <label class="radio-inline">
                                                     <input type="radio"
                                                         {{ old('fever') == "0" ? 'checked' : '' }} name="fever"
-                                                        value="0" class="fever">No
+                                                        value="0" class="fever" id="fever_no">No
                                                 </label>
                                                 <label class="radio-inline">
                                                     <input type="radio"
                                                         {{ old('fever') == "1" ? 'checked' : '' }} name="fever"
-                                                        value="1" class="fever">Yes
+                                                        value="1" class="fever" id="fever_yes">Yes
                                                 </label>
                                             </div>
                                             @if ($errors->has('fever'))
@@ -741,6 +741,7 @@
             disableAfter: currentDate
         });
 
+
         symptomaticCheck();
         $('.symptoms_recent').on('change', function() {
             symptomaticCheck();
@@ -748,6 +749,26 @@
         function symptomaticCheck() {
             if($('.symptoms_recent:checked').val() == '1'){
                 $('.asymptomatic').show();
+
+                $('.temperature').keyup(function(){
+                    if($('.temperature_type:checked').val() == '1'){
+                        if($('.temperature').val() >= 100.4){
+                            $('#fever_yes').prop("checked", true);
+                        }else {
+                            $('#fever_no').prop("checked", true);
+                        }
+                    }
+                    else if($('.temperature_type:checked').val() == '2'){
+                        if($('.temperature').val() >= 38){
+                            $('#fever_yes').prop("checked", true);
+                        }else {
+                            $('#fever_no').prop("checked", true);
+                        }
+                    }
+                    $('input[name="fever"]:not(:checked)').attr('disabled', true);
+                    $('input[name="fever"]:checked').attr('disabled', false);
+                    feverCheck();
+                });
             }
             else {
                 $('.asymptomatic').hide();
