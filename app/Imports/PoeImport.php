@@ -266,7 +266,7 @@ class PoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadi
     }
   
     private function filterEmptyRow($data) {
-      $required_row = ['full_name', 'age', 'destination_in_nepal_province', 'destination_in_nepal_district', 'destination_in_nepal_municipality', 'gender' , 'contact_of_nearest_person_phone']; //added to solve teplate throwing wierd default values
+      $required_row = ['full_name', 'age', 'destination_in_nepal_province', 'destination_in_nepal_district', 'destination_in_nepal_municipality', 'gender' , 'contact_of_nearest_person_phone', 'contact_phone_number_in_nepal']; //added to solve teplate throwing wierd default values
       $unset = true;
       foreach($data as $key=>$col){
         if($col && in_array($key, $required_row)) {
@@ -405,6 +405,16 @@ class PoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadi
               }
             },
             'contact_of_nearest_person_phone' => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                  $onFailure('Invalid Contact Phone');
+              }
+            },
+            'contact_of_nearest_person_phone' => function($attribute, $value, $onFailure) {
+              if ($value === '' || $value === null) {
+                  $onFailure('Invalid Contact Phone');
+              }
+            },
+            'contact_phone_number_in_nepal' => function($attribute, $value, $onFailure) {
               if ($value === '' || $value === null) {
                   $onFailure('Invalid Contact Phone');
               }
