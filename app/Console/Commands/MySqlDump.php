@@ -20,11 +20,13 @@ class MySqlDump extends Command
 
         $ds = DIRECTORY_SEPARATOR;
 
-        $ts = time();
+//        $ts = time();
 
-        $path = database_path() . $ds . 'backups' . $ds . date('Y', $ts) . $ds . date('m', $ts) . $ds . date('d', $ts) . $ds;
-        $file = date('Y-m-d-His', $ts) . '-dump'.'.sql';
+//        $path = database_path() . $ds . 'backups' . $ds . date('Y', $ts) . $ds . date('m', $ts) . $ds . date('d', $ts) . $ds;
+        $path = database_path() . $ds . 'backups' . $ds;
 
+//        $file = date('Y-m-d-His', $ts) . '-dump'.'.sql';
+        $file = 'dump'.'.sql';
 
         $this->process = new Process(sprintf(
             'mysqldump -u %s -p%s %s > %s ',
