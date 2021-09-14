@@ -376,17 +376,19 @@ class DashboardController extends Controller
 
     public function indexNew(Request $request)
     {
+
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $federal_info = json_decode($request->federal_info);
+        $user_role = auth()->user()->role;
 
-        if(auth()->user()->role == 'healthpost' || auth()->user()->role == 'healthworker'){
+        if($user_role == 'healthpost' || $user_role == 'healthworker'){
             $temp_name = 'hp-' . $hpCodes[0];
         }
-        elseif(auth()->user()->role == 'main' || auth()->user()->role == 'center'){
+        elseif($user_role == 'main' || $user_role == 'center'){
             $temp_name = 'main';
         }
-        elseif(auth()->user()->role == 'province'){
+        elseif($user_role == 'province'){
             if($federal_info->province_id == ""){
                 $temp_name = auth()->user()->token;
             }
@@ -394,7 +396,7 @@ class DashboardController extends Controller
                 $temp_name = 'pro-' . $federal_info->province_id;
             }
         }
-        elseif(auth()->user()->role == 'dho'){
+        elseif($user_role == 'dho'){
             if($federal_info->district_id == ""){
                 $temp_name = auth()->user()->token;
             }
@@ -402,7 +404,7 @@ class DashboardController extends Controller
                 $temp_name = 'dho-' . $federal_info->district_id;
             }
         }
-        elseif(auth()->user()->role == 'municipality'){
+        elseif($user_role == 'municipality'){
             if($federal_info->municipality_id == ""){
                 $temp_name = auth()->user()->token;
             }
@@ -487,17 +489,13 @@ class DashboardController extends Controller
                 ->get()->count();
         });
         $hospital_admission= Cache::remember('hospital_admission-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-            return PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
-                ->select('payment_cases.*', 'healthposts.hospital_type')
-                ->whereIn('payment_cases.hp_code', $hpCodes)
+            return PaymentCase::
+                whereIn('payment_cases.hp_code', $hpCodes)
                 ->whereDate('register_date_en', $date_chosen)
-                ->whereIn('healthposts.hospital_type', [3,5,6])
                 ->count();
         });
         $hospital_active_cases = Cache::remember('hospital_active_cases-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-            return PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
-                ->select('payment_cases.*', 'healthposts.hospital_type')
-                ->whereIn('payment_cases.hp_code', $hpCodes)
+            return PaymentCase::whereIn('payment_cases.hp_code', $hpCodes)
                 ->whereDate('register_date_en', '<=', $date_chosen)
                 ->where(function($q) use ($date_chosen) {
                     $q->whereNull('payment_cases.date_of_outcome_en')
@@ -506,17 +504,15 @@ class DashboardController extends Controller
                 ->count();
         });
         $hospital_discharge = Cache::remember('hospital_discharge-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-            return PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
-                ->select('payment_cases.*', 'healthposts.hospital_type')
-                ->whereIn('payment_cases.hp_code', $hpCodes)
+            return PaymentCase::
+                whereIn('payment_cases.hp_code', $hpCodes)
                 ->where('is_death', 1)
                 ->whereDate('date_of_outcome_en', $date_chosen)
                 ->count();
         });
         $hospital_death = Cache::remember('hospital_death-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-            return PaymentCase::leftjoin('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
-                ->select('payment_cases.*', 'healthposts.hospital_type')
-                ->whereIn('payment_cases.hp_code', $hpCodes)
+            return PaymentCase::
+                whereIn('payment_cases.hp_code', $hpCodes)
                 ->where('is_death', 2)
                 ->whereDate('date_of_outcome_en', $date_chosen)
                 ->count();
@@ -530,7 +526,9 @@ class DashboardController extends Controller
             'hospital_admission' => $hospital_admission,
             'hospital_active_cases' => $hospital_active_cases,
             'hospital_discharge' => $hospital_discharge,
-            'hospital_death' => $hospital_death
+            'hospital_death' => $hospital_death,
+            'federalInfo' => $federal_info,
+            'cache_created_at' => Carbon::parse(\DB::table('cache')->where('key', 'laravelpcr_positive-' . $date_chosen . '-' . $temp_name)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s')
         ];
 
         return response()->json($data);

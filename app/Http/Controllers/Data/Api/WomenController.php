@@ -67,7 +67,7 @@ class WomenController extends Controller
 
         $woman = $woman->whereIn('hp_code', $hpCodes)
             ->doesnthave('ancs')
-            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+            ->with(['province', 'district', 'municipality',
                 'healthpost' => function($q) {
                     $q->select('name', 'hp_code');
                 }]);

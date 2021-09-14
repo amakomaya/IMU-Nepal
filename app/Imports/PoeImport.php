@@ -10,15 +10,14 @@ use App\Models\Province;
 use App\Models\District;
 use App\Models\Municipality;
 use App\Models\SuspectedCase;
-use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use App\Notifications\ImportHasFailedNotification;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\RemembersRowNumber;
+use Maatwebsite\Excel\Events\ImportFailed;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Yagiten\Nepalicalendar\Calendar;
 use Maatwebsite\Excel\Validators\ValidationException;
@@ -223,8 +222,6 @@ class PoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadi
             'sample_test_time' => $sampleTestTime,
             'received_by' => $this->userToken,
             'received_by_hp_code' => $this->hpCode,
-            'received_by' => $this->userToken,
-            'received_by_hp_code' => $this->hpCode,
             'received_date_en' => $regDateEn,
             'received_date_np' => $regDateNp,
             'collection_date_en' => $regDateEn,
@@ -402,11 +399,6 @@ class PoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadi
             'travelled_from_city' => function($attribute, $value, $onFailure) {
               if ($value === '' || $value === null) {
                   $onFailure('Invalid Travel City');
-              }
-            },
-            'contact_of_nearest_person_phone' => function($attribute, $value, $onFailure) {
-              if ($value === '' || $value === null) {
-                  $onFailure('Invalid Contact Phone');
               }
             },
             'contact_of_nearest_person_phone' => function($attribute, $value, $onFailure) {

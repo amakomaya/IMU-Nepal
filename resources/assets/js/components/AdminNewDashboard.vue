@@ -1,15 +1,16 @@
 <template>
   <div class="row">
-    <div>
-      <a :href="'/admin'" class="btn btn-primary pull-right" style="margin-right: 20px;">
-        <i class="fa fa-tachometer" aria-hidden="true"></i> Old Dashboard
-      </a>
-      <div class="col-lg-6">
-        <h3>{{ headingTitle }}'s Update</h3>
+      <div class="col-lg-12">
+<!--      <a :href="'/admin'" class="btn btn-primary pull-right" style="margin-right: 20px;">-->
+<!--        <i class="fa fa-tachometer" aria-hidden="true"></i> Old Dashboard-->
+<!--      </a>-->
+        <h3>{{ headingTitle }}'s Update &nbsp; &nbsp;
+        <small v-if="!report.cache_created_at">loading...</small>
+        <small v-else>( Last updated date : {{ recordUpdatedAt() }} )</small>
+        </h3>
       </div>
-      <div class="col-lg-12" style="margin-bottom: 20px;">
-        <div class="col-md-3">
-          <div class="panel panel-danger">
+        <div class="col-md-4">
+          <div class="panel panel-danger form-group">
             <select name="date_selected" @change="onDateChange($event)" class="form-control" v-model="dayVal">
               <option value="" disabled>Select Day</option>
               <option value="1">{{ getDates().today }}</option>
@@ -23,9 +24,8 @@
             </select>
           </div>
         </div>
-      </div>
-      <div class="clearfix"></div>
-      
+    <div class="clearfix"></div>
+    <hr>
       <div class="col-lg-6">
         <h3 class="text-center" style="padding-bottom: 10px;">ANTIGEN</h3>
         <div class="col-lg-6 col-md-6">
@@ -228,7 +228,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -262,6 +261,8 @@ export default {
   methods: {
     onDateChange: function(event) {
       this.headingTitle = event.target.selectedOptions[0].text;
+      var federalInfo = JSON.stringify(this.$federalInfo);
+      this.report = []
       let url = window.location.protocol + '/data/api/admin/dashboard-new?date_selected=' + event.target.value + '&federal_info=' + federalInfo;
       axios.get(url)
         .then((response) => {
@@ -321,8 +322,8 @@ export default {
       var sevenDaysAgoFormatted = moment(String(sevenDaysAgo)).format('YYYY-MM-DD');
 
       var dates = [];
-      dates['today'] = 'Today',
-      dates['yesterday'] = 'Yesterday',
+      dates['today'] = 'Today'
+      dates['yesterday'] = 'Yesterday'
       dates['todayFormatted'] = todayFormatted;
       dates['yesterdayFormatted'] = yesterdayFormatted;
       dates['twoDaysAgoFormatted'] = twoDaysAgoFormatted;
@@ -339,6 +340,5 @@ export default {
 </script>
 
 <style scoped>
-
 
 </style>

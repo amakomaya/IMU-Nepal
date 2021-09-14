@@ -13,8 +13,6 @@
               <th width="4%" title="Ward No">Ward</th>
               <th width="15%">Case</th>
               <th width="8%" title="Case Created Date">Reg. Date</th>
-              <th width="10%" title="Sample Collection Details">Sample</th>
-              <th width="8%" title="Latest Lab Result">Result</th>
               <th width="10%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
             </tr>
             </thead>
@@ -36,16 +34,6 @@
                     Management : {{ checkCaseManagement(item.cases, item.case_where) }}
                 </td>
               <td>{{ formattedDate(item.register_date_np) }}</td>
-                <td><span class="label label-info"> {{ item.ancs.length }}</span>
-                    <div v-if="item.latest_anc" title="Swab ID">
-                      SID : <strong>{{ item.latest_anc.token }}</strong> <br>
-                      Type : {{ checkSampleType(item.latest_anc.service_for) }}
-                    </div>
-                </td>
-                <td>
-                    <div v-if="item.ancs.length > 0"><span class="label label-primary"> Pending </span></div>
-                    <div v-else><span class="label label-primary"> Registered </span></div>
-                </td>
                 <td>
                   <button v-on:click="viewCaseDetails(item.token)" target="_blank" title="Case Details Report">
                     <i class="fa fa-file" aria-hidden="true"></i> |
@@ -53,11 +41,8 @@
                     <button v-if="role === 'healthworker' || role === 'healthpost' || role === 'municipality' && permission == 1" v-on:click="editCaseDetails(item.token)" title="Edit Case Detail">
                       <i class="fa fa-edit" aria-hidden="true"></i> |
                     </button>
-                  <button v-if="item.ancs.length === 0 && checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
+                  <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
                      <i class="fa fa-medkit" aria-hidden="true"></i> |
-                  </button>
-                  <button v-if="checkPermission('lab-received') && checkAddReceivedView(item.latest_anc)" v-on:click="addReceivedInLab(item.latest_anc.token)" title="Lab Received ( PCR / Antigen )">
-                    <i class="fa fa-flask" aria-hidden="true"></i> |
                   </button>
                   <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
                         <i class="fa fa-hospital-o"></i> |

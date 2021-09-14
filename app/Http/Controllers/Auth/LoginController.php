@@ -33,7 +33,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/admin-new';
 
     /**
      * Create a new controller instance.
@@ -106,9 +106,9 @@ class LoginController extends Controller
 
             if (auth()->user()->role != 'main' && $update_profile_expiration < Carbon::now()) {
                 $request->session()->flash('message', 'Update your account\'s information ! <a href="/admin/profile">Edit Profile</a>');
-                return redirect('/admin');
+                return redirect($this->redirectTo);
             }
-            return redirect('/admin');
+            return redirect($this->redirectTo);
         }else{
             $request->session()->flash('error_message', 'Username or Password Incorrect!');
             return redirect()->route('login');

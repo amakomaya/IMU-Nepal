@@ -47,14 +47,14 @@ class AdminController extends Controller
         $organization = Organization::where('hp_code', $organization_hp_code)->first();
         $organizationType = $organization->hospital_type;
       } else {
-        return view('admin');
+        return view('admin-new-dashboard');
       }
       switch($organizationType) {
         case 7:
           return view('admin-poe');
           break;
         default:
-          return view('admin'); 
+          return view('admin-new-dashboard');
       }
     }
 
@@ -227,7 +227,7 @@ class AdminController extends Controller
             }
             return view('backend.sid-search.edit');
         } else {
-            return redirect('/admin');
+            return redirect()->back();
         }
     }
 
