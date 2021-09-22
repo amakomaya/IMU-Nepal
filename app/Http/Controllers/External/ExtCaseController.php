@@ -236,7 +236,7 @@ class ExtCaseController extends Controller
                 $sample = [
                     'token' => $swab_id,
                     'woman_token' => $case_token,
-                    'service_for' => $value['service_for'],
+                    'service_for' => $value['service_for'] == '' ?  '1' : $value['service_for'],
                     'collection_date_en' => $value['sample_collected_date'],
                     'collection_date_np' => $this->ad2bs($value['sample_collected_date']),
                     'service_type' => $value['service_type'],
