@@ -1,4 +1,3 @@
-@include('layouts.backend.navigation.html.dashboard')
 @include('layouts.backend.navigation.html.dho')
 @include('layouts.backend.navigation.html.municipality')
 @include('layouts.backend.navigation.html.organization')

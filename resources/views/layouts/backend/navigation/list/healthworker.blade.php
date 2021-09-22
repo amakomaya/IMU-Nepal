@@ -1,5 +1,3 @@
-@include('layouts.backend.navigation.html.dashboard')
-
 @canany(['cases-registration','poe-registration'])
     @include('layouts.backend.navigation.html.active-cases')
     @include('layouts.backend.navigation.html.close-cases')

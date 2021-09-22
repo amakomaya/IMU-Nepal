@@ -6,6 +6,7 @@
         <li><a href="{{ route('login') }}">Login</a></li>
         <!-- <li><a href="{{ route('register') }}">Register</a></li> -->
     @else
+        @include('layouts.backend.navigation.html.dashboard')
 
         @if(Auth::user()->role=="main")
             @include ('layouts.backend.navigation.list.main')
