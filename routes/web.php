@@ -26,6 +26,10 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
+Route::get('/index', function () {
+    return view('index');
+});
+
 //Auth
 Auth::routes();
 Route::resource('admin/permissions', 'PermissionController', ['name' => 'permissions']);

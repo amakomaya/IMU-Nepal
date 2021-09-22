@@ -103,7 +103,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="{{ url('/index') }}">
                         {{ config('app.name') }} </a>
                     @guest
                     <!-- // -->
