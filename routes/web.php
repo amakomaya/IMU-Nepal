@@ -50,6 +50,7 @@ Route::get('/admin/district-value', 'AdminController@getDistrictValue')->name('a
 Route::get('/admin/organization-select', 'AdminController@organizationSelect')->name('admin.organization-select');
 
 //Backend Center
+Route::resource('admin/dashboard', 'Backend\FrontPageController', ['name' => 'dashboard']);
 Route::resource('admin/center', 'Backend\CenterController');
 Route::get('/admin/maps', 'Backend\MapController@map')->name('center.woman.map');
 Route::get('/admin/maps/data', 'Backend\MapController@data');
