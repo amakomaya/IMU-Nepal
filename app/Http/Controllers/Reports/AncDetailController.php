@@ -242,15 +242,15 @@ class AncDetailController extends Controller
             ->whereIn('hospital_type', [2, 3])
             ->where('status', 1)
             ->get()->toArray();
-        $lab_organizations = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
+        $lab_organizations = SampleCollection::leftjoin('healthposts', 'ancs.received_by_hp_code', '=', 'healthposts.hp_code')
             ->select('ancs.*', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token')
-            ->whereIn('ancs.hp_code', $hpCodes)
+            ->whereIn('ancs.received_by_hp_code', $hpCodes)
             ->whereIn('service_for', ['1', '2'])
             ->whereIn('result', ['3', '4'])
             ->whereIn('hospital_type', [2, 3])
             ->whereBetween('reporting_date_en', [Carbon::now()->subDays(1)->toDateString(), Carbon::now()->toDateString()])
             ->get()
-            ->groupBy('hp_code');
+            ->groupBy('received_by_hp_code');
 
         $mapped_data = $lab_organizations->map(function ($lab, $key) {
             $return = [];
