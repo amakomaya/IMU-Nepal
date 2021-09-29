@@ -13,10 +13,10 @@
               <th width="7%" title="Gender">G</th>
               <th width="10%" title="Emergency Contact Number">Phone</th>
               <th>District</th>
-              <th width="10%" title="Municipality">Municipality</th>
+              <th width="6%" title="Municipality">Municipality</th>
               <th width="4%" title="Ward No">Ward</th>
-<!--              <th width="15%">Case</th>-->
-              <th width="10%" title="Test Date">Test Date</th>
+              <th width="4%" title="Report Date">Report Date</th>
+              <th width="5%" title="Result Date">Result Date</th>
               <th width="8%" title="Sample Collection Details">Sample</th>
               <th width="8%" title="Latest Lab Result">Result</th>
               <th width="4%" title="Tested By">Tested By</th>
@@ -29,43 +29,42 @@
                 <td>{{item.name}}</td>
                 <td>{{item.age}}</td>
                 <td>{{ gender(item.sex)}}</td>
-                <td>{{item.emergency_contact_one}} <br>
-                    {{item.emergency_contact_two}}
+                <td>
+                  {{item.emergency_contact_one}} <br>
+                  {{item.emergency_contact_two}}
                 </td>
                 <td>{{ checkDistrict(item.district_id) }}</td>
                 <td>{{ checkMunicipality(item.municipality_id) }}</td>
                 <td>{{ item.ward }}</td>
+                <td>{{ formattedDate(item.latest_anc.reporting_date_np) }}</td>
                 <td>{{ formattedDate(item.latest_anc.sample_test_date_np) }}</td>
-
-              <td><span class="label label-info"> {{ item.ancs.length }}</span>
-                <div title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
-              </td>
-              <td><span class="label label-success"> Negative</span>
-                <div>{{ labToken(item.latest_anc.lab_token) }}</div>
-              </td>
-              <td>
-                <div v-if="item.ancs.length > 0">
-                  {{ checkValidOrganization(item.latest_anc) }}
-                </div>
-              </td>
-              <td>
-                {{ checkInfectionType(item.latest_anc.infection_type) }}
-              </td>
                 <td>
-                  <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
-                    <i class="fa fa-file" aria-hidden="true"></i> |
-                  </button>
-                  <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
-                    <i class="fa fa-medkit" aria-hidden="true"></i> |
-                  </button>
-                  <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Move Patient Data">
-                    <i class="fa fa-trash"></i>
-                  </button>
-                </td>  
-                <!-- </div>             -->
-            </tr>
-<!--            <span>Selected Ids: {{ item }}</span>-->
-
+                  <span class="label label-info"> {{ item.ancs.length }}</span>
+                  <div title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
+                </td>
+                <td><span class="label label-success"> Negative</span>
+                  <div>{{ labToken(item.latest_anc.lab_token) }}</div>
+                </td>
+                <td>
+                  <div v-if="item.ancs.length > 0">
+                    {{ checkValidOrganization(item.latest_anc) }}
+                  </div>
+                </td>
+                <td>
+                  {{ checkInfectionType(item.latest_anc.infection_type) }}
+                </td>
+                  <td>
+                    <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
+                      <i class="fa fa-file" aria-hidden="true"></i> |
+                    </button>
+                    <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
+                      <i class="fa fa-medkit" aria-hidden="true"></i> |
+                    </button>
+                    <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Move Patient Data">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </td>  
+              </tr>
         </filterable>
     </div>
 </template>

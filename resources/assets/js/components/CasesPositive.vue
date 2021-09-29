@@ -8,10 +8,11 @@
         <th width="4%">Age</th>
         <th width="4%" title="Gender">G</th>
         <th width="7%" title="Emergency Contact Number">Phone</th>
-        <th width="10%" title="Municipality">Municipality</th>
+        <th width="6%" title="Municipality">Municipality</th>
         <th width="4%" title="Ward No">Ward</th>
         <th width="15%">Case</th>
-        <th width="7%" title="Test Date">Test Date</th>
+        <th width="4%" title="Report Date">Report Date</th>
+        <th width="5%" title="Result Date">Result Date</th>
         <th width="7%" title="Sample Collection Details">Sample</th>
         <th width="6%" title="Latest Lab Result">Result</th>
         <th width="4%" title="Tested By">Tested By</th>
@@ -38,6 +39,7 @@
           Type : {{ checkCaseType(item.cases) }} <br>
           Management : {{ checkCaseManagement(item.cases, item.case_where) }}
         </td>
+        <td>{{ formattedDate(item.latest_anc.reporting_date_np) }}</td>
         <td>{{ formattedDate(item.latest_anc.sample_test_date_np) }}</td>
         <td><span class="label label-info"> {{ item.ancs.length }}</span>
           <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>

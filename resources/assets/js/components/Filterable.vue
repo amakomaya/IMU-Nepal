@@ -252,6 +252,7 @@ export default {
         'Tested By' : 'tested_by',
         'Infection Type' : 'infection_type',
         'Date' : 'date',
+        'Report Date' : 'report_date',
         'Created At' : 'created_at'
       },
       json_fields_for_dolphins : {
@@ -410,8 +411,11 @@ export default {
 
           exportableData.current_hospital = data.healthpost ? data.healthpost.name : '';
           var date = data.register_date_np;
+          var report_date = '';
           if(data.latest_anc){
             exportableData.swab_id = data.latest_anc.token;
+            report_date = data.latest_anc.reporting_date_np;
+            
             if(data.latest_anc.infection_type === "2") {
               exportableData.infection_type = "A";
             }else if(data.latest_anc.infection_type === "1") {
@@ -428,6 +432,7 @@ export default {
             exportableData.tested_by = data.latest_anc.get_organization ? data.latest_anc.get_organization.name : '';
           }
           exportableData.date = date;
+          exportableData.report_date = report_date;
           exportableData.created_at = data.created_at;
           list.push(exportableData);
         });
