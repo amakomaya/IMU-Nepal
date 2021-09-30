@@ -379,7 +379,6 @@ class DashboardController extends Controller
 
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $federal_info = json_decode($request->federal_info);
         $user_role = auth()->user()->role;
 
         if($user_role == 'healthpost' || $user_role == 'healthworker'){

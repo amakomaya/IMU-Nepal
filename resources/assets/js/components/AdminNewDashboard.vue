@@ -246,8 +246,7 @@ export default {
     }
   },
   created: function () {
-    var federalInfo = JSON.stringify(this.$federalInfo);
-    let url = window.location.protocol + '/data/api/admin/dashboard-new?federal_info=' + federalInfo;
+    let url = window.location.protocol + '/data/api/admin/dashboard-new';
     axios.get(url)
         .then((response) => {
           this.report = response.data;
@@ -263,7 +262,7 @@ export default {
       this.headingTitle = event.target.selectedOptions[0].text;
       var federalInfo = JSON.stringify(this.$federalInfo);
       this.report = []
-      let url = window.location.protocol + '/data/api/admin/dashboard-new?date_selected=' + event.target.value + '&federal_info=' + federalInfo;
+      let url = window.location.protocol + '/data/api/admin/dashboard-new?date_selected=' + event.target.value;
       axios.get(url)
         .then((response) => {
           this.report = response.data;

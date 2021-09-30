@@ -1,5 +1,5 @@
 <li>
-    <a href="{{ url('admin-new') }}"> <i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard
+    <a href="{{ url('admin') }}"> <i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard
 {{--         <span class="fa arrow"></span>--}}
     </a>
 

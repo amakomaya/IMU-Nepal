@@ -35,7 +35,7 @@ class AdminController extends Controller
      */
 
 
-    public function index(Request $request)
+    public function index()
     {
       $user = auth()->user();
       $userRole = $user->role;
@@ -56,11 +56,6 @@ class AdminController extends Controller
         default:
           return view('admin-new-dashboard');
       }
-    }
-
-    public function newDashbaord()
-    {
-        return view('admin-new-dashboard');
     }
 
     public function getDistrictValue(Request $request){
