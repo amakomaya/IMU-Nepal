@@ -17,7 +17,7 @@
                 <div class="panel-heading">
                    Welcome to the IMU Dashboard
 
-                   @if(auth()->user()->role == 'main' || auth()->user()->role == 'province')
+                   @if(auth()->user()->role == 'main' || auth()->user()->role == 'province' && session()->get('permission_id') == 1)
                    <button class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#noticeModal" style="margin-top: -5px;">Edit Notice</button>
                    @endif
                 </div>
