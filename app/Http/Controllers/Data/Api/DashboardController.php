@@ -389,29 +389,15 @@ class DashboardController extends Controller
             $temp_name = 'main';
         }
         elseif($user_role == 'province'){
-            if($federal_info->province_id == ""){
-                $temp_name = auth()->user()->token;
-            }
-            else{
-                $temp_name = 'pro-' . $federal_info->province_id;
-            }
+            $temp_name = 'prov-' . $response['province_id'];
         }
         elseif($user_role == 'dho'){
-            if($federal_info->district_id == ""){
-                $temp_name = auth()->user()->token;
-            }
-            else{
-                $temp_name = 'dho-' . $federal_info->district_id;
-            }
+            $temp_name = 'dho-' . $response['district_id'];
         }
         elseif($user_role == 'municipality'){
-            if($federal_info->municipality_id == ""){
-                $temp_name = auth()->user()->token;
-            }
-            else{
-                $temp_name = 'mun-' . $federal_info->municipality_id;
-            }
-        }else{
+            $temp_name = 'mun-' . $response['municipality_id'];
+        }
+        else{
             $temp_name = auth()->user()->token;
         }
 
