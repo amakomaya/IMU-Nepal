@@ -512,7 +512,6 @@ class DashboardController extends Controller
             'hospital_active_cases' => $hospital_active_cases,
             'hospital_discharge' => $hospital_discharge,
             'hospital_death' => $hospital_death,
-            'federalInfo' => $federal_info,
             'cache_created_at' => Carbon::parse(\DB::table('cache')->where('key', 'laravelpcr_positive-' . $date_chosen . '-' . $temp_name)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s')
         ];
 
