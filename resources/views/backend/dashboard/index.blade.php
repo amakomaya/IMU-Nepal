@@ -15,62 +15,17 @@
             @endif
             <div class="panel panel-default">
                 <div class="panel-heading">
-                   Dashboard
+                   Welcome to the IMU Dashboard
+
+                   @if(auth()->user()->role == 'main' || auth()->user()->role == 'province')
+                   <button class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#noticeModal" style="margin-top: -5px;">Edit Notice</button>
+                   @endif
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div>
-                        {!! $data ? $data->description : '' !!}
+                        {!! $data->description ?? 'No Notice available' !!}
                     </div>
-
-                    @if(auth()->user()->role == 'main' || auth()->user()->role == 'province')
-
-                    @if($data)
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('dashboard.update', $data->id) }}" >
-                    {{ method_field('PATCH') }}
-                    @else
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('dashboard.store') }}" >
-                    @endif
-                        {{ csrf_field() }}
-                        <hr>
-                        <h3 class="text-center">Edit Form</h3>
-                        <hr>
-
-                        {{-- <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-                            <label for="title" class="col-md-3 control-label">Title</label>                                  
-                            <div class="col-md-7">
-                                <input id="title" type="text" class="form-control" title="title" value="" >
-                                @if ($errors->has('title'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('title') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div> --}}
-
-                        <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
-                            <label for="description" class="col-md-3 control-label">Description</label>                                  
-                            <div class="col-md-7">
-                                <textarea name="description" class="form-control" id="description" placeholder="Description">
-                                    {{ $data ? $data->description : '' }}
-                                </textarea>
-                                @if ($errors->has('description'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('description') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-9 col-md-offset-3">
-                                <button type="submit" class="btn btn-success">
-                                    {{ __('create.submit') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    @endif
                 </div>
                 <!-- /.panel-body -->
             </div>
@@ -81,6 +36,50 @@
     <!-- /.row -->
 </div>
 <!-- /#page-wrapper -->
+
+<!-- modal -->
+<div class="modal fade" id="noticeModal" tabindex="-1" role="dialog" aria-labelledby="noticeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="noticeModalLabel">Edit Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            @if($data)
+            <form class="form-horizontal" role="form" method="POST" action="{{ route('index.update', $data->id) }}" >
+            {{ method_field('PATCH') }}
+            @else
+            <form class="form-horizontal" role="form" method="POST" action="{{ route('index.store') }}" >
+            @endif
+            {{ csrf_field() }}
+                <div class="modal-body">
+                    <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+                        <div class="col-md-12">
+                            <label for="description">Description</label>  
+                        </div>                                
+                        <div class="col-md-12">
+                            <textarea name="description" class="form-control" id="description" placeholder="Description">
+                                {{ $data ? $data->description : '' }}
+                            </textarea>
+                            @if ($errors->has('description'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('description') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">{{ __('create.submit') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @endsection
 @section('script')

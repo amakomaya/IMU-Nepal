@@ -40,7 +40,7 @@ class FrontPageController extends Controller
     {
         FrontPage::create($request->all());
         $request->session()->flash('message', 'Message Created successfully');
-        return redirect()->route('dashboard.index');
+        return redirect()->route('index.index');
     }
 
     /**
@@ -77,7 +77,7 @@ class FrontPageController extends Controller
         $data = FrontPage::findOrfail($id);
         $data->update($request->all());
         $request->session()->flash('message', 'Message Updated successfully');
-        return redirect()->route('dashboard.index');
+        return redirect()->route('index.index');
     }
 
     /**
