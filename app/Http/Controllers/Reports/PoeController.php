@@ -81,7 +81,14 @@ class PoeController extends Controller
         
         $data = [];
         $total_data['all_total_screened'] = $total_data['all_total_tested'] = $total_data['all_antigen_postive_cases_count'] = 
-            $total_data['all_antigen_negative_cases_count'] = $total_data['all_positivity_rate'] = 0;
+        $total_data['all_antigen_negative_cases_count'] = $total_data['all_positivity_rate'] = 0;
+        foreach($hpCodes as $key => $hpCode)  {
+          $data[$hpCode]['not_tested'] = SuspectedCase::where('hp_code', $hpCode)
+          ->whereBetween(\DB::raw('DATE(created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
+          ->active()
+          ->doesnthave('ancs')
+          ->count();
+        }
         foreach($reports as $key => $report) {
             // $district_name = District::where('id', $report[0]->district_id)->pluck('district_name')[0];
             $province_name = Province::where('id', $report[0]->province_id)->pluck('province_name')[0];
@@ -92,11 +99,7 @@ class PoeController extends Controller
             $data[$key]['province_name'] = $province_name;
             // $data[$key]['district_name'] = $district_name;
             // $data[$key]['municipality_name'] = '';
-            $data[$key]['not_tested'] = SuspectedCase::where('hp_code', $key)
-            ->whereBetween(\DB::raw('DATE(created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
-            ->active()
-            ->doesnthave('ancs')
-            ->count();
+            
             
             $data[$key]['total_test'] = $report->count()??0;
             
