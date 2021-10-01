@@ -127,7 +127,8 @@ export default {
           {
             name: 'Lab Result',
             filters: [
-              {title: 'Lab Result Created At', name: 'ancs.sample_test_date_en', type: 'datetime'}
+              {title: 'Lab Reporting Date', name: 'ancs.reporting_date_en', type: 'datetime'},
+              {title: 'Lab Result Date', name: 'ancs.sample_test_date_en', type: 'datetime'}
             ]
           }
         ],
