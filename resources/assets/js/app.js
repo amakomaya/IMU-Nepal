@@ -123,8 +123,7 @@ Vue.component('cases-closed-death', CasesClosedDeath)
 Vue.component('lab-negative-patient-list', LabNegativeCases)
 Vue.component('lab-positive-patient-list', LabPositiveCases)
 Vue.component('vaccination-chart');
-Vue.component('admin-dashboard', AdminDashboard)
-Vue.component('admin-new-dashboard', AdminNewDashboard)
+Vue.component('admin-dashboard', AdminDashboard);
 Vue.component('poe-dashboard', PoeDashboard)
 Vue.component('select-year-month', SelectYearMonth)
 Vue.component('lab-case-report', LabCaseReport)
