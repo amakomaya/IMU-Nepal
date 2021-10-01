@@ -236,10 +236,10 @@ class AncDetailController extends Controller
 
     public function labVisualizationReport(Request $request) {
         $response = FilterRequest::filter($request);
+        $response['hospital_type'] = [2, 3];
         $hpCodes = GetHealthpostCodes::filter($response);
 
         $healthposts = Organization::whereIn('hp_code', $hpCodes)
-            ->whereIn('hospital_type', [2, 3])
             ->where('status', 1)
             ->select('name', 'token', 'hp_code')
             ->get()
@@ -250,21 +250,18 @@ class AncDetailController extends Controller
            whereIn('ancs.received_by_hp_code', $hpCodes)
             ->whereIn('service_for', ['1', '2'])
             ->whereIn('result', ['3', '4'])
-            ->whereIn('hospital_type', [2, 3])
-            ->where('reporting_date_en' , '>', Carbon::yesterday()->toDateTimeString())
+            ->whereDate('reporting_date_en' , '>=', Carbon::yesterday()->toDateTimeString())
             ->where('ancs.status', 1)
-            ->leftjoin('healthposts', 'ancs.received_by_hp_code', '=', 'healthposts.hp_code')
-                ->select('ancs.*', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token', \DB::raw('DATE_FORMAT(ancs.reporting_date_en, "%Y-%m-%d") as formatted_reporting_date_en'))
-                ->get()
+            ->select(\DB::raw('DATE_FORMAT(ancs.reporting_date_en, "%Y-%m-%d") as formatted_reporting_date_en'), 'received_by_hp_code', 'service_for', 'result', 'regdev')
+            ->get()
             ->groupBy('received_by_hp_code');
 
         $today = Carbon::today()->toDateString();
         $yesterday = Carbon::yesterday()->toDateString();
-
-        $mapped_data = collect($lab_organizations)->map(function ($lab, $key) use ($yesterday, $today) {
+        $mapped_data = collect($lab_organizations)->map(function ($lab, $key) use ($yesterday, $today, $healthposts) {
             $return = [];
-            $return['name'] = $lab[0]->healthpost_name;
-            $return['token'] = $lab[0]->healthpost_token;
+            $return['name'] = $healthposts[$key]['name'];
+            $return['token'] = $healthposts[$key]['token'];
             $return['pcr_postive_today'] = $lab->where('service_for', '1')->where('result', '3')->where('formatted_reporting_date_en', $today)->where('status', 1)->count();
             $return['pcr_negative_today'] = $lab->where('service_for', '1')->where('result', '4')->where('formatted_reporting_date_en', $today)->count();
             $return['antigen_positive_today'] = $lab->where('service_for', '2')->where('result', '3')->where('formatted_reporting_date_en', $today)->count();
@@ -290,10 +287,8 @@ class AncDetailController extends Controller
 
             return $return;
         })->toArray();
-
         $empty_healthposts = array_diff_key($healthposts, $mapped_data);
         $data = array_merge($mapped_data, $empty_healthposts);
-
         return view('backend.sample.report.lab-visualization', compact('data'));
 
     }
