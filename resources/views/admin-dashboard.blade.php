@@ -5,7 +5,7 @@
 @section('content')
 <div id="page-wrapper">
     <div id="app">
-        <admin-new-dashboard></admin-new-dashboard>
+        <admin-dashboard></admin-dashboard>
     </div>
 </div>
 @endsection

@@ -44,8 +44,8 @@ import AnalysisAntigen from "./components/analysis/Antigen";
 import PublicClientCreate from "./components/public_client/Create";
 import VaccinationList from "./components/VaccinationList.vue";
 import VaccinatedList from "./components/VaccinatedList";
+import AdminOldDashboard from "./components/AdminOldDashboard";
 import AdminDashboard from "./components/AdminDashboard";
-import AdminNewDashboard from "./components/AdminNewDashboard";
 import PoeDashboard from "./components/PoeDashboard";
 import OrganizationSearch from "./components/organization/Search";
 import CasesTracing from "./components/CasesTracing";
@@ -123,8 +123,7 @@ Vue.component('cases-closed-death', CasesClosedDeath)
 Vue.component('lab-negative-patient-list', LabNegativeCases)
 Vue.component('lab-positive-patient-list', LabPositiveCases)
 Vue.component('vaccination-chart');
-Vue.component('admin-dashboard', AdminDashboard)
-Vue.component('admin-new-dashboard', AdminNewDashboard)
+Vue.component('admin-dashboard', AdminDashboard);
 Vue.component('poe-dashboard', PoeDashboard)
 Vue.component('select-year-month', SelectYearMonth)
 Vue.component('lab-case-report', LabCaseReport)

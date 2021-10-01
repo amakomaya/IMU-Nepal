@@ -34,7 +34,6 @@ class AdminController extends Controller
      * @return void
      */
 
-
     public function index()
     {
       $user = auth()->user();
@@ -47,14 +46,14 @@ class AdminController extends Controller
         $organization = Organization::where('hp_code', $organization_hp_code)->first();
         $organizationType = $organization->hospital_type;
       } else {
-        return view('admin-new-dashboard');
+        return view('admin-dashboard');
       }
       switch($organizationType) {
         case 7:
           return view('admin-poe');
           break;
         default:
-          return view('admin-new-dashboard');
+          return view('admin-dashboard');
       }
     }
 

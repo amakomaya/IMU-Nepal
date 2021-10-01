@@ -11,6 +11,7 @@ use App\Models\ContactTracing;
 use App\Models\ContactTracingOld;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 
 use Auth;
 use DB;
@@ -18,6 +19,7 @@ use App\Helpers\GetHealthpostCodes;
 use App\Reports\FilterRequest;
 use Yagiten\Nepalicalendar\Calendar;
 use Carbon\Carbon;
+use Exception;
 
 class PoeController extends Controller
 {
@@ -53,7 +55,7 @@ class PoeController extends Controller
         foreach ($response as $key => $value) {
             $$key = $value;
         }
-
+        
         $healthposts = Organization::whereIn('hp_code', $hpCodes)->where('hospital_type', 7)->get();
 
         $reports = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
@@ -76,22 +78,42 @@ class PoeController extends Controller
             ->groupBy('hp_code');
 
         
-            // var_dump($reports->getBindings());
-            // dd($reports);
-        
         $data = [];
         $total_data['all_total_screened'] = $total_data['all_total_tested'] = $total_data['all_antigen_postive_cases_count'] = 
         $total_data['all_antigen_negative_cases_count'] = $total_data['all_positivity_rate'] = 0;
-        foreach($hpCodes as $key => $hpCode)  {
-          $data[$hpCode]['not_tested'] = SuspectedCase::where('hp_code', $hpCode)
-          ->whereBetween(\DB::raw('DATE(created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
-          ->active()
-          ->doesnthave('ancs')
-          ->count();
+        $province_list = Cache::remember('province-list', 48*60*60, function () {
+          return Province::select(['id', 'province_name'])->get();
+        });
+        $provinceArray = [];
+        $province_list->map(function ($province) use (&$provinceArray) {
+          $provinceArray[$province->id] = $province->province_name;
+          return;
+        });
+        $healthpostsGrouped = $healthposts->groupBy('hp_code');
+        foreach($healthpostsGrouped as $hpCode => $healthpost) {
+          if(!$reports->has($hpCode)) {
+            $data[$hpCode]['healthpost_name'] = $healthpost[0]->name;
+            $data[$hpCode]['province_name'] = $provinceArray[$healthpost[0]->province_id];
+            $data[$hpCode]['total_test'] = 0;
+            $data[$hpCode]['not_tested'] = SuspectedCase::where('hp_code', $hpCode)
+            ->whereBetween(\DB::raw('DATE(created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
+            ->active()
+            ->doesnthave('ancs')
+            ->count();
+            $data[$hpCode]['antigen_pending_received'] = 0;
+            
+            $data[$hpCode]['antigen_postive_cases_count'] = 0;
+            $data[$hpCode]['antigen_negative_cases_count'] = 0;
+            $data[$hpCode]['total_screened'] = $data[$hpCode]['not_tested'];
+            $data[$hpCode]['total_tested'] = 0;
+            $data[$hpCode]['positivity_rate'] ='-';
+            $total_data['all_total_screened'] += $data[$hpCode]['total_screened'];
+          }
         }
+        
         foreach($reports as $key => $report) {
             // $district_name = District::where('id', $report[0]->district_id)->pluck('district_name')[0];
-            $province_name = Province::where('id', $report[0]->province_id)->pluck('province_name')[0];
+            $province_name = $provinceArray[$report[0]->province_id];
            
             $healthpost_name = $report[0]->name;
 
@@ -102,6 +124,11 @@ class PoeController extends Controller
             
             
             $data[$key]['total_test'] = $report->count()??0;
+            $data[$key]['not_tested'] = SuspectedCase::where('hp_code', $key)
+            ->whereBetween(\DB::raw('DATE(created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
+            ->active()
+            ->doesnthave('ancs')
+            ->count();
             
             //municipality
             $data[$key]['antigen_pending_received'] = $report->where('service_for', '2')->where('result', 2)->count() ?? 0+$report->where('service_for', '2')->where('result', 9)->count()??0;
@@ -123,8 +150,11 @@ class PoeController extends Controller
             $total_data['all_antigen_postive_cases_count'] += $data[$key]['antigen_postive_cases_count'];
             $total_data['all_antigen_negative_cases_count'] += $data[$key]['antigen_negative_cases_count'];
         }
-
-        $all_pr = round(($total_data['all_antigen_postive_cases_count'] / $total_data['all_total_tested'] * 100), 2);
+        try {
+          $all_pr = round(($total_data['all_antigen_postive_cases_count'] / $total_data['all_total_tested'] * 100), 2);
+        } catch (Exception $e) {
+          $all_pr = null;
+        }
         if($total_data['all_antigen_postive_cases_count'] == 0){
             $total_data['all_positivity_rate'] = '0%';
         }else{
