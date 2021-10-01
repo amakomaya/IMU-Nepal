@@ -40,7 +40,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($healthposts as $healthpost)
+                                @foreach($data as $healthpost)
                                     <tr>
                                         <td>
                                             @php($id = App\User::where('token', $healthpost['token'])->first()->id ?? '')
@@ -49,16 +49,16 @@
                                                 <a href="#" onclick="this.parentNode.submit()">{{ $healthpost['name'] }}</a>
                                             </form>
                                         </td>
-                                        <td>{{ isset($data[$healthpost['hp_code']]) ? $data[$healthpost['hp_code']]['pcr_postive_today'] : 0 }}</td>
-                                        <td> {{ isset($data[$healthpost['hp_code']]) ? $data[$healthpost['hp_code']]['pcr_negative_today'] : 0 }}</td>
-                                        <td> {{ isset($data[$healthpost['hp_code']]) ? $data[$healthpost['hp_code']]['antigen_positive_today'] : 0 }}</td>
-                                        <td> {{ isset($data[$healthpost['hp_code']]) ? $data[$healthpost['hp_code']]['antigen_negative_today'] : 0 }}</td>
-                                        <td> {{ isset($data[$healthpost['hp_code']]) ? $data[$healthpost['hp_code']]['api_today'] : 'No' }}</td>
-                                        <td> {{ isset($data[$healthpost['hp_code']]) ? $data[$healthpost['hp_code']]['pcr_postive_yesterday'] : 0 }}</td>
-                                        <td> {{ isset($data[$healthpost['hp_code']]) ? $data[$healthpost['hp_code']]['pcr_negative_yesterday'] : 0 }}</td>
-                                        <td> {{ isset($data[$healthpost['hp_code']]) ? $data[$healthpost['hp_code']]['antigen_positive_yesterday'] : 0 }}</td>
-                                        <td> {{ isset($data[$healthpost['hp_code']]) ? $data[$healthpost['hp_code']]['antigen_negative_yesterday'] : 0 }}</td>
-                                        <td> {{ isset($data[$healthpost['hp_code']]) ? $data[$healthpost['hp_code']]['api_yesterday'] : 'No' }}</td>
+                                        <td>{{ isset($healthpost['pcr_postive_today']) ? $healthpost['pcr_postive_today'] : 0 }}</td>
+                                        <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['pcr_negative_today'] : 0 }}</td>
+                                        <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['antigen_positive_today'] : 0 }}</td>
+                                        <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['antigen_negative_today'] : 0 }}</td>
+                                        <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['api_today'] : 'No' }}</td>
+                                        <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['pcr_postive_yesterday'] : 0 }}</td>
+                                        <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['pcr_negative_yesterday'] : 0 }}</td>
+                                        <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['antigen_positive_yesterday'] : 0 }}</td>
+                                        <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['antigen_negative_yesterday'] : 0 }}</td>
+                                        <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['api_yesterday'] : 'No' }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
