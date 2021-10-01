@@ -241,7 +241,10 @@ class AncDetailController extends Controller
         $healthposts = Organization::whereIn('hp_code', $hpCodes)
             ->whereIn('hospital_type', [2, 3])
             ->where('status', 1)
-            ->get()->toArray();
+            ->select('name', 'token', 'hp_code')
+            ->get()
+            ->keyBy('hp_code')
+            ->toArray();
 
         $lab_organizations = SampleCollection::
            whereIn('ancs.received_by_hp_code', $hpCodes)
@@ -260,8 +263,8 @@ class AncDetailController extends Controller
 
         $mapped_data = collect($lab_organizations)->map(function ($lab, $key) use ($yesterday, $today) {
             $return = [];
-            $return['key'] = $lab[0]->healthpost_name;
-            $return['healthpost_token'] = $lab[0]->healthpost_token;
+            $return['name'] = $lab[0]->healthpost_name;
+            $return['token'] = $lab[0]->healthpost_token;
             $return['pcr_postive_today'] = $lab->where('service_for', '1')->where('result', '3')->where('formatted_reporting_date_en', $today)->where('status', 1)->count();
             $return['pcr_negative_today'] = $lab->where('service_for', '1')->where('result', '4')->where('formatted_reporting_date_en', $today)->count();
             $return['antigen_positive_today'] = $lab->where('service_for', '2')->where('result', '3')->where('formatted_reporting_date_en', $today)->count();
@@ -288,9 +291,10 @@ class AncDetailController extends Controller
             return $return;
         })->toArray();
 
-        $data = $mapped_data;
+        $empty_healthposts = array_diff_key($healthposts, $mapped_data);
+        $data = array_merge($mapped_data, $empty_healthposts);
 
-        return view('backend.sample.report.lab-visualization', compact('data', 'healthposts'));
+        return view('backend.sample.report.lab-visualization', compact('data'));
 
     }
 
