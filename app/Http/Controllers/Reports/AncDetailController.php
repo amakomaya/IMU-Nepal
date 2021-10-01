@@ -242,37 +242,43 @@ class AncDetailController extends Controller
             ->whereIn('hospital_type', [2, 3])
             ->where('status', 1)
             ->get()->toArray();
-        $lab_organizations = SampleCollection::leftjoin('healthposts', 'ancs.received_by_hp_code', '=', 'healthposts.hp_code')
-            ->select('ancs.*', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token')
-            ->whereIn('ancs.received_by_hp_code', $hpCodes)
+
+        $lab_organizations = SampleCollection::
+           whereIn('ancs.received_by_hp_code', $hpCodes)
             ->whereIn('service_for', ['1', '2'])
             ->whereIn('result', ['3', '4'])
             ->whereIn('hospital_type', [2, 3])
-            ->whereBetween('reporting_date_en', [Carbon::now()->subDays(1)->toDateString(), Carbon::now()->toDateString()])
-            ->get()
+            ->where('reporting_date_en' , '>', Carbon::yesterday()->toDateTimeString())
+            ->where('ancs.status', 1)
+            ->leftjoin('healthposts', 'ancs.received_by_hp_code', '=', 'healthposts.hp_code')
+                ->select('ancs.*', 'healthposts.name as healthpost_name', 'healthposts.token as healthpost_token', \DB::raw('DATE_FORMAT(ancs.reporting_date_en, "%Y-%m-%d") as formatted_reporting_date_en'))
+                ->get()
             ->groupBy('received_by_hp_code');
 
-        $mapped_data = $lab_organizations->map(function ($lab, $key) {
+        $today = Carbon::today()->toDateString();
+        $yesterday = Carbon::yesterday()->toDateString();
+
+        $mapped_data = collect($lab_organizations)->map(function ($lab, $key) use ($yesterday, $today) {
             $return = [];
             $return['key'] = $lab[0]->healthpost_name;
             $return['healthpost_token'] = $lab[0]->healthpost_token;
-            $return['pcr_postive_today'] = $lab->where('service_for', '1')->where('result', '3')->where('reporting_date_en', Carbon::now()->toDateString())->where('status', 1)->count();
-            $return['pcr_negative_today'] = $lab->where('service_for', '1')->where('result', '4')->where('reporting_date_en', Carbon::now()->toDateString())->where('status', 1)->count();
-            $return['antigen_positive_today'] = $lab->where('service_for', '2')->where('result', '3')->where('reporting_date_en', Carbon::now()->toDateString())->where('status', 1)->count();
-            $return['antigen_negative_today'] = $lab->where('service_for', '2')->where('result', '4')->where('reporting_date_en', Carbon::now()->toDateString())->where('status', 1)->count();
+            $return['pcr_postive_today'] = $lab->where('service_for', '1')->where('result', '3')->where('formatted_reporting_date_en', $today)->where('status', 1)->count();
+            $return['pcr_negative_today'] = $lab->where('service_for', '1')->where('result', '4')->where('formatted_reporting_date_en', $today)->count();
+            $return['antigen_positive_today'] = $lab->where('service_for', '2')->where('result', '3')->where('formatted_reporting_date_en', $today)->count();
+            $return['antigen_negative_today'] = $lab->where('service_for', '2')->where('result', '4')->where('formatted_reporting_date_en', $today)->count();
 
-            $return['pcr_postive_yesterday'] = $lab->where('service_for', '1')->where('result', '3')->where('reporting_date_en', Carbon::now()->subDays(1)->toDateString())->where('status', 1)->count();
-            $return['pcr_negative_yesterday'] = $lab->where('service_for', '1')->where('result', '4')->where('reporting_date_en', Carbon::now()->subDays(1)->toDateString())->where('status', 1)->count();
-            $return['antigen_positive_yesterday'] = $lab->where('service_for', '2')->where('result', '3')->where('reporting_date_en', Carbon::now()->subDays(1)->toDateString())->where('status', 1)->count();
-            $return['antigen_negative_yesterday'] = $lab->where('service_for', '2')->where('result', '4')->where('reporting_date_en', Carbon::now()->subDays(1)->toDateString())->where('status', 1)->count();
-            
-            $api_data_today = $lab->where('regdev', 'api')->where('reporting_date_en', Carbon::now()->toDateString())->count();
+            $return['pcr_postive_yesterday'] = $lab->where('service_for', '1')->where('result', '3')->where('formatted_reporting_date_en', $yesterday)->count();
+            $return['pcr_negative_yesterday'] = $lab->where('service_for', '1')->where('result', '4')->where('formatted_reporting_date_en', $yesterday)->count();
+            $return['antigen_positive_yesterday'] = $lab->where('service_for', '2')->where('result', '3')->where('formatted_reporting_date_en', $yesterday)->count();
+            $return['antigen_negative_yesterday'] = $lab->where('service_for', '2')->where('result', '4')->where('formatted_reporting_date_en', $yesterday)->count();
+
+            $api_data_today = $lab->where('regdev', 'api')->where('formatted_reporting_date_en', $today)->count();
             if($api_data_today > 0) {
                 $return['api_today'] = 'Yes';
             } else {
                 $return['api_today'] = 'No';
             }
-            $api_data_yesterday = $lab->where('regdev', 'api')->where('reporting_date_en', Carbon::now()->subDays(1)->toDateString())->count();
+            $api_data_yesterday = $lab->where('regdev', 'api')->where('formatted_reporting_date_en', $yesterday)->count();
             if($api_data_yesterday > 0) {
                 $return['api_yesterday'] = 'Yes';
             } else {
