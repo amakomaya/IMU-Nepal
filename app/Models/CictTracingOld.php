@@ -13,6 +13,7 @@ class CictTracingOld extends Model
 
     protected $connection = 'mysqldump';
 
+    protected $table = 'cict_tracings';
     protected $fillable = [
         'case_id', 'token', 'woman_token', 'hp_code', 'checked_by', 'regdev',
         'case_what', 'case_received_date', 'cict_initiated_date',
