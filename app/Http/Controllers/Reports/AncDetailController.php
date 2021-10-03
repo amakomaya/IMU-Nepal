@@ -262,7 +262,7 @@ class AncDetailController extends Controller
             $return = [];
             $return['name'] = $healthposts[$key]['name'];
             $return['token'] = $healthposts[$key]['token'];
-            $return['pcr_postive_today'] = $lab->where('service_for', '1')->where('result', '3')->where('formatted_reporting_date_en', $today)->where('status', 1)->count();
+            $return['pcr_postive_today'] = $lab->where('service_for', '1')->where('result', '3')->where('formatted_reporting_date_en', $today)->count();
             $return['pcr_negative_today'] = $lab->where('service_for', '1')->where('result', '4')->where('formatted_reporting_date_en', $today)->count();
             $return['antigen_positive_today'] = $lab->where('service_for', '2')->where('result', '3')->where('formatted_reporting_date_en', $today)->count();
             $return['antigen_negative_today'] = $lab->where('service_for', '2')->where('result', '4')->where('formatted_reporting_date_en', $today)->count();

@@ -11,7 +11,7 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-
+                        <p style="padding-bottom: 15px;"><i>Note: This report shows the data from organizations of type 'PCR Lab Test Only' and 'PCR Lab & Treatment'.</i></p>
                         <div class="dataTable_wrapper">
                             <table class="table table-striped table-bordered table-hover" id="dataTable" style="width: 100%;">
                                 <thead>

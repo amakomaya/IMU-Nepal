@@ -35,6 +35,8 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
+                        <p style="padding-bottom: 15px;"><i>Note: This report shows the data based on the current address of patients.</i></p>
+
                         <div class="clearfix"></div>
                         <div class="dataTable_wrapper">
                             <table class="table table-striped table-bordered table-hover" id="dataTable" style="width: 100%;">
