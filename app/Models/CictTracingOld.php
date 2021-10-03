@@ -6,7 +6,7 @@ use App\Support\Dataviewer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CictTracing extends Model
+class CictTracingOld extends Model
 {
     use SoftDeletes;
     use Dataviewer;
