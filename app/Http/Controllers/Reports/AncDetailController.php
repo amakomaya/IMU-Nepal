@@ -295,6 +295,7 @@ class AncDetailController extends Controller
 
     public function organizationRegdevCount(Request $request) {
         $response = FilterRequest::filter($request);
+        $response['hospital_type'] = [1, 2, 3, 5, 6];
         $hpCodes = GetHealthpostCodes::filter($response);
         
         $date_chosen = Carbon::now()->toDateString();
@@ -317,20 +318,22 @@ class AncDetailController extends Controller
         }
 
         $healthposts = Organization::whereIn('hp_code', $hpCodes)
-            ->whereIn('hospital_type', [1, 2, 3, 5, 6])
             ->where('status', 1)
-            ->get()->toArray();
+            ->select('name', 'hp_code')
+            ->get()
+            ->keyBy('hp_code')
+            ->toArray();
 
-        $mainquery = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
-            ->select('ancs.hp_code', 'ancs.regdev', 'healthposts.name as healthpost_name', 'healthposts.hospital_type')
-            ->whereIn('ancs.hp_code', $hpCodes)
-            ->whereIn('healthposts.hospital_type', [1, 2, 3, 5, 6])
-            ->whereDate('collection_date_en', $date_chosen);
-        $all_data = $mainquery->get()
+        $mainquery = SampleCollection::whereIn('hp_code', $hpCodes)
+            ->whereDate('collection_date_en', $date_chosen)
+            ->select('hp_code', 'regdev');
+
+        $other_regdev_data = $mainquery->get()
             ->groupBy('hp_code');
             
-        $data = $all_data->map(function ($sample) {
+        $other_regdev_data_count = $other_regdev_data->map(function ($sample, $key) use($healthposts) {
             $return = [];
+            $return['name'] = $healthposts[$key]['name'];
             $return['web_count'] = $sample->where('regdev', 'web')->count();
             $null_count = $sample->where('regdev', null)->count();
             $mobile_count = $sample->where('regdev', 'mobile')->count();
@@ -339,14 +342,20 @@ class AncDetailController extends Controller
             return $return;
         })->toArray();
 
-
-        $excel_count = $mainquery
+        $excel_data_count = $mainquery
             ->where('regdev', 'like', '%' . 'excel' . '%')
+            ->select('hp_code', \DB::raw('COUNT(*) as excel_count'))
+            ->groupBy('hp_code')
             ->get()
-            ->groupBy('hp_code');
+            ->keyBy('hp_code')
+            ->toArray();
+        $final_excel_data = isset($excel_data_count[""]) ? [] : $excel_data_count;
+        
+        $merged_data = array_merge_recursive($other_regdev_data_count, $final_excel_data);
+        $empty_healthposts = array_diff_key($healthposts, $merged_data);
+        $data = array_merge($merged_data, $empty_healthposts);
 
-        return view('backend.sample.report.regdev', compact('healthposts', 'data', 'excel_count'));
-
+        return view('backend.sample.report.regdev', compact('data'));
     }
 
     public function organizationContactTracing(Request $request) {

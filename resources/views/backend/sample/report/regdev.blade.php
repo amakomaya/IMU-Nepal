@@ -40,22 +40,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($healthposts as $healthpost)
+                                @foreach($data as $healthpost)
                                     <tr>
                                         <td>
                                             {{ $healthpost['name'] }}
                                         </td>
                                         <td>
-                                            {{ isset($data[$healthpost['hp_code']]) ? $data[$healthpost['hp_code']]['web_count'] : 0 }}
+                                            {{ isset($healthpost['web_count']) ? $healthpost['web_count'] : 0 }}
                                         </td>
                                         <td>
-                                            {{ isset($data[$healthpost['hp_code']]) ? $data[$healthpost['hp_code']]['mobile_count'] : 0 }}
+                                            {{ isset($healthpost['web_count']) ? $healthpost['mobile_count'] : 0 }}
                                         </td>
                                         <td>
-                                            {{ isset($data[$healthpost['hp_code']]) ? $data[$healthpost['hp_code']]['api_count'] : 0 }}
+                                            {{ isset($healthpost['web_count']) ? $healthpost['api_count'] : 0 }}
                                         </td>
                                         <td>
-                                            {{ isset($excel_count[$healthpost['hp_code']]) ? $excel_count[$healthpost['hp_code']]->count() : 0 }}
+                                            {{ isset($healthpost['excel_count']) ? $healthpost['excel_count'] : 0 }}
                                         </td>
                                     </tr>
                                 @endforeach
