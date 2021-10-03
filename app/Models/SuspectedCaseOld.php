@@ -165,6 +165,11 @@ class SuspectedCaseOld extends Model
         return $this->hasMany('App\Models\SymptomsOld', 'woman_token', 'token');
     }
 
+    public function cictTracing()
+    {
+        return $this->hasOne('App\Models\CictTracingOld', 'woman_token', 'token');
+    }
+
 
     public function getFormatedAgeUnitAttribute(){
         return $this->ageUnitCheck($this->age_unit);
