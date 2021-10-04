@@ -32,6 +32,7 @@ class DashboardController extends Controller
     {
 
         $response = FilterRequest::filter($request);
+        // $response['hospital_type'] = [3, 5, 6];
         $hpCodes = GetHealthpostCodes::filter($response);
         $user_role = auth()->user()->role;
 
@@ -128,30 +129,27 @@ class DashboardController extends Controller
                 ->get()->count();
         });
         $hospital_admission= Cache::remember('hospital_admission-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-            return PaymentCase::
-                whereIn('payment_cases.hp_code', $hpCodes)
+            return PaymentCase::whereIn('hp_code', $hpCodes)
                 ->whereDate('register_date_en', $date_chosen)
                 ->count();
         });
         $hospital_active_cases = Cache::remember('hospital_active_cases-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-            return PaymentCase::whereIn('payment_cases.hp_code', $hpCodes)
+            return PaymentCase::whereIn('hp_code', $hpCodes)
                 ->whereDate('register_date_en', '<=', $date_chosen)
                 ->where(function($q) use ($date_chosen) {
-                    $q->whereNull('payment_cases.date_of_outcome_en')
-                        ->orWhereDate('payment_cases.date_of_outcome_en', '>=', $date_chosen);
+                    $q->whereNull('date_of_outcome_en')
+                        ->orWhereDate('date_of_outcome_en', '>', $date_chosen);
                     })
                 ->count();
         });
         $hospital_discharge = Cache::remember('hospital_discharge-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-            return PaymentCase::
-                whereIn('payment_cases.hp_code', $hpCodes)
+            return PaymentCase::whereIn('hp_code', $hpCodes)
                 ->where('is_death', 1)
                 ->whereDate('date_of_outcome_en', $date_chosen)
                 ->count();
         });
         $hospital_death = Cache::remember('hospital_death-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-            return PaymentCase::
-                whereIn('payment_cases.hp_code', $hpCodes)
+            return PaymentCase::whereIn('hp_code', $hpCodes)
                 ->where('is_death', 2)
                 ->whereDate('date_of_outcome_en', $date_chosen)
                 ->count();
