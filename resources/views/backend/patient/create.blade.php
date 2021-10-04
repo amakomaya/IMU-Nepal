@@ -415,7 +415,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="form-group" id="case_reason">
+                            <div class="form-group" id="reson_for_testing">
                                 <label class="control-label" for="reson_for_testing">Reason for testing:</label><br>
                                 <input type="checkbox" name="reson_for_testing[]" value="1">Planned travel<br>
                                 <input type="checkbox" name="reson_for_testing[]" value="2">Mandatory requirement<br>
@@ -430,8 +430,7 @@
                                 @endif
                             </div>
 
-
-                            {{-- <div class="form-group">
+                            <div class="form-group">
                                 <label class="control-label">Have you ever received Covid-19 vaccine?</label>
                                 <div class="control-group">
                                     <label class="radio-inline">
@@ -444,73 +443,54 @@
                                                {{ old('vaccine_status') == "1" ? 'checked' : '' }} name="vaccine_status"
                                                value="1" class="vaccine_status">Yes
                                     </label>
-
                                 </div>
                             </div>
 
-                            <div class="form-group vaccine-status">
-                                <label class="control-label">Do you have a vaccination card?</label>
-                                <div class="control-group">
-                                    <label class="radio-inline">
-                                        <input type="radio"
-                                               {{ old('vaccination_card') == "0" ? 'checked' : '' }} name="vaccination_card"
-                                               value="0" class="vaccination_card">No
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio"
-                                               {{ old('vaccination_card') == "1" ? 'checked' : '' }} name="vaccination_card"
-                                               value="1" class="vaccination_card">Yes
-                                    </label>
-
-                                </div>
-                            </div>
-
-                            <div class="form-group vaccine-status">
-                                <label class="control-label">Vaccination doses complete?</label>
-                                <div class="control-group">
-                                    <label class="radio-inline">
-                                        <input type="radio"
-                                               {{ old('vaccination_dosage_complete') == "0" ? 'checked' : '' }} name="vaccination_dosage_complete"
-                                               value="0" class="vaccination_dosage_complete">No
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio"
-                                               {{ old('vaccination_dosage_complete') == "1" ? 'checked' : '' }} name="vaccination_dosage_complete"
-                                               value="1" class="vaccination_dosage_complete">Yes
-                                    </label>
-
-                                </div>
-                            </div>
-
-                            <div class="form-group vaccine-status">
-                                <label class="control-label">How many dosages of vaccine you have received?</label>
-                                <div class="control-group">
-                                    <label class="radio-inline">
-                                        <input type="radio"
-                                               {{ old('vaccine_dosage_count') == "1" ? 'checked' : '' }} name="vaccine_dosage_count"
-                                               value="1" class="vaccine_dosage_count">1st Dose
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio"
-                                               {{ old('vaccine_dosage_count') == "2" ? 'checked' : '' }} name="vaccine_dosage_count"
-                                               value="2" class="vaccine_dosage_count">2nd (Final) Dose
-                                    </label>
-
-                                </div>
-                            </div>
-
-                            <div class="form-group vaccine-status {{ $errors->has('vaccine_dosage') ? 'has-error' : '' }}">
+                            <div class="form-group vaccine-status {{ $errors->has('vaccine_name') ? 'has-error' : '' }}">
                                 <label for="vaccine_name">Name of Vaccine</label>
-                                <select name="vaccine_dosage" class="form-control">
-                                    <option {{ old('vaccine_dosage') == '' ? "selected" : "" }} value="">Select Name of Vaccine</option>
-                                    <option {{ old('vaccine_dosage') == '1' ? "selected" : "" }} value="1">Verocell (Sinopharm)</option>
-                                    <option {{ old('vaccine_dosage') == '2' ? "selected" : "" }} value="2">Covishield (The Serum Institute of India)</option>
-                                    <option {{ old('vaccine_dosage') == '3' ? "selected" : "" }} value="3">Pfizer</option>
-                                    <option {{ old('vaccine_dosage') == '4' ? "selected" : "" }} value="4">Moderna</option>
-                                    <option {{ old('vaccine_dosage') == '5' ? "selected" : "" }} value="5">AstraZeneca</option>
-                                    <option {{ old('vaccine_dosage') == '10' ? "selected" : "" }} value="10">Other</option>
+                                <select name="vaccine_name" class="form-control" id="vaccine_name">
+                                    <option {{ old('vaccine_name') == '' ? "selected" : "" }} value="">-- Select Name of Vaccine --</option>
+                                    @foreach($vaccines as $vaccine)
+                                        <option value="{{ $vaccine->id }}" {{ old('vaccine_name') == $vaccine->id ? "selected" : "" }}>{{ $vaccine->name }}</option>
+                                    @endforeach
                                 </select>
-                            </div> --}}
+                            </div>
+                            <div class="form-group vaccine-other {{ $errors->has('vaccine_name_other') ? 'has-error' : '' }}">
+                                <label for="vaccine_name_other">If other specify</label>
+                                <input type="text" class="form-control" value="{{ old('vaccine_name_other') }}" name="vaccine_name_other"
+                                        aria-describedby="help" placeholder="Enter other vaccine name"
+                                >
+                                @if ($errors->has('vaccine_name_other'))
+                                    <small id="help" class="form-text text-danger">{{ $errors->first('vaccine_name_other') }}</small>
+                                @endif
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6 vaccine-status">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td></td>
+                                            <td>Vaccination Date</td>
+                                        </tr>
+                                        <tr class="table-sars-cov-tr">
+                                            <td>
+                                                1st Dose
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" name="dose_one_date" id="dose_one_date">
+                                            </td>
+                                        </tr>
+                                        <tr class="not-jonson">
+                                            <td>
+                                                2nd Dose
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" name="dose_two_date" id="dose_two_date">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label class="control-label">Are you collecting COVID -19 swab now ?</label>
                                 <div class="control-group">
@@ -655,6 +635,17 @@
             });
         }
 
+        var currentDate = NepaliFunctions.ConvertDateFormat(NepaliFunctions.GetCurrentBsDate(), "YYYY-MM-DD");
+
+        $('#dose_one_date').nepaliDatePicker({
+            language: 'english',
+            disableAfter: currentDate
+        });
+        $('#dose_two_date').nepaliDatePicker({
+            language: 'english',
+            disableAfter: currentDate
+        });
+
         function toggleReasonLayout(reason) {
             x = document.getElementById("reason");
             if (reason) {
@@ -729,6 +720,24 @@
             }
             else {
                 $('.vaccine-status').hide();
+            }
+        }
+
+        vaccineOtherCheck();
+        $('#vaccine_name').on('change', function() {
+            vaccineOtherCheck();
+        });
+        function vaccineOtherCheck() {
+            if($('#vaccine_name').val() == '10'){
+                $('.vaccine-other').show();
+                $('.not-jonson').show();
+            }else if($('#vaccine_name').val() == '6'){
+                $('.vaccine-other').hide();
+                $('.not-jonson').hide();
+            }
+            else {
+                $('.vaccine-other').hide();
+                $('.not-jonson').show();
             }
         }
         

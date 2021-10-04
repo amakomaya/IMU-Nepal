@@ -389,15 +389,15 @@ class WomanController extends Controller
             $data = CictContact::where('case_id', $request->case_id)->first();
             return view('backend.patient.create-cict', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id', 'data'));
         }
-
+        
+        $vaccines = Vaccine::get();
         if(Auth::user()->can('poe-registration')){
-            $vaccines = Vaccine::get();
             $countries = Cache::remember('country-list', 48*60*60, function () {
               return Country::get();
             });
             return view('backend.patient.create-poe', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id', 'countries', 'vaccines'));
         } else {
-            return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id'));
+            return view('backend.patient.create', compact('provinces', 'districts', 'municipalities', 'province_id', 'district_id', 'municipality_id', 'vaccines'));
         }
     }
 
@@ -466,6 +466,28 @@ class WomanController extends Controller
         $row['reson_for_testing'] = isset($row['reson_for_testing']) ? "[" . implode(', ', $row['reson_for_testing']) . "]" : "[]";
         unset($row['symptoms_comorbidity_trimester']);
 
+        $vaccine_status = $request->vaccine_status ?? '0';
+        $vaccination_card = $request->vaccination_card ?? '0';
+        if($request->vaccine_name == 6){
+            if($request->dose_one_date){
+                $vaccination_dosage_complete = '1';
+            }else{
+                $vaccination_dosage_complete = '0';
+            }
+        }
+        else{
+            if($request->dose_one_date && $request->dose_two_date){
+                $vaccination_dosage_complete = '1';
+            }else{
+                $vaccination_dosage_complete = '0';
+            }
+        }
+        $vaccine_dosage_count = $request->vaccine_dosage_count ?? '0';
+        $vaccine_name = $request->vaccine_name ?? '10';
+
+        $row['covid_vaccination_details'] = "[" . $vaccine_status . ", " . $vaccination_card . ", " . $vaccination_dosage_complete . ", " . $vaccine_dosage_count . ", " . $vaccine_name . ", " . $request->vaccine_name_other . "]";
+        $row['dose_details'] = '[{"type":"1","date":"' . $request->dose_one_date . '"},{"type":"2","date":"' . $request->dose_two_date . '"}]';
+
         if($request->case_type == '3') {
             if($request->temperature_type == 2){
                 $row['temperature'] = ($request->temperature * 9/5) + 32;
@@ -488,28 +510,6 @@ class WomanController extends Controller
             $antigen_result = $request->antigen_result ?? '0';
     
             $row['case_reason'] = "[" . $antigen_test_status . ", " . $antigen_result .", " . $request->antigen_isolation . "]";
-    
-            $vaccine_status = $request->vaccine_status ?? '0';
-            $vaccination_card = $request->vaccination_card ?? '0';
-            if($request->vaccine_name == 6){
-                if($request->dose_one_date){
-                    $vaccination_dosage_complete = '1';
-                }else{
-                    $vaccination_dosage_complete = '0';
-                }
-            }
-            else{
-                if($request->dose_one_date && $request->dose_two_date){
-                    $vaccination_dosage_complete = '1';
-                }else{
-                    $vaccination_dosage_complete = '0';
-                }
-            }
-            $vaccine_dosage_count = $request->vaccine_dosage_count ?? '0';
-            $vaccine_name = $request->vaccine_name ?? '10';
-    
-            $row['covid_vaccination_details'] = "[" . $vaccine_status . ", " . $vaccination_card . ", " . $vaccination_dosage_complete . ", " . $vaccine_dosage_count . ", " . $vaccine_name . ", " . $request->vaccine_name_other . "]";
-            $row['dose_details'] = '[{"type":"1","date":"' . $request->dose_one_date . '"},{"type":"2","date":"' . $request->dose_two_date . '"}]';
         }
 
         SuspectedCase::create($row);
