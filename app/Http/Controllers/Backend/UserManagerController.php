@@ -59,7 +59,7 @@ class UserManagerController extends Controller
         
         Auth::login($user);
         
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function loginAsFirstLoggedIn(Request $request){
@@ -72,7 +72,7 @@ class UserManagerController extends Controller
         
         Auth::login($user);
         
-        return redirect('/admin');
+        return redirect('/index');
 
     }
 

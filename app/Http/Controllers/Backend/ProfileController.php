@@ -17,7 +17,7 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
         if ($user->role == 'main'){
-            return redirect('/admin');
+            return redirect('/index');
         }
         switch ($user->role) {
             case 'center':
@@ -51,7 +51,7 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
         if ($user->role == 'main'){
-            return redirect('/admin');
+            return redirect('/index');
         }
         $customMessages = [
             'required' => 'The :attribute field is required.',

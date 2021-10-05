@@ -36,7 +36,7 @@ class ProvinceController extends Controller
     public function index()
     {
         if(User::checkAuthForIndexShowProvince()===false){
-            return redirect('/admin');
+            return redirect('/index');
         }
 
         $provinces = provinceInfo::latest()->get();
@@ -55,7 +55,7 @@ class ProvinceController extends Controller
     public function create()
     {
         // if(User::checkAuthForCreateUpdateDelProvince()===false){
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
 
         $provinces = Cache::remember('province-list', 48*60*60, function () {
@@ -73,7 +73,7 @@ class ProvinceController extends Controller
     public function store(provinceRequest $request)
     {
         // if(User::checkAuthForCreateUpdateDelProvince()===false){
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
 
          $province =provinceInfo::create([
@@ -110,7 +110,7 @@ class ProvinceController extends Controller
     public function show($id)
     {
         // if(User::checkAuthForIndexShowProvince()===false){
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
 
         $data = $this->findModelprovince($id);
@@ -127,7 +127,7 @@ class ProvinceController extends Controller
     public function edit($id)
     {
         // if(User::checkAuthForCreateUpdateDelProvince()===false){
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
 
         $data = $this->findModelprovince($id);
@@ -148,7 +148,7 @@ class ProvinceController extends Controller
     public function update(provinceRequest $request, $id)
     {
         // if(User::checkAuthForCreateUpdateDelProvince()===false){
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
 
         $province = $this->findModelprovince($id);        
@@ -183,7 +183,7 @@ class ProvinceController extends Controller
     public function destroy($id, Request $request)
     {
         // if(User::checkAuthForCreateUpdateDelProvince()===false){
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
 
         $province = $this->findModelprovince($id);

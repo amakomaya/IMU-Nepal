@@ -311,7 +311,7 @@ class AdminController extends Controller
             return redirect()->back();
         // }
         // else {
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
     }
 }

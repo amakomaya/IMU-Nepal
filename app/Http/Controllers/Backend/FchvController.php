@@ -98,7 +98,7 @@ class FchvController extends Controller
     public function store(Request $request)
     {
         // if(User::checkAuthForCreateUpdateDelHealthworker()===false){
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
 
         $request->validate([
@@ -153,7 +153,7 @@ class FchvController extends Controller
         $data = $this->findModel($id);
 
         if(OrganizationMember::checkValidId($id)===false){
-            return redirect('/admin');
+            return redirect('/index');
         }
         $user = $this->findModelUser($data->token);
         $role="fchv";
@@ -169,13 +169,13 @@ class FchvController extends Controller
     public function edit($id)
     {
         // if(User::checkAuthForCreateUpdateDelHealthworker()===false){
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
 
         $data = $this->findModel($id);
 
         // if(OrganizationMember::checkValidId($id)===false){
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
         
         if(Auth::user()->role=="province"){
@@ -210,7 +210,7 @@ class FchvController extends Controller
     public function update(Request $request, $id)
     {
         // if(User::checkAuthForCreateUpdateDelHealthworker()===false){
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
 
         $request->validate([
@@ -218,7 +218,7 @@ class FchvController extends Controller
         ]);
 
         if(OrganizationMember::checkValidId($id)===false){
-            return redirect('/admin');
+            return redirect('/index');
         }
 
         $healthWorker = $this->findModel($id);        
@@ -259,12 +259,12 @@ class FchvController extends Controller
     public function destroy($id, Request $request)
     {
         // if(User::checkAuthForCreateUpdateDelHealthworker()===false){
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
 
 
         if(OrganizationMember::checkValidId($id)===false){
-            return redirect('/admin');
+            return redirect('/index');
         }
         
         $healthWorker = $this->findModel($id);

@@ -56,35 +56,35 @@ class WomanController extends Controller
         if($this->roleViewCheck()){
             return view('backend.woman.index');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function pendingIndex(){
         if($this->roleViewCheck()){
             return view('backend.woman.pending-index');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function pendingIndexOld(){
         if($this->roleViewCheck()){
             return view('backend.woman.pending-index-old');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function antigenPendingIndex(){
         if($this->roleViewCheck()){
             return view('backend.woman.antigen-pending-index');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function antigenPendingIndexOld(){
         if($this->roleViewCheck()){
             return view('backend.woman.antigen-pending-index-old');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function addSampleCollection(){
@@ -96,7 +96,7 @@ class WomanController extends Controller
         if($this->roleViewCheck()){
             return view('backend.woman.index-negative-antigen');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function negativeAntigenIndexOld()
@@ -104,7 +104,7 @@ class WomanController extends Controller
         if($this->roleViewCheck()){
             return view('backend.woman.index-negative-antigen-old');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function negativeIndex()
@@ -112,7 +112,7 @@ class WomanController extends Controller
         if($this->roleViewCheck()){
             return view('backend.woman.index-negative');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function negativeIndexOld()
@@ -120,7 +120,7 @@ class WomanController extends Controller
         if($this->roleViewCheck()){
             return view('backend.woman.index-negative-old');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function positiveAntigenIndex()
@@ -128,7 +128,7 @@ class WomanController extends Controller
         if($this->roleViewCheck()){
             return view('backend.woman.index-positive-antigen');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function positiveAntigenIndexOld()
@@ -136,7 +136,7 @@ class WomanController extends Controller
         if($this->roleViewCheck()){
             return view('backend.woman.index-positive-antigen-old');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function positiveIndex()
@@ -144,7 +144,7 @@ class WomanController extends Controller
         if($this->roleViewCheck()){
             return view('backend.woman.index-positive');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function positiveIndexOld()
@@ -152,7 +152,7 @@ class WomanController extends Controller
         if($this->roleViewCheck()){
             return view('backend.woman.index-positive-old');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function tracingIndex()
@@ -160,7 +160,7 @@ class WomanController extends Controller
         if($this->roleViewCheck()){
             return view('backend.woman.index-tracing');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function labReceivedIndex()
@@ -168,7 +168,7 @@ class WomanController extends Controller
         if($this->roleViewCheck()){
             return view('backend.woman.index-lab-received');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function labReceivedIndexOld()
@@ -176,7 +176,7 @@ class WomanController extends Controller
         if($this->roleViewCheck()){
             return view('backend.woman.index-lab-received-old');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function labReceivedAntigenIndex()
@@ -184,7 +184,7 @@ class WomanController extends Controller
         if($this->roleViewCheck()){
             return view('backend.woman.index-lab-received-antigen');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function labReceivedAntigenIndexOld()
@@ -192,7 +192,7 @@ class WomanController extends Controller
         if($this->roleViewCheck()){
             return view('backend.woman.index-lab-received-antigen-old');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function casesRecoveredIndex()
@@ -200,7 +200,7 @@ class WomanController extends Controller
         if($this->roleViewCheck()){
             return view('backend.woman.index-cases-recovered');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function casesPaymentIndex()
@@ -245,7 +245,7 @@ class WomanController extends Controller
             return redirect('/admin/profile');
         }
 
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function getRemainingBeds(Request $request)
@@ -357,7 +357,7 @@ class WomanController extends Controller
         if($this->roleViewCheck()){
             return view('backend.woman.index-cases-death');
         };
-        return redirect('/admin');
+        return redirect('/index');
     }
 
     public function casesInOtherOrganization()
@@ -683,7 +683,7 @@ class WomanController extends Controller
         $data = SuspectedCase::with('ancs', 'pncs', 'deliveries', 'lab_tests', 'vaccinations')->where('token', $data->token)->first();
 
         if (SuspectedCase::checkValidId($id) === false) {
-            return redirect('/admin');
+            return redirect('/index');
         }
 
         return view('backend.woman.show', compact('data'));
@@ -718,7 +718,7 @@ class WomanController extends Controller
         $woman = $this->findModel($id);
 
         if (SuspectedCase::checkValidId($id) === false) {
-            return redirect('/admin');
+            return redirect('/index');
         }
 
         $lmp_date_en_array = explode("-", $request->get('lmp_date_en'));

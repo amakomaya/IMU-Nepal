@@ -25,7 +25,7 @@ class HealthPostController extends Controller
     public function index()
     {
         if (User::checkAuthForIndexShowHealthpost() === false) {
-            return redirect('/admin');
+            return redirect('/index');
         }
         if (Auth::user()->role == "province") {
             $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
@@ -52,7 +52,7 @@ class HealthPostController extends Controller
     {
         // dd(Auth::user());
         if (User::checkAuthForCreateUpdateDelHealthpost() === false) {
-            return redirect('/admin');
+            return redirect('/index');
         }
         $token = Auth::user()->token;
         $hospital_type = '4';
@@ -75,7 +75,7 @@ class HealthPostController extends Controller
     public function store(Request $request)
     {
         if (User::checkAuthForCreateUpdateDelHealthpost() === false) {
-            return redirect('/admin');
+            return redirect('/index');
         }
         
         $this->validateForm($request, $scenario = "create");
@@ -120,7 +120,7 @@ class HealthPostController extends Controller
     public function show($id)
     {
         if (User::checkAuthForIndexShowProvince() === false && User::checkAuthForIndexShowDho() === false && User::checkAuthForIndexShowMunicipality() === true && User::checkAuthForShowWard() === false) {
-            return redirect('/admin');
+            return redirect('/index');
         }
 
         $data = $this->findModel($id);
@@ -131,7 +131,7 @@ class HealthPostController extends Controller
     public function edit($id)
     {
         if (User::checkAuthForCreateUpdateDelHealthpost() === false) {
-            return redirect('/admin');
+            return redirect('/index');
         }
 
         $data = $this->findModel($id);
@@ -207,7 +207,7 @@ class HealthPostController extends Controller
     public function update(Request $request, $id)
     {
         if (User::checkAuthForCreateUpdateDelHealthpost() === false) {
-            return redirect('/admin');
+            return redirect('/index');
         }
 
         $this->validateForm($request, $scenario = "update");
@@ -246,7 +246,7 @@ class HealthPostController extends Controller
     public function destroy($id, Request $request)
     {
         if (User::checkAuthForCreateUpdateDelHealthpost() === false) {
-            return redirect('/admin');
+            return redirect('/index');
         }
         
         $healthpost = $this->findModel($id);
@@ -276,7 +276,7 @@ class HealthPostController extends Controller
     {
         try{
             if (User::checkAuthForCreateUpdateDelHealthpost() === false) {
-                return redirect('/admin');
+                return redirect('/index');
             }
             
             $healthpost = $this->findModel($id);

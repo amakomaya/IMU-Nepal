@@ -28,7 +28,7 @@ class HealthProfessionalController extends Controller
     public function index(Request $request)
     {
 //        if (User::checkAuthForIndexShowHealthpost() === false) {
-//            return redirect('/admin');
+//            return redirect('/index');
 //        }
         if (Auth::user()->role === "dho") {
             $token = Auth::user()->token;
@@ -67,7 +67,7 @@ class HealthProfessionalController extends Controller
     public function immunized()
     {
         if (User::checkAuthForIndexShowHealthpost() === false) {
-            return redirect('/admin');
+            return redirect('/index');
         }
 
         if (Auth::user()->role === "dho") {

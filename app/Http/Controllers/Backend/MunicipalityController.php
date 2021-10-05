@@ -68,7 +68,7 @@ class MunicipalityController extends Controller
     public function create()
     {
         // if(User::checkAuthForCreateUpdateDelProvince()===false){
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
         $provinces = Cache::remember('province-list', 48*60*60, function () {
           return Province::select(['id', 'province_name'])->get();
@@ -106,7 +106,7 @@ class MunicipalityController extends Controller
     public function store(MunicipalityRequest $request)
     {
         // if(User::checkAuthForCreateUpdateDelProvince()===false){
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
 
          $municipality = MunicipalityInfo::create([
@@ -145,7 +145,7 @@ class MunicipalityController extends Controller
     public function show($id)
     {
        //  if(User::checkAuthForIndexShowProvince()===false && User::checkAuthForIndexShowDho()===false && User::checkAuthForIndexShowMunicipality()===false && User::checkAuthForShowWard()===false && User::checkAuthForShowHealthpost()===false){
-       //      return redirect('/admin');
+       //      return redirect('/index');
        // }
 
         $data = $this->findModel($id);
@@ -161,7 +161,7 @@ class MunicipalityController extends Controller
     public function edit($id)
     {
         // if(User::checkAuthForCreateUpdateDelProvince()===false){
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
 
         $data = $this->findModel($id);
@@ -196,7 +196,7 @@ class MunicipalityController extends Controller
     public function update(MunicipalityRequest $request, $id)
     {         
         // if(User::checkAuthForCreateUpdateDelProvince()===false){
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
 
         $municipalityInfo = $this->findModel($id);        
@@ -232,7 +232,7 @@ class MunicipalityController extends Controller
     public function destroy($id, Request $request)
     {
         // if(User::checkAuthForCreateUpdateDelProvince()===false){
-        //     return redirect('/admin');
+        //     return redirect('/index');
         // }
 
         $municipalityInfo = $this->findModel($id);

@@ -66,7 +66,7 @@ class HealthWorkerController extends Controller
     {
         $this->url->to('/');
         if(User::checkAuthForCreateUpdateDelHealthworker()===false){
-            return redirect('/admin');
+            return redirect('/index');
         }
         $token = Auth::user()->token;
         $healthpost = Organization::where('token', $token)->get()->first();
@@ -91,7 +91,7 @@ class HealthWorkerController extends Controller
     public function store(HealthWorkerRequest $request)
     {
         if(User::checkAuthForCreateUpdateDelHealthworker()===false){
-            return redirect('/admin');
+            return redirect('/index');
         }
 
         if ($request->hasFile('image')) {
@@ -152,7 +152,7 @@ class HealthWorkerController extends Controller
     public function show($id)
     {
         if(OrganizationMember::checkValidId($id)===false){
-            return redirect('/admin');
+            return redirect('/index');
         }
 
         $data = $this->findModel($id);
@@ -170,12 +170,12 @@ class HealthWorkerController extends Controller
     public function edit($id)
     {
         if(User::checkAuthForCreateUpdateDelHealthworker()===false){
-            return redirect('/admin');
+            return redirect('/index');
         }
 
         $data = $this->findModel($id);
         if(OrganizationMember::checkValidId($id)===false){
-            return redirect('/admin');
+            return redirect('/index');
         }
         $token = Auth::user()->token;
         $healthpost = Organization::where('token', $token)->get()->first();
@@ -200,13 +200,13 @@ class HealthWorkerController extends Controller
     public function update(HealthWorkerRequest $request, $id)
     {
         if(User::checkAuthForCreateUpdateDelHealthworker()===false){
-            return redirect('/admin');
+            return redirect('/index');
         }
 
         $healthWorker = $this->findModel($id); 
 
         if(OrganizationMember::checkValidId($id)===false){
-            return redirect('/admin');
+            return redirect('/index');
         }  
 
         if ($request->hasFile('image')) {
@@ -265,14 +265,14 @@ class HealthWorkerController extends Controller
     public function destroy($id, Request $request)
     {
         if(User::checkAuthForCreateUpdateDelHealthworker()===false){
-            return redirect('/admin');
+            return redirect('/index');
         }
         
         $healthWorker = $this->findModel($id);
 
         
         if(OrganizationMember::checkValidId($id)===false){
-            return redirect('/admin');
+            return redirect('/index');
         }
 
         if($healthWorker->image!=""){
