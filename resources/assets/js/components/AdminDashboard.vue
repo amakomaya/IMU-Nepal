@@ -59,7 +59,7 @@
         </div>
         <div class="col-lg-6 col-md-6">
           <div class="panel panel-success">
-            <div class="panel-heading">
+            <div class="panel-heading pb-5">
               <div class="row">
                 <div class="col-xs-3">
                   <i class="fa fa-minus-square-o fa-3x"></i>
@@ -114,7 +114,7 @@
         </div>
         <div class="col-lg-6 col-md-6">
           <div class="panel panel-success">
-            <div class="panel-heading">
+            <div class="panel-heading pb-5">
               <div class="row">
                 <div class="col-xs-3">
                   <i class="fa fa-minus-square-o fa-3x"></i>

@@ -36,7 +36,7 @@
         <td>One : {{ roleVisibility(item.emergency_contact_one) }} <br>
           Two : {{ roleVisibility(item.emergency_contact_two) }}
         </td>
-        <td>{{ checkMunicipality(item.municipality_id) }}</td>
+        <td>{{ item.municipality.municipality_name }}</td>
         <td>{{ item.ward }}</td>
         <td>
           Place : {{ item.healthpost ? item.healthpost.name : '' }} <br>
@@ -45,25 +45,26 @@
         </td>
         <td>{{ formattedDate(item.latest_anc.reporting_date_np) }}</td>
         <td>{{ formattedDate(item.latest_anc.sample_test_date_np) }}</td>
-        <td><span class="label label-info"> {{ item.ancs.length }}</span>
+        <td><span class="label label-info"> {{ item.ancs_count }}</span>
           <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
         </td>
         <td>
-          <div v-if="item.ancs.length > 0">
+          <div v-if="item.ancs_count > 0">
             <span class="label label-danger"> Positive</span>
           </div>
           <div>{{ labToken(item.latest_anc.lab_token) }}</div>
         </td>
         <td>
-          <div v-if="item.ancs.length > 0">
+          <div v-if="item.ancs_count > 0">
             {{ checkValidOrganization(item.latest_anc) }}
           </div>
         </td>
         <td>
           {{ checkInfectionType(item.latest_anc.infection_type) }}
         </td>
-        <td v-html="checkCictStatus(item.cict_tracing)">
-        </td>
+
+        <td v-if="item.cict_tracing_count > 0"><span class="label label-success"><i class="fa fa-check" aria-hidden="true"></i></span> </td>
+        <td v-else><span class="label label-danger"><i class="fa fa-times" aria-hidden="true"></i></span></td> 
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
             <i class="fa fa-file" aria-hidden="true"></i> |
@@ -160,7 +161,7 @@ export default {
     }
   },
   created() {
-    this.fetch()
+    // this.fetch()
   },
   methods: {
 
@@ -358,20 +359,6 @@ export default {
         }
       }
     },
-    checkDistrict: function (value) {
-      if (value === 0 || value == null || value === '') {
-        return ''
-      } else {
-        return this.districts.find(x => x.id == value).district_name;
-      }
-    },
-    checkMunicipality: function (value) {
-      if (value === 0 || value == null || value === '') {
-        return ''
-      } else {
-        return this.municipalities.find(x => x.id == value).municipality_name;
-      }
-    },
     checkForPositiveOnly: function (value) {
       if (value !== null) {
         if (value.result === 3) {
@@ -379,7 +366,6 @@ export default {
         }
       }
     },
-
     checkCaseType: function (type) {
       switch (type) {
         case '0':
