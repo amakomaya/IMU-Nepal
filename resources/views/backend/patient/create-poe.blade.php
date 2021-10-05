@@ -6,7 +6,7 @@
             display: none;
         }
 
-        form {
+        .lab-form {
             background: #ecf5fc;
             padding: 20px 50px 45px;
         }
@@ -54,7 +54,7 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <form class="form-group" role="form" action="{{route('woman.store')}}" enctype="multipart/form-data" method="POST" name="createCase" id="createCase" novalidate="novalidate" onsubmit="disableSubmit()">
+                        <form class="form-group lab-form" role="form" action="{{route('woman.store')}}" enctype="multipart/form-data" method="POST" name="createCase" id="createCase" novalidate="novalidate" onsubmit="disableSubmit()">
                           @csrf
                         <div class="panel-body">
                             <div class="form-group {{ $errors->has('register_date_np') ? 'has-error' : '' }}">
