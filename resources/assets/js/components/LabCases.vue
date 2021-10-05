@@ -35,6 +35,7 @@
           Place : {{ item.healthpost.name }} <br>
           Type : {{ checkCaseType(item.cases) }} <br>
           Management : {{ checkCaseManagement(item.cases, item.case_where) }}
+          {{item.latest_anc.service_for}}
         </td>
         <td>{{ formattedDate(item.latest_anc.received_date_np) }}</td>
         <td><span class="label label-info"> {{ item.ancs.length }}</span>
@@ -45,7 +46,7 @@
           <div>{{ labToken(item.latest_anc.lab_token) }}</div>
         </td>
         <td>
-           <button v-if="checkPermission('lab-result') || checkPermission('antigen-result')" v-on:click="addResultInLab(item, removeItemOnSuccess)" title="Add Result">
+           <button v-if="(checkPermission('lab-result') && item.latest_anc.service_for == '1') || (checkPermission('antigen-result') && item.latest_anc.service_for == '2')" v-on:click="addResultInLab(item, removeItemOnSuccess)" title="Add Result">
              <i class = "material-icons">biotech</i> | 
           </button>
           <button v-if="permission == 1" v-on:click="deleteResultData(item, removeItemOnSuccess)" title="Move Patient Data">
