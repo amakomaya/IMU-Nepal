@@ -104,10 +104,10 @@ class LoginController extends Controller
 
             $update_profile_expiration = Carbon::parse($user->updated_at)->addMonth();
 
-            if (auth()->user()->role != 'main' && $update_profile_expiration < Carbon::now()) {
-                $request->session()->flash('message', 'Update your account\'s information ! <a href="/admin/profile">Edit Profile</a>');
-                return redirect($this->redirectTo);
-            }
+            // if (auth()->user()->role != 'main' && $update_profile_expiration < Carbon::now()) {
+            //     $request->session()->flash('message', 'Update your account\'s information ! <a href="/admin/profile">Edit Profile</a>');
+            //     return redirect($this->redirectTo);
+            // }
             return redirect($this->redirectTo);
         }else{
             $request->session()->flash('error_message', 'Username or Password Incorrect!');

@@ -54,7 +54,7 @@ class DashboardController extends Controller
             $temp_name = auth()->user()->token;
         }
 
-        session()->put('temp_name', $temp_name);
+        $request->session()->put('temp_name', $temp_name);
 
         $date_chosen = Carbon::now()->toDateString();
         if($request->date_selected){
