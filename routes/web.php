@@ -193,9 +193,12 @@ Route::get('/artisan-clear', function () {
     return "Cleared!";
 });
 
-Route::get('refresh-page', function () {
-    \DB::table('cache')
-        ->where('key', 'like', '%' . '-' . auth()->user()->token)->delete();
+Route::post('refresh-page', function (Request $request) {
+    if($request->temp_name){
+        \DB::table('cache')
+        ->where('key', 'like', '%' . '-' . $request->temp_name)->delete();
+        // session()->forget('temp_name');
+    }
     return redirect()->back();
 })->name('refresh-page');
 

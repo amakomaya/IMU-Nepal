@@ -120,10 +120,16 @@
                     @endif
                 </span>
             </div>
+            <?php
+                $temp_name = session()->get('temp_name') ?? null;
+            ?>
             <div class="navbar-right" style="margin: 0px 10px">
                 <li class="nav navbar-nav" style="margin: 10px;">
-                    <button onclick="window.location='{{ route("refresh-page") }}'"> <i class="fa fa-refresh" aria-hidden="true"></i>
-                        Refresh Page</button>
+                    <form action="{{ route("refresh-page") }}" method="post">
+                    @csrf
+                    <input type="hidden" name="temp_name" value="{{$temp_name}}" id="temp_name">
+                    <button type="submit"><i class="fa fa-refresh" aria-hidden="true"></i> Refresh Page</button>
+                    </form>
                 </li>
                 <li class="nav navbar-nav sl-nav messageInfo" style="margin: 10px;">
                     <i class="fa fa-envelope-o"> : </i>

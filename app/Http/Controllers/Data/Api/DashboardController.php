@@ -30,7 +30,6 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
-
         $response = FilterRequest::filter($request);
         // $response['hospital_type'] = [3, 5, 6];
         $hpCodes = GetHealthpostCodes::filter($response);
@@ -54,6 +53,8 @@ class DashboardController extends Controller
         else{
             $temp_name = auth()->user()->token;
         }
+
+        session()->put('temp_name', $temp_name);
 
         $date_chosen = Carbon::now()->toDateString();
         if($request->date_selected){
@@ -168,6 +169,7 @@ class DashboardController extends Controller
             'hospital_active_cases' => $hospital_active_cases,
             'hospital_discharge' => $hospital_discharge,
             'hospital_death' => $hospital_death,
+            // 'temp_name' => $temp_name,
             'cache_created_at' => $cache_created_at
         ];
 
