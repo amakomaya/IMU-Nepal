@@ -27,12 +27,13 @@
                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th title="Name of contacts">Name of contacts</th>
-                                        <th title="Age">Age</th>
-                                        <th title="Sex">Sex</th>
-                                        <th title="B1 Form Actions"><i class="fa fa-cogs" aria-hidden="true"></i> B1 Form</th>
-                                        <th title="B2 Form Actions"><i class="fa fa-cogs" aria-hidden="true"></i> B2 Form</th>
+                                        <th class="text-center">ID</th>
+                                        <th class="text-center" title="Name of contacts">Name of contacts</th>
+                                        <th class="text-center" title="Age">Age</th>
+                                        <th class="text-center" title="Sex">Sex</th>
+                                        <th class="text-center" title="B1 Form Date">B1 Form Completion Date</th>
+                                        <th class="text-center" title="B1 Form Actions"><i class="fa fa-cogs" aria-hidden="true"></i> B1 Form</th>
+                                        <th class="text-center" title="B2 Form Actions"><i class="fa fa-cogs" aria-hidden="true"></i> B2 Form</th>
 {{--                                        <th>Do you want to register patient and collect sample?</th>--}}
                                     </tr>
                                 </thead>
@@ -52,6 +53,7 @@
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->age }}</td>
                                             <td>{{ $sex }}</td>
+                                            <td>{{ $item->contact ? $item->contact->completion_date : '' }}</td>
                                             <td>
                                                 Status: 
                                                 @if($item->contact)

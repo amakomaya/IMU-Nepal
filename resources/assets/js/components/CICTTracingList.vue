@@ -9,6 +9,7 @@
         <th>Sex</th>
         <th>District</th>
         <th>Municipality</th>
+        <th>CICT Initiated Date</th>
         <th></th>
       </tr>
       </thead>
@@ -19,6 +20,7 @@
         <td>{{ sex(item.sex )}}</td>
         <td>{{ item.district.district_name }}</td>
         <td>{{ item.municipality.municipality_name }}</td>
+        <td>{{ item.cict_initiated_date }}</td>
 
         <td>
           <span v-show="checkEditButton()">
