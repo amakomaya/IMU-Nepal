@@ -21,13 +21,13 @@
                                         }
                 }
 
-                $(document).ready(function() {
-                    $('#dataTables-example').DataTable( {
-                        "paging":   false,
-                        "ordering": false,
-                        "info":     false
-                    } );
-                } );
+                // $(document).ready(function() {
+                //     $('#dataTables-example').DataTable( {
+                //         "paging":   false,
+                //         "ordering": false,
+                //         "info":     false
+                //     } );
+                // } );
             </script>
             
 
@@ -104,7 +104,7 @@
                                     @endforeach
                                     </tbody>
                                 </table>
-                                <span style="float: right">{{ $municipalityInfos->links() }}</span>
+                                {{-- <span style="float: right">{{ $municipalityInfos->links() }}</span> --}}
                             </div>
                             <!-- /.table-responsive -->
                         </div>
