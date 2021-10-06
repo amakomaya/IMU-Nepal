@@ -21,7 +21,7 @@
               <option value="6">{{ getDates().fiveDaysAgoFormatted}}</option>
               <option value="7">{{ getDates().sixDaysAgoFormatted}}</option>
               <option value="8">{{ getDates().sevenDaysAgoFormatted}}</option>
-              <option value="0">Overall</option>
+              <option value="0">Total</option>
             </select>
           </div>
         </div>
