@@ -31,130 +31,211 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $response = FilterRequest::filter($request);
-        // $response['hospital_type'] = [3, 5, 6];
         $hpCodes = GetHealthpostCodes::filter($response);
         $user_role = auth()->user()->role;
 
-        if($user_role == 'healthpost' || $user_role == 'healthworker'){
-            $temp_name = 'hp-' . $hpCodes[0];
-        }
-        elseif($user_role == 'main' || $user_role == 'center'){
-            $temp_name = 'main';
-        }
-        elseif($user_role == 'province'){
-            $temp_name = 'prov-' . $response['province_id'];
-        }
-        elseif($user_role == 'dho'){
-            $temp_name = 'dho-' . $response['district_id'];
-        }
-        elseif($user_role == 'municipality'){
-            $temp_name = 'mun-' . $response['municipality_id'];
-        }
-        else{
-            $temp_name = auth()->user()->token;
+        switch($user_role){
+            case 'healthpost':
+            case 'healthworker':
+                $temp_name = 'hp-' . $hpCodes[0];
+                break;
+            case 'main':
+            case 'center':
+                $temp_name = 'main';
+                break;
+            case 'province':
+                $temp_name = 'prov-' . $response['province_id'];
+                break;
+            case 'dho':
+                $temp_name = 'dho-' . $response['district_id'];
+                break;
+            case 'municipality':
+                $temp_name = 'mun-' . $response['municipality_id'];
+                break;
+            default:
+                $temp_name = auth()->user()->token;
+                break;
+
         }
 
         $request->session()->put('temp_name', $temp_name);
 
         $date_chosen = Carbon::now()->toDateString();
         if($request->date_selected){
-            if($request->date_selected == '2') {
-                $date_chosen = Carbon::now()->subDays(1)->toDateString();
-            }elseif($request->date_selected == '3') {
-                $date_chosen = Carbon::now()->subDays(2)->toDateString();
-            }elseif($request->date_selected == '4') {
-                $date_chosen = Carbon::now()->subDays(3)->toDateString();
-            }elseif($request->date_selected == '5') {
-                $date_chosen = Carbon::now()->subDays(4)->toDateString();
-            }elseif($request->date_selected == '6') {
-                $date_chosen = Carbon::now()->subDays(5)->toDateString();
-            }elseif($request->date_selected == '7') {
-                $date_chosen = Carbon::now()->subDays(6)->toDateString();
-            }elseif($request->date_selected == '8') {
-                $date_chosen = Carbon::now()->subDays(7)->toDateString();
-            }else {
-                $date_chosen = Carbon::now()->toDateString();
+            switch($request->date_selected){
+                case '2':
+                    $date_chosen = Carbon::now()->subDays(1)->toDateString();
+                    break;
+                case '3':
+                    $date_chosen = Carbon::now()->subDays(2)->toDateString();
+                    break;
+                case '4':
+                    $date_chosen = Carbon::now()->subDays(3)->toDateString();
+                    break;
+                case '5':
+                    $date_chosen = Carbon::now()->subDays(4)->toDateString();
+                    break;
+                case '6':
+                    $date_chosen = Carbon::now()->subDays(5)->toDateString();
+                    break;
+                case '7':
+                    $date_chosen = Carbon::now()->subDays(6)->toDateString();
+                    break;
+                case '8':
+                    $date_chosen = Carbon::now()->subDays(7)->toDateString();
+                    break;
+                default:
+                    $date_chosen = Carbon::now()->toDateString();
+                    break;
             }
         }
 
-        $antigen_positive = Cache::remember('antigen_positive-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-            return SampleCollection::whereIn('hp_code', $hpCodes)
-                ->where('service_for', '2')->where('result', '3')
-                ->where(function($q) use($date_chosen){
-                    $q->whereDate('reporting_date_en', $date_chosen)
-                        ->orWhere(function($q2) use($date_chosen) {
-                            $q2->whereDate('created_at', $date_chosen)
-                                ->whereNull('received_date_en');
-                        });
-                })
-                ->active()
-                ->get()->count();
-        });
-        $antigen_negative = Cache::remember('antigen_negative-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-            return SampleCollection::whereIn('hp_code', $hpCodes)
-                ->where('service_for', '2')->where('result', '4')
-                ->where(function($q) use($date_chosen){
-                    $q->whereDate('reporting_date_en', $date_chosen)
-                        ->orWhere(function($q2) use($date_chosen) {
-                            $q2->whereDate('created_at', $date_chosen)
-                                ->whereNull('received_date_en');
-                        });
-                })
-                ->active()
-                ->get()->count();
-        });
-        $pcr_positive = Cache::remember('pcr_positive-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-            return SampleCollection::whereIn('hp_code', $hpCodes)
-                ->where('service_for', '1')->where('result', '3')
-                ->where(function($q) use($date_chosen){
-                    $q->whereDate('reporting_date_en', $date_chosen)
-                        ->orWhere(function($q2) use($date_chosen) {
-                            $q2->whereDate('created_at', $date_chosen)
-                                ->whereNull('received_date_en');
-                        });
-                })
-                ->active()
-                ->get()->count();
-        });
-        $pcr_negative = Cache::remember('pcr_negative-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-            return SampleCollection::whereIn('hp_code', $hpCodes)
-                ->where('service_for', '1')->where('result', '4')
-                ->where(function($q) use($date_chosen){
-                    $q->whereDate('reporting_date_en', $date_chosen)
-                        ->orWhere(function($q2) use($date_chosen) {
-                            $q2->whereDate('created_at', $date_chosen)
-                                ->whereNull('received_date_en');
-                        });
-                })
-                ->active()
-                ->get()->count();
-        });
-        $hospital_admission= Cache::remember('hospital_admission-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-            return PaymentCase::whereIn('hp_code', $hpCodes)
-                ->whereDate('register_date_en', $date_chosen)
-                ->count();
-        });
-        $hospital_active_cases = Cache::remember('hospital_active_cases-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-            return PaymentCase::whereIn('hp_code', $hpCodes)
-                ->whereDate('register_date_en', '<=', $date_chosen)
-                ->where(function($q) use ($date_chosen) {
-                    $q->whereNull('date_of_outcome_en')
-                        ->orWhereDate('date_of_outcome_en', '>', $date_chosen);
+        if($request->date_selected == '0'){
+            $antigen_positive = Cache::remember('antigen_positive-all-' . $temp_name, 60 * 60, function () use ($hpCodes) {
+                $current_data = SampleCollection::whereIn('hp_code', $hpCodes)
+                    ->where('service_for', '2')->where('result', '3')
+                    ->active()
+                    ->get()->count();
+                $dump_data = SampleCollectionOld::whereIn('hp_code', $hpCodes)
+                    ->where('service_for', '2')->where('result', '3')
+                    ->where('status', 1)
+                    ->get()->count();
+                return $current_data + $dump_data;
+            });
+            $antigen_negative = Cache::remember('antigen_negative-all-' . $temp_name, 60 * 60, function () use ($hpCodes) {
+                $current_data = SampleCollection::whereIn('hp_code', $hpCodes)
+                    ->where('service_for', '2')->where('result', '4')
+                    ->active()
+                    ->get()->count();
+                $dump_data = SampleCollectionOld::whereIn('hp_code', $hpCodes)
+                    ->where('service_for', '2')->where('result', '4')
+                    ->where('status', 1)
+                    ->get()->count();
+                return $current_data + $dump_data;
+            });
+            $pcr_positive = Cache::remember('pcr_positive-all-' . $temp_name, 60 * 60, function () use ($hpCodes) {
+                $current_data = SampleCollection::whereIn('hp_code', $hpCodes)
+                    ->where('service_for', '1')->where('result', '3')
+                    ->active()
+                    ->get()->count();
+                $dump_data = SampleCollectionOld::whereIn('hp_code', $hpCodes)
+                    ->where('service_for', '1')->where('result', '3')
+                    ->where('status', 1)
+                    ->get()->count();
+                return $current_data + $dump_data;
+            });
+            $pcr_negative = Cache::remember('pcr_negative-all-' . $temp_name, 60 * 60, function () use ($hpCodes) {
+                $current_data = SampleCollection::whereIn('hp_code', $hpCodes)
+                    ->where('service_for', '1')->where('result', '4')
+                    ->active()
+                    ->get()->count();
+                $dump_data = SampleCollectionOld::whereIn('hp_code', $hpCodes)
+                    ->where('service_for', '1')->where('result', '4')
+                    ->where('status', 1)
+                    ->get()->count();
+                return $current_data + $dump_data;
+            });
+            $hospital_admission= Cache::remember('hospital_admission-all-' . $temp_name, 60 * 60, function () use ($hpCodes) {
+                return PaymentCase::whereIn('hp_code', $hpCodes)
+                    ->count();
+            });
+            $hospital_active_cases = Cache::remember('hospital_active_cases-all-' . $temp_name, 60 * 60, function () use ($hpCodes) {
+                return PaymentCase::whereIn('hp_code', $hpCodes)
+                    ->whereNull('is_death')
+                    ->count();
+            });
+            $hospital_discharge = Cache::remember('hospital_discharge-all-' . $temp_name, 60 * 60, function () use ($hpCodes) {
+                return PaymentCase::whereIn('hp_code', $hpCodes)
+                    ->where('is_death', 1)
+                    ->count();
+            });
+            $hospital_death = Cache::remember('hospital_death-all-' . $temp_name, 60 * 60, function () use ($hpCodes) {
+                return PaymentCase::whereIn('hp_code', $hpCodes)
+                    ->where('is_death', 2)
+                    ->count();
+            });
+        }
+        else {
+            $antigen_positive = Cache::remember('antigen_positive-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
+                return SampleCollection::whereIn('hp_code', $hpCodes)
+                    ->where('service_for', '2')->where('result', '3')
+                    ->where(function($q) use($date_chosen){
+                        $q->whereDate('reporting_date_en', $date_chosen)
+                            ->orWhere(function($q2) use($date_chosen) {
+                                $q2->whereDate('created_at', $date_chosen)
+                                    ->whereNull('received_date_en');
+                            });
                     })
-                ->count();
-        });
-        $hospital_discharge = Cache::remember('hospital_discharge-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-            return PaymentCase::whereIn('hp_code', $hpCodes)
-                ->where('is_death', 1)
-                ->whereDate('date_of_outcome_en', $date_chosen)
-                ->count();
-        });
-        $hospital_death = Cache::remember('hospital_death-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-            return PaymentCase::whereIn('hp_code', $hpCodes)
-                ->where('is_death', 2)
-                ->whereDate('date_of_outcome_en', $date_chosen)
-                ->count();
-        });
+                    ->active()
+                    ->get()->count();
+            });
+            $antigen_negative = Cache::remember('antigen_negative-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
+                return SampleCollection::whereIn('hp_code', $hpCodes)
+                    ->where('service_for', '2')->where('result', '4')
+                    ->where(function($q) use($date_chosen){
+                        $q->whereDate('reporting_date_en', $date_chosen)
+                            ->orWhere(function($q2) use($date_chosen) {
+                                $q2->whereDate('created_at', $date_chosen)
+                                    ->whereNull('received_date_en');
+                            });
+                    })
+                    ->active()
+                    ->get()->count();
+            });
+            $pcr_positive = Cache::remember('pcr_positive-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
+                return SampleCollection::whereIn('hp_code', $hpCodes)
+                    ->where('service_for', '1')->where('result', '3')
+                    ->where(function($q) use($date_chosen){
+                        $q->whereDate('reporting_date_en', $date_chosen)
+                            ->orWhere(function($q2) use($date_chosen) {
+                                $q2->whereDate('created_at', $date_chosen)
+                                    ->whereNull('received_date_en');
+                            });
+                    })
+                    ->active()
+                    ->get()->count();
+            });
+            $pcr_negative = Cache::remember('pcr_negative-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
+                return SampleCollection::whereIn('hp_code', $hpCodes)
+                    ->where('service_for', '1')->where('result', '4')
+                    ->where(function($q) use($date_chosen){
+                        $q->whereDate('reporting_date_en', $date_chosen)
+                            ->orWhere(function($q2) use($date_chosen) {
+                                $q2->whereDate('created_at', $date_chosen)
+                                    ->whereNull('received_date_en');
+                            });
+                    })
+                    ->active()
+                    ->get()->count();
+            });
+            $hospital_admission= Cache::remember('hospital_admission-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
+                return PaymentCase::whereIn('hp_code', $hpCodes)
+                    ->whereDate('register_date_en', $date_chosen)
+                    ->count();
+            });
+            $hospital_active_cases = Cache::remember('hospital_active_cases-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
+                return PaymentCase::whereIn('hp_code', $hpCodes)
+                    ->whereDate('register_date_en', '<=', $date_chosen)
+                    ->where(function($q) use ($date_chosen) {
+                        $q->whereNull('date_of_outcome_en')
+                            ->orWhereDate('date_of_outcome_en', '>', $date_chosen);
+                        })
+                    ->count();
+            });
+            $hospital_discharge = Cache::remember('hospital_discharge-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
+                return PaymentCase::whereIn('hp_code', $hpCodes)
+                    ->where('is_death', 1)
+                    ->whereDate('date_of_outcome_en', $date_chosen)
+                    ->count();
+            });
+            $hospital_death = Cache::remember('hospital_death-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
+                return PaymentCase::whereIn('hp_code', $hpCodes)
+                    ->where('is_death', 2)
+                    ->whereDate('date_of_outcome_en', $date_chosen)
+                    ->count();
+            });
+        }
+
         try {
           $cache_created_at = Carbon::parse(\DB::table('cache')->where('key', 'laravelpcr_positive-' . $date_chosen . '-' . $temp_name)->first()->expiration)->addMinutes(285)->format('Y-m-d H:i:s');
         } catch (Exception $e) {
