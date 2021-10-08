@@ -1,0 +1,14 @@
+{
+    "name": "imunepal/report",
+    "description": "This will be used to generate reports of overall and daily data of each organization with their municipality, district and province data for lab, poe, hospital, cict, etc modules.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "anishpro",
+            "email": "anishxpro@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
