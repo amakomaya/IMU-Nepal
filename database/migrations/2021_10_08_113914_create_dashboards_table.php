@@ -21,7 +21,11 @@ class CreateDashboardsTable extends Migration
             $table->integer('anitigen_positive');
             $table->integer('anitigen_negative');
             $table->integer('pcr_positive');
-            $table->integer('pcr_positive');
+            $table->integer('pcr_negative');
+            $table->integer('admission');
+            $table->integer('under_treatment');
+            $table->integer('discharge');
+            $table->integer('death');
             $table->timestamps();
         });
     }
