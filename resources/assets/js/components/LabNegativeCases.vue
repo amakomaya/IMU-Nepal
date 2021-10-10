@@ -12,9 +12,10 @@
         <!-- <th>District</th> -->
         <th width="10%" title="Municipality">Municipality</th>
         <th width="4%" title="Ward No">Ward</th>
-        <th width="15%">Case</th>
+        <th width="11%">Case</th>
         <th width="10%" title="Case Created Date">Date</th>
         <th width="10%" title="Sample Collection Details">Sample</th>
+        <th width="4%" title="Test Type">Test Type</th>
         <th width="8%" title="Latest Lab Result">Result</th>
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
       </tr>
@@ -40,6 +41,7 @@
         <td><span class="label label-info"> {{ item.ancs.length }}</span>
           <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
         </td>
+        <td v-html="checkTestTpye(item.latest_anc.service_for)">
         <td>
           <div><span class="label label-success"> Negative </span></div>
           <div>{{ labToken(item.latest_anc.lab_token) }}</div>
@@ -226,6 +228,14 @@ export default {
           municipalities : this.municipalities
         },
       })
+    },
+
+    checkTestTpye(value){
+      if(value == '1'){
+        return '<span class="label label-success">PCR</span>';
+      }else{
+        return '<span class="label label-primary">Antigen</spa>';
+      }
     },
 
     deleteResultData: function (item, removeItemOnSuccess) {
