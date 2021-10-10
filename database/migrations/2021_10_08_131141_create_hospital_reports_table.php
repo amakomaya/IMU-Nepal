@@ -15,6 +15,20 @@ class CreateHospitalReportsTable extends Migration
     {
         Schema::create('hospital_reports', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->date('date');
+            $table->string('hp_code', 16);
+            $table->tinyInteger('province_id');
+            $table->smallInteger('district_id');
+            $table->smallInteger('municipality_id');
+            $table->smallInteger('no_of_beds_occupied')->default(0);
+            $table->smallInteger('no_of_hdu_occupied')->default(0);
+            $table->smallInteger('no_of_icu_occupied')->default(0);
+            $table->smallInteger('no_of_ventilator_occupied')->default(0);
+            $table->smallInteger('admission')->default(0);
+            $table->smallInteger('discharge')->default(0);
+            $table->smallInteger('death')->default(0);
+            $table->smallInteger('admission')->default(0);
+            $table->date('last_updated_date');
             $table->timestamps();
         });
     }

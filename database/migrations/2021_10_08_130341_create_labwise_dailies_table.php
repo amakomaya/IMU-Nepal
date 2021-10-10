@@ -17,6 +17,7 @@ class CreateLabwiseDailiesTable extends Migration
             $table->bigIncrements('id');
             $table->date('date');
             $table->string('hp_code', 16);
+            $table->tinyInteger('province_id');
             $table->smallInteger('district_id');
             $table->smallInteger('municipality_id');
             $table->smallInteger('anitigen_positive')->default(0);
