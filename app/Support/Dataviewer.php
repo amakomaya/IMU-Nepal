@@ -14,7 +14,7 @@ trait Dataviewer
                 request('order_column', 'created_at'),
                 request('order_direction', 'desc')
             )
-            ->paginate(request('limit', 100));
+            ->simplePaginate(request('limit', 100));
     }
     public function process($query, $data)
     {
