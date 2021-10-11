@@ -54,22 +54,24 @@ class SampleCollection extends Model
         return $this->hasOne('App\Models\LabTest', 'sample_token', 'token');
     }
 
-    public function infectionType($data){
-        switch ($data){
+    public function infectionType($data)
+    {
+        switch ($data) {
             case '1':
                 return 'Symptomatic';
             case '2':
                 return 'Asymptomatic';
         }
-
     }
 
-    public function getCreatedAtAttribute($date){
-      return $date;
+    public function getCreatedAtAttribute($date)
+    {
+        return $date;
     }
 
-    public function getFormattedResultAttribute(){
-        switch($this->result){
+    public function getFormattedResultAttribute()
+    {
+        switch ($this->result) {
             case 2:
                 return 'Pending';
             case 3:
@@ -83,31 +85,31 @@ class SampleCollection extends Model
         }
     }
 
-    public function sampleCollectionType($data){
+    public function sampleCollectionType($data)
+    {
         $contains_nasopharyngeal = Str::contains($data, ['1']);
         $contains_oropharyngeal = Str::contains($data, ['2']);
 
-        if ($contains_nasopharyngeal && $contains_oropharyngeal){
+        if ($contains_nasopharyngeal && $contains_oropharyngeal) {
             return 'Nasopharyngeal, Oropharyngeal';
         }
 
-        if ($contains_nasopharyngeal){
+        if ($contains_nasopharyngeal) {
             return 'Nasopharyngeal';
         }
 
-        if ($contains_oropharyngeal){
+        if ($contains_oropharyngeal) {
             return 'Oropharyngeal';
         }
-
     }
 
     public function getFormatedTokenAttribute()
     {
-        return explode('-', $this->lab_token,2)[1] ?? $this->lab_token;
+        return explode('-', $this->lab_token, 2)[1] ?? $this->lab_token;
     }
 
     public function getOrganization()
     {
-        return $this->hasOne('App\Models\Organization', 'hp_code', 'received_by_hp_code');
+        return $this->hasOne('App\Models\Organization', 'hp_code', 'received_by_hp_code')->select('hp_code', 'name');
     }
 }
