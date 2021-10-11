@@ -45,17 +45,17 @@
         </td>
         <td>{{ formattedDate(item.latest_anc.reporting_date_np) }}</td>
         <td>{{ formattedDate(item.latest_anc.sample_test_date_np) }}</td>
-        <td><span class="label label-info"> {{ item.ancs_count }}</span>
+        <td><span class="label label-info"> {{ item.ancs.length }}</span>
           <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
         </td>
         <td>
-          <div v-if="item.ancs_count > 0">
+          <div v-if="item.ancs.length > 0">
             <span class="label label-danger"> Positive</span>
           </div>
           <div>{{ labToken(item.latest_anc.lab_token) }}</div>
         </td>
         <td>
-          <div v-if="item.ancs_count > 0">
+          <div v-if="item.ancs.length > 0">
             {{ checkValidOrganization(item.latest_anc) }}
           </div>
         </td>
@@ -63,7 +63,7 @@
           {{ checkInfectionType(item.latest_anc.infection_type) }}
         </td>
 
-        <td v-if="item.cict_tracing_count > 0"><span class="label label-success"><i class="fa fa-check" aria-hidden="true"></i></span> </td>
+        <td v-if="item.cict_tracing"><span class="label label-success"><i class="fa fa-check" aria-hidden="true"></i></span> </td>
         <td v-else><span class="label label-danger"><i class="fa fa-times" aria-hidden="true"></i></span></td> 
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
