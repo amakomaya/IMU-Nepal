@@ -124,7 +124,7 @@ class SuspectedCase extends Model
     
     public function latestAnc()
     {
-        return $this->hasOne(SampleCollection::class, 'woman_token', 'token')->select('id', 'woman_token', 'token', 'reporting_date_np', 'sample_test_date_np', 'lab_token', 'infection_type', 'received_by_hp_code')->latest();
+        return $this->hasOne(SampleCollection::class, 'woman_token', 'token')->latest();
     }
    
     public function cictTracing()

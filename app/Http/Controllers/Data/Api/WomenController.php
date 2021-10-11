@@ -65,7 +65,6 @@ class WomenController extends Controller
                 $woman->where('case_type', '!=', '3');
             }
         }
-
         $woman = $woman->whereIn('hp_code', $hpCodes)
             ->doesnthave('ancs')
             ->with(['province', 'district', 'municipality',
@@ -279,21 +278,20 @@ class WomenController extends Controller
                 $woman->where('case_type', '!=', '3');
             }
         }
-        $woman->select('id', 'token', 'name', 'age', 'sex', 'ward', 'case_id', 'parent_case_id', 'emergency_contact_one', 'emergency_contact_two', 'ward', 'cases', 'case_where', 'municipality_id', 'hp_code')->whereIn('hp_code', $hpCodes)
+        $woman
+        ->whereIn('hp_code', $hpCodes)
             ->where(function ($query) {
                 $query->whereHas('ancs', function ($q) {
                     $q->where('service_for', "2")->where('result', 3);
                 });
             })
         ->with([
-            'municipality:id,municipality_name',
+            'municipality','ancs', 'cictTracing',
             'latestAnc' => function ($q) {
                 $q->with('getOrganization');
             },
-            'healthpost' => function ($q) {
-                $q->select('name', 'hp_code');
-            }])
-            ->withCount('ancs', 'cictTracing');
+            'healthpost']);
+
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
