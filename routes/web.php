@@ -242,7 +242,7 @@ Route::group(['middleware' => ['role-control:healthworker']], function() {
     
     Route::get('/admin/cict-tracing/b-two-form', 'Backend\CictTracingController@followUp')->name('b-two-form.follow-up');
     Route::put('/admin/cict-tracing/b-two-form-update/{case_id}', 'Backend\CictTracingController@followUpUpdate')->name('b-two-form.update');
-    Route::get('/admin/cict-tracing/close-contact/{case_id}/delete', 'Backend\CictTracingController@destroyCloseContact');
+    Route::get('/admin/cict-tracing/close-contact/{case_id}/delete', 'Backend\CictTracingController@destroyCloseContact')->name('cict-close-contact.delete');
 });
 
 Route::get('/admin/cict-tracing/contact-list/{case_id}', 'Backend\CictTracingController@aFormContactList')->name('cict-tracing.contact-list');

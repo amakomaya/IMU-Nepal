@@ -3,7 +3,7 @@
     <filterable v-bind="filterable">
       <thead slot="thead">
       <tr>
-        <th>Parent Case ID</th>
+        <th>Case ID</th>
         <th>Name</th>
         <th>Age</th>
         <th>Sex</th>
@@ -44,7 +44,7 @@
 </template>
 
 <script type="text/javascript">
-import Filterable from './CasesPaymentFilterable.vue'
+import Filterable from './CICTFilterable.vue'
 import axios from "axios";
 
 export default {

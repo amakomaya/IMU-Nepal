@@ -35,7 +35,8 @@ class CictTracing extends Model
     protected $allowedFilters = [
         'name', 'age',
         'created_at',
-        'emergency_contact_one'
+        'emergency_contact_one',
+        'cict_initiated_date'
     ];
 
     protected $orderable = ['name', 'age', 'created_at'];
