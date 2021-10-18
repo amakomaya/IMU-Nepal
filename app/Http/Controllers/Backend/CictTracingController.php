@@ -651,6 +651,9 @@ class CictTracingController extends Controller
     {
         try{
             $cict_tracing = CictTracing::where('token', $id)->first();
+            CictContact::where('parent_case_id', $cict_tracing->case_id)->delete();
+            CictCloseContact::where('parent_case_id', $cict_tracing->case_id)->delete();
+            CictFollowUp::where('parent_case_id', $cict_tracing->case_id)->delete();
             $cict_tracing->delete();
             return response()->json(['message' => 'success']);
         }

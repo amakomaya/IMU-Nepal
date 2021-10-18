@@ -13,7 +13,7 @@
         <th></th>
       </tr>
       </thead>
-      <tr slot-scope="{item}">
+      <tr slot-scope="{item, removeItemOnSuccess}">
         <td>{{ item.case_id }}</td>
         <td>{{ item.name }}</td>
         <td>{{ item.age }}</td>
@@ -34,9 +34,9 @@
           <button v-on:click="cictReport(item.case_id)" class="btn btn-success btn-sm" title="CICT Report">
             <i class="fa fa-file-pdf-o" aria-hidden="true"> Report</i>
           </button>
-          <!-- <button v-on:click="deletePatientData(item, removeItemOnSuccess)" class="btn btn-danger btn-sm" title="Delete Data">
+          <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" class="btn btn-danger btn-sm" title="Delete Data">
             <i class="fa fa-trash" aria-hidden="true"> Delete</i>
-          </button> -->
+          </button>
         </td>
       </tr>
     </filterable>
@@ -51,6 +51,7 @@ export default {
   components: {Filterable},
   data() {
     return {
+      permission: this.$permissionId,
       filterable: {
         url: '/data/api/cict-tracing',
         orderables: [
