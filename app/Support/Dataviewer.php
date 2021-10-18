@@ -3,10 +3,10 @@
 
 namespace App\Support;
 
-
 use Illuminate\Validation\ValidationException;
 
-trait Dataviewer {
+trait Dataviewer
+{
     public function scopeAdvancedFilter($query)
     {
         return $this->process($query, request()->all())
@@ -30,7 +30,7 @@ trait Dataviewer {
             'f.*.query_1' => 'required',
             'f.*.query_2' => 'required_if:f.*.operator,between,not_between'
         ]);
-        if($v->fails()) {
+        if ($v->fails()) {
             // debug
             return dd($v->messages()->all());
             throw new ValidationException;
