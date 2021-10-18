@@ -33,8 +33,8 @@
                   {{item.emergency_contact_one}} <br>
                   {{item.emergency_contact_two}}
                 </td>
-                <td>{{ checkDistrict(item.district_id) }}</td>
-                <td>{{ checkMunicipality(item.municipality_id) }}</td>
+                <td>{{ item.district.district_name }}</td>
+                <td>{{ item.municipality.municipality_name }}</td>
                 <td>{{ item.ward }}</td>
                 <td>{{ formattedDate(item.latest_anc.reporting_date_np) }}</td>
                 <td>{{ formattedDate(item.latest_anc.sample_test_date_np) }}</td>
@@ -124,7 +124,7 @@
             }
         },
         created() {
-            this.fetch()
+            // this.fetch()
         },
         methods: {
             newLink() {

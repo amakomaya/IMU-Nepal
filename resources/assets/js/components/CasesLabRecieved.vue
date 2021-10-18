@@ -28,7 +28,7 @@
         <td>One : {{ roleVisibility(item.emergency_contact_one) }} <br>
           Two : {{ roleVisibility(item.emergency_contact_two) }}
         </td>
-        <td>{{ checkMunicipality(item.municipality_id) }}</td>
+        <td>{{ item.municipality.municipality_name }}</td>
         <td>{{ item.ward }}</td>
         <td>
           Place : {{ item.healthpost ? item.healthpost.name : '' }} <br>
@@ -144,7 +144,7 @@ export default {
     }
   },
   created() {
-    this.fetch()
+    // this.fetch()
   },
   methods: {
     sendPatientData: function (item) {

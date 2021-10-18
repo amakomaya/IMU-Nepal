@@ -67,10 +67,8 @@ class WomenController extends Controller
         }
         $woman = $woman->whereIn('hp_code', $hpCodes)
             ->doesnthave('ancs')
-            ->with(['province', 'district', 'municipality',
-                'healthpost' => function ($q) {
-                    $q->select('name', 'hp_code');
-                }]);
+            ->with(['municipality',
+                'healthpost']);
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -102,10 +100,8 @@ class WomenController extends Controller
                     $q->where('service_for', '!=', "2")->whereIn('result', [0,2]);
                 });
             })
-            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
-                'healthpost' => function ($q) {
-                    $q->select('name', 'hp_code');
-                }]);
+            ->with(['municipality', 'latestAnc', 'ancs',
+                'healthpost']);
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -136,10 +132,8 @@ class WomenController extends Controller
                     $q->where('service_for', "2")->whereIn('result', [0,2]);
                 });
             })
-            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
-                'healthpost' => function ($q) {
-                    $q->select('name', 'hp_code');
-                }]);
+            ->with(['municipality', 'latestAnc', 'ancs',
+                'healthpost']);
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -172,13 +166,11 @@ class WomenController extends Controller
                 $q->where('service_for', '!=', "2")->where('result', '=', 4);
             })
             ->with([
-                'province', 'district', 'municipality', 'ancs',
+                 'municipality','district', 'ancs',
                 'latestAnc' => function ($q) {
                     $q->with('getOrganization');
                 },
-                'healthpost' => function ($q) {
-                    $q->select('name', 'hp_code');
-                }
+                'healthpost'
             ]);
 
         return response()->json([
@@ -210,13 +202,11 @@ class WomenController extends Controller
                 $q->where('service_for', "2")->where('result', '=', 4);
             })
             ->with([
-                'province', 'district', 'municipality', 'ancs',
+                'district','municipality', 'ancs',
                 'latestAnc' => function ($q) {
                     $q->with('getOrganization');
                 },
-                'healthpost' => function ($q) {
-                    $q->select('name', 'hp_code');
-                }
+                'healthpost'
             ]);
 
         return response()->json([
@@ -253,7 +243,7 @@ class WomenController extends Controller
                 'latestAnc' => function ($q) {
                     $q->with('getOrganization');
                 },
-                'district', 'municipality', 'cictTracing'
+                'municipality', 'cictTracing'
             ]);
         return response()->json([
             'collection' => $woman->advancedFilter()
@@ -343,9 +333,7 @@ class WomenController extends Controller
         $woman->whereIn('hp_code', $hpCodes)
             ->whereHas('ancs', function ($q) {
                 $q->where('service_for', '!=', "2")->where('result', '=', 9);
-            })->with(['ancs','healthpost' => function ($q) {
-                $q->select('name', 'hp_code');
-            }, 'latestAnc', 'district', 'municipality']);
+            })->with(['ancs','healthpost', 'latestAnc', 'municipality']);
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
@@ -376,10 +364,8 @@ class WomenController extends Controller
                     $q->where('service_for', "2")->where('result', 9);
                 });
             })
-            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
-                'healthpost' => function ($q) {
-                    $q->select('name', 'hp_code');
-                }]);
+            ->with(['municipality', 'latestAnc', 'ancs',
+                'healthpost']);
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
