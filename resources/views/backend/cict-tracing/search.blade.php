@@ -21,7 +21,6 @@
                     <form method="GET" action="">
                         <div class="row">
                             <div class="col-lg-8 form-group">
-                                <p style="color: red">This is in testing phase. Data will be deleted.</p>
                                 <div class="case-id-class">
                                     <input type="text" name="case_id" class="form-control" placeholder="Enter Case Id" value="{{ request()->get('case_id') }}" required><br>
                                     <button class="btn btn-info" title="Search CaseID" value="Submit">

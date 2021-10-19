@@ -674,6 +674,21 @@ class CictTracingController extends Controller
         }
     }
 
+    public function destroyContactAll(Request $request, $case_id)
+    {
+        try {
+            CictCloseContact::where('case_id', $case_id)->delete();
+            CictContact::where('case_id', $case_id)->delete();
+            CictFollowUp::where('case_id', $case_id)->delete();
+
+            $request->session()->flash('message', 'Contact Deleted');
+        }
+        catch (Exception $e) {
+            $request->session()->flash('message', 'Contact Deletion Failed');
+        }
+        return redirect()->back();
+    }
+
     private function dataFromOnly(Request $request)
     {
         if (!empty($request['from_date'])) {
