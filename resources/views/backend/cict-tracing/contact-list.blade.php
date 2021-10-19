@@ -34,7 +34,7 @@
                                         <th class="text-center" title="B1 Form Date">B1 Form Completion Date</th>
                                         <th class="text-center" title="B1 Form Actions"><i class="fa fa-cogs" aria-hidden="true"></i> B1 Form</th>
                                         <th class="text-center" title="B2 Form Actions"><i class="fa fa-cogs" aria-hidden="true"></i> B2 Form</th>
-                                        {{-- <th class="text-center" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i> Actions</th> --}}
+                                        <th class="text-center" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i> Actions</th>
 {{--                                        <th>Do you want to register patient and collect sample?</th>--}}
                                     </tr>
                                 </thead>
@@ -92,11 +92,14 @@
                                                 </form>
                                                 @endif
                                             </td>
-                                            {{-- <td>
-                                                <form action="GET" action="{{ url('/admin/cict-tracing/close-contact/' + $item->case_id + '/delete') }}">
-                                                    <button class="btn btn-sm btn-danger" type="submit"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
+                                            <td>
+                                                @if(session()->get('permission_id') == 1)
+                                                <form method="POST" action="{{ route('contact-all.delete', $item->case_id) }}" class="contact-delete-form">
+                                                    @csrf
+                                                    <button class="btn btn-sm btn-danger contact-delete-btn" type="button"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
                                                 </form>
-                                            </td> --}}
+                                                @endif
+                                            </td>
 {{--                                            <td>--}}
 {{--                                                @if($item->contact && $item->contact->completion_date)--}}
 {{--                                                <a class="btn btn-sm btn-info" href="{{ route('woman.create', ['case_id' => $item->case_id]) }}" target="_blank"><i class="fa fa-flask" aria-hidden="true"></i> Register and Collect Sample</a>--}}
@@ -118,4 +121,15 @@
         </div>
     </div>
     <!-- /#page-wrapper -->
+@endsection
+
+@section('script')
+<script>
+    $('.contact-delete-btn').click(function () {
+        if(!confirm('Are you sure you want to delete this contact and all related data?')){
+            return;
+        }
+        $(this).closest('.contact-delete-form').submit();
+    });
+</script>
 @endsection
