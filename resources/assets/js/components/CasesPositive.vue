@@ -61,23 +61,22 @@
         <td v-html="checkCictStatus(item.cict_tracing)">
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
-            <i class="fa fa-file" aria-hidden="true"></i> |
+            <i class="fa fa-file" aria-hidden="true"></i>
           </button>
-          <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)"
-                  title="Add Sample Collection / Swab Collection Report">
-            <i class="fa fa-medkit" aria-hidden="true"></i> |
+          <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
+             | <i class="fa fa-medkit" aria-hidden="true"></i>
           </button>
-          <span v-show="checkMunicipalityRole()">
+          <span v-show="checkMunicipalityRole() && item.cict_tracing == null">
             <button v-on:click="sendPatientData(item)" title="Send / Transfer CICT Patient data to other Hospital">
-              <i class="fa fa-hospital-o"></i>
+               | <i class="fa fa-hospital-o"></i>
             </button>
           </span>
           <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Move Patient Data">
              | <i class="fa fa-trash"></i>
           </button>
           <span v-show="checkCictButton()">
-             | <button v-on:click="sendToCict(item.case_id)" title="Add to Cict Form">
-              <i class="fa fa-users"></i>
+            <button v-on:click="sendToCict(item.case_id)" title="Add to Cict Form">
+               | <i class="fa fa-users"></i>
             </button>
           </span>
         </td>
