@@ -50,17 +50,11 @@
                 </div>
               </div>
             </div>
-            <!-- <a :href="'/admin/download/sample-collection-download?result_chosen=3&amp;service_for_chosen=2&amp;date_chosen=' + headingTitle">
-              <div class="panel-footer">
-                <span class="pull-left"><i class="fa fa-download"></i> Download</span>
-                <div class="clearfix"></div>
-              </div>
-            </a> -->
           </div>
         </div>
         <div class="col-lg-6 col-md-6">
           <div class="panel panel-success">
-            <div class="panel-heading pb-5">
+            <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
                   <i class="fa fa-minus-square-o fa-3x"></i>
@@ -105,17 +99,11 @@
                 </div>
               </div>
             </div>
-            <!-- <a :href="'/admin/download/sample-collection-download?result_chosen=3&amp;service_for_chosen=1&amp;date_chosen=' + headingTitle">
-              <div class="panel-footer">
-                <span class="pull-left"><i class="fa fa-download"></i> Download</span>
-                <div class="clearfix"></div>
-              </div>
-            </a> -->
           </div>
         </div>
         <div class="col-lg-6 col-md-6">
           <div class="panel panel-success">
-            <div class="panel-heading pb-5">
+            <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
                   <i class="fa fa-minus-square-o fa-3x"></i>

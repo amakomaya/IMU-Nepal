@@ -67,15 +67,15 @@
         <td v-else><span class="label label-danger"><i class="fa fa-times" aria-hidden="true"></i></span></td> 
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
-            <i class="fa fa-file" aria-hidden="true"></i> |
+            <i class="fa fa-file" aria-hidden="true"></i>
           </button>
           <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)"
                   title="Add Sample Collection / Swab Collection Report">
-            <i class="fa fa-medkit" aria-hidden="true"></i> |
+             | <i class="fa fa-medkit" aria-hidden="true"></i>
           </button>
-          <span v-show="checkMunicipalityRole()">
+          <span v-show="checkMunicipalityRole() && item.cict_tracing == null">
             <button v-on:click="sendPatientData(item)" title="Send / Transfer CICT Patient data to other Hospital">
-              <i class="fa fa-hospital-o"></i>
+               | <i class="fa fa-hospital-o"></i>
             </button>
           </span>
           <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Move Patient Data">
@@ -173,7 +173,7 @@ export default {
 
     sendPatientData: function (item) {
       this.$dlg.modal(SendPatientDataModel, {
-        title: 'Do you want to send ' + item.name + ' \'s patients data ?',
+        title: 'Do you want to send ' + item.name + ' \'s patients data for CICT ?',
         height: 600,
         width: 700,
         params: {
