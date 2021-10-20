@@ -41,7 +41,8 @@
         <td>
           Place : {{ item.healthpost ? item.healthpost.name : '' }} <br>
           Type : {{ checkCaseType(item.cases) }} <br>
-          Management : {{ checkCaseManagement(item.cases, item.case_where) }}
+          Management : {{ checkCaseManagement(item.cases, item.case_where) }} <br>
+          CICT : {{ item.cict_tracing ? item.cict_tracing.organization.name : 'N/A' }}
         </td>
         <td>{{ formattedDate(item.latest_anc.reporting_date_np) }}</td>
         <td>{{ formattedDate(item.latest_anc.sample_test_date_np) }}</td>
