@@ -285,7 +285,7 @@ export default {
           exportableData.age = data.age;
           exportableData.sex = formattedGenderObject[data.sex];
           exportableData.emergency_contact_one = data.emergency_contact_one;
-          exportableData.district = data.district ? data.district.district_name : '';
+          exportableData.district = data.municipality.district_name;
           exportableData.municipality = data.municipality ? data.municipality.municipality_name : '';
           exportableData.cict_initiated_date = data.cict_initiated_date;
           list.push(exportableData);

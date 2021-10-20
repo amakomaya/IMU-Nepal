@@ -366,7 +366,7 @@ export default {
           exportableData.age = data.age;
           exportableData.age_unit = data.formated_age_unit;
           exportableData.gender = data.formated_gender;
-          exportableData.district = data.district.district_name;
+          exportableData.district = data.municipality.district_name;
           exportableData.municipality = data.municipality.municipality_name;
           exportableData.ward = data.ward;
           if(data.occupation == '1'){
