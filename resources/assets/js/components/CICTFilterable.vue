@@ -243,6 +243,16 @@ export default {
     this.addFilter()
   },
   methods: {
+    ad2bs: function () {
+      var dateObject = new Date();
+
+      var dateFormat = dateObject.getFullYear()  + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getDate();
+
+      let dateConverter = DataConverter.ad2bs(dateFormat);
+
+      return dateConverter.en.year + '-' + dateConverter.en.month + '-' + dateConverter.en.day;
+
+    },
     removeItemOnSuccess(item) {
       let removeIndex = [];
       this.collection.data.find((d, index)=>{
