@@ -105,7 +105,7 @@ export default {
         closeOnCancel: false
       }).then((result) => {
         if (result.value) {
-          axios.delete('/admin/cict-tracing/' + item.token)
+          axios.post('/admin/cict-tracing/' + item.token, {_method: 'DELETE'})
               .then((response) => {
                 if (response.data.message === 'success') {
                   removeItemOnSuccess(item);
