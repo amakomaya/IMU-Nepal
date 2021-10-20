@@ -298,7 +298,10 @@ class WomenController extends Controller
                 });
             })
         ->with([
-            'municipality','ancs', 'cictTracing',
+            'municipality','ancs', 
+            'cictTracing' => function($q) {
+                $q->with('organization');
+            },
             'latestAnc' => function ($q) {
                 $q->with('getOrganization');
             },
