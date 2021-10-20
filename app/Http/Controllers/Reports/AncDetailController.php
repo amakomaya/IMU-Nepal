@@ -238,6 +238,12 @@ class AncDetailController extends Controller
         $response = FilterRequest::filter($request);
         $response['hospital_type'] = [2, 3];
         $hpCodes = GetHealthpostCodes::filter($response);
+        foreach ($response as $key => $value) {
+            $$key = $value;
+        }
+
+
+        $filter_date = $this->dataFromOnly($request);
 
         $healthposts = Organization::whereIn('hp_code', $hpCodes)
             ->where('status', 1)
@@ -250,47 +256,46 @@ class AncDetailController extends Controller
            whereIn('ancs.received_by_hp_code', $hpCodes)
             ->whereIn('service_for', ['1', '2'])
             ->whereIn('result', ['3', '4'])
-            ->whereDate('reporting_date_en' , '>=', Carbon::yesterday()->toDateTimeString())
+            ->whereDate('reporting_date_en', $filter_date['from_date']->toDateString())
             ->where('ancs.status', 1)
-            ->select(\DB::raw('DATE_FORMAT(ancs.reporting_date_en, "%Y-%m-%d") as formatted_reporting_date_en'), 'received_by_hp_code', 'service_for', 'result', 'regdev')
+            ->select('received_by_hp_code', 'service_for', 'result', 'regdev')
             ->get()
             ->groupBy('received_by_hp_code');
 
-        $today = Carbon::today()->toDateString();
-        $yesterday = Carbon::yesterday()->toDateString();
-        $mapped_data = collect($lab_organizations)->map(function ($lab, $key) use ($yesterday, $today, $healthposts) {
+        $mapped_data = collect($lab_organizations)->map(function ($lab, $key) use ($healthposts) {
             $return = [];
             $return['name'] = $healthposts[$key]['name'];
             $return['token'] = $healthposts[$key]['token'];
-            $return['pcr_postive_today'] = $lab->where('service_for', '1')->where('result', '3')->where('formatted_reporting_date_en', $today)->count();
-            $return['pcr_negative_today'] = $lab->where('service_for', '1')->where('result', '4')->where('formatted_reporting_date_en', $today)->count();
-            $return['antigen_positive_today'] = $lab->where('service_for', '2')->where('result', '3')->where('formatted_reporting_date_en', $today)->count();
-            $return['antigen_negative_today'] = $lab->where('service_for', '2')->where('result', '4')->where('formatted_reporting_date_en', $today)->count();
+            $return['pcr_postive_today'] = $lab->where('service_for', '1')->where('result', '3')->count();
+            $return['pcr_negative_today'] = $lab->where('service_for', '1')->where('result', '4')->count();
+            $return['antigen_positive_today'] = $lab->where('service_for', '2')->where('result', '3')->count();
+            $return['antigen_negative_today'] = $lab->where('service_for', '2')->where('result', '4')->count();
 
-            $return['pcr_postive_yesterday'] = $lab->where('service_for', '1')->where('result', '3')->where('formatted_reporting_date_en', $yesterday)->count();
-            $return['pcr_negative_yesterday'] = $lab->where('service_for', '1')->where('result', '4')->where('formatted_reporting_date_en', $yesterday)->count();
-            $return['antigen_positive_yesterday'] = $lab->where('service_for', '2')->where('result', '3')->where('formatted_reporting_date_en', $yesterday)->count();
-            $return['antigen_negative_yesterday'] = $lab->where('service_for', '2')->where('result', '4')->where('formatted_reporting_date_en', $yesterday)->count();
-
-            $api_data_today = $lab->where('regdev', 'api')->where('formatted_reporting_date_en', $today)->count();
+            $api_data_today = $lab->where('regdev', 'api')->count();
             if($api_data_today > 0) {
                 $return['api_today'] = 'Yes';
             } else {
                 $return['api_today'] = 'No';
-            }
-            $api_data_yesterday = $lab->where('regdev', 'api')->where('formatted_reporting_date_en', $yesterday)->count();
-            if($api_data_yesterday > 0) {
-                $return['api_yesterday'] = 'Yes';
-            } else {
-                $return['api_yesterday'] = 'No';
             }
 
             return $return;
         })->toArray();
         $empty_healthposts = array_diff_key($healthposts, $mapped_data);
         $data = array_merge($mapped_data, $empty_healthposts);
-        return view('backend.sample.report.lab-visualization', compact('data'));
+        return view('backend.sample.report.lab-visualization', compact('data', 'from_date'));
 
+    }
+
+    private function dataFromOnly(Request $request)
+    {
+        if (!empty($request['from_date'])) {
+            $from_date_array = explode("-", $request['from_date']);
+            $from_date_eng = Carbon::parse(Calendar::nep_to_eng($from_date_array[0], $from_date_array[1], $from_date_array[2])->getYearMonthDay())->startOfDay();
+        }
+
+        return [
+            'from_date' =>  $from_date_eng ?? Carbon::now()->startOfDay(),
+        ];
     }
 
     public function organizationRegdevCount(Request $request) {
