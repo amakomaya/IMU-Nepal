@@ -11,7 +11,7 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <div class="col-lg-12" style="margin-bottom: 20px;">
+                        <div class="col-lg-12" style="margin-bottom: 10px;">
                             <form action="" method="GET">
                                 <div id ="from_only"></div>
                                 <div class="form-group col-sm-3">
