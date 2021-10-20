@@ -188,7 +188,7 @@
             <option>500</option>
             <option>1000</option>
           </select>
-          <small> Showing {{collection.from}} - {{collection.to}} of {{collection.total}} entries.</small>
+          <small> Showing {{collection.from}} - {{collection.to}} of {{total}} entries.</small>
         </div>
         <div>
           <button class="btn" :disabled="!collection.prev_page_url || loading"
@@ -230,6 +230,7 @@ export default {
         limit: 100,
         page: 1
       },
+      total:0,
       collection: {
         data: []
       },
@@ -591,6 +592,8 @@ export default {
             Vue.set(this.$data, 'collection', res.data.collection)
             this.query.page = res.data.collection.current_page
             this.apiresponce = true
+                        this.total = res.data.total
+
           })
           .catch((error) => {
 
