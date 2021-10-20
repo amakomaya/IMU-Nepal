@@ -82,8 +82,8 @@
              | <i class="fa fa-trash"></i>
           </button>
           <div v-show="checkCictButton()">
-             | <button v-on:click="sendToCict(item.case_id)" title="Add to Cict Form">
-              <i class="fa fa-users"></i>
+            <button v-if="!item.cict_tracing" v-on:click="sendToCict(item.case_id)" title="Add to Cict Form">
+              | <i class="fa fa-users"></i>
             </button>
           </div>
         </td>
@@ -441,9 +441,9 @@ export default {
     },
     checkCictStatus(value){
       if(value){
-        return '<span class="label label-success"><i class="fa fa-check" aria-hidden="true"></i></span>';
+        return '<span class="label label-success" title="CICT Transfer Status Completed"><i class="fa fa-check" aria-hidden="true"></i></span>';
       }else{
-        return '<span class="label label-danger"><i class="fa fa-times" aria-hidden="true"></i></spa>';
+        return '<span class="label label-danger" title="No CICT"><i class="fa fa-times" aria-hidden="true"></i></spa>';
       }
     },
     checkPermission(value) {

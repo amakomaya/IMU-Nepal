@@ -75,10 +75,15 @@ class CictTracing extends Model
     {
         return $this->belongsTo(OrganizationMember::class, 'checked_by', 'token');
     }
-
+    
     public function vaccine()
     {
         return $this->belongsTo(Vaccine::class, 'dose_one_name', 'id');
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class, 'hp_code', 'hp_code');
     }
 
 }

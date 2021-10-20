@@ -6,10 +6,11 @@
         <th>Case ID</th>
         <th>Name</th>
         <th>Age</th>
-        <th>Sex</th>
+        <th title="Gender">G</th>
         <th>District</th>
         <th>Municipality</th>
-        <th>CICT Initiated Date</th>
+        <th title="Initiated Date">Initiated Date</th>
+        <th><i class="fa fa-mobile" aria-hidden="true"></i> / <i class="fa fa-desktop fa-sm" aria-hidden="true"></i></th>
         <th></th>
       </tr>
       </thead>
@@ -21,11 +22,19 @@
         <td>{{ item.district.district_name }}</td>
         <td>{{ item.municipality.municipality_name }}</td>
         <td>{{ item.cict_initiated_date }}</td>
+        <td>
+          <span v-if="item.regdev === 'web'" title="Web" class="label label-info">W</span>
+          <span v-else title="Mobile" class="label label-success">M</span>
+        
+        </td>
 
         <td>
           <span v-show="checkEditButton()">
-            <button v-on:click="cictUpdateDate(item.case_id)" class="btn btn-primary btn-sm" title="CICT Edit">
+            <button v-if="item.cict_initiated_date" v-on:click="cictUpdateData(item.case_id)" class="btn btn-primary btn-sm" title="CICT Edit">
               <i class="fa fa-edit" aria-hidden="true"> Edit</i>
+            </button>
+            <button v-else v-on:click="cictUpdateData(item.case_id)" class="btn btn-warning btn-sm" title="CICT Create">
+              <i class="fa fa-plus" aria-hidden="true"> Create</i>
             </button>
           </span>
           <button v-on:click="contactList(item.case_id)" class="btn btn-secondary btn-sm" title="Contact List">
@@ -73,7 +82,7 @@ export default {
     }
   },
   methods: {
-    cictUpdateDate : function (id){
+    cictUpdateData : function (id){
       window.open(
           '/admin/cict-tracing/section-one?case_id=' + id,
           '_self'

@@ -243,7 +243,10 @@ class WomenController extends Controller
                 'latestAnc' => function ($q) {
                     $q->with('getOrganization');
                 },
-                'municipality', 'cictTracing'
+                'municipality', 
+                'cictTracing' => function($q) {
+                    $q->with('organization');
+                }
             ]);
         return response()->json([
             'collection' => $woman->advancedFilter()

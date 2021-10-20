@@ -223,7 +223,8 @@ export default {
         'Phone': 'emergency_contact_one',
         'District' : 'district',
         'Municipality' : 'municipality',
-        'CICT Initiated Date' : 'cict_initiated_date'
+        'CICT Initiated Date' : 'cict_initiated_date',
+        'Device Used' : 'regdev'
       }
     }
   },
@@ -298,6 +299,7 @@ export default {
           exportableData.district = data.municipality.district_name;
           exportableData.municipality = data.municipality ? data.municipality.municipality_name : '';
           exportableData.cict_initiated_date = data.cict_initiated_date;
+          exportableData.regdev = data.regdev;
           list.push(exportableData);
         });
         return list;
@@ -483,6 +485,7 @@ $color-error: #e75650;
 $color-primary: #3aa3e3;
 $color-secondary: #2c405a;
 $color-success: #5cb85c;
+$color-warning: #f0ad4e;
 $text-color: #484746;
 $bg-color: #fafafa;
 $bg-color-light: #fcfcfc;
@@ -680,6 +683,12 @@ select {
     background: $color-error;
     color : #fff;
     border-bottom: 1px solid darken($color-error, 10%);
+  }
+
+  &-warning {
+    background: $color-warning;
+    color : #fff;
+    border-bottom: 1px solid darken($color-warning, 10%);
   }
 }
 

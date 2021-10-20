@@ -17,7 +17,7 @@
         <th width="6%" title="Latest Lab Result">Result</th>
         <th width="4%" title="Tested By">Tested By</th>
         <th width="4%" title="Infection Type">Type</th>
-        <th width="4%" title="CICT Status">CICT Status</th>
+        <th width="4%" title="CICT Transfer Status">CICT Status</th>
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
       </tr>
       </thead>
@@ -37,7 +37,8 @@
         <td>
           Place : {{ item.healthpost ? item.healthpost.name : '' }} <br>
           Type : {{ checkCaseType(item.cases) }} <br>
-          Management : {{ checkCaseManagement(item.cases, item.case_where) }}
+          Management : {{ checkCaseManagement(item.cases, item.case_where) }} <br>
+          CICT : {{ item.cict_tracing ? item.cict_tracing.organization.name : 'N/A' }}
         </td>
         <td>{{ formattedDate(item.latest_anc.reporting_date_np) }}</td>
         <td>{{ formattedDate(item.latest_anc.sample_test_date_np) }}</td>
@@ -75,7 +76,7 @@
              | <i class="fa fa-trash"></i>
           </button>
           <span v-show="checkCictButton()">
-            <button v-on:click="sendToCict(item.case_id)" title="Add to Cict Form">
+            <button v-if="!item.cict_tracing" v-on:click="sendToCict(item.case_id)" title="Add to Cict Form">
                | <i class="fa fa-users"></i>
             </button>
           </span>
@@ -451,9 +452,9 @@ export default {
     },
     checkCictStatus(value){
       if(value){
-        return '<span class="label label-success"><i class="fa fa-check" aria-hidden="true"></i></span>';
+        return '<span class="label label-success" title="CICT Transfer Status Completed"><i class="fa fa-check" aria-hidden="true"></i></span>';
       }else{
-        return '<span class="label label-danger"><i class="fa fa-times" aria-hidden="true"></i></spa>';
+        return '<span class="label label-danger" title="No CICT"><i class="fa fa-times" aria-hidden="true"></i></spa>';
       }
     },
     checkPermission(value) {
