@@ -69,8 +69,12 @@ class WomenController extends Controller
             ->doesnthave('ancs')
             ->with(['municipality',
                 'healthpost']);
+
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
+            'collection' => $woman->advancedFilter(),
+            'total' => $total->count()
         ]);
     }
 
@@ -102,8 +106,11 @@ class WomenController extends Controller
             })
             ->with(['municipality', 'latestAnc', 'ancs',
                 'healthpost']);
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
+            'collection' => $woman->advancedFilter(),
+            'total' => $total->count()
         ]);
     }
 
@@ -134,8 +141,11 @@ class WomenController extends Controller
             })
             ->with(['municipality', 'latestAnc', 'ancs',
                 'healthpost']);
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
+            'collection' => $woman->advancedFilter(),
+            'total' => $total->count()
         ]);
     }
 
@@ -173,9 +183,12 @@ class WomenController extends Controller
                 'healthpost'
             ]);
 
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
-        ]);
+                'collection' => $woman->advancedFilter(),
+                'total' => $total->count()
+            ]);
     }
 
     public function passiveAntigenIndex(Request $request)
@@ -209,9 +222,12 @@ class WomenController extends Controller
                 'healthpost'
             ]);
 
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
-        ]);
+                'collection' => $woman->advancedFilter(),
+                'total' => $total->count()
+            ]);
     }
     
     public function positiveIndex(Request $request)
@@ -248,9 +264,12 @@ class WomenController extends Controller
                     $q->with('organization');
                 }
             ]);
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
-        ]);
+                'collection' => $woman->advancedFilter(),
+                'total' => $total->count()
+            ]);
     }
 
     public function positiveAntigenIndex(Request $request)
@@ -284,9 +303,11 @@ class WomenController extends Controller
                 $q->with('getOrganization');
             },
             'healthpost']);
+        $total = clone $woman;
 
         return response()->json([
-            'collection' => $woman->advancedFilter()
+            'collection' => $woman->advancedFilter(),
+            'total' => $total->count()
         ]);
     }
 
@@ -337,9 +358,12 @@ class WomenController extends Controller
             ->whereHas('ancs', function ($q) {
                 $q->where('service_for', '!=', "2")->where('result', '=', 9);
             })->with(['ancs','healthpost', 'latestAnc', 'municipality']);
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
-        ]);
+                'collection' => $woman->advancedFilter(),
+                'total' => $total->count()
+            ]);
     }
 
     public function labReceivedAntigenIndex(Request $request)
@@ -369,8 +393,11 @@ class WomenController extends Controller
             })
             ->with(['municipality', 'latestAnc', 'ancs',
                 'healthpost']);
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
+            'collection' => $woman->advancedFilter(),
+            'total' => $total->count()
         ]);
     }
 
