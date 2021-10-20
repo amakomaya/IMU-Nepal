@@ -34,8 +34,11 @@ import PatientListLabReceivedAntigen from './components/CasesLabRecievedAntigen.
 import CasesClosedRecovered from './components/CasesClosedRecovered'
 import CasesClosedDeath from './components/CasesClosedDeath'
 import LabPatientList from './components/LabCases'
+import LabPatientAntigenList from './components/LabCasesAntigen'
 import LabNegativeCases from "./components/LabNegativeCases";
+import LabNegativeAntigenCases from "./components/LabNegativeAntigenCases";
 import LabPositiveCases from "./components/LabPositiveCases";
+import LabPositiveAntigenCases from "./components/LabPositiveAntigenCases";
 import CaseDetail from "./components/viewCaseDetailReport"
 import LabCaseReport from "./components/LabCaseReport.vue"
 import CasesInOtherOrganization from "./components/CasesInOtherOrganization";
@@ -116,12 +119,15 @@ Vue.component('women-list-positive-antigen', WomanListPositiveAntigen);
 Vue.component('women-list-positive', WomanListPositive);
 Vue.component('women-list-tracing', CasesTracing);
 Vue.component('lab-patient-list', LabPatientList);
+Vue.component('lab-patient-antigen-list', LabPatientAntigenList);
 Vue.component('women-list-lab-received', PatientListLabReceived)
 Vue.component('women-list-lab-received-antigen', PatientListLabReceivedAntigen);
 Vue.component('cases-closed-recovered', CasesClosedRecovered)
 Vue.component('cases-closed-death', CasesClosedDeath)
 Vue.component('lab-negative-patient-list', LabNegativeCases)
+Vue.component('lab-negative-patient-antigen-list', LabNegativeAntigenCases)
 Vue.component('lab-positive-patient-list', LabPositiveCases)
+Vue.component('lab-positive-patient-antigen-list', LabPositiveAntigenCases)
 Vue.component('vaccination-chart');
 Vue.component('admin-dashboard', AdminDashboard);
 Vue.component('poe-dashboard', PoeDashboard)

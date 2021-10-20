@@ -91,14 +91,25 @@ Route::resource('admin/lab-user', 'Backend\FchvController', ['names' => 'fchv'])
 Route::get('/admin/lab-patients', function () {
     return view('backend.lab.index');
 })->name('lab.patient.index');
+Route::get('/admin/lab-patients-antigen', function () {
+    return view('backend.lab.index-antigen');
+})->name('lab.patient.antigen.index');
 Route::get('/admin/lab-case-report', 'Backend\LabReportController@index')->name('lab.patient.report.index');
 Route::get('/admin/lab-case-report-old', 'Backend\LabReportController@indexOld')->name('lab.patient.report.index-old');
+
 Route::get('/admin/lab-negative-patients', function () {
     return view('backend.lab.negative-index');
 })->name('lab.negative.patients.index');
+Route::get('/admin/lab-negative-patients-antigen', function () {
+    return view('backend.lab.negative-antigen-index');
+})->name('lab.negative.patients.antigen.index');
+
 Route::get('/admin/lab-positive-patients', function () {
     return view('backend.lab.positive-index');
 })->name('lab.positive.patients.index');
+Route::get('/admin/lab-positive-patients-antigen', function () {
+    return view('backend.lab.positive-antigen-index');
+})->name('lab.positive.patients.antigen.index');
 
 Route::get('/admin/vaccination-list', function () {
     return view('vaccination.list');

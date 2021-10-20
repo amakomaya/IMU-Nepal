@@ -385,7 +385,35 @@ class WomenController extends Controller
             $data = SuspectedCase::active();
         }
 
-        $sample_token = $sample_token->where(function ($q) use ($hpCodes, $user) {
+        $sample_token = $sample_token->where('service_for', '!=', '2')
+            ->where(function ($q) use ($hpCodes, $user) {
+            $q->where('received_by', $user->token)
+                ->orWhereIn('received_by_hp_code', $hpCodes);
+        })->pluck('woman_token');
+
+        $data = $data->whereIn('token', $sample_token)->withAll();
+
+        return response()->json([
+            'collection' => $data->advancedFilter()
+        ]);
+    }
+
+    public function labAddReceivedAntigenIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $user = auth()->user();
+
+        if ($request->db_switch == '2') {
+            $sample_token = SampleCollectionOld::where('result', '9');
+            $data = SuspectedCaseOld::active();
+        } else {
+            $sample_token = SampleCollection::where('result', '9');
+            $data = SuspectedCase::active();
+        }
+
+        $sample_token = $sample_token->where('service_for', '2')
+            ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
         })->pluck('woman_token');
@@ -411,7 +439,33 @@ class WomenController extends Controller
             $data = SuspectedCase::active();
         }
 
-        $sample_token = $sample_token->where(function ($q) use ($hpCodes, $user) {
+        $sample_token = $sample_token->where('service_for', '!=', '2')
+            ->where(function ($q) use ($hpCodes, $user) {
+            $q->where('received_by', $user->token)
+                ->orWhereIn('received_by_hp_code', $hpCodes);
+        })->pluck('woman_token');
+        $data = $data->whereIn('token', $sample_token)->withAll();
+        return response()->json([
+            'collection' => $data->advancedFilter()
+        ]);
+    }
+
+    public function labAddResultPositiveAntigenIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $user = auth()->user();
+
+        if ($request->db_switch == '2') {
+            $sample_token = SampleCollectionOld::where('result', '3');
+            $data = SuspectedCaseOld::active();
+        } else {
+            $sample_token = SampleCollection::where('result', '3');
+            $data = SuspectedCase::active();
+        }
+
+        $sample_token = $sample_token->where('service_for', '2')
+            ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
         })->pluck('woman_token');
@@ -434,7 +488,33 @@ class WomenController extends Controller
             $sample_token = SampleCollection::where('result', '4');
             $data = SuspectedCase::active();
         }
-        $sample_token = $sample_token->where(function ($q) use ($hpCodes, $user) {
+        $sample_token = $sample_token->where('service_for', '!=', '2')
+            ->where(function ($q) use ($hpCodes, $user) {
+            $q->where('received_by', $user->token)
+                ->orWhereIn('received_by_hp_code', $hpCodes);
+        })->pluck('woman_token');
+        $data = $data->whereIn('token', $sample_token)->withAll();
+
+        return response()->json([
+            'collection' => $data->advancedFilter()
+        ]);
+    }
+
+    public function labAddResultNegativeAntigenIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $user = auth()->user();
+
+        if ($request->db_switch == '2') {
+            $sample_token = SampleCollectionOld::where('result', '4');
+            $data = SuspectedCaseOld::active();
+        } else {
+            $sample_token = SampleCollection::where('result', '4');
+            $data = SuspectedCase::active();
+        }
+        $sample_token = $sample_token->where('service_for', '2')
+            ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
         })->pluck('woman_token');
