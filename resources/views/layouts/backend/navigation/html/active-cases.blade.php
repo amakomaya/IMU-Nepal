@@ -154,7 +154,14 @@
                     <a href="{{ route('report.district-wise-cases-overview') }}">
                         <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                         District Wise
-                        <span class="label label-primary pull-right" title="Lab"> Lab </span>
+                        <span class="label label-primary pull-right" title="District"> District </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('report.province-municipality-wise-cases-overview') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Municipality Wise
+                        <span class="label label-warning pull-right" title="LLG"> LLG </span>
                     </a>
                 </li>
                 @endif
@@ -163,7 +170,7 @@
                     <a href="{{ route('report.municipality-wise-cases-overview') }}">
                         <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                         Municipality Wise
-                        <span class="label label-primary pull-right" title="Lab"> Lab </span>
+                        <span class="label label-primary pull-right" title="LLG"> LLG </span>
                     </a>
                 </li>
                 @endif
