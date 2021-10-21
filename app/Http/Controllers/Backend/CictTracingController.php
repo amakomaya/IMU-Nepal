@@ -710,7 +710,7 @@ class CictTracingController extends Controller
 
         $filter_date = $this->dataFromOnly($request);
         
-        $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->id;
+        $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->province_id;
         $locations = District::where('province_id', $province_id)->get();
 
         $cict_tracings = CictTracing::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_tracings.hp_code')
@@ -738,7 +738,7 @@ class CictTracingController extends Controller
 
         $filter_date = $this->dataFromOnly($request);
         
-        $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->id;
+        $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->province_id;
         $locations = Municipality::where('province_id', $province_id)->get();
 
         $cict_tracings = CictTracing::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_tracings.hp_code')
