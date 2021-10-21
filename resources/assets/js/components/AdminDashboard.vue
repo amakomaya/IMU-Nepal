@@ -28,9 +28,9 @@
     <div class="clearfix"></div>
     <hr>
       <div class="col-lg-6">
-        <h3 class="text-center" style="padding-bottom: 10px;">ANTIGEN</h3>
+        <h2 class="text-center" style="padding-bottom: 10px;">ANTIGEN</h2>
         <div class="col-lg-6 col-md-6">
-          <div class="panel panel-danger">
+          <div class="panel panel-danger shadow-lg">
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
@@ -53,7 +53,7 @@
           </div>
         </div>
         <div class="col-lg-6 col-md-6">
-          <div class="panel panel-success">
+          <div class="panel panel-success shadow-lg">
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
@@ -77,9 +77,9 @@
         </div>
       </div>
       <div class="col-lg-6">
-        <h3 class="text-center" style="padding-bottom: 10px;">PCR</h3>
+        <h2 class="text-center" style="padding-bottom: 10px;">PCR</h2>
         <div class="col-lg-6 col-md-6">
-          <div class="panel panel-danger">
+          <div class="panel panel-danger shadow-lg">
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
@@ -102,7 +102,7 @@
           </div>
         </div>
         <div class="col-lg-6 col-md-6">
-          <div class="panel panel-success">
+          <div class="panel panel-success shadow-lg ">
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
@@ -128,17 +128,25 @@
       <div class="clearfix"></div>
       <hr>
       <div class="col-lg-12">
-        <h3 class="text-center" style="padding-bottom: 10px;">HOSPITAL REPORTING</h3>
+        <h2 class="text-center" style="padding-bottom: 10px;">HOSPITAL REPORTING</h2>
       </div>
       <div class="col-lg-12">
         <div class="col-lg-3 col-md-6">
-          <div class="panel panel-info">
+          <div class="panel panel-info shadow-lg">
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
                   <i class="fa fa-hospital-o fa-3x"></i>
                 </div>
                 <div class="col-xs-9 text-right">
+                  <div v-if="Object.keys(report).length === 0">
+                    <loading-progress
+                        :progress="progress"
+                        :indeterminate="indeterminate"
+                        shape="line"
+                        size="30"
+                    />
+                  </div>
                   <div class="huge">{{ report.hospital_admission }}</div>
                   <div>Admission</div>
                 </div>
@@ -147,7 +155,7 @@
           </div>
         </div>
         <div class="col-lg-3 col-md-6">
-          <div class="panel panel-warning">
+          <div class="panel panel-warning shadow-lg">
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
@@ -170,7 +178,7 @@
           </div>
         </div>
         <div class="col-lg-3 col-md-6">
-          <div class="panel panel-success">
+          <div class="panel panel-success shadow-lg">
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
@@ -193,7 +201,7 @@
           </div>
         </div>
         <div class="col-lg-3 col-md-6">
-          <div class="panel panel-danger">
+          <div class="panel panel-danger shadow-lg">
             <div class="panel-heading">
               <div class="row">
                 <div class="col-xs-3">
