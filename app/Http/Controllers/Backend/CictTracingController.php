@@ -766,7 +766,7 @@ class CictTracingController extends Controller
 
         $filter_date = $this->dataFromOnly($request);
         
-        $district_id = DistrictInfo::where('token', auth()->user()->token)->first()->id;
+        $district_id = DistrictInfo::where('token', auth()->user()->token)->first()->district_id;
         $locations = Municipality::where('district_id', $district_id)->get();
 
         $cict_tracings = CictTracing::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_tracings.hp_code')
