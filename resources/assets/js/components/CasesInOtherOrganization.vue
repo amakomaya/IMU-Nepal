@@ -18,7 +18,7 @@
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
       </tr>
       </thead>
-      <tr slot-scope="{item}">
+      <tr slot-scope="{item}" v-bind:style= "[item.cict_tracing ? {'background': '#d1e7d6', 'color' : '#545454'} : '']">
         <td>
           <div v-if="item.parent_case_id !== null" title="Parent Case ID">PC ID : {{ item.parent_case_id }}</div>
         </td>
@@ -33,7 +33,8 @@
         <td>
           Place : {{ item.healthpost ? item.healthpost.name : '' }} <br>
           Type : {{ checkCaseType(item.cases) }} <br>
-          Management : {{ checkCaseManagement(item.cases, item.case_where) }}
+          Management : {{ checkCaseManagement(item.cases, item.case_where) }} <br>
+          CICT : {{ item.cict_tracing ? item.cict_tracing.organization.name : 'N/A' }}
         </td>
         <td>{{ ad2bs(item.register_date_en) }}</td>
         <td><span class="label label-info"> {{ item.ancs.length }}</span>
@@ -47,11 +48,11 @@
         </td>
         <td>
           <button v-on:click="viewCaseDetails(item.token)" target="_blank" title="Case Details Report">
-            <i class="fa fa-file" aria-hidden="true"></i> |
+            <i class="fa fa-file" aria-hidden="true"></i>
           </button>
-          <span v-if="item.latest_anc">
+          <span v-if="!item.cict_tracing">
             <button v-on:click="receiveCictData(item)" title="Receive CICT Patient Data from other Hospital">
-              <i class="fa fa-hospital-o"></i>
+               | <i class="fa fa-hospital-o"></i>
             </button>
           </span>
           <!-- <span v-if="item.latest_anc">
