@@ -608,7 +608,7 @@ class WomenController extends Controller
             ->whereHas('ancs', function ($q) {
                 $q->where('result', '3');
             })
-            ->whereDoesntHave('cictTracing')
+            ->with('cictTracing')
             ->active()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
