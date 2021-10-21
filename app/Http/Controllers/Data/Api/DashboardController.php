@@ -541,40 +541,26 @@ class DashboardController extends Controller
                 $date_chosen = Carbon::now()->toDateString();
             }
         }
+
         $antigen_positive = SampleCollection::whereIn('hp_code', $hpCodes)
             ->where('service_for', '2')->where('result', '3')
-            ->where(function($q) use($date_chosen){
-                $q->where(function($q2) use($date_chosen) {
-                    $q2->whereDate('created_at', $date_chosen)
-                    ->whereNull('received_date_en');
-                })->orWhereDate('reporting_date_en', $date_chosen);
-            })
+            ->whereDate('reporting_date_en', $date_chosen)
             ->active()
             ->count();
-
         $antigen_negative = SampleCollection::whereIn('hp_code', $hpCodes)
             ->where('service_for', '2')->where('result', '4')
-            ->where(function($q) use($date_chosen){
-                $q->where(function($q2) use($date_chosen) {
-                    $q2->whereDate('created_at', $date_chosen)
-                    ->whereNull('received_date_en');
-                })->orWhereDate('reporting_date_en', $date_chosen);
-            })
+            ->whereDate('reporting_date_en', $date_chosen)
             ->active()
             ->count();
         $total_registered_only = SuspectedCase::whereIn('hp_code', $hpCodes)
-              ->where(function($q) use($date_chosen){
-                $q->whereDate('created_at', $date_chosen);
-            })
+            ->whereDate('created_at', $date_chosen)
             ->active()
             ->doesnthave('ancs')
             ->count();
         $total_registered_all = SuspectedCase::whereIn('hp_code', $hpCodes)
-        ->where(function($q) use($date_chosen){
-          $q->whereDate('created_at', $date_chosen);
-        })
-        ->active()
-        ->count();
+            ->whereDate('created_at', $date_chosen)
+            ->active()
+            ->count();
         // $antigen_not_tested = SampleCollection::whereIn('hp_code', $hpCodes)
         //     ->where('service_for', '2')->whereIn('result', ['2', '9'])
         //     ->where(function($q) use($date_chosen){
