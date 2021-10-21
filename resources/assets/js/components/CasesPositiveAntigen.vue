@@ -21,7 +21,7 @@
         <th width="6%" title="Latest Lab Result">Result</th>
         <th width="4%" title="Tested By">Tested By</th>
         <th width="4%" title="Infection Type">Type</th>
-        <th width="4%" title="CICT Status">CICT Status</th>
+        <th width="4%" title="CICT Transfer Status">CICT Status</th>
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
       </tr>
       </thead>
@@ -63,9 +63,16 @@
         <td>
           {{ checkInfectionType(item.latest_anc.infection_type) }}
         </td>
-
-        <td v-if="item.cict_tracing"><span class="label label-success"><i class="fa fa-check" aria-hidden="true"></i></span> </td>
-        <td v-else><span class="label label-danger"><i class="fa fa-times" aria-hidden="true"></i></span></td> 
+        <td v-if="item.cict_tracing">
+          <span class="label label-success" title="CICT Transfer Status Completed">
+            <i class="fa fa-check" aria-hidden="true"></i>
+          </span>
+        </td>
+        <td v-else>
+          <span class="label label-danger" title="No CICT">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </span>
+        </td> 
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
             <i class="fa fa-file" aria-hidden="true"></i>
