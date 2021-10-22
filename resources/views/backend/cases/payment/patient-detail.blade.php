@@ -161,7 +161,7 @@
                                 </tbody>
                             </table>
                             <div class="row text-center">
-                                {{ $payment_cases->links() }}
+                                {{ $payment_cases->appends(Request::except('page'))->links() }}
                             </div>
                         </div>
                     </div>
