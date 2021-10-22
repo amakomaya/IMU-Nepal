@@ -20,11 +20,10 @@
                         <div class="row">
                             <form method="get" action="">
                                 <div class="form-group col-lg-6">
-                                    <label for="date_from">Date From</label>
-                                    <input type="date" name="date_from" class="form-control" value="{{ $date_from }}" min="2021-04-17" max="{{ date('Y-m-d') }}"/><br>
-                                    <label for="date_to">Date To</label>
-                                    <input type="date" name="date_to" class="form-control" value="{{ $date_to }}" min="2021-05-01" max="{{ date('Y-m-d') }}"/><br>
-                                    <button type="submit" class="btn btn-success pull-right">Filter</button>
+                                    <div id ="from_to"></div>
+                                    <div class="form-group col-sm-3">
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -193,6 +192,10 @@
             buttons: [
                 'csv', 'excel', 'pdf', 'print'
             ],
+        });
+
+        $.get( "{{route("admin.select-from-to")}}?from_date={{$from_date}}&to_date={{$to_date}}",function(data){
+            $("#from_to").html(data);
         });
     });
 </script>

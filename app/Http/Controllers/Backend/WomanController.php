@@ -369,13 +369,32 @@ class WomanController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
+        foreach ($response as $key => $value) {
+            $$key = $value;
+        }
+        $filter_date = $this->dataFromAndTo($request);
 
-        $date_from = $request->date_from ?: date('Y-m-d',strtotime("-14 days"));
-        $date_to = $request->date_to ?: date('Y-m-d');
         $payment_cases = PaymentCase::whereIn('hp_code', $hpCodes)
-            ->whereBetween(DB::raw('DATE(register_date_en)'), [$date_from, $date_to])
+            ->whereBetween(DB::raw('DATE(register_date_en)'), [$filter_date['from_date'], $filter_date['to_date']])
             ->latest()->with('organization')->paginate(1000);
-        return view('backend.cases.payment.patient-detail', compact('payment_cases', 'date_from', 'date_to'));
+        return view('backend.cases.payment.patient-detail', compact('payment_cases', 'from_date', 'to_date'));
+    }
+
+    private function dataFromAndTo(Request $request)
+    {
+        if (!empty($request['from_date'])) {
+            $from_date_array = explode("-", $request['from_date']);
+            $from_date_eng = Carbon::parse(Calendar::nep_to_eng($from_date_array[0], $from_date_array[1], $from_date_array[2])->getYearMonthDay())->startOfDay();
+        }
+        if (!empty($request['to_date'])) {
+            $to_date_array = explode("-", $request['to_date']);
+            $to_date_eng = Carbon::parse(Calendar::nep_to_eng($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay())->endOfDay();
+        }
+
+        return [
+            'from_date' =>  $from_date_eng ?? Carbon::now()->subDays(14)->startOfDay(),
+            'to_date' => $to_date_eng ?? Carbon::now()->endOfDay()
+        ];
     }
 
     public function create(Request $request)
@@ -817,22 +836,5 @@ class WomanController extends Controller
 
         $map = GMaps::create_map();
         return view('backend.woman.maps', compact('map'));
-    }
-
-    private function dataFromAndTo(Request $request)
-    {
-        if (!empty($request['from_date'])) {
-            $from_date_array = explode("-", $request['from_date']);
-            $from_date_eng = Calendar::nep_to_eng($from_date_array[0], $from_date_array[1], $from_date_array[2])->getYearMonthDay();
-        }
-        if (!empty($request['to_date'])) {
-            $to_date_array = explode("-", $request['to_date']);
-            $to_date_eng = Calendar::nep_to_eng($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay();
-        }
-
-        return [
-            'from_date' => $from_date_eng ?? Carbon::now()->subMonth(1),
-            'to_date' => $to_date_eng ?? Carbon::now()
-        ];
     }
 }
