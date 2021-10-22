@@ -472,42 +472,21 @@ class DashboardController extends Controller
         }
         $data['registered'] = $current_data + $dump_data;
 
-        // $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->active()->count();
-        // try {
-        //   $dump_data = SampleCollectionOld::whereIn('hp_code', $hpCodes)->active()->count();
-        // } catch (\Exception $e) {
-        //   $dump_data = 0;
-        // }
-        // $data['sample_collection'] = $current_data + $dump_data;
-        
-        // $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->active()->count();
-        // try {
-        //   $dump_data = SampleCollectionOld::whereIn('hp_code', $hpCodes)->where('result', 3)->active()->count();
-        // } catch (\Exception $e) {
-        //   $dump_data = 0;
-        // }
-        // $data['lab_result_positive'] = $current_data + $dump_data;
-        
-
-        $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '2')->where('result', 3)->active()->count();
+        $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '2')
+            ->where('result', 3)->active()->count();
         try {
-          $dump_data = SampleCollectionOld::whereIn('hp_code', $hpCodes)->where('service_for', '2')->where('result', 3)->where('status', 1)->count(); 
+          $dump_data = SampleCollectionOld::whereIn('hp_code', $hpCodes)->where('service_for', '2')
+            ->where('result', 3)->where('status', 1)->count(); 
         } catch (\Exception $e) {
           $dump_data = 0;
         }
         $data['lab_result_positive_antigen'] = $current_data + $dump_data;
 
-        // $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->active()->count();
-        // try {
-        //   $dump_data = SampleCollectionOld::whereIn('hp_code', $hpCodes)->where('result', 4)->active()->count();
-        // } catch (\Exception $e) {
-        //   $dump_data = 0;
-        // }
-        // $data['lab_result_negative'] = $current_data + $dump_data;
-
-        $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '2')->where('result', 4)->active()->count();
+        $current_data = SampleCollection::whereIn('hp_code', $hpCodes)->where('service_for', '2')
+            ->where('result', 4)->active()->count();
         try {
-          $dump_data = SampleCollectionOld::whereIn('hp_code', $hpCodes)->where('service_for', '2')->where('result', 4)->where('status', 1)->count();
+          $dump_data = SampleCollectionOld::whereIn('hp_code', $hpCodes)->where('service_for', '2')
+            ->where('result', 4)->where('status', 1)->count();
         } catch (\Exception $e) {
           $dump_data = 0;
         }
@@ -542,6 +521,15 @@ class DashboardController extends Controller
             }
         }
 
+        $total_registered_all = SuspectedCase::whereIn('hp_code', $hpCodes)
+            ->whereDate('created_at', $date_chosen)
+            ->active()
+            ->count();
+        $total_registered_only = SuspectedCase::whereIn('hp_code', $hpCodes)
+            ->whereDate('created_at', $date_chosen)
+            ->active()
+            ->doesnthave('ancs')
+            ->count();
         $antigen_positive = SampleCollection::whereIn('hp_code', $hpCodes)
             ->where('service_for', '2')->where('result', '3')
             ->whereDate('reporting_date_en', $date_chosen)
@@ -552,27 +540,8 @@ class DashboardController extends Controller
             ->whereDate('reporting_date_en', $date_chosen)
             ->active()
             ->count();
-        $total_registered_only = SuspectedCase::whereIn('hp_code', $hpCodes)
-            ->whereDate('created_at', $date_chosen)
-            ->active()
-            ->doesnthave('ancs')
-            ->count();
-        $total_registered_all = SuspectedCase::whereIn('hp_code', $hpCodes)
-            ->whereDate('created_at', $date_chosen)
-            ->active()
-            ->count();
-        // $antigen_not_tested = SampleCollection::whereIn('hp_code', $hpCodes)
-        //     ->where('service_for', '2')->whereIn('result', ['2', '9'])
-        //     ->where(function($q) use($date_chosen){
-        //         $q->where(function($q2) use($date_chosen) {
-        //             $q2->whereDate('created_at', $date_chosen)
-        //             ->whereNull('received_date_en');
-        //         })->orWhereDate('reporting_date_en', $date_chosen);
-        //     })
-        //     ->active()
-        //     ->count();
             
-        $total_tested = $antigen_positive+$antigen_negative;
+        $total_tested = $antigen_positive + $antigen_negative;
         $pr = '-';
         if ($total_tested != 0) {
           $pr = $antigen_positive/($antigen_negative+$antigen_positive);
