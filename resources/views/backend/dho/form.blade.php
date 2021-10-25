@@ -163,7 +163,7 @@
                                     </div>
                                 <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
                                     <label for="status" class="col-md-3 control-label">{{trans('create.status')}}</label>
-                                    @php($list = [1=>'Active',0=>'Inative'])
+                                    @php($list = [1=>'Active',0=>'Inactive'])
                                     <div class="col-md-7">
                                     <select id="status" class="form-control" name="status" >
                                             <option value="">Select Status</option>
