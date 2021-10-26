@@ -125,7 +125,7 @@ class PoeController extends Controller
             
             $data[$key]['total_test'] = $report->count()??0;
             $data[$key]['not_tested'] = SuspectedCase::where('hp_code', $key)
-            ->whereBetween(\DB::raw('DATE(reporting_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
+            ->whereBetween(\DB::raw('DATE(created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->active()
             ->doesnthave('ancs')
             ->count();
