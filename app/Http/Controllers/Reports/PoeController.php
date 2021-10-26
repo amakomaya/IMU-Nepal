@@ -96,7 +96,7 @@ class PoeController extends Controller
             $data[$hpCode]['province_name'] = $provinceArray[$healthpost[0]->province_id];
             $data[$hpCode]['total_test'] = 0;
             $data[$hpCode]['not_tested'] = SuspectedCase::where('hp_code', $hpCode)
-            ->whereBetween(\DB::raw('DATE(reporting_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
+            ->whereBetween(\DB::raw('DATE(created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->active()
             ->doesnthave('ancs')
             ->count();
