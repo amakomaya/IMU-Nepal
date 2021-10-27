@@ -90,6 +90,7 @@ class DistrictWiseCasesOverview extends Controller
         $reports = collect($reports)->sortBy('municipality_name')->groupBy('municipality_name');
         $data = [];
         foreach($reports as $key => $report) {
+            $data[$key]['district_name'] = $report->first()->district_name;
             $data[$key]['municipality_name'] = $key;
             $data[$key]['pcr_postive_cases_count'] = $report->where('service_for', '1')->where('result', 3)->count();
             $data[$key]['pcr_negative_cases_count'] = $report->where('service_for', '1')->where('result', 4)->count();
