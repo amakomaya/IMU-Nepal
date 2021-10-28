@@ -71,7 +71,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'sample_type' => array ('nasopharyngeal'=> '[1]', 'oropharyngeal' => '[2]', 'both' => '[1, 2]' ),
           'service_type' => array ('paid service' => "1", 'free of cost service' => "2"),
           'infection_type' => array ('symptomatic' => 1, 'asymptomatic' => 2),
-          'age_unit' => array ('year' => 0, 'month' => 1, 'day' => 2),
+          'age_unit' => array ('year' => '0', 'month' => '1', 'day' => '2'),
           'gender'=> array( 'male' => 1, 'female' => 2, 'other' => 3 ),
           'ethnicity' => array( "don't know"=> 7, 'dalit'=> 1, 'janajati'=> 2, 'madheshi'=> 3, 'muslim'=> 4, 'brahmin/chhetri'=> 5, 'other'=> 6),
           'province' => $provinces,
@@ -115,7 +115,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
         $suspectedCase = SuspectedCase::create([
           'name' => $row['person_name'],
           'age' => $row['age'],
-          'age_unit' => $row['age_unit'],
+          'age_unit' => $row['age_unit']??'0',
           'province_id' => $row['province'],
           'district_id' => $row['district'],
           'municipality_id' => $row['municipality'],
