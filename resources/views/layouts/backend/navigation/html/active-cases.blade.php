@@ -121,14 +121,12 @@
                 </li>
             </ul>
         </li>
-        {{-- <li>
-            <a href="{{ route('patients.tracing.index') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true" style="color: blue;"></i>
-                Contact Tracing
-                <span class="label label-primary pull-right">Tracing</span>
-
+        <li>
+            <a href="{{ route('cict-tracing-transferred') }}">
+                <i class="fa fa-arrows-h" aria-hidden="true" style="color: blue;"></i>
+                Transferred Cases
             </a>
-        </li> --}}
+        </li>
         <li>
             <a href="#">
                 <i class="fa fa-file-pdf-o" aria-hidden="true" style="color: green;"></i> 

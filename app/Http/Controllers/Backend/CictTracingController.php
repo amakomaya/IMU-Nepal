@@ -868,6 +868,11 @@ class CictTracingController extends Controller
             'date_to' => $data_to
         ]);
     }
+    
+    public function cictTransferredList()
+    {
+        return view('backend.cict-tracing.transferred-list');
+    }
 
     public function cictTransfer(Request $request){
         $data = json_decode($request->getContent(), true);

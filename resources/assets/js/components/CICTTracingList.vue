@@ -28,9 +28,7 @@
         <td>
           <span v-if="item.regdev === 'web'" title="Web" class="label label-info">W</span>
           <span v-else title="Mobile" class="label label-success">M</span>
-        
         </td>
-
         <td>
           <span v-show="checkEditButton()">
             <button v-if="item.cict_initiated_date" v-on:click="cictUpdateData(item.case_id)" class="btn btn-primary btn-sm" title="CICT Edit">

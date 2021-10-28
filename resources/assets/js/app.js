@@ -74,6 +74,7 @@ import CommunityDeathCreate from "./components/CommunityDeathCreate"
 import CommunityDeathList from "./components/CommunityDeathList"
 
 import CICTTracing from "./components/CICTTracingList"
+import CICTTracingTransferred from "./components/CICTTracingTransferred"
 import CICTOldReport from "./components/CICTOldReport"
 
 
@@ -159,6 +160,7 @@ Vue.component('community-deaths-create', CommunityDeathCreate);
 Vue.component('community-deaths-list', CommunityDeathList);
 
 Vue.component('cict-tracing-list', CICTTracing);
+Vue.component('cict-transferred-list', CICTTracingTransferred);
 Vue.component('cict-old-report', CICTOldReport);
 
 const app = new Vue({

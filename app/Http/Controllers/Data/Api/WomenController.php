@@ -823,7 +823,20 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        $data = CictTracing::whereIn('hp_code', $hpCodes)->with('municipality', 'district')->latest()->advancedFilter();
+        $data = CictTracing::whereIn('hp_code', $hpCodes)->with('municipality', 'district')
+            ->whereNotNull('cict_initiated_date')
+            ->latest()->advancedFilter();
+        return response()->json(['collection' => $data]);
+    }
+
+    public function CICTTracingTransferredList(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+
+        $data = CictTracing::whereIn('hp_code', $hpCodes)->with('municipality', 'district')
+            ->whereNull('cict_initiated_date')
+            ->latest()->advancedFilter();
         return response()->json(['collection' => $data]);
     }
 }
