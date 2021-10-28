@@ -5,7 +5,7 @@
             display: none;
         }
 
-        form {
+        .form-cict {
             background: #ecf5fc;
             padding: 20px 50px 45px;
         }
@@ -52,8 +52,8 @@
                         <strong>Case Investigation (A Form) (1 of 3)</strong>
                     </div>
                     <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        {!! rcForm::open('POST', route('cict-tracing.section-one.update', $data->case_id), ['name' => 'createCase']) !!}
+                    <div class="panel-body form-cict">
+                        {!! rcForm::open('POST', route('cict-tracing.section-one.update', $data->case_id), ['name' => 'createCase', 'class' => 'form-cict']) !!}
                         {{ method_field('PUT') }}
                         <div class="panel-body">
                             <div class="form-group">
