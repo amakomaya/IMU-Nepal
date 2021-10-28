@@ -714,6 +714,7 @@ class CictTracingController extends Controller
         $locations = District::where('province_id', $province_id)->get();
 
         $cict_tracings = CictTracing::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_tracings.hp_code')
+            ->whereNotNull('cict_tracings.cict_initiated_date')
             ->select('cict_tracings.token', 'healthposts.district_id')
             ->whereDate('cict_tracings.created_at', $filter_date['from_date']->toDateString())
             ->whereIn('cict_tracings.hp_code', $hpCodes)->get()->groupBy('district_id');
@@ -742,6 +743,7 @@ class CictTracingController extends Controller
         $locations = Municipality::where('province_id', $province_id)->get();
 
         $cict_tracings = CictTracing::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_tracings.hp_code')
+            ->whereNotNull('cict_tracings.cict_initiated_date')
             ->select('cict_tracings.token', 'healthposts.municipality_id')
             ->whereDate('cict_tracings.created_at', $filter_date['from_date']->toDateString())
             ->whereIn('cict_tracings.hp_code', $hpCodes)->get()->groupBy('municipality_id');
@@ -770,6 +772,7 @@ class CictTracingController extends Controller
         $locations = Municipality::where('district_id', $district_id)->get();
 
         $cict_tracings = CictTracing::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_tracings.hp_code')
+            ->whereNotNull('cict_tracings.cict_initiated_date')
             ->select('cict_tracings.token', 'healthposts.municipality_id')
             ->whereDate('cict_tracings.created_at', $filter_date['from_date']->toDateString())
             ->whereIn('cict_tracings.hp_code', $hpCodes)->get()->groupBy('municipality_id');
