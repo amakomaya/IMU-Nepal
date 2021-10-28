@@ -21,7 +21,10 @@
         <td>{{ sex(item.sex )}}</td>
         <td>{{ item.district.district_name }}</td>
         <td>{{ item.municipality.municipality_name }}</td>
-        <td>{{ item.cict_initiated_date }}</td>
+        <td>
+          <span v-if="item.cict_initiated_date">{{ item.cict_initiated_date }}</span>
+          <span v-else class="label label-danger">Not Initiated</span>
+        </td>
         <td>
           <span v-if="item.regdev === 'web'" title="Web" class="label label-info">W</span>
           <span v-else title="Mobile" class="label label-success">M</span>
