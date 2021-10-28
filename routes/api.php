@@ -1217,6 +1217,7 @@ Route::post('/v1/cict-close-contact', function (Request $request) {
     $data = $request->json()->all();
     foreach ($data as $value) {
         try {
+            $value['emergency_contact_one'] = $value['phone'];
             $cict = \App\Models\CictCloseContact::where('case_id', $value['case_id'])->first();
             if($cict){
                 $cict->update($value);
