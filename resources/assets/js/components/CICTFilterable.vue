@@ -1,8 +1,4 @@
 <template>
-<div>
-  <div class="pull-right">
-    <span class="label label-primary" style="font-size: 105%;">Total A form filled: {{ total }}</span>
-  </div>
   <div class="filterable">
     <div class="panel">
       <div class="panel-heading">
@@ -16,6 +12,9 @@
         </div>
       </div>
       <div class="panel-body">
+        <div class="pull-right">
+          <span class="label label-primary" style="font-size: 105%;">Total A form filled: {{ total }}</span>
+        </div>
         <div class="filter">
           <div class="filter-item" v-for="(f, i) in filterCandidates">
             <div class="filter-column">
@@ -185,8 +184,6 @@
       </div>
     </div>
   </div>
-
-</div>
 </template>
 <script type="text/javascript">
 import Vue from 'vue'
