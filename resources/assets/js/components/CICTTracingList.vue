@@ -3,15 +3,16 @@
     <filterable v-bind="filterable">
       <thead slot="thead">
       <tr>
-        <th>Case ID</th>
-        <th>Name</th>
-        <th>Age</th>
+        <th title="Case ID">Case ID</th>
+        <th title="Name">Name</th>
+        <th title="Age">Age</th>
         <th title="Gender">G</th>
-        <th>District</th>
-        <th>Municipality</th>
+        <th title="District">District</th>
+        <th title="Municipality">Municipality</th>
         <th title="Initiated Date">Initiated Date</th>
-        <th><i class="fa fa-mobile" aria-hidden="true"></i> / <i class="fa fa-desktop fa-sm" aria-hidden="true"></i></th>
-        <th></th>
+        <th title="A form Status">A form Status</th>
+        <th title="Device Used"><i class="fa fa-mobile" aria-hidden="true"></i> / <i class="fa fa-desktop fa-sm" aria-hidden="true"></i></th>
+        <th title="Action"></th>
       </tr>
       </thead>
       <tr slot-scope="{item, removeItemOnSuccess}">
@@ -24,6 +25,10 @@
         <td>
           <span v-if="item.cict_initiated_date">{{ item.cict_initiated_date }}</span>
           <span v-else class="label label-danger">Not Initiated</span>
+        </td>
+        <td>
+          <span v-if="item.completion_date" title="Complete" class="label label-success">Complete</span>
+          <span v-else title="Incomplete" class="label label-danger">Incomplete</span>
         </td>
         <td>
           <span v-if="item.regdev === 'web'" title="Web" class="label label-info">W</span>

@@ -1,4 +1,8 @@
 <template>
+<div>
+  <div class="pull-right">
+    <span class="label label-primary" style="font-size: 105%;">Total A form filled: {{ total }}</span>
+  </div>
   <div class="filterable">
     <div class="panel">
       <div class="panel-heading">
@@ -181,6 +185,8 @@
       </div>
     </div>
   </div>
+
+</div>
 </template>
 <script type="text/javascript">
 import Vue from 'vue'
@@ -199,6 +205,7 @@ export default {
   },
   data() {
     return {
+      total: 0,
       loading: true,
       apiresponce : false,
       appliedFilters: [],
@@ -444,6 +451,7 @@ export default {
             Vue.set(this.$data, 'collection', res.data.collection)
             this.query.page = res.data.collection.current_page
             this.apiresponce = true
+            this.total = res.data.total
           })
           .catch((error) => {
 
