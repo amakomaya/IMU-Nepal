@@ -13,7 +13,7 @@
       </div>
       <div class="panel-body">
         <div class="pull-right">
-          <span class="label label-primary" style="font-size: 105%;">Total A form filled: {{ total }}</span>
+          <span class="label label-primary" style="font-size: 105%;">Total: {{ total }}</span>
         </div>
         <div class="filter">
           <div class="filter-item" v-for="(f, i) in filterCandidates">

@@ -838,7 +838,9 @@ class WomenController extends Controller
 
         $data = CictTracing::whereIn('hp_code', $hpCodes)->with('municipality', 'district')
             ->whereNull('cict_initiated_date')
-            ->latest()->advancedFilter();
-        return response()->json(['collection' => $data]);
+            ->latest();
+        $total = clone $data;
+        $data = $data->advancedFilter();
+        return response()->json(['collection' => $data, 'total' => $total->count()]);
     }
 }
