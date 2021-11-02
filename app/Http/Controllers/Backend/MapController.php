@@ -21,10 +21,10 @@ class MapController extends Controller
         $data = SuspectedCase::whereNotNull('longitude')
             ->whereBetween('longitude', [79, 90])
             ->whereBetween('latitude', [26, 31])
-            ->join('ancs', 'women.token', '=', 'ancs.woman_token')
+            ->join('ancs', 'suspected_cases.token', '=', 'ancs.woman_token')
             ->whereIn('ancs.result', [3])
-            ->select(\DB::raw('round(women.latitude, 2) as latitude'), \DB::raw('round(women.longitude, 2) as longitude'), \DB::raw('count(*) as total'))
-            ->groupBy(\DB::raw('round(women.longitude, 1)'))
+            ->select(\DB::raw('round(suspected_cases.latitude, 2) as latitude'), \DB::raw('round(suspected_cases.longitude, 2) as longitude'), \DB::raw('count(*) as total'))
+            ->groupBy(\DB::raw('round(suspected_cases.longitude, 1)'))
             ->get()->makeHidden(['formated_age_unit', 'formated_gender']);
 
         $max_total = collect($data)->max('total');

@@ -27,12 +27,12 @@ class ExtCaseController extends Controller
 
         if (!empty($user)) {
             $healthworker = OrganizationMember::where('token', $user->token)->get()->first();
-            $record = DB::table('women')
-                ->join('ancs', 'ancs.woman_token', '=', 'women.token')
+            $record = DB::table('suspected_cases')
+                ->join('ancs', 'ancs.woman_token', '=', 'suspected_cases.token')
                 ->join('lab_tests', 'lab_tests.sample_token', '=', 'ancs.token')
-                ->where('women.hp_code', $healthworker->hp_code)
-                ->select('women.token','women.name','women.age','women.age_unit','women.sex','women.caste','women.province_id','women.district_id','women.municipality_id','women.ward',
-                    'women.tole','women.emergency_contact_one','women.travelled','women.occupation','women.created_at'
+                ->where('suspected_cases.hp_code', $healthworker->hp_code)
+                ->select('suspected_cases.token','suspected_cases.name','suspected_cases.age','suspected_cases.age_unit','suspected_cases.sex','suspected_cases.caste','suspected_cases.province_id','suspected_cases.district_id','suspected_cases.municipality_id','suspected_cases.ward',
+                    'suspected_cases.tole','suspected_cases.emergency_contact_one','suspected_cases.travelled','suspected_cases.occupation','suspected_cases.created_at'
                     ,'ancs.token as sample_token', 'ancs.service_for', 'ancs.service_type','ancs.sample_type',
                     'ancs.infection_type','ancs.created_at as sample_created_at','lab_tests.sample_recv_date', 'lab_tests.sample_test_date','lab_tests.sample_test_time',
                     'lab_tests.sample_test_result')
@@ -551,10 +551,10 @@ class ExtCaseController extends Controller
 
         if (!empty($user)) {
             $record = DB::table('ancs')->where('ancs.token', $sample_token)
-                ->join('women', 'women.token', '=', 'ancs.woman_token')
+                ->join('suspected_cases', 'suspected_cases.token', '=', 'ancs.woman_token')
 //                ->leftJoin('lab_tests', 'lab_tests.sample_token', '=', 'ancs.token')
-                ->select('women.token','women.name','women.age','women.age_unit','women.sex','women.caste','women.province_id','women.district_id','women.municipality_id','women.ward',
-                    'women.tole','women.emergency_contact_one','women.travelled','women.occupation','women.created_at'
+                ->select('suspected_cases.token','suspected_cases.name','suspected_cases.age','suspected_cases.age_unit','suspected_cases.sex','suspected_cases.caste','suspected_cases.province_id','suspected_cases.district_id','suspected_cases.municipality_id','suspected_cases.ward',
+                    'suspected_cases.tole','suspected_cases.emergency_contact_one','suspected_cases.travelled','suspected_cases.occupation','suspected_cases.created_at'
                     ,'ancs.token as sample_token', 'ancs.service_for', 'ancs.service_type','ancs.sample_type',
                     'ancs.infection_type','ancs.collection_date_en as sample_created_at',
                     'ancs.received_date_en as sample_recv_date', 'ancs.sample_test_date_en as sample_test_date','ancs.sample_test_time',
@@ -606,10 +606,10 @@ class ExtCaseController extends Controller
 
         if (!empty($user)) {
             $record = DB::table('ancs')->where('ancs.token', $sample_token)
-                ->join('women', 'women.token', '=', 'ancs.woman_token')
+                ->join('suspected_cases', 'suspected_cases.token', '=', 'ancs.woman_token')
 //                ->leftJoin('lab_tests', 'lab_tests.sample_token', '=', 'ancs.token')
-                ->select('women.token','women.name','women.age','women.age_unit','women.sex','women.caste','women.province_id','women.district_id','women.municipality_id','women.ward',
-                    'women.tole','women.emergency_contact_one','women.travelled','women.occupation','women.created_at'
+                ->select('suspected_cases.token','suspected_cases.name','suspected_cases.age','suspected_cases.age_unit','suspected_cases.sex','suspected_cases.caste','suspected_cases.province_id','suspected_cases.district_id','suspected_cases.municipality_id','suspected_cases.ward',
+                    'suspected_cases.tole','suspected_cases.emergency_contact_one','suspected_cases.travelled','suspected_cases.occupation','suspected_cases.created_at'
                     ,'ancs.token as sample_token', 'ancs.service_for', 'ancs.service_type','ancs.sample_type',
                     'ancs.infection_type','ancs.collection_date_en as sample_created_at',
                     'ancs.received_date_en as sample_recv_date', 'ancs.sample_test_date_en as sample_test_date','ancs.sample_test_time',

@@ -34,22 +34,22 @@ class SuspectedCaseReportController extends Controller
         }
 
         if($response['old_new_data'] == '2') {
-            $data = \DB::connection('mysqldump')->table('women');
+            $data = \DB::connection('mysqldump')->table('suspected_cases');
         } else {
-            $data = \DB::table('women');
+            $data = \DB::table('suspected_cases');
         }
         
 
         if ($response['province_id'] !== null){
-            $data = $data->where('women.province_id', $response['province_id']);
+            $data = $data->where('suspected_cases.province_id', $response['province_id']);
         }
 
         if ($response['district_id'] !== null){
-            $data = $data->where('women.district_id', $response['district_id']);
+            $data = $data->where('suspected_cases.district_id', $response['district_id']);
         }
 
         if ($response['municipality_id'] !== null){
-            $data = $data->where('women.municipality_id', $response['municipality_id']);
+            $data = $data->where('suspected_cases.municipality_id', $response['municipality_id']);
         }
 
         if($response['service_for']) {
@@ -60,10 +60,10 @@ class SuspectedCaseReportController extends Controller
             }
         }
 
-        $data = $data->join('ancs', 'ancs.woman_token', '=', 'women.token')
-            ->join('provinces', 'women.province_id', '=', 'provinces.id')
-            ->join('districts', 'women.district_id', '=', 'districts.id')
-            ->join('municipalities', 'women.municipality_id', '=', 'municipalities.id')
+        $data = $data->join('ancs', 'ancs.woman_token', '=', 'suspected_cases.token')
+            ->join('provinces', 'suspected_cases.province_id', '=', 'provinces.id')
+            ->join('districts', 'suspected_cases.district_id', '=', 'districts.id')
+            ->join('municipalities', 'suspected_cases.municipality_id', '=', 'municipalities.id')
             ->where('ancs.result', 3)
             ->whereDate('ancs.updated_at', '>', $filter_date['from_date']->toDateString())
             ->select(
@@ -71,10 +71,10 @@ class SuspectedCaseReportController extends Controller
                 'districts.district_name',
                 'municipalities.municipality_name',
 
-                'women.name',
-                'women.age',
-                'women.sex',
-                'women.emergency_contact_one',
+                'suspected_cases.name',
+                'suspected_cases.age',
+                'suspected_cases.sex',
+                'suspected_cases.emergency_contact_one',
                 'ancs.result',
                 'ancs.updated_at'
             )

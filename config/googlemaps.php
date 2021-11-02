@@ -16,7 +16,7 @@ return [
 
     'geocode' => [
         'cache' => false, //Geocode caching into database
-        'table_name' => 'women', //Geocode caching database table name
+        'table_name' => 'suspected_cases', //Geocode caching database table name
     ],
 
     'css_class' => '', //Your custom css class

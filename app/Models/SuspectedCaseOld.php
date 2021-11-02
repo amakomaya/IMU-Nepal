@@ -27,7 +27,7 @@ class SuspectedCaseOld extends Model
         '5' => 'ब्राह्मण / क्षेत्री',
         '6' => 'अन्य',
     ];
-    protected $table = 'women';
+    protected $table = 'suspected_cases';
     protected $fillable = [
         'id', 'token', 'name', 'age', 'age_unit', 'province_id', 'district_id',
         'municipality_id', 'hp_code', 'tole', 'ward', 'caste', 'registered_device',

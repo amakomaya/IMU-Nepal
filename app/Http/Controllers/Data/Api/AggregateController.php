@@ -27,10 +27,10 @@ class AggregateController extends Controller
             'lab_result_negative_in_24_hrs' => SampleCollection::where('result', 4)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
         ];
 
-        $rawForecast = DB::table('women')
-            ->latest('women.created_at')
-            ->join('ancs','women.token', '=', 'ancs.woman_token')
-            ->select(DB::raw('DATE(women.created_at) as register_date'), DB::raw('DATE(ancs.created_at) as sample_created_at'), DB::raw('DATE(women.updated_at) as result_date') , 'ancs.result as result')
+        $rawForecast = DB::table('suspected_cases')
+            ->latest('suspected_cases.created_at')
+            ->join('ancs','suspected_cases.token', '=', 'ancs.woman_token')
+            ->select(DB::raw('DATE(suspected_cases.created_at) as register_date'), DB::raw('DATE(ancs.created_at) as sample_created_at'), DB::raw('DATE(suspected_cases.updated_at) as result_date') , 'ancs.result as result')
             ->get();
 
         $forecast = $rawForecast->map(function ($item){
@@ -52,7 +52,7 @@ class AggregateController extends Controller
 //            ];
 //
 //            $provincialForecast = [
-//                'registered' => DB::table('women')
+//                'registered' => DB::table('suspected_cases')
 //                    ->whereIn('hp_code', $hpCodes)
 //                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
 //                    ->groupBy('date')
@@ -137,11 +137,11 @@ class AggregateController extends Controller
     }
 
     public function gender(){
-        $data = SuspectedCase::where('women.status', 1)
-            ->join('ancs', 'women.token', '=', 'ancs.woman_token')
+        $data = SuspectedCase::where('suspected_cases.status', 1)
+            ->join('ancs', 'suspected_cases.token', '=', 'ancs.woman_token')
             ->where('ancs.result', '!=', 5)
-            ->select('women.sex', 'ancs.result' , \DB::raw('count(*) as total'))
-            ->groupBy('women.sex', 'ancs.result')
+            ->select('suspected_cases.sex', 'ancs.result' , \DB::raw('count(*) as total'))
+            ->groupBy('suspected_cases.sex', 'ancs.result')
             ->get()->makeHidden(['formated_age_unit', 'formated_gender']);
 
         $table = collect($data)->map(function ($item) {
@@ -157,11 +157,11 @@ class AggregateController extends Controller
     }
 
     public function occupation(){
-        $data = SuspectedCase::where('women.status', 1)
-            ->join('ancs', 'women.token', '=', 'ancs.woman_token')
+        $data = SuspectedCase::where('suspected_cases.status', 1)
+            ->join('ancs', 'suspected_cases.token', '=', 'ancs.woman_token')
             ->where('ancs.result', '!=', 5)
-            ->select('women.occupation', 'ancs.result' , \DB::raw('count(*) as total'))
-            ->groupBy('women.occupation', 'ancs.result')
+            ->select('suspected_cases.occupation', 'ancs.result' , \DB::raw('count(*) as total'))
+            ->groupBy('suspected_cases.occupation', 'ancs.result')
             ->get()->makeHidden(['formated_age_unit', 'formated_gender']);
 
         $table = collect($data)->map(function ($item) {
@@ -179,9 +179,9 @@ class AggregateController extends Controller
     public function antigen(){
 
         $data = Cache::remember('analysis-report', 60 * 60, function () {
-            return \DB::table('women')->where('women.status', 1)
-                ->join('ancs', 'women.token', '=', 'ancs.woman_token')
-                ->join('healthposts', 'women.hp_code', '=', 'healthposts.hp_code')
+            return \DB::table('suspected_cases')->where('suspected_cases.status', 1)
+                ->join('ancs', 'suspected_cases.token', '=', 'ancs.woman_token')
+                ->join('healthposts', 'suspected_cases.hp_code', '=', 'healthposts.hp_code')
                 ->whereIn('ancs.result', [3,4])
                 ->select('ancs.result as antigen_result', 'ancs.service_for', 'healthposts.province_id as province', DB::raw('count(*) as total'))
                 ->groupBy(['antigen_result','province', 'service_for'])

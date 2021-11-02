@@ -319,7 +319,7 @@ class DashboardController extends Controller
             'registered' => Cache::remember('registered-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
                 $current_data = SuspectedCase::whereIn('hp_code', $hpCodes)->active()->count();
                 $dump_data = SuspectedCaseOld::whereIn('hp_code', $hpCodes)->where('status', 1)->count();
-                // $dump_data = DB::connection('mysqldump')->table('women')->whereIn('hp_code', $hpCodes)->where('status', 1)->count();
+                // $dump_data = DB::connection('mysqldump')->table('suspected_cases')->whereIn('hp_code', $hpCodes)->where('status', 1)->count();
                 return $current_data + $dump_data;
             }),
             'registered_in_24_hrs' => Cache::remember('registered_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($date_to, $date_from, $hpCodes) {
