@@ -20,7 +20,7 @@ Route::get('case-payment/situation-report' , 'Reports\CasesPaymentController@sit
 
 Route::get('cases-report/report' , 'Reports\SuspectedCaseReportController@casesReport')->name('report.cases-report-report');
 
-Route::get('situation-report/ancs-report' , 'Reports\AncDetailController@sampleAncsReport')->name('report.sample-report.ancs');
+Route::get('situation-report/sample_collection-report' , 'Reports\AncDetailController@sampleAncsReport')->name('report.sample-report.ancs');
 Route::get('situation-report/lab-report' , 'Reports\AncDetailController@sampleLabReport')->name('report.sample-report.lab');
 
 Route::get('lab-report-visualization', 'Reports\AncDetailController@labVisualizationReport')->name('report.visualization');

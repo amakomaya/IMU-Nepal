@@ -102,8 +102,8 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
         
         // $labId = $row['patient_lab_id'];
         // $sampleTestTime = $date_en->format('g : i A');
-        // $ancs = $this->getAncsBySid($sId);
-        // if(!$ancs) {
+        // $sample_collection = $this->getAncsBySid($sId);
+        // if(!$sample_collection) {
         //   $error = ['sid' => 'The patient with the given Sample ID couldnot be found. Please create the data of the patient & try again.'];
         //   $failures[] = new Failure($currentRowNumber, 'sid', $error, $row);
         //   throw new ValidationException(
@@ -134,7 +134,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
         //     return;
         //   }
             
-        //   $ancs->update([
+        //   $sample_collection->update([
         //     'result' => 9
         //   ]);
         // }
@@ -142,9 +142,9 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
     }
     
     private function getAncsBySid ($sId) {
-      $ancs = SampleCollection::where('token', $sId);
-      if($ancs->count() > 0){
-        return $ancs;
+      $sample_collection = SampleCollection::where('token', $sId);
+      if($sample_collection->count() > 0){
+        return $sample_collection;
       }
       return false;
     }

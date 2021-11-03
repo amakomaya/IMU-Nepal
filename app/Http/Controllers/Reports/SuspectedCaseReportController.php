@@ -54,18 +54,18 @@ class SuspectedCaseReportController extends Controller
 
         if($response['service_for']) {
             if($response['service_for'] == '2') {
-                $data = $data->where('ancs.service_for', '2');
+                $data = $data->where('sample_collection.service_for', '2');
             }else {
-                $date = $data->where('ancs.service_for', '!=', '2');
+                $date = $data->where('sample_collection.service_for', '!=', '2');
             }
         }
 
-        $data = $data->join('ancs', 'ancs.woman_token', '=', 'suspected_cases.token')
+        $data = $data->join('sample_collection', 'sample_collection.woman_token', '=', 'suspected_cases.token')
             ->join('provinces', 'suspected_cases.province_id', '=', 'provinces.id')
             ->join('districts', 'suspected_cases.district_id', '=', 'districts.id')
             ->join('municipalities', 'suspected_cases.municipality_id', '=', 'municipalities.id')
-            ->where('ancs.result', 3)
-            ->whereDate('ancs.updated_at', '>', $filter_date['from_date']->toDateString())
+            ->where('sample_collection.result', 3)
+            ->whereDate('sample_collection.updated_at', '>', $filter_date['from_date']->toDateString())
             ->select(
                 'provinces.province_name',
                 'districts.district_name',
@@ -75,8 +75,8 @@ class SuspectedCaseReportController extends Controller
                 'suspected_cases.age',
                 'suspected_cases.sex',
                 'suspected_cases.emergency_contact_one',
-                'ancs.result',
-                'ancs.updated_at'
+                'sample_collection.result',
+                'sample_collection.updated_at'
             )
             ->get();
         
@@ -86,12 +86,12 @@ class SuspectedCaseReportController extends Controller
         
         // if()
 
-        // $woman = SuspectedCase::with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
+        // $woman = SuspectedCase::with(['province', 'district', 'municipality', 'latestAnc', 'sampleCollection',
         //     'healthpost' => function($q) {
         //         $q->select('name', 'hp_code');
         //     }])
         //     ->where(function ($query){
-        //         $query->whereHas('ancs', function($q){
+        //         $query->whereHas('sampleCollection', function($q){
         //             $q->where('service_for', "2")->where('result', 3);
         //         });
         //     })

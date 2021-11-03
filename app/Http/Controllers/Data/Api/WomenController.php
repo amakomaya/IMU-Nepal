@@ -66,7 +66,7 @@ class WomenController extends Controller
             }
         }
         $woman = $woman->whereIn('hp_code', $hpCodes)
-            ->doesnthave('ancs')
+            ->doesnthave('sampleCollection')
             ->with(['municipality',
                 'healthpost']);
 
@@ -100,11 +100,11 @@ class WomenController extends Controller
 
         $woman = $woman->whereIn('hp_code', $hpCodes)
             ->where(function ($query) {
-                $query->whereHas('ancs', function ($q) {
+                $query->whereHas('sampleCollection', function ($q) {
                     $q->where('service_for', '!=', "2")->whereIn('result', [0,2]);
                 });
             })
-            ->with(['municipality', 'latestAnc', 'ancs',
+            ->with(['municipality', 'latestAnc', 'sampleCollection',
                 'healthpost']);
         $total = clone $woman;
 
@@ -135,11 +135,11 @@ class WomenController extends Controller
 
         $woman->whereIn('hp_code', $hpCodes)
             ->where(function ($query) {
-                $query->whereHas('ancs', function ($q) {
+                $query->whereHas('sampleCollection', function ($q) {
                     $q->where('service_for', "2")->whereIn('result', [0,2]);
                 });
             })
-            ->with(['municipality', 'latestAnc', 'ancs',
+            ->with(['municipality', 'latestAnc', 'sampleCollection',
                 'healthpost']);
         $total = clone $woman;
 
@@ -172,11 +172,11 @@ class WomenController extends Controller
             }
         }
         $woman->whereIn('hp_code', $hpCodes)
-            ->whereHas('ancs', function ($q) {
+            ->whereHas('sampleCollection', function ($q) {
                 $q->where('service_for', '!=', "2")->where('result', '=', 4);
             })
             ->with([
-                 'municipality','district', 'ancs',
+                 'municipality','district', 'sampleCollection',
                 'latestAnc' => function ($q) {
                     $q->with('getOrganization');
                 },
@@ -211,11 +211,11 @@ class WomenController extends Controller
         }
 
         $woman->whereIn('hp_code', $hpCodes)
-            ->whereHas('ancs', function ($q) {
+            ->whereHas('sampleCollection', function ($q) {
                 $q->where('service_for', "2")->where('result', '=', 4);
             })
             ->with([
-                'district','municipality', 'ancs',
+                'district','municipality', 'sampleCollection',
                 'latestAnc' => function ($q) {
                     $q->with('getOrganization');
                 },
@@ -250,10 +250,10 @@ class WomenController extends Controller
             }
         }
 
-        $woman->whereIn('hp_code', $hpCodes)->whereHas('ancs', function ($q) {
+        $woman->whereIn('hp_code', $hpCodes)->whereHas('sampleCollection', function ($q) {
             $q->where('service_for', '!=', "2")->where('result', '=', 3);
         })->with([
-                'ancs','healthpost' => function ($q) {
+                'sampleCollection','healthpost' => function ($q) {
                     $q->select('name', 'hp_code');
                 },
                 'latestAnc' => function ($q) {
@@ -293,12 +293,12 @@ class WomenController extends Controller
         $woman
         ->whereIn('hp_code', $hpCodes)
             ->where(function ($query) {
-                $query->whereHas('ancs', function ($q) {
+                $query->whereHas('sampleCollection', function ($q) {
                     $q->where('service_for', "2")->where('result', 3);
                 });
             })
         ->with([
-            'municipality','ancs', 
+            'municipality','sampleCollection', 
             'cictTracing' => function($q) {
                 $q->with('organization');
             },
@@ -358,9 +358,9 @@ class WomenController extends Controller
         }
 
         $woman->whereIn('hp_code', $hpCodes)
-            ->whereHas('ancs', function ($q) {
+            ->whereHas('sampleCollection', function ($q) {
                 $q->where('service_for', '!=', "2")->where('result', '=', 9);
-            })->with(['ancs','healthpost', 'latestAnc', 'municipality']);
+            })->with(['sampleCollection','healthpost', 'latestAnc', 'municipality']);
         $total = clone $woman;
 
         return response()->json([
@@ -390,11 +390,11 @@ class WomenController extends Controller
 
         $woman->whereIn('hp_code', $hpCodes)
             ->where(function ($query) {
-                $query->whereHas('ancs', function ($q) {
+                $query->whereHas('sampleCollection', function ($q) {
                     $q->where('service_for', "2")->where('result', 9);
                 });
             })
-            ->with(['municipality', 'latestAnc', 'ancs',
+            ->with(['municipality', 'latestAnc', 'sampleCollection',
                 'healthpost']);
         $total = clone $woman;
 
@@ -570,7 +570,7 @@ class WomenController extends Controller
         }
 
         $woman = $woman->whereIn('hp_code', $hpCodes)->casesRecoveredList()
-        ->with(['ancs','healthpost' => function ($q) {
+        ->with(['sampleCollection','healthpost' => function ($q) {
             $q->select('name', 'hp_code');
         }, 'latestAnc', 'district', 'municipality']);
         return response()->json([
@@ -591,7 +591,7 @@ class WomenController extends Controller
         
         $woman = $woman->whereIn('hp_code', $hpCodes)
             ->casesDeathList()
-            ->with(['ancs','healthpost' => function ($q) {
+            ->with(['sampleCollection','healthpost' => function ($q) {
                 $q->select('name', 'hp_code');
             }, 'latestAnc', 'district', 'municipality']);
         return response()->json([
@@ -605,7 +605,7 @@ class WomenController extends Controller
         $hp_codes = Organization::where('municipality_id', $request['municipality_id'])->pluck('hp_code');
         $woman = SuspectedCase::where('municipality_id', $request['municipality_id'])
             ->whereNotIn('hp_code', $hp_codes)
-            ->whereHas('ancs', function ($q) {
+            ->whereHas('sampleCollection', function ($q) {
                 $q->where('result', '3');
             })
             ->with(['cictTracing' => function($q) {
@@ -742,9 +742,9 @@ class WomenController extends Controller
     public function deleteSuspectedCase($id)
     {
         try {
-            $patients = SuspectedCase::with('ancs')->where('token', $id)->first();
-            if ($patients->ancs) {
-                foreach ($patients->ancs as $anc) {
+            $patients = SuspectedCase::with('sampleCollection')->where('token', $id)->first();
+            if ($patients->sample_collection) {
+                foreach ($patients->sample_collection as $anc) {
                     if ($anc->labreport) {
                         $anc->labreport->delete();
                     }

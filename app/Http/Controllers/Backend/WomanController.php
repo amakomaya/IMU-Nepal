@@ -699,7 +699,7 @@ class WomanController extends Controller
     {
 
         $data = $this->findModel($id);
-        $data = SuspectedCase::with('ancs', 'pncs', 'deliveries', 'lab_tests', 'vaccinations')->where('token', $data->token)->first();
+        $data = SuspectedCase::with('sampleCollection', 'pncs', 'deliveries', 'lab_tests', 'vaccinations')->where('token', $data->token)->first();
 
         if (SuspectedCase::checkValidId($id) === false) {
             return redirect('/index');
@@ -726,7 +726,7 @@ class WomanController extends Controller
 
     public function edit($token)
     {
-        $data['woman'] = SuspectedCase::with('ancs', 'pncs', 'deliveries', 'lab_tests')->where('token', $token)->first();
+        $data['woman'] = SuspectedCase::with('sampleCollection', 'pncs', 'deliveries', 'lab_tests')->where('token', $token)->first();
         //return $data['woman'];
         return view('backend.woman.edit-view')->with($data);
     }
@@ -792,7 +792,7 @@ class WomanController extends Controller
     public function destroy($id)
     {
         //return $id;
-        $data = SuspectedCase::with('ancs', 'pncs', 'deliveries', 'lab_tests')->where('token', $id)->firstOrfail();
+        $data = SuspectedCase::with('sampleCollection', 'pncs', 'deliveries', 'lab_tests')->where('token', $id)->firstOrfail();
         //return $data;
         $data->delete();
         return redirect()->back();

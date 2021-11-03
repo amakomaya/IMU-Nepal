@@ -25,7 +25,7 @@ class FixDuplicateLabId extends Command
 
     public function handle()
     {
-      // $duplicateLabIds = DB::table('ancs')
+      // $duplicateLabIds = DB::table('sample_collection')
       // ->select('lab_token')
       // ->whereNotNull('lab_token')
       // ->groupBy('lab_token')

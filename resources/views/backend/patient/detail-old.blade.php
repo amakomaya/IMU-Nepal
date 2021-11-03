@@ -304,24 +304,24 @@
                         </tbody>
                     </table>
                     <hr>
-                    @if($data[0]->ancs_count > 0)
+                    @if($data[0]->sample_collection_count > 0)
                         <h4>Sample Collection Information </h4>
                         @foreach ($data as $anc)
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <h5>Sample Collected Date: {{ $anc->ancs_created_at ?? '' }} </h5>
+                                    <h5>Sample Collected Date: {{ $anc->sample_collection_created_at ?? '' }} </h5>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
                                     <td>SID :</td>
-                                    <td>{{ $anc->ancs_token ?? '' }}</td>
+                                    <td>{{ $anc->sample_collection_token ?? '' }}</td>
                                 </tr>
                                 <tr>
                                     <td>Test</td>
                                     <td>
-                                        @if($anc->ancs_service_for == "2")
+                                        @if($anc->sample_collection_service_for == "2")
                                             Rapid Antigen Test
                                         @else
                                             SARS-CoV-2 RNA Test
@@ -331,52 +331,52 @@
                                 <tr>
                                     <td>Sample Type :</td>
                                     <td>
-                                        @if(is_null($anc->ancs_sample_type))
+                                        @if(is_null($anc->sample_collection_sample_type))
                                         @else
-                                            @if($anc->ancs_sample_type == "1")
+                                            @if($anc->sample_collection_sample_type == "1")
                                                 Nasopharyngeal
-                                            @elseif($anc->ancs_sample_type == "2")
+                                            @elseif($anc->sample_collection_sample_type == "2")
                                                 Oropharyngeal
                                             @endif
                                             <?php
-                                                $contains_nasopharyngeal = Illuminate\Support\Str::contains($anc->ancs_sample_type, ['1']);
-                                                $contains_oropharyngeal = Illuminate\Support\Str::contains($anc->ancs_sample_type, ['2']);
+                                                $contains_nasopharyngeal = Illuminate\Support\Str::contains($anc->sample_collection_sample_type, ['1']);
+                                                $contains_oropharyngeal = Illuminate\Support\Str::contains($anc->sample_collection_sample_type, ['2']);
 
-                                                $ancs_sample_type_name = '';
+                                                $sample_collection_sample_type_name = '';
 
                                                 if ($contains_nasopharyngeal){
-                                                    $ancs_sample_type_name = 'Nasopharyngeal';
+                                                    $sample_collection_sample_type_name = 'Nasopharyngeal';
                                                 }
 
                                                 if ($contains_oropharyngeal){
-                                                    $ancs_sample_type_name = 'Oropharyngeal';
+                                                    $sample_collection_sample_type_name = 'Oropharyngeal';
                                                 }
 
                                                 if ($contains_nasopharyngeal && $contains_oropharyngeal){
-                                                    $ancs_sample_type_name = 'Nasopharyngeal, Oropharyngeal';
+                                                    $sample_collection_sample_type_name = 'Nasopharyngeal, Oropharyngeal';
                                                 }
 
                                             ?>
-                                            {{ $ancs_sample_type_name }}
+                                            {{ $sample_collection_sample_type_name }}
                                         @endif
-                                        @if(is_null($anc->ancs_sample_type_specific))
+                                        @if(is_null($anc->sample_collection_sample_type_specific))
                                         @else
-                                            /{{ $anc->ancs_sample_type_specific }}
+                                            /{{ $anc->sample_collection_sample_type_specific }}
                                         @endif
                                     </td>
                                 </tr>
                                 <td>Infection Type</td>
                                 <?php
-                                    if($anc->ancs_infection_type == '1'){
-                                        $formatted_ancs_infection_type = 'Symptomatic';
+                                    if($anc->sample_collection_infection_type == '1'){
+                                        $formatted_sample_collection_infection_type = 'Symptomatic';
                                     }else{
-                                        $formatted_ancs_infection_type = 'Asymptomatic';
+                                        $formatted_sample_collection_infection_type = 'Asymptomatic';
                                     }
                                 ?>
-                                <td>{{ $formatted_ancs_infection_type }}</td>
+                                <td>{{ $formatted_sample_collection_infection_type }}</td>
                                 <tr>
                                     <td>Service Type :</td>
-                                    @if($anc->ancs_service_type == "1")
+                                    @if($anc->sample_collection_service_type == "1")
                                         <td>Paid</td>
                                     @else
                                         <td>Free of cost service</td>
@@ -384,27 +384,27 @@
                                 </tr>
                                 <tr>
                                     <td>Collected By :</td>
-                                    <td>{{ $anc->ancs_checked_by_name }}</td>
+                                    <td>{{ $anc->sample_collection_checked_by_name }}</td>
                                 </tr>
                                 <tr>
                                     <td>Result :</td>
                                     <?php
-                                        if($anc->ancs_result == 2){
-                                            $formatted_ancs_result = 'Pending';
-                                        } elseif($anc->ancs_result ==  3){
-                                            $formatted_ancs_result = 'Positive';
+                                        if($anc->sample_collection_result == 2){
+                                            $formatted_sample_collection_result = 'Pending';
+                                        } elseif($anc->sample_collection_result ==  3){
+                                            $formatted_sample_collection_result = 'Positive';
                                         }
-                                        elseif($anc->ancs_result ==  4){
-                                            $formatted_ancs_result = 'Negative';
+                                        elseif($anc->sample_collection_result ==  4){
+                                            $formatted_sample_collection_result = 'Negative';
                                         }
-                                        elseif($anc->ancs_result ==  9){
-                                            $formatted_ancs_result = 'Received';
+                                        elseif($anc->sample_collection_result ==  9){
+                                            $formatted_sample_collection_result = 'Received';
                                         }
                                         else {
-                                            $formatted_ancs_result = 'Don\'t Know';
+                                            $formatted_sample_collection_result = 'Don\'t Know';
                                         }
                                     ?>
-                                    <td>{{ $formatted_ancs_result }}</td>
+                                    <td>{{ $formatted_sample_collection_result }}</td>
                                 </tr>
                                 @if($anc->lab_tests_checked_by_name)
                                     <tr>

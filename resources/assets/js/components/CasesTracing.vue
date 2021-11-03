@@ -37,11 +37,11 @@
           Management : {{ checkCaseManagement(item.cases, item.case_where) }}
         </td>
         <td>{{ formattedDate(item.latest_anc ? item.latest_anc.sample_test_date_np : '') }}</td>
-        <td><span class="label label-info"> {{ item.ancs.length }}</span>
+        <td><span class="label label-info"> {{ item.sample_collection.length }}</span>
           <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc ? item.latest_anc.token : '' }}</strong></div>
         </td>
         <td>
-          <div v-if="item.ancs.length > 0">
+          <div v-if="item.sample_collection.length > 0">
             <span class="label label-danger"> Positive</span>
           </div>
           <div>{{ labToken(item.latest_anc ? item.latest_anc.lab_token : '') }}</div>
@@ -101,14 +101,14 @@ export default {
           {
             name: 'Swab Collection',
             filters: [
-              {title: 'Swab ID ', name: 'ancs.token', type: 'string'},
-              {title: 'Swab Created At', name: 'ancs.collection_date_en', type: 'datetime'}
+              {title: 'Swab ID ', name: 'sample_collection.token', type: 'string'},
+              {title: 'Swab Created At', name: 'sample_collection.collection_date_en', type: 'datetime'}
             ]
           },
           {
             name: 'Lab Result',
             filters: [
-              {title: 'Lab Result Created At', name: 'ancs.sample_test_date_en', type: 'datetime'}
+              {title: 'Lab Result Created At', name: 'sample_collection.sample_test_date_en', type: 'datetime'}
             ]
           }
         ],

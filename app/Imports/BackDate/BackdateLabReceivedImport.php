@@ -66,8 +66,8 @@ class BackdateLabReceivedImport implements ToModel, WithChunkReading, WithValida
           );
           return;
         }
-        $ancs = $this->getAncsBySid($sId);
-        if(!$ancs) {
+        $sample_collection = $this->getAncsBySid($sId);
+        if(!$sample_collection) {
           $error = ['sid' => 'The patient with the given Sample ID couldnot be found. Please create the data of the patient & try again.'];
           $failures[] = new Failure($currentRowNumber, 'sid', $error, $row);
           throw new ValidationException(
@@ -76,7 +76,7 @@ class BackdateLabReceivedImport implements ToModel, WithChunkReading, WithValida
           );
         } else {
           $pcrAllowedOrganizationType = ['2', '3'];
-          if($ancs->first()->service_for == '1' && !in_array($this->organizationType, $pcrAllowedOrganizationType)) {
+          if($sample_collection->first()->service_for == '1' && !in_array($this->organizationType, $pcrAllowedOrganizationType)) {
             $error = ['sid' => 'Your organization is not eligible for PCR Lab Received. Please contact IMU support to update your organization type.'];
             $failures[] = new Failure($currentRowNumber, 'sid', $error, $row);
             throw new ValidationException(
@@ -121,7 +121,7 @@ class BackdateLabReceivedImport implements ToModel, WithChunkReading, WithValida
             return;
           }
 
-          $ancs->update([
+          $sample_collection->update([
             'result' => '9',
             'received_by' => $this->userToken,
             'received_by_hp_code' => $this->hpCode,
@@ -166,9 +166,9 @@ class BackdateLabReceivedImport implements ToModel, WithChunkReading, WithValida
     }
     
     private function getAncsBySid ($sId) {
-      $ancs = SampleCollection::where('token', $sId);
-      if($ancs->count() > 0){
-        return $ancs;
+      $sample_collection = SampleCollection::where('token', $sId);
+      if($sample_collection->count() > 0){
+        return $sample_collection;
       }
       return false;
     }

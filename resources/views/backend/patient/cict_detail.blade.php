@@ -44,8 +44,8 @@
                 $case_received_date = '';
                 $cict_initiated_date = '';
                 $reporting_institution_name = '';
-                if($data->ancs) {
-                    $date_eng_array = explode("-", Carbon\Carbon::parse($data->ancs->first()->created_at)->format('Y-m-d'));
+                if($data->sample_collection) {
+                    $date_eng_array = explode("-", Carbon\Carbon::parse($data->sample_collection->first()->created_at)->format('Y-m-d'));
                     $data_nep= Yagiten\Nepalicalendar\Calendar::eng_to_nep($date_eng_array[0], $date_eng_array[1], $date_eng_array[2])->getYearMonthDay();
                     $date_nep_array = explode("-", $data_nep);
                     $case_received_date = $date_nep_array[2] . '/'. $date_nep_array[1] . '/' . $date_nep_array[0];
@@ -1224,27 +1224,27 @@
                     <td rowspan="2">Nasopharyngealswab or Oropharyngealswab or Broncheo-Alveolar Lavage </td>
                     <td rowspan="2">
                     <span class="col-md-3">
-                        <input type="checkbox" id="yes" name="yes" value="" @if(isset($data->ancs->first()->sample_type) && !is_null($data->ancs->first()->sample_type)) checked readonly @else disabled @endif >
+                        <input type="checkbox" id="yes" name="yes" value="" @if(isset($data->sample_collection->first()->sample_type) && !is_null($data->sample_collection->first()->sample_type)) checked readonly @else disabled @endif >
                         <label for="yes">yes</label>
                     </span>
                         <span class="col-md-3" style="padding-left: 2em;">
-                        <input type="checkbox" id="no" name="no" value="" @if(isset($data->ancs->first()->sample_type) && is_null($data->ancs->first()->sample_type)) checked readonly @else disabled @endif>
+                        <input type="checkbox" id="no" name="no" value="" @if(isset($data->sample_collection->first()->sample_type) && is_null($data->sample_collection->first()->sample_type)) checked readonly @else disabled @endif>
                         <label for="no">no</label>
                     </span>
                     </td>
-                    <td rowspan="2">{{ $data->ancs ? $data->ancs->first()->collection_date_np : ''}}</td>
+                    <td rowspan="2">{{ $data->sample_collection ? $data->sample_collection->first()->collection_date_np : ''}}</td>
                     <td> <b>Date:</b> </td>
-                    <td rowspan="2"> {{ $data->ancs ? $data->ancs->first()->received_date_np : ''}} </td>
-                    <td rowspan="2"> {{ $data->ancs ? $data->ancs->first()->sample_test_date_np : ''}} </td>
+                    <td rowspan="2"> {{ $data->sample_collection ? $data->sample_collection->first()->received_date_np : ''}} </td>
+                    <td rowspan="2"> {{ $data->sample_collection ? $data->sample_collection->first()->sample_test_date_np : ''}} </td>
                     <td rowspan="2"> 
-                        @if($data->ancs)
-                        @if($data->ancs->first()->result == 3)
+                        @if($data->sample_collection)
+                        @if($data->sample_collection->first()->result == 3)
                             Positive
-                        @elseif($data->ancs->first()->result == 4)
+                        @elseif($data->sample_collection->first()->result == 4)
                             Negative
-                        @elseif($data->ancs->first()->result == 5)
+                        @elseif($data->sample_collection->first()->result == 5)
                             Don't know
-                        @elseif($data->ancs->first()->result == 6)
+                        @elseif($data->sample_collection->first()->result == 6)
                             Rejected
                         @endif
                         @endif

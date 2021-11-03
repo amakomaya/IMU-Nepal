@@ -242,9 +242,9 @@
                         </tbody>
                     </table>
                     <hr>
-                    @if($data->ancs->count() > '0')
+                    @if($data->sample_collection->count() > '0')
                         <h4>Sample Collection Information </h4>
-                        @foreach ($data->ancs as $anc)
+                        @foreach ($data->sample_collection as $anc)
                             <table class="table table-striped">
                                 <thead>
                                 <tr>

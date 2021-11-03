@@ -28,13 +28,13 @@ class ExtCaseController extends Controller
         if (!empty($user)) {
             $healthworker = OrganizationMember::where('token', $user->token)->get()->first();
             $record = DB::table('suspected_cases')
-                ->join('ancs', 'ancs.woman_token', '=', 'suspected_cases.token')
-                ->join('lab_tests', 'lab_tests.sample_token', '=', 'ancs.token')
+                ->join('sample_collection', 'sample_collection.woman_token', '=', 'suspected_cases.token')
+                ->join('lab_tests', 'lab_tests.sample_token', '=', 'sample_collection.token')
                 ->where('suspected_cases.hp_code', $healthworker->hp_code)
                 ->select('suspected_cases.token','suspected_cases.name','suspected_cases.age','suspected_cases.age_unit','suspected_cases.sex','suspected_cases.caste','suspected_cases.province_id','suspected_cases.district_id','suspected_cases.municipality_id','suspected_cases.ward',
                     'suspected_cases.tole','suspected_cases.emergency_contact_one','suspected_cases.travelled','suspected_cases.occupation','suspected_cases.created_at'
-                    ,'ancs.token as sample_token', 'ancs.service_for', 'ancs.service_type','ancs.sample_type',
-                    'ancs.infection_type','ancs.created_at as sample_created_at','lab_tests.sample_recv_date', 'lab_tests.sample_test_date','lab_tests.sample_test_time',
+                    ,'sample_collection.token as sample_token', 'sample_collection.service_for', 'sample_collection.service_type','sample_collection.sample_type',
+                    'sample_collection.infection_type','sample_collection.created_at as sample_created_at','lab_tests.sample_recv_date', 'lab_tests.sample_test_date','lab_tests.sample_test_time',
                     'lab_tests.sample_test_result')
                 ->get();
             $data = collect($record)->map(function ($row) {
@@ -550,15 +550,15 @@ class ExtCaseController extends Controller
         $user = User::where([['username', $key], ['password', md5($secret)], ['role', 'healthworker']])->get()->first();
 
         if (!empty($user)) {
-            $record = DB::table('ancs')->where('ancs.token', $sample_token)
-                ->join('suspected_cases', 'suspected_cases.token', '=', 'ancs.woman_token')
-//                ->leftJoin('lab_tests', 'lab_tests.sample_token', '=', 'ancs.token')
+            $record = DB::table('sample_collection')->where('sample_collection.token', $sample_token)
+                ->join('suspected_cases', 'suspected_cases.token', '=', 'sample_collection.woman_token')
+//                ->leftJoin('lab_tests', 'lab_tests.sample_token', '=', 'sample_collection.token')
                 ->select('suspected_cases.token','suspected_cases.name','suspected_cases.age','suspected_cases.age_unit','suspected_cases.sex','suspected_cases.caste','suspected_cases.province_id','suspected_cases.district_id','suspected_cases.municipality_id','suspected_cases.ward',
                     'suspected_cases.tole','suspected_cases.emergency_contact_one','suspected_cases.travelled','suspected_cases.occupation','suspected_cases.created_at'
-                    ,'ancs.token as sample_token', 'ancs.service_for', 'ancs.service_type','ancs.sample_type',
-                    'ancs.infection_type','ancs.collection_date_en as sample_created_at',
-                    'ancs.received_date_en as sample_recv_date', 'ancs.sample_test_date_en as sample_test_date','ancs.sample_test_time',
-                    'ancs.result as sample_test_result'
+                    ,'sample_collection.token as sample_token', 'sample_collection.service_for', 'sample_collection.service_type','sample_collection.sample_type',
+                    'sample_collection.infection_type','sample_collection.collection_date_en as sample_created_at',
+                    'sample_collection.received_date_en as sample_recv_date', 'sample_collection.sample_test_date_en as sample_test_date','sample_collection.sample_test_time',
+                    'sample_collection.result as sample_test_result'
                 )
                 ->get();
             $data = collect($record)->map(function ($row) {
@@ -605,15 +605,15 @@ class ExtCaseController extends Controller
         $user = User::where([['username', $key], ['password', md5($secret)], ['role', 'healthworker']])->get()->first();
 
         if (!empty($user)) {
-            $record = DB::table('ancs')->where('ancs.token', $sample_token)
-                ->join('suspected_cases', 'suspected_cases.token', '=', 'ancs.woman_token')
-//                ->leftJoin('lab_tests', 'lab_tests.sample_token', '=', 'ancs.token')
+            $record = DB::table('sample_collection')->where('sample_collection.token', $sample_token)
+                ->join('suspected_cases', 'suspected_cases.token', '=', 'sample_collection.woman_token')
+//                ->leftJoin('lab_tests', 'lab_tests.sample_token', '=', 'sample_collection.token')
                 ->select('suspected_cases.token','suspected_cases.name','suspected_cases.age','suspected_cases.age_unit','suspected_cases.sex','suspected_cases.caste','suspected_cases.province_id','suspected_cases.district_id','suspected_cases.municipality_id','suspected_cases.ward',
                     'suspected_cases.tole','suspected_cases.emergency_contact_one','suspected_cases.travelled','suspected_cases.occupation','suspected_cases.created_at'
-                    ,'ancs.token as sample_token', 'ancs.service_for', 'ancs.service_type','ancs.sample_type',
-                    'ancs.infection_type','ancs.collection_date_en as sample_created_at',
-                    'ancs.received_date_en as sample_recv_date', 'ancs.sample_test_date_en as sample_test_date','ancs.sample_test_time',
-                    'ancs.result as sample_test_result'
+                    ,'sample_collection.token as sample_token', 'sample_collection.service_for', 'sample_collection.service_type','sample_collection.sample_type',
+                    'sample_collection.infection_type','sample_collection.collection_date_en as sample_created_at',
+                    'sample_collection.received_date_en as sample_recv_date', 'sample_collection.sample_test_date_en as sample_test_date','sample_collection.sample_test_time',
+                    'sample_collection.result as sample_test_result'
                 )
                 ->get();
             $data = collect($record)->map(function ($row) {

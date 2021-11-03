@@ -207,13 +207,13 @@ class AdminController extends Controller
                 $response = FilterRequest::filter($request);
                 $hpCodes = GetHealthpostCodes::filter($response);
 
-                $ancs = SampleCollection::with('woman')->where('token', $request->sid)
+                $sample_collection = SampleCollection::with('woman')->where('token', $request->sid)
                     ->whereIn('hp_code', $hpCodes)->first();
-                // dd($ancs);
+                // dd($sample_collection);
 
-                if($ancs){
+                if($sample_collection){
                     $request->session()->flash('message', 'Record Found');
-                    return view('backend.sid-search.edit', compact('ancs'));
+                    return view('backend.sid-search.edit', compact('sample_collection'));
                 }else{
                     $request->session()->flash('message', 'Record Not Found');
                     return redirect()->route('admin.sid.search');

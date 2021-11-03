@@ -17,7 +17,7 @@ class SampleCollectionOld extends Model
 
     protected $connection = 'mysqldump';
 
-    protected $table = 'ancs';
+    protected $table = 'sample_collection';
 
     protected $fillable = ['token', 'woman_token', 'service_for', 'checked_by', 'hp_code', 'status',
 

@@ -29,8 +29,8 @@ class AggregateController extends Controller
 
         $rawForecast = DB::table('suspected_cases')
             ->latest('suspected_cases.created_at')
-            ->join('ancs','suspected_cases.token', '=', 'ancs.woman_token')
-            ->select(DB::raw('DATE(suspected_cases.created_at) as register_date'), DB::raw('DATE(ancs.created_at) as sample_created_at'), DB::raw('DATE(suspected_cases.updated_at) as result_date') , 'ancs.result as result')
+            ->join('sample_collection','suspected_cases.token', '=', 'sample_collection.woman_token')
+            ->select(DB::raw('DATE(suspected_cases.created_at) as register_date'), DB::raw('DATE(sample_collection.created_at) as sample_created_at'), DB::raw('DATE(suspected_cases.updated_at) as result_date') , 'sample_collection.result as result')
             ->get();
 
         $forecast = $rawForecast->map(function ($item){
@@ -58,20 +58,20 @@ class AggregateController extends Controller
 //                    ->groupBy('date')
 //                    ->get(),
 //
-//                'sample_collection' => DB::table('ancs')
+//                'sample_collection' => DB::table('sample_collection')
 //                    ->whereIn('hp_code', $hpCodes)
 //                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
 //                    ->groupBy('date')
 //                    ->get(),
 //
-//                'lab_result_positive' => DB::table('ancs')
+//                'lab_result_positive' => DB::table('sample_collection')
 //                    ->whereIn('hp_code', $hpCodes)
 //                    ->where('result', 3)
 //                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
 //                    ->groupBy('date')
 //                    ->get(),
 //
-//                'lab_result_negative' => DB::table('ancs')
+//                'lab_result_negative' => DB::table('sample_collection')
 //                    ->whereIn('hp_code', $hpCodes)
 //                    ->where('result', 4)
 //                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
@@ -138,10 +138,10 @@ class AggregateController extends Controller
 
     public function gender(){
         $data = SuspectedCase::where('suspected_cases.status', 1)
-            ->join('ancs', 'suspected_cases.token', '=', 'ancs.woman_token')
-            ->where('ancs.result', '!=', 5)
-            ->select('suspected_cases.sex', 'ancs.result' , \DB::raw('count(*) as total'))
-            ->groupBy('suspected_cases.sex', 'ancs.result')
+            ->join('sample_collection', 'suspected_cases.token', '=', 'sample_collection.woman_token')
+            ->where('sample_collection.result', '!=', 5)
+            ->select('suspected_cases.sex', 'sample_collection.result' , \DB::raw('count(*) as total'))
+            ->groupBy('suspected_cases.sex', 'sample_collection.result')
             ->get()->makeHidden(['formated_age_unit', 'formated_gender']);
 
         $table = collect($data)->map(function ($item) {
@@ -158,10 +158,10 @@ class AggregateController extends Controller
 
     public function occupation(){
         $data = SuspectedCase::where('suspected_cases.status', 1)
-            ->join('ancs', 'suspected_cases.token', '=', 'ancs.woman_token')
-            ->where('ancs.result', '!=', 5)
-            ->select('suspected_cases.occupation', 'ancs.result' , \DB::raw('count(*) as total'))
-            ->groupBy('suspected_cases.occupation', 'ancs.result')
+            ->join('sample_collection', 'suspected_cases.token', '=', 'sample_collection.woman_token')
+            ->where('sample_collection.result', '!=', 5)
+            ->select('suspected_cases.occupation', 'sample_collection.result' , \DB::raw('count(*) as total'))
+            ->groupBy('suspected_cases.occupation', 'sample_collection.result')
             ->get()->makeHidden(['formated_age_unit', 'formated_gender']);
 
         $table = collect($data)->map(function ($item) {
@@ -180,10 +180,10 @@ class AggregateController extends Controller
 
         $data = Cache::remember('analysis-report', 60 * 60, function () {
             return \DB::table('suspected_cases')->where('suspected_cases.status', 1)
-                ->join('ancs', 'suspected_cases.token', '=', 'ancs.woman_token')
+                ->join('sample_collection', 'suspected_cases.token', '=', 'sample_collection.woman_token')
                 ->join('healthposts', 'suspected_cases.hp_code', '=', 'healthposts.hp_code')
-                ->whereIn('ancs.result', [3,4])
-                ->select('ancs.result as antigen_result', 'ancs.service_for', 'healthposts.province_id as province', DB::raw('count(*) as total'))
+                ->whereIn('sample_collection.result', [3,4])
+                ->select('sample_collection.result as antigen_result', 'sample_collection.service_for', 'healthposts.province_id as province', DB::raw('count(*) as total'))
                 ->groupBy(['antigen_result','province', 'service_for'])
                 ->get();
         });

@@ -58,10 +58,10 @@ class PoeController extends Controller
         
         $healthposts = Organization::whereIn('hp_code', $hpCodes)->where('hospital_type', 7)->get();
 
-        $reports = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
-            ->whereIn('ancs.hp_code', $hpCodes)
-            ->whereIn('ancs.result', [3, 4, 2, 9])
-            ->whereBetween(\DB::raw('DATE(ancs.reporting_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
+        $reports = SampleCollection::leftjoin('healthposts', 'sample_collection.hp_code', '=', 'healthposts.hp_code')
+            ->whereIn('sample_collection.hp_code', $hpCodes)
+            ->whereIn('sample_collection.result', [3, 4, 2, 9])
+            ->whereBetween(\DB::raw('DATE(sample_collection.reporting_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
 
         if ($response['province_id'] !== null) {
             $reports = $reports->where('healthposts.province_id', $response['province_id']);
@@ -98,7 +98,7 @@ class PoeController extends Controller
             $data[$hpCode]['not_tested'] = SuspectedCase::where('hp_code', $hpCode)
             ->whereBetween(\DB::raw('DATE(created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->active()
-            ->doesnthave('ancs')
+            ->doesnthave('sampleCollection')
             ->count();
             $data[$hpCode]['antigen_pending_received'] = 0;
             
@@ -127,7 +127,7 @@ class PoeController extends Controller
             $data[$key]['not_tested'] = SuspectedCase::where('hp_code', $key)
             ->whereBetween(\DB::raw('DATE(created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->active()
-            ->doesnthave('ancs')
+            ->doesnthave('sampleCollection')
             ->count();
             
             //municipality

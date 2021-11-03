@@ -45,14 +45,14 @@
                     </div>
                     <hr>
                     @php $initial_token = '' @endphp
-                    @if(isset($ancs))
+                    @if(isset($sample_collection))
                     <div class="panel-body">
-                        <form action="{{ route('admin.sid.update', $ancs->token) }}" method="POST" id="all_form">
+                        <form action="{{ route('admin.sid.update', $sample_collection->token) }}" method="POST" id="all_form">
                         @csrf
                         <h2>Patient Data</h2>
                         <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
                             <label for="name">Full Name</label>
-                            <input type="text" id="name" class="form-control" value="{{ $ancs->woman->name }}" name="name"
+                            <input type="text" id="name" class="form-control" value="{{ $sample_collection->woman->name }}" name="name"
                                    aria-describedby="help" placeholder="Enter Full Name">
                             @if ($errors->has('name'))
                                 <small id="help" class="form-text text-danger">{{ $errors->first('name') }}</small>
@@ -60,16 +60,16 @@
                         </div>
                         <div class="form-group {{ $errors->has('age') ? 'has-error' : '' }}">
                             <label for="age">Age</label>
-                            <input type="text" id="age" value="{{ $ancs->woman->age }}" class="form-control col-xs-9"
+                            <input type="text" id="age" value="{{ $sample_collection->woman->age }}" class="form-control col-xs-9"
                                    name="age" placeholder="Enter Age"
                             ><br>
                             <input type="radio" name="age_unit"
-                                   {{ $ancs->woman->age_unit == "0" ? 'checked' : '' }} value="0" data-rel="earning"
+                                   {{ $sample_collection->woman->age_unit == "0" ? 'checked' : '' }} value="0" data-rel="earning"
                                    checked>Years
                             <input type="radio" name="age_unit"
-                                   {{ $ancs->woman->age_unit == "1" ? 'checked' : '' }} value="1" data-rel="earning">Months
+                                   {{ $sample_collection->woman->age_unit == "1" ? 'checked' : '' }} value="1" data-rel="earning">Months
                             <input type="radio" name="age_unit"
-                                   {{ $ancs->woman->age_unit == "2" ? 'checked' : '' }} value="2" data-rel="earning">Days
+                                   {{ $sample_collection->woman->age_unit == "2" ? 'checked' : '' }} value="2" data-rel="earning">Days
                             <br>
                             @if ($errors->has('age'))
                                 <small id="help" class="form-text text-danger">{{ $errors->first('age') }}</small>
@@ -78,23 +78,23 @@
                         <div class="form-group">
                             <label class="control-label" for="caste">Ethnicity</label>
                             <select name="caste" class="form-control">
-                                <option {{ $ancs->woman->caste == '7' ? "selected" : "" }} value="7">Don't Know</option>
-                                <option {{ $ancs->woman->caste == '1' ? "selected" : "" }} value="1">Dalit</option>
-                                <option {{ $ancs->woman->caste == '2' ? "selected" : "" }} value="2">Janajati</option>
-                                <option {{ $ancs->woman->caste == '3' ? "selected" : "" }} value="3">Madheshi</option>
-                                <option {{ $ancs->woman->caste == '4' ? "selected" : "" }} value="4">Muslim</option>
-                                <option {{ $ancs->woman->caste == '5' ? "selected" : "" }} value="5">Brahmin/Chhetri
+                                <option {{ $sample_collection->woman->caste == '7' ? "selected" : "" }} value="7">Don't Know</option>
+                                <option {{ $sample_collection->woman->caste == '1' ? "selected" : "" }} value="1">Dalit</option>
+                                <option {{ $sample_collection->woman->caste == '2' ? "selected" : "" }} value="2">Janajati</option>
+                                <option {{ $sample_collection->woman->caste == '3' ? "selected" : "" }} value="3">Madheshi</option>
+                                <option {{ $sample_collection->woman->caste == '4' ? "selected" : "" }} value="4">Muslim</option>
+                                <option {{ $sample_collection->woman->caste == '5' ? "selected" : "" }} value="5">Brahmin/Chhetri
                                 </option>
-                                <option {{ $ancs->woman->caste == '6' ? "selected" : "" }} value="6">Other</option>
+                                <option {{ $sample_collection->woman->caste == '6' ? "selected" : "" }} value="6">Other</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="company">Gender</label>
                             <select name="sex" class="form-control">
                                 <option value="" disabled selected>Select Gender</option>
-                                <option {{ $ancs->woman->sex == '1' ? "selected" : "" }} value="1">Male</option>
-                                <option {{ $ancs->woman->sex == '2' ? "selected" : "" }} value="2">Female</option>
-                                <option {{ $ancs->woman->sex == '3' ? "selected" : "" }}  value="3">Other</option>
+                                <option {{ $sample_collection->woman->sex == '1' ? "selected" : "" }} value="1">Male</option>
+                                <option {{ $sample_collection->woman->sex == '2' ? "selected" : "" }} value="2">Female</option>
+                                <option {{ $sample_collection->woman->sex == '3' ? "selected" : "" }}  value="3">Other</option>
                             </select>
                             @if ($errors->has('sex'))
                                 <small id="help" class="form-text text-danger">{{ $errors->first('sex') }}</small>
@@ -102,7 +102,7 @@
                         </div>
                         <div class="form-group {{ $errors->has('ward') ? 'has-error' : '' }}">
                             <label for="ward">Ward No</label>
-                            <input type="text" class="form-control" value="{{ $ancs->woman->ward }}" name="ward"
+                            <input type="text" class="form-control" value="{{ $sample_collection->woman->ward }}" name="ward"
                                    aria-describedby="help" placeholder="Enter Ward No"
                             >
                             @if ($errors->has('ward'))
@@ -111,7 +111,7 @@
                         </div>
                         <div class="form-group {{ $errors->has('tole') ? 'has-error' : '' }}">
                             <label for="tole">Tole</label>
-                            <input type="text" class="form-control" value="{{ $ancs->woman->tole }}" name="tole"
+                            <input type="text" class="form-control" value="{{ $sample_collection->woman->tole }}" name="tole"
                                    aria-describedby="help" placeholder="Enter Tole"
                             >
                             @if ($errors->has('tole'))
@@ -120,7 +120,7 @@
                         </div>
                         <div class="form-group {{ $errors->has('emergency_contact_one') ? 'has-error' : '' }}">
                             <label for="name">Emergency Contact One</label>
-                            <input type="text" class="form-control" value="{{ $ancs->woman->emergency_contact_one }}"
+                            <input type="text" class="form-control" value="{{ $sample_collection->woman->emergency_contact_one }}"
                                    name="emergency_contact_one" aria-describedby="help"
                                    placeholder="Enter Emergency Contact One"
                             >
@@ -131,7 +131,7 @@
                         </div>
                         <div class="form-group {{ $errors->has('emergency_contact_two') ? 'has-error' : '' }}">
                             <label for="name">Emergency Contact Two</label>
-                            <input type="text" class="form-control" value="{{ $ancs->woman->emergency_contact_two }}"
+                            <input type="text" class="form-control" value="{{ $sample_collection->woman->emergency_contact_two }}"
                                    name="emergency_contact_two" aria-describedby="help"
                                    placeholder="Enter Emergency Contact Two">
                             @if ($errors->has('emergency_contact_one'))
@@ -145,12 +145,12 @@
                             <div class="control-group">
                                 <label class="radio-inline">
                                     <input type="radio" name="symptoms_recent"
-                                           {{ $ancs->woman->symptoms_recent == "0" ? 'checked' : '' }} value="0"
+                                           {{ $sample_collection->woman->symptoms_recent == "0" ? 'checked' : '' }} value="0"
                                            data-rel="earning" class="symptoms_recent">No
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio" name="symptoms_recent"
-                                           {{ $ancs->woman->symptoms_recent == "1" ? 'checked' : '' }}
+                                           {{ $sample_collection->woman->symptoms_recent == "1" ? 'checked' : '' }}
                                            value="1" data-rel="earning" class="symptoms_recent">Yes
                                 </label>
                             </div>
@@ -160,12 +160,12 @@
                             <div class="control-group">
                                 <label class="radio-inline">
                                     <input type="radio" name="symptoms_within_four_week"
-                                           {{ $ancs->woman->symptoms_within_four_week == "0" ? 'checked' : '' }} value="0"
+                                           {{ $sample_collection->woman->symptoms_within_four_week == "0" ? 'checked' : '' }} value="0"
                                            data-rel="earning" checked>No
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio"
-                                           {{ $ancs->woman->symptoms_within_four_week == "1" ? 'checked' : '' }} name="symptoms_within_four_week"
+                                           {{ $sample_collection->woman->symptoms_within_four_week == "1" ? 'checked' : '' }} name="symptoms_within_four_week"
                                            value="1" data-rel="earning">Yes
                                 </label>
                             </div>
@@ -173,7 +173,7 @@
                         <div class="is-symptomatic" style="display: none;">
                             <div class="form-group {{ $errors->has('date_of_onset_of_first_symptom') ? 'has-error' : '' }}">
                                 <label for="date_of_onset_of_first_symptom">Date of onset of first symptom:</label>
-                                <input type="text" class="form-control" value="{{ $ancs->woman->date_of_onset_of_first_symptom }}"
+                                <input type="text" class="form-control" value="{{ $sample_collection->woman->date_of_onset_of_first_symptom }}"
                                     name="date_of_onset_of_first_symptom" aria-describedby="help">
                                 @if ($errors->has('date_of_onset_of_first_symptom'))
                                     <small id="help"
@@ -182,7 +182,7 @@
                             </div>
                             <div class="form-group" id="symptomatic-patient">
                                 @php
-                                    $symptoms = json_decode($ancs->woman->symptoms ?? '[]');
+                                    $symptoms = json_decode($sample_collection->woman->symptoms ?? '[]');
                                 @endphp
                                 <label class="control-label" for="symptoms">Symptomatic patient with:</label><br>
                                 <input type="checkbox" name="symptoms[]" value="1" @if(in_array(1, $symptoms)) checked @endif>Pneumonia<br>
@@ -221,7 +221,7 @@
                             </div>
                             <div class="form-group {{ $errors->has('symptoms_specific') ? 'has-error' : '' }}">
                                 <label for="symptoms_specific">If other specify</label>
-                                <input type="text" class="form-control" value="{{ $ancs->woman->symptoms_specific }}" name="symptoms_specific"
+                                <input type="text" class="form-control" value="{{ $sample_collection->woman->symptoms_specific }}" name="symptoms_specific"
                                        aria-describedby="help" placeholder="Enter other symptoms"
                                 >
                                 @if ($errors->has('symptoms_specific'))
@@ -230,7 +230,7 @@
                             </div>
                             <div class="form-group" id="symptoms_comorbidity">
                                 @php
-                                    $symptoms_comorbidity = json_decode($ancs->woman->symptoms_comorbidity ?? '[]');
+                                    $symptoms_comorbidity = json_decode($sample_collection->woman->symptoms_comorbidity ?? '[]');
                                 @endphp
                                 <label class="control-label" for="symptoms_comorbidity">Symptomatic patient with comorbidity</label><br>
                                 <input type="checkbox" name="symptoms_comorbidity[]" value="1" @if(in_array(1, $symptoms_comorbidity)) checked @endif>Diabetes<br>
@@ -261,7 +261,7 @@
                             </div>
                             <div class="form-group {{ $errors->has('symptoms_comorbidity_specific') ? 'has-error' : '' }}">
                                 <label for="symptoms_comorbidity_specific">If other specify</label>
-                                <input type="text" class="form-control" value="{{ $ancs->woman->symptoms_comorbidity_specific }}" name="symptoms_comorbidity_specific"
+                                <input type="text" class="form-control" value="{{ $sample_collection->woman->symptoms_comorbidity_specific }}" name="symptoms_comorbidity_specific"
                                        aria-describedby="help" placeholder="Enter other symptoms"
                                 >
                                 @if ($errors->has('symptoms_comorbidity_specific'))
@@ -273,20 +273,20 @@
                         <div class="form-group">
                             <label class="control-label" for="caste">Occupation</label>
                             <select name="occupation" class="form-control">
-                                <option {{ $ancs->woman->occupation == '' ? "selected" : "" }} value="">Select Occupation</option>
-                                <option {{ $ancs->woman->occupation == '1' ? "selected" : "" }} value="1">Front Line Health Worker</option>
-                                <option {{ $ancs->woman->occupation == '2' ? "selected" : "" }} value="2">Doctor</option>
-                                <option {{ $ancs->woman->occupation == '3' ? "selected" : "" }} value="3">Nurse</option>
-                                <option {{ $ancs->woman->occupation == '4' ? "selected" : "" }} value="4">Police/Army</option>
-                                <option {{ $ancs->woman->occupation == '5' ? "selected" : "" }} value="5">Business/Industry</option>
-                                <option {{ $ancs->woman->occupation == '6' ? "selected" : "" }} value="6">Teacher/Student/Education</option>
-                                <option {{ $ancs->woman->occupation == '7' ? "selected" : "" }} value="7">Civil servant</option>
-                                <option {{ $ancs->woman->occupation == '8' ? "selected" : "" }} value="8">Journalist</option>
-                                <option {{ $ancs->woman->occupation == '9' ? "selected" : "" }} value="9">Agriculture</option>
-                                <option {{ $ancs->woman->occupation == '10' ? "selected" : "" }} value="10">Transport/Delivery</option>
-                                <option {{ $ancs->woman->occupation == '12' ? "selected" : "" }} value="12">Tourist</option>
-                                <option {{ $ancs->woman->occupation == '13' ? "selected" : "" }} value="13">Migrant Worker</option>
-                                <option {{ $ancs->woman->occupation == '11' ? "selected" : "" }} value="11">Other</option>
+                                <option {{ $sample_collection->woman->occupation == '' ? "selected" : "" }} value="">Select Occupation</option>
+                                <option {{ $sample_collection->woman->occupation == '1' ? "selected" : "" }} value="1">Front Line Health Worker</option>
+                                <option {{ $sample_collection->woman->occupation == '2' ? "selected" : "" }} value="2">Doctor</option>
+                                <option {{ $sample_collection->woman->occupation == '3' ? "selected" : "" }} value="3">Nurse</option>
+                                <option {{ $sample_collection->woman->occupation == '4' ? "selected" : "" }} value="4">Police/Army</option>
+                                <option {{ $sample_collection->woman->occupation == '5' ? "selected" : "" }} value="5">Business/Industry</option>
+                                <option {{ $sample_collection->woman->occupation == '6' ? "selected" : "" }} value="6">Teacher/Student/Education</option>
+                                <option {{ $sample_collection->woman->occupation == '7' ? "selected" : "" }} value="7">Civil servant</option>
+                                <option {{ $sample_collection->woman->occupation == '8' ? "selected" : "" }} value="8">Journalist</option>
+                                <option {{ $sample_collection->woman->occupation == '9' ? "selected" : "" }} value="9">Agriculture</option>
+                                <option {{ $sample_collection->woman->occupation == '10' ? "selected" : "" }} value="10">Transport/Delivery</option>
+                                <option {{ $sample_collection->woman->occupation == '12' ? "selected" : "" }} value="12">Tourist</option>
+                                <option {{ $sample_collection->woman->occupation == '13' ? "selected" : "" }} value="13">Migrant Worker</option>
+                                <option {{ $sample_collection->woman->occupation == '11' ? "selected" : "" }} value="11">Other</option>
                             </select>
                             @if ($errors->has('occupation'))
                                 <small id="help"
@@ -298,19 +298,19 @@
                             <div class="control-group">
                                 <label class="radio-inline">
                                     <input type="radio"
-                                           {{ $ancs->woman->travelled == "0" ? 'checked' : '' }} name="travelled" value="0"
+                                           {{ $sample_collection->woman->travelled == "0" ? 'checked' : '' }} name="travelled" value="0"
                                            checked>No
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio"
-                                           {{ $ancs->woman->travelled == "1" ? 'checked' : '' }} name="travelled"
+                                           {{ $sample_collection->woman->travelled == "1" ? 'checked' : '' }} name="travelled"
                                            value="1">Yes
                                 </label>
                             </div>
                         </div>
                         <div class="form-group" id="case_reason">
                             @php
-                                $reasons = json_decode($ancs->woman->reson_for_testing ?? '[]');
+                                $reasons = json_decode($sample_collection->woman->reson_for_testing ?? '[]');
                             @endphp
                             <label class="control-label" for="reson_for_testing">Reason for testing:</label><br>
                             <input type="checkbox" name="reson_for_testing[]" value="1" @if(in_array(1, $reasons)) checked @endif>Planned travel<br>
@@ -329,7 +329,7 @@
                         <h2>Lab Data</h2>
                         <div class="form-group">
                             <label for="name">Sample Received Date</label>
-                            <input type="text" id="sample_recv_date" class="form-control" value="{{ $ancs->received_date_np ?? '' }}" name="sample_recv_date"
+                            <input type="text" id="sample_recv_date" class="form-control" value="{{ $sample_collection->received_date_np ?? '' }}" name="sample_recv_date"
                                    aria-describedby="help" placeholder="Enter Sample Received Date">
                             @if ($errors->has('sample_recv_date'))
                                 <small id="help" class="form-text text-danger">{{ $errors->first('sample_recv_date') }}</small>
@@ -337,7 +337,7 @@
                         </div>
                         <div class="form-group">
                             <label for="name">Sample Test Date</label>
-                            <input type="text" id="sample_test_date" class="form-control" value="{{ $ancs->sample_test_date_np ?? '' }}" name="sample_test_date"
+                            <input type="text" id="sample_test_date" class="form-control" value="{{ $sample_collection->sample_test_date_np ?? '' }}" name="sample_test_date"
                                    aria-describedby="help" placeholder="Enter Sample Test Date">
                             @if ($errors->has('sample_test_date'))
                                 <small id="help" class="form-text text-danger">{{ $errors->first('sample_test_date') }}</small>
@@ -345,7 +345,7 @@
                         </div>
                         <div class="form-group">
                             <label for="name">Sample Test Time</label>
-                            <input type="text" id="sample_test_time" class="form-control" value="{{ $ancs->sample_test_time ?? '' }}" name="sample_test_time"
+                            <input type="text" id="sample_test_time" class="form-control" value="{{ $sample_collection->sample_test_time ?? '' }}" name="sample_test_time"
                                    aria-describedby="help" placeholder="Enter Sample Test Time">
                             @if ($errors->has('sample_test_time'))
                                 <small id="help" class="form-text text-danger">{{ $errors->first('sample_test_time') }}</small>
@@ -355,12 +355,12 @@
                             <label for="name">Sample Test Result</label>
                             <select name="sample_test_result" class="form-control">
                                 <option value="" disabled selected>Select Sample Test Result</option>
-                                <option {{ $ancs->result == '3' ? "selected" : "" }} value="3">Positive</option>
-                                <option {{ $ancs->result == '4' ? "selected" : "" }} value="4">Negative</option>
-                                <option {{ $ancs->result == '9' ? "selected" : "" }}  value="9">Received</option>
-                                @php if($ancs->result != 3 && $ancs->result != 4 && $ancs->result != 9) {
+                                <option {{ $sample_collection->result == '3' ? "selected" : "" }} value="3">Positive</option>
+                                <option {{ $sample_collection->result == '4' ? "selected" : "" }} value="4">Negative</option>
+                                <option {{ $sample_collection->result == '9' ? "selected" : "" }}  value="9">Received</option>
+                                @php if($sample_collection->result != 3 && $sample_collection->result != 4 && $sample_collection->result != 9) {
                                     $is_select = 'selected';
-                                    $is_value = $ancs->result;
+                                    $is_value = $sample_collection->result;
                                 } else {
                                     $is_select = '';
                                     $is_value = '';
@@ -375,17 +375,17 @@
                         <div class="form-group">
                             <label for="name">Test Type</label>
                             <select name="service_for" class="form-control">
-                                <option {{ $ancs->service_for == '' ? "selected" : "" }} value="1">Select Test Type</option>
-                                <option {{ $ancs->service_for == '1' ? "selected" : "" }} value="1">PCR</option>
-                                <option {{ $ancs->service_for == '2' ? "selected" : "" }} value="2">Antigen</option>
+                                <option {{ $sample_collection->service_for == '' ? "selected" : "" }} value="1">Select Test Type</option>
+                                <option {{ $sample_collection->service_for == '1' ? "selected" : "" }} value="1">PCR</option>
+                                <option {{ $sample_collection->service_for == '2' ? "selected" : "" }} value="2">Antigen</option>
                             </select>
                             @if ($errors->has('service_for'))
                                 <small id="help" class="form-text text-danger">{{ $errors->first('service_for') }}</small>
                             @endif
                         </div>
                         @php
-                            if($ancs->lab_token) {
-                                $s_token = explode('-', $ancs->lab_token);
+                            if($sample_collection->lab_token) {
+                                $s_token = explode('-', $sample_collection->lab_token);
                                 $initial_token = $s_token[0];
                                 array_shift($s_token);
                                 $remaining_token = implode('-', $s_token);
@@ -403,8 +403,8 @@
                             </div>
                         </div>
 
-                        <input type="hidden" id="lab_tests_token" name="lab_tests_token" value="{{ $ancs->lab_token ?? '' }}" class="form-control">
-                        <input type="hidden" name="woman_token" value="{{ $ancs->woman_token }}" class="form-control">
+                        <input type="hidden" id="lab_tests_token" name="lab_tests_token" value="{{ $sample_collection->lab_token ?? '' }}" class="form-control">
+                        <input type="hidden" name="woman_token" value="{{ $sample_collection->woman_token }}" class="form-control">
 
                         {!! rcForm::close('post') !!}
                     </div>

@@ -107,7 +107,7 @@ export default {
           {
             name: 'Swab Collection',
             filters: [
-              {title: 'Swab Created At', name: 'ancs.collection_date_en', type: 'datetime'}
+              {title: 'Swab Created At', name: 'sample_collection.collection_date_en', type: 'datetime'}
             ]
           }
         ],

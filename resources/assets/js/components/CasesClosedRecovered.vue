@@ -27,7 +27,7 @@
         <td>{{ checkDistrict(item.district_id) }}</td>
         <td>{{ checkMunicipality(item.municipality_id) }}</td>
         <td>{{ item.ward }}</td>
-        <td><span class="label label-info"> {{ item.ancs.length }}</span></td>
+        <td><span class="label label-info"> {{ item.sample_collection.length }}</span></td>
         <td><div v-html="latestLabResult(item.latest_anc)">
         </div>
 
@@ -79,8 +79,8 @@ export default {
           {
             name: 'Swab Collection',
             filters: [
-              {title: 'Swab ID ', name: 'ancs.token', type: 'string'},
-              {title: 'Swab Created At', name: 'ancs.created_at', type: 'datetime'}
+              {title: 'Swab ID ', name: 'sample_collection.token', type: 'string'},
+              {title: 'Swab Created At', name: 'sample_collection.created_at', type: 'datetime'}
             ]
           }
         ]

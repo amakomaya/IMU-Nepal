@@ -33,7 +33,7 @@ class ServiceController extends Controller
                             ->active()
                             ->pluck('token')->toArray();
 
-        $ancs = SampleCollection::whereIn('hp_code', $hpCodes)
+        $sample_collection = SampleCollection::whereIn('hp_code', $hpCodes)
             ->fromToDate($date['from_date'], $date['to_date'])
             ->active()
             ->pluck('woman_token')->toArray();
@@ -58,11 +58,11 @@ class ServiceController extends Controller
             ->active()
             ->pluck('woman_token')->toArray();
 
-        $woman_tokens = array_unique(array_merge($register, $ancs, $pncs, $delivery, $medication, $labtest));
+        $woman_tokens = array_unique(array_merge($register, $sample_collection, $pncs, $delivery, $medication, $labtest));
 
         $woman = SuspectedCase::withAll()->whereIn('token', $woman_tokens)->active()->get();
 
-        return view('reports.woman-service', compact('woman', 'register','ancs','medication', 'delivery', 'pncs','provinces', 'ward_or_healthpost','districts','municipalities','wards','healthposts','options','province_id','district_id','municipality_id','ward_id','hp_code', 'select_year', 'select_month'));
+        return view('reports.woman-service', compact('woman', 'register','sample_collection','medication', 'delivery', 'pncs','provinces', 'ward_or_healthpost','districts','municipalities','wards','healthposts','options','province_id','district_id','municipality_id','ward_id','hp_code', 'select_year', 'select_month'));
     }
 
 

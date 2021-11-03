@@ -25,7 +25,7 @@ class FixDuplicateSampleId extends Command
 
     public function handle()
     {
-      $duplicateSids = DB::table('ancs')
+      $duplicateSids = DB::table('sample_collection')
       ->select('token')
       ->whereNull('deleted_at')
       ->groupBy('token')

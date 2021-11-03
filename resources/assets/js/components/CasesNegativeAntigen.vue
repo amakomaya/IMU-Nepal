@@ -37,14 +37,14 @@
                 <td>{{ item.ward }}</td>
                 <td>{{ formattedDate(item.latest_anc.reporting_date_np) }}</td>
                 <td>{{ formattedDate(item.latest_anc.sample_test_date_np) }}</td>
-                <td><span class="label label-info"> {{ item.ancs.length }}</span>
+                <td><span class="label label-info"> {{ item.sample_collection.length }}</span>
                   <div title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
                 </td>
                 <td><span class="label label-success"> Negative</span>
                   <div>{{ labToken(item.latest_anc.lab_token) }}</div>
                 </td>
                 <td>
-                  <div v-if="item.ancs.length > 0">
+                  <div v-if="item.sample_collection.length > 0">
                     {{ checkValidOrganization(item.latest_anc) }}
                   </div>
                 </td>
@@ -99,15 +99,15 @@
                     {
                       name: 'Swab Collection',
                       filters: [
-                        {title: 'Swab ID ', name: 'ancs.token', type: 'string'},
-                        {title: 'Swab Created At', name: 'ancs.collection_date_en', type: 'datetime'}
+                        {title: 'Swab ID ', name: 'sample_collection.token', type: 'string'},
+                        {title: 'Swab Created At', name: 'sample_collection.collection_date_en', type: 'datetime'}
                       ]
                     },
                     {
                       name: 'Lab Result',
                       filters: [
-                        {title: 'Lab Reporting Date', name: 'ancs.reporting_date_en', type: 'datetime'},
-                        {title: 'Lab Result Date', name: 'ancs.sample_test_date_en', type: 'datetime'}
+                        {title: 'Lab Reporting Date', name: 'sample_collection.reporting_date_en', type: 'datetime'},
+                        {title: 'Lab Result Date', name: 'sample_collection.sample_test_date_en', type: 'datetime'}
                       ]
                     }
                   ],

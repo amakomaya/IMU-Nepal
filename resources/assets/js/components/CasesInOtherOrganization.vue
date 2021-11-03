@@ -37,13 +37,13 @@
           CICT : {{ item.cict_tracing ? item.cict_tracing.organization.name : 'N/A' }}
         </td>
         <td>{{ ad2bs(item.register_date_en) }}</td>
-        <td><span class="label label-info"> {{ item.ancs.length }}</span>
+        <td><span class="label label-info"> {{ item.sample_collection.length }}</span>
           <div v-if="item.latest_anc" title="Swab ID">
             Type : {{ checkSampleType(item.latest_anc.service_for) }}
           </div>
         </td>
         <td>
-          <div v-if="item.ancs.length > 0" v-html="latestLabResult(item.latest_anc)"> </div>
+          <div v-if="item.sample_collection.length > 0" v-html="latestLabResult(item.latest_anc)"> </div>
           <div v-else><span class="label label-primary"> Registered </span></div>
         </td>
         <td>
@@ -104,7 +104,7 @@ export default {
           {
             name: 'Swab Collection',
             filters: [
-              {title: 'Collection Date', name: 'ancs.collection_date_en', type: 'datetime'}
+              {title: 'Collection Date', name: 'sample_collection.collection_date_en', type: 'datetime'}
             ]
           }
         ],

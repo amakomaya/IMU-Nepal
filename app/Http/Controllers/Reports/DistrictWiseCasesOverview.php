@@ -38,10 +38,10 @@ class DistrictWiseCasesOverview extends Controller
         }
 
         $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->province_id;
-        $reports = DB::select(DB::raw("SELECT districts.district_name, ancs.result, ancs.service_for FROM `suspected_cases` 
-            LEFT JOIN ancs ON suspected_cases.token = ancs.woman_token
+        $reports = DB::select(DB::raw("SELECT districts.district_name, sample_collection.result, sample_collection.service_for FROM `suspected_cases` 
+            LEFT JOIN sample_collection ON suspected_cases.token = sample_collection.woman_token
             LEFT JOIN districts on suspected_cases.district_id = districts.id
-            WHERE suspected_cases.province_id = :province_id AND ancs.result in (3,4) and Date(ancs.reporting_date_en) = :date"), array(
+            WHERE suspected_cases.province_id = :province_id AND sample_collection.result in (3,4) and Date(sample_collection.reporting_date_en) = :date"), array(
             'province_id' => $province_id,
             'date' => $date_chosen
         ));
@@ -80,10 +80,10 @@ class DistrictWiseCasesOverview extends Controller
         }
 
         $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->province_id;
-        $reports = DB::select(DB::raw("SELECT municipalities.municipality_name, municipalities.district_name, ancs.result, ancs.service_for FROM `suspected_cases` 
-            LEFT JOIN ancs ON suspected_cases.token = ancs.woman_token
+        $reports = DB::select(DB::raw("SELECT municipalities.municipality_name, municipalities.district_name, sample_collection.result, sample_collection.service_for FROM `suspected_cases` 
+            LEFT JOIN sample_collection ON suspected_cases.token = sample_collection.woman_token
             LEFT JOIN municipalities on suspected_cases.municipality_id = municipalities.id
-            WHERE suspected_cases.province_id = :province_id AND ancs.result in (3,4) and Date(ancs.reporting_date_en) = :date"), array(
+            WHERE suspected_cases.province_id = :province_id AND sample_collection.result in (3,4) and Date(sample_collection.reporting_date_en) = :date"), array(
             'province_id' => $province_id,
             'date' => $date_chosen
         ));
@@ -123,10 +123,10 @@ class DistrictWiseCasesOverview extends Controller
         }
 
         $district_id = DistrictInfo::where('token', auth()->user()->token)->first()->district_id;
-        $reports = DB::select(DB::raw("SELECT municipalities.municipality_name, ancs.result, ancs.service_for FROM `suspected_cases` 
-            LEFT JOIN ancs ON suspected_cases.token = ancs.woman_token
+        $reports = DB::select(DB::raw("SELECT municipalities.municipality_name, sample_collection.result, sample_collection.service_for FROM `suspected_cases` 
+            LEFT JOIN sample_collection ON suspected_cases.token = sample_collection.woman_token
             LEFT JOIN municipalities on suspected_cases.municipality_id = municipalities.id
-            WHERE suspected_cases.district_id = :district_id AND ancs.result in (3,4) and Date(ancs.reporting_date_en) = :date"), array(
+            WHERE suspected_cases.district_id = :district_id AND sample_collection.result in (3,4) and Date(sample_collection.reporting_date_en) = :date"), array(
             'district_id' => $district_id,
             'date' => $date_chosen
         ));

@@ -137,7 +137,7 @@ Route::post('/v2/client', function (Request $request) {
 Route::get('/v1/client', function (Request $request) {
     $hp_code = $request->hp_code;
 
-    $record = SuspectedCase::with('ancs')
+    $record = SuspectedCase::with('sample_collection')
         ->where('hp_code', $hp_code)
         ->where('created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
         ->active()
@@ -189,7 +189,7 @@ Route::get('/v1/client', function (Request $request) {
         $response['case_where'] = $row->case_where ?? '';
         $response['end_case'] = $row->end_case ?? '';
         $response['payment'] = $row->payment ?? '';
-        $response['result'] = $row->ancs->first() ? $row->ancs->first()->result : '';
+        $response['result'] = $row->sample_collection->first() ? $row->sample_collection->first()->result : '';
 
         $response['nationality'] = $row->nationality ?? '';
         $response['id_card_detail'] = $row->id_card_detail ?? '';
@@ -1029,10 +1029,10 @@ Route::post('/v1/cases-search-by-lab-and-id', function (Request $request) {
     }
 
     $response_data = LabTest::whereIn('lab_tests.token', $lab_token)->where('women.name', '!=', null)
-        ->leftJoin('ancs', 'lab_tests.sample_token', '=', 'ancs.token')
-        ->leftJoin('women', 'ancs.woman_token', '=', 'women.token')
+        ->leftJoin('sample_collection', 'lab_tests.sample_token', '=', 'sample_collection.token')
+        ->leftJoin('women', 'sample_collection.woman_token', '=', 'women.token')
         ->leftJoin('municipalities', 'women.municipality_id', '=', 'municipalities.id')
-        ->select('ancs.service_for', \DB::raw('DATE(ancs.sample_test_date_np) AS date_of_positive'), 'women.name', 'women.age', 'women.age_unit', 'women.province_id', 'women.district_id', 'women.municipality_id', 'women.emergency_contact_one', 'women.sex', 'municipalities.municipality_name', 'women.tole', 'women.ward')->first();
+        ->select('sample_collection.service_for', \DB::raw('DATE(sample_collection.sample_test_date_np) AS date_of_positive'), 'women.name', 'women.age', 'women.age_unit', 'women.province_id', 'women.district_id', 'women.municipality_id', 'women.emergency_contact_one', 'women.sex', 'municipalities.municipality_name', 'women.tole', 'women.ward')->first();
 
     if(count($response_data) == 0){
         return response()->json(['message' => 'error']);

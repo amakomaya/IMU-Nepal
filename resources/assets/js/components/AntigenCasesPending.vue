@@ -40,7 +40,7 @@
                     Management : {{ checkCaseManagement(item.cases, item.case_where) }}
                 </td>
               <td>{{ formattedDate(item.register_date_np) }}</td>
-                <td><span class="label label-info"> {{ item.ancs.length }}</span>
+                <td><span class="label label-info"> {{ item.sample_collection.length }}</span>
                     <div v-if="item.latest_anc" title="Swab ID">
                       SID : <strong>{{ item.latest_anc.token }}</strong> <br>
                       Collected Date: {{item.latest_anc.collection_date_np}}
@@ -48,7 +48,7 @@
                     </div>
                 </td>
                 <td>
-                    <div v-if="item.ancs.length > 0"><span class="label label-primary"> Pending </span></div>
+                    <div v-if="item.sample_collection.length > 0"><span class="label label-primary"> Pending </span></div>
                     <div v-else><span class="label label-primary"> Registered </span></div>
                 </td>
                 <td>
@@ -58,7 +58,7 @@
                     <button v-if="role === 'healthworker' || role === 'healthpost' || role === 'municipality' && permission == 1" v-on:click="editCaseDetails(item.token)" title="Edit Case Detail">
                       <i class="fa fa-edit" aria-hidden="true"></i> |
                     </button>
-                  <button v-if="item.ancs.length === 0 && checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
+                  <button v-if="item.sample_collection.length === 0 && checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
                      <i class="fa fa-medkit" aria-hidden="true"></i> |
                   </button>
                   <button v-if="checkPermission('antigen-result') && checkAddReceivedView(item.latest_anc)" v-on:click="addAntigenResultInLab(item, removeItemOnSuccess)" title="Add Antigen Result">
@@ -127,7 +127,7 @@ export default {
           {
             name: 'Swab Collection',
             filters: [
-              {title: 'Swab Created At', name: 'ancs.collection_date_en', type: 'datetime'}
+              {title: 'Swab Created At', name: 'sample_collection.collection_date_en', type: 'datetime'}
             ]
           }
         ],

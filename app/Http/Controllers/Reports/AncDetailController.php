@@ -144,11 +144,11 @@ class AncDetailController extends Controller
             $$key = $value;
         }
 
-        $reports = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
-            ->whereIn('ancs.hp_code', $hpCodes)
-            ->whereIn('ancs.result', [3, 4])
+        $reports = SampleCollection::leftjoin('healthposts', 'sample_collection.hp_code', '=', 'healthposts.hp_code')
+            ->whereIn('sample_collection.hp_code', $hpCodes)
+            ->whereIn('sample_collection.result', [3, 4])
             ->whereIn('healthposts.hospital_type', [2, 3])
-            ->whereBetween(\DB::raw('DATE(ancs.sample_test_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
+            ->whereBetween(\DB::raw('DATE(sample_collection.sample_test_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
 
         if ($response['province_id'] !== null){
             $reports = $reports->where('healthposts.province_id', $response['province_id']);
@@ -196,10 +196,10 @@ class AncDetailController extends Controller
         }
 
         $user = auth()->user();
-        $reports = SampleCollection::leftjoin('healthposts', 'ancs.received_by_hp_code', '=', 'healthposts.hp_code')
-            ->whereIn('ancs.received_by_hp_code', $hpCodes)
-            ->whereIn('ancs.result', ['3', '4'])
-            ->whereBetween(\DB::raw('DATE(ancs.sample_test_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
+        $reports = SampleCollection::leftjoin('healthposts', 'sample_collection.received_by_hp_code', '=', 'healthposts.hp_code')
+            ->whereIn('sample_collection.received_by_hp_code', $hpCodes)
+            ->whereIn('sample_collection.result', ['3', '4'])
+            ->whereBetween(\DB::raw('DATE(sample_collection.sample_test_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->get()
             ->groupBy('hp_code');
         
@@ -253,11 +253,11 @@ class AncDetailController extends Controller
             ->toArray();
 
         $lab_organizations = SampleCollection::
-           whereIn('ancs.received_by_hp_code', $hpCodes)
+           whereIn('sample_collection.received_by_hp_code', $hpCodes)
             ->whereIn('service_for', ['1', '2'])
             ->whereIn('result', ['3', '4'])
             ->whereDate('reporting_date_en', $filter_date['from_date']->toDateString())
-            ->where('ancs.status', 1)
+            ->where('sample_collection.status', 1)
             ->select('received_by_hp_code', 'service_for', 'result', 'regdev')
             ->get()
             ->groupBy('received_by_hp_code');

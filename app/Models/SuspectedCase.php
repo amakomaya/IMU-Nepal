@@ -46,18 +46,18 @@ class SuspectedCase extends Model
         'case_id',
         'register_date_en',
         // nested
-        'ancs.service_for',
-        'ancs.created_at', 'ancs.token' , 'ancs.updated_at' ,
-        'ancs.collection_date_en',
-        'ancs.received_date_en',
-        'ancs.sample_test_date_en',
-        'ancs.reporting_date_en'
+        'sample_collection.service_for',
+        'sample_collection.created_at', 'sample_collection.token' , 'sample_collection.updated_at' ,
+        'sample_collection.collection_date_en',
+        'sample_collection.received_date_en',
+        'sample_collection.sample_test_date_en',
+        'sample_collection.reporting_date_en'
     ];
     protected $appends = ['formated_age_unit', 'formated_gender'];
     // protected $appends = ['anc_with_protocol', 'anc_visits'];
     protected $orderable = ['name', 'age', 'lmp_date_en', 'created_at', 'register_date_en'];
 
-    protected $supportedRelations = ['ancs', 'latestAnc', 'healthworker' ,'healthpost', 'district', 'municipality'];
+    protected $supportedRelations = ['sampleCollection', 'latestAnc', 'healthworker' ,'healthpost', 'district', 'municipality'];
 
     public function scopeWithAll($query)
     {
@@ -98,7 +98,7 @@ class SuspectedCase extends Model
     {
         return $this->hasOne('App\Models\OrganizationMember', 'token', 'created_by');
     }
-    public function ancs()
+    public function sampleCollection()
     {
         return $this->hasMany('App\Models\SampleCollection', 'woman_token', 'token');
     }
@@ -255,7 +255,7 @@ class SuspectedCase extends Model
     public function scopeActivePatientList($query)
     {
         return $query->whereHas('latestAnc', function ($latest_anc_query) {
-            $latest_anc_query->whereNotIn('ancs.result', [ '3', '4', '9']);
+            $latest_anc_query->whereNotIn('sample_collection.result', [ '3', '4', '9']);
         })->doesntHave('latestAnc', 'or');
     }
 

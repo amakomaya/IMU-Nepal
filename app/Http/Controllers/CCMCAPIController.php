@@ -46,21 +46,21 @@ class CCMCAPIController extends Controller
         $startDate = \request('startDate') ?? Carbon::now()->toDateString();
         $endDate = \request('endDate') ?? Carbon::tomorrow()->toDateString();
 
-        $data = DB::table('ancs')
-            ->selectRaw('count(ancs.id) as total')
+        $data = DB::table('sample_collection')
+            ->selectRaw('count(sample_collection.id) as total')
             ->selectRaw('district_name')
             ->selectRaw('sample_test_date_en')
             ->selectRaw('case
-           when ancs.result = 3 then "Positive"
-           when ancs.result = 4 then "Negative"
+           when sample_collection.result = 3 then "Positive"
+           when sample_collection.result = 4 then "Negative"
        END as test_result')
-            ->selectRaw('case when ancs.service_for = 1 then "PCR"
-            when ancs.service_for = 2 then "Antigen"
+            ->selectRaw('case when sample_collection.service_for = 1 then "PCR"
+            when sample_collection.service_for = 2 then "Antigen"
        END  as test_type')
-            ->leftJoin('healthposts as h', 'ancs.hp_code', 'h.hp_code')
+            ->leftJoin('healthposts as h', 'sample_collection.hp_code', 'h.hp_code')
             ->leftJoin('districts as d', 'd.id', 'h.district_id')
             ->whereRaw('(result = 3 or result = 4) and (service_for = 1 or service_for = 2)')
-            ->groupBy(DB::raw('district_name,ancs.result,ancs.service_for,sample_test_date_en'))
+            ->groupBy(DB::raw('district_name,sample_collection.result,sample_collection.service_for,sample_test_date_en'))
             ->where('sample_test_date_en', '>=', $startDate)
             ->where('sample_test_date_en', '<', $endDate)
             ->simplePaginate(1000);

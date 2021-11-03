@@ -97,14 +97,14 @@ class BackdateLabResultImport implements ToModel, WithChunkReading, WithValidati
                   'sample_test_result' => $labResult
                 ]);
               }
-              $ancs = SampleCollection::where('token', $sId);
-              $hasAlreadyReported = $ancs->get()->first()->sample_test_date_en;
+              $sample_collection = SampleCollection::where('token', $sId);
+              $hasAlreadyReported = $sample_collection->get()->first()->sample_test_date_en;
               if($hasAlreadyReported) {
-                $ancs->update([
+                $sample_collection->update([
                   'result' => $labResult
                 ]);
               } else {
-                $ancs->update([
+                $sample_collection->update([
                   'result' => $labResult,
                   'sample_test_date_en' => $backDateEn,
                   'sample_test_date_np' => $backDateNp,

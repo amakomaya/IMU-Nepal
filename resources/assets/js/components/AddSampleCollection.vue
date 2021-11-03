@@ -56,7 +56,7 @@
             <td>{{ CaseSelected.district.district_name }}</td>
             <td>{{ CaseSelected.municipality.municipality_name }}</td>
             <td>
-                <li v-for="item in CaseSelected.ancs">{{ item.token }} : {{ item.formatted_result }}</li>
+                <li v-for="item in CaseSelected.sample_collection">{{ item.token }} : {{ item.formatted_result }}</li>
             <td>
             <button v-on:click="addSampleCollection(CaseSelected.token)" title="Add Sample Collection / Swab Collection Report">
               <i class="fa fa-medkit" aria-hidden="true"></i>

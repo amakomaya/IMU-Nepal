@@ -52,10 +52,10 @@ class CictTracingController extends Controller
                 $request->session()->flash('message', 'Case already registered in Cict.');
                 return redirect()->route('cict-tracing.search');
             }
-            $patient = SuspectedCase::with('province', 'district', 'municipality', 'ancs', 'latestAnc')
+            $patient = SuspectedCase::with('province', 'district', 'municipality', 'sampleCollection', 'latestAnc')
                 ->where('case_id', $request->case_id)->first();
             if(empty($patient)){
-                $patient = SuspectedCaseOld::with('province', 'district', 'municipality', 'ancs', 'latestAnc')
+                $patient = SuspectedCaseOld::with('province', 'district', 'municipality', 'sampleCollection', 'latestAnc')
                     ->where('case_id', $request->case_id)->first();
             }
 
@@ -99,7 +99,7 @@ class CictTracingController extends Controller
                     return redirect()->route('cict-tracing.search');
                 }
 
-                $patient = SuspectedCase::with('province', 'district', 'municipality', 'ancs', 'latestAnc')
+                $patient = SuspectedCase::with('province', 'district', 'municipality', 'sampleCollection', 'latestAnc')
                     ->where('case_id', $request->case_id)->first();
                 if($patient){
                     $data['token'] = md5(microtime(true) . mt_Rand());
@@ -147,7 +147,7 @@ class CictTracingController extends Controller
     {
         if($request->case_id){
             $data = CictTracing::with(['suspectedCase' => function($q){
-                    $q->with('ancs', 'latestAnc');
+                    $q->with('sampleCollection', 'latestAnc');
                 }])->where('case_id', $request->case_id)->first();
             if($data){
                 return view('backend.cict-tracing.a-form.section-one', compact('data'));
@@ -178,7 +178,7 @@ class CictTracingController extends Controller
     {
         if($request->case_id){
             $data = CictTracing::with(['suspectedCase' => function($q){
-                    $q->with('ancs', 'latestAnc');
+                    $q->with('sampleCollection', 'latestAnc');
                 }])->where('case_id', $request->case_id)->first();
             if($data){
                 return view('backend.cict-tracing.a-form.section-two', compact('data'));
@@ -312,7 +312,7 @@ class CictTracingController extends Controller
         $vaccines = Vaccine::get();
         if($request->case_id){
             $data = CictTracing::with(['closeContacts', 'checkedBy', 'suspectedCase' => function($q){
-                    $q->with('ancs', 'latestAnc');
+                    $q->with('sampleCollection', 'latestAnc');
                 }])->where('case_id', $request->case_id)->first();
             if($data){
                 $org_id = OrganizationMember::where('token', auth()->user()->token)->first()->id;
@@ -600,7 +600,7 @@ class CictTracingController extends Controller
             },
             'closeContacts', 'checkedBy', 'vaccine',
             'suspectedCase' => function($q){
-                $q->with('ancs', 'latestAnc');
+                $q->with('sampleCollection', 'latestAnc');
             }])->where('case_id', $case_id)->first();
 
         // dd($data);
@@ -886,7 +886,7 @@ class CictTracingController extends Controller
         if($check_if_exists){
             return response()->json('1');
         }else{
-            $patient = SuspectedCase::with('ancs', 'latestAnc')
+            $patient = SuspectedCase::with('sampleCollection', 'latestAnc')
                 ->where('case_id', $data['case_id'])->first();
             if($patient){
                 $data['token'] = md5(microtime(true) . mt_Rand());

@@ -85,14 +85,14 @@ class LabResultImport implements ToModel, WithChunkReading, WithValidation, With
                   'sample_test_result' => $labResult
                 ]);
               }
-              $ancs = SampleCollection::where('token', $sId);
-              $hasAlreadyReported = $ancs->get()->first()->sample_test_date_en;
+              $sample_collection = SampleCollection::where('token', $sId);
+              $hasAlreadyReported = $sample_collection->get()->first()->sample_test_date_en;
               if($hasAlreadyReported) {
-                $ancs->update([
+                $sample_collection->update([
                   'result' => $labResult
                 ]);
               } else {
-                $ancs->update([
+                $sample_collection->update([
                   'result' => $labResult,
                   'sample_test_date_en' => $this->todayDateEn,
                   'sample_test_date_np' => $this->todayDateNp,
