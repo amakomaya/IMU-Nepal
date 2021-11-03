@@ -10,7 +10,7 @@ class OrganizationMember extends Model
 {
 	use LogsActivity;
 
-    protected $table='health_workers';
+    protected $table='organization_members';
 
 
     protected static $logFillable = true;
