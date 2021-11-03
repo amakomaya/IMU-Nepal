@@ -6,7 +6,7 @@ Route::get('ward-or-healthpost-select-municipality', 'Reports\FilterController@W
 
 Route::get('ward-select-municipality', 'Reports\FilterController@wardSelectByMunicipality')->name('ward-select-municipality');
 
-Route::get('healthpost-select-municipality', 'Reports\FilterController@healthpostSelectByMunicipality')->name('healthpost-select-municipality');
+Route::get('healthpost-select-municipality', 'Reports\FilterController@organizationSelectByMunicipality')->name('healthpost-select-municipality');
 
 Route::get('healthpost-select', 'Reports\FilterController@healthpostSelect');
 Route::get('select-from-to', 'Reports\FilterController@selectFromTo');

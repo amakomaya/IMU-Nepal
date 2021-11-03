@@ -52,7 +52,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($healthposts as $healthpost)
+                                @foreach($organizations as $healthpost)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $healthpost->name }}</td>

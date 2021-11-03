@@ -114,7 +114,7 @@
                                 <select name="hp_code" class="form-control"  >
                                     @if(Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
                                         <option value="">All Organization</option>
-                                        @foreach($healthposts as $healthpost)
+                                        @foreach($organizations as $healthpost)
                                             @if($healthpost->hospital_type == 3 || $healthpost->hospital_type == 5 || $healthpost->hospital_type == 6)
                                             @if($hp_code==$healthpost->hp_code)
                                                 @php($selectedHealthpost = "selected")

@@ -221,10 +221,10 @@ class WomanController extends Controller
     public function casesPaymentCreate(Request $request)
     {
         if(Auth::user()->role == 'healthpost'){
-            $healthposts = Organization::where('token', Auth::user()->token)->first();
-        // dd($healthposts);
+            $organizations = Organization::where('token', Auth::user()->token)->first();
+        // dd($organizations);
 
-            $total = $healthposts->no_of_beds + $healthposts->no_of_hdu + $healthposts->no_of_icu + $healthposts->no_of_ventilators;
+            $total = $organizations->no_of_beds + $organizations->no_of_hdu + $organizations->no_of_icu + $organizations->no_of_ventilators;
 
             if($total > 0) {
                 return view('backend.cases.payment.create');
@@ -234,9 +234,9 @@ class WomanController extends Controller
         }
         if(Auth::user()->role == 'healthworker'){
             $hp_code = OrganizationMember::where('token',Auth::user()->token)->first()->hp_code;
-            $healthposts = Organization::where('hp_code', $hp_code)->first();
+            $organizations = Organization::where('hp_code', $hp_code)->first();
 
-            $total = $healthposts->no_of_beds + $healthposts->no_of_hdu + $healthposts->no_of_icu + $healthposts->no_of_ventilators;
+            $total = $organizations->no_of_beds + $organizations->no_of_hdu + $organizations->no_of_icu + $organizations->no_of_ventilators;
 
             if($total > 0) {
                 return view('backend.cases.payment.create');
@@ -251,13 +251,13 @@ class WomanController extends Controller
     public function getRemainingBeds(Request $request)
     {
         if(Auth::user()->role == 'healthpost'){
-            $healthposts = Organization::where('token', Auth::user()->token)->first();
+            $organizations = Organization::where('token', Auth::user()->token)->first();
         }
         if (Auth::user()->role == 'healthworker'){
             $hp_code = OrganizationMember::where('token',Auth::user()->token)->first()->hp_code;
-            $healthposts = Organization::where('hp_code', $hp_code)->first();
+            $organizations = Organization::where('hp_code', $hp_code)->first();
         }
-        $total = $healthposts->no_of_beds + $healthposts->no_of_hdu + $healthposts->no_of_icu + $healthposts->no_of_ventilators;
+        $total = $organizations->no_of_beds + $organizations->no_of_hdu + $organizations->no_of_icu + $organizations->no_of_ventilators;
 
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
@@ -291,10 +291,10 @@ class WomanController extends Controller
                 }
             }
         }
-        $dropdown['general'] = $healthposts->no_of_beds - $general_count;
-        $dropdown['hdu'] = $healthposts->no_of_hdu - $hdu_count;
-        $dropdown['icu'] = $healthposts->no_of_icu - $icu_count;
-        $dropdown['venti'] = $healthposts->no_of_ventilators - $venti_count;
+        $dropdown['general'] = $organizations->no_of_beds - $general_count;
+        $dropdown['hdu'] = $organizations->no_of_hdu - $hdu_count;
+        $dropdown['icu'] = $organizations->no_of_icu - $icu_count;
+        $dropdown['venti'] = $organizations->no_of_ventilators - $venti_count;
         return response()->json([
             'remaining_beds' => $dropdown
         ]); 
@@ -309,9 +309,9 @@ class WomanController extends Controller
         }
         if (Auth::user()->role == 'healthworker'){
             $hp_code = OrganizationMember::where('token',Auth::user()->token)->first()->hp_code;
-            $healthposts = Organization::where('hp_code', $hp_code)->first();
+            $organizations = Organization::where('hp_code', $hp_code)->first();
         }
-        $total = $healthposts->no_of_beds + $healthposts->no_of_hdu + $healthposts->no_of_icu + $healthposts->no_of_ventilators;
+        $total = $organizations->no_of_beds + $organizations->no_of_hdu + $organizations->no_of_icu + $organizations->no_of_ventilators;
 
         $data = PaymentCase::where('hp_code', $hp_code)->whereNull('is_death')->get();
         $hdu_count = $icu_count = $venti_count = $general_count = 0;
@@ -343,10 +343,10 @@ class WomanController extends Controller
                 }
             }
         }
-        $dropdown['general'] = $healthposts->no_of_beds - $general_count;
-        $dropdown['hdu'] = $healthposts->no_of_hdu - $hdu_count;
-        $dropdown['icu'] = $healthposts->no_of_icu - $icu_count;
-        $dropdown['venti'] = $healthposts->no_of_ventilators - $venti_count;
+        $dropdown['general'] = $organizations->no_of_beds - $general_count;
+        $dropdown['hdu'] = $organizations->no_of_hdu - $hdu_count;
+        $dropdown['icu'] = $organizations->no_of_icu - $icu_count;
+        $dropdown['venti'] = $organizations->no_of_ventilators - $venti_count;
         return response()->json([
             'remaining_beds' => $dropdown
         ]); 

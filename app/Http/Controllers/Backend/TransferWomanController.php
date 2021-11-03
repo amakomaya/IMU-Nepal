@@ -27,8 +27,8 @@ class TransferWomanController extends Controller
       $municipalities = Cache::remember('municipality-list', 48*60*60, function () {
         return Municipality::select(['id', 'municipality_name', 'province_id', 'district_id', 'municipality_name_np', 'type', 'total_no_of_wards'])->get();
       });
-      $healthposts = Organization::all();
-    	return view('backend.transfer-woman.transfer',compact('from_hp_code','woman','provinces','districts','municipalities','healthposts'));
+      $organizations = Organization::all();
+    	return view('backend.transfer-woman.transfer',compact('from_hp_code','woman','provinces','districts','municipalities','organizations'));
     }
 
     public function transferStore(TransferWomanRequest $request)

@@ -29,23 +29,23 @@ class HealthPostController extends Controller
         }
         if (Auth::user()->role == "province") {
             $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
-            $healthposts = Organization::where('province_id', $province_id)->latest()->get();
+            $organizations = Organization::where('province_id', $province_id)->latest()->get();
         } elseif (Auth::user()->role == "dho") {
             $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
-            $healthposts = Organization::where('district_id', $district_id)->latest()->get();
+            $organizations = Organization::where('district_id', $district_id)->latest()->get();
         } elseif (Auth::user()->role == "municipality") {
             $municipality_id = Municipality::modelMunicipalityInfo(Auth::user()->token)->municipality_id;
-            $healthposts = Organization::where('municipality_id', $municipality_id)->latest()->get();
+            $organizations = Organization::where('municipality_id', $municipality_id)->latest()->get();
         } elseif (Auth::user()->role == "ward") {
             $ward_id = Ward::modelWard(Auth::user()->token)->id;
             $ward_no = Ward::getWardNo($ward_id);
             $municipality_id = Ward::modelWard(Auth::user()->token)->municipality_id;
-            $healthposts = Organization::where([['municipality_id', $municipality_id], ['ward_no', $ward_no]])->latest()->get();
+            $organizations = Organization::where([['municipality_id', $municipality_id], ['ward_no', $ward_no]])->latest()->get();
         } else {
-            $healthposts = Organization::latest()->get();
+            $organizations = Organization::latest()->get();
         }
 
-        return view('backend.healthpost.index', compact('healthposts'));
+        return view('backend.healthpost.index', compact('organizations'));
     }
 
     public function create()
@@ -352,7 +352,7 @@ class HealthPostController extends Controller
                 'name' => 'required|string',
                 'province_id' => 'required|string',
                 'district_id' => 'required|string',
-                'hp_code' => 'required|unique:healthposts',
+                'hp_code' => 'required|unique:organizations',
                 'ward_no' => 'required|string',
                 'address' => 'required|string',
                 'status' => 'required|string',

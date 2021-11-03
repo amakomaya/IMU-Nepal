@@ -144,7 +144,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($healthposts as $item)
+                                @foreach ($organizations as $item)
                                     <tr>
                                         <td class="text-center"> {{ $loop->iteration }}</td>
                                         <td> {{ $item->name }} </td>

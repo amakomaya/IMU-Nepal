@@ -112,7 +112,7 @@ class SuspectedCase extends Model
         return $this->hasOne('App\User', 'token', 'token');
     }
 
-    public function healthpost()
+    public function organization()
     {
         return $this->hasOne('App\Models\Organization', 'hp_code', 'hp_code');
     }

@@ -322,20 +322,20 @@ class CasesPaymentController extends Controller
 
         $data = \DB::table('payment_cases')
             ->whereIn('payment_cases.hp_code', $hpCodes)
-            ->join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
-            ->join('municipalities', 'healthposts.municipality_id', '=', 'municipalities.id')
-            ->select(['healthposts.name as organiation_name',
-                'healthposts.no_of_beds',
-                'healthposts.no_of_ventilators',
-                'healthposts.no_of_icu',
-                'healthposts.no_of_hdu',
-                'healthposts.daily_consumption_of_oxygen',
-                'healthposts.is_oxygen_facility',
+            ->join('organizations', 'payment_cases.hp_code', '=', 'organizations.hp_code')
+            ->join('municipalities', 'organizations.municipality_id', '=', 'municipalities.id')
+            ->select(['organizations.name as organiation_name',
+                'organizations.no_of_beds',
+                'organizations.no_of_ventilators',
+                'organizations.no_of_icu',
+                'organizations.no_of_hdu',
+                'organizations.daily_consumption_of_oxygen',
+                'organizations.is_oxygen_facility',
                 'municipalities.municipality_name as municipality',
                 'payment_cases.health_condition', 'payment_cases.health_condition_update',
                 'payment_cases.self_free', 'payment_cases.is_death'
             ])
-            ->orderBy('healthposts.name', 'asc')
+            ->orderBy('organizations.name', 'asc')
             ->get();
 
         $mapped_data = $data->map(function ($value) {
@@ -389,21 +389,21 @@ class CasesPaymentController extends Controller
 
         $data = \DB::table('payment_cases')
             ->whereIn('payment_cases.hp_code', $hpCodes)
-            ->where('healthposts.hospital_type', 5)
-            ->join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
-            ->join('municipalities', 'healthposts.municipality_id', '=', 'municipalities.id')
-            ->select(['healthposts.name as organiation_name',
-                'healthposts.no_of_beds',
-                'healthposts.no_of_ventilators',
-                'healthposts.no_of_icu',
-                'healthposts.no_of_hdu',
-                'healthposts.daily_consumption_of_oxygen',
-                'healthposts.is_oxygen_facility',
+            ->where('organizations.hospital_type', 5)
+            ->join('organizations', 'payment_cases.hp_code', '=', 'organizations.hp_code')
+            ->join('municipalities', 'organizations.municipality_id', '=', 'municipalities.id')
+            ->select(['organizations.name as organiation_name',
+                'organizations.no_of_beds',
+                'organizations.no_of_ventilators',
+                'organizations.no_of_icu',
+                'organizations.no_of_hdu',
+                'organizations.daily_consumption_of_oxygen',
+                'organizations.is_oxygen_facility',
                 'municipalities.municipality_name as municipality',
                 'payment_cases.health_condition', 'payment_cases.health_condition_update',
                 'payment_cases.self_free', 'payment_cases.is_death'
             ])
-            ->orderBy('healthposts.name', 'asc')
+            ->orderBy('organizations.name', 'asc')
             ->get();
 
         $mapped_data = $data->map(function ($value) {
@@ -456,22 +456,22 @@ class CasesPaymentController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
 
         $data = \DB::table('payment_cases')
-            ->where('healthposts.hospital_type', 3)
+            ->where('organizations.hospital_type', 3)
             ->whereIn('payment_cases.hp_code', $hpCodes)
-            ->join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
-            ->join('municipalities', 'healthposts.municipality_id', '=', 'municipalities.id')
-            ->select(['healthposts.name as organiation_name',
-                'healthposts.no_of_beds',
-                'healthposts.no_of_ventilators',
-                'healthposts.no_of_icu',
-                'healthposts.no_of_hdu',
-                'healthposts.daily_consumption_of_oxygen',
-                'healthposts.is_oxygen_facility',
+            ->join('organizations', 'payment_cases.hp_code', '=', 'organizations.hp_code')
+            ->join('municipalities', 'organizations.municipality_id', '=', 'municipalities.id')
+            ->select(['organizations.name as organiation_name',
+                'organizations.no_of_beds',
+                'organizations.no_of_ventilators',
+                'organizations.no_of_icu',
+                'organizations.no_of_hdu',
+                'organizations.daily_consumption_of_oxygen',
+                'organizations.is_oxygen_facility',
                 'municipalities.municipality_name as municipality',
                 'payment_cases.health_condition', 'payment_cases.health_condition_update',
                 'payment_cases.self_free', 'payment_cases.is_death'
             ])
-            ->orderBy('healthposts.name', 'asc')
+            ->orderBy('organizations.name', 'asc')
             ->get();
 
         $mapped_data = $data->map(function ($value) {
@@ -524,22 +524,22 @@ class CasesPaymentController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
 
         $data = \DB::table('payment_cases')
-            ->where('healthposts.hospital_type', 6)
+            ->where('organizations.hospital_type', 6)
             ->whereIn('payment_cases.hp_code', $hpCodes)
-            ->join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
-            ->join('municipalities', 'healthposts.municipality_id', '=', 'municipalities.id')
-            ->select(['healthposts.name as organiation_name',
-                'healthposts.no_of_beds',
-                'healthposts.no_of_ventilators',
-                'healthposts.no_of_icu',
-                'healthposts.no_of_hdu',
-                'healthposts.daily_consumption_of_oxygen',
-                'healthposts.is_oxygen_facility',
+            ->join('organizations', 'payment_cases.hp_code', '=', 'organizations.hp_code')
+            ->join('municipalities', 'organizations.municipality_id', '=', 'municipalities.id')
+            ->select(['organizations.name as organiation_name',
+                'organizations.no_of_beds',
+                'organizations.no_of_ventilators',
+                'organizations.no_of_icu',
+                'organizations.no_of_hdu',
+                'organizations.daily_consumption_of_oxygen',
+                'organizations.is_oxygen_facility',
                 'municipalities.municipality_name as municipality',
                 'payment_cases.health_condition', 'payment_cases.health_condition_update',
                 'payment_cases.self_free', 'payment_cases.is_death'
             ])
-            ->orderBy('healthposts.name', 'asc')
+            ->orderBy('organizations.name', 'asc')
             ->get();
 
         $mapped_data = $data->map(function ($value) {

@@ -15,14 +15,14 @@
                 <p class="govF">Government of Nepal</p>
                 <p class="govF">Ministry of Health & Population</p>
                 <p class="govM">Department of Health Service</p>
-                <p class="govB">{{ item.healthpost.name }}</p>
-                <p class="govA">{{ item.healthpost.address }}, {{ districts.find(x => x.id === item.healthpost.district_id).district_name }}</p>
+                <p class="govB">{{ item.organization.name }}</p>
+                <p class="govA">{{ item.organization.address }}, {{ districts.find(x => x.id === item.organization.district_id).district_name }}</p>
             </div>
 
             <div class="titleSide">
-                <p>Phone: {{ item.healthpost.phone }}</p>
+                <p>Phone: {{ item.organization.phone }}</p>
                 <!-- <p>Fax: 4252375</p> -->
-                <p> E-mail: {{ item.healthpost.email }}</p>
+                <p> E-mail: {{ item.organization.email }}</p>
                 <p class="date">Date: {{ ad2bs(item.created_at) }}</p>
             </div>
         </div>

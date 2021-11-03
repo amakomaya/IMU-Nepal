@@ -181,9 +181,9 @@ class AggregateController extends Controller
         $data = Cache::remember('analysis-report', 60 * 60, function () {
             return \DB::table('suspected_cases')->where('suspected_cases.status', 1)
                 ->join('sample_collection', 'suspected_cases.token', '=', 'sample_collection.woman_token')
-                ->join('healthposts', 'suspected_cases.hp_code', '=', 'healthposts.hp_code')
+                ->join('organizations', 'suspected_cases.hp_code', '=', 'organizations.hp_code')
                 ->whereIn('sample_collection.result', [3,4])
-                ->select('sample_collection.result as antigen_result', 'sample_collection.service_for', 'healthposts.province_id as province', DB::raw('count(*) as total'))
+                ->select('sample_collection.result as antigen_result', 'sample_collection.service_for', 'organizations.province_id as province', DB::raw('count(*) as total'))
                 ->groupBy(['antigen_result','province', 'service_for'])
                 ->get();
         });

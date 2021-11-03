@@ -100,17 +100,17 @@ class AdminController extends Controller
     }
 
 
-    public function healthpostSelectByWard(Request $request)
+    public function organizationSelectByWard(Request $request)
     {
         $id = $request->get('id');
         $ward_no = Ward::getWardNo($id);
         $municipality_id = $request->get('municipality_id');
         echo '<select id="hp_code" class="form-control" name="hp_code">';
 
-        $healthposts = Organization::where([['municipality_id', $municipality_id], ['ward_no', $ward_no]])->orderBy('name', 'asc')->get();
+        $organizations = Organization::where([['municipality_id', $municipality_id], ['ward_no', $ward_no]])->orderBy('name', 'asc')->get();
 
         echo "<option value=\"\">Select Organization</option>";
-        foreach ($healthposts as $healthpost) {
+        foreach ($organizations as $healthpost) {
             echo "<option value=\"$healthpost->hp_code\">$healthpost->name</option>";
         }
         echo '<select>';
@@ -121,9 +121,9 @@ class AdminController extends Controller
     {
         $id = $request->get('id');
         echo '<select id="hp_code" class="form-control" name="hp_code">';
-        $healthposts = Organization::where('municipality_id', $id)->orderBy('name', 'asc')->get();
+        $organizations = Organization::where('municipality_id', $id)->orderBy('name', 'asc')->get();
         echo "<option value=\"\">Select Organization</option>";
-        foreach ($healthposts as $Healthpost) {
+        foreach ($organizations as $Healthpost) {
             echo "<option value=\"$Healthpost->hp_code\">$Healthpost->name</option>";
         }
         echo '<select>';

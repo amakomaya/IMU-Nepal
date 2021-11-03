@@ -75,11 +75,11 @@ class HealthWorkerController extends Controller
         $municipalities = Municipality::where('id', $healthpost->municipality_id)->get();
         // $wards = Ward::where([['ward_no', $healthpost->ward_no],['municipality_id', $healthpost->municipality_id]])->get();
         $wards = [];
-        $healthposts = Organization::where('id', $healthpost->id)->get();
+        $organizations = Organization::where('id', $healthpost->id)->get();
         $role = "healthworker";
         $permissions = Permission::whereNotIn('id', [1, 2, 3, 4, 5, 15, 17])->get();
 
-        return view('backend.health-worker.create',compact('provinces','districts','municipalities','healthposts','role', 'permissions'));
+        return view('backend.health-worker.create',compact('provinces','districts','municipalities','organizations','role', 'permissions'));
     }
 
     /**
@@ -183,11 +183,11 @@ class HealthWorkerController extends Controller
         $districts = District::where('id', $healthpost->district_id)->get();
         $municipalities = Municipality::where('id', $healthpost->municipality_id)->get();
 //        $wards = Ward::where([['ward_no', $healthpost->ward_no],['municipality_id', $healthpost->municipality_id]])->get();
-        $healthposts = Organization::where('id', $healthpost->id)->get();
+        $organizations = Organization::where('id', $healthpost->id)->get();
         $user = $this->findModelUser($data->token);
         $role = "healthworker";
         $permissions = Permission::whereNotIn('id', [1, 2, 3, 4, 5, 15, 17])->get();
-        return view('backend.health-worker.edit', compact('data','provinces','districts','municipalities','healthposts','user','role', 'permissions'));
+        return view('backend.health-worker.edit', compact('data','provinces','districts','municipalities','organizations','user','role', 'permissions'));
     }
 
     /**

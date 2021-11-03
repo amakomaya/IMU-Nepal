@@ -410,7 +410,7 @@ export default {
             exportableData.occupation = "Other";
           }
 
-          exportableData.current_hospital = data.healthpost ? data.healthpost.name : '';
+          exportableData.current_hospital = data.organization ? data.organization.name : '';
           var date = data.register_date_np;
           var report_date = '';
           if(data.latest_anc){

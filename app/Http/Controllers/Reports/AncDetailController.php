@@ -144,21 +144,21 @@ class AncDetailController extends Controller
             $$key = $value;
         }
 
-        $reports = SampleCollection::leftjoin('healthposts', 'sample_collection.hp_code', '=', 'healthposts.hp_code')
+        $reports = SampleCollection::leftjoin('organizations', 'sample_collection.hp_code', '=', 'organizations.hp_code')
             ->whereIn('sample_collection.hp_code', $hpCodes)
             ->whereIn('sample_collection.result', [3, 4])
-            ->whereIn('healthposts.hospital_type', [2, 3])
+            ->whereIn('organizations.hospital_type', [2, 3])
             ->whereBetween(\DB::raw('DATE(sample_collection.sample_test_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
 
         if ($response['province_id'] !== null){
-            $reports = $reports->where('healthposts.province_id', $response['province_id']);
+            $reports = $reports->where('organizations.province_id', $response['province_id']);
         }
 
         if($response['district_id'] !== null){
-            $reports = $reports->where('healthposts.district_id', $response['district_id']);
+            $reports = $reports->where('organizations.district_id', $response['district_id']);
         }
         if($response['municipality_id'] !== null){
-            $reports = $reports->where('healthposts.municipality_id', $response['municipality_id']);
+            $reports = $reports->where('organizations.municipality_id', $response['municipality_id']);
         }
 
         $reports = $reports->get()
@@ -180,7 +180,7 @@ class AncDetailController extends Controller
             $data[$key]['antigen_negative_cases_count'] = $report->where('service_for', '2')->where('result', 4)->count();
         }
             
-        return view('backend.sample.report.report', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+        return view('backend.sample.report.report', compact('data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
     }
 
 
@@ -196,7 +196,7 @@ class AncDetailController extends Controller
         }
 
         $user = auth()->user();
-        $reports = SampleCollection::leftjoin('healthposts', 'sample_collection.received_by_hp_code', '=', 'healthposts.hp_code')
+        $reports = SampleCollection::leftjoin('organizations', 'sample_collection.received_by_hp_code', '=', 'organizations.hp_code')
             ->whereIn('sample_collection.received_by_hp_code', $hpCodes)
             ->whereIn('sample_collection.result', ['3', '4'])
             ->whereBetween(\DB::raw('DATE(sample_collection.sample_test_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
@@ -214,7 +214,7 @@ class AncDetailController extends Controller
             $data[$key]['negative_cases_count'] = $report->where('sample_test_result', '4')->count();
         }
             
-        return view('backend.sample.report.lab-report', compact('data','provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+        return view('backend.sample.report.lab-report', compact('data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
     }
 
     private function dataFromAndTo(Request $request)
@@ -245,7 +245,7 @@ class AncDetailController extends Controller
 
         $filter_date = $this->dataFromOnly($request);
 
-        $healthposts = Organization::whereIn('hp_code', $hpCodes)
+        $organizations = Organization::whereIn('hp_code', $hpCodes)
             ->where('status', 1)
             ->select('name', 'token', 'hp_code')
             ->get()
@@ -262,10 +262,10 @@ class AncDetailController extends Controller
             ->get()
             ->groupBy('received_by_hp_code');
 
-        $mapped_data = collect($lab_organizations)->map(function ($lab, $key) use ($healthposts) {
+        $mapped_data = collect($lab_organizations)->map(function ($lab, $key) use ($organizations) {
             $return = [];
-            $return['name'] = $healthposts[$key]['name'];
-            $return['token'] = $healthposts[$key]['token'];
+            $return['name'] = $organizations[$key]['name'];
+            $return['token'] = $organizations[$key]['token'];
             $return['pcr_postive_today'] = $lab->where('service_for', '1')->where('result', '3')->count();
             $return['pcr_negative_today'] = $lab->where('service_for', '1')->where('result', '4')->count();
             $return['antigen_positive_today'] = $lab->where('service_for', '2')->where('result', '3')->count();
@@ -280,8 +280,8 @@ class AncDetailController extends Controller
 
             return $return;
         })->toArray();
-        $empty_healthposts = array_diff_key($healthposts, $mapped_data);
-        $data = array_merge($mapped_data, $empty_healthposts);
+        $empty_organizations = array_diff_key($organizations, $mapped_data);
+        $data = array_merge($mapped_data, $empty_organizations);
         return view('backend.sample.report.lab-visualization', compact('data', 'from_date'));
 
     }
@@ -322,7 +322,7 @@ class AncDetailController extends Controller
             }
         }
 
-        $healthposts = Organization::whereIn('hp_code', $hpCodes)
+        $organizations = Organization::whereIn('hp_code', $hpCodes)
             ->where('status', 1)
             ->select('name', 'hp_code')
             ->get()
@@ -336,9 +336,9 @@ class AncDetailController extends Controller
         $other_regdev_data = $mainquery->get()
             ->groupBy('hp_code');
             
-        $other_regdev_data_count = $other_regdev_data->map(function ($sample, $key) use($healthposts) {
+        $other_regdev_data_count = $other_regdev_data->map(function ($sample, $key) use($organizations) {
             $return = [];
-            $return['name'] = $healthposts[$key]['name'];
+            $return['name'] = $organizations[$key]['name'];
             $return['web_count'] = $sample->where('regdev', 'web')->count();
             $null_count = $sample->where('regdev', null)->count();
             $mobile_count = $sample->where('regdev', 'mobile')->count();
@@ -357,8 +357,8 @@ class AncDetailController extends Controller
         $final_excel_data = isset($excel_data_count[""]) ? [] : $excel_data_count;
         
         $merged_data = array_merge_recursive($other_regdev_data_count, $final_excel_data);
-        $empty_healthposts = array_diff_key($healthposts, $merged_data);
-        $data = array_merge($merged_data, $empty_healthposts);
+        $empty_organizations = array_diff_key($organizations, $merged_data);
+        $data = array_merge($merged_data, $empty_organizations);
 
         return view('backend.sample.report.regdev', compact('data'));
     }

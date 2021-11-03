@@ -35,7 +35,7 @@
                 <td>{{ item.municipality.municipality_name }}</td>
                 <td>{{ item.ward }}</td>
                 <td>
-                    Place : {{ item.healthpost ? item.healthpost.name : '' }} <br>
+                    Place : {{ item.organization ? item.organization.name : '' }} <br>
                     Type : {{ checkCaseType(item.cases) }} <br>
                     Management : {{ checkCaseManagement(item.cases, item.case_where) }}
                 </td>

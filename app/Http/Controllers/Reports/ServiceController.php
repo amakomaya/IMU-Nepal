@@ -62,7 +62,7 @@ class ServiceController extends Controller
 
         $woman = SuspectedCase::withAll()->whereIn('token', $woman_tokens)->active()->get();
 
-        return view('reports.woman-service', compact('woman', 'register','sample_collection','medication', 'delivery', 'pncs','provinces', 'ward_or_healthpost','districts','municipalities','wards','healthposts','options','province_id','district_id','municipality_id','ward_id','hp_code', 'select_year', 'select_month'));
+        return view('reports.woman-service', compact('woman', 'register','sample_collection','medication', 'delivery', 'pncs','provinces', 'ward_or_healthpost','districts','municipalities','wards','organizations','options','province_id','district_id','municipality_id','ward_id','hp_code', 'select_year', 'select_month'));
     }
 
 
@@ -89,7 +89,7 @@ class ServiceController extends Controller
 
         $tokens = array_unique(array_merge($register, $vaccination));
         $babies = BabyDetail::withAll()->whereIn('token', $tokens)->active()->get();
-        return view('reports.baby-service', compact('babies','vaccination', 'register','provinces', 'ward_or_healthpost','districts','municipalities','wards','healthposts','options','province_id','district_id','municipality_id','ward_id','hp_code', 'select_year', 'select_month'));
+        return view('reports.baby-service', compact('babies','vaccination', 'register','provinces', 'ward_or_healthpost','districts','municipalities','wards','organizations','options','province_id','district_id','municipality_id','ward_id','hp_code', 'select_year', 'select_month'));
     }
     private function dataFromAndTo(Request $request)
     {

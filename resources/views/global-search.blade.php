@@ -108,7 +108,7 @@
                 </div>
                 <div class="form-group  col-sm-3" id="healthpost">
                     <select name="hp_code" class="form-control"  >
-                        <option value="">Select All Healthposts</option>
+                        <option value="">Select All Organizations</option>
                         @if(request()->hp_code)
                             <option value="{{ request()->hp_code }}" selected>{{ \App\Models\Organization::where('hp_code', request()->hp_code)->first()->name ?? ''}}
                         @endif

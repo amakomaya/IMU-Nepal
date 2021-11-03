@@ -28,7 +28,7 @@ class CCMCAPIController extends Controller
          WHEN gender = 2 THEN "female"
          ELSE "other"
         END as gender')
-            ->leftJoin('healthposts as h', 'payment_cases.hp_code', 'h.hp_code')
+            ->leftJoin('organizations as h', 'payment_cases.hp_code', 'h.hp_code')
             ->leftJoin('districts as d', 'd.id', 'h.district_id')
             ->whereNotNull('d.district_name')
             ->where('payment_cases.updated_at', '>=', $startDate)
@@ -57,7 +57,7 @@ class CCMCAPIController extends Controller
             ->selectRaw('case when sample_collection.service_for = 1 then "PCR"
             when sample_collection.service_for = 2 then "Antigen"
        END  as test_type')
-            ->leftJoin('healthposts as h', 'sample_collection.hp_code', 'h.hp_code')
+            ->leftJoin('organizations as h', 'sample_collection.hp_code', 'h.hp_code')
             ->leftJoin('districts as d', 'd.id', 'h.district_id')
             ->whereRaw('(result = 3 or result = 4) and (service_for = 1 or service_for = 2)')
             ->groupBy(DB::raw('district_name,sample_collection.result,sample_collection.service_for,sample_test_date_en'))
@@ -72,25 +72,25 @@ class CCMCAPIController extends Controller
         if (request()->query->get('ccmcApiKey') != env('CCMCAPIKEY', 'jEmUQMWEHI'))
             abort('401', 'Incorrect api key');
 
-        $data = DB::table('healthposts')
+        $data = DB::table('organizations')
             ->selectRaw('
-          healthposts.name,
-          healthposts.hp_code,
-          healthposts.no_of_beds as no_of_beds,
+          organizations.name,
+          organizations.hp_code,
+          organizations.no_of_beds as no_of_beds,
           ifnull(hp_bed_status.occupied_beds,0) as bed_occupied,
-          healthposts.no_of_hdu as no_of_hdu,
+          organizations.no_of_hdu as no_of_hdu,
           ifnull(hp_bed_status.hdu_occuplied,0) as hdu_occupied,
-          healthposts.no_of_icu as no_of_icu,
+          organizations.no_of_icu as no_of_icu,
           ifnull(hp_bed_status.icu_occuplied,0) as icu_occupied,
-          healthposts.no_of_ventilators as no_of_ventilators,
-          healthposts.hospital_type as hospital_type,
-          healthposts.is_oxygen_facility as is_oxygen_facility,
-          healthposts.phone as phone,
+          organizations.no_of_ventilators as no_of_ventilators,
+          organizations.hospital_type as hospital_type,
+          organizations.is_oxygen_facility as is_oxygen_facility,
+          organizations.phone as phone,
           ifnull(hp_bed_status.venilator_occupied,0) as ventilator_occupied,
           provinces.province_name,
           districts.district_name,
           municipalities.municipality_name,
-          healthposts.ward_no
+          organizations.ward_no
           ')
             ->leftJoin(
                 DB::raw("(select
@@ -98,11 +98,11 @@ class CCMCAPIController extends Controller
                   count(IF(health_condition = 3, 1, null)) as hdu_occuplied,
                   count(IF(health_condition = 4, 1, null)) as icu_occuplied,
                   count(IF(health_condition = 5, 1, null)) as venilator_occupied,
-                  hp_code from payment_cases where payment_cases.is_death is null group by hp_code) AS hp_bed_status"), 'hp_bed_status.hp_code', 'healthposts.hp_code'
+                  hp_code from payment_cases where payment_cases.is_death is null group by hp_code) AS hp_bed_status"), 'hp_bed_status.hp_code', 'organizations.hp_code'
             )
-            ->leftJoin('provinces', 'provinces.id', 'healthposts.province_id')
-            ->leftJoin('districts', 'districts.id', 'healthposts.district_id')
-            ->leftJoin('municipalities', 'municipalities.id', 'healthposts.municipality_id')
+            ->leftJoin('provinces', 'provinces.id', 'organizations.province_id')
+            ->leftJoin('districts', 'districts.id', 'organizations.district_id')
+            ->leftJoin('municipalities', 'municipalities.id', 'organizations.municipality_id')
             ->simplePaginate(1000);
         return response(['data' => $data]);
     }
@@ -119,7 +119,7 @@ class CCMCAPIController extends Controller
             ->selectRaw('d.district_name')
             ->selectRaw("gender")
             ->selectRaw('date(payment_cases.created_at) as created_at')
-            ->leftJoin('healthposts as h', 'payment_cases.hp_code', 'h.hp_code')
+            ->leftJoin('organizations as h', 'payment_cases.hp_code', 'h.hp_code')
             ->leftJoin('districts as d', 'd.id', 'h.district_id')
             ->whereNotNull('d.district_name')
             ->where('payment_cases.created_at', '>=', $startDate)

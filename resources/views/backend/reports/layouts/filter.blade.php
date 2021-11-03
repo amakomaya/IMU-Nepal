@@ -138,9 +138,9 @@
                         <div class="form-group  col-sm-3" id="healthpost">
                             <select name="hp_code" class="form-control"  >
                             	@if(Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
-                                	<option value="">Select All Healthposts</option>
+                                	<option value="">Select All Organizations</option>
                                 @endif
-                                @foreach($healthposts as $healthpost)
+                                @foreach($organizations as $healthpost)
                                     @if($hp_code==$healthpost->hp_code)
                                         @php($selectedHealthpost = "selected")
                                     @else

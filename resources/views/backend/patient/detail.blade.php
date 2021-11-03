@@ -116,7 +116,7 @@
                         </div>
 
                         <div class="titleSide">
-                            <p>Phone: {{  $data->healthpost ? $data->healthpost->phone : '' }}</p>
+                            <p>Phone: {{  $data->organization ? $data->organization->phone : '' }}</p>
                             <?php
                                 $date_en = explode("-", Carbon\Carbon::now()->format('Y-m-d'));
                                 $date_np = Yagiten\Nepalicalendar\Calendar::eng_to_nep($date_en[0], $date_en[1], $date_en[2])->getYearMonthDay();

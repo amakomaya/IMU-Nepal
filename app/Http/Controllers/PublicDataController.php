@@ -58,48 +58,48 @@ class PublicDataController extends Controller
     public function publicPortal(Request $request){
 
         $data = \DB::table('payment_cases');
-            // ->whereIn('healthposts.hospital_type', [3,5,6]);
+            // ->whereIn('organizations.hospital_type', [3,5,6]);
         //            ->whereNull('payment_cases.is_death');
         
             if($request->has('organization_type')){
                 $organization_array = $request->organization_type ? json_decode($request->organization_type) : [3,5,6];
-                $data = $data->whereIn('healthposts.hospital_type', $organization_array);
+                $data = $data->whereIn('organizations.hospital_type', $organization_array);
             } else{
-                $data = $data->whereIn('healthposts.hospital_type', [3,5,6]);
+                $data = $data->whereIn('organizations.hospital_type', [3,5,6]);
             }
 
             if ($request->has('province_id')){
-                $data = $data->where('healthposts.province_id', $request->get('province_id'));
+                $data = $data->where('organizations.province_id', $request->get('province_id'));
             }
 
             if ($request->has('district_id')){
-                $data = $data->where('healthposts.district_id', $request->get('district_id'));
+                $data = $data->where('organizations.district_id', $request->get('district_id'));
             }
 
             if ($request->has('municipality_id')){
-                $data = $data->where('healthposts.municipality_id', $request->get('municipality_id'));
+                $data = $data->where('organizations.municipality_id', $request->get('municipality_id'));
             }
 
-            $data = $data->join('healthposts', 'payment_cases.hp_code', '=', 'healthposts.hp_code')
-            ->join('districts', 'healthposts.district_id', '=', 'districts.id')
-            ->join('provinces', 'healthposts.province_id', '=', 'provinces.id')
-            ->join('municipalities', 'healthposts.municipality_id', '=', 'municipalities.id')
+            $data = $data->join('organizations', 'payment_cases.hp_code', '=', 'organizations.hp_code')
+            ->join('districts', 'organizations.district_id', '=', 'districts.id')
+            ->join('provinces', 'organizations.province_id', '=', 'provinces.id')
+            ->join('municipalities', 'organizations.municipality_id', '=', 'municipalities.id')
             ->select([
-                'healthposts.name as name',
+                'organizations.name as name',
                 'provinces.province_name',
                 'districts.district_name',
                 'municipalities.municipality_name',
-                'healthposts.address',
-                'healthposts.phone',
-                'healthposts.hp_code as hp_code',
+                'organizations.address',
+                'organizations.phone',
+                'organizations.hp_code as hp_code',
 
-                'healthposts.no_of_beds',
-                'healthposts.no_of_ventilators',
-                'healthposts.no_of_icu',
-                'healthposts.no_of_hdu',
+                'organizations.no_of_beds',
+                'organizations.no_of_ventilators',
+                'organizations.no_of_icu',
+                'organizations.no_of_hdu',
 
-                'healthposts.daily_consumption_of_oxygen as daily_capacity_in_liter',
-                'healthposts.is_oxygen_facility as oxygen_availability',
+                'organizations.daily_consumption_of_oxygen as daily_capacity_in_liter',
+                'organizations.is_oxygen_facility as oxygen_availability',
                 'payment_cases.health_condition',
                 'payment_cases.is_death',
                 'payment_cases.health_condition_update',
@@ -107,7 +107,7 @@ class PublicDataController extends Controller
                 'payment_cases.date_of_outcome_en',
             ])
             ->whereNotNull('payment_cases.register_date_en')
-            ->orderBy('healthposts.name', 'asc')
+            ->orderBy('organizations.name', 'asc')
             ->get();
 
         $mapped_data = $data->map(function ($value) {

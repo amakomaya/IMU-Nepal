@@ -2950,7 +2950,7 @@
             </tr>
             <tr>
                 <td width="50%">Name: {{ isset($data->registerBy) ? $data->registerBy->name : '' }}</td>
-                <td width="50%">Institution: {{ isset($data->healthpost) ? $data->healthpost->name : '' }}</td>
+                <td width="50%">Institution: {{ isset($data->organization) ? $data->organization->name : '' }}</td>
             </tr>
             <tr>
                 <td>Telepphone number:{{ isset($data->registerBy) ? $data->registerBy->phone : '' }}</td>

@@ -94,7 +94,7 @@
                                     
                                     <div class="col-md-7">
                                     <select id="hp_code" class="form-control" name="hp_code" >
-                                            @foreach ($healthposts as $healthpost )
+                                            @foreach ($organizations as $healthpost )
                                                <option value="{{ $healthpost->hp_code }}" @if($hp_code=="$healthpost->hp_code") {{ 'selected' }} @endif >{{ $healthpost->name }}</option>
                                             @endforeach
                                     </select>

@@ -14,7 +14,7 @@ class Organization extends Model
 
     protected static $logFillable = true;
 
-    protected $table='healthposts';
+    protected $table='organizations';
 
     public function getDescriptionForEvent(string $eventName): string
     {

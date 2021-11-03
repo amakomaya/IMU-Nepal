@@ -56,22 +56,22 @@ class PoeController extends Controller
             $$key = $value;
         }
         
-        $healthposts = Organization::whereIn('hp_code', $hpCodes)->where('hospital_type', 7)->get();
+        $organizations = Organization::whereIn('hp_code', $hpCodes)->where('hospital_type', 7)->get();
 
-        $reports = SampleCollection::leftjoin('healthposts', 'sample_collection.hp_code', '=', 'healthposts.hp_code')
+        $reports = SampleCollection::leftjoin('organizations', 'sample_collection.hp_code', '=', 'organizations.hp_code')
             ->whereIn('sample_collection.hp_code', $hpCodes)
             ->whereIn('sample_collection.result', [3, 4, 2, 9])
             ->whereBetween(\DB::raw('DATE(sample_collection.reporting_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
 
         if ($response['province_id'] !== null) {
-            $reports = $reports->where('healthposts.province_id', $response['province_id']);
+            $reports = $reports->where('organizations.province_id', $response['province_id']);
         }
 
         if($response['district_id'] !== null){
-            $reports = $reports->where('healthposts.district_id', $response['district_id']);
+            $reports = $reports->where('organizations.district_id', $response['district_id']);
         }
         if($response['municipality_id'] !== null){
-            $reports = $reports->where('healthposts.municipality_id', $response['municipality_id']);
+            $reports = $reports->where('organizations.municipality_id', $response['municipality_id']);
         }
 
         $reports = $reports->get()
@@ -89,7 +89,7 @@ class PoeController extends Controller
           $provinceArray[$province->id] = $province->province_name;
           return;
         });
-        $healthpostsGrouped = $healthposts->groupBy('hp_code');
+        $healthpostsGrouped = $organizations->groupBy('hp_code');
         foreach($healthpostsGrouped as $hpCode => $healthpost) {
           if(!$reports->has($hpCode)) {
             $data[$hpCode]['healthpost_name'] = $healthpost[0]->name;
@@ -162,6 +162,6 @@ class PoeController extends Controller
         }
 
         // dd($data);
-        return view('backend.sample.report.poe-report', compact('data', 'total_data', 'provinces','districts','municipalities','healthposts','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days', 'default_from_date'));
+        return view('backend.sample.report.poe-report', compact('data', 'total_data', 'provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days', 'default_from_date'));
     }
 }

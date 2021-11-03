@@ -713,17 +713,17 @@ class CictTracingController extends Controller
         $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->province_id;
         $locations = District::where('province_id', $province_id)->get();
 
-        $cict_tracings = CictTracing::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_tracings.hp_code')
+        $cict_tracings = CictTracing::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_tracings.hp_code')
             ->whereNotNull('cict_tracings.cict_initiated_date')
-            ->select('cict_tracings.token', 'healthposts.district_id')
+            ->select('cict_tracings.token', 'organizations.district_id')
             ->whereDate('cict_tracings.created_at', $filter_date['from_date']->toDateString())
             ->whereIn('cict_tracings.hp_code', $hpCodes)->get()->groupBy('district_id');
-        $contacts = CictContact::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_contacts.hp_code')
-            ->select('cict_contacts.token', 'healthposts.district_id')
+        $contacts = CictContact::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_contacts.hp_code')
+            ->select('cict_contacts.token', 'organizations.district_id')
             ->whereDate('cict_contacts.created_at', $filter_date['from_date']->toDateString())
             ->whereIn('cict_contacts.hp_code', $hpCodes)->get()->groupBy('district_id');
-        $follow_ups = CictFollowUp::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_follow_ups.hp_code')
-            ->select('cict_follow_ups.token', 'healthposts.district_id')
+        $follow_ups = CictFollowUp::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_follow_ups.hp_code')
+            ->select('cict_follow_ups.token', 'organizations.district_id')
             ->whereDate('cict_follow_ups.created_at', $filter_date['from_date']->toDateString())
             ->whereIn('cict_follow_ups.hp_code', $hpCodes)->get()->groupBy('district_id');
 
@@ -742,17 +742,17 @@ class CictTracingController extends Controller
         $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->province_id;
         $locations = Municipality::where('province_id', $province_id)->get();
 
-        $cict_tracings = CictTracing::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_tracings.hp_code')
+        $cict_tracings = CictTracing::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_tracings.hp_code')
             ->whereNotNull('cict_tracings.cict_initiated_date')
-            ->select('cict_tracings.token', 'healthposts.municipality_id')
+            ->select('cict_tracings.token', 'organizations.municipality_id')
             ->whereDate('cict_tracings.created_at', $filter_date['from_date']->toDateString())
             ->whereIn('cict_tracings.hp_code', $hpCodes)->get()->groupBy('municipality_id');
-        $contacts = CictContact::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_contacts.hp_code')
-            ->select('cict_contacts.token', 'healthposts.municipality_id')
+        $contacts = CictContact::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_contacts.hp_code')
+            ->select('cict_contacts.token', 'organizations.municipality_id')
             ->whereDate('cict_contacts.created_at', $filter_date['from_date']->toDateString())
             ->whereIn('cict_contacts.hp_code', $hpCodes)->get()->groupBy('municipality_id');
-        $follow_ups = CictFollowUp::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_follow_ups.hp_code')
-            ->select('cict_follow_ups.token', 'healthposts.municipality_id')
+        $follow_ups = CictFollowUp::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_follow_ups.hp_code')
+            ->select('cict_follow_ups.token', 'organizations.municipality_id')
             ->whereDate('cict_follow_ups.created_at', $filter_date['from_date']->toDateString())
             ->whereIn('cict_follow_ups.hp_code', $hpCodes)->get()->groupBy('municipality_id');
 
@@ -771,17 +771,17 @@ class CictTracingController extends Controller
         $district_id = DistrictInfo::where('token', auth()->user()->token)->first()->district_id;
         $locations = Municipality::where('district_id', $district_id)->get();
 
-        $cict_tracings = CictTracing::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_tracings.hp_code')
+        $cict_tracings = CictTracing::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_tracings.hp_code')
             ->whereNotNull('cict_tracings.cict_initiated_date')
-            ->select('cict_tracings.token', 'healthposts.municipality_id')
+            ->select('cict_tracings.token', 'organizations.municipality_id')
             ->whereDate('cict_tracings.created_at', $filter_date['from_date']->toDateString())
             ->whereIn('cict_tracings.hp_code', $hpCodes)->get()->groupBy('municipality_id');
-        $contacts = CictContact::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_contacts.hp_code')
-            ->select('cict_contacts.token', 'healthposts.municipality_id')
+        $contacts = CictContact::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_contacts.hp_code')
+            ->select('cict_contacts.token', 'organizations.municipality_id')
             ->whereDate('cict_contacts.created_at', $filter_date['from_date']->toDateString())
             ->whereIn('cict_contacts.hp_code', $hpCodes)->get()->groupBy('municipality_id');
-        $follow_ups = CictFollowUp::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_follow_ups.hp_code')
-            ->select('cict_follow_ups.token', 'healthposts.municipality_id')
+        $follow_ups = CictFollowUp::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_follow_ups.hp_code')
+            ->select('cict_follow_ups.token', 'organizations.municipality_id')
             ->whereDate('cict_follow_ups.created_at', $filter_date['from_date']->toDateString())
             ->whereIn('cict_follow_ups.hp_code', $hpCodes)->get()->groupBy('municipality_id');
 

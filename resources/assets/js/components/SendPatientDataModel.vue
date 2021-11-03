@@ -27,7 +27,7 @@
                     <tr>
                         <td>Case : </td>
                         <td>
-                            Place : {{ data.healthpost ? data.healthpost.name : '' }} <br>
+                            Place : {{ data.organization ? data.organization.name : '' }} <br>
                             Type : {{ checkCaseType(data.cases) }} <br>
                             Management : {{ checkCaseManagement(data.cases, data.case_where) }}
                         </td>
