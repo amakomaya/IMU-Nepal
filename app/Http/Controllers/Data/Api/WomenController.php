@@ -421,7 +421,7 @@ class WomenController extends Controller
         $sample_token = $sample_token->where('service_for', '!=', '2')
             ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
-                ->orWhereIn('received_by_hp_code', $hpCodes);
+                ->orWhereIn('received_by_org_code', $hpCodes);
         })->pluck('case_token');
 
         $data = $data->whereIn('token', $sample_token)->withAll();
@@ -448,7 +448,7 @@ class WomenController extends Controller
         $sample_token = $sample_token->where('service_for', '2')
             ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
-                ->orWhereIn('received_by_hp_code', $hpCodes);
+                ->orWhereIn('received_by_org_code', $hpCodes);
         })->pluck('case_token');
 
         $data = $data->whereIn('token', $sample_token)->withAll();
@@ -475,7 +475,7 @@ class WomenController extends Controller
         $sample_token = $sample_token->where('service_for', '!=', '2')
             ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
-                ->orWhereIn('received_by_hp_code', $hpCodes);
+                ->orWhereIn('received_by_org_code', $hpCodes);
         })->pluck('case_token');
         $data = $data->whereIn('token', $sample_token)->withAll();
         return response()->json([
@@ -500,7 +500,7 @@ class WomenController extends Controller
         $sample_token = $sample_token->where('service_for', '2')
             ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
-                ->orWhereIn('received_by_hp_code', $hpCodes);
+                ->orWhereIn('received_by_org_code', $hpCodes);
         })->pluck('case_token');
         $data = $data->whereIn('token', $sample_token)->withAll();
         return response()->json([
@@ -524,7 +524,7 @@ class WomenController extends Controller
         $sample_token = $sample_token->where('service_for', '!=', '2')
             ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
-                ->orWhereIn('received_by_hp_code', $hpCodes);
+                ->orWhereIn('received_by_org_code', $hpCodes);
         })->pluck('case_token');
         $data = $data->whereIn('token', $sample_token)->withAll();
 
@@ -549,7 +549,7 @@ class WomenController extends Controller
         $sample_token = $sample_token->where('service_for', '2')
             ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
-                ->orWhereIn('received_by_hp_code', $hpCodes);
+                ->orWhereIn('received_by_org_code', $hpCodes);
         })->pluck('case_token');
         $data = $data->whereIn('token', $sample_token)->withAll();
 
@@ -767,7 +767,7 @@ class WomenController extends Controller
                 $sample_collection->update([
                     'result' => '2',
                     'received_by' => null,
-                    'received_by_hp_code' => null,
+                    'received_by_org_code' => null,
                     'received_date_en' => null,
                     'received_date_np' => null,
                     'sample_test_date_en' => null,
@@ -797,7 +797,7 @@ class WomenController extends Controller
                     $sample_collection->update([
                         'result' => '2',
                         'received_by' => null,
-                        'received_by_hp_code' => null,
+                        'received_by_org_code' => null,
                         'received_date_en' => null,
                         'received_date_np' => null,
                         'sample_test_date_en' => null,

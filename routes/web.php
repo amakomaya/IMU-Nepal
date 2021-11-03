@@ -526,7 +526,7 @@ Route::get('/calc-data', function(){
                             $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDayNepToEng();
                         }
                         $item->received_by = $lab_token->checked_by;
-                        $item->received_by_hp_code = $lab_token->org_code;
+                        $item->received_by_org_code = $lab_token->org_code;
 
                         $item->received_date_en = $received_date_en_lab;
 

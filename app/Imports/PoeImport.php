@@ -221,7 +221,7 @@ class PoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadi
             'sample_test_date_np' => $regDateNp,
             'sample_test_time' => $sampleTestTime,
             'received_by' => $this->userToken,
-            'received_by_hp_code' => $this->hpCode,
+            'received_by_org_code' => $this->hpCode,
             'received_date_en' => $regDateEn,
             'received_date_np' => $regDateNp,
             'collection_date_en' => $regDateEn,

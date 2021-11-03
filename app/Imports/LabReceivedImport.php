@@ -111,7 +111,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
             $sample_collection->update([
               'result' => '9',
               'received_by' => $this->userToken,
-              'received_by_hp_code' => $this->hpCode,
+              'received_by_org_code' => $this->hpCode,
               'received_date_en' => $this->todayDateEn,
               'received_date_np' => $this->todayDateNp,
               'lab_token' => $patientLabId

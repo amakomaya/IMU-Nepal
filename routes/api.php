@@ -277,7 +277,7 @@ Route::get('/v1/client-tests', function (Request $request) {
       'collection_date_en',
       'collection_date_np',
       'received_by',
-      'received_by_hp_code',
+      'received_by_org_code',
       'received_date_en',
       'received_date_np',
       'sample_test_date_en',
@@ -313,7 +313,7 @@ Route::get('/v1/client-tests', function (Request $request) {
       $response['collection_date_en'] = $row->collection_date_en ?? '';
       $response['collection_date_np'] = $row->collection_date_np ?? '';
       $response['received_by'] = $row->received_by ?? '';
-      $response['received_by_hp_code'] = $row->received_by_hp_code ?? '';
+      $response['received_by_org_code'] = $row->received_by_org_code ?? '';
       $response['received_date_en'] = $row->received_date_en ?? '';
       $response['received_date_np'] = $row->received_date_np ?? '';
       $response['sample_test_date_en'] = $row->sample_test_date_en ?? '';
@@ -385,7 +385,7 @@ Route::post('/v1/lab-test', function (Request $request) {
                     'sample_test_date_np' => $value['sample_test_date'],
                     'sample_test_time' => $value['sample_test_time'],
                     'received_by' => $value['checked_by'],
-                    'received_by_hp_code' => $value['org_code'],
+                    'received_by_org_code' => $value['org_code'],
                     'received_date_en' => Carbon::parse($value['created_at'])->format('Y-m-d'),
                     'received_date_np' => $received_date_np,
                     'lab_token' => $value['token']
@@ -397,7 +397,7 @@ Route::post('/v1/lab-test', function (Request $request) {
                     'sample_test_date_np' => $value['sample_test_date'],
                     'sample_test_time' => $value['sample_test_time'],
                     'received_by' => $value['checked_by'],
-                    'received_by_hp_code' => $value['org_code'],
+                    'received_by_org_code' => $value['org_code'],
                     'received_date_en' => Carbon::parse($value['created_at'])->format('Y-m-d'),
                     'received_date_np' => $received_date_np,
                     'lab_token' => $value['token'],
@@ -441,7 +441,7 @@ Route::post('/v2/lab-test', function (Request $request) {
                   'sample_test_date_np' => $value['sample_test_date'],
                   'sample_test_time' => $value['sample_test_time'],
                   'received_by' => $value['checked_by'],
-                  'received_by_hp_code' => $value['org_code'],
+                  'received_by_org_code' => $value['org_code'],
                   'received_date_en' => Carbon::parse($value['created_at'])->format('Y-m-d'),
                   'received_date_np' => $received_date_np,
                   'lab_token' => $value['token']
@@ -453,7 +453,7 @@ Route::post('/v2/lab-test', function (Request $request) {
                   'sample_test_date_np' => $value['sample_test_date'],
                   'sample_test_time' => $value['sample_test_time'],
                   'received_by' => $value['checked_by'],
-                  'received_by_hp_code' => $value['org_code'],
+                  'received_by_org_code' => $value['org_code'],
                   'received_date_en' => Carbon::parse($value['created_at'])->format('Y-m-d'),
                   'received_date_np' => $received_date_np,
                   'lab_token' => $value['token'],
@@ -584,7 +584,7 @@ Route::post('/v1/received-in-lab', function (Request $request) {
             $updateData = [
                 'result' => '9',
                 'received_by' => $data['checked_by'],
-                'received_by_hp_code' => $data['org_code'],
+                'received_by_org_code' => $data['org_code'],
                 'received_date_en' => Carbon::now()->toDateString(),
                 'received_date_np' => $data['sample_recv_date'],
                 'lab_token' => $data['token']
@@ -662,7 +662,7 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
             'sample_test_date_np' => $value['sample_test_date'],
             'sample_test_time' => $value['sample_test_time'],
             'received_by' => $user->token,
-            'received_by_hp_code' => $healthWorker->org_code,
+            'received_by_org_code' => $healthWorker->org_code,
             'received_date_en' => $sample_test_date_en,
             'received_date_np' => $value['sample_test_date'],
             'lab_token' => $value['token'],

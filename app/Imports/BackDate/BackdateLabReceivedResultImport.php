@@ -134,7 +134,7 @@ class BackdateLabReceivedResultImport implements ToModel, WithChunkReading, With
               'sample_test_date_np' => $backDateNp,
               'sample_test_time' => $sampleTestTime,
               'received_by' => $this->userToken,
-              'received_by_hp_code' => $this->hpCode,
+              'received_by_org_code' => $this->hpCode,
               'received_date_en' => $backDateEn,
               'received_date_np' => $backDateNp,
               'lab_token' => $patientLabId,

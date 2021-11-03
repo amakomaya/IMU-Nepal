@@ -153,7 +153,7 @@ class ImuMobileV2Controller extends Controller
                         SampleCollection::where('token', $value['sample_token'])->update([
                           'result' => (int)$value['sample_test_result'],
                           'received_by' => $value['checked_by'],
-                          'received_by_hp_code' => $value['org_code'],
+                          'received_by_org_code' => $value['org_code'],
                           'received_date_en' => $received_date_en,
                           'received_date_np' => $received_date_np,
                           'lab_token' => $value['token']
@@ -165,7 +165,7 @@ class ImuMobileV2Controller extends Controller
                           'sample_test_date_np' => $value['sample_test_date'],
                           'sample_test_time' => $value['sample_test_time'],
                           'received_by' => $value['checked_by'],
-                          'received_by_hp_code' => $value['org_code'],
+                          'received_by_org_code' => $value['org_code'],
                           'received_date_en' => $received_date_en,
                           'received_date_np' => $received_date_np,
                           'lab_token' => $value['token'],
@@ -193,7 +193,7 @@ class ImuMobileV2Controller extends Controller
                         SampleCollection::where('token', $value['sample_token'])->update([
                           'result' => $value['sample_test_result'],
                           'received_by' => $value['checked_by'],
-                          'received_by_hp_code' => $value['org_code'],
+                          'received_by_org_code' => $value['org_code'],
                           'received_date_en' => $received_date_en,
                           'received_date_np' => $received_date_np,
                           'lab_token' => $value['token'],
@@ -207,7 +207,7 @@ class ImuMobileV2Controller extends Controller
                           'sample_test_date_np' => $value['sample_test_date'],
                           'sample_test_time' => $value['sample_test_time'],
                           'received_by' => $value['checked_by'],
-                          'received_by_hp_code' => $value['org_code'],
+                          'received_by_org_code' => $value['org_code'],
                           'received_date_en' => $reporting_date_en,
                           'received_date_np' => $reporting_date_np,
                           'lab_token' => $value['token'],

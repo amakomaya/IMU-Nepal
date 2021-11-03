@@ -196,8 +196,8 @@ class AncDetailController extends Controller
         }
 
         $user = auth()->user();
-        $reports = SampleCollection::leftjoin('organizations', 'sample_collection.received_by_hp_code', '=', 'organizations.org_code')
-            ->whereIn('sample_collection.received_by_hp_code', $hpCodes)
+        $reports = SampleCollection::leftjoin('organizations', 'sample_collection.received_by_org_code', '=', 'organizations.org_code')
+            ->whereIn('sample_collection.received_by_org_code', $hpCodes)
             ->whereIn('sample_collection.result', ['3', '4'])
             ->whereBetween(\DB::raw('DATE(sample_collection.sample_test_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->get()
@@ -253,14 +253,14 @@ class AncDetailController extends Controller
             ->toArray();
 
         $lab_organizations = SampleCollection::
-           whereIn('sample_collection.received_by_hp_code', $hpCodes)
+           whereIn('sample_collection.received_by_org_code', $hpCodes)
             ->whereIn('service_for', ['1', '2'])
             ->whereIn('result', ['3', '4'])
             ->whereDate('reporting_date_en', $filter_date['from_date']->toDateString())
             ->where('sample_collection.status', 1)
-            ->select('received_by_hp_code', 'service_for', 'result', 'registered_device')
+            ->select('received_by_org_code', 'service_for', 'result', 'registered_device')
             ->get()
-            ->groupBy('received_by_hp_code');
+            ->groupBy('received_by_org_code');
 
         $mapped_data = collect($lab_organizations)->map(function ($lab, $key) use ($organizations) {
             $return = [];

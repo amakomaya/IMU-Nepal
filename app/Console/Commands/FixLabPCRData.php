@@ -90,7 +90,7 @@ class FixLabPCRData extends Command
           $sampleData->update(
             [
               // 'received_by' => $sampleData->checked_by,
-              // 'received_by_hp_code' => $sampleData->org_code,
+              // 'received_by_org_code' => $sampleData->org_code,
               'received_date_en' => $sampleCreatedDate['en'],
               'received_date_np' =>  $sampleCreatedDate['np'],
               'sample_test_date_en' => $sampleCreatedDate['en'],

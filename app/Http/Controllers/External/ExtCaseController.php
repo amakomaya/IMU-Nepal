@@ -273,7 +273,7 @@ class ExtCaseController extends Controller
                     'sample_test_date_np' => $this->ad2bs($value['lab_test_date']),
                     'sample_test_time' => $value['lab_test_time'],
                     'received_by' => $healthworker->token,
-                    'received_by_hp_code' => $healthworker->org_code,
+                    'received_by_org_code' => $healthworker->org_code,
                     'reporting_date_en' => Carbon::now(),
                     'reporting_date_np' => $reporting_date_np
                 ];
@@ -484,7 +484,7 @@ class ExtCaseController extends Controller
                     'sample_test_date_np' => $this->ad2bs($value['lab_test_date']),
                     'sample_test_time' => $value['lab_test_time'],
                     'received_by' => $healthworker->token,
-                    'received_by_hp_code' => $healthworker->org_code,
+                    'received_by_org_code' => $healthworker->org_code,
                     'reporting_date_en' => Carbon::now(),
                     'reporting_date_np' => $reporting_date_np
                 ];

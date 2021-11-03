@@ -92,44 +92,44 @@ class DashboardController extends Controller
 
         if($request->date_selected == '0'){
             $antigen_positive = Cache::remember('antigen_positive-all-' . $temp_name, 60 * 60, function () use ($hpCodes) {
-                $current_data = SampleCollection::whereIn('received_by_hp_code', $hpCodes)
+                $current_data = SampleCollection::whereIn('received_by_org_code', $hpCodes)
                     ->where('service_for', '2')->where('result', '3')
                     ->active()
                     ->get()->count();
-                $dump_data = SampleCollectionOld::whereIn('received_by_hp_code', $hpCodes)
+                $dump_data = SampleCollectionOld::whereIn('received_by_org_code', $hpCodes)
                     ->where('service_for', '2')->where('result', '3')
                     ->where('status', 1)
                     ->get()->count();
                 return $current_data + $dump_data;
             });
             $antigen_negative = Cache::remember('antigen_negative-all-' . $temp_name, 60 * 60, function () use ($hpCodes) {
-                $current_data = SampleCollection::whereIn('received_by_hp_code', $hpCodes)
+                $current_data = SampleCollection::whereIn('received_by_org_code', $hpCodes)
                     ->where('service_for', '2')->where('result', '4')
                     ->active()
                     ->get()->count();
-                $dump_data = SampleCollectionOld::whereIn('received_by_hp_code', $hpCodes)
+                $dump_data = SampleCollectionOld::whereIn('received_by_org_code', $hpCodes)
                     ->where('service_for', '2')->where('result', '4')
                     ->where('status', 1)
                     ->get()->count();
                 return $current_data + $dump_data;
             });
             $pcr_positive = Cache::remember('pcr_positive-all-' . $temp_name, 60 * 60, function () use ($hpCodes) {
-                $current_data = SampleCollection::whereIn('received_by_hp_code', $hpCodes)
+                $current_data = SampleCollection::whereIn('received_by_org_code', $hpCodes)
                     ->where('service_for', '1')->where('result', '3')
                     ->active()
                     ->get()->count();
-                $dump_data = SampleCollectionOld::whereIn('received_by_hp_code', $hpCodes)
+                $dump_data = SampleCollectionOld::whereIn('received_by_org_code', $hpCodes)
                     ->where('service_for', '1')->where('result', '3')
                     ->where('status', 1)
                     ->get()->count();
                 return $current_data + $dump_data;
             });
             $pcr_negative = Cache::remember('pcr_negative-all-' . $temp_name, 60 * 60, function () use ($hpCodes) {
-                $current_data = SampleCollection::whereIn('received_by_hp_code', $hpCodes)
+                $current_data = SampleCollection::whereIn('received_by_org_code', $hpCodes)
                     ->where('service_for', '1')->where('result', '4')
                     ->active()
                     ->get()->count();
-                $dump_data = SampleCollectionOld::whereIn('received_by_hp_code', $hpCodes)
+                $dump_data = SampleCollectionOld::whereIn('received_by_org_code', $hpCodes)
                     ->where('service_for', '1')->where('result', '4')
                     ->where('status', 1)
                     ->get()->count();
@@ -157,7 +157,7 @@ class DashboardController extends Controller
         }
         else {
             $antigen_positive = Cache::remember('antigen_positive-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-                return SampleCollection::whereIn('received_by_hp_code', $hpCodes)
+                return SampleCollection::whereIn('received_by_org_code', $hpCodes)
                     ->where('service_for', '2')->where('result', '3')
                     ->where(function($q) use($date_chosen){
                         $q->whereDate('reporting_date_en', $date_chosen)
@@ -170,7 +170,7 @@ class DashboardController extends Controller
                     ->get()->count();
             });
             $antigen_negative = Cache::remember('antigen_negative-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-                return SampleCollection::whereIn('received_by_hp_code', $hpCodes)
+                return SampleCollection::whereIn('received_by_org_code', $hpCodes)
                     ->where('service_for', '2')->where('result', '4')
                     ->where(function($q) use($date_chosen){
                         $q->whereDate('reporting_date_en', $date_chosen)
@@ -183,7 +183,7 @@ class DashboardController extends Controller
                     ->get()->count();
             });
             $pcr_positive = Cache::remember('pcr_positive-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-                return SampleCollection::whereIn('received_by_hp_code', $hpCodes)
+                return SampleCollection::whereIn('received_by_org_code', $hpCodes)
                     ->where('service_for', '1')->where('result', '3')
                     ->where(function($q) use($date_chosen){
                         $q->whereDate('reporting_date_en', $date_chosen)
@@ -196,7 +196,7 @@ class DashboardController extends Controller
                     ->get()->count();
             });
             $pcr_negative = Cache::remember('pcr_negative-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
-                return SampleCollection::whereIn('received_by_hp_code', $hpCodes)
+                return SampleCollection::whereIn('received_by_org_code', $hpCodes)
                     ->where('service_for', '1')->where('result', '4')
                     ->where(function($q) use($date_chosen){
                         $q->whereDate('reporting_date_en', $date_chosen)
@@ -276,40 +276,40 @@ class DashboardController extends Controller
         $date_to = Carbon::now();
         if (auth()->user()->role == 'healthworker' || auth()->user()->role == 'healthpost') {
             $in_lab_received = Cache::remember('in_lab_received-' . auth()->user()->token, 60 * 60, function() use ($hpCodes) {
-                $current_data = SampleCollection::whereIn('received_by_hp_code', $hpCodes)->get()->count();
-                $dump_data = SampleCollectionOld::whereIn('received_by_hp_code', $hpCodes)->get()->count();
+                $current_data = SampleCollection::whereIn('received_by_org_code', $hpCodes)->get()->count();
+                $dump_data = SampleCollectionOld::whereIn('received_by_org_code', $hpCodes)->get()->count();
                 // $dump_data = DB::connection('mysqldump')->table('lab_tests')->whereIn('org_code', $hpCodes)->get()->count();
                 return $current_data + $dump_data;
             });
 
             $in_lab_received_in_24_hrs = Cache::remember('in_lab_received_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return SampleCollection::whereIn('received_by_hp_code', $hpCodes)
+                return SampleCollection::whereIn('received_by_org_code', $hpCodes)
                     ->where('received_date_en', Carbon::now()->toDateString())
                     ->get()->count();
             });
 
             $in_lab_received_positive = Cache::remember('in_lab_received_positive-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                $current_data = SampleCollection::whereIn('received_by_hp_code', $hpCodes)->where('result', '3')->get()->count();
-                $dump_data = SampleCollectionOld::whereIn('received_by_hp_code', $hpCodes)->where('result', '3')->get()->count();
+                $current_data = SampleCollection::whereIn('received_by_org_code', $hpCodes)->where('result', '3')->get()->count();
+                $dump_data = SampleCollectionOld::whereIn('received_by_org_code', $hpCodes)->where('result', '3')->get()->count();
                 // $dump_data = DB::connection('mysqldump')->table('lab_tests')->whereIn('org_code', $hpCodes)->where('sample_test_result', '3')->get()->count();
                 return $current_data + $dump_data;
             });
 
             $in_lab_received_positive_in_24_hrs = Cache::remember('in_lab_received_positive_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return SampleCollection::whereIn('received_by_hp_code', $hpCodes)->where('result', '3')
+                return SampleCollection::whereIn('received_by_org_code', $hpCodes)->where('result', '3')
                     ->where('sample_test_date_en', Carbon::now()->toDateString())
                     ->get()->count();
             });
 
             $in_lab_received_negative = Cache::remember('in_lab_received_negative-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                $current_data = SampleCollection::whereIn('received_by_hp_code', $hpCodes)->where('result', '4')->get()->count();
-                $dump_data = SampleCollectionOld::whereIn('received_by_hp_code', $hpCodes)->where('result', '4')->get()->count();
+                $current_data = SampleCollection::whereIn('received_by_org_code', $hpCodes)->where('result', '4')->get()->count();
+                $dump_data = SampleCollectionOld::whereIn('received_by_org_code', $hpCodes)->where('result', '4')->get()->count();
                 // $dump_data = DB::connection('mysqldump')->table('lab_tests')->whereIn('org_code', $hpCodes)->where('sample_test_result', '4')->get()->count();
                 return $current_data + $dump_data;
             });
 
             $in_lab_received_negative_in_24_hrs = Cache::remember('in_lab_received_negative_in_24_hrs-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
-                return SampleCollection::whereIn('received_by_hp_code', $hpCodes)->where('result', '4')
+                return SampleCollection::whereIn('received_by_org_code', $hpCodes)->where('result', '4')
                     ->where('sample_test_date_en', Carbon::now()->toDateString())
                     ->get()->count();
             });
@@ -356,7 +356,7 @@ class DashboardController extends Controller
             'sample_received_in_lab' => Cache::remember('sample_received_in_lab-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {
                 $current_data = SampleCollection::whereIn('org_code', $hpCodes)->whereIn('result', [9, 3, 4, 5])->active()->count();
                 $dump_data = SampleCollectionOld::whereIn('org_code', $hpCodes)->whereIn('result', [9, 3, 4, 5])->where('status', 1)->count();
-                // $dump_data = DB::connection('mysqldump')->table('sample_collection')->whereIn('received_by_hp_code', $hpCodes)->whereIn('result', [9, 3, 4, 5])->where('status', 1)->count();
+                // $dump_data = DB::connection('mysqldump')->table('sample_collection')->whereIn('received_by_org_code', $hpCodes)->whereIn('result', [9, 3, 4, 5])->where('status', 1)->count();
                 return $current_data + $dump_data;
             }),
             'sample_received_in_lab_antigen' => Cache::remember('sample_received_in_lab_antigen-' . auth()->user()->token, 60 * 60, function () use ($hpCodes) {

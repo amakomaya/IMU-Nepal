@@ -27,7 +27,7 @@ class SampleCollectionOld extends Model
       'created_at', 'updated_at', 'situation',
 
         'received_by', 'received_date_en', 'received_date_np', 'collection_date_en', 'collection_date_np',
-        'sample_test_date_en', 'sample_test_date_np','sample_test_time', 'lab_token', 'received_by_hp_code',
+        'sample_test_date_en', 'sample_test_date_np','sample_test_time', 'lab_token', 'received_by_org_code',
         'reporting_date_en', 'reporting_date_np'
 
     ];
@@ -102,6 +102,6 @@ class SampleCollectionOld extends Model
 
     public function getOrganization()
     {
-        return $this->setConnection('mysql')->hasOne('App\Models\Organization', 'org_code', 'received_by_hp_code');
+        return $this->setConnection('mysql')->hasOne('App\Models\Organization', 'org_code', 'received_by_org_code');
     }
 }

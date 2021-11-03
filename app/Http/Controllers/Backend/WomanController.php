@@ -556,14 +556,14 @@ class WomanController extends Controller
                         $sample_row['org_code'] = $healthpost->org_code;
                         $sample_row['checked_by_name'] = $healthpost->name;
                         $sample_row['checked_by'] = $healthpost->token;
-                        // $sample_row['received_by_hp_code'] = $healthpost->org_code;
+                        // $sample_row['received_by_org_code'] = $healthpost->org_code;
         
                     case 'healthworker':
                         $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
                         $sample_row['org_code'] = $healthworker->org_code;
                         $sample_row['checked_by_name'] = $healthworker->name;
                         $sample_row['checked_by'] = $healthworker->token;
-                        // $sample_row['received_by_hp_code'] = $healthworker->org_code;
+                        // $sample_row['received_by_org_code'] = $healthworker->org_code;
         
                 }
                 if ($request->service_for === '1')
@@ -577,7 +577,7 @@ class WomanController extends Controller
                     $sample_row['received_date_en'] = $sample_row['collection_date_en'];
                     $sample_row['received_date_np'] = $sample_row['collection_date_np'];
                     $sample_row['received_by'] = $sample_row['checked_by'];
-                    $sample_row['received_by_hp_code'] = $sample_row['org_code'];
+                    $sample_row['received_by_org_code'] = $sample_row['org_code'];
 
                     LabTest::create([
                         'token' => $sample_row['lab_token'],
@@ -669,7 +669,7 @@ class WomanController extends Controller
             $row['received_date_en'] = $row['collection_date_en'];
             $row['received_date_np'] = $row['collection_date_np'];
             $row['received_by'] = $row['org_code'];
-            $row['received_by_hp_code'] = $row['org_code'];
+            $row['received_by_org_code'] = $row['org_code'];
 
             LabTest::create([
                 'token' => $row['lab_token'],

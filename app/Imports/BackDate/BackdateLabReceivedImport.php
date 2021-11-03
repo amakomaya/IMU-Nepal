@@ -124,7 +124,7 @@ class BackdateLabReceivedImport implements ToModel, WithChunkReading, WithValida
           $sample_collection->update([
             'result' => '9',
             'received_by' => $this->userToken,
-            'received_by_hp_code' => $this->hpCode,
+            'received_by_org_code' => $this->hpCode,
             'received_date_en' => $backDateEn,
             'received_date_np' => $backDateNp,
             'lab_token' => $patientLabId
