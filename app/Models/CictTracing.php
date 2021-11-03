@@ -12,7 +12,7 @@ class CictTracing extends Model
     use Dataviewer;
 
     protected $fillable = [
-        'case_id', 'token', 'woman_token', 'org_code', 'checked_by', 'registered_device',
+        'case_id', 'token', 'case_token', 'org_code', 'checked_by', 'registered_device',
         'case_what', 'case_received_date', 'cict_initiated_date',
         'name', 'age', 'age_unit', 'sex',
         'emergency_contact_one', 'emergency_contact_two', 'nationality', 'nationality_other', 
@@ -58,7 +58,7 @@ class CictTracing extends Model
 
     public function suspectedCase()
     {
-        return $this->belongsTo(SuspectedCase::class, 'woman_token', 'token');
+        return $this->belongsTo(SuspectedCase::class, 'case_token', 'token');
     }
 
 	public function contact()

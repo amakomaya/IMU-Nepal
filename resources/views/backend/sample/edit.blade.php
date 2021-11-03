@@ -59,15 +59,15 @@
                                                class="form-text text-danger">{{ $errors->first('token') }}</small>
                                     @endif
                                 </div> --}}
-                                {{-- <div class="form-group {{ $errors->has('woman_token') ? 'has-error' : '' }}">
-                                    <label for="woman_token">Woman Token</label>
-                                    <input type="text" id="woman_token" class="form-control" name="woman_token"
+                                {{-- <div class="form-group {{ $errors->has('case_token') ? 'has-error' : '' }}">
+                                    <label for="case_token">Woman Token</label>
+                                    <input type="text" id="case_token" class="form-control" name="case_token"
                                            aria-describedby="help" placeholder="Enter Woman Token"
-                                           value="{{ $data->woman_token }}"
+                                           value="{{ $data->case_token }}"
                                     >
-                                    @if ($errors->has('woman_token'))
+                                    @if ($errors->has('case_token'))
                                         <small id="help"
-                                               class="form-text text-danger">{{ $errors->first('woman_token') }}</small>
+                                               class="form-text text-danger">{{ $errors->first('case_token') }}</small>
                                     @endif
                                 </div> --}}
                                 <div class="form-group">

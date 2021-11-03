@@ -79,7 +79,7 @@ Route::get('/v1/suspected-cases', function (Request $request) {
     if($request->has('sid')){
         $sid_to_caseid = SampleCollection::where('token', $request->sid)->first();
         if ($sid_to_caseid){
-            $cases = \App\Models\SuspectedCase::where('token', $sid_to_caseid->woman_token)->withAll()->latest()->get();
+            $cases = \App\Models\SuspectedCase::where('token', $sid_to_caseid->case_token)->withAll()->latest()->get();
             return response()->json($cases);
         }
         return response()->json([]);
@@ -260,7 +260,7 @@ Route::get('/v1/client-tests', function (Request $request) {
     $org_code = $request->org_code;
     $record = SampleCollection::select(
       'token',
-      'woman_token',
+      'case_token',
       'checked_by',
       'org_code',
       'status',
@@ -295,7 +295,7 @@ Route::get('/v1/client-tests', function (Request $request) {
     $data = collect($record)->map(function ($row) {
       $response = [];
       $response['token'] = $row->token;
-      $response['woman_token'] = $row->woman_token ?? '';
+      $response['case_token'] = $row->case_token ?? '';
       $response['checked_by'] = $row->checked_by ?? '';
       $response['org_code'] = $row->org_code ?? '';
       $response['status'] = $row->status ?? '';
@@ -494,7 +494,7 @@ Route::post('/v1/patient-transfer', function (Request $request) {
 
     SuspectedCase::where('token', $data['token'])
         ->update(['org_code' => $data['org_code']]);
-    SampleCollection::where('woman_token', $data['token'])->update(['org_code' => $data['org_code']]);
+    SampleCollection::where('case_token', $data['token'])->update(['org_code' => $data['org_code']]);
 
     return response()->json($data['token']);
 });
@@ -554,7 +554,7 @@ Route::get('/v1/patient-laboratory-parameter', function (Request $request) {
 Route::get('/v1/recieved-in-lab', function (Request $request) {
     $user = auth()->user();
     $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
-    $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
+    $token = SampleCollection::whereIn('token', $sample_token)->pluck('case_token');
     $data = SuspectedCase::whereIn('token', $token)->active()->withAll();
     return response()->json([
         'collection' => $data->advancedFilter()
@@ -628,7 +628,7 @@ Route::post('/v1/result-in-lab-from-web', function (Request $request) {
             ]);
 
             if(isset($request->antigen_isolation) && $request->antigen_isolation){
-                $patient = SuspectedCase::where('token', $sample->woman_token)->first();
+                $patient = SuspectedCase::where('token', $sample->case_token)->first();
                 $case_reason = "[1, 0, " . $request->antigen_isolation . "]";
                 $patient->update(['case_reason' => $case_reason]);
             }
@@ -685,7 +685,7 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
         ]);
 
         if(isset($request->antigen_isolation) && $request->antigen_isolation){
-            $patient = SuspectedCase::where('token', $sample_collection->woman_token)->first();
+            $patient = SuspectedCase::where('token', $sample_collection->case_token)->first();
             $case_reason = "[1, 0, " . $request->antigen_isolation . "]";
             $patient->update(['case_reason' => $case_reason]);
         }
@@ -886,11 +886,11 @@ Route::get('/v1/check-by-sid-or-lab-id', function (Request $request) {
         return response()->json();
     }
 
-    $case = SuspectedCase::where('token', $sample_detail->woman_token)
+    $case = SuspectedCase::where('token', $sample_detail->case_token)
         ->with(['healthworker' ,'healthpost', 'district', 'municipality'])
         ->first();
     if(empty($case)){
-        $case = SuspectedCaseOld::where('token', $sample_detail->woman_token)
+        $case = SuspectedCaseOld::where('token', $sample_detail->case_token)
         ->with(['healthworker' ,'healthpost', 'district', 'municipality'])
         ->first();
     }
@@ -1030,7 +1030,7 @@ Route::post('/v1/cases-search-by-lab-and-id', function (Request $request) {
 
     $response_data = LabTest::whereIn('lab_tests.token', $lab_token)->where('women.name', '!=', null)
         ->leftJoin('sample_collection', 'lab_tests.sample_token', '=', 'sample_collection.token')
-        ->leftJoin('women', 'sample_collection.woman_token', '=', 'women.token')
+        ->leftJoin('women', 'sample_collection.case_token', '=', 'women.token')
         ->leftJoin('municipalities', 'women.municipality_id', '=', 'municipalities.id')
         ->select('sample_collection.service_for', \DB::raw('DATE(sample_collection.sample_test_date_np) AS date_of_positive'), 'women.name', 'women.age', 'women.age_unit', 'women.province_id', 'women.district_id', 'women.municipality_id', 'women.emergency_contact_one', 'women.sex', 'municipalities.municipality_name', 'women.tole', 'women.ward')->first();
 

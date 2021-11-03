@@ -28,7 +28,7 @@ class ExtCaseController extends Controller
         if (!empty($user)) {
             $healthworker = OrganizationMember::where('token', $user->token)->get()->first();
             $record = DB::table('suspected_cases')
-                ->join('sample_collection', 'sample_collection.woman_token', '=', 'suspected_cases.token')
+                ->join('sample_collection', 'sample_collection.case_token', '=', 'suspected_cases.token')
                 ->join('lab_tests', 'lab_tests.sample_token', '=', 'sample_collection.token')
                 ->where('suspected_cases.org_code', $healthworker->org_code)
                 ->select('suspected_cases.token','suspected_cases.name','suspected_cases.age','suspected_cases.age_unit','suspected_cases.sex','suspected_cases.caste','suspected_cases.province_id','suspected_cases.district_id','suspected_cases.municipality_id','suspected_cases.ward',
@@ -229,7 +229,7 @@ class ExtCaseController extends Controller
                 if(array_key_exists('imu_swab_id', $value) && $value['imu_swab_id']) {
                   $existingSampleCollection = SampleCollection::where('checked_by', $user->token)->where('token', $value['imu_swab_id'])->first();
                   if($existingSampleCollection) {
-                    $existingSuspectedCase = SuspectedCase::where('token', $existingSampleCollection->woman_token)->first();
+                    $existingSuspectedCase = SuspectedCase::where('token', $existingSampleCollection->case_token)->first();
                     $existingLabTest = LabTest::where('sample_token', $value['imu_swab_id'])->first();
                     $update = true;
                     $swab_id = $value['imu_swab_id'];
@@ -253,7 +253,7 @@ class ExtCaseController extends Controller
                 
                 $sample = [
                     'token' => $swab_id,
-                    'woman_token' => $case_token,
+                    'case_token' => $case_token,
                     'service_for' => $value['service_for'] == '' ?  '1' : $value['service_for'],
                     'collection_date_en' => $value['sample_collected_date'],
                     'collection_date_np' => $this->ad2bs($value['sample_collected_date']),
@@ -304,7 +304,7 @@ class ExtCaseController extends Controller
                         unset($case['register_date_en']);
                         unset($case['register_date_np']);
 
-                      unset($sample['woman_token']);
+                      unset($sample['case_token']);
                       unset($sample['collection_date_en']);
                       unset($sample['collection_date_np']);
                       unset($sample['registered_device']);
@@ -440,7 +440,7 @@ class ExtCaseController extends Controller
                 if(array_key_exists('imu_swab_id', $value) && $value['imu_swab_id']) {
                   $existingSampleCollection = SampleCollection::where('checked_by', $user->token)->where('token', $value['imu_swab_id'])->first();
                   if($existingSampleCollection) {
-                    $existingSuspectedCase = SuspectedCase::where('token', $existingSampleCollection->woman_token)->first();
+                    $existingSuspectedCase = SuspectedCase::where('token', $existingSampleCollection->case_token)->first();
                     $existingLabTest = LabTest::where('sample_token', $value['imu_swab_id'])->first();
                     $update = true;
                     $swab_id = $value['imu_swab_id'];
@@ -464,7 +464,7 @@ class ExtCaseController extends Controller
 
                 $sample = [
                     'token' => $swab_id,
-                    'woman_token' => $case_token,
+                    'case_token' => $case_token,
                     'service_for' => $value['service_for'],
                     'collection_date_en' => $value['sample_collected_date'],
                     'collection_date_np' => $this->ad2bs($value['sample_collected_date']),
@@ -515,7 +515,7 @@ class ExtCaseController extends Controller
                         unset($case['register_date_en']);
                         unset($case['register_date_np']);
 
-                      unset($sample['woman_token']);
+                      unset($sample['case_token']);
                       unset($sample['collection_date_en']);
                       unset($sample['collection_date_np']);
                       unset($sample['registered_device']);
@@ -551,7 +551,7 @@ class ExtCaseController extends Controller
 
         if (!empty($user)) {
             $record = DB::table('sample_collection')->where('sample_collection.token', $sample_token)
-                ->join('suspected_cases', 'suspected_cases.token', '=', 'sample_collection.woman_token')
+                ->join('suspected_cases', 'suspected_cases.token', '=', 'sample_collection.case_token')
 //                ->leftJoin('lab_tests', 'lab_tests.sample_token', '=', 'sample_collection.token')
                 ->select('suspected_cases.token','suspected_cases.name','suspected_cases.age','suspected_cases.age_unit','suspected_cases.sex','suspected_cases.caste','suspected_cases.province_id','suspected_cases.district_id','suspected_cases.municipality_id','suspected_cases.ward',
                     'suspected_cases.tole','suspected_cases.emergency_contact_one','suspected_cases.travelled','suspected_cases.occupation','suspected_cases.created_at'
@@ -606,7 +606,7 @@ class ExtCaseController extends Controller
 
         if (!empty($user)) {
             $record = DB::table('sample_collection')->where('sample_collection.token', $sample_token)
-                ->join('suspected_cases', 'suspected_cases.token', '=', 'sample_collection.woman_token')
+                ->join('suspected_cases', 'suspected_cases.token', '=', 'sample_collection.case_token')
 //                ->leftJoin('lab_tests', 'lab_tests.sample_token', '=', 'sample_collection.token')
                 ->select('suspected_cases.token','suspected_cases.name','suspected_cases.age','suspected_cases.age_unit','suspected_cases.sex','suspected_cases.caste','suspected_cases.province_id','suspected_cases.district_id','suspected_cases.municipality_id','suspected_cases.ward',
                     'suspected_cases.tole','suspected_cases.emergency_contact_one','suspected_cases.travelled','suspected_cases.occupation','suspected_cases.created_at'

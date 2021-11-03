@@ -35,7 +35,7 @@ class DownloadablePositiveListPoeByDate implements FromCollection, WithHeadings
         }
 
         // $data = DB::raw("
-        // SELECT suspected_cases.name, suspected_cases.age, genders.name as gender, suspected_cases.province_id, districts.district_name, municipalities.municipality_name, suspected_cases.ward, suspected_cases.tole, suspected_cases.emergency_contact_one, suspected_cases.emergency_contact_two , sample_collection.token SID, sample_collection.created_at, sample_collection.reporting_date_en FROM `sample_collection` LEFT JOIN suspected_cases on suspected_cases.token = sample_collection.woman_token LEFT JOIN districts ON suspected_cases.district_id = districts.id LEFT JOIN municipalities on suspected_cases.municipality_id = municipalities.id LEFT JOIN genders on suspected_cases.sex = genders.id LEFT JOIN organizations h on h.org_code = sample_collection.org_code WHERE ((sample_collection.created_at like '2021-06-29%' and sample_collection.received_date_en is null) or sample_collection.reporting_date_en LIKE '2021-06-29%') and sample_collection.service_for = 2 AND sample_collection.result = 4 AND sample_collection.status = 1 and suspected_cases.name is not null ORDER BY `sample_collection`.`created_at` ASC
+        // SELECT suspected_cases.name, suspected_cases.age, genders.name as gender, suspected_cases.province_id, districts.district_name, municipalities.municipality_name, suspected_cases.ward, suspected_cases.tole, suspected_cases.emergency_contact_one, suspected_cases.emergency_contact_two , sample_collection.token SID, sample_collection.created_at, sample_collection.reporting_date_en FROM `sample_collection` LEFT JOIN suspected_cases on suspected_cases.token = sample_collection.case_token LEFT JOIN districts ON suspected_cases.district_id = districts.id LEFT JOIN municipalities on suspected_cases.municipality_id = municipalities.id LEFT JOIN genders on suspected_cases.sex = genders.id LEFT JOIN organizations h on h.org_code = sample_collection.org_code WHERE ((sample_collection.created_at like '2021-06-29%' and sample_collection.received_date_en is null) or sample_collection.reporting_date_en LIKE '2021-06-29%') and sample_collection.service_for = 2 AND sample_collection.result = 4 AND sample_collection.status = 1 and suspected_cases.name is not null ORDER BY `sample_collection`.`created_at` ASC
         // ")
 
         $tokens = SampleCollection::whereIn('org_code', $hpCodes)
@@ -46,7 +46,7 @@ class DownloadablePositiveListPoeByDate implements FromCollection, WithHeadings
                     ->whereNull('received_date_en');
                 })->orWhereDate('reporting_date_en', $date_chosen);
             })
-            ->active()->get()->pluck('woman_token');
+            ->active()->get()->pluck('case_token');
             
 
         $data = SuspectedCase::whereIn('token', $tokens)->with('district', 'municipality', 'latestAnc')->get();

@@ -29,7 +29,7 @@ class AggregateController extends Controller
 
         $rawForecast = DB::table('suspected_cases')
             ->latest('suspected_cases.created_at')
-            ->join('sample_collection','suspected_cases.token', '=', 'sample_collection.woman_token')
+            ->join('sample_collection','suspected_cases.token', '=', 'sample_collection.case_token')
             ->select(DB::raw('DATE(suspected_cases.created_at) as register_date'), DB::raw('DATE(sample_collection.created_at) as sample_created_at'), DB::raw('DATE(suspected_cases.updated_at) as result_date') , 'sample_collection.result as result')
             ->get();
 
@@ -138,7 +138,7 @@ class AggregateController extends Controller
 
     public function gender(){
         $data = SuspectedCase::where('suspected_cases.status', 1)
-            ->join('sample_collection', 'suspected_cases.token', '=', 'sample_collection.woman_token')
+            ->join('sample_collection', 'suspected_cases.token', '=', 'sample_collection.case_token')
             ->where('sample_collection.result', '!=', 5)
             ->select('suspected_cases.sex', 'sample_collection.result' , \DB::raw('count(*) as total'))
             ->groupBy('suspected_cases.sex', 'sample_collection.result')
@@ -158,7 +158,7 @@ class AggregateController extends Controller
 
     public function occupation(){
         $data = SuspectedCase::where('suspected_cases.status', 1)
-            ->join('sample_collection', 'suspected_cases.token', '=', 'sample_collection.woman_token')
+            ->join('sample_collection', 'suspected_cases.token', '=', 'sample_collection.case_token')
             ->where('sample_collection.result', '!=', 5)
             ->select('suspected_cases.occupation', 'sample_collection.result' , \DB::raw('count(*) as total'))
             ->groupBy('suspected_cases.occupation', 'sample_collection.result')
@@ -180,7 +180,7 @@ class AggregateController extends Controller
 
         $data = Cache::remember('analysis-report', 60 * 60, function () {
             return \DB::table('suspected_cases')->where('suspected_cases.status', 1)
-                ->join('sample_collection', 'suspected_cases.token', '=', 'sample_collection.woman_token')
+                ->join('sample_collection', 'suspected_cases.token', '=', 'sample_collection.case_token')
                 ->join('organizations', 'suspected_cases.org_code', '=', 'organizations.org_code')
                 ->whereIn('sample_collection.result', [3,4])
                 ->select('sample_collection.result as antigen_result', 'sample_collection.service_for', 'organizations.province_id as province', DB::raw('count(*) as total'))

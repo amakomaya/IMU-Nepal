@@ -8,7 +8,7 @@ class CaseManagement extends Model
 {
     protected $table='case_mgmt';
     protected $fillable = [
-        'token', 'woman_token', 'contact_with_covid_place', 'contact_travel', 'name',
+        'token', 'case_token', 'contact_with_covid_place', 'contact_travel', 'name',
         'relation', 'last_meet_date', 'covid_infect_place', 'case_gone_festival',
         'case_gone_festival_info', 'case_contact_same_illness',
         'case_contact_same_illness_info', 'case_gone_institution',

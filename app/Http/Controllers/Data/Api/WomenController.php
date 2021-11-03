@@ -37,7 +37,7 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $sample_collection_token = SampleCollection::where('org_code', $hpCodes)->pluck('woman_token');
+        $sample_collection_token = SampleCollection::where('org_code', $hpCodes)->pluck('case_token');
         $woman = SuspectedCase::whereIn('token', $sample_collection_token)->active()
             ->withAll();
         return response()->json([
@@ -155,7 +155,7 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-//        $token = SampleCollection::whereIn('org_code', $hpCodes)->where('result', 4)->pluck('woman_token');
+//        $token = SampleCollection::whereIn('org_code', $hpCodes)->where('result', 4)->pluck('case_token');
 //        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
 
         if ($request->db_switch == '2') {
@@ -234,7 +234,7 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-//        $token = SampleCollection::whereIn('org_code', $hpCodes)->where('result', 3)->pluck('woman_token');
+//        $token = SampleCollection::whereIn('org_code', $hpCodes)->where('result', 3)->pluck('case_token');
 
         if ($request->db_switch == '2') {
             $woman = SuspectedCaseOld::active();
@@ -320,13 +320,13 @@ class WomenController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
 
         if ($request->db_switch == '2') {
-            $tracing_tokens = ContactTracingOld::whereIn('org_code', $hpCodes)->pluck('woman_token');
+            $tracing_tokens = ContactTracingOld::whereIn('org_code', $hpCodes)->pluck('case_token');
 //            $woman = SuspectedCaseOld::active();
             $woman1 = SuspectedCase::whereIn('token', $tracing_tokens)->active();
             $woman2 = SuspectedCaseOld::whereIn('token', $tracing_tokens)->active();
             $woman = $woman1->unionAll($woman2)->distinct();
         } else {
-            $tracing_tokens = ContactTracing::whereIn('org_code', $hpCodes)->pluck('woman_token');
+            $tracing_tokens = ContactTracing::whereIn('org_code', $hpCodes)->pluck('case_token');
 //            $woman = SuspectedCase::active();
             $woman2 = SuspectedCaseOld::whereIn('token', $tracing_tokens)->active();
             $woman1 = SuspectedCase::whereIn('token', $tracing_tokens)->active();
@@ -422,7 +422,7 @@ class WomenController extends Controller
             ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-        })->pluck('woman_token');
+        })->pluck('case_token');
 
         $data = $data->whereIn('token', $sample_token)->withAll();
 
@@ -449,7 +449,7 @@ class WomenController extends Controller
             ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-        })->pluck('woman_token');
+        })->pluck('case_token');
 
         $data = $data->whereIn('token', $sample_token)->withAll();
 
@@ -476,7 +476,7 @@ class WomenController extends Controller
             ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-        })->pluck('woman_token');
+        })->pluck('case_token');
         $data = $data->whereIn('token', $sample_token)->withAll();
         return response()->json([
             'collection' => $data->advancedFilter()
@@ -501,7 +501,7 @@ class WomenController extends Controller
             ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-        })->pluck('woman_token');
+        })->pluck('case_token');
         $data = $data->whereIn('token', $sample_token)->withAll();
         return response()->json([
             'collection' => $data->advancedFilter()
@@ -525,7 +525,7 @@ class WomenController extends Controller
             ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-        })->pluck('woman_token');
+        })->pluck('case_token');
         $data = $data->whereIn('token', $sample_token)->withAll();
 
         return response()->json([
@@ -550,7 +550,7 @@ class WomenController extends Controller
             ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-        })->pluck('woman_token');
+        })->pluck('case_token');
         $data = $data->whereIn('token', $sample_token)->withAll();
 
         return response()->json([
@@ -667,7 +667,7 @@ class WomenController extends Controller
     {
         $user = auth()->user();
         $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
-        $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
+        $token = SampleCollection::whereIn('token', $sample_token)->pluck('case_token');
         $data = SuspectedCase::whereIn('token', $token)->latest()->active()->withAll()->get();
 
         $final_data = $data->map(function ($item, $key) {
@@ -823,7 +823,7 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        $data = CictTracing::whereIn('hp_code', $hpCodes)->with('municipality', 'district')
+        $data = CictTracing::whereIn('org_code', $hpCodes)->with('municipality', 'district')
             ->whereNotNull('cict_initiated_date')
             ->latest();
         $total = clone $data;
@@ -836,7 +836,7 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        $data = CictTracing::whereIn('hp_code', $hpCodes)->with('municipality', 'district')
+        $data = CictTracing::whereIn('org_code', $hpCodes)->with('municipality', 'district')
             ->whereNull('cict_initiated_date')
             ->latest();
         $total = clone $data;

@@ -258,7 +258,7 @@ class AdminController extends Controller
                 $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np_array[0], $sample_test_date_np_array[1], $sample_test_date_np_array[2])->getYearMonthDay();
             }
             try{
-                $woman_id = SuspectedCase::where('token', $request->woman_token)->first()->id;
+                $woman_id = SuspectedCase::where('token', $request->case_token)->first()->id;
                 SuspectedCase::where('id', $woman_id)->update([
                     'name' => $request->name,
                     'age' => $request->age,

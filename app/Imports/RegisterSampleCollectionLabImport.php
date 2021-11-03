@@ -149,7 +149,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'service_type' => $row['service_type'],
           'result' => $row['result'],
           'registered_device' => 'excel',
-          'woman_token' => $suspectedCase->token,
+          'case_token' => $suspectedCase->token,
           'infection_type' => $row['infection_type'],
           'sample_test_date_en' => $this->todayDateEn,
           'sample_test_date_np' => $this->todayDateNp,

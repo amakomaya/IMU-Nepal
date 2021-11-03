@@ -33,7 +33,7 @@ class DownloadablePositiveList implements FromCollection, WithHeadings
 //                ->whereDate('updated_at', Carbon::today())
                 ->whereBetween('sample_test_date_en', array($date_from->toDateTimeString(), $date_to->toDateTimeString()) )
                 ->active()
-                ->pluck('woman_token');
+                ->pluck('case_token');
 
             $data = SuspectedCase::whereIn('token', $tokens)->with('district', 'municipality', 'latestAnc')->get();
 

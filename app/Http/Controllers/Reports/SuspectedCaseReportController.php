@@ -60,7 +60,7 @@ class SuspectedCaseReportController extends Controller
             }
         }
 
-        $data = $data->join('sample_collection', 'sample_collection.woman_token', '=', 'suspected_cases.token')
+        $data = $data->join('sample_collection', 'sample_collection.case_token', '=', 'suspected_cases.token')
             ->join('provinces', 'suspected_cases.province_id', '=', 'provinces.id')
             ->join('districts', 'suspected_cases.district_id', '=', 'districts.id')
             ->join('municipalities', 'suspected_cases.municipality_id', '=', 'municipalities.id')

@@ -25,7 +25,7 @@ class ExtSampleController extends Controller
             $data = collect($record)->map(function ($row) {
                 $response = [];
                 $response['token'] = $row->token;
-                $response['case_token'] = $row->woman_token ?? '';
+                $response['case_token'] = $row->case_token ?? '';
                 $response['sample_type'] = $row->sample_type ?? '';
                 $response['sample_type_specific'] = $row->sample_type_specific ?? '';
                 $response['service_type'] = $row->service_type ?? '';
@@ -60,7 +60,7 @@ class ExtSampleController extends Controller
                 try {
                     SampleCollection::insert([
                         'token' =>  $swab_id,
-                        'woman_token' => $value['case_token'],
+                        'case_token' => $value['case_token'],
                         'sample_type' => $value['sample_type'],
                         'sample_type_specific' => $value['sample_type_specific'],
                         'sample_case' => $value['sample_case'],

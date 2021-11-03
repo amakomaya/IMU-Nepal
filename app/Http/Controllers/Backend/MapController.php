@@ -21,7 +21,7 @@ class MapController extends Controller
         $data = SuspectedCase::whereNotNull('longitude')
             ->whereBetween('longitude', [79, 90])
             ->whereBetween('latitude', [26, 31])
-            ->join('sample_collection', 'suspected_cases.token', '=', 'sample_collection.woman_token')
+            ->join('sample_collection', 'suspected_cases.token', '=', 'sample_collection.case_token')
             ->whereIn('sample_collection.result', [3])
             ->select(\DB::raw('round(suspected_cases.latitude, 2) as latitude'), \DB::raw('round(suspected_cases.longitude, 2) as longitude'), \DB::raw('count(*) as total'))
             ->groupBy(\DB::raw('round(suspected_cases.longitude, 1)'))

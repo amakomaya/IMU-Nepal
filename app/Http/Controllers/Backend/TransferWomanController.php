@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Cache;
 
 class TransferWomanController extends Controller
 {
-    public function transfer($from_hp_code, $woman_token){
-    	$woman = SuspectedCase::where('token', $woman_token)->get()->first();
+    public function transfer($from_hp_code, $case_token){
+    	$woman = SuspectedCase::where('token', $case_token)->get()->first();
     	$provinces = Cache::remember('province-list', 48*60*60, function () {
         return Province::select(['id', 'province_name'])->get();
       });
@@ -34,7 +34,7 @@ class TransferWomanController extends Controller
     public function transferStore(TransferWomanRequest $request)
     {
     	$transferWoman = new TransferWoman;
-        $transferWoman->woman_token = $request->get('woman_token');
+        $transferWoman->case_token = $request->get('case_token');
         $transferWoman->from_hp_code = $request->get('from_hp_code');
         $transferWoman->to_hp_code = $request->get('org_code');
         $transferWoman->message = $request->get('message');
@@ -46,10 +46,10 @@ class TransferWomanController extends Controller
         return redirect()->route('woman.index');
     }
 
-    public function transferConfirm($from_hp_code, $woman_token){
-        $woman = SuspectedCase::where('token', $woman_token)->get()->first();
+    public function transferConfirm($from_hp_code, $case_token){
+        $woman = SuspectedCase::where('token', $case_token)->get()->first();
         $healthpost = Organization::where('org_code', $from_hp_code)->get()->first();
-        $transfer = TransferWoman::where([['from_hp_code', $healthpost->org_code], ['woman_token', $woman->token]])->get()->first();
+        $transfer = TransferWoman::where([['from_hp_code', $healthpost->org_code], ['case_token', $woman->token]])->get()->first();
         return view('backend.transfer-woman.transfer-confrim',compact('healthpost','woman','transfer'));
     }
 
@@ -58,7 +58,7 @@ class TransferWomanController extends Controller
             $transferWoman = $this->findModel($id);
             $transferWoman->status = '0';
             $transferWoman->save();
-            $woman = $this->findModelWoman($transferWoman->woman_token);
+            $woman = $this->findModelWoman($transferWoman->case_token);
             $loggedInToken = Auth::user()->token;
             $healthpost = Organization::where('token', $loggedInToken)->get()->first();
             $woman->org_code = $healthpost->org_code;

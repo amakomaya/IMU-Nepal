@@ -215,7 +215,7 @@ class PoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadi
             // 'service_type' => $row['service_type'], //TODO verify service type paid or free
             'result' => $labResult,
             'registered_device' => 'excel',
-            'woman_token' => $suspectedCase->token,
+            'case_token' => $suspectedCase->token,
             'infection_type' => '1',
             'sample_test_date_en' => $regDateEn,
             'sample_test_date_np' => $regDateNp,

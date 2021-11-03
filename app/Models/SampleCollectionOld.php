@@ -19,7 +19,7 @@ class SampleCollectionOld extends Model
 
     protected $table = 'sample_collection';
 
-    protected $fillable = ['token', 'woman_token', 'service_for', 'checked_by', 'org_code', 'status',
+    protected $fillable = ['token', 'case_token', 'service_for', 'checked_by', 'org_code', 'status',
 
     'checked_by_name', 'sample_type', 'sample_type_specific', 'sample_case',
         'sample_case_specific', 'sample_identification_type',
@@ -38,7 +38,7 @@ class SampleCollectionOld extends Model
 
     public function woman()
     {
-        return $this->belongsTo('App\Models\SuspectedCaseOld', 'woman_token', 'token');
+        return $this->belongsTo('App\Models\SuspectedCaseOld', 'case_token', 'token');
     }
 
     public function scopeActive($query)

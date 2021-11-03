@@ -64,7 +64,7 @@ class CaseDetailController extends Controller
         if(empty($data)) {
             $data = SuspectedCaseOld::withAll()->where('token', $token)->first();
         }
-        $samples = SampleCollection::where('status', '1')->where('woman_token', $token)->get();
+        $samples = SampleCollection::where('status', '1')->where('case_token', $token)->get();
 
         return view('backend.patient.edit', compact('data','samples'));
     }

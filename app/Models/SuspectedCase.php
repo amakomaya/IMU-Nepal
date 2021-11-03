@@ -100,11 +100,11 @@ class SuspectedCase extends Model
     }
     public function sampleCollection()
     {
-        return $this->hasMany('App\Models\SampleCollection', 'woman_token', 'token');
+        return $this->hasMany('App\Models\SampleCollection', 'case_token', 'token');
     }
     public function ancsWithLabReport()
     {
-        return $this->hasMany('App\Models\SampleCollection', 'woman_token', 'token')->with('labreport');
+        return $this->hasMany('App\Models\SampleCollection', 'case_token', 'token')->with('labreport');
     }
 
     public function user()
@@ -124,37 +124,37 @@ class SuspectedCase extends Model
     
     public function latestAnc()
     {
-        return $this->hasOne(SampleCollection::class, 'woman_token', 'token')->latest();
+        return $this->hasOne(SampleCollection::class, 'case_token', 'token')->latest();
     }
    
     public function cictTracing()
     {
-        return $this->hasOne('App\Models\CictTracing', 'woman_token', 'token');
+        return $this->hasOne('App\Models\CictTracing', 'case_token', 'token');
     }
 
     public function caseManagement()
     {
-        return $this->hasOne('App\Models\CaseManagement', 'woman_token', 'token');
+        return $this->hasOne('App\Models\CaseManagement', 'case_token', 'token');
     }
 
     public function clinicalParameter()
     {
-        return $this->hasMany('App\Models\ClinicalParameter', 'woman_token', 'token');
+        return $this->hasMany('App\Models\ClinicalParameter', 'case_token', 'token');
     }
 
     public function contactTracing()
     {
-        return $this->hasMany('App\Models\ContactTracing', 'woman_token', 'token');
+        return $this->hasMany('App\Models\ContactTracing', 'case_token', 'token');
     }
 
     public function laboratoryParameter()
     {
-        return $this->hasMany('App\Models\LaboratoryParameter', 'woman_token', 'token');
+        return $this->hasMany('App\Models\LaboratoryParameter', 'case_token', 'token');
     }
 
     public function symptomsRelation()
     {
-        return $this->hasMany('App\Models\Symptoms', 'woman_token', 'token');
+        return $this->hasMany('App\Models\Symptoms', 'case_token', 'token');
     }
 
     public function getFormatedAgeUnitAttribute()

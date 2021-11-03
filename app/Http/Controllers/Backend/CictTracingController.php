@@ -104,7 +104,7 @@ class CictTracingController extends Controller
                 if($patient){
                     $data['token'] = md5(microtime(true) . mt_Rand());
                     $data['case_id'] = $request->case_id;
-                    $data['woman_token'] = $patient->token;
+                    $data['case_token'] = $patient->token;
                     $data['org_code'] = $healthworker->org_code;
                     $data['checked_by'] = $healthworker->token;
                     $data['registered_device'] = 'web';
@@ -891,7 +891,7 @@ class CictTracingController extends Controller
             if($patient){
                 $data['token'] = md5(microtime(true) . mt_Rand());
                 $data['case_id'] = $data['case_id'];
-                $data['woman_token'] = $patient->token;
+                $data['case_token'] = $patient->token;
                 $data['org_code'] = $data['org_code'];
                 $data['checked_by'] = '';
                 $data['registered_device'] = $registered_device;

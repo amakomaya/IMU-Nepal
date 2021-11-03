@@ -17,9 +17,9 @@ class SendMessageController extends Controller
         $json = json_decode($request->getContent(), true);
         $unSavedWomanToken = [];
         $savedWomanToken = [];
-        foreach ($json['woman_token'] as $value) {
+        foreach ($json['case_token'] as $value) {
             $payload = [
-                "woman_token" => $value,
+                "case_token" => $value,
                 "message" => $json['message'],
                 'notified_by' => $json['notified_by'],
                 'notified_at' =>$json['notified_at']
@@ -28,10 +28,10 @@ class SendMessageController extends Controller
             try {
                 if (sizeof($user) > 0) {
                     $user->notify(new SendMessageFromWebNotify($payload));
-                    array_push($savedWomanToken, $value['woman_token']);
+                    array_push($savedWomanToken, $value['case_token']);
                 }
             } catch (Exception $exception) {
-                array_push($unSavedWomanToken, $value['woman_token']);
+                array_push($unSavedWomanToken, $value['case_token']);
             }
         }
         return response()->json(['error_woman_token' => $unSavedWomanToken, 'success_woman_token' => $savedWomanToken]);

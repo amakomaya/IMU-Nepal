@@ -36,31 +36,31 @@ class ServiceController extends Controller
         $sample_collection = SampleCollection::whereIn('org_code', $hpCodes)
             ->fromToDate($date['from_date'], $date['to_date'])
             ->active()
-            ->pluck('woman_token')->toArray();
+            ->pluck('case_token')->toArray();
 
         $pncs = Pnc::whereIn('org_code', $hpCodes)
             ->fromToDate($date['from_date'], $date['to_date'])
             ->active()
-            ->pluck('woman_token')->toArray();
+            ->pluck('case_token')->toArray();
 
         $delivery = Delivery::whereIn('org_code', $hpCodes)
             ->fromToDate($date['from_date'], $date['to_date'])
             ->active()
-            ->pluck('woman_token')->toArray();
+            ->pluck('case_token')->toArray();
 
         $labtest = LabTest::whereIn('org_code', $hpCodes)
             ->fromToDate($date['from_date'], $date['to_date'])
             ->active()
-            ->pluck('woman_token')->toArray();
+            ->pluck('case_token')->toArray();
 
         $medication = Woman\Vaccination::whereIn('org_code', $hpCodes)
             ->fromToDate($date['from_date'], $date['to_date'])
             ->active()
-            ->pluck('woman_token')->toArray();
+            ->pluck('case_token')->toArray();
 
-        $woman_tokens = array_unique(array_merge($register, $sample_collection, $pncs, $delivery, $medication, $labtest));
+        $case_tokens = array_unique(array_merge($register, $sample_collection, $pncs, $delivery, $medication, $labtest));
 
-        $woman = SuspectedCase::withAll()->whereIn('token', $woman_tokens)->active()->get();
+        $woman = SuspectedCase::withAll()->whereIn('token', $case_tokens)->active()->get();
 
         return view('reports.woman-service', compact('woman', 'register','sample_collection','medication', 'delivery', 'pncs','provinces', 'ward_or_healthpost','districts','municipalities','wards','organizations','options','province_id','district_id','municipality_id','ward_id','org_code', 'select_year', 'select_month'));
     }

@@ -506,7 +506,7 @@ Route::get('/calc-data', function(){
                 $item->collection_date_en = $parse_date->toDateString();
                 $item->collection_date_np = $collection_date_np;
 
-                $token = $item->woman_token;
+                $token = $item->case_token;
                 $case = \App\Models\SuspectedCaseOld::where('token', $token)->first();
                 if(!empty($case)) {
                     $case->register_date_np = $collection_date_np;

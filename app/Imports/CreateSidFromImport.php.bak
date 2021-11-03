@@ -88,7 +88,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
           'service_type' => '1',
           'result' => 9,
           'registered_device' => 'excel',
-          'woman_token' => $suspectedCase->token,
+          'case_token' => $suspectedCase->token,
           'infection_type' => '1',
           'sample_type' => '[1,2]',
           'token' => $sId

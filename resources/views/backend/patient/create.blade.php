@@ -593,7 +593,7 @@
                                     </div>
                                 </div>
                                 <input type="text" name="token" value="{{$swab_id}}" hidden>
-                                {{-- <input type="text" name="woman_token" value="{{$token}}" hidden> --}}
+                                {{-- <input type="text" name="case_token" value="{{$token}}" hidden> --}}
                             </div>
                             <button type="submit" id="submit-form" class="btn btn-primary btn-sm btn-block ">SAVE</button>
 

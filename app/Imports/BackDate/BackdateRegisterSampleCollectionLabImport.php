@@ -160,7 +160,7 @@ class BackdateRegisterSampleCollectionLabImport implements ToModel, WithChunkRea
           'service_type' => $row['service_type'],
           'result' => $row['result'],
           'registered_device' => 'excel-bd',
-          'woman_token' => $suspectedCase->token,
+          'case_token' => $suspectedCase->token,
           'infection_type' => $row['infection_type'],
           'sample_test_date_en' => $backDateEn,
           'sample_test_date_np' => $backDateNp,

@@ -106,11 +106,11 @@ class SuspectedCaseOld extends Model
     }
     public function sampleCollection()
     {
-        return $this->hasMany('App\Models\SampleCollection', 'woman_token', 'token');
+        return $this->hasMany('App\Models\SampleCollection', 'case_token', 'token');
     }
     public function ancsWithLabReport()
     {
-        return $this->hasMany('App\Models\SampleCollection', 'woman_token', 'token')->with('labreport');
+        return $this->hasMany('App\Models\SampleCollection', 'case_token', 'token')->with('labreport');
     }
 
     public function user()
@@ -130,17 +130,17 @@ class SuspectedCaseOld extends Model
 
     public function latestAnc()
     {
-        return $this->hasOne(SampleCollectionOld::class, 'woman_token', 'token')->latest();
+        return $this->hasOne(SampleCollectionOld::class, 'case_token', 'token')->latest();
     }
 
     public function caseManagement()
     {
-        return $this->hasOne('App\Models\CaseManagementOld', 'woman_token', 'token');
+        return $this->hasOne('App\Models\CaseManagementOld', 'case_token', 'token');
     }
 
     public function clinicalParameter()
     {
-        return $this->hasMany('App\Models\ClinicalParameterOld', 'woman_token', 'token');
+        return $this->hasMany('App\Models\ClinicalParameterOld', 'case_token', 'token');
     }
 
     public function contactDetail()
@@ -155,22 +155,22 @@ class SuspectedCaseOld extends Model
 
     public function contactTracing()
     {
-        return $this->hasMany('App\Models\ContactTracingOld', 'woman_token', 'token');
+        return $this->hasMany('App\Models\ContactTracingOld', 'case_token', 'token');
     }
 
     public function laboratoryParameter()
     {
-        return $this->hasMany('App\Models\LaboratoryParameterOld', 'woman_token', 'token');
+        return $this->hasMany('App\Models\LaboratoryParameterOld', 'case_token', 'token');
     }
 
     public function symptomsRelation()
     {
-        return $this->hasMany('App\Models\SymptomsOld', 'woman_token', 'token');
+        return $this->hasMany('App\Models\SymptomsOld', 'case_token', 'token');
     }
 
     public function cictTracing()
     {
-        return $this->hasOne('App\Models\CictTracingOld', 'woman_token', 'token');
+        return $this->hasOne('App\Models\CictTracingOld', 'case_token', 'token');
     }
 
 

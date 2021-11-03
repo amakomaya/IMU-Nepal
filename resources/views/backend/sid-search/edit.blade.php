@@ -404,7 +404,7 @@
                         </div>
 
                         <input type="hidden" id="lab_tests_token" name="lab_tests_token" value="{{ $sample_collection->lab_token ?? '' }}" class="form-control">
-                        <input type="hidden" name="woman_token" value="{{ $sample_collection->woman_token }}" class="form-control">
+                        <input type="hidden" name="case_token" value="{{ $sample_collection->case_token }}" class="form-control">
 
                         {!! rcForm::close('post') !!}
                     </div>

@@ -17,7 +17,7 @@ class AncController extends Controller
         if (empty($record))
             return response()->json(['message' => 'Data Not Found']);
         else {
-            $woman_data = SuspectedCase::where('token', $record->woman_token)->first();
+            $woman_data = SuspectedCase::where('token', $record->case_token)->first();
 
             return response()->json([
                 'message' => 'Data Found Successfully',
