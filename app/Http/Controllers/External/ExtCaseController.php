@@ -265,7 +265,7 @@ class ExtCaseController extends Controller
                     'checked_by' => $healthworker->token,
                     'checked_by_name' => $healthworker->name,
                     'status' => 1,
-                    'regdev' => 'api',
+                    'registered_device' => 'api',
                     'lab_token' => $lab_id,
                     'received_date_en' => $value['lab_received_date'],
                     'received_date_np' => $this->ad2bs($value['lab_received_date']),
@@ -288,7 +288,7 @@ class ExtCaseController extends Controller
                     'checked_by' => $healthworker->token,
                     'checked_by_name' => $healthworker->name,
                     'status' => 1,
-                    'regdev' => 'api',
+                    'registered_device' => 'api',
                 ];
                 try {
                     if(!$update) {
@@ -307,7 +307,7 @@ class ExtCaseController extends Controller
                       unset($sample['woman_token']);
                       unset($sample['collection_date_en']);
                       unset($sample['collection_date_np']);
-                      unset($sample['regdev']);
+                      unset($sample['registered_device']);
 //                      unset($sample['reporting_date_en']);
 //                      unset($sample['reporting_date_np']);
                       $existingSuspectedCase->update($case);
@@ -476,7 +476,7 @@ class ExtCaseController extends Controller
                     'checked_by' => $healthworker->token,
                     'checked_by_name' => $healthworker->name,
                     'status' => 1,
-                    'regdev' => 'api',
+                    'registered_device' => 'api',
                     'lab_token' => $lab_id,
                     'received_date_en' => $value['lab_received_date'],
                     'received_date_np' => $this->ad2bs($value['lab_received_date']),
@@ -499,7 +499,7 @@ class ExtCaseController extends Controller
                     'checked_by' => $healthworker->token,
                     'checked_by_name' => $healthworker->name,
                     'status' => 1,
-                    'regdev' => 'api',
+                    'registered_device' => 'api',
                 ];
                 try {
                     if(!$update) {
@@ -518,7 +518,7 @@ class ExtCaseController extends Controller
                       unset($sample['woman_token']);
                       unset($sample['collection_date_en']);
                       unset($sample['collection_date_np']);
-                      unset($sample['regdev']);
+                      unset($sample['registered_device']);
 //                      unset($sample['reporting_date_en']);
 //                      unset($sample['reporting_date_np']);
                       $existingSuspectedCase->update($case);

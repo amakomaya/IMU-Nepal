@@ -214,7 +214,7 @@ class PoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadi
             'sample_identification_type' => 'unique_id',
             // 'service_type' => $row['service_type'], //TODO verify service type paid or free
             'result' => $labResult,
-            'regdev' => 'excel',
+            'registered_device' => 'excel',
             'woman_token' => $suspectedCase->token,
             'infection_type' => '1',
             'sample_test_date_en' => $regDateEn,
@@ -250,7 +250,7 @@ class PoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadi
             'checked_by' => $this->userToken,
             'checked_by_name' => $this->healthWorker->name,
             'sample_token' => $sampleCollection->token,
-            'regdev' => 'excel'
+            'registered_device' => 'excel'
           ]);
         }
         return;

@@ -87,7 +87,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
           'sample_identification_type' => 'unique_id',
           'service_type' => '1',
           'result' => 9,
-          'regdev' => 'excel',
+          'registered_device' => 'excel',
           'woman_token' => $suspectedCase->token,
           'infection_type' => '1',
           'sample_type' => '[1,2]',
@@ -121,7 +121,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
         //       'checked_by' => $this->userToken,
         //       'checked_by_name' => $this->healthWorker->name,
         //       'sample_token' => $sId,
-        //       'regdev' => 'excel'
+        //       'registered_device' => 'excel'
         //     ]);
           
         //   } catch (\Illuminate\Database\QueryException $e) {

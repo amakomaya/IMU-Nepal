@@ -110,7 +110,7 @@ class FixLabPCRData extends Command
             // 'checked_by' => $sampleData->checked_by,
             // 'checked_by_name' => $sampleData->checked_by,
             'sample_token' => $sId,
-            'regdev' => $sampleData->regdev
+            'registered_device' => $sampleData->registered_device
           ]);
           $this->info('Successfully assigned LabId '. $uniqueLabId);
         } catch (Exception $e){

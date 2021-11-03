@@ -148,7 +148,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'sample_identification_type' => 'unique_id',
           'service_type' => $row['service_type'],
           'result' => $row['result'],
-          'regdev' => 'excel',
+          'registered_device' => 'excel',
           'woman_token' => $suspectedCase->token,
           'infection_type' => $row['infection_type'],
           'sample_test_date_en' => $this->todayDateEn,
@@ -188,7 +188,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
             'checked_by' => $this->userToken,
             'checked_by_name' => $this->healthWorker->name,
             'sample_token' => $sampleCollection->token,
-            'regdev' => 'excel'
+            'registered_device' => 'excel'
           ]);
         } catch (\Illuminate\Database\QueryException $e) {
           $error = ['patient_lab_id' => 'The test with the given Patient Lab ID already exists in the system.'];

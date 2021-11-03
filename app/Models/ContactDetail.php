@@ -18,7 +18,7 @@ class ContactDetail extends Model
         'relevant_thing', 'contact_classification', 'symptoms_recent',
         'symptoms_within_four_week', 'symptoms_date', 'case_reason',
         'temperature', 'symptoms', 'symptoms_specific', 'symptoms_comorbidity',
-        'symptoms_comorbidity_specific', 'checked_by', 'org_code', 'regdev', 'sync',
+        'symptoms_comorbidity_specific', 'checked_by', 'org_code', 'registered_device', 'sync',
         'update_status', 'status', 'created_at', 'updated_at', 'checked_by_name',
 
         'social_gathering', 'social_gathering_date', 'sars_cov2_vaccinated', 'first_dose',

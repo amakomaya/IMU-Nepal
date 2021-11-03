@@ -540,7 +540,7 @@ class WomanController extends Controller
                 $sample_row['checked_by'] = auth()->user()->token;
                 $sample_row['status'] = 1;
                 $sample_row['result'] = 2;
-                $sample_row['regdev'] = 'web';
+                $sample_row['registered_device'] = 'web';
                 $sample_row['service_type'] = $request->service_type;
                 $sample_row['service_for'] = $request->service_for;
                 $sample_row['infection_type'] = $request->infection_type;
@@ -587,7 +587,7 @@ class WomanController extends Controller
                         'checked_by' => $sample_row['checked_by'],
                         'checked_by_name' => $sample_row['checked_by_name'],
                         'sample_token' => $sample_row['token'],
-                        'regdev' => 'web'
+                        'registered_device' => 'web'
                     ]);
                 }
                 SampleCollection::create($sample_row);
@@ -679,7 +679,7 @@ class WomanController extends Controller
                 'checked_by' => $row['checked_by'],
                 'checked_by_name' => $row['created_by_name'],
                 'sample_token' => $row['token'],
-                'regdev' => 'web'
+                'registered_device' => 'web'
             ]);
         }
 

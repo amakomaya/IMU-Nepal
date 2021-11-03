@@ -13,7 +13,7 @@ class CaseManagement extends Model
         'case_gone_festival_info', 'case_contact_same_illness',
         'case_contact_same_illness_info', 'case_gone_institution',
         'case_gone_institution_info', 'case_additional_info', 'checked_by',
-        'org_code', 'regdev', 'sync', 'update_status', 'status', 'created_at',
+        'org_code', 'registered_device', 'sync', 'update_status', 'status', 'created_at',
         'updated_at', 'checked_by_name', 'reference_date_from', 'reference_date_to',
 
         'anyother_member_household', 'total_member', 'service_at_home',

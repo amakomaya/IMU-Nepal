@@ -108,7 +108,7 @@ class BackdateLabReceivedImport implements ToModel, WithChunkReading, WithValida
               'checked_by' => $this->userToken,
               'checked_by_name' => $this->healthWorker->name,
               'sample_token' => $sId,
-              'regdev' => 'excel-bd'
+              'registered_device' => 'excel-bd'
           ]);
           
           } catch (\Illuminate\Database\QueryException $e) {

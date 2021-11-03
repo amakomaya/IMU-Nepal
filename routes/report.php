@@ -24,7 +24,7 @@ Route::get('situation-report/sample_collection-report' , 'Reports\AncDetailContr
 Route::get('situation-report/lab-report' , 'Reports\AncDetailController@sampleLabReport')->name('report.sample-report.lab');
 
 Route::get('lab-report-visualization', 'Reports\AncDetailController@labVisualizationReport')->name('report.visualization');
-Route::get('regdev-data', 'Reports\AncDetailController@organizationRegdevCount')->name('report.regdev');
+Route::get('registered_device-data', 'Reports\AncDetailController@organizationRegdevCount')->name('report.registered-device');
 Route::get('organization-contact-tracing', 'Reports\AncDetailController@organizationContactTracing')->name('organization.contact.tracing');
 
 Route::get('district-wise-cases-overview', 'Reports\DistrictWiseCasesOverview@provinceDistrictwiseReport')->name('report.district-wise-cases-overview')->middleware('role-control:province');;

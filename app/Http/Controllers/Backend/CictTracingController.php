@@ -107,7 +107,7 @@ class CictTracingController extends Controller
                     $data['woman_token'] = $patient->token;
                     $data['org_code'] = $healthworker->org_code;
                     $data['checked_by'] = $healthworker->token;
-                    $data['regdev'] = 'web';
+                    $data['registered_device'] = 'web';
                     $data['name'] = $patient->name;
                     $data['age'] = $patient->age;
                     $data['age_unit'] = $patient->age_unit;
@@ -396,7 +396,7 @@ class CictTracingController extends Controller
                     $household['org_code'] = $healthworker->org_code;
                     $household['checked_by'] = $healthworker->token;
                     $household['parent_case_id'] = $cict_tracing->case_id;
-                    $household['regdev'] = 'web';
+                    $household['registered_device'] = 'web';
                     $close_contact = CictCloseContact::where('case_id', $details['case_id'])->where('cict_id', $cict_tracing->id)
                         ->where('contact_type', '1')->first();
                     if($close_contact){
@@ -423,7 +423,7 @@ class CictTracingController extends Controller
                     $travel_vehicle['org_code'] = $healthworker->org_code;
                     $travel_vehicle['checked_by'] = $healthworker->token;
                     $travel_vehicle['parent_case_id'] = $cict_tracing->case_id;
-                    $travel_vehicle['regdev'] = 'web';
+                    $travel_vehicle['registered_device'] = 'web';
                     $close_contact = CictCloseContact::where('case_id', $details['case_id'])->where('cict_id', $cict_tracing->id)
                         ->where('contact_type', '2')->first();
                     if($close_contact){
@@ -449,7 +449,7 @@ class CictTracingController extends Controller
                     $other_direct_care['org_code'] = $healthworker->org_code;
                     $other_direct_care['checked_by'] = $healthworker->token;
                     $other_direct_care['parent_case_id'] = $cict_tracing->case_id;
-                    $other_direct_care['regdev'] = 'web';
+                    $other_direct_care['registered_device'] = 'web';
                     $close_contact = CictCloseContact::where('case_id', $details['case_id'])->where('cict_id', $cict_tracing->id)
                         ->where('contact_type', '3')->first();
                     if($close_contact){
@@ -504,7 +504,7 @@ class CictTracingController extends Controller
             $data['token'] = md5(microtime(true) . mt_Rand());
             $data['org_code'] = $healthworker->org_code;
             $data['checked_by'] = $healthworker->token;
-            $data['regdev'] = 'web';
+            $data['registered_device'] = 'web';
             $cict_contact = CictContact::create($data);
         }
             
@@ -586,7 +586,7 @@ class CictTracingController extends Controller
             $data['token'] = md5(microtime(true) . mt_Rand());
             $data['org_code'] = $healthworker->org_code;
             $data['checked_by'] = $healthworker->token;
-            $data['regdev'] = 'web';
+            $data['registered_device'] = 'web';
             $cict_follow_up = CictFollowUp::create($data);
         }
 
@@ -877,9 +877,9 @@ class CictTracingController extends Controller
     public function cictTransfer(Request $request){
         $data = json_decode($request->getContent(), true);
         if($data['platform'] == '2'){
-            $regdev = 'mobile';
+            $registered_device = 'mobile';
         } else {
-            $regdev = 'web';
+            $registered_device = 'web';
         }
 
         $check_if_exists = CictTracing::where('case_id', $data['case_id'])->first();
@@ -894,7 +894,7 @@ class CictTracingController extends Controller
                 $data['woman_token'] = $patient->token;
                 $data['org_code'] = $data['org_code'];
                 $data['checked_by'] = '';
-                $data['regdev'] = $regdev;
+                $data['registered_device'] = $registered_device;
                 $data['name'] = $patient->name;
                 $data['age'] = $patient->age;
                 $data['age_unit'] = $patient->age_unit;

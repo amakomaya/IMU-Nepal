@@ -140,7 +140,7 @@ class BackdateRegisterSampleCollectionImport implements ToModel, WithChunkReadin
           'sample_identification_type' => 'unique_id',
           'service_type' => $row['service_type'],
           'result' => 2,
-          'regdev' => 'excel-bd',
+          'registered_device' => 'excel-bd',
           'woman_token' => $suspectedCase->token,
           'infection_type' => $row['infection_type'],
           'collection_date_en' => $backDateEn,

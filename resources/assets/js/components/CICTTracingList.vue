@@ -31,7 +31,7 @@
           <span v-else title="Incomplete" class="label label-danger">Incomplete</span>
         </td>
         <td>
-          <span v-if="item.regdev === 'web'" title="Web" class="label label-info">W</span>
+          <span v-if="item.registered_device === 'web'" title="Web" class="label label-info">W</span>
           <span v-else title="Mobile" class="label label-success">M</span>
         </td>
         <td>

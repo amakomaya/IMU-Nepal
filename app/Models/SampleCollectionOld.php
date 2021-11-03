@@ -23,7 +23,7 @@ class SampleCollectionOld extends Model
 
     'checked_by_name', 'sample_type', 'sample_type_specific', 'sample_case',
         'sample_case_specific', 'sample_identification_type',
-        'service_type', 'result','infection_type', 'regdev',
+        'service_type', 'result','infection_type', 'registered_device',
       'created_at', 'updated_at', 'situation',
 
         'received_by', 'received_date_en', 'received_date_np', 'collection_date_en', 'collection_date_np',

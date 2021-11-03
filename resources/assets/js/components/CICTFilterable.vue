@@ -228,7 +228,7 @@ export default {
         'District' : 'district',
         'Municipality' : 'municipality',
         'CICT Initiated Date' : 'cict_initiated_date',
-        'Device Used' : 'regdev'
+        'Device Used' : 'registered_device'
       }
     }
   },
@@ -303,7 +303,7 @@ export default {
           exportableData.district = data.municipality.district_name;
           exportableData.municipality = data.municipality ? data.municipality.municipality_name : '';
           exportableData.cict_initiated_date = data.cict_initiated_date;
-          exportableData.regdev = data.regdev;
+          exportableData.registered_device = data.registered_device;
           list.push(exportableData);
         });
         return list;

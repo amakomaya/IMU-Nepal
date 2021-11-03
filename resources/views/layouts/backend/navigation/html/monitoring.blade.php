@@ -15,7 +15,7 @@
               </a>
           </li>
           <li>
-              <a href="{{ route('report.regdev') }}">
+              <a href="{{ route('report.registered-device') }}">
                   <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                   Registered Device
                   <span class="label label-warning pull-right">RD</span>

@@ -17,7 +17,7 @@ class LabTestOld extends Model
 
     protected $fillable = ['token', 'status','created_at','updated_at',
         'sample_recv_date', 'sample_test_date', 'sample_test_time',
-        'sample_test_result', 'checked_by', 'checked_by_name', 'sample_token', 'org_code', 'regdev'
+        'sample_test_result', 'checked_by', 'checked_by_name', 'sample_token', 'org_code', 'registered_device'
     ];
 
     protected $appends = ['formated_token'];

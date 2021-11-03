@@ -95,7 +95,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
               'checked_by' => $this->userToken,
               'checked_by_name' => $this->healthWorker->name,
               'sample_token' => $sId,
-              'regdev' => 'excel'
+              'registered_device' => 'excel'
           ]);
           
           } catch (\Illuminate\Database\QueryException $e) {

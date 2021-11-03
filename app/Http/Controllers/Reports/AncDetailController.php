@@ -258,7 +258,7 @@ class AncDetailController extends Controller
             ->whereIn('result', ['3', '4'])
             ->whereDate('reporting_date_en', $filter_date['from_date']->toDateString())
             ->where('sample_collection.status', 1)
-            ->select('received_by_hp_code', 'service_for', 'result', 'regdev')
+            ->select('received_by_hp_code', 'service_for', 'result', 'registered_device')
             ->get()
             ->groupBy('received_by_hp_code');
 
@@ -271,7 +271,7 @@ class AncDetailController extends Controller
             $return['antigen_positive_today'] = $lab->where('service_for', '2')->where('result', '3')->count();
             $return['antigen_negative_today'] = $lab->where('service_for', '2')->where('result', '4')->count();
 
-            $api_data_today = $lab->where('regdev', 'api')->count();
+            $api_data_today = $lab->where('registered_device', 'api')->count();
             if($api_data_today > 0) {
                 $return['api_today'] = 'Yes';
             } else {
@@ -331,24 +331,24 @@ class AncDetailController extends Controller
 
         $mainquery = SampleCollection::whereIn('org_code', $hpCodes)
             ->whereDate('collection_date_en', $date_chosen)
-            ->select('org_code', 'regdev');
+            ->select('org_code', 'registered_device');
 
-        $other_regdev_data = $mainquery->get()
+        $other_registered_device_data = $mainquery->get()
             ->groupBy('org_code');
             
-        $other_regdev_data_count = $other_regdev_data->map(function ($sample, $key) use($organizations) {
+        $other_registered_device_data_count = $other_registered_device_data->map(function ($sample, $key) use($organizations) {
             $return = [];
             $return['name'] = $organizations[$key]['name'];
-            $return['web_count'] = $sample->where('regdev', 'web')->count();
-            $null_count = $sample->where('regdev', null)->count();
-            $mobile_count = $sample->where('regdev', 'mobile')->count();
+            $return['web_count'] = $sample->where('registered_device', 'web')->count();
+            $null_count = $sample->where('registered_device', null)->count();
+            $mobile_count = $sample->where('registered_device', 'mobile')->count();
             $return['mobile_count'] = $null_count + $mobile_count;
-            $return['api_count'] = $sample->where('regdev', 'api')->count();
+            $return['api_count'] = $sample->where('registered_device', 'api')->count();
             return $return;
         })->toArray();
 
         $excel_data_count = $mainquery
-            ->where('regdev', 'like', '%' . 'excel' . '%')
+            ->where('registered_device', 'like', '%' . 'excel' . '%')
             ->select('org_code', \DB::raw('COUNT(*) as excel_count'))
             ->groupBy('org_code')
             ->get()
@@ -356,7 +356,7 @@ class AncDetailController extends Controller
             ->toArray();
         $final_excel_data = isset($excel_data_count[""]) ? [] : $excel_data_count;
         
-        $merged_data = array_merge_recursive($other_regdev_data_count, $final_excel_data);
+        $merged_data = array_merge_recursive($other_registered_device_data_count, $final_excel_data);
         $empty_organizations = array_diff_key($organizations, $merged_data);
         $data = array_merge($merged_data, $empty_organizations);
 

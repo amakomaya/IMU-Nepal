@@ -681,7 +681,7 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
             'checked_by' => $user->token,
             'checked_by_name' => $healthWorker->name,
             'sample_token' => $sample_collection->token,
-            'regdev' => 'web'
+            'registered_device' => 'web'
         ]);
 
         if(isset($request->antigen_isolation) && $request->antigen_isolation){
@@ -1126,22 +1126,22 @@ Route::get('/v1/countries', function(){
 //Cict APis
 Route::get('/v1/cict-tracing', function(Request $request) {
     $org_code = $request->org_code;
-    $response = \App\Models\CictTracing::where('org_code', $org_code)->where('regdev', 'mobile')->get();
+    $response = \App\Models\CictTracing::where('org_code', $org_code)->where('registered_device', 'mobile')->get();
     return response()->json($response);
 });
 Route::get('/v1/cict-close-contact', function(Request $request) {
     $org_code = $request->org_code;
-    $response = \App\Models\CictCloseContact::where('org_code', $org_code)->where('regdev', 'mobile')->get();
+    $response = \App\Models\CictCloseContact::where('org_code', $org_code)->where('registered_device', 'mobile')->get();
     return response()->json($response);
 });
 Route::get('/v1/cict-contact', function(Request $request) {
     $org_code = $request->org_code;
-    $response = \App\Models\CictContact::where('org_code', $org_code)->where('regdev', 'mobile')->get();
+    $response = \App\Models\CictContact::where('org_code', $org_code)->where('registered_device', 'mobile')->get();
     return response()->json($response);
 });
 Route::get('/v1/cict-follow-up', function(Request $request) {
     $org_code = $request->org_code;
-    $follow_ups = \App\Models\CictFollowUp::where('org_code', $org_code)->where('regdev', 'mobile')->get();
+    $follow_ups = \App\Models\CictFollowUp::where('org_code', $org_code)->where('registered_device', 'mobile')->get();
     $data = [];
     if($follow_ups){
         foreach($follow_ups as $key => $follow_up){
@@ -1152,7 +1152,7 @@ Route::get('/v1/cict-follow-up', function(Request $request) {
                     $data[$key.'_'.$i]['parent_case_id'] = $follow_up->parent_case_id ?? '';
                     $data[$key.'_'.$i]['org_code'] = $follow_up->org_code ?? '';
                     $data[$key.'_'.$i]['checked_by'] = $follow_up->checked_by ?? '';
-                    $data[$key.'_'.$i]['regdev'] = $follow_up->regdev ?? '';
+                    $data[$key.'_'.$i]['registered_device'] = $follow_up->registered_device ?? '';
                     $data[$key.'_'.$i]['high_exposure'] = $follow_up->high_exposure ?? '';
                     $data[$key.'_'.$i]['completion_date'] = $follow_up->completion_date ?? '';
                     $data[$key.'_'.$i]['created_at'] = $follow_up->created_at ? $follow_up->created_at->format('Y-m-d H:i:s') : '';

@@ -104,7 +104,7 @@ class LabReceivedResultImport implements ToModel, WithChunkReading, WithValidati
               'checked_by' => $this->userToken,
               'checked_by_name' => $this->healthWorker->name,
               'sample_token' => $sId,
-              'regdev' => 'excel'
+              'registered_device' => 'excel'
             ]);
           } catch (\Illuminate\Database\QueryException $e) {
             $error = ['sid' => 'The test with the given Sample ID/Patient Lab ID already exists in the system.'];
