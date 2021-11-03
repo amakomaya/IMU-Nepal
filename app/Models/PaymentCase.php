@@ -16,7 +16,7 @@ class PaymentCase extends Model
 
     protected $fillable = [
     'id', 'name', 'age', 'gender', 'phone', 'address', 'health_condition', 'is_death',
-    'remark', 'lab_name', 'lab_id', 'is_in_imu', 'hp_code', 'created_at', 'updated_at',
+    'remark', 'lab_name', 'lab_id', 'is_in_imu', 'org_code', 'created_at', 'updated_at',
         'register_date_en', 'register_date_np', 'hospital_register_id', 'date_of_outcome', 'date_of_outcome_en',
         'health_condition_update' , 'method_of_diagnosis', 'age_unit',
         'guardian_name', 'self_free', 'comorbidity', 'other_comorbidity', 'pregnant_status', 'date_of_positive', 'date_of_positive_np',
@@ -44,7 +44,7 @@ class PaymentCase extends Model
   
     public function organization()
     {
-        return $this->hasOne('App\Models\Organization', 'hp_code', 'hp_code');
+        return $this->hasOne('App\Models\Organization', 'org_code', 'org_code');
     }
 
     public function province()

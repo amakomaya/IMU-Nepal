@@ -30,7 +30,7 @@ class SuspectedCaseReportController extends Controller
             $final_data = [];
             $request->session()->flash('message', 'Please select the above filters to view the data within the selected date range.');
             
-            return view('backend.woman.report.report', compact('final_data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+            return view('backend.woman.report.report', compact('final_data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','org_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
         }
 
         if($response['old_new_data'] == '2') {
@@ -82,13 +82,13 @@ class SuspectedCaseReportController extends Controller
         
         $final_data = $data;
             
-        return view('backend.woman.report.report', compact('final_data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+        return view('backend.woman.report.report', compact('final_data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','org_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
         
         // if()
 
         // $woman = SuspectedCase::with(['province', 'district', 'municipality', 'latestAnc', 'sampleCollection',
         //     'healthpost' => function($q) {
-        //         $q->select('name', 'hp_code');
+        //         $q->select('name', 'org_code');
         //     }])
         //     ->where(function ($query){
         //         $query->whereHas('sampleCollection', function($q){

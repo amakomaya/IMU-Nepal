@@ -27,7 +27,7 @@ class TransferWomanRequest extends FormRequest
         'province_id' => 'required|string',
         'district_id' => 'required|string',
         'municipality_id' => 'required|string',
-        'hp_code' => 'required|string',
+        'org_code' => 'required|string',
         'message' => 'required|string',
         ];
     }
@@ -37,7 +37,7 @@ class TransferWomanRequest extends FormRequest
             'province_id' => 'province',
             'district_id' => 'district',
             'municipality_id' => 'municipality',
-            'hp_code' => 'healthpost',
+            'org_code' => 'healthpost',
             'message' => 'message',
         ];
     }

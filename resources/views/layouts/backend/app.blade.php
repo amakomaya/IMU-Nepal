@@ -44,7 +44,7 @@
         if (auth()->user()->role == 'healthworker'){
             $healthWorker = \App\Models\OrganizationMember::where('token', Auth::user()->token)->first();
             $metaRole = $healthWorker->role;
-            $hospital = \App\Models\Organization::where('hp_code', $healthWorker->hp_code)->first();
+            $hospital = \App\Models\Organization::where('org_code', $healthWorker->org_code)->first();
             if($hospital) {
               $federalInfo= json_encode(["province_id" => $hospital->province_id, "district_id" => $hospital->district_id, "municipality_id" => $hospital->municipality_id]);
               $province=$hospital->province_id;

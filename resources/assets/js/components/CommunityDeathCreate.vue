@@ -509,7 +509,7 @@ export default {
       }
       var payload = {
         id: id,
-        hp_code: organization.hp_code,
+        org_code: organization.org_code,
       };
       axios.post('/api/v1/cases-search-by-lab-and-id', payload)
           .then((response) => {

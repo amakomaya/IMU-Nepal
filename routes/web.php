@@ -301,9 +301,9 @@ Route::get('/send-hp-data', function (\Illuminate\Http\Request $request){
     $token = \App\User::whereIn('username', $username)->pluck('token');
     try {
         $send_token =  \App\User::where('username', $send)->first()->token;
-        $send_hp_code = \App\Models\Organization::where('token', $send_token)->first()->hp_code;
+        $send_org_code = \App\Models\Organization::where('token', $send_token)->first()->org_code;
     }catch (\Exception $e){
-        $send_hp_code = '';
+        $send_org_code = '';
     }
 
 
@@ -317,7 +317,7 @@ Route::get('/send-hp-data', function (\Illuminate\Http\Request $request){
 
     $post = [
         'municipality_id' => 1,
-        'hp_code' => $send_hp_code ?? '',
+        'org_code' => $send_org_code ?? '',
         'data_list' => implode(",", $data_id),
         'expire_date' => \Carbon\Carbon::now()->addDays(10)->format('Y-m-d')
     ];
@@ -405,8 +405,8 @@ Route::get('admin/get-org-rep', function (Request $request){
     $dateReference = (\Carbon\Carbon::now()->subDays($request->date)->setTime(0, 0, 0));
     $data = \DB::table('payment_cases')
         ->where('payment_cases.updated_at', '>=' ,$dateReference)
-        ->whereIn('payment_cases.hp_code', $hpCodes)
-        ->join('organizations', 'payment_cases.hp_code', '=', 'organizations.hp_code')
+        ->whereIn('payment_cases.org_code', $hpCodes)
+        ->join('organizations', 'payment_cases.org_code', '=', 'organizations.org_code')
         ->join('municipalities', 'organizations.municipality_id', '=', 'municipalities.id')
         ->select(['organizations.name as organiation_name',
             'organizations.no_of_beds',
@@ -526,7 +526,7 @@ Route::get('/calc-data', function(){
                             $sample_test_date_en = Calendar::nep_to_eng($sample_test_date_np[0], $sample_test_date_np[1], $sample_test_date_np[2])->getYearMonthDayNepToEng();
                         }
                         $item->received_by = $lab_token->checked_by;
-                        $item->received_by_hp_code = $lab_token->hp_code;
+                        $item->received_by_hp_code = $lab_token->org_code;
 
                         $item->received_date_en = $received_date_en_lab;
 

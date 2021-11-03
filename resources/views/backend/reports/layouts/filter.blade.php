@@ -136,17 +136,17 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group  col-sm-3" id="healthpost">
-                            <select name="hp_code" class="form-control"  >
+                            <select name="org_code" class="form-control"  >
                             	@if(Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
                                 	<option value="">Select All Organizations</option>
                                 @endif
                                 @foreach($organizations as $healthpost)
-                                    @if($hp_code==$healthpost->hp_code)
+                                    @if($org_code==$healthpost->org_code)
                                         @php($selectedHealthpost = "selected")
                                     @else
                                         @php($selectedHealthpost = "")
                                     @endif
-                                    <option value="{{$healthpost->hp_code}}" {{$selectedHealthpost}}>{{$healthpost->name}}</option>
+                                    <option value="{{$healthpost->org_code}}" {{$selectedHealthpost}}>{{$healthpost->name}}</option>
                                 @endforeach
                             </select>
                         </div>                                
@@ -170,7 +170,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <a href="{{URL::to('/')}}/admin/woman?list=registered&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&hp_code={{$hp_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
+	                        <a href="{{URL::to('/')}}/admin/woman?list=registered&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&org_code={{$org_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
 	                            <div class="panel-footer">
 	                                <span class="pull-left">View Details</span>
 	                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -194,7 +194,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <a href="{{URL::to('/')}}/admin/woman?list=anc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&hp_code={{$hp_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
+	                        <a href="{{URL::to('/')}}/admin/woman?list=anc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&org_code={{$org_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
 	                            <div class="panel-footer">
 	                                <span class="pull-left">View Details</span>
 	                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -218,7 +218,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <a href="{{URL::to('/')}}/admin/woman?list=firstAnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&hp_code={{$hp_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
+	                        <a href="{{URL::to('/')}}/admin/woman?list=firstAnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&org_code={{$org_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
 	                            <div class="panel-footer">
 	                                <span class="pull-left">View Details</span>
 	                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -242,7 +242,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <a href="{{URL::to('/')}}/admin/woman?list=notFirstAnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&hp_code={{$hp_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
+	                        <a href="{{URL::to('/')}}/admin/woman?list=notFirstAnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&org_code={{$org_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
 	                            <div class="panel-footer">
 	                                <span class="pull-left">View Details</span>
 	                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -267,7 +267,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <a href="{{URL::to('/')}}/admin/woman?list=secondAnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&hp_code={{$hp_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
+	                        <a href="{{URL::to('/')}}/admin/woman?list=secondAnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&org_code={{$org_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
 	                            <div class="panel-footer">
 	                                <span class="pull-left">View Details</span>
 	                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -291,7 +291,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <a href="{{URL::to('/')}}/admin/woman?list=notSecondAnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&hp_code={{$hp_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
+	                        <a href="{{URL::to('/')}}/admin/woman?list=notSecondAnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&org_code={{$org_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
 	                            <div class="panel-footer">
 	                                <span class="pull-left">View Details</span>
 	                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -315,7 +315,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <a href="{{URL::to('/')}}/admin/woman?list=thirdAnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&hp_code={{$hp_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
+	                        <a href="{{URL::to('/')}}/admin/woman?list=thirdAnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&org_code={{$org_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
 	                            <div class="panel-footer">
 	                                <span class="pull-left">View Details</span>
 	                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -339,7 +339,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <a href="{{URL::to('/')}}/admin/woman?list=notThirdAnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&hp_code={{$hp_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
+	                        <a href="{{URL::to('/')}}/admin/woman?list=notThirdAnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&org_code={{$org_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
 	                            <div class="panel-footer">
 	                                <span class="pull-left">View Details</span>
 	                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -363,7 +363,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <a href="{{URL::to('/')}}/admin/woman?list=forthAnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&hp_code={{$hp_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
+	                        <a href="{{URL::to('/')}}/admin/woman?list=forthAnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&org_code={{$org_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
 	                            <div class="panel-footer">
 	                                <span class="pull-left">View Details</span>
 	                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -387,7 +387,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <a href="{{URL::to('/')}}/admin/woman?list=notForthAnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&hp_code={{$hp_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
+	                        <a href="{{URL::to('/')}}/admin/woman?list=notForthAnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&org_code={{$org_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
 	                            <div class="panel-footer">
 	                                <span class="pull-left">View Details</span>
 	                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -411,7 +411,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <a href="{{URL::to('/')}}/admin/woman?list=anc_all&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&hp_code={{$hp_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
+	                        <a href="{{URL::to('/')}}/admin/woman?list=anc_all&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&org_code={{$org_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
 	                            <div class="panel-footer">
 	                                <span class="pull-left">View Details</span>
 	                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -435,7 +435,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <a href="{{URL::to('/')}}/admin/woman?list=delivery&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&hp_code={{$hp_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
+	                        <a href="{{URL::to('/')}}/admin/woman?list=delivery&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&org_code={{$org_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
 	                            <div class="panel-footer">
 	                                <span class="pull-left">View Details</span>
 	                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -460,7 +460,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <a href="{{URL::to('/')}}/admin/woman?list=misccarige&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&hp_code={{$hp_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
+	                        <a href="{{URL::to('/')}}/admin/woman?list=misccarige&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&org_code={{$org_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
 	                            <div class="panel-footer">
 	                                <span class="pull-left">View Details</span>
 	                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -484,7 +484,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <a href="{{URL::to('/')}}/admin/baby?list=baby&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&hp_code={{$hp_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
+	                        <a href="{{URL::to('/')}}/admin/baby?list=baby&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&org_code={{$org_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
 	                            <div class="panel-footer">
 	                                <span class="pull-left">View Details</span>
 	                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -508,7 +508,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <a href="{{URL::to('/')}}/admin/woman?list=pnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&hp_code={{$hp_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
+	                        <a href="{{URL::to('/')}}/admin/woman?list=pnc&province_id={{$province_id}}&district_id={{$district_id}}&municipality_id={{$municipality_id}}&ward_id={{$ward_id}}&org_code={{$org_code}}&from_date={{$from_date}}&to_date={{$to_date}}">
 	                            <div class="panel-footer">
 	                                <span class="pull-left">View Details</span>
 	                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

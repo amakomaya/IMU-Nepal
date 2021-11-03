@@ -30,7 +30,7 @@ class SuspectedCaseOld extends Model
     protected $table = 'suspected_cases';
     protected $fillable = [
         'id', 'token', 'name', 'age', 'age_unit', 'province_id', 'district_id',
-        'municipality_id', 'hp_code', 'tole', 'ward', 'caste', 'registered_device',
+        'municipality_id', 'org_code', 'tole', 'ward', 'caste', 'registered_device',
         'created_by', 'longitude', 'latitude', 'status', 'created_at', 'updated_at',
         'deleted_at', 'sex', 'symptoms', 'travelled', 'travelled_date', 'travel_medium',
         'travel_detail', 'travelled_where', 'occupation', 'symptoms_specific',
@@ -120,7 +120,7 @@ class SuspectedCaseOld extends Model
 
     public function healthpost()
     {
-        return $this->setConnection('mysql')->hasOne('App\Models\Organization', 'hp_code', 'hp_code');
+        return $this->setConnection('mysql')->hasOne('App\Models\Organization', 'org_code', 'org_code');
     }
 
     public function healthworker()

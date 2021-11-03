@@ -29,7 +29,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
     {
         $userToken = auth()->user()->token;
         $healthWorker = \App\Models\OrganizationMember::where('token', $userToken)->first();
-        $hpCode = $healthWorker->hp_code;
+        $hpCode = $healthWorker->org_code;
         $this->importedBy = $importedBy;
         $this->userToken =  $userToken;
         $this->hpCode = $hpCode;
@@ -59,7 +59,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
           'province_id' => 3,
           'district_id' => 26,
           'municipality_id' => 293,
-          'hp_code' => $this->hpCode,
+          'org_code' => $this->hpCode,
           'tole' => 'test',
           'ward' => 'ward',
           'caste' => 'eth',
@@ -81,7 +81,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
         $sampleCollectionData = [
           'service_for' => '1',
           'checked_by' => $this->userToken,
-          'hp_code' => $this->hpCode,
+          'org_code' => $this->hpCode,
           'status' => 1,
           'checked_by_name'=> $this->healthWorker->name,
           'sample_identification_type' => 'unique_id',
@@ -114,7 +114,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
         //   try {
         //     LabTest::create([
         //       'token' => $this->userToken.'-'.$labId,
-        //       'hp_code' => $this->hpCode,
+        //       'org_code' => $this->hpCode,
         //       'status' => 1,
         //       'sample_recv_date' =>  $date_np,
         //       'sample_test_result' => '9',

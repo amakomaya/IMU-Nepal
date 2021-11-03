@@ -30,7 +30,7 @@ class ExtCaseController extends Controller
             $record = DB::table('suspected_cases')
                 ->join('sample_collection', 'sample_collection.woman_token', '=', 'suspected_cases.token')
                 ->join('lab_tests', 'lab_tests.sample_token', '=', 'sample_collection.token')
-                ->where('suspected_cases.hp_code', $healthworker->hp_code)
+                ->where('suspected_cases.org_code', $healthworker->org_code)
                 ->select('suspected_cases.token','suspected_cases.name','suspected_cases.age','suspected_cases.age_unit','suspected_cases.sex','suspected_cases.caste','suspected_cases.province_id','suspected_cases.district_id','suspected_cases.municipality_id','suspected_cases.ward',
                     'suspected_cases.tole','suspected_cases.emergency_contact_one','suspected_cases.travelled','suspected_cases.occupation','suspected_cases.created_at'
                     ,'sample_collection.token as sample_token', 'sample_collection.service_for', 'sample_collection.service_type','sample_collection.sample_type',
@@ -149,7 +149,7 @@ class ExtCaseController extends Controller
                 if(!is_numeric($value['municipality_id']) || ((int)$value['municipality_id']<1 || (int)$value['municipality_id']>754) ) {
                   //Put default id
 
-                  $organization = Organization::where('hp_code', $healthworker->hp_code)->get()->first();
+                  $organization = Organization::where('org_code', $healthworker->org_code)->get()->first();
                   $value['province_id'] = $organization->province_id;
                   $value['district_id'] = $organization->district_id;
                   $value['municipality_id'] = $organization->municipality_id;
@@ -179,7 +179,7 @@ class ExtCaseController extends Controller
                     'travelled' => $value['travelled']??'0',
                     'occupation' => $value['occupation']??0,
                     'status' => 1,
-                    'hp_code' => $healthworker->hp_code,
+                    'org_code' => $healthworker->org_code,
                     'created_by' => $healthworker->token,
                     'checked_by_name' => $healthworker->name,
                     'case_id' => $healthworker->id .'-' . Carbon::now()->format('ymd') . '-' . strtoupper(bin2hex(random_bytes(3))),
@@ -261,7 +261,7 @@ class ExtCaseController extends Controller
                     'sample_type' => $sample_type,
                     'infection_type' => strval($value['infection_type']),
                     'result' => strval($value['lab_result']),
-                    'hp_code' => $healthworker->hp_code,
+                    'org_code' => $healthworker->org_code,
                     'checked_by' => $healthworker->token,
                     'checked_by_name' => $healthworker->name,
                     'status' => 1,
@@ -273,7 +273,7 @@ class ExtCaseController extends Controller
                     'sample_test_date_np' => $this->ad2bs($value['lab_test_date']),
                     'sample_test_time' => $value['lab_test_time'],
                     'received_by' => $healthworker->token,
-                    'received_by_hp_code' => $healthworker->hp_code,
+                    'received_by_hp_code' => $healthworker->org_code,
                     'reporting_date_en' => Carbon::now(),
                     'reporting_date_np' => $reporting_date_np
                 ];
@@ -284,7 +284,7 @@ class ExtCaseController extends Controller
                     'sample_test_date' => $this->ad2bs($value['lab_test_date']),
                     'sample_test_time' => $value['lab_test_time'],
                     'sample_test_result' => strval($value['lab_result']),
-                    'hp_code' => $healthworker->hp_code,
+                    'org_code' => $healthworker->org_code,
                     'checked_by' => $healthworker->token,
                     'checked_by_name' => $healthworker->name,
                     'status' => 1,
@@ -297,7 +297,7 @@ class ExtCaseController extends Controller
                       LabTest::create($lab_test);
                     } else {
                         unset($case['token']);
-                        unset($case['hp_code']);
+                        unset($case['org_code']);
                         unset($case['created_by']);
                         unset($case['checked_by_name']);
                         unset($case['registered_device']);
@@ -361,7 +361,7 @@ class ExtCaseController extends Controller
                 if(!is_numeric($value['municipality_id']) || ((int)$value['municipality_id']<1 || (int)$value['municipality_id']>754) ) {
                   //Put default id
 
-                  $organization = Organization::where('hp_code', $healthworker->hp_code)->get()->first();
+                  $organization = Organization::where('org_code', $healthworker->org_code)->get()->first();
                   $value['province_id'] = $organization->province_id;
                   $value['district_id'] = $organization->district_id;
                   $value['municipality_id'] = $organization->municipality_id;
@@ -390,7 +390,7 @@ class ExtCaseController extends Controller
                     'travelled' => $value['travelled']??'0',
                     'occupation' => $value['occupation']??0,
                     'status' => 1,
-                    'hp_code' => $healthworker->hp_code,
+                    'org_code' => $healthworker->org_code,
                     'created_by' => $healthworker->token,
                     'checked_by_name' => $healthworker->name,
                     'case_id' => $healthworker->id .'-' . Carbon::now()->format('ymd') . '-' . strtoupper(bin2hex(random_bytes(3))),
@@ -472,7 +472,7 @@ class ExtCaseController extends Controller
                     'sample_type' => $sample_type,
                     'infection_type' => strval($value['infection_type']),
                     'result' => strval($value['lab_result']),
-                    'hp_code' => $healthworker->hp_code,
+                    'org_code' => $healthworker->org_code,
                     'checked_by' => $healthworker->token,
                     'checked_by_name' => $healthworker->name,
                     'status' => 1,
@@ -484,7 +484,7 @@ class ExtCaseController extends Controller
                     'sample_test_date_np' => $this->ad2bs($value['lab_test_date']),
                     'sample_test_time' => $value['lab_test_time'],
                     'received_by' => $healthworker->token,
-                    'received_by_hp_code' => $healthworker->hp_code,
+                    'received_by_hp_code' => $healthworker->org_code,
                     'reporting_date_en' => Carbon::now(),
                     'reporting_date_np' => $reporting_date_np
                 ];
@@ -495,7 +495,7 @@ class ExtCaseController extends Controller
                     'sample_test_date' => $this->ad2bs($value['lab_test_date']),
                     'sample_test_time' => $value['lab_test_time'],
                     'sample_test_result' => strval($value['lab_result']),
-                    'hp_code' => $healthworker->hp_code,
+                    'org_code' => $healthworker->org_code,
                     'checked_by' => $healthworker->token,
                     'checked_by_name' => $healthworker->name,
                     'status' => 1,
@@ -508,7 +508,7 @@ class ExtCaseController extends Controller
                       LabTest::create($lab_test);
                     } else {
                         unset($case['token']);
-                        unset($case['hp_code']);
+                        unset($case['org_code']);
                         unset($case['created_by']);
                         unset($case['checked_by_name']);
                         unset($case['registered_device']);

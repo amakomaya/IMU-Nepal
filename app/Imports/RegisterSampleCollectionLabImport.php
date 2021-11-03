@@ -59,12 +59,12 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
         });
         $userToken = auth()->user()->token;
         $healthWorker = \App\Models\OrganizationMember::where('token', $userToken)->first();
-        $hpCode = $healthWorker->hp_code;
+        $hpCode = $healthWorker->org_code;
 
         $this->importedBy = $importedBy;
         $this->userToken =  $userToken;
         $this->hpCode = $hpCode;
-        $this->organizationType = \App\Models\Organization::where('hp_code', $hpCode)->first()->hospital_type;
+        $this->organizationType = \App\Models\Organization::where('org_code', $hpCode)->first()->hospital_type;
         $this->healthWorker = $healthWorker;
         $this->enums = array(
           'test_type'=> array( 'pcr swab collection' => '1', 'antigen test' => '2' ),
@@ -119,7 +119,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
           'province_id' => $row['province'],
           'district_id' => $row['district'],
           'municipality_id' => $row['municipality'],
-          'hp_code' => $this->hpCode,
+          'org_code' => $this->hpCode,
           'token' => 'e-' . md5(microtime(true) . mt_Rand()),
           'tole' => $row['tole'],
           'ward' => $row['ward'],
@@ -142,7 +142,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
         $sampleCollectionData = [
           'service_for' => $row['test_type'],
           'checked_by' => $this->userToken,
-          'hp_code' => $this->hpCode,
+          'org_code' => $this->hpCode,
           'status' => 1,
           'checked_by_name'=> $this->healthWorker->name,
           'sample_identification_type' => 'unique_id',
@@ -179,7 +179,7 @@ class RegisterSampleCollectionLabImport implements ToModel, WithChunkReading, Wi
         try {
           LabTest::create([
             'token' => $patientLabId,
-            'hp_code' => $this->hpCode,
+            'org_code' => $this->hpCode,
             'status' => 1,
             'sample_recv_date' =>  $this->todayDateNp,
             'sample_test_date' => $this->todayDateNp,

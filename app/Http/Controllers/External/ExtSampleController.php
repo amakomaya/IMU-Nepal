@@ -21,7 +21,7 @@ class ExtSampleController extends Controller
 
         if (!empty($user)) {
             $healthworker = OrganizationMember::where('token', $user->token)->get()->first();
-            $record = DB::table('sample_collection')->where('hp_code', $healthworker->hp_code)->get();
+            $record = DB::table('sample_collection')->where('org_code', $healthworker->org_code)->get();
             $data = collect($record)->map(function ($row) {
                 $response = [];
                 $response['token'] = $row->token;
@@ -69,7 +69,7 @@ class ExtSampleController extends Controller
                         'result' => $value['result'],
                         'infection_type' => $value['infection_type'],
                         'service_for' => $value['service_for'],
-                        'hp_code' => $healthworker->hp_code,
+                        'org_code' => $healthworker->org_code,
                         'status' =>1
                     ]);
                 } catch (\Exception $e) {

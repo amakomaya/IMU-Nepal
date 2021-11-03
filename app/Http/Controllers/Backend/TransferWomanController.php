@@ -36,7 +36,7 @@ class TransferWomanController extends Controller
     	$transferWoman = new TransferWoman;
         $transferWoman->woman_token = $request->get('woman_token');
         $transferWoman->from_hp_code = $request->get('from_hp_code');
-        $transferWoman->to_hp_code = $request->get('hp_code');
+        $transferWoman->to_hp_code = $request->get('org_code');
         $transferWoman->message = $request->get('message');
         $transferWoman->status = '1';
         $transferWoman->save();
@@ -48,8 +48,8 @@ class TransferWomanController extends Controller
 
     public function transferConfirm($from_hp_code, $woman_token){
         $woman = SuspectedCase::where('token', $woman_token)->get()->first();
-        $healthpost = Organization::where('hp_code', $from_hp_code)->get()->first();
-        $transfer = TransferWoman::where([['from_hp_code', $healthpost->hp_code], ['woman_token', $woman->token]])->get()->first();
+        $healthpost = Organization::where('org_code', $from_hp_code)->get()->first();
+        $transfer = TransferWoman::where([['from_hp_code', $healthpost->org_code], ['woman_token', $woman->token]])->get()->first();
         return view('backend.transfer-woman.transfer-confrim',compact('healthpost','woman','transfer'));
     }
 
@@ -61,7 +61,7 @@ class TransferWomanController extends Controller
             $woman = $this->findModelWoman($transferWoman->woman_token);
             $loggedInToken = Auth::user()->token;
             $healthpost = Organization::where('token', $loggedInToken)->get()->first();
-            $woman->hp_code = $healthpost->hp_code;
+            $woman->org_code = $healthpost->org_code;
             $woman->save();
             $request->session()->flash('message', 'SuspectedCase admitted succesffully');
         }else{

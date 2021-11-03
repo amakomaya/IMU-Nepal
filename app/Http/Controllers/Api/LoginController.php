@@ -30,8 +30,8 @@ class LoginController extends Controller
                 'name'=>$healthworker->name,
                 'role'=>$healthworker->role,
                 'token'=>$user->token,
-                'hp_code'=>$healthworker->hp_code,
-                'hp_name'=>$healthworker->getHealthpost($healthworker->hp_code),
+                'org_code'=>$healthworker->org_code,
+                'hp_name'=>$healthworker->getHealthpost($healthworker->org_code),
                 'province_id'=>$healthworker->province_id,
                 'municipality_id'=>$healthworker->municipality_id,
                 'district_id'=>$healthworker->district_id
@@ -62,14 +62,14 @@ class LoginController extends Controller
 
         if (!empty($user)) {
             $healthworker = OrganizationMember::where('token',$user->token)->get()->first();
-            $organization = Organization::where('hp_code', $healthworker->hp_code)->first();
+            $organization = Organization::where('org_code', $healthworker->org_code)->first();
             $response = [
                 'id' => $healthworker->id,
                 'name'=>$healthworker->name,
                 'role'=>$healthworker->role,
                 'token'=>$user->token,
-                'hp_code'=>$healthworker->hp_code,
-                'hp_name'=>$healthworker->getHealthpost($healthworker->hp_code),
+                'org_code'=>$healthworker->org_code,
+                'hp_name'=>$healthworker->getHealthpost($healthworker->org_code),
                 'province_id'=>$healthworker->province_id,
                 'municipality_id'=>$healthworker->municipality_id,
                 'district_id'=>$healthworker->district_id,

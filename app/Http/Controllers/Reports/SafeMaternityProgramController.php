@@ -23,6 +23,6 @@ class SafeMaternityProgramController extends Controller
             $$key = $value;
         }
         $data = $this->service->all($response);
-        return view('reports.safe-maternity-program', compact('data','provinces', 'ward_or_healthpost','districts','municipalities','wards','organizations','options','province_id','district_id','municipality_id','ward_id','hp_code','from_date','to_date', 'select_year', 'select_month'));
+        return view('reports.safe-maternity-program', compact('data','provinces', 'ward_or_healthpost','districts','municipalities','wards','organizations','options','province_id','district_id','municipality_id','ward_id','org_code','from_date','to_date', 'select_year', 'select_month'));
     }
 }

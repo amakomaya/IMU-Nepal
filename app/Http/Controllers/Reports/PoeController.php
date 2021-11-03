@@ -56,10 +56,10 @@ class PoeController extends Controller
             $$key = $value;
         }
         
-        $organizations = Organization::whereIn('hp_code', $hpCodes)->where('hospital_type', 7)->get();
+        $organizations = Organization::whereIn('org_code', $hpCodes)->where('hospital_type', 7)->get();
 
-        $reports = SampleCollection::leftjoin('organizations', 'sample_collection.hp_code', '=', 'organizations.hp_code')
-            ->whereIn('sample_collection.hp_code', $hpCodes)
+        $reports = SampleCollection::leftjoin('organizations', 'sample_collection.org_code', '=', 'organizations.org_code')
+            ->whereIn('sample_collection.org_code', $hpCodes)
             ->whereIn('sample_collection.result', [3, 4, 2, 9])
             ->whereBetween(\DB::raw('DATE(sample_collection.reporting_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
 
@@ -75,7 +75,7 @@ class PoeController extends Controller
         }
 
         $reports = $reports->get()
-            ->groupBy('hp_code');
+            ->groupBy('org_code');
 
         
         $data = [];
@@ -89,13 +89,13 @@ class PoeController extends Controller
           $provinceArray[$province->id] = $province->province_name;
           return;
         });
-        $healthpostsGrouped = $organizations->groupBy('hp_code');
+        $healthpostsGrouped = $organizations->groupBy('org_code');
         foreach($healthpostsGrouped as $hpCode => $healthpost) {
           if(!$reports->has($hpCode)) {
             $data[$hpCode]['healthpost_name'] = $healthpost[0]->name;
             $data[$hpCode]['province_name'] = $provinceArray[$healthpost[0]->province_id];
             $data[$hpCode]['total_test'] = 0;
-            $data[$hpCode]['not_tested'] = SuspectedCase::where('hp_code', $hpCode)
+            $data[$hpCode]['not_tested'] = SuspectedCase::where('org_code', $hpCode)
             ->whereBetween(\DB::raw('DATE(created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->active()
             ->doesnthave('sampleCollection')
@@ -124,7 +124,7 @@ class PoeController extends Controller
             
             
             $data[$key]['total_test'] = $report->count()??0;
-            $data[$key]['not_tested'] = SuspectedCase::where('hp_code', $key)
+            $data[$key]['not_tested'] = SuspectedCase::where('org_code', $key)
             ->whereBetween(\DB::raw('DATE(created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->active()
             ->doesnthave('sampleCollection')
@@ -162,6 +162,6 @@ class PoeController extends Controller
         }
 
         // dd($data);
-        return view('backend.sample.report.poe-report', compact('data', 'total_data', 'provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days', 'default_from_date'));
+        return view('backend.sample.report.poe-report', compact('data', 'total_data', 'provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','org_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days', 'default_from_date'));
     }
 }

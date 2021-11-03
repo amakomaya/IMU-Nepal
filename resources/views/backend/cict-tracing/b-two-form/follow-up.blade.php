@@ -168,12 +168,12 @@
                                     @if(isset($data->checkedBy))
                                     <b>Name:</b> {{ isset($data->checkedBy) && $data->checkedBy ? $data->checkedBy->name : '' }}<br>
                                     <b>Telephone Number:</b> {{ isset($data->checkedBy) && $data->checkedBy ? $data->checkedBy->phone : '' }}<br>
-                                    <b>Instituton:</b> {{ isset($data->checkedBy) && $data->checkedBy ? $data->checkedBy->getHealthpost($data->hp_code) : '' }}<br>
+                                    <b>Instituton:</b> {{ isset($data->checkedBy) && $data->checkedBy ? $data->checkedBy->getHealthpost($data->org_code) : '' }}<br>
                                     <b>Email:</b> {{ isset($data->checkedBy) && $data->checkedBy ? $data->checkedBy->user->email : '' }}<br>
                                     @else
                                     <b>Name:</b> {{ isset($cict_contact->checkedBy) && $cict_contact->checkedBy ? $cict_contact->checkedBy->name : '' }}<br>
                                     <b>Telephone Number:</b> {{ isset($cict_contact->checkedBy) && $cict_contact->checkedBy ? $cict_contact->checkedBy->phone : '' }}<br>
-                                    <b>Instituton:</b> {{ isset($cict_contact->checkedBy) && $cict_contact->checkedBy ? $cict_contact->checkedBy->getHealthpost($cict_contact->hp_code) : '' }}<br>
+                                    <b>Instituton:</b> {{ isset($cict_contact->checkedBy) && $cict_contact->checkedBy ? $cict_contact->checkedBy->getHealthpost($cict_contact->org_code) : '' }}<br>
                                     <b>Email:</b> {{ isset($cict_contact->checkedBy) && $cict_contact->checkedBy ? $cict_contact->checkedBy->user->email : '' }}<br>
                                     @endif
                                     <label>Form Completion Date </label><br>

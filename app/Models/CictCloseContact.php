@@ -9,7 +9,7 @@ class CictCloseContact extends Model
 {
     use SoftDeletes;
     protected $fillable = [
-        'cict_id', 'case_id', 'parent_case_id', 'hp_code', 'checked_by', 'regdev',
+        'cict_id', 'case_id', 'parent_case_id', 'org_code', 'checked_by', 'regdev',
         'name', 'age', 'age_unit', 'sex',
         'emergency_contact_one', 'relationship', 'relationship_others', 'vehicle_no', 'contact_type',
         'created_at', 'updated_at'

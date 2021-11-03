@@ -148,11 +148,11 @@
                                     <tr>
                                         <td class="text-center"> {{ $loop->iteration }}</td>
                                         <td> {{ $item->name }} </td>
-                                        <td class="text-center"> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['total_screened'] : 'N/A' }} </td>
-                                        <td class="text-center"> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['total_tested'] : 'N/A' }} </td>
-                                        <td class="text-center"> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['antigen_postive_cases_count'] : 'N/A' }} </td>
-                                        <td class="text-center"> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['antigen_negative_cases_count'] : 'N/A' }} </td>
-                                        <td class="text-center"> {{ isset($data[$item->hp_code]) ? $data[$item->hp_code]['positivity_rate'] : 'N/A' }} </td>
+                                        <td class="text-center"> {{ isset($data[$item->org_code]) ? $data[$item->org_code]['total_screened'] : 'N/A' }} </td>
+                                        <td class="text-center"> {{ isset($data[$item->org_code]) ? $data[$item->org_code]['total_tested'] : 'N/A' }} </td>
+                                        <td class="text-center"> {{ isset($data[$item->org_code]) ? $data[$item->org_code]['antigen_postive_cases_count'] : 'N/A' }} </td>
+                                        <td class="text-center"> {{ isset($data[$item->org_code]) ? $data[$item->org_code]['antigen_negative_cases_count'] : 'N/A' }} </td>
+                                        <td class="text-center"> {{ isset($data[$item->org_code]) ? $data[$item->org_code]['positivity_rate'] : 'N/A' }} </td>
                                     </tr>
                                 @endforeach
                                 </tbody>

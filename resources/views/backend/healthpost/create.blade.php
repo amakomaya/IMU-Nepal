@@ -16,7 +16,7 @@
 
     @php($ward_no= old('ward_no'))
 
-    @section ('hp_code',old('hp_code'))
+    @section ('org_code',old('org_code'))
 
     @section ('phone',old('phone'))
 

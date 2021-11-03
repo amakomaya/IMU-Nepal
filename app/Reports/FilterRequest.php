@@ -18,7 +18,7 @@ class FilterRequest
         $province_id = $request->get('province_id');
         $district_id = $request->get('district_id');
         $municipality_id = $request->get('municipality_id');
-        $hp_code = $request->get('hp_code');
+        $org_code = $request->get('org_code');
         $from_date = $request->get('from_date');
         $to_date = $request->get('to_date');
         $select_year = $request->get('select_year');
@@ -26,10 +26,10 @@ class FilterRequest
         $loggedInToken = Auth::user()->token;
 
         if (Auth::user()->role == "healthpost") {
-            $hp_code = "";
+            $org_code = "";
             $healthpost = Organization::where('token', Auth::user()->token)->get()->first();
-            if (count($hp_code) > 0) {
-                $hp_code = $healthpost->hp_code;
+            if (count($org_code) > 0) {
+                $org_code = $healthpost->org_code;
             }
         }
 
@@ -56,7 +56,7 @@ class FilterRequest
             $organizations = Organization::where([['municipality_id', $municipality_id]])->orderBy('name', 'asc')->get();
         } elseif (Auth::user()->role == "healthpost") {
             $healthpost_id = Organization::modelHealthpost($loggedInToken)->id;
-            $hp_code = Organization::modelHealthpost($loggedInToken)->hp_code;
+            $org_code = Organization::modelHealthpost($loggedInToken)->org_code;
             $ward_or_healthpost = 'healthpost' . $municipality_id;
             $municipality_id = Organization::modelHealthpost($loggedInToken)->municipality_id;
             $district_id = Organization::modelHealthpost($loggedInToken)->district_id;
@@ -68,14 +68,14 @@ class FilterRequest
 
         } elseif(Auth::user()->role == "healthworker"){
             $healthworker = OrganizationMember::where('token', $loggedInToken)->first();
-            $hp_code = $healthworker->hp_code;
+            $org_code = $healthworker->org_code;
             $municipality_id = $healthworker->municipality_id;
             $district_id = $healthworker->district_id;
             $province_id = $healthworker->province_id;
             $provinces = Province::where('id', $province_id)->orderBy('province_name', 'asc')->get();
             $districts = District::where('id', $district_id)->orderBy('district_name', 'asc')->get();
             $municipalities = Municipality::where('id', $municipality_id)->orderBy('municipality_name', 'asc')->get();
-            $organizations = Organization::where('hp_code', $hp_code)->orderBy('name', 'asc')->get();
+            $organizations = Organization::where('org_code', $org_code)->orderBy('name', 'asc')->get();
         } else{
             $provinces = Cache::remember('province-list', 48*60*60, function () {
               return Province::select(['id', 'province_name'])->get();
@@ -84,7 +84,7 @@ class FilterRequest
             $municipalities = Municipality::where('district_id', $district_id)->orderBy('municipality_name', 'asc')->get();
             $organizations = Organization::where([['municipality_id', $municipality_id]])->orderBy('name', 'asc')->get();
         }
-        $request = compact('provinces', 'districts', 'municipalities', 'organizations', 'province_id', 'district_id', 'municipality_id', 'hp_code', 'from_date', 'to_date','select_year','select_month');
+        $request = compact('provinces', 'districts', 'municipalities', 'organizations', 'province_id', 'district_id', 'municipality_id', 'org_code', 'from_date', 'to_date','select_year','select_month');
         return $request;
     }
 }

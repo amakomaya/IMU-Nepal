@@ -32,7 +32,7 @@ class BackdateLabResultImport implements ToModel, WithChunkReading, WithValidati
         ini_set('max_execution_time', '300');
         $userToken = auth()->user()->token;
         $healthWorker = \App\Models\OrganizationMember::where('token', $userToken)->first();
-        $hpCode = $healthWorker->hp_code;
+        $hpCode = $healthWorker->org_code;
         $this->importedBy = $importedBy;
         $this->userToken =  $userToken;
         $this->healthWorker =  $healthWorker;
@@ -158,7 +158,7 @@ class BackdateLabResultImport implements ToModel, WithChunkReading, WithValidati
     }
   
     private function getLabTestByPatientLabId ($patientLabId) {
-      $organiation_member_tokens = OrganizationMember::where('hp_code', $this->hpCode)->pluck('token');
+      $organiation_member_tokens = OrganizationMember::where('org_code', $this->hpCode)->pluck('token');
       $labTokens = [];
       foreach ($organiation_member_tokens as $item) {
           array_push($labTokens, $item."-".$patientLabId);

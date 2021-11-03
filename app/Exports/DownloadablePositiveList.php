@@ -27,7 +27,7 @@ class DownloadablePositiveList implements FromCollection, WithHeadings
             $date_from = Carbon::today()->startOfDay();
             $date_to = Carbon::now();
 
-            $tokens = SampleCollection::whereIn('hp_code', $hpCodes)->where(function ($q) {
+            $tokens = SampleCollection::whereIn('org_code', $hpCodes)->where(function ($q) {
                     $q->where('result', 3)->orWhere('result', '0');
                 })
 //                ->whereDate('updated_at', Carbon::today())

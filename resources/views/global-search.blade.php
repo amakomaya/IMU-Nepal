@@ -107,18 +107,18 @@
                     </select>
                 </div>
                 <div class="form-group  col-sm-3" id="healthpost">
-                    <select name="hp_code" class="form-control"  >
+                    <select name="org_code" class="form-control"  >
                         <option value="">Select All Organizations</option>
-                        @if(request()->hp_code)
-                            <option value="{{ request()->hp_code }}" selected>{{ \App\Models\Organization::where('hp_code', request()->hp_code)->first()->name ?? ''}}
+                        @if(request()->org_code)
+                            <option value="{{ request()->org_code }}" selected>{{ \App\Models\Organization::where('org_code', request()->org_code)->first()->name ?? ''}}
                         @endif
 {{--                        @foreach(\App\Models\Organization::all() as $healthpost)--}}
-{{--                            @if(''==$healthpost->hp_code)--}}
+{{--                            @if(''==$healthpost->org_code)--}}
 {{--                                @php($selectedHealthpost = "selected")--}}
 {{--                            @else--}}
 {{--                                @php($selectedHealthpost = "")--}}
 {{--                            @endif--}}
-{{--                            <option value="{{$healthpost->hp_code}}" {{$selectedHealthpost}}>{{$healthpost->name}}</option>--}}
+{{--                            <option value="{{$healthpost->org_code}}" {{$selectedHealthpost}}>{{$healthpost->name}}</option>--}}
 {{--                        @endforeach--}}
                     </select>
                 </div>
@@ -144,12 +144,12 @@
                             <option value="{{ request()->organization }}" selected>{{ request()->organization}}
                             @endif
                         {{--                        @foreach(\App\Models\Organization::all() as $healthpost)--}}
-                        {{--                            @if(''==$healthpost->hp_code)--}}
+                        {{--                            @if(''==$healthpost->org_code)--}}
                         {{--                                @php($selectedHealthpost = "selected")--}}
                         {{--                            @else--}}
                         {{--                                @php($selectedHealthpost = "")--}}
                         {{--                            @endif--}}
-                        {{--                            <option value="{{$healthpost->hp_code}}" {{$selectedHealthpost}}>{{$healthpost->name}}</option>--}}
+                        {{--                            <option value="{{$healthpost->org_code}}" {{$selectedHealthpost}}>{{$healthpost->name}}</option>--}}
                         {{--                        @endforeach--}}
                     </select>
                 </div>

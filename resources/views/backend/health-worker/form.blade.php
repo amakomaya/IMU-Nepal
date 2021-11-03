@@ -89,19 +89,19 @@
                                 </div>
                                     
                                     
-                                <div class="form-group{{ $errors->has('hp_code') ? ' has-error' : '' }}" hidden>
-                                    <label for="hp_code" class="col-md-3 control-label">Healthpost</label>
+                                <div class="form-group{{ $errors->has('org_code') ? ' has-error' : '' }}" hidden>
+                                    <label for="org_code" class="col-md-3 control-label">Healthpost</label>
                                     
                                     <div class="col-md-7">
-                                    <select id="hp_code" class="form-control" name="hp_code" >
+                                    <select id="org_code" class="form-control" name="org_code" >
                                             @foreach ($organizations as $healthpost )
-                                               <option value="{{ $healthpost->hp_code }}" @if($hp_code=="$healthpost->hp_code") {{ 'selected' }} @endif >{{ $healthpost->name }}</option>
+                                               <option value="{{ $healthpost->org_code }}" @if($org_code=="$healthpost->org_code") {{ 'selected' }} @endif >{{ $healthpost->name }}</option>
                                             @endforeach
                                     </select>
 
-                                        @if ($errors->has('hp_code'))
+                                        @if ($errors->has('org_code'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('hp_code') }}</strong>
+                                                <strong>{{ $errors->first('org_code') }}</strong>
                                             </span>
                                         @endif
                                     </div>

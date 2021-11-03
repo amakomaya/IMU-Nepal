@@ -26,7 +26,7 @@ class Organization extends Model
     protected static $logOnlyDirty = true;
 
     protected $fillable = ['name','token','hmis_uid','province_id',
-        'district_id','municipality_id','hp_code','ward_no','phone',
+        'district_id','municipality_id','org_code','ward_no','phone',
         'no_of_beds', 'no_of_ventilators','vaccination_center_id', 'no_of_icu', 'hospital_type',
         'address','longitude','lattitude','status','created_at','updated_at' , 'daily_consumption_of_oxygen', 'is_oxygen_facility', 'no_of_hdu',
 		'sector'
@@ -57,9 +57,9 @@ class Organization extends Model
 		return $this->belongsTo(Municipality::class);
 	}
 
-    public static function getHealthpost($hp_code)
+    public static function getHealthpost($org_code)
     {
-    	$healthpost = Organization::where('hp_code',$hp_code)->get()->first();
+    	$healthpost = Organization::where('org_code',$org_code)->get()->first();
     	if(count($healthpost)>0){
     		return $healthpost->name;
     	}
@@ -76,7 +76,7 @@ class Organization extends Model
 		$title = substr($hp, 0, 3);
 		$random = rand(0, 1000);
 		echo $hpCode = $title.$random;
-		$healthpost = Organization::where('hp_code',$hpCode)->get()->first();
+		$healthpost = Organization::where('org_code',$hpCode)->get()->first();
     	if(count($healthpost)>0){
     		return self::generateHpCode($hp);
     	}else{
@@ -89,7 +89,7 @@ class Organization extends Model
     }
 
 	public static function isHpCodeAlreadyExist($hpCode){
-		$healthpost = Organization::where('hp_code',$hpCode)->get()->first();
+		$healthpost = Organization::where('org_code',$hpCode)->get()->first();
     	if(count($healthpost)>0){
     		return true;
     	}else{

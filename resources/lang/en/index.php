@@ -21,7 +21,7 @@ return [
     'created_at' => 'Created At',
     'updated_at' => 'Updated At',
     'dho_info' => 'DHO Information',
-    'hp_code' => 'HP Code',
+    'org_code' => 'HP Code',
     'wards' => 'Wards',
     'healthpost_info' => 'Hospital Information',
     'name' => 'Name',

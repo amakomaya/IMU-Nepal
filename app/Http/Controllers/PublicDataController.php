@@ -80,7 +80,7 @@ class PublicDataController extends Controller
                 $data = $data->where('organizations.municipality_id', $request->get('municipality_id'));
             }
 
-            $data = $data->join('organizations', 'payment_cases.hp_code', '=', 'organizations.hp_code')
+            $data = $data->join('organizations', 'payment_cases.org_code', '=', 'organizations.org_code')
             ->join('districts', 'organizations.district_id', '=', 'districts.id')
             ->join('provinces', 'organizations.province_id', '=', 'provinces.id')
             ->join('municipalities', 'organizations.municipality_id', '=', 'municipalities.id')
@@ -91,7 +91,7 @@ class PublicDataController extends Controller
                 'municipalities.municipality_name',
                 'organizations.address',
                 'organizations.phone',
-                'organizations.hp_code as hp_code',
+                'organizations.org_code as org_code',
 
                 'organizations.no_of_beds',
                 'organizations.no_of_ventilators',
@@ -118,7 +118,7 @@ class PublicDataController extends Controller
             $return['municipality_name'] = $value->municipality_name;
             $return['address'] = $value->address;
             $return['phone'] = $value->phone;
-            $return['hp_code'] = $value->hp_code;
+            $return['org_code'] = $value->org_code;
 
             $return['total_general'] = $value->no_of_beds ;
             $return['total_hdu'] = $value->no_of_hdu;
@@ -159,7 +159,7 @@ class PublicDataController extends Controller
             
             return $return;
         })->groupBy(function($item) {
-            return $item['hp_code'];
+            return $item['org_code'];
         });
         
 

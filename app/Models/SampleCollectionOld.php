@@ -19,7 +19,7 @@ class SampleCollectionOld extends Model
 
     protected $table = 'sample_collection';
 
-    protected $fillable = ['token', 'woman_token', 'service_for', 'checked_by', 'hp_code', 'status',
+    protected $fillable = ['token', 'woman_token', 'service_for', 'checked_by', 'org_code', 'status',
 
     'checked_by_name', 'sample_type', 'sample_type_specific', 'sample_case',
         'sample_case_specific', 'sample_identification_type',
@@ -102,6 +102,6 @@ class SampleCollectionOld extends Model
 
     public function getOrganization()
     {
-        return $this->setConnection('mysql')->hasOne('App\Models\Organization', 'hp_code', 'received_by_hp_code');
+        return $this->setConnection('mysql')->hasOne('App\Models\Organization', 'org_code', 'received_by_hp_code');
     }
 }

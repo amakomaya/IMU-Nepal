@@ -32,10 +32,10 @@ class VaccinationList implements FromCollection, WithHeadings
             $start = Carbon::parse($request->from)->startOfDay();
             $end = Carbon::parse($request->to)->endOfDay();
 
-            $data_list = VaccinationRecord::whereIn('hp_code', $hpCodes)
+            $data_list = VaccinationRecord::whereIn('org_code', $hpCodes)
                 ->whereBetween('created_at',[$start, $end]);
         }else {
-            $data_list = VaccinationRecord::whereIn('hp_code', $hpCodes);
+            $data_list = VaccinationRecord::whereIn('org_code', $hpCodes);
         }
         $data_ids = $data_list->pluck('vaccinated_id');
 

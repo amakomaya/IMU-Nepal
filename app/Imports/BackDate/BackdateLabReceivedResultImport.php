@@ -32,12 +32,12 @@ class BackdateLabReceivedResultImport implements ToModel, WithChunkReading, With
         ini_set('max_execution_time', '300');
         $userToken = auth()->user()->token;
         $healthWorker = \App\Models\OrganizationMember::where('token', $userToken)->first();
-        $hpCode = $healthWorker->hp_code;
+        $hpCode = $healthWorker->org_code;
         $this->importedBy = $importedBy;
         $this->healthWorker = $healthWorker;
         $this->userToken =  $userToken;
         $this->hpCode = $hpCode;
-        $this->organizationType = \App\Models\Organization::where('hp_code', $hpCode)->first()->hospital_type;
+        $this->organizationType = \App\Models\Organization::where('org_code', $hpCode)->first()->hospital_type;
         $this->enums = [
           'result' => array('positive' => '3', 'negative' => '4', "don't know"=>'5')
         ];
@@ -108,7 +108,7 @@ class BackdateLabReceivedResultImport implements ToModel, WithChunkReading, With
           try {
             LabTest::create([
               'token' => $patientLabId,
-              'hp_code' => $this->hpCode,
+              'org_code' => $this->hpCode,
               'status' => 1,
               'sample_recv_date' =>  $backDateNp,
               'sample_test_date' => $backDateNp,
@@ -201,7 +201,7 @@ class BackdateLabReceivedResultImport implements ToModel, WithChunkReading, With
     }
 
     private function getLabTestByPatientLabId ($patientLabId) {
-      $organiation_member_tokens = OrganizationMember::where('hp_code', $this->hpCode)->pluck('token');
+      $organiation_member_tokens = OrganizationMember::where('org_code', $this->hpCode)->pluck('token');
       $labTokens = [];
       foreach ($organiation_member_tokens as $item) {
           array_push($labTokens, $item."-".$patientLabId);

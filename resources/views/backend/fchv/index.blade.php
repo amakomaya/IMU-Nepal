@@ -52,7 +52,7 @@
                                 <td> {{ $healthWorker->user->username ?? '' }} </td>
                                 <td> {{ $healthWorker->phone }}</td>   
                                 <td> 
-                                    Name : {{ $healthWorker->hp_code }} <br>
+                                    Name : {{ $healthWorker->org_code }} <br>
                                     Address : {{ $healthWorker->municipality->municipality_name ?? '' }}
                                 </td>
                                 <td>

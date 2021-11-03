@@ -18,7 +18,7 @@ class StockTransaction extends Model
 
   protected $fillable = [
       'stock',
-      'hp_code',
+      'org_code',
       'user_id',
       'asset_id',
       'current_stock',
@@ -36,7 +36,7 @@ class StockTransaction extends Model
 
   public function healthpost()
   {
-      return $this->belongsTo(Organization::class, 'hp_code', 'hp_code');
+      return $this->belongsTo(Organization::class, 'org_code', 'org_code');
 
   }
 

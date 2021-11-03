@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrganizationObservationCases extends Model
 {
-    protected $fillable = ['hp_code','add','transfer_to_bed','return_to_home'];
+    protected $fillable = ['org_code','add','transfer_to_bed','return_to_home'];
 }

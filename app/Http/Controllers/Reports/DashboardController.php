@@ -37,6 +37,6 @@ class DashboardController extends Controller
             ->dimensions(1000,500)
             ->responsive(false);
 
-        return view('reports.dashboard', compact('chart','data','provinces','districts','options','ward_or_healthpost', 'municipalities','wards','organizations','province_id','district_id','municipality_id','ward_id','hp_code','from_date','to_date'));
+        return view('reports.dashboard', compact('chart','data','provinces','districts','options','ward_or_healthpost', 'municipalities','wards','organizations','province_id','district_id','municipality_id','ward_id','org_code','from_date','to_date'));
     }
 }

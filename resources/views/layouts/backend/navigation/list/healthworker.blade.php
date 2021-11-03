@@ -18,8 +18,8 @@
 <?php
  $userToken = auth()->user()->token;
  $healthWorker = \App\Models\OrganizationMember::where('token', $userToken)->first();
- $hpCode = $healthWorker->hp_code;
- $organizationType = \App\Models\Organization::where('hp_code', $hpCode)->first()->hospital_type;
+ $hpCode = $healthWorker->org_code;
+ $organizationType = \App\Models\Organization::where('org_code', $hpCode)->first()->hospital_type;
   if($organizationType == 1) {
 ?>
   @include('layouts.backend.navigation.html.community-deaths')

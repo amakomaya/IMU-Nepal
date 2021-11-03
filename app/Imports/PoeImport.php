@@ -66,7 +66,7 @@ class PoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadi
         });
         $userToken = auth()->user()->token;
         $healthWorker = \App\Models\OrganizationMember::where('token', $userToken)->first();
-        $hpCode = $healthWorker->hp_code;
+        $hpCode = $healthWorker->org_code;
 
         $this->importedBy = $importedBy;
         $this->userToken =  $userToken;
@@ -175,7 +175,7 @@ class PoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadi
           'province_id' => $row['destination_in_nepal_province'],
           'district_id' => $row['destination_in_nepal_district'],
           'municipality_id' => $row['destination_in_nepal_municipality'],
-          'hp_code' => $this->hpCode,
+          'org_code' => $this->hpCode,
           'tole' => $row['destination_in_nepal_tole'],
           'ward' => $row['destination_in_nepal_ward_no'],
           'created_by' => $this->userToken,
@@ -208,7 +208,7 @@ class PoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadi
           $sampleCollectionData = [
             'service_for' => '2',
             'checked_by' => $this->userToken,
-            'hp_code' => $this->hpCode,
+            'org_code' => $this->hpCode,
             'status' => 1,
             'checked_by_name'=> $this->healthWorker->name,
             'sample_identification_type' => 'unique_id',
@@ -241,7 +241,7 @@ class PoeImport  implements ToModel, WithChunkReading, WithValidation, WithHeadi
           $sampleCollection = SampleCollection::create($sampleCollectionData);
           LabTest::create([
             'token' => $sampleCollectionData['lab_token'],
-            'hp_code' => $this->hpCode,
+            'org_code' => $this->hpCode,
             'status' => 1,
             'sample_recv_date' =>  $regDateEn,
             'sample_test_date' => $regDateNp,

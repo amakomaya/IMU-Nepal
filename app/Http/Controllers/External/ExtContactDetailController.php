@@ -19,7 +19,7 @@ class ExtContactDetailController extends Controller
 
         if (!empty($user)) {
             $healthworker = OrganizationMember::where('token', $user->token)->get()->first();
-            $data = ContactDetail::where('hp_code', $healthworker->hp_code)->get();
+            $data = ContactDetail::where('org_code', $healthworker->org_code)->get();
             return response()->json($data);
         }
         return ['message' => 'Authentication Failed'];

@@ -26,7 +26,7 @@ class OrganizationMember extends Model
 
     protected $appends = ['lab_report_count'];
 
-    protected $fillable = ['token','name','province_id','district_id','municipality_id','ward','hp_code','image','post','phone','tole','registered_device','role','longitude','latitude','status','updated_at'];
+    protected $fillable = ['token','name','province_id','district_id','municipality_id','ward','org_code','image','post','phone','tole','registered_device','role','longitude','latitude','status','updated_at'];
 
     public function province()
     {
@@ -43,9 +43,9 @@ class OrganizationMember extends Model
 		return $this->belongsTo(Municipality::class);
 	}
 
-	public static function getHealthpost($hp_code)
+	public static function getHealthpost($org_code)
     {
-    	$healthpost = Organization::where('hp_code',$hp_code)->get()->first();
+    	$healthpost = Organization::where('org_code',$org_code)->get()->first();
     	if(count($healthpost)>0){
     		return $healthpost->name;
     	}
@@ -90,10 +90,10 @@ class OrganizationMember extends Model
 
 	public static function checkValidId($id){
 		$loggedInToken = Auth::user()->token;
-		// $loggedInHpCode = Organization::modelHealthpost($loggedInToken)->hp_code;
+		// $loggedInHpCode = Organization::modelHealthpost($loggedInToken)->org_code;
 		$recoredHealthworker = OrganizationMember::where('id',$id)->get()->first();
 		if(count($recoredHealthworker)>0){
-			$recoredHpCode = $recoredHealthworker->hp_code;
+			$recoredHpCode = $recoredHealthworker->org_code;
 			// if($loggedInHpCode==$recoredHpCode){
 				return true;
 			// }
@@ -107,6 +107,6 @@ class OrganizationMember extends Model
 
     public function getLabReportCountAttribute()
     {
-        return \App\Models\LabTest::where('hp_code', $this->hp_code)->active()->count();
+        return \App\Models\LabTest::where('org_code', $this->org_code)->active()->count();
     }
 }

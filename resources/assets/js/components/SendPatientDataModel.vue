@@ -128,7 +128,7 @@
 
                 var payload = {
                     case_id: case_id,
-                    hp_code: healthpost.hp_code,
+                    org_code: healthpost.org_code,
                     platform: platform
                 };
 

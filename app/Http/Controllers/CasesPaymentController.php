@@ -20,7 +20,7 @@ class CasesPaymentController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        $organization = Organization::whereIn('hp_code', $hpCodes)->get();
+        $organization = Organization::whereIn('org_code', $hpCodes)->get();
 
         if ($request->has('selected_date')){
             $check_date = Carbon::parse($request->selected_date);
@@ -30,7 +30,7 @@ class CasesPaymentController extends Controller
         }
         if ($request->has('selected_date')){
             $period = Carbon::parse($request->selected_date)->format('Ymd');
-            $total = PaymentCase::whereIn('hp_code', $hpCodes)
+            $total = PaymentCase::whereIn('org_code', $hpCodes)
                 ->where(function($q) use ($request) {
                     $q->whereNull('date_of_outcome_en')
                         ->orWhereDate('date_of_outcome_en','>=' ,Carbon::parse($request->selected_date))
@@ -39,7 +39,7 @@ class CasesPaymentController extends Controller
                 ->get();
         }else{
             $period = date('Ymd');
-            $total = PaymentCase::whereIn('hp_code', $hpCodes)
+            $total = PaymentCase::whereIn('org_code', $hpCodes)
                 ->where(function($q){
                     $q->whereNull('date_of_outcome_en')
                         ->orWhereDate('date_of_outcome_en',Carbon::today());
@@ -213,7 +213,7 @@ class CasesPaymentController extends Controller
         }
 
         if (auth()->user()->role === 'healthpost' || auth()->user()->role === 'healthworker'){
-            $organization_is_oxygen_facility = Organization::where('hp_code', $hpCodes)->first()->is_oxygen_facility;
+            $organization_is_oxygen_facility = Organization::where('org_code', $hpCodes)->first()->is_oxygen_facility;
         }else{
             $organization_is_oxygen_facility = '';
         }
@@ -251,8 +251,8 @@ class CasesPaymentController extends Controller
 
     public function sendToDhis(Request $request){
         if (auth()->user()->role == 'healthworker'){
-            $organization_hp_code = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
-            $organization = Organization::where('hp_code', $organization_hp_code)->first();
+            $organization_org_code = OrganizationMember::where('token', auth()->user()->token)->first()->org_code;
+            $organization = Organization::where('org_code', $organization_org_code)->first();
         }else{
             $organization = Organization::where('token', \auth()->user()->token)->first();
         }
@@ -321,8 +321,8 @@ class CasesPaymentController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
 
         $data = \DB::table('payment_cases')
-            ->whereIn('payment_cases.hp_code', $hpCodes)
-            ->join('organizations', 'payment_cases.hp_code', '=', 'organizations.hp_code')
+            ->whereIn('payment_cases.org_code', $hpCodes)
+            ->join('organizations', 'payment_cases.org_code', '=', 'organizations.org_code')
             ->join('municipalities', 'organizations.municipality_id', '=', 'municipalities.id')
             ->select(['organizations.name as organiation_name',
                 'organizations.no_of_beds',
@@ -388,9 +388,9 @@ class CasesPaymentController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
 
         $data = \DB::table('payment_cases')
-            ->whereIn('payment_cases.hp_code', $hpCodes)
+            ->whereIn('payment_cases.org_code', $hpCodes)
             ->where('organizations.hospital_type', 5)
-            ->join('organizations', 'payment_cases.hp_code', '=', 'organizations.hp_code')
+            ->join('organizations', 'payment_cases.org_code', '=', 'organizations.org_code')
             ->join('municipalities', 'organizations.municipality_id', '=', 'municipalities.id')
             ->select(['organizations.name as organiation_name',
                 'organizations.no_of_beds',
@@ -457,8 +457,8 @@ class CasesPaymentController extends Controller
 
         $data = \DB::table('payment_cases')
             ->where('organizations.hospital_type', 3)
-            ->whereIn('payment_cases.hp_code', $hpCodes)
-            ->join('organizations', 'payment_cases.hp_code', '=', 'organizations.hp_code')
+            ->whereIn('payment_cases.org_code', $hpCodes)
+            ->join('organizations', 'payment_cases.org_code', '=', 'organizations.org_code')
             ->join('municipalities', 'organizations.municipality_id', '=', 'municipalities.id')
             ->select(['organizations.name as organiation_name',
                 'organizations.no_of_beds',
@@ -525,8 +525,8 @@ class CasesPaymentController extends Controller
 
         $data = \DB::table('payment_cases')
             ->where('organizations.hospital_type', 6)
-            ->whereIn('payment_cases.hp_code', $hpCodes)
-            ->join('organizations', 'payment_cases.hp_code', '=', 'organizations.hp_code')
+            ->whereIn('payment_cases.org_code', $hpCodes)
+            ->join('organizations', 'payment_cases.org_code', '=', 'organizations.org_code')
             ->join('municipalities', 'organizations.municipality_id', '=', 'municipalities.id')
             ->select(['organizations.name as organiation_name',
                 'organizations.no_of_beds',

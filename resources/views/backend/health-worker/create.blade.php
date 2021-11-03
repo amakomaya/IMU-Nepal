@@ -22,7 +22,7 @@
 
     @php($ward= old('ward')) 
 
-    @php($hp_code= old('hp_code'))  
+    @php($org_code= old('org_code'))  
 
     @section ('image',old('image'))
 

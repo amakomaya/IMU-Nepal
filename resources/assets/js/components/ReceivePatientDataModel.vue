@@ -115,7 +115,7 @@
 
                 var payload = {
                     token: token,
-                    hp_code: healthpost.hp_code,
+                    org_code: healthpost.org_code,
                 };
 
                 this.$swal({

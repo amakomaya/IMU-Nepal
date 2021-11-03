@@ -19,7 +19,7 @@ class ExtCaseMgmtController extends Controller
 
         if (!empty($user)) {
             $healthworker = OrganizationMember::where('token', $user->token)->get()->first();
-            $data = CaseManagement::where('hp_code', $healthworker->hp_code)->get();
+            $data = CaseManagement::where('org_code', $healthworker->org_code)->get();
             return response()->json($data);
         }
         return ['message' => 'Authentication Failed'];

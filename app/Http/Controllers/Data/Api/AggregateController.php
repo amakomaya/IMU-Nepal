@@ -39,40 +39,40 @@ class AggregateController extends Controller
 
 //        $provincialData = [];
 //        foreach($hpCodesbyProvince as $key => $provinceData){
-//            $hpCodes = $provinceData->pluck('hp_code');
+//            $hpCodes = $provinceData->pluck('org_code');
 //            $data = [
-//                'registered' => SuspectedCase::whereIn('hp_code', $hpCodes)->active()->count(),
-//                'registered_in_24_hrs' => SuspectedCase::whereIn('hp_code', $hpCodes)->active()->where('created_at', '>', Carbon::now()->subDay()->toDateString())->count(),
-//                'sample_collection' =>SampleCollection::whereIn('hp_code', $hpCodes)->active()->count(),
-//                'sample_collection_in_24_hrs' => SampleCollection::whereIn('hp_code', $hpCodes)->active()->where('created_at', '>', Carbon::now()->subDay()->toDateString())->count(),
-//                'lab_result_positive' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->active()->count(),
-//                'lab_result_positive_in_24_hrs' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
-//                'lab_result_negative' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->active()->count(),
-//                'lab_result_negative_in_24_hrs' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
+//                'registered' => SuspectedCase::whereIn('org_code', $hpCodes)->active()->count(),
+//                'registered_in_24_hrs' => SuspectedCase::whereIn('org_code', $hpCodes)->active()->where('created_at', '>', Carbon::now()->subDay()->toDateString())->count(),
+//                'sample_collection' =>SampleCollection::whereIn('org_code', $hpCodes)->active()->count(),
+//                'sample_collection_in_24_hrs' => SampleCollection::whereIn('org_code', $hpCodes)->active()->where('created_at', '>', Carbon::now()->subDay()->toDateString())->count(),
+//                'lab_result_positive' => SampleCollection::whereIn('org_code', $hpCodes)->where('result', 3)->active()->count(),
+//                'lab_result_positive_in_24_hrs' => SampleCollection::whereIn('org_code', $hpCodes)->where('result', 3)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
+//                'lab_result_negative' => SampleCollection::whereIn('org_code', $hpCodes)->where('result', 4)->active()->count(),
+//                'lab_result_negative_in_24_hrs' => SampleCollection::whereIn('org_code', $hpCodes)->where('result', 4)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
 //            ];
 //
 //            $provincialForecast = [
 //                'registered' => DB::table('suspected_cases')
-//                    ->whereIn('hp_code', $hpCodes)
+//                    ->whereIn('org_code', $hpCodes)
 //                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
 //                    ->groupBy('date')
 //                    ->get(),
 //
 //                'sample_collection' => DB::table('sample_collection')
-//                    ->whereIn('hp_code', $hpCodes)
+//                    ->whereIn('org_code', $hpCodes)
 //                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
 //                    ->groupBy('date')
 //                    ->get(),
 //
 //                'lab_result_positive' => DB::table('sample_collection')
-//                    ->whereIn('hp_code', $hpCodes)
+//                    ->whereIn('org_code', $hpCodes)
 //                    ->where('result', 3)
 //                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
 //                    ->groupBy('date')
 //                    ->get(),
 //
 //                'lab_result_negative' => DB::table('sample_collection')
-//                    ->whereIn('hp_code', $hpCodes)
+//                    ->whereIn('org_code', $hpCodes)
 //                    ->where('result', 4)
 //                    ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
 //                    ->groupBy('date')
@@ -108,15 +108,15 @@ class AggregateController extends Controller
         $hpCodesbyProvince = Organization::get()->groupBy('province_id');
         $provincialData = [];
         foreach($hpCodesbyProvince as $key => $provinceData) {
-            $hpCodes = $provinceData->pluck('hp_code');
+            $hpCodes = $provinceData->pluck('org_code');
             $provinceDataCalc = [
                 'province' => province::where('id', $key)->first()->province_name,
-                'sample_collection' => SampleCollection::whereIn('hp_code', $hpCodes)->active()->count(),
-                'sample_collection_in_24_hrs' => SampleCollection::whereIn('hp_code', $hpCodes)->active()->where('created_at', '>', Carbon::now()->subDay()->toDateString())->count(),
-                'lab_result_positive' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->active()->count(),
-                'lab_result_positive_in_24_hrs' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
-                'lab_result_negative' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->active()->count(),
-                'lab_result_negative_in_24_hrs' => SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
+                'sample_collection' => SampleCollection::whereIn('org_code', $hpCodes)->active()->count(),
+                'sample_collection_in_24_hrs' => SampleCollection::whereIn('org_code', $hpCodes)->active()->where('created_at', '>', Carbon::now()->subDay()->toDateString())->count(),
+                'lab_result_positive' => SampleCollection::whereIn('org_code', $hpCodes)->where('result', 3)->active()->count(),
+                'lab_result_positive_in_24_hrs' => SampleCollection::whereIn('org_code', $hpCodes)->where('result', 3)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
+                'lab_result_negative' => SampleCollection::whereIn('org_code', $hpCodes)->where('result', 4)->active()->count(),
+                'lab_result_negative_in_24_hrs' => SampleCollection::whereIn('org_code', $hpCodes)->where('result', 4)->where('updated_at', '>', Carbon::now()->subDay()->toDateString())->active()->count(),
             ];
             $provincialData[] = $provinceDataCalc;
         }
@@ -181,7 +181,7 @@ class AggregateController extends Controller
         $data = Cache::remember('analysis-report', 60 * 60, function () {
             return \DB::table('suspected_cases')->where('suspected_cases.status', 1)
                 ->join('sample_collection', 'suspected_cases.token', '=', 'sample_collection.woman_token')
-                ->join('organizations', 'suspected_cases.hp_code', '=', 'organizations.hp_code')
+                ->join('organizations', 'suspected_cases.org_code', '=', 'organizations.org_code')
                 ->whereIn('sample_collection.result', [3,4])
                 ->select('sample_collection.result as antigen_result', 'sample_collection.service_for', 'organizations.province_id as province', DB::raw('count(*) as total'))
                 ->groupBy(['antigen_result','province', 'service_for'])

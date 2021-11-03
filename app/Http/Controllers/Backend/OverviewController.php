@@ -18,9 +18,9 @@ class OverviewController extends Controller
     {
         if(\Auth::user()->role == 'province'){
             $province = \App\Models\ProvinceInfo::where('token', \Auth::user()->token)->first();
-            $data = Organization::where('province_id', $province->province_id)->with('user', 'province', 'municipality', 'district')->latest()->get(['token', 'name', 'province_id', 'district_id', 'municipality_id', 'hp_code']);
+            $data = Organization::where('province_id', $province->province_id)->with('user', 'province', 'municipality', 'district')->latest()->get(['token', 'name', 'province_id', 'district_id', 'municipality_id', 'org_code']);
         }else{
-            $data = Organization::with('user', 'district', 'province', 'municipality')->latest()->get(['token', 'name', 'municipality_id','province_id', 'district_id', 'hp_code']);
+            $data = Organization::with('user', 'district', 'province', 'municipality')->latest()->get(['token', 'name', 'municipality_id','province_id', 'district_id', 'org_code']);
         }
 
         return view('backend.overview.index', [
@@ -74,11 +74,11 @@ class OverviewController extends Controller
             $data = Organization::where('province_id', $province->province_id)
                 ->where('hospital_type', $type)
                 ->with('user', 'province', 'municipality', 'district')
-                ->get(['token', 'name', 'province_id', 'district_id', 'municipality_id', 'hp_code']);
+                ->get(['token', 'name', 'province_id', 'district_id', 'municipality_id', 'org_code']);
         }else{
             $data = Organization::with('user', 'district', 'province', 'municipality')
                 ->where('hospital_type', $type)
-                ->get(['token', 'name', 'municipality_id','province_id', 'district_id', 'hp_code']);
+                ->get(['token', 'name', 'municipality_id','province_id', 'district_id', 'org_code']);
         }
 
         return view('backend.overview.index', [

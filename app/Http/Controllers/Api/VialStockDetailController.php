@@ -10,8 +10,8 @@ class VialStockDetailController extends Controller
 {
     public function index(Request $request)
     {
-        $hpCode = $request->hp_code;
-        $data = VialStockDetail::where('hp_code',$hpCode)->get();
+        $hpCode = $request->org_code;
+        $data = VialStockDetail::where('org_code',$hpCode)->get();
         return response()->json($data);
     }
 

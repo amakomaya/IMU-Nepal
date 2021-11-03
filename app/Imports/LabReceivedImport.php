@@ -31,12 +31,12 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
         ini_set('max_execution_time', '300');
         $userToken = auth()->user()->token;
         $healthWorker = \App\Models\OrganizationMember::where('token', $userToken)->first();
-        $hpCode = $healthWorker->hp_code;
+        $hpCode = $healthWorker->org_code;
         $this->importedBy = $importedBy;
         $this->userToken =  $userToken;
         $this->hpCode = $hpCode;
         $this->healthWorker = $healthWorker;
-        $this->organizationType = \App\Models\Organization::where('hp_code', $hpCode)->first()->hospital_type;
+        $this->organizationType = \App\Models\Organization::where('org_code', $hpCode)->first()->hospital_type;
         $this->todayDateEn = Carbon::now();
         $this->todayDateNp = Calendar::eng_to_nep($this->todayDateEn->year,$this->todayDateEn->month,$this->todayDateEn->day)->getYearMonthDay();
     }
@@ -88,7 +88,7 @@ class LabReceivedImport implements ToModel, WithChunkReading, WithValidation, Wi
           try {
             LabTest::create([
               'token' => $patientLabId,
-              'hp_code' => $this->hpCode,
+              'org_code' => $this->hpCode,
               'status' => 1,
               'sample_recv_date' =>  $this->todayDateNp,
               'sample_test_result' => '9',

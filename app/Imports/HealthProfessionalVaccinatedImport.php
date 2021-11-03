@@ -16,9 +16,9 @@ class HealthProfessionalVaccinatedImport implements ToCollection, WithColumnLimi
     public function collection(Collection $rows)
     {
         $token = auth()->user()->token;
-        $hp_code = OrganizationMember::where('token', $token)->first()->hp_code;
+        $org_code = OrganizationMember::where('token', $token)->first()->org_code;
         $now_date = Carbon::now();
-        $data = $rows->map(function ($row) use ($now_date, $hp_code) {
+        $data = $rows->map(function ($row) use ($now_date, $org_code) {
             $data = [
                 'vaccinated_id'         => $row[0],
                 'vaccinated_date_en'     => $row[1],
@@ -29,7 +29,7 @@ class HealthProfessionalVaccinatedImport implements ToCollection, WithColumnLimi
                 'status' => 1,
                 'vaccine_period' => '1M',
                 'vaccine_name' => 'Covi Shield',
-                'hp_code' => $hp_code
+                'org_code' => $org_code
             ];
           return $data;
         })->toArray();

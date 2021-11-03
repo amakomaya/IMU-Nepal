@@ -135,10 +135,10 @@ Route::post('/v2/client', function (Request $request) {
 });
 
 Route::get('/v1/client', function (Request $request) {
-    $hp_code = $request->hp_code;
+    $org_code = $request->org_code;
 
     $record = SuspectedCase::with('sample_collection')
-        ->where('hp_code', $hp_code)
+        ->where('org_code', $org_code)
         ->where('created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
         ->active()
         ->get();
@@ -165,7 +165,7 @@ Route::get('/v1/client', function (Request $request) {
         $response['travel_detail'] = $row->travel_detail ?? '';
         $response['travelled_where'] = $row->travelled_where ?? '';
 
-        $response['hp_code'] = $row->hp_code ?? '';
+        $response['org_code'] = $row->org_code ?? '';
         $response['registered_device'] = $row->registered_device ?? '';
         $response['created_by'] = $row->created_by ?? '';
         $response['longitude'] = $row->longitude ?? '';
@@ -257,12 +257,12 @@ Route::post('/v1/client-tests', function (Request $request) {
 
 
 Route::get('/v1/client-tests', function (Request $request) {
-    $hp_code = $request->hp_code;
+    $org_code = $request->org_code;
     $record = SampleCollection::select(
       'token',
       'woman_token',
       'checked_by',
-      'hp_code',
+      'org_code',
       'status',
       'created_at',
       'updated_at',
@@ -288,7 +288,7 @@ Route::get('/v1/client-tests', function (Request $request) {
       'reporting_date_np'
 
     )
-    ->where('hp_code', $hp_code)
+    ->where('org_code', $org_code)
     ->where('created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
     ->get();
     //TODO: Optimization, check null in mobile and remove collect code
@@ -297,7 +297,7 @@ Route::get('/v1/client-tests', function (Request $request) {
       $response['token'] = $row->token;
       $response['woman_token'] = $row->woman_token ?? '';
       $response['checked_by'] = $row->checked_by ?? '';
-      $response['hp_code'] = $row->hp_code ?? '';
+      $response['org_code'] = $row->org_code ?? '';
       $response['status'] = $row->status ?? '';
       $response['created_at'] = $row->created_at??'';
       $response['updated_at'] = $row->updated_at ?? '';
@@ -328,11 +328,11 @@ Route::get('/v1/client-tests', function (Request $request) {
 });
 
 Route::get('/v1/lab-test', function (Request $request) {
-    $hp_code = $request->hp_code;
+    $org_code = $request->org_code;
     $record = LabTest::select(
       'id',
       'token',
-      'hp_code',
+      'org_code',
       'status',
       'sample_recv_date',
       'sample_test_date',
@@ -342,7 +342,7 @@ Route::get('/v1/lab-test', function (Request $request) {
       'checked_by_name',
       'sample_token',
       'created_at'
-    )->where('hp_code', $hp_code)
+    )->where('org_code', $org_code)
     ->where('created_at', '>=', Carbon::now()->subDays(14)->toDateTimeString())
     ->get();
     //TODO: Optimization, check null in mobile and remove collect code
@@ -350,7 +350,7 @@ Route::get('/v1/lab-test', function (Request $request) {
       $response = [];
       $response['id'] = $row->id;
       $response['token'] = $row->token ?? '';
-      $response['hp_code'] = $row->hp_code ?? '';
+      $response['org_code'] = $row->org_code ?? '';
       $response['status'] = $row->status ?? '';
       $response['sample_recv_date'] = $row->sample_recv_date ?? '';
       $response['sample_test_date'] = $row->sample_test_date ?? '';
@@ -385,7 +385,7 @@ Route::post('/v1/lab-test', function (Request $request) {
                     'sample_test_date_np' => $value['sample_test_date'],
                     'sample_test_time' => $value['sample_test_time'],
                     'received_by' => $value['checked_by'],
-                    'received_by_hp_code' => $value['hp_code'],
+                    'received_by_hp_code' => $value['org_code'],
                     'received_date_en' => Carbon::parse($value['created_at'])->format('Y-m-d'),
                     'received_date_np' => $received_date_np,
                     'lab_token' => $value['token']
@@ -397,7 +397,7 @@ Route::post('/v1/lab-test', function (Request $request) {
                     'sample_test_date_np' => $value['sample_test_date'],
                     'sample_test_time' => $value['sample_test_time'],
                     'received_by' => $value['checked_by'],
-                    'received_by_hp_code' => $value['hp_code'],
+                    'received_by_hp_code' => $value['org_code'],
                     'received_date_en' => Carbon::parse($value['created_at'])->format('Y-m-d'),
                     'received_date_np' => $received_date_np,
                     'lab_token' => $value['token'],
@@ -411,7 +411,7 @@ Route::post('/v1/lab-test', function (Request $request) {
                         'sample_test_time' => $value['sample_test_time'],
                         'sample_test_result' => $value['sample_test_result'],
                         'checked_by' => $value['checked_by'],
-                        'hp_code' => $value['hp_code'],
+                        'org_code' => $value['org_code'],
                         'status' => $value['status'],
                         'created_at' => $value['created_at'],
                         'checked_by_name' => $value['checked_by_name']
@@ -441,7 +441,7 @@ Route::post('/v2/lab-test', function (Request $request) {
                   'sample_test_date_np' => $value['sample_test_date'],
                   'sample_test_time' => $value['sample_test_time'],
                   'received_by' => $value['checked_by'],
-                  'received_by_hp_code' => $value['hp_code'],
+                  'received_by_hp_code' => $value['org_code'],
                   'received_date_en' => Carbon::parse($value['created_at'])->format('Y-m-d'),
                   'received_date_np' => $received_date_np,
                   'lab_token' => $value['token']
@@ -453,7 +453,7 @@ Route::post('/v2/lab-test', function (Request $request) {
                   'sample_test_date_np' => $value['sample_test_date'],
                   'sample_test_time' => $value['sample_test_time'],
                   'received_by' => $value['checked_by'],
-                  'received_by_hp_code' => $value['hp_code'],
+                  'received_by_hp_code' => $value['org_code'],
                   'received_date_en' => Carbon::parse($value['created_at'])->format('Y-m-d'),
                   'received_date_np' => $received_date_np,
                   'lab_token' => $value['token'],
@@ -467,7 +467,7 @@ Route::post('/v2/lab-test', function (Request $request) {
                       'sample_test_time' => $value['sample_test_time'],
                       'sample_test_result' => $value['sample_test_result'],
                       'checked_by' => $value['checked_by'],
-                      'hp_code' => $value['hp_code'],
+                      'org_code' => $value['org_code'],
                       'status' => $value['status'],
                       'created_at' => $value['created_at'],
                       'checked_by_name' => $value['checked_by_name']
@@ -487,14 +487,14 @@ Route::post('/v1/patient-transfer', function (Request $request) {
 
     $data = json_decode($request->getContent(), true);
 
-    $data['from'] = SuspectedCase::where('token', $data['token'])->first()->hp_code;
-    $data['to'] = $data['hp_code'];
+    $data['from'] = SuspectedCase::where('token', $data['token'])->first()->org_code;
+    $data['to'] = $data['org_code'];
     $data['name'] = 'patient';
     $transfer = \App\Models\TransferLog::create($data);
 
     SuspectedCase::where('token', $data['token'])
-        ->update(['hp_code' => $data['hp_code']]);
-    SampleCollection::where('woman_token', $data['token'])->update(['hp_code' => $data['hp_code']]);
+        ->update(['org_code' => $data['org_code']]);
+    SampleCollection::where('woman_token', $data['token'])->update(['org_code' => $data['org_code']]);
 
     return response()->json($data['token']);
 });
@@ -512,8 +512,8 @@ Route::post('/v1/patient-symptoms', function (Request $request) {
 });
 
 Route::get('/v1/patient-symptoms', function (Request $request) {
-    $hp_code = $request->hp_code;
-    $data = \App\Models\Symptoms::where('hp_code', $hp_code)->get();
+    $org_code = $request->org_code;
+    $data = \App\Models\Symptoms::where('org_code', $org_code)->get();
     return response()->json($data);
 });
 
@@ -528,8 +528,8 @@ Route::post('/v1/patient-clinical-parameters', function (Request $request) {
 });
 
 Route::get('/v1/patient-clinical-parameters', function (Request $request) {
-    $hp_code = $request->hp_code;
-    $data = \App\Models\ClinicalParameter::where('hp_code', $hp_code)->get();
+    $org_code = $request->org_code;
+    $data = \App\Models\ClinicalParameter::where('org_code', $org_code)->get();
     return response()->json($data);
 });
 
@@ -544,8 +544,8 @@ Route::post('/v1/patient-laboratory-parameter', function (Request $request) {
 });
 
 Route::get('/v1/patient-laboratory-parameter', function (Request $request) {
-    $hp_code = $request->hp_code;
-    $data = LaboratoryParameter::where('hp_code', $hp_code)->get();
+    $org_code = $request->org_code;
+    $data = LaboratoryParameter::where('org_code', $org_code)->get();
     return response()->json($data);
 });
 
@@ -566,7 +566,7 @@ Route::post('/v1/received-in-lab', function (Request $request) {
     $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
     $data['token'] = auth()->user()->token . '-' . $data['token'];
     $data['token'] = generate_unique_lab_id_web($data['token']);
-    $data['hp_code'] = $healthworker->hp_code;
+    $data['org_code'] = $healthworker->org_code;
     $data['checked_by_name'] = $healthworker->name;
     $data['checked_by'] = $healthworker->token;
     $data['status'] = 1;
@@ -584,7 +584,7 @@ Route::post('/v1/received-in-lab', function (Request $request) {
             $updateData = [
                 'result' => '9',
                 'received_by' => $data['checked_by'],
-                'received_by_hp_code' => $data['hp_code'],
+                'received_by_hp_code' => $data['org_code'],
                 'received_date_en' => Carbon::now()->toDateString(),
                 'received_date_np' => $data['sample_recv_date'],
                 'lab_token' => $data['token']
@@ -662,7 +662,7 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
             'sample_test_date_np' => $value['sample_test_date'],
             'sample_test_time' => $value['sample_test_time'],
             'received_by' => $user->token,
-            'received_by_hp_code' => $healthWorker->hp_code,
+            'received_by_hp_code' => $healthWorker->org_code,
             'received_date_en' => $sample_test_date_en,
             'received_date_np' => $value['sample_test_date'],
             'lab_token' => $value['token'],
@@ -672,7 +672,7 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
 
         LabTest::create([
             'token' => $value['token'],
-            'hp_code' => $healthWorker->hp_code,
+            'org_code' => $healthWorker->org_code,
             'status' => 1,
             'sample_recv_date' => $value['sample_test_date'],
             'sample_test_date' => $value['sample_test_date'],
@@ -698,8 +698,8 @@ Route::post('/v1/antigen-result-in-lab-from-web', function (Request $request) {
 
 // New update
 Route::get('/v1/contact-tracing', function (Request $request) {
-    $hp_code = $request->hp_code;
-    $data = ContactTracing::where('hp_code', $hp_code)->get();
+    $org_code = $request->org_code;
+    $data = ContactTracing::where('org_code', $org_code)->get();
     return response()->json($data);
 });
 
@@ -716,8 +716,8 @@ Route::post('/v1/contact-tracing', function (Request $request) {
 });
 
 Route::get('/v1/case-mgmt', function (Request $request) {
-    $hp_code = $request->hp_code;
-    $data = CaseManagement::where('hp_code', $hp_code)->get()->toArray();
+    $org_code = $request->org_code;
+    $data = CaseManagement::where('org_code', $org_code)->get()->toArray();
 
     array_walk_recursive($data, function (&$item, $key) {
         $item = null === $item ? '' : $item;
@@ -770,7 +770,7 @@ Route::post('/v1/payment-cases', function (Request $request) {
                 $payment_case_create['lab_id'] = $payment_case['lab_id'] ?? 'N/A';
                 $payment_case_create['is_in_imu'] = $payment_case['is_in_imu'] ?? 0;
                 $payment_case_create['pregnant_status'] = $payment_case['pregnant_status'] ?? 0;
-                $payment_case_create['hp_code'] = $healthworker->hp_code;
+                $payment_case_create['org_code'] = $healthworker->org_code;
                 
                 if(isset($payment_case['register_date_en'])) {
                     $date_en_array = explode("-", date("Y-m-d", strtotime($payment_case['register_date_en'])));
@@ -796,8 +796,8 @@ Route::post('/v1/payment-cases', function (Request $request) {
 });
 
 Route::get('/v1/contact-follow-up', function (Request $request) {
-    $hp_code = $request->hp_code;
-    $data = ContactFollowUp::where('hp_code', $hp_code)->get();
+    $org_code = $request->org_code;
+    $data = ContactFollowUp::where('org_code', $org_code)->get();
     return response()->json($data);
 });
 
@@ -814,8 +814,8 @@ Route::post('/v1/contact-follow-up', function (Request $request) {
 });
 
 Route::get('/v1/contact-detail', function (Request $request) {
-    $hp_code = $request->hp_code;
-    $data = ContactDetail::where('hp_code', $hp_code)->get();
+    $org_code = $request->org_code;
+    $data = ContactDetail::where('org_code', $org_code)->get();
     array_walk_recursive($data, function (&$item, $key) {
         $item = null === $item ? '' : $item;
     });
@@ -869,7 +869,7 @@ Route::get('/v1/check-by-sid-or-lab-id', function (Request $request) {
             $lab_result = LabTestOld::where('token', auth()->user()->token.'-'.$token)->first();
         }
         if ($lab_result){
-            $lab_details = OrganizationMember::where('hp_code', $lab_result->hp_code)->first();
+            $lab_details = OrganizationMember::where('org_code', $lab_result->org_code)->first();
         }
         if (!$lab_result){
             return response()->json();
@@ -992,9 +992,9 @@ Route::post('/v1/cases-payment', function (Request $request) {
         }else{
             $dateToday = Carbon::now(); //#TODO validate register_date_en from serverside.
             if (auth()->user()->role == 'healthworker'){
-                $data['hp_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
+                $data['org_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->org_code;
             }else{
-                $data['hp_code'] = \App\Models\Organization::where('token', auth()->user()->token)->first()->hp_code;
+                $data['org_code'] = \App\Models\Organization::where('token', auth()->user()->token)->first()->org_code;
             }
             \App\Models\PaymentCase::insert($data);
         }
@@ -1021,8 +1021,8 @@ Route::post('/v1/cases-payment-import', function (Request $request) {
 
 Route::post('/v1/cases-search-by-lab-and-id', function (Request $request) {
     $id = $request->id;
-    $hp_code = $request->hp_code;
-    $organiation_member_tokens = OrganizationMember::where('hp_code', $hp_code)->pluck('token');
+    $org_code = $request->org_code;
+    $organiation_member_tokens = OrganizationMember::where('org_code', $org_code)->pluck('token');
     $lab_token = [];
     foreach ($organiation_member_tokens as $item) {
         array_push($lab_token, $item."-".$id);
@@ -1070,9 +1070,9 @@ Route::post('/v1/community-deaths', function (Request $request) {
         }else{
             $dateToday = Carbon::now(); //#TODO validate register_date_en from serverside.
             if (auth()->user()->role == 'healthworker'){
-                $data['hp_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
+                $data['org_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->org_code;
             }else{
-                $data['hp_code'] = \App\Models\Organization::where('token', auth()->user()->token)->first()->hp_code;
+                $data['org_code'] = \App\Models\Organization::where('token', auth()->user()->token)->first()->org_code;
             }
             $data['created_at'] = $data['updated_at'] = Carbon::now()->toDateTimeString();
             \App\Models\CommunityDeath::insert($data);
@@ -1125,23 +1125,23 @@ Route::get('/v1/countries', function(){
 
 //Cict APis
 Route::get('/v1/cict-tracing', function(Request $request) {
-    $hp_code = $request->hp_code;
-    $response = \App\Models\CictTracing::where('hp_code', $hp_code)->where('regdev', 'mobile')->get();
+    $org_code = $request->org_code;
+    $response = \App\Models\CictTracing::where('org_code', $org_code)->where('regdev', 'mobile')->get();
     return response()->json($response);
 });
 Route::get('/v1/cict-close-contact', function(Request $request) {
-    $hp_code = $request->hp_code;
-    $response = \App\Models\CictCloseContact::where('hp_code', $hp_code)->where('regdev', 'mobile')->get();
+    $org_code = $request->org_code;
+    $response = \App\Models\CictCloseContact::where('org_code', $org_code)->where('regdev', 'mobile')->get();
     return response()->json($response);
 });
 Route::get('/v1/cict-contact', function(Request $request) {
-    $hp_code = $request->hp_code;
-    $response = \App\Models\CictContact::where('hp_code', $hp_code)->where('regdev', 'mobile')->get();
+    $org_code = $request->org_code;
+    $response = \App\Models\CictContact::where('org_code', $org_code)->where('regdev', 'mobile')->get();
     return response()->json($response);
 });
 Route::get('/v1/cict-follow-up', function(Request $request) {
-    $hp_code = $request->hp_code;
-    $follow_ups = \App\Models\CictFollowUp::where('hp_code', $hp_code)->where('regdev', 'mobile')->get();
+    $org_code = $request->org_code;
+    $follow_ups = \App\Models\CictFollowUp::where('org_code', $org_code)->where('regdev', 'mobile')->get();
     $data = [];
     if($follow_ups){
         foreach($follow_ups as $key => $follow_up){
@@ -1150,7 +1150,7 @@ Route::get('/v1/cict-follow-up', function(Request $request) {
                     $data[$key.'_'.$i]['token'] = $follow_up->token ?? '';
                     $data[$key.'_'.$i]['case_id'] = $follow_up->case_id ?? '';
                     $data[$key.'_'.$i]['parent_case_id'] = $follow_up->parent_case_id ?? '';
-                    $data[$key.'_'.$i]['hp_code'] = $follow_up->hp_code ?? '';
+                    $data[$key.'_'.$i]['org_code'] = $follow_up->org_code ?? '';
                     $data[$key.'_'.$i]['checked_by'] = $follow_up->checked_by ?? '';
                     $data[$key.'_'.$i]['regdev'] = $follow_up->regdev ?? '';
                     $data[$key.'_'.$i]['high_exposure'] = $follow_up->high_exposure ?? '';

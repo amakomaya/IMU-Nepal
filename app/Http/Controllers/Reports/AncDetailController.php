@@ -144,8 +144,8 @@ class AncDetailController extends Controller
             $$key = $value;
         }
 
-        $reports = SampleCollection::leftjoin('organizations', 'sample_collection.hp_code', '=', 'organizations.hp_code')
-            ->whereIn('sample_collection.hp_code', $hpCodes)
+        $reports = SampleCollection::leftjoin('organizations', 'sample_collection.org_code', '=', 'organizations.org_code')
+            ->whereIn('sample_collection.org_code', $hpCodes)
             ->whereIn('sample_collection.result', [3, 4])
             ->whereIn('organizations.hospital_type', [2, 3])
             ->whereBetween(\DB::raw('DATE(sample_collection.sample_test_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
@@ -162,7 +162,7 @@ class AncDetailController extends Controller
         }
 
         $reports = $reports->get()
-            ->groupBy('hp_code');
+            ->groupBy('org_code');
 
         
         $data = [];
@@ -180,7 +180,7 @@ class AncDetailController extends Controller
             $data[$key]['antigen_negative_cases_count'] = $report->where('service_for', '2')->where('result', 4)->count();
         }
             
-        return view('backend.sample.report.report', compact('data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+        return view('backend.sample.report.report', compact('data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','org_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
     }
 
 
@@ -196,12 +196,12 @@ class AncDetailController extends Controller
         }
 
         $user = auth()->user();
-        $reports = SampleCollection::leftjoin('organizations', 'sample_collection.received_by_hp_code', '=', 'organizations.hp_code')
+        $reports = SampleCollection::leftjoin('organizations', 'sample_collection.received_by_hp_code', '=', 'organizations.org_code')
             ->whereIn('sample_collection.received_by_hp_code', $hpCodes)
             ->whereIn('sample_collection.result', ['3', '4'])
             ->whereBetween(\DB::raw('DATE(sample_collection.sample_test_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->get()
-            ->groupBy('hp_code');
+            ->groupBy('org_code');
         
         $data = [];
         foreach($reports as $key => $report) {
@@ -214,7 +214,7 @@ class AncDetailController extends Controller
             $data[$key]['negative_cases_count'] = $report->where('sample_test_result', '4')->count();
         }
             
-        return view('backend.sample.report.lab-report', compact('data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+        return view('backend.sample.report.lab-report', compact('data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','org_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
     }
 
     private function dataFromAndTo(Request $request)
@@ -245,11 +245,11 @@ class AncDetailController extends Controller
 
         $filter_date = $this->dataFromOnly($request);
 
-        $organizations = Organization::whereIn('hp_code', $hpCodes)
+        $organizations = Organization::whereIn('org_code', $hpCodes)
             ->where('status', 1)
-            ->select('name', 'token', 'hp_code')
+            ->select('name', 'token', 'org_code')
             ->get()
-            ->keyBy('hp_code')
+            ->keyBy('org_code')
             ->toArray();
 
         $lab_organizations = SampleCollection::
@@ -322,19 +322,19 @@ class AncDetailController extends Controller
             }
         }
 
-        $organizations = Organization::whereIn('hp_code', $hpCodes)
+        $organizations = Organization::whereIn('org_code', $hpCodes)
             ->where('status', 1)
-            ->select('name', 'hp_code')
+            ->select('name', 'org_code')
             ->get()
-            ->keyBy('hp_code')
+            ->keyBy('org_code')
             ->toArray();
 
-        $mainquery = SampleCollection::whereIn('hp_code', $hpCodes)
+        $mainquery = SampleCollection::whereIn('org_code', $hpCodes)
             ->whereDate('collection_date_en', $date_chosen)
-            ->select('hp_code', 'regdev');
+            ->select('org_code', 'regdev');
 
         $other_regdev_data = $mainquery->get()
-            ->groupBy('hp_code');
+            ->groupBy('org_code');
             
         $other_regdev_data_count = $other_regdev_data->map(function ($sample, $key) use($organizations) {
             $return = [];
@@ -349,10 +349,10 @@ class AncDetailController extends Controller
 
         $excel_data_count = $mainquery
             ->where('regdev', 'like', '%' . 'excel' . '%')
-            ->select('hp_code', \DB::raw('COUNT(*) as excel_count'))
-            ->groupBy('hp_code')
+            ->select('org_code', \DB::raw('COUNT(*) as excel_count'))
+            ->groupBy('org_code')
             ->get()
-            ->keyBy('hp_code')
+            ->keyBy('org_code')
             ->toArray();
         $final_excel_data = isset($excel_data_count[""]) ? [] : $excel_data_count;
         
@@ -366,22 +366,22 @@ class AncDetailController extends Controller
     public function organizationContactTracing(Request $request) {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $contact_tracing = ContactTracing::whereIn('hp_code', $hpCodes)
+        $contact_tracing = ContactTracing::whereIn('org_code', $hpCodes)
             ->get()
-            ->groupBy('hp_code');
+            ->groupBy('org_code');
         $contact_tracing_hpcodes = [];
         $contact_tracing_hpcodes = $contact_tracing->map(function ($item, $key) {return $key;})->values()->toArray();
         
-        $contact_tracing_dump = ContactTracingOld::whereIn('hp_code', $hpCodes)
+        $contact_tracing_dump = ContactTracingOld::whereIn('org_code', $hpCodes)
             ->get()
-            ->groupBy('hp_code');
+            ->groupBy('org_code');
         $contact_tracing_dump_hpcodes = [];
         $contact_tracing_dump_hpcodes = $contact_tracing_dump->map(function ($item, $key) {return $key;})->values()->toArray();
         array_merge($contact_tracing_hpcodes, $contact_tracing_dump_hpcodes);
         
-        $organizations = Organization::whereIn('hp_code', $contact_tracing_hpcodes)
+        $organizations = Organization::whereIn('org_code', $contact_tracing_hpcodes)
             ->get()
-            ->groupBy('hp_code');
+            ->groupBy('org_code');
         
         $data = [];
         foreach($organizations as $key => $organization) {

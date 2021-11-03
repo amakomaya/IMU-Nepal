@@ -34,7 +34,7 @@
         <div class="info">
             <p>Date of case received by health authority: <u>{{ $data ? $data->case_received_date : '' }}</u></p>
             <p>Date of CICT initiated: <u>{{ $data ? $data->cict_initiated_date : '' }}</u></p>
-            <p>Name and Address of the reporting Institution: <u>{{ $data && $data->checkedBy ? $data->checkedBy->getHealthpost($data->hp_code) : '' }}</u></p>
+            <p>Name and Address of the reporting Institution: <u>{{ $data && $data->checkedBy ? $data->checkedBy->getHealthpost($data->org_code) : '' }}</u></p>
         </div>
 
         <section class="section-1">
@@ -1266,7 +1266,7 @@
                 <td>Telephone: {{ $data->checkedBy ? $data->checkedBy->phone : '' }}</td>
                 </tr>
                 <tr>
-                    <td>Institution: {{ $data->checkedBy ? $data->checkedBy->getHealthpost($data->hp_code) : '' }}</td>
+                    <td>Institution: {{ $data->checkedBy ? $data->checkedBy->getHealthpost($data->org_code) : '' }}</td>
                     <td>Email: {{ $data->checkedBy ? $data->checkedBy->user->email : '' }}</td>
                 </tr>
                 <tr>
@@ -2092,7 +2092,7 @@
                 </tr>
                 <tr>
                     <td width="50%">Name: {{ $contact->checkedBy ? $contact->checkedBy->name : '' }}</td>
-                    <td width="50%">Institution: {{ $contact->checkedBy ? $contact->checkedBy->getHealthpost($contact->hp_code) : '' }}</td>
+                    <td width="50%">Institution: {{ $contact->checkedBy ? $contact->checkedBy->getHealthpost($contact->org_code) : '' }}</td>
                 </tr>
                 <tr>
                     <td>Telephone number:{{ $contact->checkedBy ? $contact->checkedBy->phone : '' }}</td>

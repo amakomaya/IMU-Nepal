@@ -57,7 +57,7 @@ class BackdateRegisterSampleCollectionImport implements ToModel, WithChunkReadin
         });
         $userToken = auth()->user()->token;
         $healthWorker = \App\Models\OrganizationMember::where('token', $userToken)->first();
-        $hpCode = $healthWorker->hp_code;
+        $hpCode = $healthWorker->org_code;
 
         $this->importedBy = $importedBy;
         $this->userToken =  $userToken;
@@ -113,7 +113,7 @@ class BackdateRegisterSampleCollectionImport implements ToModel, WithChunkReadin
           'province_id' => $row['province'],
           'district_id' => $row['district'],
           'municipality_id' => $row['municipality'],
-          'hp_code' => $this->hpCode,
+          'org_code' => $this->hpCode,
           'tole' => $row['tole'],
           'ward' => $row['ward'],
           'caste' => $row['ethnicity'],
@@ -134,7 +134,7 @@ class BackdateRegisterSampleCollectionImport implements ToModel, WithChunkReadin
         $sampleCollectionData = [
           'service_for' => $row['test_type'],
           'checked_by' => $this->userToken,
-          'hp_code' => $this->hpCode,
+          'org_code' => $this->hpCode,
           'status' => 1,
           'checked_by_name'=> $this->healthWorker->name,
           'sample_identification_type' => 'unique_id',

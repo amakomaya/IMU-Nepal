@@ -22,7 +22,7 @@
 
     @php($ward = !!old('ward')? old('ward') : $data->ward)
 
-    @php($hp_code = !!old('hp_code')? old('hp_code') : $data->hp_code)
+    @php($org_code = !!old('org_code')? old('org_code') : $data->org_code)
 
     @section ('phone',!!old('phone')? old('phone') : $data->phone)
 

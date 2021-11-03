@@ -78,7 +78,7 @@ $.ajaxSetup({
               var data = {
                 stock_id: stockId,
                 asset_id: assetId,
-                hp_code: "{{ \App\Models\Organization::where('token', auth()->user()->token)->first()->hp_code }}",
+                org_code: "{{ \App\Models\Organization::where('token', auth()->user()->token)->first()->org_code }}",
                 new_stock: $("input[name='new_stock"+iteration+"']").val(),
                 remove_stock: $("input[name='remove_stock"+iteration+"']").val(),
                 current_stock:  $("input[name='current_stock"+iteration+"']").val(),

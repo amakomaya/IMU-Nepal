@@ -24,7 +24,7 @@ class BabyController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $babies = BabyDetail::whereIn('hp_code', $hpCodes)->withAll()->active()->isAlive();
+        $babies = BabyDetail::whereIn('org_code', $hpCodes)->withAll()->active()->isAlive();
         return response()->json([
             'collection' => $babies->advancedFilter()
         ]);

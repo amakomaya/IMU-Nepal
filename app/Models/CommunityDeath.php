@@ -12,7 +12,7 @@ class CommunityDeath extends Model
 
     protected $fillable = [
         'name', 'age', 'age_unit', 'gender', 'phone', 'address', 'guardian_name', 'province_id', 'district_id', 'municipality_id', 'ward', 'tole',
-        'hp_code', 'method_of_diagnosis','comorbidity', 'other_comorbidity', 'pregnant_status',
+        'org_code', 'method_of_diagnosis','comorbidity', 'other_comorbidity', 'pregnant_status',
         'complete_vaccination', 'vaccine_type', 'other_vaccine_type','date_of_positive_en', 'date_of_positive_np', 
         'date_of_outcome_en', 'date_of_outcome_np','cause_of_death', 'other_death_cause', 'time_of_death', 'remarks',
         'created_at', 'updated_at'
@@ -37,7 +37,7 @@ class CommunityDeath extends Model
   
     public function organization()
     {
-        return $this->hasOne('App\Models\Organization', 'hp_code', 'hp_code');
+        return $this->hasOne('App\Models\Organization', 'org_code', 'org_code');
     }
 
     public function province()

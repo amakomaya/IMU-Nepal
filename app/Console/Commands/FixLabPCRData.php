@@ -90,7 +90,7 @@ class FixLabPCRData extends Command
           $sampleData->update(
             [
               // 'received_by' => $sampleData->checked_by,
-              // 'received_by_hp_code' => $sampleData->hp_code,
+              // 'received_by_hp_code' => $sampleData->org_code,
               'received_date_en' => $sampleCreatedDate['en'],
               'received_date_np' =>  $sampleCreatedDate['np'],
               'sample_test_date_en' => $sampleCreatedDate['en'],
@@ -101,7 +101,7 @@ class FixLabPCRData extends Command
           );
           LabTest::create([
             // 'token' => $uniqueLabId,
-            'hp_code' => $sampleData->hp_code,
+            'org_code' => $sampleData->org_code,
             'status' => 1,
             'sample_recv_date' =>  $sampleCreatedDate['np'],
             'sample_test_date' => $sampleCreatedDate['np'],

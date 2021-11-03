@@ -47,8 +47,8 @@ class HealthWorkerController extends Controller
             $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
             $healthWorkers = OrganizationMember::where([['district_id', $district_id],['role','healthworker']])->latest()->get();
        }elseif(Auth::user()->role=="healthpost"){
-            $hp_code = Organization::where('token', Auth::user()->token)->get()->first()->hp_code;
-            $healthWorkers = OrganizationMember::where([['hp_code', $hp_code],['role','healthworker']])->latest()->get();
+            $org_code = Organization::where('token', Auth::user()->token)->get()->first()->org_code;
+            $healthWorkers = OrganizationMember::where([['org_code', $org_code],['role','healthworker']])->latest()->get();
        }else{
             $healthWorkers = OrganizationMember::where('role', 'healthworker')->latest()->get();
        }
@@ -110,7 +110,7 @@ class HealthWorkerController extends Controller
             'province_id'               => $request->get('province_id'),
             'district_id'               => $request->get('district_id'),
             'municipality_id'               => $request->get('municipality_id'),
-            'hp_code'               => $request->get('hp_code'),
+            'org_code'               => $request->get('org_code'),
             'image'               => $filename,
             'phone'               => $request->get('phone'),
             'post'               => $request->get('post'),
@@ -230,7 +230,7 @@ class HealthWorkerController extends Controller
             'province_id'               => $request->get('province_id'),
             'district_id'               => $request->get('district_id'),
             'municipality_id'               => $request->get('municipality_id'),
-            'hp_code'               => $request->get('hp_code'),
+            'org_code'               => $request->get('org_code'),
             'phone'               => $request->get('phone'),
             'tole'               => $request->get('tole'),
             'post'               => $request->get('post'),

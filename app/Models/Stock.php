@@ -17,7 +17,7 @@ class Stock extends Model
     ];
 
     protected $fillable = [
-      'hp_code',
+      'org_code',
       'asset_id',
       'current_stock',
       'created_at',
@@ -32,7 +32,7 @@ class Stock extends Model
 
     public function healthpost()
     {
-        return $this->belongsTo(Organization::class, 'hp_code', 'hp_code');
+        return $this->belongsTo(Organization::class, 'org_code', 'org_code');
     }
   
     protected $supportedRelations = ['healthpost', 'asset'];

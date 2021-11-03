@@ -110,17 +110,17 @@
                                 </select>
                             </div>
                             <div class="form-group  col-sm-3" id="organization">
-                                <select name="hp_code" class="form-control"  >
+                                <select name="org_code" class="form-control"  >
                                     @if(Auth::user()->role!="healthpost" && Auth::user()->role!="healthworker")
                                         <option value="">All Organization</option>
                                         @foreach($organizations as $healthpost)
                                             @if($healthpost->hospital_type == 3 || $healthpost->hospital_type == 5 || $healthpost->hospital_type == 6)
-                                            @if($hp_code==$healthpost->hp_code)
+                                            @if($org_code==$healthpost->org_code)
                                                 @php($selectedHealthpost = "selected")
                                             @else
                                                 @php($selectedHealthpost = "")
                                             @endif
-                                            <option value="{{$healthpost->hp_code}}" {{$selectedHealthpost}}>{{$healthpost->name}}</option>
+                                            <option value="{{$healthpost->org_code}}" {{$selectedHealthpost}}>{{$healthpost->name}}</option>
                                             @endif
                                         @endforeach
                                     @endif

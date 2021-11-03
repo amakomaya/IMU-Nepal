@@ -11,8 +11,8 @@ class VialDetailController extends Controller
 
     public function index(Request $request)
     {
-        $hpCode = $request->hp_code;
-        $data = VialDetail::where('hp_code',$hpCode)->get();
+        $hpCode = $request->org_code;
+        $data = VialDetail::where('org_code',$hpCode)->get();
         return response()->json($data);
     }
     public function create()

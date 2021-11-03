@@ -19,7 +19,7 @@ class StockController extends Controller
   {
       $response = FilterRequest::filter($request);
       $hpCodes = GetHealthpostCodes::filter($response);
-      $stocks = Stock::whereIn('hp_code', $hpCodes)
+      $stocks = Stock::whereIn('org_code', $hpCodes)
          ->withAll()
          ->join('assets', 'assets.id', '=', 'stocks.asset_id')
         ->get(['stocks.*', 'assets.name'])
@@ -40,7 +40,7 @@ class StockController extends Controller
             array_push($stocks, [
               'current_stock' => 0, 
               'asset_id' => $assetId,
-              'hp_code' => $hpCodes[0],
+              'org_code' => $hpCodes[0],
               'name' => $assets[$index]['name']
             ]);
           }
@@ -56,11 +56,11 @@ class StockController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         $availableAssets = Asset::all()->pluck('name')->toArray();
-        $groupedStocks = Stock::whereIn('hp_code', $hpCodes)
+        $groupedStocks = Stock::whereIn('org_code', $hpCodes)
            ->withAll()
            ->join('assets', 'assets.id', '=', 'stocks.asset_id')
           ->get(['stocks.*', 'assets.name'])
-          ->groupBy('hp_code')
+          ->groupBy('org_code')
           ->toArray();
         $stockList = [];
         $count = 0;
@@ -86,7 +86,7 @@ class StockController extends Controller
         $data = $request->all();
         $stock_transaction_data = $stock_data = [];
         $stock_transaction_data['current_stock'] = $stock_data['current_stock'] = $data['new_stock'] - $data['remove_stock'];
-        $stock_transaction_data['hp_code'] = $stock_data['hp_code'] = $data['hp_code'];
+        $stock_transaction_data['org_code'] = $stock_data['org_code'] = $data['org_code'];
         $stock_transaction_data['asset_id'] = $stock_data['asset_id'] = $data['asset_id'];
         $stock_transaction_data['new_stock'] = $data['new_stock'];
         $stock_transaction_data['used_stock'] = $data['remove_stock'];
@@ -112,8 +112,8 @@ class StockController extends Controller
     {
       $user = auth()->user();
       $healthpostInfo = Organization::where('token', $user->token)->first();
-      $hpCode = $healthpostInfo->hp_code;
-      $stock_transactions = StockTransaction::join('assets','assets.id','=','stock_transactions.asset_id')->select(['stock_transactions.*','assets.name',]) ->where('stock_transactions.hp_code', $hpCode)->orderBy('stock_transactions.id', 'DESC')->get()->toArray();
+      $hpCode = $healthpostInfo->org_code;
+      $stock_transactions = StockTransaction::join('assets','assets.id','=','stock_transactions.asset_id')->select(['stock_transactions.*','assets.name',]) ->where('stock_transactions.org_code', $hpCode)->orderBy('stock_transactions.id', 'DESC')->get()->toArray();
         return view('backend.stock.transaction', [
             'stock_transactions' => $stock_transactions,
         ]);

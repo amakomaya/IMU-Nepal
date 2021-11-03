@@ -112,10 +112,10 @@
                         </tr>
                         @foreach($data['organization_data'] as $organization)
                             @php
-                                $org = \App\Models\Organization::where('hp_code', $organization->hp_code)->with('province','municipality', 'district')->first();
+                                $org = \App\Models\Organization::where('org_code', $organization->org_code)->with('province','municipality', 'district')->first();
                             @endphp
                             <tr>
-                                <td>{{ $org->name ?? $organization->hp_code }}</td>
+                                <td>{{ $org->name ?? $organization->org_code }}</td>
                                 <td>{{ $org->province->province_name ?? '' }}</td>
                                 <td>{{ $org->district->district_name ?? '' }}</td>
                                 <td>{{ $org->municipality->municipality_name ?? '' }}</td>

@@ -57,7 +57,7 @@
                     $date_nep_array = explode("-", $data_nep);
                     $cict_initiated_date = $date_nep_array[2] . '/'. $date_nep_array[1] . '/' . $date_nep_array[0];
 
-                    $reporting_institution_name = App\Models\Organization::where('hp_code', $data->caseManagement->hp_code)->first()->name;
+                    $reporting_institution_name = App\Models\Organization::where('org_code', $data->caseManagement->org_code)->first()->name;
                 }
             ?>
             <p>Date of case received by health authority: <u>{{ $case_received_date }}</u></p>

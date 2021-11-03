@@ -49,7 +49,7 @@ class VaccinationController extends Controller
         $d = $request->all();
         $data['token'] = md5(microtime(true) . mt_Rand());
         $data['vaccinated_id'] = $d['vaccinated_id'];
-        $data['hp_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
+        $data['org_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->org_code;
         $data['vaccine_name'] = 'Covi Shield';
         $data['vaccine_period'] = '1M';
         $data['vaccinated_date_en'] = $d['vaccinated_date_en'];

@@ -233,8 +233,8 @@ class WomanController extends Controller
             return redirect('/admin/profile');
         }
         if(Auth::user()->role == 'healthworker'){
-            $hp_code = OrganizationMember::where('token',Auth::user()->token)->first()->hp_code;
-            $organizations = Organization::where('hp_code', $hp_code)->first();
+            $org_code = OrganizationMember::where('token',Auth::user()->token)->first()->org_code;
+            $organizations = Organization::where('org_code', $org_code)->first();
 
             $total = $organizations->no_of_beds + $organizations->no_of_hdu + $organizations->no_of_icu + $organizations->no_of_ventilators;
 
@@ -254,14 +254,14 @@ class WomanController extends Controller
             $organizations = Organization::where('token', Auth::user()->token)->first();
         }
         if (Auth::user()->role == 'healthworker'){
-            $hp_code = OrganizationMember::where('token',Auth::user()->token)->first()->hp_code;
-            $organizations = Organization::where('hp_code', $hp_code)->first();
+            $org_code = OrganizationMember::where('token',Auth::user()->token)->first()->org_code;
+            $organizations = Organization::where('org_code', $org_code)->first();
         }
         $total = $organizations->no_of_beds + $organizations->no_of_hdu + $organizations->no_of_icu + $organizations->no_of_ventilators;
 
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-        $data = PaymentCase::whereIn('hp_code', $hpCodes)->whereNull('is_death')->get();
+        $data = PaymentCase::whereIn('org_code', $hpCodes)->whereNull('is_death')->get();
         $hdu_count = $icu_count = $venti_count = $general_count = 0;
         foreach($data as $datum) {
             if($datum->health_condition_update == null) {
@@ -305,15 +305,15 @@ class WomanController extends Controller
         $user = Auth::user();
         if($user->role == 'healthpost'){
             $healthpost = Organization::where('token', $user->token)->first();
-            $hp_code = $healthpost->hp_code;
+            $org_code = $healthpost->org_code;
         }
         if (Auth::user()->role == 'healthworker'){
-            $hp_code = OrganizationMember::where('token',Auth::user()->token)->first()->hp_code;
-            $organizations = Organization::where('hp_code', $hp_code)->first();
+            $org_code = OrganizationMember::where('token',Auth::user()->token)->first()->org_code;
+            $organizations = Organization::where('org_code', $org_code)->first();
         }
         $total = $organizations->no_of_beds + $organizations->no_of_hdu + $organizations->no_of_icu + $organizations->no_of_ventilators;
 
-        $data = PaymentCase::where('hp_code', $hp_code)->whereNull('is_death')->get();
+        $data = PaymentCase::where('org_code', $org_code)->whereNull('is_death')->get();
         $hdu_count = $icu_count = $venti_count = $general_count = 0;
         foreach($data as $datum) {
             if($datum->health_condition_update == null) {
@@ -374,7 +374,7 @@ class WomanController extends Controller
         }
         $filter_date = $this->dataFromAndTo($request);
 
-        $payment_cases = PaymentCase::whereIn('hp_code', $hpCodes)
+        $payment_cases = PaymentCase::whereIn('org_code', $hpCodes)
             ->whereBetween(DB::raw('DATE(register_date_en)'), [$filter_date['from_date'], $filter_date['to_date']])
             ->latest()->with('organization')->paginate(1000);
         return view('backend.cases.payment.patient-detail', compact('payment_cases', 'from_date', 'to_date'));
@@ -466,7 +466,7 @@ class WomanController extends Controller
         $row['symptoms'] = isset($row['symptoms']) ? "[" . implode(', ', $row['symptoms']) . "]" : "[]";
         $row['symptoms_comorbidity'] = isset($row['symptoms_comorbidity']) ? "[" . implode(', ', $row['symptoms_comorbidity']) . "]" : "[]";
         $row['travelled_where'] = "[" . $request->travelled_where ."]";
-        $row['hp_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
+        $row['org_code'] = OrganizationMember::where('token', auth()->user()->token)->first()->org_code;
         $row['cases'] = '0';
         $row['case_where'] = '0';
         $row['end_case'] = '0';
@@ -553,17 +553,17 @@ class WomanController extends Controller
                 switch (auth()->user()->role) {
                     case 'healthpost':
                         $healthpost = Organization::where('token', auth()->user()->token)->first();
-                        $sample_row['hp_code'] = $healthpost->hp_code;
+                        $sample_row['org_code'] = $healthpost->org_code;
                         $sample_row['checked_by_name'] = $healthpost->name;
                         $sample_row['checked_by'] = $healthpost->token;
-                        // $sample_row['received_by_hp_code'] = $healthpost->hp_code;
+                        // $sample_row['received_by_hp_code'] = $healthpost->org_code;
         
                     case 'healthworker':
                         $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
-                        $sample_row['hp_code'] = $healthworker->hp_code;
+                        $sample_row['org_code'] = $healthworker->org_code;
                         $sample_row['checked_by_name'] = $healthworker->name;
                         $sample_row['checked_by'] = $healthworker->token;
-                        // $sample_row['received_by_hp_code'] = $healthworker->hp_code;
+                        // $sample_row['received_by_hp_code'] = $healthworker->org_code;
         
                 }
                 if ($request->service_for === '1')
@@ -577,11 +577,11 @@ class WomanController extends Controller
                     $sample_row['received_date_en'] = $sample_row['collection_date_en'];
                     $sample_row['received_date_np'] = $sample_row['collection_date_np'];
                     $sample_row['received_by'] = $sample_row['checked_by'];
-                    $sample_row['received_by_hp_code'] = $sample_row['hp_code'];
+                    $sample_row['received_by_hp_code'] = $sample_row['org_code'];
 
                     LabTest::create([
                         'token' => $sample_row['lab_token'],
-                        'hp_code' => $sample_row['hp_code'],
+                        'org_code' => $sample_row['org_code'],
                         'sample_test_result' => '9',
                         'status' => 1,
                         'checked_by' => $sample_row['checked_by'],
@@ -648,13 +648,13 @@ class WomanController extends Controller
         switch (auth()->user()->role) {
             case 'healthpost':
                 $healthpost = Organization::where('token', auth()->user()->token)->first();
-                $row['hp_code'] = $healthpost->hp_code;
+                $row['org_code'] = $healthpost->org_code;
                 $row['created_by_name'] = $healthpost->name;
                 $row['checked_by'] = $healthpost->token;
 
             case 'healthworker':
                 $healthworker = OrganizationMember::where('token', auth()->user()->token)->first();
-                $row['hp_code'] = $healthworker->hp_code;
+                $row['org_code'] = $healthworker->org_code;
                 $row['created_by_name'] = $healthworker->name;
                 $row['checked_by'] = $healthworker->token;
 
@@ -668,12 +668,12 @@ class WomanController extends Controller
             $row['lab_token'] = $uniqueLabId;
             $row['received_date_en'] = $row['collection_date_en'];
             $row['received_date_np'] = $row['collection_date_np'];
-            $row['received_by'] = $row['hp_code'];
-            $row['received_by_hp_code'] = $row['hp_code'];
+            $row['received_by'] = $row['org_code'];
+            $row['received_by_hp_code'] = $row['org_code'];
 
             LabTest::create([
                 'token' => $row['lab_token'],
-                'hp_code' => $row['hp_code'],
+                'org_code' => $row['org_code'],
                 'sample_test_result' => '9',
                 'status' => 1,
                 'checked_by' => $row['checked_by'],
@@ -812,7 +812,7 @@ class WomanController extends Controller
         GMaps::initialize($config);
 
         // Add marker
-        $woman = SuspectedCase::whereIn('hp_code', $hpCodes)
+        $woman = SuspectedCase::whereIn('org_code', $hpCodes)
             ->groupBy(['longitude', 'latitude'])
             ->get(['longitude', 'latitude']);
 

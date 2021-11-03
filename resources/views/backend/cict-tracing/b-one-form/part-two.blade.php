@@ -610,7 +610,7 @@
                                 <div class="form-group">
                                     <b>Name:</b> {{ isset($data) && $data->checkedBy ? $data->checkedBy->name : '' }}<br>
                                     <b>Telephone Number:</b> {{ isset($data) && $data->checkedBy ? $data->checkedBy->phone : '' }}<br>
-                                    <b>Instituton:</b> {{ isset($data) && $data->checkedBy ? $data->checkedBy->getHealthpost($data->hp_code) : '' }}<br>
+                                    <b>Instituton:</b> {{ isset($data) && $data->checkedBy ? $data->checkedBy->getHealthpost($data->org_code) : '' }}<br>
                                     <b>Email:</b> {{ isset($data) && $data->checkedBy ? $data->checkedBy->user->email : '' }}<br>
                                     <label>Form Completion Date </label><br>
                                     <input type="text" class="form-control" value="{{ isset($data) ? $data->completion_date : '' }}" name="completion_date"

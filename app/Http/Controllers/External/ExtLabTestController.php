@@ -20,7 +20,7 @@ class ExtLabTestController extends Controller
 
         if (!empty($user)) {
             $healthworker = OrganizationMember::where('token', $user->token)->get()->first();
-            $record = LabTest::where('hp_code', $healthworker->hp_code)->get();
+            $record = LabTest::where('org_code', $healthworker->org_code)->get();
 
             $data = collect($record)->map(function ($row) use ($user){
                 $response = [];
@@ -65,7 +65,7 @@ class ExtLabTestController extends Controller
                                 'sample_test_time' => $value['sample_test_time'],
                                 'sample_test_result' => strval($value['sample_test_result']),
                                 'checked_by' => $value['checked_by'],
-                                'hp_code' => $value['hp_code'],
+                                'org_code' => $value['org_code'],
                                 'status' => $value['status'],
                                 'created_at' => $value['created_at'],
                                 'checked_by_name' => $value['checked_by_name']
@@ -79,7 +79,7 @@ class ExtLabTestController extends Controller
                                     'sample_test_date' => $value['sample_test_date'],
                                     'sample_test_time' => $value['sample_test_time'],
                                     'sample_test_result' => strval($value['sample_test_result']),
-                                    'hp_code' => $healthworker->hp_code,
+                                    'org_code' => $healthworker->org_code,
                                     'checked_by' => $healthworker->token,
                                     'status' => 1
                                 ]);

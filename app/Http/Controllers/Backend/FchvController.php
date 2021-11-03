@@ -43,8 +43,8 @@ class FchvController extends Controller
             $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
             $healthWorkers = OrganizationMember::where([['district_id', $district_id],['role','fchv']])->with('municipality')->latest()->get();
        }elseif(Auth::user()->role=="healthpost"){
-            $hp_code = Organization::where('token', Auth::user()->token)->get()->first()->hp_code;
-            $healthWorkers = OrganizationMember::where([['hp_code', $hp_code],['role','fchv']])->with('municipality')->latest()->get();
+            $org_code = Organization::where('token', Auth::user()->token)->get()->first()->org_code;
+            $healthWorkers = OrganizationMember::where([['org_code', $org_code],['role','fchv']])->with('municipality')->latest()->get();
        }else{
             $healthWorkers = OrganizationMember::where('role', 'fchv')->with('municipality')->latest()->get();
        }
@@ -69,8 +69,8 @@ class FchvController extends Controller
             $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
             $healthWorkers = OrganizationMember::where([['district_id', $district_id],['role','fchv']])->latest()->get();
        }elseif(Auth::user()->role=="healthpost"){
-            $hp_code = Organization::where('token', Auth::user()->token)->get()->first()->hp_code;
-            $healthWorkers = OrganizationMember::where([['hp_code', $hp_code],['role','fchv']])->latest()->get();
+            $org_code = Organization::where('token', Auth::user()->token)->get()->first()->org_code;
+            $healthWorkers = OrganizationMember::where([['org_code', $org_code],['role','fchv']])->latest()->get();
        }else{
             $healthWorkers = OrganizationMember::where('role', 'fchv')->latest()->get();
        }        
@@ -113,7 +113,7 @@ class FchvController extends Controller
             'province_id'               => $request->get('province_id'),
             'district_id'               => $request->get('district_id'),
             'municipality_id'               => $request->get('municipality_id'),
-            'hp_code'               => $request->get('hp_code'),
+            'org_code'               => $request->get('org_code'),
             'phone'               => $request->get('phone'),
             'tole'               => $request->get('tole'),
             'post'               => $request->get('post'),
@@ -187,8 +187,8 @@ class FchvController extends Controller
             $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
             $healthWorkers = OrganizationMember::where([['district_id', $district_id],['role','fchv']])->latest()->get();
        }elseif(Auth::user()->role=="healthpost"){
-            $hp_code = Organization::where('token', Auth::user()->token)->get()->first()->hp_code;
-            $healthWorkers = OrganizationMember::where([['hp_code', $hp_code],['role','fchv']])->latest()->get();
+            $org_code = Organization::where('token', Auth::user()->token)->get()->first()->org_code;
+            $healthWorkers = OrganizationMember::where([['org_code', $org_code],['role','fchv']])->latest()->get();
        }else{
         $provinces = Province::get();
         $districts = District::get();
@@ -228,7 +228,7 @@ class FchvController extends Controller
             'province_id'               => $request->get('province_id'),
             'district_id'               => $request->get('district_id'),
             'municipality_id'               => $request->get('municipality_id'),
-            'hp_code'               => $request->get('hp_code'),
+            'org_code'               => $request->get('org_code'),
             'phone'               => $request->get('phone'),
             'tole'               => $request->get('tole'),
             'post'               => $request->get('post'),

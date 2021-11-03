@@ -38,7 +38,7 @@
                                             <input type="number" min="0" name="return_to_home" placeholder="Enter the number of persons returned to home" class="form-control" id="return_to_home" />
                                         </div>
                                     </div>
-                                    <input type="hidden" name="hp_code" value="{{ $organization_hp_code }}">
+                                    <input type="hidden" name="org_code" value="{{ $organization_org_code }}">
                                         <div class="col-lg-12 form-group">
                                             <button type="button" class="btn btn-primary btn-lg btn-block" id="submit_btn">Save</button>
                                         </div>

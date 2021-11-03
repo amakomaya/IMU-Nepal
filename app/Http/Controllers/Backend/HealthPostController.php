@@ -86,7 +86,7 @@ class HealthPostController extends Controller
             'district_id' => $request->get('district_id'),
             'municipality_id' => $request->get('municipality_id'),
             'ward_no' => $request->get('ward_no'),
-            'hp_code' => $request->get('hp_code'),
+            'org_code' => $request->get('org_code'),
             'phone' => $request->get('phone'),
             'address' => $request->get('address'),
             'longitude' => $request->get('longitude'),
@@ -251,7 +251,7 @@ class HealthPostController extends Controller
         
         $healthpost = $this->findModel($id);
         
-        $healthworkers = OrganizationMember::where('hp_code', $healthpost->hp_code)->get();
+        $healthworkers = OrganizationMember::where('org_code', $healthpost->org_code)->get();
 
         
         foreach($healthworkers as $healthworker) {
@@ -281,7 +281,7 @@ class HealthPostController extends Controller
             
             $healthpost = $this->findModel($id);
             
-            $healthworkers = OrganizationMember::where('hp_code', $healthpost->hp_code)->get();
+            $healthworkers = OrganizationMember::where('org_code', $healthpost->org_code)->get();
 
             
             foreach($healthworkers as $healthworker) {
@@ -352,7 +352,7 @@ class HealthPostController extends Controller
                 'name' => 'required|string',
                 'province_id' => 'required|string',
                 'district_id' => 'required|string',
-                'hp_code' => 'required|unique:organizations',
+                'org_code' => 'required|unique:organizations',
                 'ward_no' => 'required|string',
                 'address' => 'required|string',
                 'status' => 'required|string',

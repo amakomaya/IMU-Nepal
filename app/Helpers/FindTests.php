@@ -8,8 +8,8 @@ if (! function_exists('organization_get_sample_by_lab_id')) {
     function organization_get_sample_by_lab_id($labId, $sId = null){
         $userToken = auth()->user()->token;
         $healthWorker = OrganizationMember::where('token', $userToken)->first();
-        $hpCode = $healthWorker->hp_code;
-        $organiation_member_tokens = OrganizationMember::where('hp_code', $hpCode)->pluck('token');
+        $hpCode = $healthWorker->org_code;
+        $organiation_member_tokens = OrganizationMember::where('org_code', $hpCode)->pluck('token');
         $labTokens = [];
         foreach ($organiation_member_tokens as $item) {
             array_push($labTokens, $item."-".$labId);

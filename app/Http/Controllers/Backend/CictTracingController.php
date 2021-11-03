@@ -105,7 +105,7 @@ class CictTracingController extends Controller
                     $data['token'] = md5(microtime(true) . mt_Rand());
                     $data['case_id'] = $request->case_id;
                     $data['woman_token'] = $patient->token;
-                    $data['hp_code'] = $healthworker->hp_code;
+                    $data['org_code'] = $healthworker->org_code;
                     $data['checked_by'] = $healthworker->token;
                     $data['regdev'] = 'web';
                     $data['name'] = $patient->name;
@@ -393,7 +393,7 @@ class CictTracingController extends Controller
                     $household['relationship_others'] = $details['relationship_others'];
                     $household['emergency_contact_one'] = $details['emergency_contact_one'];
                     $household['contact_type'] = $details['contact_type'];
-                    $household['hp_code'] = $healthworker->hp_code;
+                    $household['org_code'] = $healthworker->org_code;
                     $household['checked_by'] = $healthworker->token;
                     $household['parent_case_id'] = $cict_tracing->case_id;
                     $household['regdev'] = 'web';
@@ -420,7 +420,7 @@ class CictTracingController extends Controller
                     $travel_vehicle['emergency_contact_one'] = $details['emergency_contact_one'];
                     $travel_vehicle['vehicle_no'] = $details['vehicle_no'];
                     $travel_vehicle['contact_type'] = $details['contact_type'];
-                    $travel_vehicle['hp_code'] = $healthworker->hp_code;
+                    $travel_vehicle['org_code'] = $healthworker->org_code;
                     $travel_vehicle['checked_by'] = $healthworker->token;
                     $travel_vehicle['parent_case_id'] = $cict_tracing->case_id;
                     $travel_vehicle['regdev'] = 'web';
@@ -446,7 +446,7 @@ class CictTracingController extends Controller
                     $other_direct_care['relationship_others'] = $details['relationship_others'];
                     $other_direct_care['emergency_contact_one'] = $details['emergency_contact_one'];
                     $other_direct_care['contact_type'] = $details['contact_type'];
-                    $other_direct_care['hp_code'] = $healthworker->hp_code;
+                    $other_direct_care['org_code'] = $healthworker->org_code;
                     $other_direct_care['checked_by'] = $healthworker->token;
                     $other_direct_care['parent_case_id'] = $cict_tracing->case_id;
                     $other_direct_care['regdev'] = 'web';
@@ -502,7 +502,7 @@ class CictTracingController extends Controller
             $cict_contact->update($data);
         }else{
             $data['token'] = md5(microtime(true) . mt_Rand());
-            $data['hp_code'] = $healthworker->hp_code;
+            $data['org_code'] = $healthworker->org_code;
             $data['checked_by'] = $healthworker->token;
             $data['regdev'] = 'web';
             $cict_contact = CictContact::create($data);
@@ -584,7 +584,7 @@ class CictTracingController extends Controller
             $cict_follow_up->update($data);
         }else{
             $data['token'] = md5(microtime(true) . mt_Rand());
-            $data['hp_code'] = $healthworker->hp_code;
+            $data['org_code'] = $healthworker->org_code;
             $data['checked_by'] = $healthworker->token;
             $data['regdev'] = 'web';
             $cict_follow_up = CictFollowUp::create($data);
@@ -713,19 +713,19 @@ class CictTracingController extends Controller
         $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->province_id;
         $locations = District::where('province_id', $province_id)->get();
 
-        $cict_tracings = CictTracing::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_tracings.hp_code')
+        $cict_tracings = CictTracing::leftjoin('organizations', 'organizations.org_code', '=', 'cict_tracings.org_code')
             ->whereNotNull('cict_tracings.cict_initiated_date')
             ->select('cict_tracings.token', 'organizations.district_id')
             ->whereDate('cict_tracings.created_at', $filter_date['from_date']->toDateString())
-            ->whereIn('cict_tracings.hp_code', $hpCodes)->get()->groupBy('district_id');
-        $contacts = CictContact::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_contacts.hp_code')
+            ->whereIn('cict_tracings.org_code', $hpCodes)->get()->groupBy('district_id');
+        $contacts = CictContact::leftjoin('organizations', 'organizations.org_code', '=', 'cict_contacts.org_code')
             ->select('cict_contacts.token', 'organizations.district_id')
             ->whereDate('cict_contacts.created_at', $filter_date['from_date']->toDateString())
-            ->whereIn('cict_contacts.hp_code', $hpCodes)->get()->groupBy('district_id');
-        $follow_ups = CictFollowUp::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_follow_ups.hp_code')
+            ->whereIn('cict_contacts.org_code', $hpCodes)->get()->groupBy('district_id');
+        $follow_ups = CictFollowUp::leftjoin('organizations', 'organizations.org_code', '=', 'cict_follow_ups.org_code')
             ->select('cict_follow_ups.token', 'organizations.district_id')
             ->whereDate('cict_follow_ups.created_at', $filter_date['from_date']->toDateString())
-            ->whereIn('cict_follow_ups.hp_code', $hpCodes)->get()->groupBy('district_id');
+            ->whereIn('cict_follow_ups.org_code', $hpCodes)->get()->groupBy('district_id');
 
         return view('backend.cict-tracing.reports.province-districtwise-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date'));
     }
@@ -742,19 +742,19 @@ class CictTracingController extends Controller
         $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->province_id;
         $locations = Municipality::where('province_id', $province_id)->get();
 
-        $cict_tracings = CictTracing::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_tracings.hp_code')
+        $cict_tracings = CictTracing::leftjoin('organizations', 'organizations.org_code', '=', 'cict_tracings.org_code')
             ->whereNotNull('cict_tracings.cict_initiated_date')
             ->select('cict_tracings.token', 'organizations.municipality_id')
             ->whereDate('cict_tracings.created_at', $filter_date['from_date']->toDateString())
-            ->whereIn('cict_tracings.hp_code', $hpCodes)->get()->groupBy('municipality_id');
-        $contacts = CictContact::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_contacts.hp_code')
+            ->whereIn('cict_tracings.org_code', $hpCodes)->get()->groupBy('municipality_id');
+        $contacts = CictContact::leftjoin('organizations', 'organizations.org_code', '=', 'cict_contacts.org_code')
             ->select('cict_contacts.token', 'organizations.municipality_id')
             ->whereDate('cict_contacts.created_at', $filter_date['from_date']->toDateString())
-            ->whereIn('cict_contacts.hp_code', $hpCodes)->get()->groupBy('municipality_id');
-        $follow_ups = CictFollowUp::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_follow_ups.hp_code')
+            ->whereIn('cict_contacts.org_code', $hpCodes)->get()->groupBy('municipality_id');
+        $follow_ups = CictFollowUp::leftjoin('organizations', 'organizations.org_code', '=', 'cict_follow_ups.org_code')
             ->select('cict_follow_ups.token', 'organizations.municipality_id')
             ->whereDate('cict_follow_ups.created_at', $filter_date['from_date']->toDateString())
-            ->whereIn('cict_follow_ups.hp_code', $hpCodes)->get()->groupBy('municipality_id');
+            ->whereIn('cict_follow_ups.org_code', $hpCodes)->get()->groupBy('municipality_id');
 
         return view('backend.cict-tracing.reports.province-municipalitywise-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date'));
     }
@@ -771,19 +771,19 @@ class CictTracingController extends Controller
         $district_id = DistrictInfo::where('token', auth()->user()->token)->first()->district_id;
         $locations = Municipality::where('district_id', $district_id)->get();
 
-        $cict_tracings = CictTracing::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_tracings.hp_code')
+        $cict_tracings = CictTracing::leftjoin('organizations', 'organizations.org_code', '=', 'cict_tracings.org_code')
             ->whereNotNull('cict_tracings.cict_initiated_date')
             ->select('cict_tracings.token', 'organizations.municipality_id')
             ->whereDate('cict_tracings.created_at', $filter_date['from_date']->toDateString())
-            ->whereIn('cict_tracings.hp_code', $hpCodes)->get()->groupBy('municipality_id');
-        $contacts = CictContact::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_contacts.hp_code')
+            ->whereIn('cict_tracings.org_code', $hpCodes)->get()->groupBy('municipality_id');
+        $contacts = CictContact::leftjoin('organizations', 'organizations.org_code', '=', 'cict_contacts.org_code')
             ->select('cict_contacts.token', 'organizations.municipality_id')
             ->whereDate('cict_contacts.created_at', $filter_date['from_date']->toDateString())
-            ->whereIn('cict_contacts.hp_code', $hpCodes)->get()->groupBy('municipality_id');
-        $follow_ups = CictFollowUp::leftjoin('organizations', 'organizations.hp_code', '=', 'cict_follow_ups.hp_code')
+            ->whereIn('cict_contacts.org_code', $hpCodes)->get()->groupBy('municipality_id');
+        $follow_ups = CictFollowUp::leftjoin('organizations', 'organizations.org_code', '=', 'cict_follow_ups.org_code')
             ->select('cict_follow_ups.token', 'organizations.municipality_id')
             ->whereDate('cict_follow_ups.created_at', $filter_date['from_date']->toDateString())
-            ->whereIn('cict_follow_ups.hp_code', $hpCodes)->get()->groupBy('municipality_id');
+            ->whereIn('cict_follow_ups.org_code', $hpCodes)->get()->groupBy('municipality_id');
 
         return view('backend.cict-tracing.reports.district-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date'));
     }
@@ -892,7 +892,7 @@ class CictTracingController extends Controller
                 $data['token'] = md5(microtime(true) . mt_Rand());
                 $data['case_id'] = $data['case_id'];
                 $data['woman_token'] = $patient->token;
-                $data['hp_code'] = $data['hp_code'];
+                $data['org_code'] = $data['org_code'];
                 $data['checked_by'] = '';
                 $data['regdev'] = $regdev;
                 $data['name'] = $patient->name;

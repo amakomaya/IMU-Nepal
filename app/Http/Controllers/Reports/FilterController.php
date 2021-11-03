@@ -65,12 +65,12 @@ class FilterController extends Controller
 
     public function organizationSelectByMunicipality(Request $request){
         $id = preg_replace('/[^0-9]/', '', $request->get('id'));
-        echo '<select id="hp_code" class="form-control" name="hp_code" required>';
+        echo '<select id="org_code" class="form-control" name="org_code" required>';
         $organizations = Organization::where([['municipality_id', $id]])->orderBy('name', 'asc')->get();
             echo "<option value=\"\">Select all Organization</option>";
             foreach($organizations as $healthpost)
             {
-                echo"<option value=\"$healthpost->hp_code\">$healthpost->name</option>";
+                echo"<option value=\"$healthpost->org_code\">$healthpost->name</option>";
             }
         echo '<select>';
     }

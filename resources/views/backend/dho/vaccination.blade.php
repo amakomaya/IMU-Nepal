@@ -150,14 +150,14 @@
                             <input type="text" id="data_list" name="data_list">
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-4" for="hp_code">Select Immunization
+                            <label class="control-label col-sm-4" for="org_code">Select Immunization
                                 Center
                                 :</label>
                             <div class="col-sm-8">
-                                <select name="hp_code" class="form-control"
-                                        id="hp_code">
+                                <select name="org_code" class="form-control"
+                                        id="org_code">
                                     @foreach($organizations ?? '' as $immunizationCenter)
-                                        <option value="{{ $immunizationCenter->hp_code }}">{{$immunizationCenter->name ?? ''}}</option>
+                                        <option value="{{ $immunizationCenter->org_code }}">{{$immunizationCenter->name ?? ''}}</option>
                                     @endforeach
                                 </select>
                             </div>

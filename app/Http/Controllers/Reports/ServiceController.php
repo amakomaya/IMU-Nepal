@@ -28,32 +28,32 @@ class ServiceController extends Controller
             $$key = $value;
         }
 
-        $register = SuspectedCase::whereIn('hp_code', $hpCodes)
+        $register = SuspectedCase::whereIn('org_code', $hpCodes)
                             ->fromToDate($date['from_date'], $date['to_date'])
                             ->active()
                             ->pluck('token')->toArray();
 
-        $sample_collection = SampleCollection::whereIn('hp_code', $hpCodes)
+        $sample_collection = SampleCollection::whereIn('org_code', $hpCodes)
             ->fromToDate($date['from_date'], $date['to_date'])
             ->active()
             ->pluck('woman_token')->toArray();
 
-        $pncs = Pnc::whereIn('hp_code', $hpCodes)
+        $pncs = Pnc::whereIn('org_code', $hpCodes)
             ->fromToDate($date['from_date'], $date['to_date'])
             ->active()
             ->pluck('woman_token')->toArray();
 
-        $delivery = Delivery::whereIn('hp_code', $hpCodes)
+        $delivery = Delivery::whereIn('org_code', $hpCodes)
             ->fromToDate($date['from_date'], $date['to_date'])
             ->active()
             ->pluck('woman_token')->toArray();
 
-        $labtest = LabTest::whereIn('hp_code', $hpCodes)
+        $labtest = LabTest::whereIn('org_code', $hpCodes)
             ->fromToDate($date['from_date'], $date['to_date'])
             ->active()
             ->pluck('woman_token')->toArray();
 
-        $medication = Woman\Vaccination::whereIn('hp_code', $hpCodes)
+        $medication = Woman\Vaccination::whereIn('org_code', $hpCodes)
             ->fromToDate($date['from_date'], $date['to_date'])
             ->active()
             ->pluck('woman_token')->toArray();
@@ -62,7 +62,7 @@ class ServiceController extends Controller
 
         $woman = SuspectedCase::withAll()->whereIn('token', $woman_tokens)->active()->get();
 
-        return view('reports.woman-service', compact('woman', 'register','sample_collection','medication', 'delivery', 'pncs','provinces', 'ward_or_healthpost','districts','municipalities','wards','organizations','options','province_id','district_id','municipality_id','ward_id','hp_code', 'select_year', 'select_month'));
+        return view('reports.woman-service', compact('woman', 'register','sample_collection','medication', 'delivery', 'pncs','provinces', 'ward_or_healthpost','districts','municipalities','wards','organizations','options','province_id','district_id','municipality_id','ward_id','org_code', 'select_year', 'select_month'));
     }
 
 
@@ -76,12 +76,12 @@ class ServiceController extends Controller
             $$key = $value;
         }
 
-        $register = BabyDetail::whereIn('hp_code', $hpCodes)
+        $register = BabyDetail::whereIn('org_code', $hpCodes)
             ->fromToDate($date['from_date'], $date['to_date'])
             ->active()
             ->pluck('token')->toArray();
 
-        $vaccination = VaccinationRecord::whereIn('hp_code', $hpCodes)
+        $vaccination = VaccinationRecord::whereIn('org_code', $hpCodes)
             ->vaccinatedFromToDate($date['from_date'], $date['to_date'])
             ->hasVialImage()
             ->active()
@@ -89,7 +89,7 @@ class ServiceController extends Controller
 
         $tokens = array_unique(array_merge($register, $vaccination));
         $babies = BabyDetail::withAll()->whereIn('token', $tokens)->active()->get();
-        return view('reports.baby-service', compact('babies','vaccination', 'register','provinces', 'ward_or_healthpost','districts','municipalities','wards','organizations','options','province_id','district_id','municipality_id','ward_id','hp_code', 'select_year', 'select_month'));
+        return view('reports.baby-service', compact('babies','vaccination', 'register','provinces', 'ward_or_healthpost','districts','municipalities','wards','organizations','options','province_id','district_id','municipality_id','ward_id','org_code', 'select_year', 'select_month'));
     }
     private function dataFromAndTo(Request $request)
     {

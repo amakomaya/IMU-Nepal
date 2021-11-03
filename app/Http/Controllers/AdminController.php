@@ -42,8 +42,8 @@ class AdminController extends Controller
         $organization = Organization::where('token', $user->token)->first();
         $organizationType = $organization->hospital_type;
       } else if($userRole == 'healthworker') {
-        $organization_hp_code = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
-        $organization = Organization::where('hp_code', $organization_hp_code)->first();
+        $organization_org_code = OrganizationMember::where('token', auth()->user()->token)->first()->org_code;
+        $organization = Organization::where('org_code', $organization_org_code)->first();
         $organizationType = $organization->hospital_type;
       } else {
         return view('admin-dashboard');
@@ -105,13 +105,13 @@ class AdminController extends Controller
         $id = $request->get('id');
         $ward_no = Ward::getWardNo($id);
         $municipality_id = $request->get('municipality_id');
-        echo '<select id="hp_code" class="form-control" name="hp_code">';
+        echo '<select id="org_code" class="form-control" name="org_code">';
 
         $organizations = Organization::where([['municipality_id', $municipality_id], ['ward_no', $ward_no]])->orderBy('name', 'asc')->get();
 
         echo "<option value=\"\">Select Organization</option>";
         foreach ($organizations as $healthpost) {
-            echo "<option value=\"$healthpost->hp_code\">$healthpost->name</option>";
+            echo "<option value=\"$healthpost->org_code\">$healthpost->name</option>";
         }
         echo '<select>';
     }
@@ -120,11 +120,11 @@ class AdminController extends Controller
     public function healthpostSelect(Request $request)
     {
         $id = $request->get('id');
-        echo '<select id="hp_code" class="form-control" name="hp_code">';
+        echo '<select id="org_code" class="form-control" name="org_code">';
         $organizations = Organization::where('municipality_id', $id)->orderBy('name', 'asc')->get();
         echo "<option value=\"\">Select Organization</option>";
         foreach ($organizations as $Healthpost) {
-            echo "<option value=\"$Healthpost->hp_code\">$Healthpost->name</option>";
+            echo "<option value=\"$Healthpost->org_code\">$Healthpost->name</option>";
         }
         echo '<select>';
     }
@@ -208,7 +208,7 @@ class AdminController extends Controller
                 $hpCodes = GetHealthpostCodes::filter($response);
 
                 $sample_collection = SampleCollection::with('woman')->where('token', $request->sid)
-                    ->whereIn('hp_code', $hpCodes)->first();
+                    ->whereIn('org_code', $hpCodes)->first();
                 // dd($sample_collection);
 
                 if($sample_collection){

@@ -27,13 +27,13 @@ class ObservationCasesController extends Controller
     public function index(Request $request)
     {
         if(Auth::user()->role == 'healthpost') {
-            $organization_hp_code = DB::table('organizations')->where('token', Auth::user()->token)->first()->hp_code;
-            $observation_cases = OrganizationObservationCases::where('hp_code', $organization_hp_code)->orderBy('created_at', 'desc')->get();
+            $organization_org_code = DB::table('organizations')->where('token', Auth::user()->token)->first()->org_code;
+            $observation_cases = OrganizationObservationCases::where('org_code', $organization_org_code)->orderBy('created_at', 'desc')->get();
             $add_sum = $observation_cases->sum('add');
             $transfer_to_bed_sum = $observation_cases->sum('transfer_to_bed');
             $return_to_home_sum = $observation_cases->sum('return_to_home');
 
-            $observation_cases_today = OrganizationObservationCases::where('hp_code', $organization_hp_code)
+            $observation_cases_today = OrganizationObservationCases::where('org_code', $organization_org_code)
                 ->whereDate('created_at', date('Y-m-d'))
                 ->orderBy('created_at', 'desc')
                 ->get();
@@ -46,12 +46,12 @@ class ObservationCasesController extends Controller
             $response = FilterRequest::filter($request);
             $hpCodes = GetHealthpostCodes::filter($response);
     
-            $observation_cases = OrganizationObservationCases::whereIn('organization_observation_cases.hp_code', $hpCodes)
-                ->leftjoin('organizations', 'organization_observation_cases.hp_code', '=', 'organizations.hp_code')
+            $observation_cases = OrganizationObservationCases::whereIn('organization_observation_cases.org_code', $hpCodes)
+                ->leftjoin('organizations', 'organization_observation_cases.org_code', '=', 'organizations.org_code')
                 ->select('organization_observation_cases.*', 'organizations.name')
                 ->orderBy('organization_observation_cases.created_at', 'desc')
                 ->get()
-                ->groupBy('hp_code');
+                ->groupBy('org_code');
             $add_sum = $transfer_to_bed_sum = $return_to_home_sum = $add_today_sum = $transfer_to_bed_today_sum = $return_to_home_today_sum = 0;
             foreach($observation_cases as $case) {
                 $add_sum += $case->sum('add');
@@ -59,13 +59,13 @@ class ObservationCasesController extends Controller
                 $return_to_home_sum += $case->sum('return_to_home');
             }
 
-            $observation_cases_today = OrganizationObservationCases::whereIn('organization_observation_cases.hp_code', $hpCodes)
-                ->leftjoin('organizations', 'organization_observation_cases.hp_code', '=', 'organizations.hp_code')
+            $observation_cases_today = OrganizationObservationCases::whereIn('organization_observation_cases.org_code', $hpCodes)
+                ->leftjoin('organizations', 'organization_observation_cases.org_code', '=', 'organizations.org_code')
                 ->select('organization_observation_cases.*', 'organizations.name')
                 ->whereDate('organization_observation_cases.created_at', date('Y-m-d'))
                 ->orderBy('organization_observation_cases.created_at', 'desc')
                 ->get()
-                ->groupBy('hp_code');
+                ->groupBy('org_code');
             foreach($observation_cases_today as $cases) {
                 $add_today_sum += $cases->sum('add');
                 $transfer_to_bed_today_sum += $cases->sum('transfer_to_bed');
@@ -84,8 +84,8 @@ class ObservationCasesController extends Controller
      */
     public function create()
     {
-        $organization_hp_code = DB::table('organizations')->where('token', auth()->user()->token)->first()->hp_code;
-        return view('backend.observation-cases.create', compact('organization_hp_code'));
+        $organization_org_code = DB::table('organizations')->where('token', auth()->user()->token)->first()->org_code;
+        return view('backend.observation-cases.create', compact('organization_org_code'));
     }
 
     /**
@@ -101,8 +101,8 @@ class ObservationCasesController extends Controller
             return redirect()->back();
         }
         try{
-            // $organization_hp_code = DB::table('organizations')->where('token', auth()->user()->token)->first()->hp_code;
-            // $request['hp_code'] = $organization_hp_code;
+            // $organization_org_code = DB::table('organizations')->where('token', auth()->user()->token)->first()->org_code;
+            // $request['org_code'] = $organization_org_code;
             OrganizationObservationCases::create($request->all());
 
             $request->session()->flash('message', 'Data Inserted successfully');

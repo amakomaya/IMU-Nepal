@@ -47,17 +47,17 @@ class CasesPaymentController extends Controller
         ){
             $final_data = [];
             $request->session()->flash('message', 'Please select all the above filters to view the line listing data of the selected organization within the selected date range.');
-            return view('backend.cases.reports.monthly-line-listing', compact('final_data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+            return view('backend.cases.reports.monthly-line-listing', compact('final_data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','org_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
         }
      
         $from_date_en = Carbon::parse($filter_date['from_date'])->toDateString();
         $to_date_en = Carbon::parse($filter_date['to_date'])->toDateString();
 
-        $data = PaymentCase::join('organizations', 'payment_cases.hp_code', '=', 'organizations.hp_code')
+        $data = PaymentCase::join('organizations', 'payment_cases.org_code', '=', 'organizations.org_code')
             ->leftjoin('provinces', 'provinces.id', '=', 'organizations.province_id')
             ->leftjoin('districts', 'districts.id', '=', 'organizations.district_id')
             ->leftjoin('municipalities', 'municipalities.id', '=', 'organizations.municipality_id')
-            ->whereIn('payment_cases.hp_code', $hpCodes)
+            ->whereIn('payment_cases.org_code', $hpCodes)
             ->whereIn('organizations.hospital_type', [3,5,6])
             ->whereDate('register_date_en', '<=', $to_date_en)
             ->where(function ($query) use ($from_date_en){
@@ -239,7 +239,7 @@ class CasesPaymentController extends Controller
             }
         }
         
-        return view('backend.cases.reports.monthly-line-listing', compact('final_data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+        return view('backend.cases.reports.monthly-line-listing', compact('final_data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','org_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
 
     }
 
@@ -257,18 +257,18 @@ class CasesPaymentController extends Controller
         {
             $final_data = [];
             $request->session()->flash('message', 'Please select the above filters to view the data within the selected date range.');
-            return view('backend.cases.reports.overview', compact('final_data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+            return view('backend.cases.reports.overview', compact('final_data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','org_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
         }
      
         $from_date_en = Carbon::parse($filter_date['from_date'])->toDateString();
         $to_date_en = Carbon::parse($filter_date['to_date'])->toDateString();
 
-        $data = PaymentCase::join('organizations', 'payment_cases.hp_code', '=', 'organizations.hp_code')
+        $data = PaymentCase::join('organizations', 'payment_cases.org_code', '=', 'organizations.org_code')
             ->leftjoin('provinces', 'provinces.id', '=', 'organizations.province_id')
             ->leftjoin('districts', 'districts.id', '=', 'organizations.district_id')
             ->leftjoin('municipalities', 'municipalities.id', '=', 'organizations.municipality_id')
             ->where('payment_cases.self_free', 2)
-            ->whereIn('payment_cases.hp_code', $hpCodes)
+            ->whereIn('payment_cases.org_code', $hpCodes)
             ->whereIn('organizations.hospital_type', [3,5,6])
             ->whereDate('register_date_en', '<=', $to_date_en)
             ->where(function ($query) use ($from_date_en){
@@ -279,7 +279,7 @@ class CasesPaymentController extends Controller
                 'organizations.name as name',
                 'organizations.id as healthpost_id',
                 'organizations.phone',
-                'organizations.hp_code as hp_code',
+                'organizations.org_code as org_code',
                 'provinces.province_name',
                 'districts.district_name',
                 'municipalities.municipality_name',
@@ -426,7 +426,7 @@ class CasesPaymentController extends Controller
             }                
         }
 
-        return view('backend.cases.reports.overview', compact('final_data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+        return view('backend.cases.reports.overview', compact('final_data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','org_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
     }
 
     public function dailyListing(Request $request){
@@ -444,7 +444,7 @@ class CasesPaymentController extends Controller
         ){
             $final_data = $grandsum = [];
             $request->session()->flash('message', 'Please select all the above filters to view the data within the selected date range.');
-            return view('backend.cases.reports.daily-listing', compact('final_data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days', 'grandsum'));
+            return view('backend.cases.reports.daily-listing', compact('final_data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','org_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days', 'grandsum'));
         }
 
         $data = \DB::table('payment_cases')->whereIn('organizations.hospital_type', [3,5,6]);
@@ -461,12 +461,12 @@ class CasesPaymentController extends Controller
             $data = $data->where('organizations.municipality_id', $response['municipality_id']);
         }
 
-        if ($response['hp_code'] !== null){
-            $data = $data->where('organizations.hp_code', $response['hp_code']);
+        if ($response['org_code'] !== null){
+            $data = $data->where('organizations.org_code', $response['org_code']);
         }
 
         $daily_cases = $data
-            ->join('organizations', 'payment_cases.hp_code', '=', 'organizations.hp_code')
+            ->join('organizations', 'payment_cases.org_code', '=', 'organizations.org_code')
             ->where(function($query) use ($filter_date) {
                 return $query
                     ->whereDate('payment_cases.register_date_en', '>', $filter_date['from_date']->toDateString())
@@ -580,7 +580,7 @@ class CasesPaymentController extends Controller
         $grandsum['total_ventilator'] = $total_ventilator;
         $grandsum['grand_total_cost'] = $grand_total_cost;
 
-        return view('backend.cases.reports.daily-listing', compact('final_data', 'grandsum', 'provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+        return view('backend.cases.reports.daily-listing', compact('final_data', 'grandsum', 'provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','org_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
 
     }
 
@@ -605,11 +605,11 @@ class CasesPaymentController extends Controller
         $from_date_en = Carbon::parse($filter_date['from_date'])->toDateString();
         $to_date_en = Carbon::parse($filter_date['to_date'])->toDateString();
 
-        $data = PaymentCase::join('organizations', 'payment_cases.hp_code', '=', 'organizations.hp_code')
+        $data = PaymentCase::join('organizations', 'payment_cases.org_code', '=', 'organizations.org_code')
             ->leftjoin('provinces', 'provinces.id', '=', 'organizations.province_id')
             ->leftjoin('districts', 'districts.id', '=', 'organizations.district_id')
             ->leftjoin('municipalities', 'municipalities.id', '=', 'organizations.municipality_id')
-            ->whereIn('payment_cases.hp_code', $hpCodes);
+            ->whereIn('payment_cases.org_code', $hpCodes);
 
         if ($response['hospital_type'] !== null){
             $data = $data->where('organizations.hospital_type', $response['hospital_type']);
@@ -746,7 +746,7 @@ class CasesPaymentController extends Controller
             }
         }
 
-        return view('backend.cases.reports.situation-report', compact('final_data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','hp_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
+        return view('backend.cases.reports.situation-report', compact('final_data','provinces','districts','municipalities','organizations','province_id','district_id','municipality_id','org_code','from_date','to_date', 'select_year', 'select_month', 'reporting_days'));
 
     }
 

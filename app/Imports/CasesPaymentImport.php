@@ -55,9 +55,9 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
         });
         $hpCode = '';
         if($importedBy->role === 'healthworker') {
-          $hpCode = \App\Models\OrganizationMember::where('token', $importedBy->token)->first()->hp_code;
+          $hpCode = \App\Models\OrganizationMember::where('token', $importedBy->token)->first()->org_code;
         } else {
-          $hpCode = \App\Models\Organization::where('token', auth()->user()->token)->first()->hp_code;
+          $hpCode = \App\Models\Organization::where('token', auth()->user()->token)->first()->org_code;
         }
         $this->enums = array(
           'gender'=> array( 'male' => 1, 'female' => 2, 'other' => 3 ),
@@ -159,7 +159,7 @@ class CasesPaymentImport implements ToModel, WithChunkReading, WithValidation, W
             'is_death' => null,
             'is_in_imu' => 0,
             'method_of_diagnosis' => $row['method_of_diagnosis'],
-            'hp_code' => $this->hpCode,
+            'org_code' => $this->hpCode,
             'reg_dev' => 'excel',
             'province_id' => $row['province'],
             'district_id' => $row['district'],

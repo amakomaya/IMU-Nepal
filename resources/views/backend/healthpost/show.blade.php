@@ -71,7 +71,7 @@
                                 </tr>                                         
                                 <tr>
                                     <th>Hp Code</th>
-                                    <td>{{$data->hp_code}}</td>
+                                    <td>{{$data->org_code}}</td>
                                 </tr>                                     
                                 <tr>
                                     <th>Phone</th>

@@ -28,7 +28,7 @@ class CovidImmunizationController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['hp_code'] = $request->hp_code;
+        $data['org_code'] = $request->org_code;
         $data['municipality_id'] = MunicipalityInfo::where('token', auth()->user()->token)->first()->municipality_id;
         CovidImmunization::create($data);
         $request->session()->flash('message', 'Data Send for Immunization successfully');
@@ -38,7 +38,7 @@ class CovidImmunizationController extends Controller
     public function immunizationListByDistrictLogin(Request $request)
     {
         $data = $request->all();
-        $data['hp_code'] = $request->hp_code;
+        $data['org_code'] = $request->org_code;
         $data['municipality_id'] = auth()->user()->token;
         CovidImmunization::create($data);
         $request->session()->flash('message', 'Data Send for Immunization successfully');
@@ -48,9 +48,9 @@ class CovidImmunizationController extends Controller
     public function show(Request $request)
     {
         try{
-            $hp_code = $request->hp_code;
+            $org_code = $request->org_code;
             $currentDate = Carbon::now()->format('Y-m-d');
-            $data = CovidImmunization::where('hp_code', $hp_code)
+            $data = CovidImmunization::where('org_code', $org_code)
                 ->where('expire_date', '>=', $currentDate)
                 ->pluck('data_list');
 
@@ -76,9 +76,9 @@ class CovidImmunizationController extends Controller
     public function showDataByUserLogin()
     {
         try{
-            $hp_code = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
+            $org_code = OrganizationMember::where('token', auth()->user()->token)->first()->org_code;
             $currentDate = Carbon::now()->format('Y-m-d');
-            $data = CovidImmunization::where('hp_code', $hp_code)
+            $data = CovidImmunization::where('org_code', $org_code)
                 ->where('expire_date', '>=', $currentDate)
                 ->pluck('data_list');
 
@@ -103,10 +103,10 @@ class CovidImmunizationController extends Controller
 
     public function immunized(Request $request){
         try{
-            $hp_code = OrganizationMember::where('token', auth()->user()->token)->first()->hp_code;
+            $org_code = OrganizationMember::where('token', auth()->user()->token)->first()->org_code;
 
-            $check_hp_code = collect($hp_code)->merge(auth()->user()->token)->toArray();
-            $ids = VaccinationRecord::whereIn('hp_code', $check_hp_code)->pluck('vaccinated_id');
+            $check_org_code = collect($org_code)->merge(auth()->user()->token)->toArray();
+            $ids = VaccinationRecord::whereIn('org_code', $check_org_code)->pluck('vaccinated_id');
 
             $response = HealthProfessional::whereIn('id', $ids)->with('municipality');
 

@@ -17,8 +17,8 @@ class HealthpostController extends Controller
      */
     public function index(Request $request)
     {
-        $hpCode = $request->hp_code;
-        $heathpost = Organization::where([['hp_code', $hpCode],['status', 1]])->get();
+        $hpCode = $request->org_code;
+        $heathpost = Organization::where([['org_code', $hpCode],['status', 1]])->get();
         return response()->json($heathpost);
     }
 
@@ -31,18 +31,18 @@ class HealthpostController extends Controller
     public function store(Request $request)
     {
         $json = json_decode($request->getContent(), true);
-        $hp_code=array();
+        $org_code=array();
         foreach ($json as $data) {
             $healthpost = new Organization;
             foreach ($data as $key => $record) {
                 $healthpost->$key = $record;
-                if($key=="hp_code"){
-                    $hp_code[]['hp_code'] = $record;
+                if($key=="org_code"){
+                    $org_code[]['org_code'] = $record;
                 }
             }
             $healthpost->save();
         }
-        return response()->json($hp_code);
+        return response()->json($org_code);
     }
 
     /**
@@ -54,7 +54,7 @@ class HealthpostController extends Controller
     public function show(Request $request, $id)
     {
         
-        $hpCode = $request->hp_code;
+        $hpCode = $request->org_code;
         $model = $this->findModelHealthpost($hpCode);
         if(count($this->msg)>0){
             return response()->json($this->msg);
@@ -72,23 +72,23 @@ class HealthpostController extends Controller
     public function update(Request $request, $id)
     {
         $json = json_decode($request->getContent(), true);
-        $hp_code=array();
+        $org_code=array();
         foreach ($json as $data) {
-            $healthpost = $this->findModelHealthpost($data['hp_code']);
+            $healthpost = $this->findModelHealthpost($data['org_code']);
             if(count($this->msg)>0){
                 return response()->json($this->msg);
             }
             if($data['updated_at']>=$healthpost->updated_at){
                 foreach ($data as $key => $record) {
                     $healthpost->$key = $record;
-                    if($key=="hp_code"){
-                        $hp_code[]['hp_code'] = $record;
+                    if($key=="org_code"){
+                        $org_code[]['org_code'] = $record;
                     }
                 }
                 $healthpost->save();
             }
         }
-        return response()->json($hp_code);
+        return response()->json($org_code);
     }
 
     /**
@@ -102,8 +102,8 @@ class HealthpostController extends Controller
         //
     }
 
-    public function findModelHealthpost($hp_code){
-        if (($model = Organization::where('hp_code', $hp_code)->get()->first()) !== null) {
+    public function findModelHealthpost($org_code){
+        if (($model = Organization::where('org_code', $org_code)->get()->first()) !== null) {
             return $model;
         } else {
             $this->msg = ['name'=>'Not Found', 'message'=>'The requested page doesn\'t exist', 'status'=>'404'];
