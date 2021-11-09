@@ -21,6 +21,12 @@
                 
             </a>
         </li>
+        <li>
+            <a href="{{ route('cict-tracing-transferred') }}">
+                <i class="fa fa-arrows-h" aria-hidden="true" style="color: blue;"></i>
+                Transferred Cases
+            </a>
+        </li>
         @if(auth()->user()->role == 'province')
         <ul class="nav nav-second-level">
             <li>
