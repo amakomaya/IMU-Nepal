@@ -876,8 +876,12 @@ class CictTracingController extends Controller
 
     public function cictTransfer(Request $request){
         $data = json_decode($request->getContent(), true);
-        if($data['platform'] == '2'){
-            $regdev = 'mobile';
+        if(isset($data['platform'])){
+            if($data['platform'] == '2'){
+                $regdev = 'mobile';
+            } else {
+                $regdev = 'web';
+            }
         } else {
             $regdev = 'web';
         }
