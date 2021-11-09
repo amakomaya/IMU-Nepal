@@ -159,52 +159,28 @@ class DashboardController extends Controller
             $antigen_positive = Cache::remember('antigen_positive-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
                 return SampleCollection::whereIn('received_by_hp_code', $hpCodes)
                     ->where('service_for', '2')->where('result', '3')
-                    ->where(function($q) use($date_chosen){
-                        $q->whereDate('reporting_date_en', $date_chosen)
-                            ->orWhere(function($q2) use($date_chosen) {
-                                $q2->whereDate('created_at', $date_chosen)
-                                    ->whereNull('received_date_en');
-                            });
-                    })
+                    ->whereDate('reporting_date_en', $date_chosen)
                     ->active()
                     ->get()->count();
             });
             $antigen_negative = Cache::remember('antigen_negative-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
                 return SampleCollection::whereIn('received_by_hp_code', $hpCodes)
                     ->where('service_for', '2')->where('result', '4')
-                    ->where(function($q) use($date_chosen){
-                        $q->whereDate('reporting_date_en', $date_chosen)
-                            ->orWhere(function($q2) use($date_chosen) {
-                                $q2->whereDate('created_at', $date_chosen)
-                                    ->whereNull('received_date_en');
-                            });
-                    })
+                    ->whereDate('reporting_date_en', $date_chosen)
                     ->active()
                     ->get()->count();
             });
             $pcr_positive = Cache::remember('pcr_positive-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
                 return SampleCollection::whereIn('received_by_hp_code', $hpCodes)
                     ->where('service_for', '1')->where('result', '3')
-                    ->where(function($q) use($date_chosen){
-                        $q->whereDate('reporting_date_en', $date_chosen)
-                            ->orWhere(function($q2) use($date_chosen) {
-                                $q2->whereDate('created_at', $date_chosen)
-                                    ->whereNull('received_date_en');
-                            });
-                    })
+                    ->whereDate('reporting_date_en', $date_chosen)
                     ->active()
                     ->get()->count();
             });
             $pcr_negative = Cache::remember('pcr_negative-' . $date_chosen . '-' . $temp_name, 60 * 60, function () use ($date_chosen, $hpCodes) {
                 return SampleCollection::whereIn('received_by_hp_code', $hpCodes)
                     ->where('service_for', '1')->where('result', '4')
-                    ->where(function($q) use($date_chosen){
-                        $q->whereDate('reporting_date_en', $date_chosen)
-                            ->orWhere(function($q2) use($date_chosen) {
-                                $q2->whereDate('created_at', $date_chosen)
-                                    ->whereNull('received_date_en');
-                            });
-                    })
+                    ->whereDate('reporting_date_en', $date_chosen)
                     ->active()
                     ->get()->count();
             });
