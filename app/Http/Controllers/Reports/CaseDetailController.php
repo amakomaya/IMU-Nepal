@@ -22,7 +22,7 @@ class CaseDetailController extends Controller
     function getCaseDetail(Request $request)
     {
         $token = $request->token;
-        $data = SuspectedCase::with(['sampleCollection', 'healthworker', 'healthpost', 'district',
+        $data = SuspectedCase::with(['sampleCollection', 'healthworker', 'organization', 'district',
             'municipality', 'caseManagement', 'clinicalParameter',
             'laboratoryParameter', 'registerBy', 'symptomsRelation',
             'contactTracing' => function ($q) {
@@ -32,7 +32,7 @@ class CaseDetailController extends Controller
         ->where('token', $token)->first();
 
         if(empty($data)) {
-            $data = SuspectedCaseOld::with(['sampleCollection', 'healthworker', 'healthpost', 'district',
+            $data = SuspectedCaseOld::with(['sampleCollection', 'healthworker', 'organization', 'district',
             'municipality', 'caseManagement', 'clinicalParameter', 'contactDetail',
             'contactFollowUp', 'contactTracing' , 'laboratoryParameter', 'registerBy', 'symptomsRelation'
             ])
@@ -45,7 +45,7 @@ class CaseDetailController extends Controller
 
     public function cictDetail(Request $request){
         $token = $request->token;
-        $data = SuspectedCase::with(['sampleCollection', 'healthworker', 'healthpost', 'district',
+        $data = SuspectedCase::with(['sampleCollection', 'healthworker', 'organization', 'district',
                 'municipality', 'caseManagement', 'clinicalParameter', 'laboratoryParameter', 'registerBy', 'symptomsRelation', 
                 'contactTracing' => function ($q) {
                     $q->with('contactDetail', 'contactFollowUp');

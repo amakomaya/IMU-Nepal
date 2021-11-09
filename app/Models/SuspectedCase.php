@@ -57,7 +57,7 @@ class SuspectedCase extends Model
     // protected $appends = ['anc_with_protocol', 'anc_visits'];
     protected $orderable = ['name', 'age', 'lmp_date_en', 'created_at', 'register_date_en'];
 
-    protected $supportedRelations = ['sampleCollection', 'latestAnc', 'healthworker' ,'healthpost', 'district', 'municipality'];
+    protected $supportedRelations = ['sampleCollection', 'latestAnc', 'healthworker' ,'organization', 'district', 'municipality'];
 
     public function scopeWithAll($query)
     {

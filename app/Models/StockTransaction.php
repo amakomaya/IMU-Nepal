@@ -34,7 +34,7 @@ class StockTransaction extends Model
 
   }
 
-  public function healthpost()
+  public function organization()
   {
       return $this->belongsTo(Organization::class, 'org_code', 'org_code');
 
@@ -45,7 +45,7 @@ class StockTransaction extends Model
       return $this->belongsTo(User::class, 'user_id');
   }
 
-  protected $supportedRelations = ['healthpost', 'asset', 'user'];
+  protected $supportedRelations = ['organization', 'asset', 'user'];
 
   public function scopeWithAll($query)
   {

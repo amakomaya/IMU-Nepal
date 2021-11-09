@@ -887,11 +887,11 @@ Route::get('/v1/check-by-sid-or-lab-id', function (Request $request) {
     }
 
     $case = SuspectedCase::where('token', $sample_detail->case_token)
-        ->with(['healthworker' ,'healthpost', 'district', 'municipality'])
+        ->with(['healthworker' ,'organization', 'district', 'municipality'])
         ->first();
     if(empty($case)){
         $case = SuspectedCaseOld::where('token', $sample_detail->case_token)
-        ->with(['healthworker' ,'healthpost', 'district', 'municipality'])
+        ->with(['healthworker' ,'organization', 'district', 'municipality'])
         ->first();
     }
         

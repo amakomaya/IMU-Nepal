@@ -67,8 +67,7 @@ class WomenController extends Controller
         }
         $woman = $woman->whereIn('org_code', $hpCodes)
             ->doesnthave('sampleCollection')
-            ->with(['municipality',
-                'healthpost']);
+            ->with(['municipality', 'organization']);
 
         $total = clone $woman;
 
@@ -104,8 +103,7 @@ class WomenController extends Controller
                     $q->where('service_for', '!=', "2")->whereIn('result', [0,2]);
                 });
             })
-            ->with(['municipality', 'latestAnc', 'sampleCollection',
-                'healthpost']);
+            ->with(['municipality', 'latestAnc', 'sampleCollection', 'organization']);
         $total = clone $woman;
 
         return response()->json([
@@ -139,8 +137,7 @@ class WomenController extends Controller
                     $q->where('service_for', "2")->whereIn('result', [0,2]);
                 });
             })
-            ->with(['municipality', 'latestAnc', 'sampleCollection',
-                'healthpost']);
+            ->with(['municipality', 'latestAnc', 'sampleCollection', 'organization']);
         $total = clone $woman;
 
         return response()->json([
@@ -180,7 +177,7 @@ class WomenController extends Controller
                 'latestAnc' => function ($q) {
                     $q->with('getOrganization');
                 },
-                'healthpost'
+                'organization'
             ]);
 
         $total = clone $woman;
@@ -219,7 +216,7 @@ class WomenController extends Controller
                 'latestAnc' => function ($q) {
                     $q->with('getOrganization');
                 },
-                'healthpost'
+                'organization'
             ]);
 
         $total = clone $woman;
@@ -253,7 +250,7 @@ class WomenController extends Controller
         $woman->whereIn('org_code', $hpCodes)->whereHas('sampleCollection', function ($q) {
             $q->where('service_for', '!=', "2")->where('result', '=', 3);
         })->with([
-                'sampleCollection','healthpost' => function ($q) {
+                'sampleCollection','organization' => function ($q) {
                     $q->select('name', 'org_code');
                 },
                 'latestAnc' => function ($q) {
@@ -305,7 +302,7 @@ class WomenController extends Controller
             'latestAnc' => function ($q) {
                 $q->with('getOrganization');
             },
-            'healthpost']);
+            'organization']);
         $total = clone $woman;
 
         return response()->json([
@@ -360,7 +357,7 @@ class WomenController extends Controller
         $woman->whereIn('org_code', $hpCodes)
             ->whereHas('sampleCollection', function ($q) {
                 $q->where('service_for', '!=', "2")->where('result', '=', 9);
-            })->with(['sampleCollection','healthpost', 'latestAnc', 'municipality']);
+            })->with(['sampleCollection','organization', 'latestAnc', 'municipality']);
         $total = clone $woman;
 
         return response()->json([
@@ -394,8 +391,7 @@ class WomenController extends Controller
                     $q->where('service_for', "2")->where('result', 9);
                 });
             })
-            ->with(['municipality', 'latestAnc', 'sampleCollection',
-                'healthpost']);
+            ->with(['municipality', 'latestAnc', 'sampleCollection', 'organization']);
         $total = clone $woman;
 
         return response()->json([
@@ -570,7 +566,7 @@ class WomenController extends Controller
         }
 
         $woman = $woman->whereIn('org_code', $hpCodes)->casesRecoveredList()
-        ->with(['sampleCollection','healthpost' => function ($q) {
+        ->with(['sampleCollection', 'organization' => function ($q) {
             $q->select('name', 'org_code');
         }, 'latestAnc', 'district', 'municipality']);
         return response()->json([
@@ -591,7 +587,7 @@ class WomenController extends Controller
         
         $woman = $woman->whereIn('org_code', $hpCodes)
             ->casesDeathList()
-            ->with(['sampleCollection','healthpost' => function ($q) {
+            ->with(['sampleCollection','organization' => function ($q) {
                 $q->select('name', 'org_code');
             }, 'latestAnc', 'district', 'municipality']);
         return response()->json([
