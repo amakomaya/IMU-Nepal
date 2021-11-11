@@ -16,11 +16,14 @@
                     <div class="panel-body">
                         <div class="col-lg-12" style="margin-bottom: 20px;">
                             <form action="" method="GET">
-                                <div id ="from_only"></div>
+                                <div id ="from_to"></div>
                                 <div class="form-group col-sm-3">
                                     <button type="submit" class="btn btn-success">Submit</button>
                                 </div>
                             </form>
+                            <div class="row col-md-12" style="padding-left: 30px;">
+                                Reporting Days: {{ $reporting_days }}
+                            </div>
                         </div>
                         <div class="clearfix"></div>
                         <div class="dataTable_wrapper">
@@ -88,8 +91,8 @@
                 ]
             });
 
-            $.get( "{{route("admin.select-from-only")}}?from_date={{$from_date}}",function(data){
-                $("#from_only").html(data);
+            $.get("{{route("admin.select-from-to")}}?from_date={{$from_date}}&to_date={{$to_date}}",function(data){
+                $("#from_to").html(data);
             });
         });
     </script>

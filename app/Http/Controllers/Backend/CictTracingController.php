@@ -689,15 +689,20 @@ class CictTracingController extends Controller
         return redirect()->back();
     }
 
-    private function dataFromOnly(Request $request)
+    private function dataFromAndTo(Request $request)
     {
         if (!empty($request['from_date'])) {
             $from_date_array = explode("-", $request['from_date']);
             $from_date_eng = Carbon::parse(Calendar::nep_to_eng($from_date_array[0], $from_date_array[1], $from_date_array[2])->getYearMonthDay())->startOfDay();
         }
+        if (!empty($request['to_date'])) {
+            $to_date_array = explode("-", $request['to_date']);
+            $to_date_eng = Carbon::parse(Calendar::nep_to_eng($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay())->endOfDay();
+        }
 
         return [
             'from_date' =>  $from_date_eng ?? Carbon::now()->startOfDay(),
+            'to_date' => $to_date_eng ?? Carbon::now()->endOfDay()
         ];
     }
 
@@ -708,7 +713,8 @@ class CictTracingController extends Controller
             $$key = $value;
         }
 
-        $filter_date = $this->dataFromOnly($request);
+        $filter_date = $this->dataFromAndTo($request);
+        $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']) + 1;
         
         $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->province_id;
         $locations = District::where('province_id', $province_id)->get();
@@ -716,18 +722,18 @@ class CictTracingController extends Controller
         $cict_tracings = CictTracing::leftjoin('organizations', 'organizations.org_code', '=', 'cict_tracings.org_code')
             ->whereNotNull('cict_tracings.cict_initiated_date')
             ->select('cict_tracings.token', 'organizations.district_id')
-            ->whereDate('cict_tracings.created_at', $filter_date['from_date']->toDateString())
+            ->whereBetween(\DB::raw('DATE(cict_tracings.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->whereIn('cict_tracings.org_code', $hpCodes)->get()->groupBy('district_id');
         $contacts = CictContact::leftjoin('organizations', 'organizations.org_code', '=', 'cict_contacts.org_code')
             ->select('cict_contacts.token', 'organizations.district_id')
-            ->whereDate('cict_contacts.created_at', $filter_date['from_date']->toDateString())
+            ->whereBetween(\DB::raw('DATE(cict_contacts.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->whereIn('cict_contacts.org_code', $hpCodes)->get()->groupBy('district_id');
         $follow_ups = CictFollowUp::leftjoin('organizations', 'organizations.org_code', '=', 'cict_follow_ups.org_code')
             ->select('cict_follow_ups.token', 'organizations.district_id')
-            ->whereDate('cict_follow_ups.created_at', $filter_date['from_date']->toDateString())
+            ->whereBetween(\DB::raw('DATE(cict_follow_ups.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->whereIn('cict_follow_ups.org_code', $hpCodes)->get()->groupBy('district_id');
 
-        return view('backend.cict-tracing.reports.province-districtwise-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date'));
+        return view('backend.cict-tracing.reports.province-districtwise-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date', 'to_date', 'reporting_days'));
     }
 
     public function provinceMunicipalitywiseReport(Request $request){
@@ -737,7 +743,8 @@ class CictTracingController extends Controller
             $$key = $value;
         }
 
-        $filter_date = $this->dataFromOnly($request);
+        $filter_date = $this->dataFromAndTo($request);
+        $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']) + 1;
         
         $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->province_id;
         $locations = Municipality::where('province_id', $province_id)->get();
@@ -745,18 +752,18 @@ class CictTracingController extends Controller
         $cict_tracings = CictTracing::leftjoin('organizations', 'organizations.org_code', '=', 'cict_tracings.org_code')
             ->whereNotNull('cict_tracings.cict_initiated_date')
             ->select('cict_tracings.token', 'organizations.municipality_id')
-            ->whereDate('cict_tracings.created_at', $filter_date['from_date']->toDateString())
+            ->whereBetween(\DB::raw('DATE(cict_tracings.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->whereIn('cict_tracings.org_code', $hpCodes)->get()->groupBy('municipality_id');
         $contacts = CictContact::leftjoin('organizations', 'organizations.org_code', '=', 'cict_contacts.org_code')
             ->select('cict_contacts.token', 'organizations.municipality_id')
-            ->whereDate('cict_contacts.created_at', $filter_date['from_date']->toDateString())
+            ->whereBetween(\DB::raw('DATE(cict_contacts.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->whereIn('cict_contacts.org_code', $hpCodes)->get()->groupBy('municipality_id');
         $follow_ups = CictFollowUp::leftjoin('organizations', 'organizations.org_code', '=', 'cict_follow_ups.org_code')
             ->select('cict_follow_ups.token', 'organizations.municipality_id')
-            ->whereDate('cict_follow_ups.created_at', $filter_date['from_date']->toDateString())
+            ->whereBetween(\DB::raw('DATE(cict_follow_ups.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->whereIn('cict_follow_ups.org_code', $hpCodes)->get()->groupBy('municipality_id');
 
-        return view('backend.cict-tracing.reports.province-municipalitywise-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date'));
+        return view('backend.cict-tracing.reports.province-municipalitywise-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date', 'to_date', 'reporting_days'));
     }
 
     public function districtMunicipalityReport(Request $request){
@@ -766,7 +773,8 @@ class CictTracingController extends Controller
             $$key = $value;
         }
 
-        $filter_date = $this->dataFromOnly($request);
+        $filter_date = $this->dataFromAndTo($request);
+        $reporting_days = $filter_date['to_date']->diffInDays($filter_date['from_date']) + 1;
         
         $district_id = DistrictInfo::where('token', auth()->user()->token)->first()->district_id;
         $locations = Municipality::where('district_id', $district_id)->get();
@@ -774,18 +782,18 @@ class CictTracingController extends Controller
         $cict_tracings = CictTracing::leftjoin('organizations', 'organizations.org_code', '=', 'cict_tracings.org_code')
             ->whereNotNull('cict_tracings.cict_initiated_date')
             ->select('cict_tracings.token', 'organizations.municipality_id')
-            ->whereDate('cict_tracings.created_at', $filter_date['from_date']->toDateString())
+            ->whereBetween(\DB::raw('DATE(cict_tracings.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->whereIn('cict_tracings.org_code', $hpCodes)->get()->groupBy('municipality_id');
         $contacts = CictContact::leftjoin('organizations', 'organizations.org_code', '=', 'cict_contacts.org_code')
             ->select('cict_contacts.token', 'organizations.municipality_id')
-            ->whereDate('cict_contacts.created_at', $filter_date['from_date']->toDateString())
+            ->whereBetween(\DB::raw('DATE(cict_contacts.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->whereIn('cict_contacts.org_code', $hpCodes)->get()->groupBy('municipality_id');
         $follow_ups = CictFollowUp::leftjoin('organizations', 'organizations.org_code', '=', 'cict_follow_ups.org_code')
             ->select('cict_follow_ups.token', 'organizations.municipality_id')
-            ->whereDate('cict_follow_ups.created_at', $filter_date['from_date']->toDateString())
+            ->whereBetween(\DB::raw('DATE(cict_follow_ups.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->whereIn('cict_follow_ups.org_code', $hpCodes)->get()->groupBy('municipality_id');
 
-        return view('backend.cict-tracing.reports.district-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date'));
+        return view('backend.cict-tracing.reports.district-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date', 'to_date', 'reporting_days'));
     }
 
     public function oldCictReport()
