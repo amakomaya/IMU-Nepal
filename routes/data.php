@@ -22,6 +22,8 @@ Route::get('api/cases-payment-death', 'Data\Api\WomenController@casesPaymentDeat
 Route::get('api/community-deaths', 'Data\Api\WomenController@communityDeathIndex');
 Route::get('api/cict-tracing', 'Data\Api\WomenController@CICTTracingList');
 Route::get('api/cict-transferred-list', 'Data\Api\WomenController@CICTTracingTransferredList');
+Route::get('api/cict-municipality-data-total', 'Backend\CictTracingController@cictMunicipalityDataTotal');
+Route::get('api/cict-municipality-data', 'Backend\CictTracingController@cictMunicipalityData');
 
 Route::get('api/lab/received-sample', 'Data\Api\WomenController@labAddReceivedIndex');
 Route::get('api/lab/received-sample-antigen', 'Data\Api\WomenController@labAddReceivedAntigenIndex');

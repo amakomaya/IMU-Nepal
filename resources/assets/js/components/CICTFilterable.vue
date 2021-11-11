@@ -12,9 +12,9 @@
         </div>
       </div>
       <div class="panel-body">
-        <div class="pull-right">
+        <!-- <div class="pull-right">
           <span class="label label-primary" style="font-size: 105%;">Total: {{ total }}</span>
-        </div>
+        </div> -->
         <div class="filter">
           <div class="filter-item" v-for="(f, i) in filterCandidates">
             <div class="filter-column">

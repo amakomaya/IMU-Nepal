@@ -59,7 +59,15 @@
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                 Report
                 <span class="label label-danger pull-right">Report</span>
-
+            </a>
+        </li>
+        @endif
+        @if(auth()->user()->role == 'municipality')
+        <li>
+            <a href="{{ route('cict-tracing.municipality-report') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Report
+                <span class="label label-danger pull-right">Report</span>
             </a>
         </li>
         @endif

@@ -796,6 +796,11 @@ class CictTracingController extends Controller
         return view('backend.cict-tracing.reports.district-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date', 'to_date', 'reporting_days'));
     }
 
+    public function municipalityReport()
+    {
+        return view('backend.cict-tracing.reports.municipality-report');
+    }
+
     public function oldCictReport()
     {
         return view('backend.cict-tracing.old-report.report');
@@ -933,5 +938,105 @@ class CictTracingController extends Controller
                 return response()->json('0');
             }
         }
+    }
+
+    public function cictMunicipalityData(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+
+        $date_chosen = Carbon::now()->toDateString();
+        if($request->date_selected){
+            switch($request->date_selected){
+                case '2':
+                    $date_chosen = Carbon::now()->subDays(1)->toDateString();
+                    break;
+                case '3':
+                    $date_chosen = Carbon::now()->subDays(2)->toDateString();
+                    break;
+                case '4':
+                    $date_chosen = Carbon::now()->subDays(3)->toDateString();
+                    break;
+                case '5':
+                    $date_chosen = Carbon::now()->subDays(4)->toDateString();
+                    break;
+                case '6':
+                    $date_chosen = Carbon::now()->subDays(5)->toDateString();
+                    break;
+                case '7':
+                    $date_chosen = Carbon::now()->subDays(6)->toDateString();
+                    break;
+                case '8':
+                    $date_chosen = Carbon::now()->subDays(7)->toDateString();
+                    break;
+                default:
+                    $date_chosen = Carbon::now()->toDateString();
+                    break;
+            }
+        }
+
+        $a_form_completed = CictTracing::whereIn('org_code', $hpCodes)
+            ->whereNotNull('cict_initiated_date')
+            ->whereDate('created_at', $date_chosen)
+            ->get()
+            ->count();
+        $a_form_incomplete = CictTracing::whereIn('org_code', $hpCodes)
+            ->whereNull('cict_initiated_date')
+            ->whereDate('created_at', $date_chosen)
+            ->get()
+            ->count();
+        
+        $b1_form_completed = CictContact::whereIn('org_code', $hpCodes)
+            ->whereNotNull('completion_date')
+            ->whereDate('created_at', $date_chosen)
+            ->get()
+            ->count();
+        $b1_form_incomplete = CictContact::whereIn('org_code', $hpCodes)
+            ->whereNull('completion_date')
+            ->whereDate('created_at', $date_chosen)
+            ->get()
+            ->count();
+
+        $data = [
+            'a_form_completed' => $a_form_completed,
+            'a_form_incomplete' => $a_form_incomplete,
+            'b1_form_completed' => $b1_form_completed,
+            'b1_form_incomplete' => $b1_form_incomplete
+        ];
+
+        return response()->json($data);
+    }
+
+    public function cictMunicipalityDataTotal(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+
+        $a_form_completed = CictTracing::whereIn('org_code', $hpCodes)
+            ->whereNotNull('cict_initiated_date')
+            ->get()
+            ->count();
+        $a_form_incomplete = CictTracing::whereIn('org_code', $hpCodes)
+            ->whereNull('cict_initiated_date')
+            ->get()
+            ->count();
+        
+        $b1_form_completed = CictContact::whereIn('org_code', $hpCodes)
+            ->whereNotNull('completion_date')
+            ->get()
+            ->count();
+        $b1_form_incomplete = CictContact::whereIn('org_code', $hpCodes)
+            ->whereNull('completion_date')
+            ->get()
+            ->count();
+
+        $data = [
+            'a_form_completed' => $a_form_completed,
+            'a_form_incomplete' => $a_form_incomplete,
+            'b1_form_completed' => $b1_form_completed,
+            'b1_form_incomplete' => $b1_form_incomplete
+        ];
+
+        return response()->json($data);
     }
 }

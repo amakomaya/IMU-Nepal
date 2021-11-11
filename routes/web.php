@@ -262,6 +262,7 @@ Route::get('/admin/cict-tracing/report/{case_id}', 'Backend\CictTracingControlle
 Route::get('/admin/cict-tracing/province-districtwise-report', 'Backend\CictTracingController@provinceDistrictwiseReport')->name('cict-tracing.province-districtwise-report')->middleware('role-control:province');
 Route::get('/admin/cict-tracing/province-municipalitywise-report', 'Backend\CictTracingController@provinceMunicipalitywiseReport')->name('cict-tracing.province-municipalitywise-report')->middleware('role-control:province');
 Route::get('/admin/cict-tracing/district-municipalitywise-report', 'Backend\CictTracingController@districtMunicipalityReport')->name('cict-tracing.district-municipalitywise-report')->middleware('role-control:dho');
+Route::get('/admin/cict-tracing/municipality-report', 'Backend\CictTracingController@municipalityReport')->name('cict-tracing.municipality-report')->middleware('role-control:municipality');
 Route::resource('/admin/cict-tracing', 'Backend\CictTracingController', ['names' => 'cict-tracing']);
 Route::get('/admin/cict-tracing-transferred', 'Backend\CictTracingController@cictTransferredList')->name('cict-tracing-transferred');
 
