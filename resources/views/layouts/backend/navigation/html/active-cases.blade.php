@@ -122,12 +122,6 @@
             </ul>
         </li>
         <li>
-            <a href="{{ route('cict-tracing-transferred') }}">
-                <i class="fa fa-arrows-h" aria-hidden="true" style="color: blue;"></i>
-                Transferred Cases
-            </a>
-        </li>
-        <li>
             <a href="#">
                 <i class="fa fa-file-pdf-o" aria-hidden="true" style="color: green;"></i> 
                 Situation Reports <span class="fa arrow"></span>
