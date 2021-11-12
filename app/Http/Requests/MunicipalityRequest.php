@@ -32,7 +32,7 @@ class MunicipalityRequest extends FormRequest
                         'phone' => 'required|string',
                         'province_id' => 'required|string',
                         'district_id' => 'required|string',
-                        'municipality_id' => 'required|string|unique:municipality_infos',
+                        'municipality_id' => 'required|string',
                         'office_address' => 'required|string',
                         'status' => 'required|numeric',
                         'phone' => 'nullable|regex:/(^([+0-9]+)(\d+)?$)/u|max:15',
