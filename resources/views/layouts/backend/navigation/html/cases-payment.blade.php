@@ -1,6 +1,6 @@
 <li @if(Request::segment(3) == 'monthly-line-listing' || Request::segment(3) == 'overview' || 
     Request::segment(3) == 'daily-listing'|| Request::segment(3) == 'situation-report'|| 
-    Request::segment(2) == 'cases-patient-detail' || Request::segment(3) == 'cases-report-payment') class="active" @endif>
+    Request::segment(2) == 'cases-patient-detail' || Request::segment(2) == 'cases-report-payment') class="active" @endif>
     <a href="#">
         <i class="fa fa-money" aria-hidden="true"></i>
 
