@@ -70,11 +70,11 @@ class WomenController extends Controller
             ->with(['municipality',
                 'healthpost']);
 
-        $total = clone $woman;
+
 
         return response()->json([
             'collection' => $woman->advancedFilter(),
-            'total' => $total->count()
+            
         ]);
     }
 
@@ -106,11 +106,11 @@ class WomenController extends Controller
             })
             ->with(['municipality', 'latestAnc', 'ancs',
                 'healthpost']);
-        $total = clone $woman;
+
 
         return response()->json([
             'collection' => $woman->advancedFilter(),
-            'total' => $total->count()
+            
         ]);
     }
 
@@ -141,11 +141,11 @@ class WomenController extends Controller
             })
             ->with(['municipality', 'latestAnc', 'ancs',
                 'healthpost']);
-        $total = clone $woman;
+
 
         return response()->json([
             'collection' => $woman->advancedFilter(),
-            'total' => $total->count()
+            
         ]);
     }
 
@@ -183,11 +183,11 @@ class WomenController extends Controller
                 'healthpost'
             ]);
 
-        $total = clone $woman;
+
 
         return response()->json([
                 'collection' => $woman->advancedFilter(),
-                'total' => $total->count()
+                
             ]);
     }
 
@@ -222,11 +222,11 @@ class WomenController extends Controller
                 'healthpost'
             ]);
 
-        $total = clone $woman;
+
 
         return response()->json([
                 'collection' => $woman->advancedFilter(),
-                'total' => $total->count()
+                
             ]);
     }
     
@@ -259,16 +259,16 @@ class WomenController extends Controller
                 'latestAnc' => function ($q) {
                     $q->with('getOrganization');
                 },
-                'municipality', 
-                'cictTracing' => function($q) {
+                'municipality',
+                'cictTracing' => function ($q) {
                     $q->with('organization');
                 }
             ]);
-        $total = clone $woman;
+
 
         return response()->json([
                 'collection' => $woman->advancedFilter(),
-                'total' => $total->count()
+                
             ]);
     }
 
@@ -298,19 +298,17 @@ class WomenController extends Controller
                 });
             })
         ->with([
-            'municipality','ancs', 
-            'cictTracing' => function($q) {
+            'municipality','ancs',
+            'cictTracing' => function ($q) {
                 $q->with('organization');
             },
             'latestAnc' => function ($q) {
                 $q->with('getOrganization');
             },
             'healthpost']);
-        $total = clone $woman;
 
         return response()->json([
             'collection' => $woman->advancedFilter(),
-            'total' => $total->count()
         ]);
     }
 
@@ -361,11 +359,11 @@ class WomenController extends Controller
             ->whereHas('ancs', function ($q) {
                 $q->where('service_for', '!=', "2")->where('result', '=', 9);
             })->with(['ancs','healthpost', 'latestAnc', 'municipality']);
-        $total = clone $woman;
+
 
         return response()->json([
                 'collection' => $woman->advancedFilter(),
-                'total' => $total->count()
+                
             ]);
     }
 
@@ -396,11 +394,11 @@ class WomenController extends Controller
             })
             ->with(['municipality', 'latestAnc', 'ancs',
                 'healthpost']);
-        $total = clone $woman;
+
 
         return response()->json([
             'collection' => $woman->advancedFilter(),
-            'total' => $total->count()
+            
         ]);
     }
 
@@ -420,9 +418,9 @@ class WomenController extends Controller
 
         $sample_token = $sample_token->where('service_for', '!=', '2')
             ->where(function ($q) use ($hpCodes, $user) {
-            $q->where('received_by', $user->token)
+                $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-        })->pluck('woman_token');
+            })->pluck('woman_token');
 
         $data = $data->whereIn('token', $sample_token)->withAll();
 
@@ -447,9 +445,9 @@ class WomenController extends Controller
 
         $sample_token = $sample_token->where('service_for', '2')
             ->where(function ($q) use ($hpCodes, $user) {
-            $q->where('received_by', $user->token)
+                $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-        })->pluck('woman_token');
+            })->pluck('woman_token');
 
         $data = $data->whereIn('token', $sample_token)->withAll();
 
@@ -474,9 +472,9 @@ class WomenController extends Controller
 
         $sample_token = $sample_token->where('service_for', '!=', '2')
             ->where(function ($q) use ($hpCodes, $user) {
-            $q->where('received_by', $user->token)
+                $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-        })->pluck('woman_token');
+            })->pluck('woman_token');
         $data = $data->whereIn('token', $sample_token)->withAll();
         return response()->json([
             'collection' => $data->advancedFilter()
@@ -499,9 +497,9 @@ class WomenController extends Controller
 
         $sample_token = $sample_token->where('service_for', '2')
             ->where(function ($q) use ($hpCodes, $user) {
-            $q->where('received_by', $user->token)
+                $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-        })->pluck('woman_token');
+            })->pluck('woman_token');
         $data = $data->whereIn('token', $sample_token)->withAll();
         return response()->json([
             'collection' => $data->advancedFilter()
@@ -523,9 +521,9 @@ class WomenController extends Controller
         }
         $sample_token = $sample_token->where('service_for', '!=', '2')
             ->where(function ($q) use ($hpCodes, $user) {
-            $q->where('received_by', $user->token)
+                $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-        })->pluck('woman_token');
+            })->pluck('woman_token');
         $data = $data->whereIn('token', $sample_token)->withAll();
 
         return response()->json([
@@ -548,9 +546,9 @@ class WomenController extends Controller
         }
         $sample_token = $sample_token->where('service_for', '2')
             ->where(function ($q) use ($hpCodes, $user) {
-            $q->where('received_by', $user->token)
+                $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-        })->pluck('woman_token');
+            })->pluck('woman_token');
         $data = $data->whereIn('token', $sample_token)->withAll();
 
         return response()->json([
@@ -608,7 +606,7 @@ class WomenController extends Controller
             ->whereHas('ancs', function ($q) {
                 $q->where('result', '3');
             })
-            ->with(['cictTracing' => function($q) {
+            ->with(['cictTracing' => function ($q) {
                 $q->with('organization');
             }])
             ->active()->withAll();
@@ -828,7 +826,7 @@ class WomenController extends Controller
             ->latest();
         $total = clone $data;
         $data = $data->advancedFilter();
-        return response()->json(['collection' => $data, 'total' => $total->count()]);
+        return response()->json(['collection' => $data, ]);
     }
 
     public function CICTTracingTransferredList(Request $request)
@@ -841,6 +839,6 @@ class WomenController extends Controller
             ->latest();
         $total = clone $data;
         $data = $data->advancedFilter();
-        return response()->json(['collection' => $data, 'total' => $total->count()]);
+        return response()->json(['collection' => $data, ]);
     }
 }
