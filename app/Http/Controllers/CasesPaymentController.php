@@ -20,7 +20,30 @@ class CasesPaymentController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        $organization = Organization::whereIn('hp_code', $hpCodes)->get();
+        if($request->type){
+            switch($request->type){
+                case '1':
+                    $org_type = ['3', '6'];
+                    break;
+                
+                case '2':
+                    $org_type = ['1'];
+                    break;
+            
+                case '3':
+                    $org_type = ['5'];
+                    break;
+                
+                default:
+                    $org_type = ['1','2','3','4','5','6','7'];
+            }
+        }
+
+        $organization = Organization::whereIn('hp_code', $hpCodes);
+        if($request->type){
+            $organization = $organization->whereIn('hospital_type', $org_type);
+        }
+        $organization = $organization->get();
 
         if ($request->has('selected_date')){
             $check_date = Carbon::parse($request->selected_date);
@@ -28,21 +51,34 @@ class CasesPaymentController extends Controller
         else{
             $check_date = Carbon::today();
         }
+
         if ($request->has('selected_date')){
             $period = Carbon::parse($request->selected_date)->format('Ymd');
-            $total = PaymentCase::whereIn('hp_code', $hpCodes)
-                ->where(function($q) use ($request) {
-                    $q->whereNull('date_of_outcome_en')
-                        ->orWhereDate('date_of_outcome_en','>=' ,Carbon::parse($request->selected_date))
-                        ->whereDate('register_date_en', '<=' ,Carbon::parse($request->selected_date));
+            $total = PaymentCase::leftjoin('healthposts', 'healthposts.hp_code', '=', 'payment_cases.hp_code')
+                ->whereIn('payment_cases.hp_code', $hpCodes);
+            
+            if($request->type){
+                $total = $total->whereIn('healthposts.hospital_type', $org_type);
+            }
+
+            $total = $total->where(function($q) use ($request) {
+                    $q->whereNull('payment_cases.date_of_outcome_en')
+                        ->orWhereDate('payment_cases.date_of_outcome_en','>=' ,Carbon::parse($request->selected_date))
+                        ->whereDate('payment_cases.register_date_en', '<=' ,Carbon::parse($request->selected_date));
                 })
                 ->get();
         }else{
             $period = date('Ymd');
-            $total = PaymentCase::whereIn('hp_code', $hpCodes)
-                ->where(function($q){
-                    $q->whereNull('date_of_outcome_en')
-                        ->orWhereDate('date_of_outcome_en',Carbon::today());
+            $total = PaymentCase::leftjoin('healthposts', 'healthposts.hp_code', '=', 'payment_cases.hp_code')
+                ->whereIn('payment_cases.hp_code', $hpCodes);
+            
+            if($request->type){
+                $total = $total->whereIn('healthposts.hospital_type', $org_type);
+            }
+            
+            $total = $total->where(function($q){
+                    $q->whereNull('payment_cases.date_of_outcome_en')
+                        ->orWhereDate('payment_cases.date_of_outcome_en',Carbon::today());
                 })
                 ->get();
         }
@@ -213,7 +249,11 @@ class CasesPaymentController extends Controller
         }
 
         if (auth()->user()->role === 'healthpost' || auth()->user()->role === 'healthworker'){
-            $organization_is_oxygen_facility = Organization::where('hp_code', $hpCodes)->first()->is_oxygen_facility;
+            $organization_is_oxygen_facility = Organization::where('hp_code', $hpCodes);
+            if($request->type){
+                $organization_is_oxygen_facility = $organization_is_oxygen_facility->whereIn('hospital_type', $org_type);
+            }
+            $organization_is_oxygen_facility = $organization_is_oxygen_facility->first()->is_oxygen_facility;
         }else{
             $organization_is_oxygen_facility = '';
         }
