@@ -18,7 +18,8 @@
         <th width="4%" title="Tested By">Tested By</th>
         <th width="4%" title="Infection Type">Type</th>
         <th width="4%" title="CICT Transfer Status">CICT Status</th>
-        <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
+        <th width="7%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
+        <th width="1%" title="Checkbox"></th>
       </tr>
       </thead>
       <tr slot-scope="{item, removeItemOnSuccess}">
@@ -79,6 +80,11 @@
             <button v-if="!item.cict_tracing" v-on:click="sendToCict(item.case_id)" title="Add to Cict Form">
                | <i class="fa fa-users"></i>
             </button>
+          </span>
+        </td>
+        <td>
+          <span v-if="!item.cict_tracing">
+            <input type="checkbox" v-model="checkedCict" v-bind:value="item.case_id">
           </span>
         </td>
       </tr>
@@ -142,6 +148,7 @@ export default {
       provinces: [],
       municipalities: [],
       districts: [],
+      checkedCict: [],
       exportHtml: '',
       fabOptions: {
         bgColor: '#778899',
