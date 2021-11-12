@@ -152,6 +152,10 @@
         </strong>
       </div>
     </div>
+    <slot name="cictTransfer">
+      <button class="btn btn-sm btn-primary pull-right mr-2" @click="getChecked($event)">Transfer CICT</button>
+    </slot>
+    
     <div class="panel">
       <div class="panel-body">
         <table class="table table-striped sortable">

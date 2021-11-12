@@ -1,6 +1,9 @@
 <template>
   <div>
+   
     <filterable v-bind="filterable">
+      <template v-slot:cictTransfer>
+      </template>
       <thead slot="thead">
       <tr>
         <th width="6%">ID</th>
@@ -19,9 +22,11 @@
         <th width="4%" title="Infection Type">Type</th>
         <th width="4%" title="CICT Transfer Status">CICT Status</th>
         <th width="7%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
-        <th width="1%" title="Checkbox"></th>
+        <th width="1%" title="Cict Transfer Checkbox"></th>
       </tr>
       </thead>
+
+
       <tr slot-scope="{item, removeItemOnSuccess}">
         <td>
           <div title="Case ID">C ID : {{ item.case_id }}</div>
@@ -84,7 +89,7 @@
         </td>
         <td>
           <span v-if="!item.cict_tracing">
-            <input type="checkbox" v-model="checkedCict" v-bind:value="item.case_id">
+            <input type="checkbox" v-model="checkedCict" v-bind:value="item.case_id" title="Cict Transfer">
           </span>
         </td>
       </tr>
