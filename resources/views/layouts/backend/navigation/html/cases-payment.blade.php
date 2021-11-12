@@ -55,7 +55,7 @@
                 <span class="label label-info pull-right">HMIS</span>
             </a>
         </li> --}}
-        <li>
+        <li @if(Request::segment(3) == 'cases-report-payment') @endif>
             <a href="#">
                 <i class="fa fa-file-text-o" aria-hidden="true"></i>
                 DHIS2 Reports <span class="fa arrow"></span>
