@@ -153,7 +153,7 @@
       </div>
     </div>
     <slot name="cictTransfer">
-      <button class="btn btn-sm btn-primary pull-right mr-2" @click="getChecked($event)">Transfer CICT</button>
+      <button class="btn btn-sm btn-primary pull-right mr-2" v-on:click="checkedTransferData()">Transfer CICT</button>
     </slot>
     
     <div class="panel">
@@ -443,6 +443,9 @@ export default {
         });
         return list;
       }
+    },
+    checkedTransferData() {
+      Fire.$emit('checkCict');
     },
     resetFilter() {
       this.appliedFilters.splice(0)

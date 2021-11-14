@@ -103,6 +103,7 @@ import DataConverter from 'ad-bs-converter'
 import axios from 'axios'
 import ViewLabResultReportModel from './ViewLabResultReportModel.vue'
 import SendPatientDataModel from './SendPatientDataModel.vue'
+import MultipleCictTransferDataModel from './MultipleCictTransferDataModel.vue'
 import viewConfirmReportFormModel from './viewConfirmReportFormModel.vue'
 import fab from 'vue-fab'
 
@@ -169,7 +170,20 @@ export default {
     }
   },
   created() {
-    // this.fetch()
+    Fire.$on('checkCict', ()=>{
+      this.$dlg.modal(MultipleCictTransferDataModel, {
+        title: 'Do you want to transfer these data for CICT?',
+        height : 600,
+        width : 700,
+        params: {
+          // data : item,
+          provinces : this.provinces,
+          districts : this.districts,
+          municipalities : this.municipalities,
+          checkedCount : this.checkedCict
+        },
+      })
+    })
   },
   methods: {
     sendPatientData: function (item) {

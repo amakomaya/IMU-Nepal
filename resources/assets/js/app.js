@@ -87,6 +87,9 @@ import 'vue2-timepicker/dist/VueTimepicker.css';
 Vue.use(VueMask);
 Vue.use(VNepaliDatePicker);
 
+let Fire = new Vue();
+window.Fire = Fire;
+
 Vue.component('downloadExcel', JsonExcel)
 
 Vue.prototype.$userRole = document.querySelector("meta[name='user-role']").getAttribute('content');

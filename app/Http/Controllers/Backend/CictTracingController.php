@@ -889,11 +889,12 @@ class CictTracingController extends Controller
 
     public function cictTransfer(Request $request){
         $data = json_decode($request->getContent(), true);
+        dd($data);
         if(isset($data['platform'])){
             if($data['platform'] == '2'){
-                $regdev = 'mobile';
+                $registered_device = 'mobile';
             } else {
-                $regdev = 'web';
+                $registered_device = 'web';
             }
         } else {
             $registered_device = 'web';
@@ -938,6 +939,64 @@ class CictTracingController extends Controller
                 return response()->json('0');
             }
         }
+    }
+
+    public function cictTransferMultiple(Request $request){
+        $data = json_decode($request->getContent(), true);
+        if(isset($data['platform'])){
+            if($data['platform'] == '2'){
+                $registered_device = 'mobile';
+            } else {
+                $registered_device = 'web';
+            }
+        } else {
+            $registered_device = 'web';
+        }
+        
+        if(count($data['checkedCount']) > 0){
+            foreach($data['checkedCount'] as $cict_data){
+                $check_if_exists = CictTracing::where('case_id', $cict_data)->first();
+                if(!$check_if_exists){
+                    $patient = SuspectedCase::with('sampleCollection', 'latestAnc')
+                        ->where('case_id', $cict_data)->first();
+                    if($patient){
+                        $data['token'] = md5(microtime(true) . mt_Rand());
+                        $data['case_id'] = $cict_data;
+                        $data['case_token'] = $patient->token;
+                        $data['org_code'] = $data['org_code'];
+                        $data['checked_by'] = '';
+                        $data['registered_device'] = $registered_device;
+                        $data['name'] = $patient->name;
+                        $data['age'] = $patient->age;
+                        $data['age_unit'] = $patient->age_unit;
+                        $data['sex'] = $patient->sex;
+                        $data['emergency_contact_one'] = $patient->emergency_contact_one;
+                        $data['emergency_contact_two'] = $patient->emergency_contact_two;
+                        $data['nationality'] = $patient->nationality;
+                        $data['province_id'] = $patient->province_id;
+                        $data['district_id'] = $patient->district_id;
+                        $data['municipality_id'] = $patient->municipality_id;
+                        $data['ward'] = $patient->ward;
+                        $data['tole'] = $patient->tole;
+                        $data['symptoms_recent'] = $patient->latestAnc ? $patient->latestAnc->infection_type : null;
+                        $data['date_of_onset_of_first_symptom_np'] = $patient->date_of_onset_of_first_symptom;
+                        $data['symptoms'] = $patient->symptoms;
+                        $data['symptoms_specific'] = $patient->symptoms_specific;
+                        $data['symptoms_comorbidity'] = $patient->symptoms_comorbidity;
+                        $data['symptoms_comorbidity_specific'] = $patient->symptoms_comorbidity_specific;
+                        
+                        try{
+                            $cict_tracing = CictTracing::create($data);
+                        }catch(Exception $e){
+                            return response()->json($e);
+                        }
+                    }
+                }
+            }
+        }else {
+            return response()->json('0');
+        }
+        return response()->json($data['case_id']);
     }
 
     public function cictMunicipalityData(Request $request)

@@ -500,6 +500,7 @@ Route::post('/v1/patient-transfer', function (Request $request) {
 });
 
 Route::post('/v1/cict-transfer', 'Backend\CictTracingController@cictTransfer');
+Route::post('/v1/cict-transfer-multiple', 'Backend\CictTracingController@cictTransferMultiple');
 
 Route::post('/v1/patient-symptoms', function (Request $request) {
     $data = $request->json()->all();
