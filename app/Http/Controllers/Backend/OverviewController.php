@@ -63,6 +63,11 @@ class OverviewController extends Controller
         return $this->filter(7);
     }
 
+    public function vaccination()
+    {
+        return $this->filter(8);
+    }
+
     public function search(){
         return view('backend.overview.search');
     }
