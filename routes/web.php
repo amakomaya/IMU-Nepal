@@ -78,7 +78,7 @@ Route::post('/admin/user-manager/first-loggedin', 'Backend\UserManagerController
 
 //Bakend Organization
 Route::resource('admin/healthpost', 'Backend\HealthPostController');
-Route::get('admin/vaccination-list', 'Backend\HealthPostController@vaccinationList')->name('admin.vaccination.list');
+Route::get('admin/vaccination-center', 'Backend\HealthPostController@vaccinationCenterList')->name('admin.vaccination-center');
 Route::get('admin/organization/{id}/edit-record', 'Backend\HealthPostController@editRecord');
 Route::post('admin/organization/update-record/{id}', 'Backend\HealthPostController@updateRecord')->name('admin.organization.update-record');
 Route::post('admin/organization/api-delete/{id}', 'Backend\HealthPostController@apiDestroy')->name('admin.organization.api-destroy');
