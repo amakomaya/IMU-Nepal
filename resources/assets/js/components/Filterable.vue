@@ -192,7 +192,7 @@
             <option>500</option>
             <option>1000</option>
           </select>
-          <small> Showing {{collection.from}} - {{collection.to}} of {{total}} entries.</small>
+          <small> Showing {{collection.from}} - {{collection.to}} of {{collection.total}} entries.</small>
         </div>
         <div>
           <button class="btn" :disabled="!collection.prev_page_url || loading"

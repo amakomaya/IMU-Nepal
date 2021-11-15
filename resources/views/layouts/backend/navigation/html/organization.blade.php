@@ -19,6 +19,10 @@
                 <i class="fa fa-building-o"></i>
                 Hospitals / CICT Teams
             </a>
+            <a href="{{ route('admin.vaccination.list') }}">
+                <i class="fa fa-building-o"></i>
+                Vaccination Center
+            </a>
         </li>
         @endif
         @if(auth()->user()->role == 'main' || auth()->user()->role == 'center' || auth()->user()->role == 'dho' || auth()->user()->role == 'province')
@@ -39,6 +43,9 @@
         </li>
         <li>
             <a href="{{ route('organization.overview.poe') }}" title="Point of Entry (POE)">POE</a>
+        </li>
+        <li>
+            <a href="{{ route('organization.overview.vaccination') }}" title="Vaccination Center">Vaccination Center</a>
         </li>
         @endif
     </ul>
