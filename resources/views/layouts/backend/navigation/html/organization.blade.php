@@ -19,7 +19,7 @@
                 <i class="fa fa-building-o"></i>
                 Hospitals / CICT Teams
             </a>
-            <a href="{{ route('admin.vaccination.list') }}">
+            <a href="{{ route('admin.vaccination-center') }}">
                 <i class="fa fa-building-o"></i>
                 Vaccination Center
             </a>

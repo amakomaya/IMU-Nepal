@@ -49,34 +49,34 @@ class HealthPostController extends Controller
             $organizations = Organization::where('hospital_type', '!=', 8)->latest()->get();
         }
 
-        return view('backend.healthpost.index', compact('healthposts'));
+        return view('backend.healthpost.index', compact('organizations'));
     }
 
-    public function vaccinationList()
+    public function vaccinationCenterList()
     {
         if (User::checkAuthForIndexShowHealthpost() === false) {
             return redirect('/index');
         }
         if (Auth::user()->role == "province") {
             $province_id = Province::modelProvinceInfo(Auth::user()->token)->province_id;
-            $healthposts = Organization::where('province_id', $province_id)->where('hospital_type', 8)
+            $organizations = Organization::where('province_id', $province_id)->where('hospital_type', 8)
                 ->latest()->get();
         } elseif (Auth::user()->role == "dho") {
             $district_id = District::modelDistrictInfo(Auth::user()->token)->district_id;
-            $healthposts = Organization::where('district_id', $district_id)->where('hospital_type', 8)
+            $organizations = Organization::where('district_id', $district_id)->where('hospital_type', 8)
                 ->latest()->get();
         } elseif (Auth::user()->role == "municipality") {
             $municipality_id = Municipality::modelMunicipalityInfo(Auth::user()->token)->municipality_id;
-            $healthposts = Organization::where('municipality_id', $municipality_id)->where('hospital_type', 8)
+            $organizations = Organization::where('municipality_id', $municipality_id)->where('hospital_type', 8)
                 ->latest()->get();
         } elseif (Auth::user()->role == "ward") {
             $ward_id = Ward::modelWard(Auth::user()->token)->id;
             $ward_no = Ward::getWardNo($ward_id);
             $municipality_id = Ward::modelWard(Auth::user()->token)->municipality_id;
-            $healthposts = Organization::where([['municipality_id', $municipality_id], ['ward_no', $ward_no]])
+            $organizations = Organization::where([['municipality_id', $municipality_id], ['ward_no', $ward_no]])
                 ->where('hospital_type', 8)->latest()->get();
         } else {
-            $healthposts = Organization::where('hospital_type', 8)->latest()->get();
+            $organizations = Organization::where('hospital_type', 8)->latest()->get();
         }
 
         return view('backend.healthpost.index', compact('organizations'));
