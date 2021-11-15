@@ -35,7 +35,8 @@ class CictTracing extends Model
     protected $allowedFilters = [
         'name', 'age',
         'created_at',
-        'emergency_contact_one'
+        'emergency_contact_one',
+        'cict_initiated_date'
     ];
 
     protected $orderable = ['name', 'age', 'created_at'];
@@ -74,10 +75,15 @@ class CictTracing extends Model
     {
         return $this->belongsTo(OrganizationMember::class, 'checked_by', 'token');
     }
-
+    
     public function vaccine()
     {
         return $this->belongsTo(Vaccine::class, 'dose_one_name', 'id');
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class, 'hp_code', 'hp_code');
     }
 
 }

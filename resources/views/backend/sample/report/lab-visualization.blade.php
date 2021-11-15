@@ -11,33 +11,31 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
+                        <div class="col-lg-12" style="margin-bottom: 10px;">
+                            <form action="" method="GET">
+                                <div id ="from_only"></div>
+                                <div class="form-group col-sm-3">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="clearfix"></div>
                         <p style="padding-bottom: 15px;"><i>Note: This report shows the data from organizations of type 'PCR Lab Test Only' and 'PCR Lab & Treatment'.</i></p>
                         <div class="dataTable_wrapper">
                             <table class="table table-striped table-bordered table-hover" id="dataTable" style="width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th rowspan="3">List of Laboratories</th>
-                                        <th colspan="5">Today's Update</th>
-                                        <th colspan="5">Yesterday's Update</th>
+                                        <th rowspan="2">List of Laboratories</th>
+                                        <th colspan="2">PCR</th>
+                                        <th colspan="2">Antigen</th>
+                                        <th rowspan="2">Data from API</th>
                                     </tr>
-                                <tr>
-                                    <th colspan="2">PCR</th>
-                                    <th colspan="2">Antigen</th>
-                                    <th rowspan="2">Data from API</th>
-                                    <th colspan="2">PCR</th>
-                                    <th colspan="2">Antigen</th>
-                                    <th rowspan="2">Data from API</th>
-                                </tr>
-                                <tr>
-                                    <th>Positive</th>
-                                    <th>Negative</th>
-                                    <th>Positive</th>
-                                    <th>Negative</th>
-                                    <th>Positive</th>
-                                    <th>Negative</th>
-                                    <th>Positive</th>
-                                    <th>Negative</th>
-                                </tr>
+                                    <tr>
+                                        <th>Positive</th>
+                                        <th>Negative</th>
+                                        <th>Positive</th>
+                                        <th>Negative</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($data as $healthpost)
@@ -54,11 +52,6 @@
                                         <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['antigen_positive_today'] : 0 }}</td>
                                         <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['antigen_negative_today'] : 0 }}</td>
                                         <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['api_today'] : 'No' }}</td>
-                                        <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['pcr_postive_yesterday'] : 0 }}</td>
-                                        <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['pcr_negative_yesterday'] : 0 }}</td>
-                                        <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['antigen_positive_yesterday'] : 0 }}</td>
-                                        <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['antigen_negative_yesterday'] : 0 }}</td>
-                                        <td> {{ isset($healthpost['pcr_postive_today']) ? $healthpost['api_yesterday'] : 'No' }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -98,6 +91,10 @@
             buttons: [
                 'csv', 'excel', 'pdf'
             ]
+        });
+
+        $.get( "{{route("admin.select-from-only")}}?from_date={{$from_date}}",function(data){
+            $("#from_only").html(data);
         });
     });
 </script>

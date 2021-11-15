@@ -61,7 +61,7 @@ class PoeController extends Controller
         $reports = SampleCollection::leftjoin('healthposts', 'ancs.hp_code', '=', 'healthposts.hp_code')
             ->whereIn('ancs.hp_code', $hpCodes)
             ->whereIn('ancs.result', [3, 4, 2, 9])
-            ->whereBetween(\DB::raw('DATE(ancs.sample_test_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
+            ->whereBetween(\DB::raw('DATE(ancs.reporting_date_en)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()]);
 
         if ($response['province_id'] !== null) {
             $reports = $reports->where('healthposts.province_id', $response['province_id']);

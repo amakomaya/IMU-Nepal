@@ -121,14 +121,6 @@
                 </li>
             </ul>
         </li>
-        {{-- <li>
-            <a href="{{ route('patients.tracing.index') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true" style="color: blue;"></i>
-                Contact Tracing
-                <span class="label label-primary pull-right">Tracing</span>
-
-            </a>
-        </li> --}}
         <li>
             <a href="#">
                 <i class="fa fa-file-pdf-o" aria-hidden="true" style="color: green;"></i> 
@@ -154,7 +146,14 @@
                     <a href="{{ route('report.district-wise-cases-overview') }}">
                         <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                         District Wise
-                        <span class="label label-primary pull-right" title="Lab"> Lab </span>
+                        <span class="label label-primary pull-right" title="District"> District </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('report.province-municipality-wise-cases-overview') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Municipality Wise
+                        <span class="label label-warning pull-right" title="LLG"> LLG </span>
                     </a>
                 </li>
                 @endif
@@ -163,7 +162,7 @@
                     <a href="{{ route('report.municipality-wise-cases-overview') }}">
                         <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                         Municipality Wise
-                        <span class="label label-primary pull-right" title="Lab"> Lab </span>
+                        <span class="label label-primary pull-right" title="LLG"> LLG </span>
                     </a>
                 </li>
                 @endif

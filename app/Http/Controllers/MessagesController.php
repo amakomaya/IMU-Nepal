@@ -9,8 +9,8 @@ use App\Models\Organization;
 use App\Models\OrganizationMember;
 use App\Models\Message;
 use App\Models\MunicipalityInfo;
-use App\Models\province;
-use App\Models\provinceInfo;
+use App\Models\Province;
+use App\Models\ProvinceInfo;
 use App\User;
 use Carbon\Carbon;
 //use Cmgmyr\Messenger\Models\Message;
@@ -69,14 +69,14 @@ class MessagesController extends Controller
         if ($user->role == 'main' || $user->role == 'center') {
             $center_tokens = Center::get()->pluck(['token']);
             $labs_token = OrganizationMember::where('role', 'fchv')->get()->pluck(['token']);
-            $province_token = provinceInfo::get()->pluck(['token']);
+            $province_token = ProvinceInfo::get()->pluck(['token']);
             $district_token = DistrictInfo::get()->pluck(['token']);
             $municipality_token = MunicipalityInfo::get()->pluck(['token']);
             $hospital_or_cict_tokens = Organization::get()->pluck(['token']);
         } if ($user->role == 'province') {
-        $provinceInfo = provinceInfo::where('token', $user->token)->first();
+        $provinceInfo = ProvinceInfo::where('token', $user->token)->first();
         $labs_token = OrganizationMember::where('role', '=', 'fchv')->where('province_id', '=', $provinceInfo->province_id)->get()->pluck(['token']);
-        $province_token = provinceInfo::where('province_id', $provinceInfo->province_id)->get()->pluck(['token']);
+        $province_token = ProvinceInfo::where('province_id', $provinceInfo->province_id)->get()->pluck(['token']);
         $districts_from_province = District::where('province_id', $provinceInfo->province_id)->get()->pluck(['id']);
         $district_token = DistrictInfo::whereIn('district_id', $districts_from_province)->get()->pluck(['token']);
         $municipality_token = MunicipalityInfo::whereIn('district_id', $districts_from_province)->get()->pluck(['token']);
@@ -87,14 +87,14 @@ class MessagesController extends Controller
         $center_tokens = [];
         $dhoInfo = DistrictInfo::where('token', $user->token)->first();
         $labs_token = OrganizationMember::where('role', 'fchv')->where('district_id', $dhoInfo->district_id)->get()->pluck(['token']);
-        $province_token = provinceInfo::where('province_id', $dhoInfo->district->province_id)->get()->pluck(['token']);
+        $province_token = ProvinceInfo::where('province_id', $dhoInfo->district->province_id)->get()->pluck(['token']);
         $district_token = [];
         $municipality_token = MunicipalityInfo::where('district_id', $dhoInfo->district_id)->get()->pluck(['token']);
         $hospital_or_cict_tokens = Organization::where('district_id', $dhoInfo->district_id)->get()->pluck(['token']);
     }if ($user->role == 'municipality') {
         $municipalityInfo = MunicipalityInfo::where('token', $user->token)->first();
         $labs_token = OrganizationMember::where('role', '=', 'fchv')->where('municipality_id', '=', $municipalityInfo->municipality_id)->get()->pluck(['token']);
-        $province_token = provinceInfo::where('province_id', $municipalityInfo->province_id)->get()->pluck(['token']);
+        $province_token = ProvinceInfo::where('province_id', $municipalityInfo->province_id)->get()->pluck(['token']);
         $district_token = DistrictInfo::where('district_id', $municipalityInfo->district_id)->get()->pluck(['token']);
         $hospital_or_cict_tokens = Organization::where('district_id', $municipalityInfo->municipality_id)->get()->pluck(['token']);
         $municipality_token = [];
@@ -148,14 +148,14 @@ class MessagesController extends Controller
         if ($user->role == 'main' || $user->role == 'center') {
             $center_tokens = Center::get()->pluck(['token']);
             $labs_token = OrganizationMember::where('role', 'fchv')->get()->pluck(['token']);
-            $province_token = provinceInfo::get()->pluck(['token']);
+            $province_token = ProvinceInfo::get()->pluck(['token']);
             $district_token = DistrictInfo::get()->pluck(['token']);
             $municipality_token = MunicipalityInfo::get()->pluck(['token']);
             $hospital_or_cict_tokens = Organization::get()->pluck(['token']);
         } if ($user->role == 'province') {
-        $provinceInfo = provinceInfo::where('token', $user->token)->first();
+        $provinceInfo = ProvinceInfo::where('token', $user->token)->first();
         $labs_token = OrganizationMember::where('role', '=', 'fchv')->where('province_id', '=', $provinceInfo->province_id)->get()->pluck(['token']);
-        $province_token = provinceInfo::where('province_id', $provinceInfo->province_id)->get()->pluck(['token']);
+        $province_token = ProvinceInfo::where('province_id', $provinceInfo->province_id)->get()->pluck(['token']);
         $districts_from_province = District::where('province_id', $provinceInfo->province_id)->get()->pluck(['id']);
         $district_token = DistrictInfo::whereIn('district_id', $districts_from_province)->get()->pluck(['token']);
         $municipality_token = MunicipalityInfo::whereIn('district_id', $districts_from_province)->get()->pluck(['token']);
@@ -166,14 +166,14 @@ class MessagesController extends Controller
             $center_tokens = [];
             $dhoInfo = DistrictInfo::where('token', $user->token)->first();
             $labs_token = OrganizationMember::where('role', 'fchv')->where('district_id', $dhoInfo->district_id)->get()->pluck(['token']);
-            $province_token = provinceInfo::where('province_id', $dhoInfo->district->province_id)->get()->pluck(['token']);
+            $province_token = ProvinceInfo::where('province_id', $dhoInfo->district->province_id)->get()->pluck(['token']);
             $district_token = [];
             $municipality_token = MunicipalityInfo::where('district_id', $dhoInfo->district_id)->get()->pluck(['token']);
             $hospital_or_cict_tokens = Organization::where('district_id', $dhoInfo->district_id)->get()->pluck(['token']);
         }if ($user->role == 'municipality') {
                 $municipalityInfo = MunicipalityInfo::where('token', $user->token)->first();
                 $labs_token = OrganizationMember::where('role', '=', 'fchv')->where('municipality_id', '=', $municipalityInfo->municipality_id)->get()->pluck(['token']);
-                $province_token = provinceInfo::where('province_id', $municipalityInfo->province_id)->get()->pluck(['token']);
+                $province_token = ProvinceInfo::where('province_id', $municipalityInfo->province_id)->get()->pluck(['token']);
                 $district_token = DistrictInfo::where('district_id', $municipalityInfo->district_id)->get()->pluck(['token']);
                 $hospital_or_cict_tokens = Organization::where('district_id', $municipalityInfo->municipality_id)->get()->pluck(['token']);
                 $municipality_token = [];

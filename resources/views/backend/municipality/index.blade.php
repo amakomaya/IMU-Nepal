@@ -55,6 +55,7 @@
                                         <th>{{trans('index.province')}}</th>                                     
                                         <th>{{trans('index.district')}}</th>                                    
                                         <th>{{trans('index.local_level')}}</th>
+                                        <th>{{trans('index.address')}}</th>
                                         <th>{{trans('index.options')}}</th>
                                     </tr>
                                     </thead>
@@ -70,7 +71,10 @@
                                         </td>                                           
                                         <td>
                                             {{ $municipalityInfo->municipality }}
-                                        </td>  
+                                        </td>                                          
+                                        <td>
+                                            {{ $municipalityInfo->office_address }}
+                                        </td>
                                         <td>
                                         <form method="post" action="{{route('municipality.destroy', $municipalityInfo->id)}}" onsubmit="return confirmDelete()">
                                             <div class="icon">

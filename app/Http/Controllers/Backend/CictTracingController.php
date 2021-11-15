@@ -651,6 +651,9 @@ class CictTracingController extends Controller
     {
         try{
             $cict_tracing = CictTracing::where('token', $id)->first();
+            CictContact::where('parent_case_id', $cict_tracing->case_id)->delete();
+            CictCloseContact::where('parent_case_id', $cict_tracing->case_id)->delete();
+            CictFollowUp::where('parent_case_id', $cict_tracing->case_id)->delete();
             $cict_tracing->delete();
             return response()->json(['message' => 'success']);
         }
@@ -671,72 +674,123 @@ class CictTracingController extends Controller
         }
     }
 
-    private function dataFromOnly(Request $request)
+    public function destroyContactAll(Request $request, $case_id)
+    {
+        try {
+            CictCloseContact::where('case_id', $case_id)->delete();
+            CictContact::where('case_id', $case_id)->delete();
+            CictFollowUp::where('case_id', $case_id)->delete();
+
+            $request->session()->flash('message', 'Contact Deleted');
+        }
+        catch (Exception $e) {
+            $request->session()->flash('message', 'Contact Deletion Failed');
+        }
+        return redirect()->back();
+    }
+
+    private function dataFromAndTo(Request $request)
     {
         if (!empty($request['from_date'])) {
             $from_date_array = explode("-", $request['from_date']);
             $from_date_eng = Carbon::parse(Calendar::nep_to_eng($from_date_array[0], $from_date_array[1], $from_date_array[2])->getYearMonthDay())->startOfDay();
         }
+        if (!empty($request['to_date'])) {
+            $to_date_array = explode("-", $request['to_date']);
+            $to_date_eng = Carbon::parse(Calendar::nep_to_eng($to_date_array[0], $to_date_array[1], $to_date_array[2])->getYearMonthDay())->endOfDay();
+        }
 
         return [
-            'from_date' =>  $from_date_eng ?? Carbon::now()->startOfDay(),
+            'from_date' =>  $from_date_eng ?? Carbon::now()->subMonth(1)->startOfDay(),
+            'to_date' => $to_date_eng ?? Carbon::now()->endOfDay()
         ];
     }
 
-    public function provinceReport(Request $request){
+    public function provinceDistrictwiseReport(Request $request){
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         foreach ($response as $key => $value) {
             $$key = $value;
         }
 
-        $filter_date = $this->dataFromOnly($request);
+        $filter_date = $this->dataFromAndTo($request);
         
-        $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->id;
+        $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->province_id;
         $locations = District::where('province_id', $province_id)->get();
 
         $cict_tracings = CictTracing::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_tracings.hp_code')
+            ->whereNotNull('cict_tracings.cict_initiated_date')
             ->select('cict_tracings.token', 'healthposts.district_id')
-            ->whereDate('cict_tracings.created_at', $filter_date['from_date']->toDateString())
+            ->whereBetween(\DB::raw('DATE(cict_tracings.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->whereIn('cict_tracings.hp_code', $hpCodes)->get()->groupBy('district_id');
         $contacts = CictContact::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_contacts.hp_code')
             ->select('cict_contacts.token', 'healthposts.district_id')
-            ->whereDate('cict_contacts.created_at', $filter_date['from_date']->toDateString())
+            ->whereBetween(\DB::raw('DATE(cict_contacts.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->whereIn('cict_contacts.hp_code', $hpCodes)->get()->groupBy('district_id');
         $follow_ups = CictFollowUp::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_follow_ups.hp_code')
             ->select('cict_follow_ups.token', 'healthposts.district_id')
-            ->whereDate('cict_follow_ups.created_at', $filter_date['from_date']->toDateString())
+            ->whereBetween(\DB::raw('DATE(cict_follow_ups.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->whereIn('cict_follow_ups.hp_code', $hpCodes)->get()->groupBy('district_id');
 
-        return view('backend.cict-tracing.reports.province-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date'));
+        return view('backend.cict-tracing.reports.province-districtwise-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date', 'to_date'));
     }
 
-    public function districtReport(Request $request){
+    public function provinceMunicipalitywiseReport(Request $request){
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         foreach ($response as $key => $value) {
             $$key = $value;
         }
 
-        $filter_date = $this->dataFromOnly($request);
+        $filter_date = $this->dataFromAndTo($request);
         
-        $district_id = DistrictInfo::where('token', auth()->user()->token)->first()->id;
-        $locations = Municipality::where('district_id', $district_id)->get();
+        $province_id = ProvinceInfo::where('token', auth()->user()->token)->first()->province_id;
+        $locations = Municipality::where('province_id', $province_id)->get();
 
         $cict_tracings = CictTracing::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_tracings.hp_code')
+            ->whereNotNull('cict_tracings.cict_initiated_date')
             ->select('cict_tracings.token', 'healthposts.municipality_id')
-            ->whereDate('cict_tracings.created_at', $filter_date['from_date']->toDateString())
+            ->whereBetween(\DB::raw('DATE(cict_tracings.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->whereIn('cict_tracings.hp_code', $hpCodes)->get()->groupBy('municipality_id');
         $contacts = CictContact::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_contacts.hp_code')
             ->select('cict_contacts.token', 'healthposts.municipality_id')
-            ->whereDate('cict_contacts.created_at', $filter_date['from_date']->toDateString())
+            ->whereBetween(\DB::raw('DATE(cict_contacts.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->whereIn('cict_contacts.hp_code', $hpCodes)->get()->groupBy('municipality_id');
         $follow_ups = CictFollowUp::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_follow_ups.hp_code')
             ->select('cict_follow_ups.token', 'healthposts.municipality_id')
-            ->whereDate('cict_follow_ups.created_at', $filter_date['from_date']->toDateString())
+            ->whereBetween(\DB::raw('DATE(cict_follow_ups.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
             ->whereIn('cict_follow_ups.hp_code', $hpCodes)->get()->groupBy('municipality_id');
 
-        return view('backend.cict-tracing.reports.district-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date'));
+        return view('backend.cict-tracing.reports.province-municipalitywise-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date', 'to_date'));
+    }
+
+    public function districtMunicipalityReport(Request $request){
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        foreach ($response as $key => $value) {
+            $$key = $value;
+        }
+
+        $filter_date = $this->dataFromAndTo($request);
+        
+        $district_id = DistrictInfo::where('token', auth()->user()->token)->first()->district_id;
+        $locations = Municipality::where('district_id', $district_id)->get();
+
+        $cict_tracings = CictTracing::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_tracings.hp_code')
+            ->whereNotNull('cict_tracings.cict_initiated_date')
+            ->select('cict_tracings.token', 'healthposts.municipality_id')
+            ->whereBetween(\DB::raw('DATE(cict_tracings.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
+            ->whereIn('cict_tracings.hp_code', $hpCodes)->get()->groupBy('municipality_id');
+        $contacts = CictContact::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_contacts.hp_code')
+            ->select('cict_contacts.token', 'healthposts.municipality_id')
+            ->whereBetween(\DB::raw('DATE(cict_contacts.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
+            ->whereIn('cict_contacts.hp_code', $hpCodes)->get()->groupBy('municipality_id');
+        $follow_ups = CictFollowUp::leftjoin('healthposts', 'healthposts.hp_code', '=', 'cict_follow_ups.hp_code')
+            ->select('cict_follow_ups.token', 'healthposts.municipality_id')
+            ->whereBetween(\DB::raw('DATE(cict_follow_ups.created_at)'), [$filter_date['from_date']->toDateString(), $filter_date['to_date']->toDateString()])
+            ->whereIn('cict_follow_ups.hp_code', $hpCodes)->get()->groupBy('municipality_id');
+
+        return view('backend.cict-tracing.reports.district-report', compact('cict_tracings', 'contacts', 'follow_ups', 'locations', 'from_date', 'to_date'));
     }
 
     public function oldCictReport()
@@ -819,11 +873,20 @@ class CictTracingController extends Controller
             'date_to' => $data_to
         ]);
     }
+    
+    public function cictTransferredList()
+    {
+        return view('backend.cict-tracing.transferred-list');
+    }
 
     public function cictTransfer(Request $request){
         $data = json_decode($request->getContent(), true);
-        if($data['platform'] == '2'){
-            $regdev = 'mobile';
+        if(isset($data['platform'])){
+            if($data['platform'] == '2'){
+                $regdev = 'mobile';
+            } else {
+                $regdev = 'web';
+            }
         } else {
             $regdev = 'web';
         }

@@ -10,7 +10,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Municipality Wise
+                        District Wise
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -28,7 +28,7 @@
                                 <thead>
                                 <tr>
                                     <th>S.N</th>
-                                    <th>Municipality</th>
+                                    <th>District</th>
                                     <th>A Form</th>
                                     <th>B1 Form</th>
                                     <th>B2 Form</th>
@@ -38,7 +38,7 @@
                                     @foreach($locations as $key => $location)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $location->municipality_name }}</td>
+                                        <td>{{ $location->district_name }}</td>
                                         <td>{{ isset($cict_tracings[$location->id]) ? $cict_tracings[$location->id]->count() : 0 }}</td>
                                         <td>{{ isset($contacts[$location->id]) ? $contacts[$location->id]->count() : 0 }}</td>
                                         <td>{{ isset($follow_ups[$location->id]) ? $follow_ups[$location->id]->count() : 0 }}</td>

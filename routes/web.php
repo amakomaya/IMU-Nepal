@@ -78,6 +78,7 @@ Route::post('/admin/user-manager/first-loggedin', 'Backend\UserManagerController
 
 //Bakend Organization
 Route::resource('admin/healthpost', 'Backend\HealthPostController');
+Route::get('admin/vaccination-list', 'Backend\HealthPostController@vaccinationList')->name('admin.vaccination.list');
 Route::get('admin/organization/{id}/edit-record', 'Backend\HealthPostController@editRecord');
 Route::post('admin/organization/update-record/{id}', 'Backend\HealthPostController@updateRecord')->name('admin.organization.update-record');
 Route::post('admin/organization/api-delete/{id}', 'Backend\HealthPostController@apiDestroy')->name('admin.organization.api-destroy');
@@ -91,14 +92,25 @@ Route::resource('admin/lab-user', 'Backend\FchvController', ['names' => 'fchv'])
 Route::get('/admin/lab-patients', function () {
     return view('backend.lab.index');
 })->name('lab.patient.index');
+Route::get('/admin/lab-patients-antigen', function () {
+    return view('backend.lab.index-antigen');
+})->name('lab.patient.antigen.index');
 Route::get('/admin/lab-case-report', 'Backend\LabReportController@index')->name('lab.patient.report.index');
 Route::get('/admin/lab-case-report-old', 'Backend\LabReportController@indexOld')->name('lab.patient.report.index-old');
+
 Route::get('/admin/lab-negative-patients', function () {
     return view('backend.lab.negative-index');
 })->name('lab.negative.patients.index');
+Route::get('/admin/lab-negative-patients-antigen', function () {
+    return view('backend.lab.negative-antigen-index');
+})->name('lab.negative.patients.antigen.index');
+
 Route::get('/admin/lab-positive-patients', function () {
     return view('backend.lab.positive-index');
 })->name('lab.positive.patients.index');
+Route::get('/admin/lab-positive-patients-antigen', function () {
+    return view('backend.lab.positive-antigen-index');
+})->name('lab.positive.patients.antigen.index');
 
 Route::get('/admin/vaccination-list', function () {
     return view('vaccination.list');
@@ -162,6 +174,7 @@ Route::get('/admin/organization-overview-both', 'Backend\OverviewController@both
 Route::get('/admin/organization-overview-normal', 'Backend\OverviewController@normal')->name('organization.overview.normal');
 Route::get('/admin/organization-overview-hospitalnopcr', 'Backend\OverviewController@hospitalnopcr')->name('organization.overview.hospitalnopcr');
 Route::get('/admin/organization-overview-poe', 'Backend\OverviewController@poe')->name('organization.overview.poe');
+Route::get('/admin/organization-overview-vaccination', 'Backend\OverviewController@vaccination')->name('organization.overview.vaccination');
 
 Route::resource('/admin/download-dev-apks', 'Backend\DownloadApksController');
 
@@ -245,11 +258,14 @@ Route::group(['middleware' => ['role-control:healthworker']], function() {
     Route::get('/admin/cict-tracing/close-contact/{case_id}/delete', 'Backend\CictTracingController@destroyCloseContact');
 });
 
+Route::post('/admin/cict-tracing/close-contact-all-delete/{case_id}', 'Backend\CictTracingController@destroyContactAll')->name('contact-all.delete');
 Route::get('/admin/cict-tracing/contact-list/{case_id}', 'Backend\CictTracingController@aFormContactList')->name('cict-tracing.contact-list');
 Route::get('/admin/cict-tracing/report/{case_id}', 'Backend\CictTracingController@report')->name('cict-tracing.report');
-Route::get('/admin/cict-tracing/province-report', 'Backend\CictTracingController@provinceReport')->name('cict-tracing.province-report')->middleware('role-control:province');
-Route::get('/admin/cict-tracing/district-report', 'Backend\CictTracingController@districtReport')->name('cict-tracing.district-report')->middleware('role-control:dho');
+Route::get('/admin/cict-tracing/province-districtwise-report', 'Backend\CictTracingController@provinceDistrictwiseReport')->name('cict-tracing.province-districtwise-report')->middleware('role-control:province');
+Route::get('/admin/cict-tracing/province-municipalitywise-report', 'Backend\CictTracingController@provinceMunicipalitywiseReport')->name('cict-tracing.province-municipalitywise-report')->middleware('role-control:province');
+Route::get('/admin/cict-tracing/district-municipalitywise-report', 'Backend\CictTracingController@districtMunicipalityReport')->name('cict-tracing.district-municipalitywise-report')->middleware('role-control:dho');
 Route::resource('/admin/cict-tracing', 'Backend\CictTracingController', ['names' => 'cict-tracing']);
+Route::get('/admin/cict-tracing-transferred', 'Backend\CictTracingController@cictTransferredList')->name('cict-tracing-transferred');
 
 
 Route::get('/admin/sid-search', 'AdminController@sidSearch')->name('admin.sid.search');

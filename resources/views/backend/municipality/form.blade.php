@@ -216,6 +216,25 @@
                                     @endif
                                 </div>
                             </div>
+
+                            <div class="form-group{{ $errors->has('center_type') ? ' has-error' : '' }}">
+                                <label for="status" class="col-md-3 control-label">
+                                    IMU or Vaccination Center</label>
+                                <div class="col-md-7">
+                                    <select id="center_type" class="form-control" name="center_type" >
+                                        {{-- <option value="">Select Organization center_type</option> --}}
+                                        <option value="1" @if(isset($data->center_type) && $data->center_type == "1") {{ 'selected' }} @endif>IMU</option>
+                                        <option value="2" @if(isset($data->center_type) && $data->center_type == "2") {{ 'selected' }} @endif>Vaccination Center</option>
+                                    </select>
+
+                                    @if ($errors->has('center_type'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('center_type') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+
             				<div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
                                 <label for="status" class="col-md-3 control-label">{{ trans('create.status') }}</label>
                                 @php($list = [1=>'Active',0=>'Inactive'])

@@ -17,6 +17,7 @@ use App\Models\LabTestOld;
 use App\Models\SuspectedCase;
 use App\Models\SuspectedCaseOld;
 use App\Models\CommunityDeath;
+use App\Models\Municipality;
 use App\Reports\FilterRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -51,45 +52,46 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        if($request->db_switch == '2') {
+        if ($request->db_switch == '2') {
             $woman = SuspectedCaseOld::active();
-        } else{
+        } else {
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->role == 'healthworker'){
-            if(Auth::user()->can('poe-registration')){
+        if (Auth::user()->role == 'healthworker') {
+            if (Auth::user()->can('poe-registration')) {
                 $woman->where('case_type', '3');
             } else {
                 $woman->where('case_type', '!=', '3');
             }
         }
-
         $woman = $woman->whereIn('hp_code', $hpCodes)
             ->doesnthave('ancs')
-            ->with(['province', 'district', 'municipality',
-                'healthpost' => function($q) {
-                    $q->select('name', 'hp_code');
-                }]);
+            ->with(['municipality',
+                'healthpost']);
+
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
+            'collection' => $woman->advancedFilter(),
+            'total' => $total->count()
         ]);
     }
 
- // Pending
+    // Pending
     public function activePendingIndex(Request $request)
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        if($request->db_switch == '2') {
+        if ($request->db_switch == '2') {
             $woman = SuspectedCaseOld::active();
-        } else{
+        } else {
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->role == 'healthworker'){
-            if(Auth::user()->can('poe-registration')){
+        if (Auth::user()->role == 'healthworker') {
+            if (Auth::user()->can('poe-registration')) {
                 $woman->where('case_type', '3');
             } else {
                 $woman->where('case_type', '!=', '3');
@@ -97,17 +99,18 @@ class WomenController extends Controller
         }
 
         $woman = $woman->whereIn('hp_code', $hpCodes)
-            ->where(function ($query){
-                $query->whereHas('ancs', function($q){
-                    $q->where('service_for', '!=' ,"2")->whereIn('result', [0,2]);
+            ->where(function ($query) {
+                $query->whereHas('ancs', function ($q) {
+                    $q->where('service_for', '!=', "2")->whereIn('result', [0,2]);
                 });
             })
-            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
-                'healthpost' => function($q) {
-                    $q->select('name', 'hp_code');
-                }]);
+            ->with(['municipality', 'latestAnc', 'ancs',
+                'healthpost']);
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
+            'collection' => $woman->advancedFilter(),
+            'total' => $total->count()
         ]);
     }
 
@@ -116,14 +119,14 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
  
-        if($request->db_switch == '2') {
+        if ($request->db_switch == '2') {
             $woman = SuspectedCaseOld::active();
-        } else{
+        } else {
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->role == 'healthworker'){
-            if(Auth::user()->can('poe-registration')){
+        if (Auth::user()->role == 'healthworker') {
+            if (Auth::user()->can('poe-registration')) {
                 $woman->where('case_type', '3');
             } else {
                 $woman->where('case_type', '!=', '3');
@@ -131,17 +134,18 @@ class WomenController extends Controller
         }
 
         $woman->whereIn('hp_code', $hpCodes)
-            ->where(function ($query){
-                $query->whereHas('ancs', function($q){
+            ->where(function ($query) {
+                $query->whereHas('ancs', function ($q) {
                     $q->where('service_for', "2")->whereIn('result', [0,2]);
                 });
             })
-            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
-                'healthpost' => function($q) {
-                    $q->select('name', 'hp_code');
-                }]);
+            ->with(['municipality', 'latestAnc', 'ancs',
+                'healthpost']);
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
+            'collection' => $woman->advancedFilter(),
+            'total' => $total->count()
         ]);
     }
 
@@ -154,36 +158,37 @@ class WomenController extends Controller
 //        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 4)->pluck('woman_token');
 //        $woman = SuspectedCase::whereIn('token', $token)->active()->withAll();
 
-        if($request->db_switch == '2') {
+        if ($request->db_switch == '2') {
             $woman = SuspectedCaseOld::active();
-        } else{
+        } else {
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->role == 'healthworker'){
-            if(Auth::user()->can('poe-registration')){
+        if (Auth::user()->role == 'healthworker') {
+            if (Auth::user()->can('poe-registration')) {
                 $woman->where('case_type', '3');
             } else {
                 $woman->where('case_type', '!=', '3');
             }
         }
         $woman->whereIn('hp_code', $hpCodes)
-            ->whereHas('ancs', function($q){
-                $q->where('service_for', '!=' , "2")->where('result', '=', 4);
+            ->whereHas('ancs', function ($q) {
+                $q->where('service_for', '!=', "2")->where('result', '=', 4);
             })
             ->with([
-                'province', 'district', 'municipality', 'ancs',
-                'latestAnc' => function($q) {
+                 'municipality','district', 'ancs',
+                'latestAnc' => function ($q) {
                     $q->with('getOrganization');
                 },
-                'healthpost' => function($q) {
-                    $q->select('name', 'hp_code');
-                }
+                'healthpost'
             ]);
 
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
-        ]);
+                'collection' => $woman->advancedFilter(),
+                'total' => $total->count()
+            ]);
     }
 
     public function passiveAntigenIndex(Request $request)
@@ -191,14 +196,14 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         
-        if($request->db_switch == '2') {
+        if ($request->db_switch == '2') {
             $woman = SuspectedCaseOld::active();
-        } else{
+        } else {
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->role == 'healthworker'){
-            if(Auth::user()->can('poe-registration')){
+        if (Auth::user()->role == 'healthworker') {
+            if (Auth::user()->can('poe-registration')) {
                 $woman->where('case_type', '3');
             } else {
                 $woman->where('case_type', '!=', '3');
@@ -206,22 +211,23 @@ class WomenController extends Controller
         }
 
         $woman->whereIn('hp_code', $hpCodes)
-            ->whereHas('ancs', function($q){
+            ->whereHas('ancs', function ($q) {
                 $q->where('service_for', "2")->where('result', '=', 4);
             })
             ->with([
-                'province', 'district', 'municipality', 'ancs',
-                'latestAnc' => function($q) {
+                'district','municipality', 'ancs',
+                'latestAnc' => function ($q) {
                     $q->with('getOrganization');
                 },
-                'healthpost' => function($q) {
-                    $q->select('name', 'hp_code');
-                }
+                'healthpost'
             ]);
 
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
-        ]);
+                'collection' => $woman->advancedFilter(),
+                'total' => $total->count()
+            ]);
     }
     
     public function positiveIndex(Request $request)
@@ -230,35 +236,40 @@ class WomenController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
 //        $token = SampleCollection::whereIn('hp_code', $hpCodes)->where('result', 3)->pluck('woman_token');
 
-        if($request->db_switch == '2') {
+        if ($request->db_switch == '2') {
             $woman = SuspectedCaseOld::active();
-        } else{
+        } else {
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->role == 'healthworker'){
-            if(Auth::user()->can('poe-registration')){
+        if (Auth::user()->role == 'healthworker') {
+            if (Auth::user()->can('poe-registration')) {
                 $woman->where('case_type', '3');
             } else {
                 $woman->where('case_type', '!=', '3');
             }
         }
 
-        $woman->whereIn('hp_code', $hpCodes)->whereHas('ancs', function($q){
-                $q->where('service_for', '!=' , "2")->where('result', '=', 3);
-            })->with([
-                'ancs','healthpost' => function($q) {
+        $woman->whereIn('hp_code', $hpCodes)->whereHas('ancs', function ($q) {
+            $q->where('service_for', '!=', "2")->where('result', '=', 3);
+        })->with([
+                'ancs','healthpost' => function ($q) {
                     $q->select('name', 'hp_code');
-                }, 
-                'latestAnc' => function($q) {
+                },
+                'latestAnc' => function ($q) {
                     $q->with('getOrganization');
-                }, 
-                'district', 'municipality', 'cictTracing'
+                },
+                'municipality', 
+                'cictTracing' => function($q) {
+                    $q->with('organization');
+                }
             ]);
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
-        ]);
-        
+                'collection' => $woman->advancedFilter(),
+                'total' => $total->count()
+            ]);
     }
 
     public function positiveAntigenIndex(Request $request)
@@ -266,35 +277,40 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        if($request->db_switch == '2') {
+        if ($request->db_switch == '2') {
             $woman = SuspectedCaseOld::active();
-        } else{
+        } else {
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->role == 'healthworker'){
-            if(Auth::user()->can('poe-registration')){
+        if (Auth::user()->role == 'healthworker') {
+            if (Auth::user()->can('poe-registration')) {
                 $woman->where('case_type', '3');
             } else {
                 $woman->where('case_type', '!=', '3');
             }
         }
-
-        $woman->whereIn('hp_code', $hpCodes)
-            ->where(function ($query){
-                $query->whereHas('ancs', function($q){
+        $woman
+        ->whereIn('hp_code', $hpCodes)
+            ->where(function ($query) {
+                $query->whereHas('ancs', function ($q) {
                     $q->where('service_for', "2")->where('result', 3);
                 });
             })
-            ->with(['province', 'district', 'municipality', 'ancs', 'cictTracing',
-                'latestAnc' => function($q) {
-                    $q->with('getOrganization');
-                },
-                'healthpost' => function($q) {
-                    $q->select('name', 'hp_code');
-                }]);
+        ->with([
+            'municipality','ancs', 
+            'cictTracing' => function($q) {
+                $q->with('organization');
+            },
+            'latestAnc' => function ($q) {
+                $q->with('getOrganization');
+            },
+            'healthpost']);
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
+            'collection' => $woman->advancedFilter(),
+            'total' => $total->count()
         ]);
     }
 
@@ -303,13 +319,13 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        if($request->db_switch == '2') {
+        if ($request->db_switch == '2') {
             $tracing_tokens = ContactTracingOld::whereIn('hp_code', $hpCodes)->pluck('woman_token');
 //            $woman = SuspectedCaseOld::active();
             $woman1 = SuspectedCase::whereIn('token', $tracing_tokens)->active();
             $woman2 = SuspectedCaseOld::whereIn('token', $tracing_tokens)->active();
             $woman = $woman1->unionAll($woman2)->distinct();
-        } else{
+        } else {
             $tracing_tokens = ContactTracing::whereIn('hp_code', $hpCodes)->pluck('woman_token');
 //            $woman = SuspectedCase::active();
             $woman2 = SuspectedCaseOld::whereIn('token', $tracing_tokens)->active();
@@ -327,14 +343,14 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        if($request->db_switch == '2') {
+        if ($request->db_switch == '2') {
             $woman = SuspectedCaseOld::active();
-        } else{
+        } else {
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->role == 'healthworker'){
-            if(Auth::user()->can('poe-registration')){
+        if (Auth::user()->role == 'healthworker') {
+            if (Auth::user()->can('poe-registration')) {
                 $woman->where('case_type', '3');
             } else {
                 $woman->where('case_type', '!=', '3');
@@ -342,14 +358,15 @@ class WomenController extends Controller
         }
 
         $woman->whereIn('hp_code', $hpCodes)
-            ->whereHas('ancs', function($q){
-                $q->where('service_for', '!=' , "2")->where('result', '=', 9);
-            })->with(['ancs','healthpost' => function($q) {
-                $q->select('name', 'hp_code');
-            }, 'latestAnc', 'district', 'municipality']);
+            ->whereHas('ancs', function ($q) {
+                $q->where('service_for', '!=', "2")->where('result', '=', 9);
+            })->with(['ancs','healthpost', 'latestAnc', 'municipality']);
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
-        ]);
+                'collection' => $woman->advancedFilter(),
+                'total' => $total->count()
+            ]);
     }
 
     public function labReceivedAntigenIndex(Request $request)
@@ -357,14 +374,14 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        if($request->db_switch == '2') {
+        if ($request->db_switch == '2') {
             $woman = SuspectedCaseOld::active();
-        } else{
+        } else {
             $woman = SuspectedCase::active();
         }
 
-        if(Auth::user()->role == 'healthworker'){
-            if(Auth::user()->can('poe-registration')){
+        if (Auth::user()->role == 'healthworker') {
+            if (Auth::user()->can('poe-registration')) {
                 $woman->where('case_type', '3');
             } else {
                 $woman->where('case_type', '!=', '3');
@@ -372,17 +389,18 @@ class WomenController extends Controller
         }
 
         $woman->whereIn('hp_code', $hpCodes)
-            ->where(function ($query){
-                $query->whereHas('ancs', function($q){
+            ->where(function ($query) {
+                $query->whereHas('ancs', function ($q) {
                     $q->where('service_for', "2")->where('result', 9);
                 });
             })
-            ->with(['province', 'district', 'municipality', 'latestAnc', 'ancs',
-                'healthpost' => function($q) {
-                    $q->select('name', 'hp_code');
-                }]);
+            ->with(['municipality', 'latestAnc', 'ancs',
+                'healthpost']);
+        $total = clone $woman;
+
         return response()->json([
-            'collection' => $woman->advancedFilter()
+            'collection' => $woman->advancedFilter(),
+            'total' => $total->count()
         ]);
     }
 
@@ -392,18 +410,46 @@ class WomenController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
 
-        if($request->db_switch == '2') {
+        if ($request->db_switch == '2') {
             $sample_token = SampleCollectionOld::where('result', '9');
             $data = SuspectedCaseOld::active();
-        } else{
+        } else {
             $sample_token = SampleCollection::where('result', '9');
             $data = SuspectedCase::active();
         }
 
-        $sample_token = $sample_token->where(function($q) use ($hpCodes, $user) {
+        $sample_token = $sample_token->where('service_for', '!=', '2')
+            ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-            })->pluck('woman_token');
+        })->pluck('woman_token');
+
+        $data = $data->whereIn('token', $sample_token)->withAll();
+
+        return response()->json([
+            'collection' => $data->advancedFilter()
+        ]);
+    }
+
+    public function labAddReceivedAntigenIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $user = auth()->user();
+
+        if ($request->db_switch == '2') {
+            $sample_token = SampleCollectionOld::where('result', '9');
+            $data = SuspectedCaseOld::active();
+        } else {
+            $sample_token = SampleCollection::where('result', '9');
+            $data = SuspectedCase::active();
+        }
+
+        $sample_token = $sample_token->where('service_for', '2')
+            ->where(function ($q) use ($hpCodes, $user) {
+            $q->where('received_by', $user->token)
+                ->orWhereIn('received_by_hp_code', $hpCodes);
+        })->pluck('woman_token');
 
         $data = $data->whereIn('token', $sample_token)->withAll();
 
@@ -418,18 +464,44 @@ class WomenController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
 
-        if($request->db_switch == '2') {
+        if ($request->db_switch == '2') {
             $sample_token = SampleCollectionOld::where('result', '3');
             $data = SuspectedCaseOld::active();
-        } else{
+        } else {
             $sample_token = SampleCollection::where('result', '3');
             $data = SuspectedCase::active();
         }
 
-        $sample_token = $sample_token->where(function($q) use ($hpCodes, $user) {
+        $sample_token = $sample_token->where('service_for', '!=', '2')
+            ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-            })->pluck('woman_token');
+        })->pluck('woman_token');
+        $data = $data->whereIn('token', $sample_token)->withAll();
+        return response()->json([
+            'collection' => $data->advancedFilter()
+        ]);
+    }
+
+    public function labAddResultPositiveAntigenIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $user = auth()->user();
+
+        if ($request->db_switch == '2') {
+            $sample_token = SampleCollectionOld::where('result', '3');
+            $data = SuspectedCaseOld::active();
+        } else {
+            $sample_token = SampleCollection::where('result', '3');
+            $data = SuspectedCase::active();
+        }
+
+        $sample_token = $sample_token->where('service_for', '2')
+            ->where(function ($q) use ($hpCodes, $user) {
+            $q->where('received_by', $user->token)
+                ->orWhereIn('received_by_hp_code', $hpCodes);
+        })->pluck('woman_token');
         $data = $data->whereIn('token', $sample_token)->withAll();
         return response()->json([
             'collection' => $data->advancedFilter()
@@ -442,17 +514,43 @@ class WomenController extends Controller
         $hpCodes = GetHealthpostCodes::filter($response);
         $user = auth()->user();
 
-        if($request->db_switch == '2') {
+        if ($request->db_switch == '2') {
             $sample_token = SampleCollectionOld::where('result', '4');
             $data = SuspectedCaseOld::active();
-        } else{
+        } else {
             $sample_token = SampleCollection::where('result', '4');
             $data = SuspectedCase::active();
         }
-        $sample_token = $sample_token->where(function($q) use ($hpCodes, $user) {
+        $sample_token = $sample_token->where('service_for', '!=', '2')
+            ->where(function ($q) use ($hpCodes, $user) {
             $q->where('received_by', $user->token)
                 ->orWhereIn('received_by_hp_code', $hpCodes);
-            })->pluck('woman_token');
+        })->pluck('woman_token');
+        $data = $data->whereIn('token', $sample_token)->withAll();
+
+        return response()->json([
+            'collection' => $data->advancedFilter()
+        ]);
+    }
+
+    public function labAddResultNegativeAntigenIndex(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $user = auth()->user();
+
+        if ($request->db_switch == '2') {
+            $sample_token = SampleCollectionOld::where('result', '4');
+            $data = SuspectedCaseOld::active();
+        } else {
+            $sample_token = SampleCollection::where('result', '4');
+            $data = SuspectedCase::active();
+        }
+        $sample_token = $sample_token->where('service_for', '2')
+            ->where(function ($q) use ($hpCodes, $user) {
+            $q->where('received_by', $user->token)
+                ->orWhereIn('received_by_hp_code', $hpCodes);
+        })->pluck('woman_token');
         $data = $data->whereIn('token', $sample_token)->withAll();
 
         return response()->json([
@@ -465,14 +563,14 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        if($request->db_switch == '2') {
+        if ($request->db_switch == '2') {
             $woman = SuspectedCaseOld::active();
-        } else{
+        } else {
             $woman = SuspectedCase::active();
         }
 
         $woman = $woman->whereIn('hp_code', $hpCodes)->casesRecoveredList()
-        ->with(['ancs','healthpost' => function($q) {
+        ->with(['ancs','healthpost' => function ($q) {
             $q->select('name', 'hp_code');
         }, 'latestAnc', 'district', 'municipality']);
         return response()->json([
@@ -485,15 +583,15 @@ class WomenController extends Controller
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        if($request->db_switch == '2') {
+        if ($request->db_switch == '2') {
             $woman = SuspectedCaseOld::active();
-        } else{
+        } else {
             $woman = SuspectedCase::active();
         }
         
         $woman = $woman->whereIn('hp_code', $hpCodes)
             ->casesDeathList()
-            ->with(['ancs','healthpost' => function($q) {
+            ->with(['ancs','healthpost' => function ($q) {
                 $q->select('name', 'hp_code');
             }, 'latestAnc', 'district', 'municipality']);
         return response()->json([
@@ -507,17 +605,20 @@ class WomenController extends Controller
         $hp_codes = Organization::where('municipality_id', $request['municipality_id'])->pluck('hp_code');
         $woman = SuspectedCase::where('municipality_id', $request['municipality_id'])
             ->whereNotIn('hp_code', $hp_codes)
-            ->whereHas('ancs', function($q){
+            ->whereHas('ancs', function ($q) {
                 $q->where('result', '3');
             })
-            ->whereDoesntHave('cictTracing')
+            ->with(['cictTracing' => function($q) {
+                $q->with('organization');
+            }])
             ->active()->withAll();
         return response()->json([
             'collection' => $woman->advancedFilter()
         ]);
     }
 
-    public function show($token){
+    public function show($token)
+    {
         $data = SuspectedCase::withAll()->where('token', $token)->first();
         return response()->json([
             'record' => $data
@@ -562,7 +663,8 @@ class WomenController extends Controller
         return response()->json($formated_data);
     }
 
-    public function labExport(){
+    public function labExport()
+    {
         $user = auth()->user();
         $sample_token = LabTest::where('checked_by', $user->token)->pluck('sample_token');
         $token = SampleCollection::whereIn('token', $sample_token)->pluck('woman_token');
@@ -589,8 +691,9 @@ class WomenController extends Controller
         })->values();
         return response()->json($final_data);
     }
-    private function ageUnitCheck($data){
-        switch($data){
+    private function ageUnitCheck($data)
+    {
+        switch ($data) {
             case '1':
                 return 'Months';
             case '2':
@@ -600,7 +703,8 @@ class WomenController extends Controller
         }
     }
 
-    public function casesPaymentIndex(Request $request){
+    public function casesPaymentIndex(Request $request)
+    {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         
@@ -608,7 +712,8 @@ class WomenController extends Controller
         return response()->json(['collection' => $data]);
     }
 
-    public function casesPaymentDischargeIndex(Request $request){
+    public function casesPaymentDischargeIndex(Request $request)
+    {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
@@ -616,7 +721,8 @@ class WomenController extends Controller
         return response()->json(['collection' => $data]);
     }
 
-    public function casesPaymentDeathIndex(Request $request){
+    public function casesPaymentDeathIndex(Request $request)
+    {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
@@ -624,7 +730,8 @@ class WomenController extends Controller
         return response()->json(['collection' => $data]);
     }
 
-    public function communityDeathIndex(Request $request){
+    public function communityDeathIndex(Request $request)
+    {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
         
@@ -632,12 +739,13 @@ class WomenController extends Controller
         return response()->json(['collection' => $data]);
     }
 
-    public function deleteSuspectedCase($id){
-        try{
+    public function deleteSuspectedCase($id)
+    {
+        try {
             $patients = SuspectedCase::with('ancs')->where('token', $id)->first();
-            if($patients->ancs){
-                foreach($patients->ancs as $anc) {
-                    if($anc->labreport){
+            if ($patients->ancs) {
+                foreach ($patients->ancs as $anc) {
+                    if ($anc->labreport) {
                         $anc->labreport->delete();
                     }
                     $anc->delete();
@@ -646,16 +754,16 @@ class WomenController extends Controller
             $patients->delete();
             
             return response()->json(['message' => 'success']);
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json(['message' => 'error']);
         }
     }
 
-    public function deleteLabSample($id) {
-        try{
+    public function deleteLabSample($id)
+    {
+        try {
             $sample_collection = SampleCollection::where('token', $id)->first();
-            if($sample_collection->service_for == '2'){
+            if ($sample_collection->service_for == '2') {
                 $sample_collection->update([
                     'result' => '2',
                     'received_by' => null,
@@ -670,8 +778,8 @@ class WomenController extends Controller
                     'reporting_date_np' => null
                 ]);
                 LabTest::where('sample_token', $id)->delete();
-            }else {
-                if($sample_collection->result == '3' || $sample_collection->result == '4') {
+            } else {
+                if ($sample_collection->result == '3' || $sample_collection->result == '4') {
                     $sample_collection->update([
                         'result' => '9',
                         'sample_test_date_en' => null,
@@ -685,8 +793,7 @@ class WomenController extends Controller
                         'sample_test_date' => null,
                         'sample_test_time' => null,
                     ]);
-                }
-                elseif($sample_collection->result == '9') {
+                } elseif ($sample_collection->result == '9') {
                     $sample_collection->update([
                         'result' => '2',
                         'received_by' => null,
@@ -701,23 +808,39 @@ class WomenController extends Controller
                         'reporting_date_np' => null
                     ]);
                     LabTest::where('sample_token', $id)->delete();
-                }else {
+                } else {
                     return response()->json(['message' => 'error']);
                 }
             }
             return response()->json(['message' => 'success']);
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json(['message' => 'error']);
         }
     }
 
-    public function CICTTracingList(Request $request){
+    public function CICTTracingList(Request $request)
+    {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
 
-        $data = CictTracing::whereIn('hp_code', $hpCodes)->with('municipality', 'district')->latest()->advancedFilter();
-        return response()->json(['collection' => $data]);
+        $data = CictTracing::whereIn('hp_code', $hpCodes)->with('municipality', 'district')
+            ->whereNotNull('cict_initiated_date')
+            ->latest();
+        $total = clone $data;
+        $data = $data->advancedFilter();
+        return response()->json(['collection' => $data, 'total' => $total->count()]);
+    }
 
+    public function CICTTracingTransferredList(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+
+        $data = CictTracing::whereIn('hp_code', $hpCodes)->with('municipality', 'district')
+            ->whereNull('cict_initiated_date')
+            ->latest();
+        $total = clone $data;
+        $data = $data->advancedFilter();
+        return response()->json(['collection' => $data, 'total' => $total->count()]);
     }
 }

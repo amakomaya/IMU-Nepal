@@ -9,20 +9,20 @@
                         <td>{{ data.case_id }}</td>
                     </tr>
                     <tr>
-                        <td>Name : </td>
-                        <td>{{ data.name }}</td>
+                        <td>Name / Age : </td>
+                        <td>
+                            {{ data.name }} / 
+                            {{ data.age }} ( <span v-if="data.age_unit == 1">Months</span>
+                            <span v-if="data.age_unit == 2">Days</span><span v-if="data.age_unit == 0">Years</span> )
+                        </td>
                     </tr>
                     <tr>
-                        <td>Age : </td>
-                        <td>{{ data.age }} / <span v-if="data.age_unit == 1">Months</span><span v-if="data.age_unit == 2">Days</span><span v-if="data.age_unit == 0">Years</span></td>
-                    </tr>
-                    <tr>
-                        <td>Gender : </td>
-                        <td><span v-if="data.sex == 1">Male</span><span v-if="data.sex == 2">Female</span><span v-if="data.sex == 3">Other</span></td>
-                    </tr>
-                    <tr>
-                        <td>Emergency Phone : </td>
-                        <td>One : {{ data.emergency_contact_one }} <br> Two : {{ data.emergency_contact_two }}</td>
+                        <td>Gender / Emergency Phone: </td>
+                        <td>
+                            <span v-if="data.sex == 1">Male</span><span v-if="data.sex == 2">Female</span>
+                            <span v-if="data.sex == 3">Other</span> / 
+                            {{ data.emergency_contact_one }}
+                        </td>
                     </tr>
                     <tr>
                         <td>Case : </td>
@@ -32,8 +32,21 @@
                             Management : {{ checkCaseManagement(data.cases, data.case_where) }}
                         </td>
                     </tr>
+                    <tr>
+                        <td>Test Type / Result Date : </td>
+                        <td>
+                            {{ checkTestType(data.latest_anc.service_for) }} / 
+                            {{ data.latest_anc.sample_test_date_np }}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
+
+            <h4>Which platform would be used for CICT?</h4>
+            <input type="radio" v-model="platform" value="1" id="web">
+            <label class="font-weight-normal" for="web">Web</label>&nbsp;
+            <input type="radio" v-model="platform" value="2" id="mobile">
+            <label class="font-weight-normal" for="mobile">Mobile</label>
 
         	<h4>Where do you want to transfer this patient, Please search </h4>
 
@@ -59,8 +72,8 @@
             </v-select> 
 			
 			<br>
-            <button class="btn btn-primary btn-lg btn-block" v-on:click="sendPatient(healthpostSelected, data.token)" title="Send Patient">
-            <i class="fa fa-send"> Send Patient</i>
+            <button class="btn btn-primary btn-lg btn-block" v-on:click="sendPatient(healthpostSelected, data.case_id, platform)" title="Send Patient">
+            <i class="fa fa-send"> Send Patient for CICT</i>
         </button>     
         </div>
 	</div>
@@ -102,7 +115,7 @@
                         })
                 }, 350),
 
-            sendPatient: async function (healthpost, token) {
+            sendPatient: async function (healthpost, case_id, platform) {
                 if (!healthpost) {
                     this.$dlg.toast('Please Select Hospital !', {
 					  messageType: 'warning',
@@ -114,13 +127,14 @@
                 }
 
                 var payload = {
-                    token: token,
+                    case_id: case_id,
                     hp_code: healthpost.hp_code,
+                    platform: platform
                 };
 
                 this.$swal({
                     title: 'Are you sure?',
-                    text: "Do you want to transfer this patient!",
+                    text: "Do you want to transfer this patient to CICT list!",
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -138,14 +152,14 @@
                         allowOutsideClick: false
                     });
 
-                    axios.post('/api/v1/patient-transfer', payload,{headers: {'Accept': 'application/json'}})
+                    axios.post('/api/v1/cict-transfer', payload,{headers: {'Accept': 'application/json'}})
                         .then(response => {
                             // JSON responses are automatically parsed.
                             if (response.data.length > 0) {
                                 this.$swal({
                                     position: 'top-end',
                                     type: 'success',
-                                    title: 'Successfully transfer patient, please refresh page to see changes !',
+                                    title: 'Successfully transfer patient to CICT !',
                                     showConfirmButton: false,
                                     timer: 1500
                                 });                
@@ -162,6 +176,18 @@
                         });
                     }
                 }) 
+            },
+            checkTestType : function(type){
+                switch(type){
+                    case '1':
+                        return 'PCR';
+                    
+                    case '2':
+                        return 'Antigen';
+                    
+                    default:
+                        return 'Antigen';
+                }
             },
             checkCaseType : function(type){
                 switch(type){

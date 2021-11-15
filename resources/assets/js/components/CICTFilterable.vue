@@ -12,10 +12,8 @@
         </div>
       </div>
       <div class="panel-body">
-        <div class="checkbox-slider">
-          <input type="checkbox" id="checkbox" @click="switchValue($event)">
-          <label for="checkbox" class="slider"></label>
-          <label for="checkbox">{{ title_of_switch }}</label>
+        <div class="pull-right">
+          <span class="label label-primary" style="font-size: 105%;">Total: {{ total }}</span>
         </div>
         <div class="filter">
           <div class="filter-item" v-for="(f, i) in filterCandidates">
@@ -120,22 +118,9 @@
               :name    = "excelFileName()"
           >
             Download Data
-            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-          </download-excel>
-
-        </div>
-        <div class="btn btn-secondary">
-          <download-excel
-              :fetch   = "exportToExcelForDolphins"
-              :fields = "json_fields_for_dolphins"
-              :name    = "excelFileName()"
-          >
-            Download Data for Dolphins
-            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+            <i class="fa fa-download" aria-hidden="true"></i>
           </download-excel>
         </div>
-        <!--        <button @click="exportToCSV()">Export</button>-->
-
       <div>
         <span>Order by:</span>
         <select :disabled="loading" @input="updateOrderColumn">
@@ -158,7 +143,7 @@
           <slot name="thead"></slot>
           <tbody>
             <slot v-if="collection.data && collection.data.length"
-                v-for="(item, index) in collection.data"
+                v-for="item in collection.data"
                 :item="item" :removeItemOnSuccess="removeItemOnSuccess"
             >
             </slot>
@@ -188,7 +173,7 @@
             <option>500</option>
             <option>1000</option>
           </select>
-          <small> Showing {{collection.from}} - {{collection.to}} of {{total}} entries.</small>
+          <small> Showing {{collection.from}} - {{collection.to}} of {{collection.total}} entries.</small>
         </div>
         <div>
           <button class="btn" :disabled="!collection.prev_page_url || loading"
@@ -217,12 +202,12 @@ export default {
   },
   data() {
     return {
-      initialApiParam: '',
+      total: 0,
       loading: true,
       apiresponce : false,
       appliedFilters: [],
       filterCandidates: [],
-      title_of_switch: 'Click for old data',
+      file : '',
       query: {
         order_column: 'created_at',
         order_direction: 'desc',
@@ -230,39 +215,21 @@ export default {
         limit: 100,
         page: 1
       },
-      total:0,
       collection: {
         data: []
       },
       json_fields: {
         'S.N': 'serial_number',
-        'Case Name': 'name',
+        'Case ID' : 'case_id',
+        'Name': 'name',
         'Age': 'age',
-        'Age Unit': 'age_unit',
-        'Gender': 'gender',
+        'Gender': 'sex',
+        'Phone': 'emergency_contact_one',
         'District' : 'district',
         'Municipality' : 'municipality',
-        'Ward' : 'ward',
-        'Emergency Contact One' : 'emergency_contact_one',
-        'Emergency Contact Two'	: 'emergency_contact_two',
-        'Occupation' : 'occupation',
-        'Current Hospital' : 'current_hospital',
-        'Swab ID' : 'swab_id',
-        'Lab ID' : 'lab_id',
-        'Result' : 'result',
-        'Tested By' : 'tested_by',
-        'Infection Type' : 'infection_type',
-        'Date' : 'date',
-        'Report Date' : 'report_date',
-        'Created At' : 'created_at'
-      },
-      json_fields_for_dolphins : {
-        'name': 'name',
-        'age': 'age',
-        'gender': 'gender',
-        'form_no' : 'swab_id',
-        'mobile_no' : 'emergency_contact_one'
-      },
+        'CICT Initiated Date' : 'cict_initiated_date',
+        'Device Used' : 'regdev'
+      }
     }
   },
   computed: {
@@ -281,8 +248,6 @@ export default {
     this.addFilter()
   },
   methods: {
-
-
     ad2bs: function () {
       var dateObject = new Date();
 
@@ -321,120 +286,24 @@ export default {
       var ext = '.xls';
       return 'IMU Nepal Export Data '+ new Date()+ext;
     },
-    exportToExcelForDolphins() {
-      if (confirm("Do you want to Download all records in excel ! ")) {
-      let list=[];
-        let role = this.$userRole;
-        $.each(this.collection.data, function(key, data) {
-        let exportableData = {};
-          exportableData.name = data.name;
-          // if(role == 'dho' || role == 'province' || role == 'center'){
-          //   exportableData.name = '** ***';
-          //   exportableData.emergency_contact_one = '** ***';
-          // }else {
-            exportableData.name = data.name;
-            exportableData.emergency_contact_one = data.emergency_contact_one;
-          // }
-          exportableData.age = data.age;
-          exportableData.gender = data.formated_gender;
-        if(data.latest_anc){
-          if(data.latest_anc.labreport){
-            exportableData.swab_id = data.latest_anc.labreport.formated_token;
-          }
-        }
-        list.push(exportableData);
-      });
-      return list;
-      }
-    },
-
     exportToExcel() {
+      let self = this;
       if (confirm("Do you want to Download all records in excel ! ")) {
         let list=[];
         let role = this.$userRole;
         this.collection.data.map(function(data, key) {
           let exportableData = {};
+          let formattedGenderObject = {1:"Male", 2:"Female", 3:"Other"};
           exportableData.serial_number = key +1;
-          // if(role == 'dho' || role == 'province' || role == 'center'){
-          //     exportableData.name = '** ***';
-          //     exportableData.emergency_contact_one = '** ***';
-          //     exportableData.emergency_contact_two = '** ***';
-          //     }else {
-            exportableData.name = data.name;
-            exportableData.emergency_contact_one = data.emergency_contact_one;
-            exportableData.emergency_contact_two = data.emergency_contact_two;
-          // }
+          exportableData.case_id = data.case_id;
+          exportableData.name = data.name;
           exportableData.age = data.age;
-          exportableData.age_unit = data.formated_age_unit;
-          exportableData.gender = data.formated_gender;
+          exportableData.sex = formattedGenderObject[data.sex];
+          exportableData.emergency_contact_one = data.emergency_contact_one;
           exportableData.district = data.municipality.district_name;
-          exportableData.municipality = data.municipality.municipality_name;
-          exportableData.ward = data.ward;
-          if(data.occupation == '1'){
-            exportableData.occupation = "Front Line Health Worker";
-          }
-          else if(data.occupation == "2"){
-            exportableData.occupation = "Doctor";
-          }
-          else if(data.occupation == "3"){
-            exportableData.occupation = "Nurse";
-          }
-          else if(data.occupation == "4"){
-            exportableData.occupation = "Police/Army";
-          }
-          else if(data.occupation == "5"){
-            exportableData.occupation = "Business/Industry";
-          }
-          else if(data.occupation == "6"){
-            exportableData.occupation = "Teacher/Student/Education";
-          }
-          else if(data.occupation == "7"){
-            exportableData.occupation = "Civil Servant";
-          }
-          else if(data.occupation == "8"){
-            exportableData.occupation = "Journalist";
-          }
-          else if(data.occupation == "9"){
-            exportableData.occupation = "Agriculture";
-          }
-          else if(data.occupation == "10"){
-            exportableData.occupation = "Transport/Delivery";
-          }
-          else if(data.occupation == "12"){
-            exportableData.occupation = "Tourist";
-          }
-          else if(data.occupation == "13"){
-            exportableData.occupation = "Migrant Worker";
-          }
-          else{
-            exportableData.occupation = "Other";
-          }
-
-          exportableData.current_hospital = data.healthpost ? data.healthpost.name : '';
-          var date = data.register_date_np;
-          var report_date = '';
-          if(data.latest_anc){
-            exportableData.swab_id = data.latest_anc.token;
-            report_date = data.latest_anc.reporting_date_np;
-            
-            if(data.latest_anc.infection_type === "2") {
-              exportableData.infection_type = "A";
-            }else if(data.latest_anc.infection_type === "1") {
-              exportableData.infection_type = "S";
-            }else{
-              exportableData.infection_type = "N/A";
-            }
-            date = data.latest_anc.collection_date_np;
-            if(data.latest_anc.lab_token){
-              exportableData.lab_id = data.latest_anc.formated_token;
-              date = data.latest_anc.sample_test_date_np;
-            }
-            exportableData.result = data.latest_anc.formatted_result;
-            exportableData.tested_by = data.latest_anc.get_organization ? data.latest_anc.get_organization.name : '';
-          }
-          exportableData.date = date;
-          exportableData.report_date = report_date;
-          exportableData.created_at = data.created_at;
+          exportableData.municipality = data.municipality ? data.municipality.municipality_name : '';
+          exportableData.cict_initiated_date = data.cict_initiated_date;
+          exportableData.regdev = data.regdev;
           list.push(exportableData);
         });
         return list;
@@ -566,34 +435,20 @@ export default {
 
       return f
     },
-    switchValue(event){
-      if(event.target.checked === true) {
-        this.initialApiParam = {'db_switch': '2'}
-        this.title_of_switch = 'Click for latest data'
-      } else {
-        this.initialApiParam = {},
-        this.title_of_switch = 'Click for old data'
-
-      }
-      this.fetch()
-
-    },
     fetch() {
       this.loading = true
       const filters = this.getFilters()
 
       const params = {
         ...filters,
-        ...this.query,
-        ...this.initialApiParam
+        ...this.query
       }
       axios.get(this.url, {params: params})
           .then((res) => {
             Vue.set(this.$data, 'collection', res.data.collection)
             this.query.page = res.data.collection.current_page
             this.apiresponce = true
-                        this.total = res.data.total
-
+            this.total = res.data.total
           })
           .catch((error) => {
 
@@ -634,6 +489,8 @@ export default {
 $color-error: #e75650;
 $color-primary: #3aa3e3;
 $color-secondary: #2c405a;
+$color-success: #5cb85c;
+$color-warning: #f0ad4e;
 $text-color: #484746;
 $bg-color: #fafafa;
 $bg-color-light: #fcfcfc;
@@ -819,6 +676,24 @@ select {
     background: $color-secondary;
     color: #fff;
     border-bottom: 1px solid darken($color-secondary, 10%);
+  }
+
+  &-success {
+    background: $color-success;
+    color : #fff;
+    border-bottom: 1px solid darken($color-success, 10%);
+  }
+
+  &-danger {
+    background: $color-error;
+    color : #fff;
+    border-bottom: 1px solid darken($color-error, 10%);
+  }
+
+  &-warning {
+    background: $color-warning;
+    color : #fff;
+    border-bottom: 1px solid darken($color-warning, 10%);
   }
 }
 

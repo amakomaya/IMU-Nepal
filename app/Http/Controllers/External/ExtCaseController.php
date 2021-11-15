@@ -101,6 +101,23 @@ class ExtCaseController extends Controller
       return $this->testValidEnDate($date);
     }
 
+    private function patchOccupation($occupationCode) {
+      //#NOTE Added patch due to wrong code in API documentation. 
+      //Need to update API documentation & third party vendor should also update their software before disabling this patch
+      switch($occupationCode) {
+        case 7:
+          return 8;
+        case 8:
+          return 9;
+        case 9:
+          return 10;
+        case 10:
+          return 11;
+        default:
+          return $occupationCode;
+      }
+    }
+
     public function store(Request $request)
     {
         $key = request()->getUser();
@@ -124,7 +141,6 @@ class ExtCaseController extends Controller
             $data = json_decode($request->getContent(), true);
             DB::beginTransaction();
 
-           
             foreach ($data as $index=>$value) {
                 $case_token = 'a-' . md5(microtime(true) . mt_Rand());
                 if(empty($value['registered_at'])){
@@ -145,6 +161,8 @@ class ExtCaseController extends Controller
                   $value['province_id'] = $municipality->province_id;
                   $value['district_id'] = $municipality->district_id;
                 }
+                $value['occupation'] = $this->patchOccupation($value['occupation']??null);
+
                 $case = [
                     'token' => $case_token,
                     'name' => $value['name'],
@@ -355,6 +373,7 @@ class ExtCaseController extends Controller
                   $value['province_id'] = $municipality->province_id;
                   $value['district_id'] = $municipality->district_id;
                 }
+                $value['occupation'] = $this->patchOccupation($value['occupation']??null);
                 $case = [
                     'token' => $case_token,
                     'name' => $value['name'],

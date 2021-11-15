@@ -98,9 +98,11 @@ class SuspectedCase extends Model
     {
         return $this->hasOne('App\Models\OrganizationMember', 'token', 'created_by');
     }
-
-
     public function ancs()
+    {
+        return $this->hasMany('App\Models\SampleCollection', 'woman_token', 'token');
+    }
+    public function ancsWithLabReport()
     {
         return $this->hasMany('App\Models\SampleCollection', 'woman_token', 'token')->with('labreport');
     }
@@ -119,12 +121,12 @@ class SuspectedCase extends Model
     {
         return $this->hasOne('App\Models\OrganizationMember', 'token', 'created_by');
     }
-
+    
     public function latestAnc()
     {
-        return $this->hasOne('App\Models\SampleCollection', 'woman_token', 'token')->latest()->with('labreport');
+        return $this->hasOne(SampleCollection::class, 'woman_token', 'token')->latest();
     }
-
+   
     public function cictTracing()
     {
         return $this->hasOne('App\Models\CictTracing', 'woman_token', 'token');
@@ -155,13 +157,14 @@ class SuspectedCase extends Model
         return $this->hasMany('App\Models\Symptoms', 'woman_token', 'token');
     }
 
-
-    public function getFormatedAgeUnitAttribute(){
+    public function getFormatedAgeUnitAttribute()
+    {
         return $this->ageUnitCheck($this->age_unit);
     }
 
-    private function ageUnitCheck($data){
-        switch($data){
+    private function ageUnitCheck($data)
+    {
+        switch ($data) {
             case '1':
                 return 'Months';
             case '2':
@@ -171,9 +174,9 @@ class SuspectedCase extends Model
         }
     }
 
-    public function getFormatedGenderAttribute(){
-
-        switch($this->sex){
+    public function getFormatedGenderAttribute()
+    {
+        switch ($this->sex) {
             case '1':
                 return 'Male';
             case '2':
@@ -183,8 +186,9 @@ class SuspectedCase extends Model
         }
     }
 
-    public function occupation($data){
-        switch($data){
+    public function occupation($data)
+    {
+        switch ($data) {
             case '1':
                 return 'Front Line Healthworker';
 
@@ -220,8 +224,9 @@ class SuspectedCase extends Model
         }
     }
 
-    public function caste($data){
-        switch($data){
+    public function caste($data)
+    {
+        switch ($data) {
             case '1':
                 return 'Dalit';
 
@@ -247,56 +252,66 @@ class SuspectedCase extends Model
 
 
 
-    public function scopeActivePatientList($query){
+    public function scopeActivePatientList($query)
+    {
         return $query->whereHas('latestAnc', function ($latest_anc_query) {
-            $latest_anc_query->whereNotIn('ancs.result' ,[ '3', '4', '9']);
+            $latest_anc_query->whereNotIn('ancs.result', [ '3', '4', '9']);
         })->doesntHave('latestAnc', 'or');
     }
 
-    public function scopePassivePatientList($query){
+    public function scopePassivePatientList($query)
+    {
         return $query->whereHas('latestAnc', function ($latest_anc_query) {
             $latest_anc_query->where('result', '4');
         });
     }
 
-    public function scopePositivePatientList($query){
+    public function scopePositivePatientList($query)
+    {
         return $query->whereHas('latestAnc', function ($latest_anc_query) {
             $latest_anc_query->where('result', '3');
         });
     }
 
-    public function scopeLabReceivedList($query){
+    public function scopeLabReceivedList($query)
+    {
         return $query->whereHas('latestAnc', function ($latest_anc_query) {
             $latest_anc_query->where('result', '9')->whereHas('labReport');
         });
     }
-    public function scopeLabAddReceived($query){
+    public function scopeLabAddReceived($query)
+    {
         return $query->whereHas('latestAnc', function ($latest_anc_query) {
             $latest_anc_query->where('result', '9')->whereHas('labReport');
         });
     }
 
-    public function scopeLabAddReceivedNegative($query){
+    public function scopeLabAddReceivedNegative($query)
+    {
         return $query->whereHas('latestAnc', function ($latest_anc_query) {
             $latest_anc_query->where('result', '4')->whereHas('labReport');
         });
     }
 
-    public function scopeLabAddReceivedPositive($query){
+    public function scopeLabAddReceivedPositive($query)
+    {
         return $query->whereHas('latestAnc', function ($latest_anc_query) {
             $latest_anc_query->where('result', '3')->whereHas('labReport');
         });
     }
 
-    public function scopeCasesRecoveredList($query){
+    public function scopeCasesRecoveredList($query)
+    {
         return $query->where('end_case', '1');
     }
 
-    public function scopeCasesDeathList($query){
+    public function scopeCasesDeathList($query)
+    {
         return $query->where('end_case', '2');
     }
 
-    public function getCreatedAtAttribute($date){
-      return $date;
+    public function getCreatedAtAttribute($date)
+    {
+        return $date;
     }
 }

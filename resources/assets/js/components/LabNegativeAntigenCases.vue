@@ -14,16 +14,14 @@
         <th width="4%" title="Ward No">Ward</th>
         <th width="11%">Case</th>
         <th width="10%" title="Case Created Date">Date</th>
-        <th width="10%" title="Sample Collection Details">Sample</th>
-        <th width="4%" title="Test Type">Test Type</th>
+        <th width="14%" title="Sample Collection Details">Sample</th>
         <th width="8%" title="Latest Lab Result">Result</th>
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
       </tr>
       </thead>
       <tr slot-scope="{item, removeItemOnSuccess}">
         <td>
-          <div title="Case ID">C ID : {{ item.case_id }}</div>
-          <div v-if="item.parent_case_id !== null" title="Parent Case ID">PC ID : {{ item.parent_case_id }}</div>
+          <div v-if="item.parent_case_id !== null">Parent Case ID : {{ item.parent_case_id }}</div>
         </td>
         <td>{{item.name}}</td>
         <td>{{item.age}}</td>
@@ -34,7 +32,7 @@
         <td>{{ checkMunicipality(item.municipality_id) }}</td>
         <td>{{ item.ward }}</td>
         <td>
-          Place : {{ getHealthPostName(item.healthpost) }} <br>
+          Place : {{ item.healthpost.name }} <br>
           Type : {{ checkCaseType(item.cases) }} <br>
           Management : {{ checkCaseManagement(item.cases, item.case_where) }}
         </td>
@@ -42,13 +40,12 @@
         <td><span class="label label-info"> {{ item.ancs.length }}</span>
           <div v-if="item.latest_anc" title="Swab ID">SID : <strong>{{ item.latest_anc.token }}</strong></div>
         </td>
-        <td v-html="checkTestTpye(item.latest_anc.service_for)">
         <td>
-          <span class="label label-danger"> Positive </span>
+          <div><span class="label label-success"> Negative </span></div>
           <div>{{ labToken(item.latest_anc.lab_token) }}</div>
         </td>
         <td>
-          <button v-if="item.latest_anc.result == 9" v-on:click="addResultInLab(item)" title="Add Result">
+          <button v-if="item.latest_anc.result === '9'" v-on:click="addResultInLab(item)" title="Add Result">
             <i class = "material-icons">biotech</i> | 
           </button>
           <button v-if="permission == 1" v-on:click="deleteResultData(item, removeItemOnSuccess)" title="Move Patient Data">
@@ -60,7 +57,7 @@
       <!--            <span>Selected Ids: {{ item }}</span>-->
 
     </filterable>
-    <div v-if="this.$userRole == 'fchv'">
+    <div v-if="this.$userRole === 'fchv'">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
       <fab
           :position="fabOptions.position"
@@ -92,7 +89,7 @@ export default {
     return {
       permission: this.$permissionId,
       filterable: {
-        url: '/data/api/lab/add-result-positive',
+        url: '/data/api/lab/add-result-negative-antigen',
         orderables: [
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},
@@ -189,12 +186,6 @@ export default {
     select: function () {
       this.allSelected = false;
     },
-    getHealthPostName: function(item) {
-      if(item === null) {
-        return ''
-      }
-      return item.name
-    },
     sendPatientData: function (item) {
       this.$dlg.modal(SendPatientDataModel, {
         title: 'Do you want to send '+item.name+' \'s patients data ?',
@@ -235,14 +226,6 @@ export default {
           municipalities : this.municipalities
         },
       })
-    },
-
-    checkTestTpye(value){
-      if(value == '1'){
-        return '<span class="label label-success">PCR</span>';
-      }else{
-        return '<span class="label label-primary">Antigen</spa>';
-      }
     },
 
     deleteResultData: function (item, removeItemOnSuccess) {
@@ -390,19 +373,20 @@ export default {
       }
     },
     checkDistrict : function(value){
-      if (value == 0 || value == null || value == ''){
+      if (value === 0 || value == null || value === ''){
         return ''
       }else{
         return this.districts.find(x => x.id == value).district_name;
       }
     },
     checkMunicipality : function(value){
-      if (value == 0 || value == null || value == ''){
+      if (value === 0 || value == null || value === ''){
         return ''
       }else{
         return this.municipalities.find(x => x.id == value).municipality_name;
       }
     },
+
     checkForPositiveOnly : function (value){
       if (value !== null) {
         if (value.result === '3') {
@@ -414,11 +398,7 @@ export default {
       if (value === '0' || value == null || value === ''){
         return true;
       }
-      if (value.result === '4') {
-        return false;
-      }else{
-        return true;
-      }
+      return value.result !== '4';
     },
     excelFileName : function(){
       var ext = '.xls';
@@ -450,7 +430,7 @@ export default {
     },
 
     checkCaseManagement : function (type, management){
-      if (type == '1') {
+      if (type === '1') {
         switch(management){
           case '0':
             return 'Home';
@@ -466,15 +446,15 @@ export default {
         }
       }
 
-      if (type == '2') {
+      if (type === '2') {
         switch(management){
           case '0':
             return 'General Ward';
 
-          case '0':
+          case '1':
             return 'ICU';
 
-          case '0':
+          case '2':
             return 'Ventilator';
 
           default:
@@ -499,6 +479,11 @@ export default {
         },
       })
     },
+    labToken(data){
+      if (data !== null){
+        return data.split('-').splice(1).join('-');
+      }
+    },
     gender(type){
       switch (type){
         case '1':
@@ -509,11 +494,6 @@ export default {
           return 'O';
       }
     },
-    labToken(data){
-      if (data !== null){
-        return data.split('-').splice(1).join('-');
-      }
-    }
   }
 }
 

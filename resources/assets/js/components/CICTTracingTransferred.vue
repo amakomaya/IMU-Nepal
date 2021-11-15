@@ -3,16 +3,14 @@
     <filterable v-bind="filterable">
       <thead slot="thead">
       <tr>
-        <th title="Case ID">Case ID</th>
-        <th title="Name">Name</th>
-        <th title="Age">Age</th>
+        <th>Case ID</th>
+        <th>Name</th>
+        <th>Age</th>
         <th title="Gender">G</th>
-        <th title="District">District</th>
-        <th title="Municipality">Municipality</th>
-        <th title="Initiated Date">Initiated Date</th>
-        <th title="A form Status">A form Status</th>
-        <th title="Device Used"><i class="fa fa-mobile" aria-hidden="true"></i> / <i class="fa fa-desktop fa-sm" aria-hidden="true"></i></th>
-        <th title="Action"></th>
+        <th>District</th>
+        <th>Municipality</th>
+        <th><i class="fa fa-mobile" aria-hidden="true"></i> / <i class="fa fa-desktop fa-sm" aria-hidden="true"></i></th>
+        <th></th>
       </tr>
       </thead>
       <tr slot-scope="{item, removeItemOnSuccess}">
@@ -23,35 +21,16 @@
         <td>{{ item.district.district_name }}</td>
         <td>{{ item.municipality.municipality_name }}</td>
         <td>
-          <span v-if="item.cict_initiated_date">{{ item.cict_initiated_date }}</span>
-          <span v-else class="label label-danger">Not Initiated</span>
+            <span v-if="item.regdev === 'web'" title="Web" class="label label-info">W</span>
+            <span v-else title="Mobile" class="label label-success">M</span>
         </td>
         <td>
-          <span v-if="item.completion_date" title="Complete" class="label label-success">Complete</span>
-          <span v-else title="Incomplete" class="label label-danger">Incomplete</span>
-        </td>
-        <td>
-          <span v-if="item.regdev === 'web'" title="Web" class="label label-info">W</span>
-          <span v-else title="Mobile" class="label label-success">M</span>
-        </td>
-        <td>
-          <span v-show="checkEditButton()">
-            <button v-if="item.cict_initiated_date" v-on:click="cictUpdateData(item.case_id)" class="btn btn-primary btn-sm" title="CICT Edit">
-              <i class="fa fa-edit" aria-hidden="true"> Edit</i>
+            <button v-on:click="cictUpdateData(item.case_id)" class="btn btn-warning btn-sm" title="CICT Create">
+                <i class="fa fa-plus" aria-hidden="true"> Create</i>
             </button>
-            <button v-else v-on:click="cictUpdateData(item.case_id)" class="btn btn-warning btn-sm" title="CICT Create">
-              <i class="fa fa-plus" aria-hidden="true"> Create</i>
-            </button>
-          </span>
-          <button v-on:click="contactList(item.case_id)" class="btn btn-secondary btn-sm" title="Contact List">
-            <i class="fa fa-list" aria-hidden="true"> Contact List</i>
-          </button>
-          <button v-on:click="cictReport(item.case_id)" class="btn btn-success btn-sm" title="CICT Report">
-            <i class="fa fa-file-pdf-o" aria-hidden="true"> Report</i>
-          </button>
-          <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" class="btn btn-danger btn-sm" title="Delete Data">
+            <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" class="btn btn-danger btn-sm" title="Delete Data">
             <i class="fa fa-trash" aria-hidden="true"> Delete</i>
-          </button>
+            </button>
         </td>
       </tr>
     </filterable>
@@ -68,7 +47,7 @@ export default {
     return {
       permission: this.$permissionId,
       filterable: {
-        url: '/data/api/cict-tracing',
+        url: '/data/api/cict-transferred-list',
         orderables: [
           {title: 'Name', name: 'name'},
           {title: 'Age', name: 'age'},

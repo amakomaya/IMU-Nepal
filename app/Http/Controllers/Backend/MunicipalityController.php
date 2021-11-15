@@ -48,6 +48,7 @@ class MunicipalityController extends Controller
             ->select([
                 'municipality_infos.id',
                 'municipality_infos.token',
+                'municipality_infos.office_address',
                 'provinces.province_name as province',
                 'districts.district_name as district',
                 'municipalities.municipality_name as municipality'
@@ -118,6 +119,7 @@ class MunicipalityController extends Controller
             'office_address'               => $request->get('office_address'),
             'office_longitude'               => $request->get('office_longitude'),
             'office_lattitude'               => $request->get('office_lattitude'),
+            'center_type' => $request->get('center_type'),
             'status'               => $request->get('status'),
         ]);
 

@@ -10,13 +10,13 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        District Wise
+                        Local Level Government Wise
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="col-lg-12" style="margin-bottom: 20px;">
                             <form action="" method="GET">
-                                <div id ="from_only"></div>
+                                <div id ="from_to"></div>
                                 <div class="form-group col-sm-3">
                                     <button type="submit" class="btn btn-success">Submit</button>
                                 </div>
@@ -29,6 +29,7 @@
                                 <tr>
                                     <th>S.N</th>
                                     <th>District</th>
+                                    <th>Municipality</th>
                                     <th>A Form</th>
                                     <th>B1 Form</th>
                                     <th>B2 Form</th>
@@ -39,6 +40,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $location->district_name }}</td>
+                                        <td>{{ $location->municipality_name }}</td>
                                         <td>{{ isset($cict_tracings[$location->id]) ? $cict_tracings[$location->id]->count() : 0 }}</td>
                                         <td>{{ isset($contacts[$location->id]) ? $contacts[$location->id]->count() : 0 }}</td>
                                         <td>{{ isset($follow_ups[$location->id]) ? $follow_ups[$location->id]->count() : 0 }}</td>
@@ -88,8 +90,8 @@
                 ]
             });
 
-            $.get( "{{route("admin.select-from-only")}}?from_date={{$from_date}}",function(data){
-                $("#from_only").html(data);
+            $.get("{{route("admin.select-from-to")}}?from_date={{$from_date}}&to_date={{$to_date}}",function(data){
+                $("#from_to").html(data);
             });
         });
     </script>

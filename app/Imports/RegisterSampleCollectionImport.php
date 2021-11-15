@@ -98,7 +98,7 @@ class RegisterSampleCollectionImport implements ToModel, WithChunkReading, WithV
         $suspectedCase = SuspectedCase::create([
           'name' => $row['person_name'],
           'age' => $row['age'],
-          'age_unit' => $row['age_unit'],
+          'age_unit' => $row['age_unit']??'0',
           'province_id' => $row['province'],
           'district_id' => $row['district'],
           'municipality_id' => $row['municipality'],

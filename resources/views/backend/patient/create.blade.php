@@ -31,6 +31,10 @@
             border-color: red;
             padding: .375rem .75rem;
         }
+
+        /* .error:before {
+            content: "This field is required"
+        } */
     </style>
 @endsection
 @section('content')
@@ -436,7 +440,7 @@
                                     <label class="radio-inline">
                                         <input type="radio"
                                                {{ old('vaccine_status') == "0" ? 'checked' : '' }} name="vaccine_status"
-                                               value="0" class="vaccine_status" required>No
+                                               value="0" class="vaccine_status" checked>No
                                     </label>
                                     <label class="radio-inline">
                                         <input type="radio"
@@ -717,9 +721,13 @@
         function vaccineStatusCheck() {
             if($('.vaccine_status:checked').val() == '1'){
                 $('.vaccine-status').show();
+                $('#vaccine_name').prop('required', true);
+                $('#dose_one_date').prop('required', true);
             }
             else {
                 $('.vaccine-status').hide();
+                $('#vaccine_name').prop('required', false);
+                $('#dose_one_date').prop('required', false);
             }
         }
 

@@ -1,6 +1,6 @@
 <li @if(Request::segment(3) == 'monthly-line-listing' || Request::segment(3) == 'overview' || 
     Request::segment(3) == 'daily-listing'|| Request::segment(3) == 'situation-report'|| 
-    Request::segment(2) == 'cases-patient-detail') class="active" @endif>
+    Request::segment(2) == 'cases-patient-detail' || Request::segment(2) == 'cases-report-payment') class="active" @endif>
     <a href="#">
         <i class="fa fa-money" aria-hidden="true"></i>
 
@@ -27,13 +27,6 @@
             </li>
         @endif
         <li>
-            <a href="{{ route('cases.payment.report') }}">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Report
-                <span class="label label-info pull-right">HMIS</span>
-            </a>
-        </li>
-        <li>
             <a href="{{ route('cases.payment.index') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                 Under Treatment
@@ -54,94 +47,136 @@
                 <span class="label label-danger pull-right">List</span>
             </a>
         </li>
-            <li @if(Request::segment(3) == 'overview' || Request::segment(3) == 'daily-listing' || Request::segment(3) == 'monthly-line-listing') class="active" @endif >
-                <a href="#">
-                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-                    Reports <span class="fa arrow"></span>
-                </a>
-                <ul class="nav nav-third-level">
-                    @if(auth()->user()->role == 'main')
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-calculator"></i>
-                                Cost Calculation <span class="fa arrow"></span>
-                            </a>
-                            <ul class="nav nav-forth-level">
-                                <li>
-                                    <a href="{{ route('report.case-payment-overview') }}">
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                                        Overview
-                                        <span class="label label-primary pull-right"> Monthly </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('report.case-payment-daily-listing') }}">
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                                        Daily List
-                                        <span class="label label-primary pull-right"> Daily </span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
-                    <li>
-                        <a href="{{ route('report.case-payment-monthly-line-listing') }}">
-                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                            Line Listing
-                            <span class="label label-info pull-right"> Monthly </span>
-                        </a>
-                    </li>
-                    @if(auth()->user()->role == 'main' || auth()->user()->role == 'province' || 
-                    auth()->user()->role == 'dho' || auth()->user()->role == 'municipality')
-                    <li>
-                        <a href="{{ route('report.case-payment-situation-report') }}">
-                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                            Situation Report
-                            <span class="label label-info pull-right"> SR </span>
-                        </a>
-                    </li>
-                    @endif
-                    <li>
-                        <a href="{{ route('cases.patient.detail') }}">
-                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                            Patient Detail
-                            <span class="label label-primary pull-right">Detail</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-@if(auth()->user()->role === 'main' || auth()->user()->role === 'province' || auth()->user()->role === 'municipality' || auth()->user()->role === 'dho')
-<li>
-<a href="#">
-<i class="fa fa-money" aria-hidden="true"></i>
 
-By Organization <span class="fa arrow"></span>
-</a>
-<ul class="nav nav-third-level">
-<li>
-<a href="{{ route('cases.payment.by.organization') }}">
-    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-    All
-    <span class="label label-info pull-right">All</span>
-</a>
-</li>
-<li>
-<a href="{{ route('cases.payment.by.institutional') }}">
-    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-    Institutional
-    <span class="label label-info pull-right">Isolation</span>
-</a>
-</li>
-<li>
-<a href="{{ route('cases.payment.by.lab-treatment') }}">
-    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-    Lab & Treatment
-    <span class="label label-info pull-right">LNT</span>
-</a>
-</li>
-<li>
+        {{-- <li>
+            <a href="{{ route('cases.payment.report') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Report
+                <span class="label label-info pull-right">HMIS</span>
+            </a>
+        </li> --}}
+        <li @if(Request::segment(3) == 'cases-report-payment') @endif>
+            <a href="#">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                DHIS2 Reports <span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-third-level">
+                <li>
+                    <a href="{{ route('cases.payment.report', ['type' => '1']) }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        PCR Lab & Treatment and Hospital without PCR Lab
+                        {{-- <span class="label label-primary pull-right"> LT </span> --}}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('cases.payment.report', ['type' => '2']) }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Home Isolation
+                        {{-- <span class="label label-primary pull-right"> HI </span> --}}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('cases.payment.report', ['type' => '3']) }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Institutional Isolation
+                        {{-- <span class="label label-primary pull-right"> II </span> --}}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('cases.payment.report') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Overall
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li @if(Request::segment(3) == 'overview' || Request::segment(3) == 'daily-listing' || Request::segment(3) == 'monthly-line-listing') class="active" @endif >
+            <a href="#">
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                Reports <span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-third-level">
+                @if(auth()->user()->role == 'main')
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-calculator"></i>
+                            Cost Calculation <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-forth-level">
+                            <li>
+                                <a href="{{ route('report.case-payment-overview') }}">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                    Overview
+                                    <span class="label label-primary pull-right"> Monthly </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('report.case-payment-daily-listing') }}">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                    Daily List
+                                    <span class="label label-primary pull-right"> Daily </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+                <li>
+                    <a href="{{ route('report.case-payment-monthly-line-listing') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Line Listing
+                        <span class="label label-info pull-right"> Monthly </span>
+                    </a>
+                </li>
+                @if(auth()->user()->role == 'main' || auth()->user()->role == 'province' || 
+                auth()->user()->role == 'dho' || auth()->user()->role == 'municipality')
+                <li>
+                    <a href="{{ route('report.case-payment-situation-report') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Situation Report
+                        <span class="label label-info pull-right"> SR </span>
+                    </a>
+                </li>
+                @endif
+                <li>
+                    <a href="{{ route('cases.patient.detail') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Patient Detail
+                        <span class="label label-primary pull-right">Detail</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        @if(auth()->user()->role === 'main' || auth()->user()->role === 'province' || auth()->user()->role === 'municipality' || auth()->user()->role === 'dho')
+        <li>
+            <a href="#">
+                <i class="fa fa-money" aria-hidden="true"></i>
+                By Organization <span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-third-level">
+                <li>
+                    <a href="{{ route('cases.payment.by.organization') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        All
+                        <span class="label label-info pull-right">All</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('cases.payment.by.institutional') }}">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        Institutional
+                        <span class="label label-info pull-right">Isolation</span>
+                    </a>
+                </li>
+            <li>
+                <a href="{{ route('cases.payment.by.lab-treatment') }}">
+                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                    Lab & Treatment
+                    <span class="label label-info pull-right">LNT</span>
+                </a>
+            </li>
+            <li>
 <a href="{{ route('cases.payment.by.hospital.wo.pcrlab') }}">
     <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
     Hospital without PCR Lab

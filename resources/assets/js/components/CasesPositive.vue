@@ -17,7 +17,7 @@
         <th width="6%" title="Latest Lab Result">Result</th>
         <th width="4%" title="Tested By">Tested By</th>
         <th width="4%" title="Infection Type">Type</th>
-        <th width="4%" title="CICT Status">CICT Status</th>
+        <th width="4%" title="CICT Transfer Status">CICT Status</th>
         <th width="8%" title="Actions"><i class="fa fa-cogs" aria-hidden="true"></i></th>
       </tr>
       </thead>
@@ -32,12 +32,13 @@
         <td>One : {{ roleVisibility(item.emergency_contact_one) }} <br>
           Two : {{ roleVisibility(item.emergency_contact_two) }}
         </td>
-        <td>{{ checkMunicipality(item.municipality_id) }}</td>
+        <td>{{ item.municipality.municipality_name }}</td>
         <td>{{ item.ward }}</td>
         <td>
           Place : {{ item.healthpost ? item.healthpost.name : '' }} <br>
           Type : {{ checkCaseType(item.cases) }} <br>
-          Management : {{ checkCaseManagement(item.cases, item.case_where) }}
+          Management : {{ checkCaseManagement(item.cases, item.case_where) }} <br>
+          CICT : {{ item.cict_tracing ? item.cict_tracing.organization.name : 'N/A' }}
         </td>
         <td>{{ formattedDate(item.latest_anc.reporting_date_np) }}</td>
         <td>{{ formattedDate(item.latest_anc.sample_test_date_np) }}</td>
@@ -61,23 +62,24 @@
         <td v-html="checkCictStatus(item.cict_tracing)">
         <td>
           <button v-on:click="viewCaseDetails(item.token)" title="Case Details Report">
-            <i class="fa fa-file" aria-hidden="true"></i> |
+            <i class="fa fa-file" aria-hidden="true"></i>
           </button>
-          <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)"
-                  title="Add Sample Collection / Swab Collection Report">
-            <i class="fa fa-medkit" aria-hidden="true"></i> |
+          <button v-if="checkPermission('sample-collection')" v-on:click="addSampleCollection(item.token)" title="Add Sample Collection / Swab Collection Report">
+             | <i class="fa fa-medkit" aria-hidden="true"></i>
           </button>
-          <button v-on:click="sendPatientData(item)" title="Send / Transfer Patient to other Hospital">
-            <i class="fa fa-hospital-o"></i>
-          </button>
+          <span v-show="checkMunicipalityRole() && item.cict_tracing == null">
+            <button v-on:click="sendPatientData(item)" title="Send / Transfer CICT Patient data to other Hospital">
+               | <i class="fa fa-hospital-o"></i>
+            </button>
+          </span>
           <button v-if="permission == 1" v-on:click="deletePatientData(item, removeItemOnSuccess)" title="Move Patient Data">
              | <i class="fa fa-trash"></i>
           </button>
-          <div v-show="checkCictButton()">
-             | <button v-on:click="sendToCict(item.case_id)" title="Add to Cict Form">
-              <i class="fa fa-users"></i>
+          <span v-show="checkCictButton()">
+            <button v-if="!item.cict_tracing" v-on:click="sendToCict(item.case_id)" title="Add to Cict Form">
+               | <i class="fa fa-users"></i>
             </button>
-          </div>
+          </span>
         </td>
       </tr>
     </filterable>
@@ -155,12 +157,12 @@ export default {
     }
   },
   created() {
-    this.fetch()
+    // this.fetch()
   },
   methods: {
     sendPatientData: function (item) {
       this.$dlg.modal(SendPatientDataModel, {
-        title: 'Do you want to send ' + item.name + ' \'s patients data ?',
+        title: 'Do you want to send ' + item.name + ' \'s patients data for CICT ?',
         height: 600,
         width: 700,
         params: {
@@ -450,9 +452,9 @@ export default {
     },
     checkCictStatus(value){
       if(value){
-        return '<span class="label label-success"><i class="fa fa-check" aria-hidden="true"></i></span>';
+        return '<span class="label label-success" title="CICT Transfer Status Completed"><i class="fa fa-check" aria-hidden="true"></i></span>';
       }else{
-        return '<span class="label label-danger"><i class="fa fa-times" aria-hidden="true"></i></spa>';
+        return '<span class="label label-danger" title="No CICT"><i class="fa fa-times" aria-hidden="true"></i></spa>';
       }
     },
     checkPermission(value) {
@@ -492,6 +494,9 @@ export default {
     },
     checkCictButton(){
       return this.$userRole === 'healthworker';
+    },
+    checkMunicipalityRole(){
+      return this.$userRole === 'municipality';
     },
     checkValidOrganization(latest_anc){
       var ret = '';

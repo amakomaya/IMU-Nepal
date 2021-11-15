@@ -21,10 +21,14 @@ Route::get('api/cases-payment-death', 'Data\Api\WomenController@casesPaymentDeat
 
 Route::get('api/community-deaths', 'Data\Api\WomenController@communityDeathIndex');
 Route::get('api/cict-tracing', 'Data\Api\WomenController@CICTTracingList');
+Route::get('api/cict-transferred-list', 'Data\Api\WomenController@CICTTracingTransferredList');
 
 Route::get('api/lab/received-sample', 'Data\Api\WomenController@labAddReceivedIndex');
+Route::get('api/lab/received-sample-antigen', 'Data\Api\WomenController@labAddReceivedAntigenIndex');
 Route::get('api/lab/add-result-negative', 'Data\Api\WomenController@labAddResultNegativeIndex');
+Route::get('api/lab/add-result-negative-antigen', 'Data\Api\WomenController@labAddResultNegativeAntigenIndex');
 Route::get('api/lab/add-result-positive', 'Data\Api\WomenController@labAddResultPositiveIndex');
+Route::get('api/lab/add-result-positive-antigen', 'Data\Api\WomenController@labAddResultPositiveAntigenIndex');
 
 Route::get('api/admin/dashboard', 'Data\Api\DashboardController@index');
 Route::get('api/admin/dashboard-old', 'Data\Api\DashboardController@indexOld');
