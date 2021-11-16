@@ -69,6 +69,7 @@ Route::resource('admin/province', 'Backend\ProvinceController');
 
 //Bakend Municipality
 Route::resource('admin/municipality', 'Backend\MunicipalityController');
+Route::get('admin/municipality-vaccine', 'Backend\MunicipalityController@createVaccine');
 
 //User Manager
 Route::get('/admin/user-manager/{id}/change-paswword', 'Backend\UserManagerController@changePassword')->name('user-manager.change-paswword');
