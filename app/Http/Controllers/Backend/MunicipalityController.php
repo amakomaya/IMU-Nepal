@@ -49,7 +49,7 @@ class MunicipalityController extends Controller
             ->select([
                 'municipality_infos.id',
                 'municipality_infos.token',
-                'municipality_infos.office_address',
+                'municipality_infos.center_type',
                 'provinces.province_name as province',
                 'districts.district_name as district',
                 'municipalities.municipality_name as municipality'
