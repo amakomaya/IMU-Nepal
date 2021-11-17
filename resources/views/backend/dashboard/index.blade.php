@@ -34,7 +34,7 @@
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
-    @if(auth()->user()->role == 'municipality')
+    @if(auth()->user()->role == 'municipality' && $is_user == 0)
     <div id="messageModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -109,8 +109,6 @@
 		removePlugins : 'image'
  	};
 	CKEDITOR.replace( 'description', options);
-
-
         $(window).on('load', function () {
             $('#messageModal').modal('show');
         });
