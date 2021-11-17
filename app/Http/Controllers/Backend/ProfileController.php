@@ -83,7 +83,6 @@ class ProfileController extends Controller
                 $data->update([
                     'phone' => $request->phone,
                     'office_address' => $request->office_address,
-                    'email' => $request->email,
                     'responsible_person' => $request->responsible_person
                 ]);
                 break;

@@ -108,6 +108,14 @@ class LoginController extends Controller
             //     $request->session()->flash('message', 'Update your account\'s information ! <a href="/admin/profile">Edit Profile</a>');
             //     return redirect($this->redirectTo);
             // }
+
+            if(auth()->user()->role == 'municipality'){
+              $m_info = MunicipalityInfo::where('token', $user->token)->first();
+              if($m_info->phone == null || $m_info->office_address == null){
+                $request->session()->flash('message', 'Complete your account\'s information ! <a href="/admin/profile">Edit Profile</a>');
+                return redirect($this->redirectTo);
+              }
+            }
             return redirect($this->redirectTo);
         }else{
             $request->session()->flash('error_message', 'Username or Password Incorrect!');
