@@ -1,6 +1,5 @@
 @extends('layouts.backend.app')
 @section('content')
-    
 <div id="page-wrapper">
     <!-- /.row -->
     <div class="row">
@@ -18,10 +17,14 @@
                    Welcome to the IMU Dashboard
 
                    @if(auth()->user()->role == 'main' || auth()->user()->role == 'center' || auth()->user()->role == 'province' && session()->get('permission_id') == 1)
-                   <button class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#noticeModal" style="margin-top: -5px;">Edit Notice</button>
+                        <button class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#noticeModal" style="margin-top: -5px;">Edit Notice</button>
                    @endif
                 </div>
                 <!-- /.panel-heading -->
+                <div class="panel-body">
+                    Note: यदि आजको अन्त्य सम्म कुनै रिपोर्टिङ गरिएको छैन भने मात्र चेक बाकसमा टिक गर्नुहोस्:
+                </div>
+                <hr>
                 <div class="panel-body">
                     <div>
                         {!! $data->description ?? 'No Notice available' !!}
