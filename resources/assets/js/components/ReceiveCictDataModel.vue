@@ -1,6 +1,30 @@
 <template>
 	<div>
         <div class="form-group">
+            <h4>Where do you want to receive this patient, Please search </h4>
+
+            <v-select label="name"
+                v-model="healthpostSelected"
+                placeholder="Type to search informations .."
+                :options="options"
+                @search="onSearch"
+            >
+                <template vslot="no-options">
+                    type to search informations ...
+                </template>
+                <template slot="option" slot-scope="option">
+                    {{ option.name }} <br>
+                    {{ option.province.province_name }}, {{ option.municipality.municipality_name }}, {{ option.district.district_name }}<br>
+                    {{ option.address }}
+                </template>
+                <template slot="selected-option" slot-scope="option">
+                    <div class="selected d-center">
+                        {{ option.name }}, {{ option.address }}
+                    </div>
+                </template>
+            </v-select> 
+			
+			<br>
             <h4><u><strong>Patient Details :</strong></u></h4>
             <table class="table table-striped">
                 <tbody>
@@ -48,30 +72,7 @@
             <input type="radio" v-model="platform" value="2" id="mobile">
             <label class="font-weight-normal" for="mobile">Mobile</label>
 
-        	<h4>Where do you want to receive this patient, Please search </h4>
-
-            <v-select label="name"
-                v-model="healthpostSelected"
-                placeholder="Type to search informations .."
-                :options="options"
-                @search="onSearch"
-            >
-                <template vslot="no-options">
-                    type to search informations ...
-                </template>
-                <template slot="option" slot-scope="option">
-                    {{ option.name }} <br>
-                    {{ option.province.province_name }}, {{ option.municipality.municipality_name }}, {{ option.district.district_name }}<br>
-                    {{ option.address }}
-                </template>
-                <template slot="selected-option" slot-scope="option">
-                    <div class="selected d-center">
-                        {{ option.name }}, {{ option.address }}
-                    </div>
-                </template>
-            </v-select> 
-			
-			<br>
+        	<br>
             <button class="btn btn-primary btn-lg btn-block" v-on:click="receivePatient(healthpostSelected, data.case_id, platform)" title="Receive Patient">
             <i class="fa fa-send"> Receive Patient for CICT</i>
         </button>     

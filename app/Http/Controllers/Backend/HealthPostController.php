@@ -52,7 +52,7 @@ class HealthPostController extends Controller
         return view('backend.healthpost.index', compact('healthposts'));
     }
 
-    public function vaccinationList()
+    public function vaccinationCenter()
     {
         if (User::checkAuthForIndexShowHealthpost() === false) {
             return redirect('/index');
