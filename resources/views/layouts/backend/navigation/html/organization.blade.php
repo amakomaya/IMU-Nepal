@@ -42,6 +42,9 @@
             <a href="{{ route('organization.overview.hospitalnopcr') }}" title="Hospital without PCR Lab">Hospital without PCR Lab</a>
         </li>
         <li>
+            <a href="{{ route('organization.overview.antigenonly') }}" title="Antigen Test Only">Antigen Test Only</a>
+        </li>
+        <li>
             <a href="{{ route('organization.overview.poe') }}" title="Point of Entry (POE)">POE</a>
         </li>
         <li>
