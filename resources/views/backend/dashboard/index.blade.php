@@ -34,6 +34,26 @@
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
+    @if(auth()->user()->role == 'municipality' && $is_user == 0)
+    <div id="messageModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">सूचना ! सूचना!! सूचना!!!</h4>
+                </div>
+                <div class="modal-body">
+                    Please create only one vaccination verification user.<br>
+                    <span class="text-center">Click here <a href="{{ url('admin/municipality-vaccine') }}" class="btn btn-success">Create</a></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
 <!-- /#page-wrapper -->
 
@@ -89,6 +109,9 @@
 		removePlugins : 'image'
  	};
 	CKEDITOR.replace( 'description', options);
+        $(window).on('load', function () {
+            $('#messageModal').modal('show');
+        });
 
 </script>
 @endsection

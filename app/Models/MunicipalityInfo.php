@@ -20,7 +20,7 @@ class MunicipalityInfo extends Model
 
 	protected static $logOnlyDirty = true;
 	
-    protected $fillable = ['token','phone','province_id','district_id','municipality_id','office_address','office_longitude','office_lattitude','status','updated_at'];
+    protected $fillable = ['token','phone','province_id','district_id','municipality_id','office_address','office_longitude','office_lattitude','status','updated_at', 'center_type', 'responsible_person'];
 
 	public function province()
     {

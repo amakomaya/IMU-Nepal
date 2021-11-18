@@ -12,6 +12,7 @@ use App\Models\MunicipalityInfo;
 use App\Models\Province;
 use App\Models\District;
 use App\Models\Municipality;
+use App\Reports\FilterRequest;
 use App\User;
 use Illuminate\Support\Facades\Cache;
 use Auth;
@@ -48,7 +49,7 @@ class MunicipalityController extends Controller
             ->select([
                 'municipality_infos.id',
                 'municipality_infos.token',
-                'municipality_infos.office_address',
+                'municipality_infos.center_type',
                 'provinces.province_name as province',
                 'districts.district_name as district',
                 'municipalities.municipality_name as municipality'
@@ -98,6 +99,24 @@ class MunicipalityController extends Controller
         return view('backend.municipality.create',compact('provinces','districts','municipalities'));
     }
 
+    public function createVaccine(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $province_id = $response['province_id'];
+        $district_id = $response['district_id'];
+        $municipality_id = $response['municipality_id'];
+        $provinces = Cache::remember('province-list', 48*60*60, function () {
+          return Province::select(['id', 'province_name'])->get();
+        });
+        $districts = Cache::remember('district-list', 48*60*60, function () {
+          return District::select(['id', 'district_name', 'province_id' ])->get();
+        });
+        $municipalities = Cache::remember('municipality-list', 48*60*60, function () {
+          return Municipality::select(['id', 'municipality_name', 'province_id', 'district_id', 'municipality_name_np', 'type', 'total_no_of_wards'])->get();
+        });
+        return view('backend.municipality.create-vaccine',compact('provinces','districts','municipalities', 'province_id', 'district_id', 'municipality_id'));
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -110,6 +129,7 @@ class MunicipalityController extends Controller
         //     return redirect('/index');
         // }
 
+
          $municipality = MunicipalityInfo::create([
             'token'               => uniqid().time(),
             'phone'               => $request->get('phone'),
@@ -119,6 +139,7 @@ class MunicipalityController extends Controller
             'office_address'               => $request->get('office_address'),
             'office_longitude'               => $request->get('office_longitude'),
             'office_lattitude'               => $request->get('office_lattitude'),
+            'responsible_person' => $request->get('responsible_person'),
             'center_type' => $request->get('center_type'),
             'status'               => $request->get('status'),
         ]);
@@ -135,6 +156,9 @@ class MunicipalityController extends Controller
 
         $request->session()->flash('message', 'Data Inserted successfully');
 
+        if(Auth::user()->role=="municipality"){
+            return redirect()->route('index.index');
+        }
         return redirect()->route('municipality.index');
     }
 
