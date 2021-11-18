@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Reports\FilterRequest;
+use App\Models\MunicipalityInfo;
 use App\Models\FrontPage;
 
 class FrontPageController extends Controller
@@ -14,10 +15,19 @@ class FrontPageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $is_user = 0;
+        if(auth()->user()->role == 'municipality'){
+            $response = FilterRequest::filter($request);
+            $municipality_id = $response['municipality_id'];
+            $m_info = MunicipalityInfo::where('municipality_id', $municipality_id)->where('center_type', 2)->first();
+            if($m_info){
+                $is_user = 1;
+            }
+        }
         $data = FrontPage::first();
-        return view('backend.dashboard.index', compact('data'));
+        return view('backend.dashboard.index', compact('data', 'is_user'));
     }
 
     /**

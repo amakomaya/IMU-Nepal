@@ -60,33 +60,51 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                        <label for="email" class="col-md-3 control-label"><i data-toggle="tooltip" title="इमेल आई.डी. हाल्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i> Email</label>
+                                    <label for="email" class="col-md-3 control-label"><i data-toggle="tooltip" title="इमेल आई.डी. हाल्नुहोस्।"class="fa fa-info-circle" aria-hidden="true"></i> Email</label>
 
-                                        <div class="col-md-7">
-                                            <input id="email" type="text" class="form-control" name="email" value="{{ $user->email ?? '' }}" >
+                                    <div class="col-md-7">
+                                        <input id="email" type="text" class="form-control" name="email" value="{{ $user->email ?? '' }}" >
 
-                                            @if ($errors->has('email'))
-                                                <span class="help-block">
-                                                    <strong>{{ $errors->first('email') }}</strong>
-                                                </span>
-                                            @endif
-                                        </div>
+                                        @if ($errors->has('email'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('email') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
-
+                                </div>
                                 
-                                <div class="form-group{{ $errors->has('tole') ? ' has-error' : '' }}">
-                                        <label for="tole" class="col-md-3 control-label"><i data-toggle="tooltip" title="गाउँ टोलको नाम लेख्नुहिस्।"class="fa fa-info-circle" aria-hidden="true"></i> Office Address</label>
+                                <div class="form-group{{ $errors->has('office_address') ? ' has-error' : '' }}">
+                                    <label for="office_address" class="col-md-3 control-label"><i data-toggle="tooltip" title="गाउँ टोलको नाम लेख्नुहिस्।"class="fa fa-info-circle" aria-hidden="true"></i> Office Address</label>
 
-                                        <div class="col-md-7">
-                                            <input id="tole" type="text" class="form-control" name="tole" value="{{ $data->tole ?? '' }}" >
+                                    <div class="col-md-7">
+                                        <input id="office_address" type="text" class="form-control" name="office_address" value="{{ $data->office_address ?? '' }}" >
 
-                                            @if ($errors->has('tole'))
-                                                <span class="help-block">
-                                                    <strong>{{ $errors->first('tole') }}</strong>
-                                                </span>
-                                            @endif
-                                        </div>
+                                        @if ($errors->has('office_address'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('office_address') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
+                                </div>
+                                
+                                @if(auth()->user()->role === 'municipality')
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">For Vaccination Verifier</label>
+                                </div>
+                                <div class="form-group{{ $errors->has('responsible_person') ? ' has-error' : '' }}">
+                                    <label for="responsible_person" class="col-md-3 control-label"><i data-toggle="tooltip" title="Responsible Person"class="fa fa-info-circle" aria-hidden="true"></i> Responsible Person</label>
+
+                                    <div class="col-md-7">
+                                        <input id="responsible_person" type="text" class="form-control" name="responsible_person" value="{{ $data->responsible_person ?? '' }}" >
+
+                                        @if ($errors->has('responsible_person'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('responsible_person') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                @endif
 
                                 @if(auth()->user()->role === 'healthpost')
                                 <div class="form-group{{ $errors->has('no_of_beds') ? ' has-error' : '' }}">

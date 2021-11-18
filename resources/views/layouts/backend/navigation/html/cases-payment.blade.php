@@ -48,14 +48,16 @@
             </a>
         </li>
 
-        {{-- <li>
+        @if(auth()->user()->role == 'healthpost' || auth()->user()->role == 'healthworker')
+        <li>
             <a href="{{ route('cases.payment.report') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Report
+                DHIS2 Report
                 <span class="label label-info pull-right">HMIS</span>
             </a>
-        </li> --}}
-        <li>
+        </li>
+        @else
+        <li @if(Request::segment(3) == 'cases-report-payment') @endif>
             <a href="#">
                 <i class="fa fa-file-text-o" aria-hidden="true"></i>
                 DHIS2 Reports <span class="fa arrow"></span>
@@ -65,21 +67,18 @@
                     <a href="{{ route('cases.payment.report', ['type' => '1']) }}">
                         <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                         PCR Lab & Treatment and Hospital without PCR Lab
-                        {{-- <span class="label label-primary pull-right"> LT </span> --}}
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('cases.payment.report', ['type' => '2']) }}">
                         <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                         Home Isolation
-                        {{-- <span class="label label-primary pull-right"> HI </span> --}}
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('cases.payment.report', ['type' => '3']) }}">
                         <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                         Institutional Isolation
-                        {{-- <span class="label label-primary pull-right"> II </span> --}}
                     </a>
                 </li>
                 <li>
@@ -90,6 +89,8 @@
                 </li>
             </ul>
         </li>
+        @endif
+
         <li @if(Request::segment(3) == 'overview' || Request::segment(3) == 'daily-listing' || Request::segment(3) == 'monthly-line-listing') class="active" @endif >
             <a href="#">
                 <i class="fa fa-file-excel-o" aria-hidden="true"></i>

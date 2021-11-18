@@ -38,6 +38,7 @@ class Organization extends Model
         2=>'PCR Lab Test Only',
         3=>'PCR Lab & Treatment',
         6=>'Hospital Without PCR Lab',
+		9=>'Antigen Test Only',
         7=>'Point of Entry (POE)',
         8=>'Vaccination Center'
     ];

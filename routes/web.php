@@ -69,6 +69,7 @@ Route::resource('admin/province', 'Backend\ProvinceController');
 
 //Bakend Municipality
 Route::resource('admin/municipality', 'Backend\MunicipalityController');
+Route::get('admin/municipality-vaccine', 'Backend\MunicipalityController@createVaccine');
 
 //User Manager
 Route::get('/admin/user-manager/{id}/change-paswword', 'Backend\UserManagerController@changePassword')->name('user-manager.change-paswword');
@@ -173,6 +174,7 @@ Route::get('/admin/organization-overview-labtest', 'Backend\OverviewController@l
 Route::get('/admin/organization-overview-both', 'Backend\OverviewController@both')->name('organization.overview.both');
 Route::get('/admin/organization-overview-normal', 'Backend\OverviewController@normal')->name('organization.overview.normal');
 Route::get('/admin/organization-overview-hospitalnopcr', 'Backend\OverviewController@hospitalnopcr')->name('organization.overview.hospitalnopcr');
+Route::get('/admin/organization-overview-antigenonly', 'Backend\OverviewController@antigenonly')->name('organization.overview.antigenonly');
 Route::get('/admin/organization-overview-poe', 'Backend\OverviewController@poe')->name('organization.overview.poe');
 Route::get('/admin/organization-overview-vaccination', 'Backend\OverviewController@vaccination')->name('organization.overview.vaccination');
 

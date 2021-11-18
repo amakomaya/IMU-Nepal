@@ -82,7 +82,8 @@ class ProfileController extends Controller
                 $data = MunicipalityInfo::where('token', $user->token)->first();
                 $data->update([
                     'phone' => $request->phone,
-                    'office_address' => $request->tole
+                    'office_address' => $request->office_address,
+                    'responsible_person' => $request->responsible_person
                 ]);
                 break;
             case 'dho':

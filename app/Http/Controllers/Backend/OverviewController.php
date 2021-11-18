@@ -58,6 +58,11 @@ class OverviewController extends Controller
         return $this->filter(6);
     }
 
+    public function antigenonly()
+    {
+        return $this->filter(9);
+    }
+
     public function poe()
     {
         return $this->filter(7);
