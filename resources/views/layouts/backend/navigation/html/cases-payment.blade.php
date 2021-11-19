@@ -52,7 +52,7 @@
         <li>
             <a href="{{ route('cases.payment.report') }}">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                Report
+                DHIS2 Report
                 <span class="label label-info pull-right">HMIS</span>
             </a>
         </li>
