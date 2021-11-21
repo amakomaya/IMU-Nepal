@@ -28,12 +28,20 @@
                 @endif
                 @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
                 <div class="form-group">
+                    @if(Request::segment(2) == 'vaccination-center')
+                    <a class="btn btn-success" href="{{ url('admin/municipality-vaccine') }}">{{trans('index.create')}}</a>
+                    @else
                     <a class="btn btn-success" href="{{route('healthpost.create') }}">{{trans('index.create')}}</a>
+                    @endif
                 </div>
                 @endif
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    @if(Request::segment(2) == 'vaccination-center')
+                    Vaccination Center
+                    @else
                     Hospitals / CICT Teams
+                    @endif
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">

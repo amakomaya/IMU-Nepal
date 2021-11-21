@@ -71,16 +71,11 @@
                             </div>
 
                             @if (!isset($data))
-                            @php
-                                $imu_user = auth()->user()->username;
-                                $imu_user_array = explode(".", $imu_user);
-                                $new_user = $imu_user_array[0] . ".ver";
-                            @endphp
                                 <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
                                     <label for="username" class="col-md-3 control-label">{{ trans('create.username') }}</label>
 
-                                    <div class="col-md-7">
-                                        <input id="username" type="text" class="form-control" name="username" value="{{ $new_user }}" readonly>
+                                    <div class="col-md-3">
+                                        <input id="username" type="text" class="form-control">
 
                                         @if ($errors->has('username'))
                                             <span class="help-block">
@@ -88,7 +83,9 @@
                                             </span>
                                         @endif
                                     </div>
+                                    <label for="username" class="control-label">.ver</label>
                                 </div>
+                                <input type="hidden" class="form-control username" name="username" value="@yield('username')">
 
 
                                 <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
@@ -220,4 +217,13 @@
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->
-@endsection    
+@endsection
+
+@section('script')
+<script>
+    $('#username').on("keyup", function(){
+        $('.username').val($('#username').val() + '.ver');
+    });
+</script>
+@endsection
+
