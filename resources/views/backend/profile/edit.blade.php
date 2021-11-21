@@ -107,6 +107,10 @@
                                 @endif
 
                                 @if(auth()->user()->role === 'healthpost')
+                                @php
+                                    $hospital_type = \App\Models\Organization::where('token', auth()->user()->token)->first()->hospital_type;
+                                @endphp
+                                @if($hospital_type != 1)
                                 <div class="form-group{{ $errors->has('no_of_beds') ? ' has-error' : '' }}">
                                     <label for="no_of_beds" class="col-md-3 control-label"><i data-toggle="tooltip" title=""class="fa fa-info-circle" aria-hidden="true"></i> No of Beds ( General )</label>
 
@@ -176,7 +180,7 @@
                                         @endif
                                     </div>
                                 </div>
-
+                                @endif
                                 @endif
                                 <br>
                                     <div class="form-group"> <div class="col-md-7 col-md-offset-3">
