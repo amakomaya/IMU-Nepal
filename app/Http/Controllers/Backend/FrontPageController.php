@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Helpers\GetHealthpostCodes;
 use App\Reports\FilterRequest;
 use App\Models\MunicipalityInfo;
 use App\Models\FrontPage;
+use App\Models\ZeroReport;
 
 class FrontPageController extends Controller
 {
@@ -18,8 +20,10 @@ class FrontPageController extends Controller
     public function index(Request $request)
     {
         $is_user = 0;
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+        $zero_report = ZeroReport::whereIn('org_code', $hpCodes)->whereDate('date', date('Y-m-d'))->get();
         if(auth()->user()->role == 'municipality'){
-            $response = FilterRequest::filter($request);
             $municipality_id = $response['municipality_id'];
             $m_info = MunicipalityInfo::where('municipality_id', $municipality_id)->where('center_type', 2)->first();
             if($m_info){
@@ -27,7 +31,7 @@ class FrontPageController extends Controller
             }
         }
         $data = FrontPage::first();
-        return view('backend.dashboard.index', compact('data', 'is_user'));
+        return view('backend.dashboard.index', compact('data', 'is_user', 'zero_report'));
     }
 
     /**
@@ -99,5 +103,39 @@ class FrontPageController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function zeroReport(Request $request)
+    {
+        $response = FilterRequest::filter($request);
+        $hpCodes = GetHealthpostCodes::filter($response);
+
+        try{
+            if($request['check_status'] == 1){
+                $zero_report = ZeroReport::where('org_code', $hpCodes[0])
+                    ->where('type', $request['type'])
+                    ->where('date', date('Y-m-d'))
+                    ->first();
+                if(!$zero_report){
+                    ZeroReport::create([
+                        'province_id' => $response['province_id'],
+                        'district_id' => $response['district_id'],
+                        'municipality_id' => $response['municipality_id'],
+                        'org_code' => $hpCodes[0],
+                        'type' => $request['type'],
+                        'status' => $request['check_status'],
+                        'date' => date('Y-m-d')
+                    ]);
+                }
+            }else {
+                ZeroReport::where('org_code', $hpCodes[0])
+                    ->where('type', $request['type'])
+                    ->where('date', date('Y-m-d'))
+                    ->delete();
+            }
+            return response()->json(['message' => 'Successful']);
+        }catch(Exception $e){
+            return response()->json(['message' => $e]);
+        }
     }
 }

@@ -1309,3 +1309,5 @@ Route::post('/v1/cict-follow-up', function (Request $request) {
 Route::get('/v1/old-cict-total', 'Backend\CictTracingController@oldCictTotalData');
 Route::get('/v1/old-cict-datewise', 'Backend\CictTracingController@oldCictDatewiseReport');
 //End of Cict APis
+
+Route::post('/v1/zero-reporting', 'Backend\FrontPageController@zeroReport');
