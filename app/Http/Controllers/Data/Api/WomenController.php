@@ -825,8 +825,10 @@ class WomenController extends Controller
     {
         $response = FilterRequest::filter($request);
         $hpCodes = GetHealthpostCodes::filter($response);
-
-        $data = CictTracing::whereIn('org_code', $hpCodes)->with('municipality', 'district')
+        $data = CictTracing::whereIn('org_code', $hpCodes)->with(['municipality', 'district', 
+            'suspectedCase' => function($q){
+                $q->with('ancs', 'latestAnc');
+            }])
             ->whereNull('cict_initiated_date')
             ->latest();
         $total = clone $data;

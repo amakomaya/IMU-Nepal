@@ -9,6 +9,7 @@
         <th title="Gender">G</th>
         <th>District</th>
         <th>Municipality</th>
+        <th>Positive Result Date</th>
         <th><i class="fa fa-mobile" aria-hidden="true"></i> / <i class="fa fa-desktop fa-sm" aria-hidden="true"></i></th>
         <th></th>
       </tr>
@@ -20,6 +21,9 @@
         <td>{{ sex(item.sex )}}</td>
         <td>{{ item.district.district_name }}</td>
         <td>{{ item.municipality.municipality_name }}</td>
+        <td>
+          {{ customDate(item.suspected_case) }}
+        </td>
         <td>
             <span v-if="item.registered_device === 'web'" title="Web" class="label label-info">W</span>
             <span v-else title="Mobile" class="label label-success">M</span>
@@ -143,6 +147,74 @@ export default {
       var arr = this.$userPermissions.split(',');
       return this.$userRole === 'healthworker';
     },
+
+    formattedDate(data) {
+      if(data == null) {
+        return '';
+      }else {
+        var date_array = data.split('-');
+        switch (date_array[1]) {
+          case '1':
+          case '01':
+            return date_array[2] + " Baishakh, " + date_array[0];
+
+          case '2':
+          case '02':
+            return  date_array[2] + " Jestha, " + date_array[0];
+
+          case '3':
+          case '03':
+            return  date_array[2] + " Ashad, " + date_array[0];
+
+          case '4':
+          case '04':
+            return  date_array[2] + " Shrawan, " + date_array[0];
+
+          case '5':
+          case '05':
+            return  date_array[2] + " Bhadra, " + date_array[0];
+
+          case '6':
+          case '06':
+            return  date_array[2] + " Ashwin, " + date_array[0];
+
+          case '7':
+          case '07':
+            return  date_array[2] + " Karthik, " + date_array[0];
+
+          case '8':
+          case '08':
+            return  date_array[2] + " Mangsir, " + date_array[0];
+
+          case '9':
+          case '09':
+            return  date_array[2] + " Poush, " + date_array[0];
+
+          case '10':
+            return  date_array[2] + " Magh, " + date_array[0];
+
+          case '11':
+            return  date_array[2] + " Falgun, " + date_array[0];
+
+          case '12':
+            return  date_array[2] + " Chaitra, " + date_array[0];
+
+          default:
+            return '';
+        }
+      }
+    },
+    customDate(data){
+      if(data == null) {
+        return '';
+      }else{
+        if(data.latest_anc == null){
+          return '';
+        }else{
+          return this.formattedDate(data.latest_anc.sample_test_date_np);
+        }
+      }
+    }
   }
 }
 </script>
