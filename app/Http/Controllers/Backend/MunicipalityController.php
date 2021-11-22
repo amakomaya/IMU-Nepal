@@ -236,6 +236,7 @@ class MunicipalityController extends Controller
             'office_address'               => $request->get('office_address'),
             'office_longitude'               => $request->get('office_longitude'),
             'office_lattitude'               => $request->get('office_lattitude'),
+            'responsible_person' => $request->get('responsible_person'),
             'status'               => $request->get('status'),
         ]);
 
