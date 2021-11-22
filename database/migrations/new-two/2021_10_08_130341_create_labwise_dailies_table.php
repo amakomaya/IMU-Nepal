@@ -16,7 +16,7 @@ class CreateLabwiseDailiesTable extends Migration
         Schema::create('labwise_dailies', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('date');
-            $table->string('hp_code', 16);
+            $table->string('org_code', 16);
             $table->tinyInteger('province_id');
             $table->smallInteger('district_id');
             $table->smallInteger('municipality_id');

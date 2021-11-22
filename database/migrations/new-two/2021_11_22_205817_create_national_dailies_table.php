@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHealthpostwiseDailiesTable extends Migration
+class CreateNationalDailiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateHealthpostwiseDailiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('healthpostwise_dailies', function (Blueprint $table) {
+        Schema::create('national_dailies', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('date');
-            $table->string('org_code', 16);
             $table->tinyInteger('hospital_type', 1);
             $table->tinyInteger('province_id', 1);
             $table->smallInteger('district_id', 3);
@@ -55,6 +54,6 @@ class CreateHealthpostwiseDailiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('healthpostwise_dailies');
+        Schema::dropIfExists('national_dailies');
     }
 }
