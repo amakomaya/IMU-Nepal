@@ -66,6 +66,18 @@ return [
             'prefix'    => ''
         ],
 
+        'mysqlreport' => [
+            'driver'    => env('DB_CONNECTION_REPORT'),
+            'host'      => env('DB_HOST_REPORT'),
+            'port'      => env('DB_PORT_REPORT'),
+            'database'  => env('DB_DATABASE_REPORT'),
+            'username'  => env('DB_USERNAME_REPORT'),
+            'password'  => env('DB_PASSWORD_REPORT'),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => ''
+        ],
+
 
         'pgsql' => [
             'driver' => 'pgsql',
