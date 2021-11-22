@@ -19,7 +19,7 @@
 @endif
 @if($h_type !== 4)
     @include('layouts.backend.navigation.html.active-cases')
-    @include('layouts.backend.navigation.html.close-cases')
+    {{-- @include('layouts.backend.navigation.html.close-cases') --}}
 @endif
 @if($h_type == 2 || $h_type == 3)
     @include('layouts.backend.navigation.html.active-cases-in-lab')

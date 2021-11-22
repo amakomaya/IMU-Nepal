@@ -1,4 +1,4 @@
-@include('layouts.backend.navigation.html.analysis')
+{{-- @include('layouts.backend.navigation.html.analysis') --}}
 @include('layouts.backend.navigation.html.center')
 @include('layouts.backend.navigation.html.province')
 @include('layouts.backend.navigation.html.dho')

@@ -56,6 +56,7 @@
                                         <th>{{trans('index.district')}}</th>                                    
                                         <th>{{trans('index.local_level')}}</th>
                                         <th>Center Type</th>
+                                        <th>Responsible Person</th>
                                         <th>{{trans('index.options')}}</th>
                                     </tr>
                                     </thead>
@@ -78,6 +79,9 @@
                                             @else
                                             Vaccination Center
                                             @endif
+                                        </td>
+                                        <td>
+                                            {{ $municipalityInfo->responsible_person }}
                                         </td>
                                         <td>
                                         <form method="post" action="{{route('municipality.destroy', $municipalityInfo->id)}}" onsubmit="return confirmDelete()">

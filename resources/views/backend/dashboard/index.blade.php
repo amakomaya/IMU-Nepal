@@ -109,9 +109,9 @@
 		removePlugins : 'image'
  	};
 	CKEDITOR.replace( 'description', options);
-        $(window).on('load', function () {
-            $('#messageModal').modal('show');
-        });
+        // $(window).on('load', function () {
+        //     $('#messageModal').modal('show');
+        // });
 
 </script>
 @endsection
