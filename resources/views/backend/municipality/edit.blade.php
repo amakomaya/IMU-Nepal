@@ -6,6 +6,8 @@
 
     @section ('token',!!old('token')? old('token') : $data->token)
 
+    @section ('responsible_person',!!old('responsible_person')? old('responsible_person') : $data->responsible_person)
+
     @section ('phone',!!old('phone')? old('phone') : $data->phone)
 
     @php($province_id = !!old('province_id')? old('province_id') : $data->province_id)

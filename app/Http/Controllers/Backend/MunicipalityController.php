@@ -50,6 +50,7 @@ class MunicipalityController extends Controller
                 'municipality_infos.id',
                 'municipality_infos.token',
                 'municipality_infos.center_type',
+                'municipality_infos.responsible_person',
                 'provinces.province_name as province',
                 'districts.district_name as district',
                 'municipalities.municipality_name as municipality'
@@ -235,6 +236,7 @@ class MunicipalityController extends Controller
             'office_address'               => $request->get('office_address'),
             'office_longitude'               => $request->get('office_longitude'),
             'office_lattitude'               => $request->get('office_lattitude'),
+            'responsible_person' => $request->get('responsible_person'),
             'status'               => $request->get('status'),
         ]);
 

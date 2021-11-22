@@ -926,7 +926,6 @@
                         required: true,
                     },
                     id_card_detail: {
-                        required: true,
                         maxlength: 30,
                     },
                     travelled_where: {
@@ -955,7 +954,6 @@
                         required: true,
                     },
                     emergency_contact_one: {
-                        required: true,
                         digits: true,
                         minlength: 10,
                         maxlength: 10,
@@ -966,7 +964,6 @@
                         nameCustom: true
                     },
                     emergency_contact_two: {
-                        required: true,
                         digits: true,
                         minlength: 7
                     },

@@ -21,32 +21,37 @@
                    @endif
                 </div>
                 <!-- /.panel-heading -->
-                @if(auth()->user()->role == 'healthpost' || auth()->user()->role == 'healthworker')
-                @php
-                    $lab_report = $hospital_report = '';
-                    if($zero_report){
-                        if($zero_report->where('type', 1)->first()){
-                            $lab_report = 'checked';
-                        }
-                        if($zero_report->where('type', 2)->first()){
-                            $hospital_report = 'checked';
-                        }
-                    }
-                @endphp
+                
                 <div class="panel-body">
-                    <b>Note: यदि आजको अन्त्य सम्म कुनै रिपोर्टिङ गरिएको छैन भने मात्र चेक बाकसमा टिक गर्नुहोस्:</b>
-                    <div style="margin-left: 20px; margin-top: 10px;">
-                        <p>Lab Reporting &nbsp; <input type="checkbox" name="lab" id="lab" {{ $lab_report }}></p>
-                        <p>Hospital Reporting &nbsp; <input type="checkbox" name="hospital" id="hospital" {{ $hospital_report }}></p>
+                    <div class="row">
+                        <div class="col-md-9" style="overflow-wrap: break-word;">
+                            {!! $data->description ?? 'No Notice available' !!}
+                        </div>
+                        @if(auth()->user()->role == 'healthpost' || auth()->user()->role == 'healthworker')
+                        @php
+                            $lab_report = $hospital_report = '';
+                            if($zero_report){
+                                if($zero_report->where('type', 1)->first()){
+                                    $lab_report = 'checked';
+                                }
+                                if($zero_report->where('type', 2)->first()){
+                                    $hospital_report = 'checked';
+                                }
+                            }
+                        @endphp
+                        
+                        <div class="col-md-3" style="border-left:1px solid;">
+                            <h4>Zero Reporting</h3>
+                            <b>Note: यदि आजको अन्त्य सम्म कुनै रिपोर्टिङ गरिएको छैन भने मात्र चेक बाकसमा टिक गर्नुहोस्:</b>
+                            <div style="margin-left: 20px; margin-top: 10px;">
+                                <p>Lab Reporting &nbsp; <input type="checkbox" name="lab" id="lab" {{ $lab_report }}></p>
+                                <p>Hospital Reporting &nbsp; <input type="checkbox" name="hospital" id="hospital" {{ $hospital_report }}></p>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
-                <hr>
-                @endif
-                <div class="panel-body">
-                    <div>
-                        {!! $data->description ?? 'No Notice available' !!}
-                    </div>
-                </div>
+                
                 <!-- /.panel-body -->
             </div>
             <!-- /.panel -->
@@ -129,9 +134,9 @@
 		removePlugins : 'image'
  	};
 	CKEDITOR.replace( 'description', options);
-    $(window).on('load', function () {
-        $('#messageModal').modal('show');
-    });
+    // $(window).on('load', function () {
+    //     $('#messageModal').modal('show');
+    // });
 
     $('#lab').on("change", function() {
         var state = $(this).is(':checked');
