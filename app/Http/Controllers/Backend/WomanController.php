@@ -435,7 +435,7 @@ class WomanController extends Controller
             'district_id' => 'required',
             'municipality_id' => 'required',
             'tole' => 'required',
-            'emergency_contact_one' => 'required',
+            // 'emergency_contact_one' => 'required',
             'occupation' => 'required',
             // 'service_for' => 'required',
             // 'infection_type' => 'required',
