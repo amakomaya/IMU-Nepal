@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePoeOrganizationwiseDailiesTable extends Migration
+class CreatePoeReportsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreatePoeOrganizationwiseDailiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('poe_organizationwise_dailies', function (Blueprint $table) {
+        Schema::create('poe_reports', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('date');
-            $table->string('org_code', 16);
-            $table->tinyInteger('province_id', 1);
-            $table->smallInteger('district_id', 3);
-            $table->smallInteger('municipality_id', 6);
+            $table->tinyInteger('province_id');
+            $table->smallInteger('district_id');
+            $table->smallInteger('municipality_id');
             $table->smallInteger('poe_total_registration')->default(0);
             $table->smallInteger('poe_antigen_total')->default(0);
             $table->smallInteger('poe_antigen_positive')->default(0);
@@ -39,6 +38,6 @@ class CreatePoeOrganizationwiseDailiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('poe_organizationwise_dailies');
+        Schema::dropIfExists('poe_reports');
     }
 }

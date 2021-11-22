@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateNationalDailiesTable extends Migration
+class CreateOrganizationwiseLabReportsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateNationalDailiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('national_dailies', function (Blueprint $table) {
+        Schema::create('organizationwise_lab_reports', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->date('date');
             $table->string('org_code', 16);
-            $table->tinyInteger('hospital_type', 1);
-            $table->tinyInteger('province_id', 1);
-            $table->smallInteger('district_id', 3);
-            $table->smallInteger('municipality_id', 6);
+            $table->tinyInteger('hospital_type');
+            $table->tinyInteger('province_id');
+            $table->smallInteger('district_id');
+            $table->smallInteger('municipality_id');
             $table->smallInteger('antigen_positive')->default(0);
             $table->smallInteger('antigen_negative')->default(0);
             $table->integer('antigen_total')->default(0);
@@ -42,6 +43,6 @@ class CreateNationalDailiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('national_dailies');
+        Schema::dropIfExists('organizationwise_lab_reports');
     }
 }
