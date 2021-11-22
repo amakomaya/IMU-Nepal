@@ -97,6 +97,19 @@
                                 </div>
                             </div>
 
+                            <div class="form-group{{ $errors->has('responsible_person') ? ' has-error' : '' }}">
+                                <label for="responsible_person" class="col-md-3 control-label">Responsible Person</label>
+
+                                <div class="col-md-7">
+                                    <input id="responsible_person" type="text" class="form-control" name="responsible_person" value="@yield('responsible_person')" >
+
+                                    @if ($errors->has('responsible_person'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('responsible_person') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
 
                             <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
                                 <label for="phone" class="col-md-3 control-label">{{ trans('create.phone') }}</label>
@@ -219,12 +232,12 @@
 
                             <div class="form-group{{ $errors->has('center_type') ? ' has-error' : '' }}">
                                 <label for="status" class="col-md-3 control-label">
-                                    IMU or Vaccination Center</label>
+                                    IMU or Vaccine Verifier</label>
                                 <div class="col-md-7">
                                     <select id="center_type" class="form-control" name="center_type" >
-                                        {{-- <option value="">Select Organization center_type</option> --}}
+                                        {{-- <option value="">Select IMU or Vaccine Verifier</option> --}}
                                         <option value="1" @if(isset($data->center_type) && $data->center_type == "1") {{ 'selected' }} @endif>IMU</option>
-                                        <option value="2" @if(isset($data->center_type) && $data->center_type == "2") {{ 'selected' }} @endif>Vaccination Center</option>
+                                        <option value="2" @if(isset($data->center_type) && $data->center_type == "2") {{ 'selected' }} @endif>Vaccine Verifier</option>
                                     </select>
 
                                     @if ($errors->has('center_type'))

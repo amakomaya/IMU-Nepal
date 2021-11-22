@@ -29,7 +29,6 @@
                 @if(\App\User::getFirstLoggedInRole(Request::session()->get('user_token')) == 'Main')
                 <div class="form-group">
                     @if(Request::segment(2) == 'vaccination-center')
-                    <a class="btn btn-success" href="{{ url('admin/municipality-vaccine') }}">{{trans('index.create')}}</a>
                     @else
                     <a class="btn btn-success" href="{{route('healthpost.create') }}">{{trans('index.create')}}</a>
                     @endif
