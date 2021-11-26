@@ -2,9 +2,8 @@
     Request::segment(3) == 'daily-listing'|| Request::segment(3) == 'situation-report'|| 
     Request::segment(2) == 'cases-patient-detail' || Request::segment(2) == 'cases-report-payment') class="active" @endif>
     <a href="#">
-        <i class="fa fa-money" aria-hidden="true"></i>
-
-        CASES Payment <span class="fa arrow"></span>
+        <i class="fa fa-money" aria-hidden="true" title="Covid Designated Institution"></i>
+        Designated Covid OU <span class="fa arrow"></span>
     </a>
 
     <ul class="nav nav-second-level">
