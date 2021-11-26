@@ -6,14 +6,14 @@
     </a>
 
     <ul class="nav nav-second-level">
-      @if(auth()->user()->role == 'province')
         <li>
-              <a href="{{ route('report.visualization') }}">
-                  <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                  Lab Visualizaion
-                  <span class="label label-success pull-right">LV</span>
-              </a>
-          </li>
+            <a href="{{ route('report.visualization') }}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                Lab Visualizaion
+                <span class="label label-success pull-right">LV</span>
+            </a>
+        </li>
+        @if(auth()->user()->role == 'province')
           <li>
               <a href="{{ route('report.regdev') }}">
                   <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
