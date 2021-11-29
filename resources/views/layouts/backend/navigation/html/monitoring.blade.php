@@ -13,7 +13,7 @@
                 <span class="label label-success pull-right">LV</span>
             </a>
         </li>
-        @if(auth()->user()->role == 'province')
+      @if(auth()->user()->role == 'province' || auth()->user()->role == 'dho' || auth()->user()->role == 'municipality')
           <li>
               <a href="{{ route('report.regdev') }}">
                   <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
